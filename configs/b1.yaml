@@ -1,0 +1,4 @@
+# B1: parallel sampling with a flat, monolithic simulator (no recursion / partition).
+method: b1
+N: 8
+simulator: {kind: flat}

@@ -1,0 +1,4 @@
+# Ours: recursive, read-grounded, partitioned — fixed depth L.
+method: ours
+N: 8
+simulator: {kind: recursive, recursion_mode: fixed, L: 2, branching: 2, node_read_limit: 1, hard_cap: 6}
