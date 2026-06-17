@@ -45,6 +45,19 @@ def _simulator_success(r: RolloutResult, _all: Sequence[RolloutResult]) -> float
     return 1.0 if (r.predicted and r.predicted.success) else 0.0
 
 
+@register("simulator_confidence")
+def _simulator_confidence(r: RolloutResult, _all: Sequence[RolloutResult]) -> float:
+    """Rank by the world model's success CONFIDENCE (predicted reward) for the trajectory.
+
+    With a self-consistency-ensembled verifier (AppWorld ``TTS_APPWORLD_VERIFIER_SAMPLES>=2``) the
+    predicted ``reward`` is the fraction of judge samples voting SUCCESS, so this prefers the rollout
+    the world model is most *consistently* confident in — a sharper, calibrated signal than the
+    binary ``simulator_success`` (it breaks the score ties that otherwise force an arbitrary
+    lowest-cost/index tiebreak).  Reduces to ``simulator_success`` when reward is binary (0/1).
+    """
+    return float(r.predicted.reward) if r.predicted is not None else 0.0
+
+
 @register("self_consistency")
 def _self_consistency(r: RolloutResult, allr: Sequence[RolloutResult]) -> float:
     """Predicted success, tie-broken by agreement (how many rollouts share this trajectory)."""

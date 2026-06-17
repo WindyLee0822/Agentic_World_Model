@@ -255,6 +255,63 @@ class AppWorldTaskEnv(TaskEnvironment):
                         reason=f"official AppWorld.evaluate TGC {passed}/{total}")
         return traj, ri
 
+    def run_agent_rollout_wm(self, config, method: str, seed: int, budget, cache=None):
+        """Official ReAct code agent interacting with the **world model** (no real writes).
+
+        Runs the official AppWorld ReAct loop, but routes every ``apis.*`` call through the
+        world-model interception (:func:`~tts.env.appworld_wm.install_wm_requester`): read (``GET``)
+        endpoints execute exactly against the real backing DBs (read-only), write endpoints are
+        LLM-predicted from the call args + the endpoint's response schema + history, so the real DB is
+        never mutated.  Returns ``(Trajectory, predicted RewardInfo, None)``; the realized code rides
+        on the trajectory so the selected one can be committed (re-executed for real) and officially
+        scored.  AppWorld exposes no gold action list, so the selection signal is an LLM success
+        verdict over the realized plan.
+        """
+        from ..llm import make_chat_client
+        from ..llm.azure import azure_deployment
+        from .appworld_react_agent import run_react_code_agent
+        from .appworld_wm import AppWorldWMPredictor, install_wm_requester
+
+        solver = config.solver
+        model = solver.llm_agent or azure_deployment()
+        # Seed the AGENT's sampling with the per-rollout seed so the N best-of-N rollouts are
+        # DIVERSE (distinct seeds) yet reproducible; at temperature 0 this is a no-op, at >0 it is the
+        # diversity selection needs. The WM predictor stays unseeded (its temp-0 predictions are
+        # deterministic and benefit from the shared response cache).
+        chat = make_chat_client(model=model, seed=seed)
+        predictor = AppWorldWMPredictor(make_chat_client(model=model))
+        max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 50 else 40
+
+        with _world_session(self._task_id, self._experiment_base, f"wm{seed}") as world:
+            install_wm_requester(world, predictor)  # reads exact, writes predicted (no mutation)
+            # Bound the whole rollout by the predictor's hard timeout too: the predictor raises inside
+            # a runaway API loop to end the offending cell, and this stops the step loop right after,
+            # so a non-terminating agent can't spin forever (AppWorld's own per-cell timeout does not
+            # abort it in the IPython+freezegun+process-pool context). A small margin lets the
+            # predictor's in-cell raise fire first.
+            wall_clock_budget = (predictor.hard_timeout_s + 30.0) if predictor.hard_timeout_s and predictor.hard_timeout_s > 0 else None
+            code_blocks, outputs = run_react_code_agent(
+                world, chat, max_steps=max_steps, temperature=solver.temperature,
+                wall_clock_budget_s=wall_clock_budget,
+            )
+            predicted_confidence = predictor.predict_success(self._instruction, code_blocks, outputs)
+
+        steps = [
+            Step(action=Action("execute_code", {"step": i, "code": code}),
+                 observation=Observation(content=str(out)[-400:], error="Execution failed" in str(out)))
+            for i, (code, out) in enumerate(zip(code_blocks, outputs))
+        ]
+        traj = Trajectory(steps=steps, final_message="complete_task")
+        # ``reward`` carries the WM's success CONFIDENCE in [0,1] (binary 0/1 unless the verifier is
+        # self-consistency-ensembled); ``success`` is the majority verdict.  ``simulator_success``
+        # ranks on the binary flag, ``simulator_confidence`` on the continuous reward.
+        predicted = RewardInfo(reward=float(predicted_confidence), success=predicted_confidence >= 0.5,
+                               grounded=False,
+                               reason=(f"AppWorld WM rollout ({predictor.n_writes} writes LLM-predicted, "
+                                       f"{predictor.n_dirty_reads} dirty reads predicted, "
+                                       f"{predictor.n_reads} reads exact)"))
+        return traj, predicted, None
+
     # -- stepping / evaluation / commit --------------------------------- #
     def step(self, action: Action) -> Observation:  # pragma: no cover - llm path runs the loop
         raise NotImplementedError("AppWorld steps run inside the official ReAct loop")

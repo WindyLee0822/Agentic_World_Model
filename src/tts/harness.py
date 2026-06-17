@@ -61,7 +61,18 @@ def drive(agent: Agent, view, stepper: Stepper, seed: int, max_steps: int = 64) 
 
 
 def build_agent(env: TaskEnvironment, config: Config) -> Agent:
-    """Default agent: deterministic scripted stand-in following the gold plan w.p. ``p_correct``."""
+    """Default agent for the simulated path.
+
+    ``llm_wm`` builds a real LLM tool-calling solver that *interacts with the world model*; every
+    other (non-real-agent) mode uses the deterministic scripted stand-in following the gold plan
+    w.p. ``p_correct``.
+    """
+    if getattr(config.solver, "agent", "scripted") == "llm_wm":
+        from .llm.solver_agent import make_llm_solver_agent
+
+        return make_llm_solver_agent(model=config.solver.llm_agent,
+                                     temperature=config.solver.temperature,
+                                     max_steps=config.solver.max_steps)
     plan = env.gold_trajectory().actions
     mutating = getattr(env, "mutating_tools", None)
     if mutating is None:
@@ -141,6 +152,37 @@ def _real_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: i
     return rollouts
 
 
+def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int,
+                       budget: Budget, cache: ReadCache,
+                       rollout_cache: Optional[Dict] = None) -> List[RolloutResult]:
+    """Sample ``n`` rollouts of the **official agent + user simulator interacting with the WM**.
+
+    Each rollout runs the official τ² orchestrator with tool execution routed through the
+    read-grounded world model (read tools exact, write tools predicted; the real env is never
+    written).  The selection signal (``predicted``) is the WM's success belief; the realized
+    official message log rides on the trajectory so the selected one can be committed and officially
+    scored.  Generation is method-independent (same prompts/seeds); only the WM read depth differs
+    (flat for B1, recursive for Ours/B0)."""
+    rollouts: List[RolloutResult] = []
+    for i in range(n):
+        key = (env.env_name, env.task_id, config.seed + i, _solver_signature(config.solver), method)
+        if rollout_cache is not None and key in rollout_cache:
+            traj, predicted, root = rollout_cache[key]
+        else:
+            traj, predicted, root = env.run_agent_rollout_wm(config, method, config.seed + i, budget, cache)
+            if rollout_cache is not None:
+                rollout_cache[key] = (traj, predicted, root)
+        rollouts.append(RolloutResult(
+            index=i, trajectory=traj, predicted=predicted, spawn_root=root,
+            n_reads=root.total_reads() if root else 0,
+            n_spawns=root.n_spawns() if root else 0,
+            depth=root.max_depth() if root else 0,
+            tokens=root.total_tokens() if root else 0,
+            cost=root.total_cost() if root else 0.0,
+        ))
+    return rollouts
+
+
 def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = None,
                  rollout_cache: Optional[Dict] = None) -> DecisionOutcome:
     method = config.method.lower()
@@ -156,7 +198,9 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
     rollouts: List[RolloutResult] = []
     n = 1 if method == "b0" else config.N
 
-    use_real_agent = getattr(config.solver, "agent", "scripted") == "llm" and agent is None
+    solver_agent = getattr(config.solver, "agent", "scripted")
+    use_real_agent = solver_agent == "llm" and agent is None
+    use_wm_agent = solver_agent == "llm_wm" and agent is None
 
     if use_real_agent:
         rollouts = _real_agent_rollouts(env, config, method, n, budget, cache, rollout_cache)
@@ -171,10 +215,39 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         return _build_outcome(env, config, method, rollouts, selected_index, actual,
                               1, simulator_writes, budget, cache, time.perf_counter() - t0)
 
+    if use_wm_agent:
+        try:
+            rollouts = _wm_agent_rollouts(env, config, method, n, budget, cache, rollout_cache)
+        except NotImplementedError:
+            use_wm_agent = False  # no WM rollout for this env -> fall back to the drive path below
+        else:
+            # The official agent+user-sim generated each trajectory against the WM (no real write);
+            # select by the WM's predicted success, then commit the chosen one to the real env.
+            if method == "b0":
+                selected_index = 0
+            else:
+                selected_index, rollouts = Selector(config.success_score).select(rollouts)
+            simulator_writes = 0 if env.state_hash() == pre_hash else 1
+            selected = rollouts[selected_index]
+            chokepoint = CommitChokepoint(env)
+            actual = chokepoint.commit(selected.trajectory)  # the ONLY real write
+            return _build_outcome(env, config, method, rollouts, selected_index, actual,
+                                  int(chokepoint.used), simulator_writes, budget, cache,
+                                  time.perf_counter() - t0)
+
     agent = agent or build_agent(env, config)
 
     if method == "b0":
-        traj = drive(agent, view, _NoOpStepper(), config.seed)
+        # The scripted stand-in ignores observations, so B0 needs no stepper (NoOp).  The llm_wm
+        # solver, however, is meant to *interact with the world model* — so drive its single rollout
+        # against a (recursive) WM when the env supports one, falling back to NoOp otherwise.
+        stepper: Stepper = _NoOpStepper()
+        if getattr(config.solver, "agent", "scripted") == "llm_wm":
+            try:
+                stepper = env.world_model(replace(config.simulator, kind="recursive"), budget, cache)
+            except NotImplementedError:
+                stepper = _NoOpStepper()
+        traj = drive(agent, view, stepper, config.seed)
         rollouts.append(RolloutResult(index=0, trajectory=traj, predicted=RewardInfo()))
         selected_index = 0
     elif method == "b2":
@@ -188,7 +261,16 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         kind = _METHOD_TO_KIND[method]
         sim_cfg = replace(config.simulator, kind=kind)
         for i in range(n):
-            wm = env.world_model(sim_cfg, budget, cache)
+            try:
+                wm = env.world_model(sim_cfg, budget, cache)
+            except NotImplementedError:
+                # No read-grounded world model for this env/task (e.g. AppWorld, dual-control or
+                # retrieval τ² task): degrade to a privileged fork + oracle reward for this rollout,
+                # the same fallback contract the real-agent path uses.
+                fork = env.fork()
+                traj = drive(agent, view, fork, config.seed + i)
+                rollouts.append(RolloutResult(index=i, trajectory=traj, predicted=fork.evaluate(traj)))
+                continue
             traj = drive(agent, view, wm, config.seed + i)
             predicted = wm.evaluate(traj)
             root = wm.spawn_root

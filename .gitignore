@@ -13,3 +13,6 @@ venv/
 # Experiment outputs
 experiments/results/
 *.png
+
+# tau2 banking KB embeddings cache (regenerable; ~16MB per embedder config)
+data/.embeddings_cache/

@@ -26,11 +26,13 @@ def test_appworld_subsets_and_official_sizes():
 
 
 def test_tau2_subsets_and_official_sizes():
-    assert set(subsets("tau2")) == {"airline", "retail", "telecom", "mock", "banking_knowledge"}
+    assert set(subsets("tau2")) == {"airline", "retail", "telecom", "telecom-workflow", "mock",
+                                    "banking_knowledge"}
     # official tau2.registry.get_tasks_loader counts
     assert subset_size("tau2", "airline") == 50
     assert subset_size("tau2", "retail") == 114
     assert subset_size("tau2", "telecom") == 114
+    assert subset_size("tau2", "telecom-workflow") == 114
     assert subset_size("tau2", "mock") == 10
     assert subset_size("tau2", "banking_knowledge") == 97
     assert dataset_size("tau2") == sum(TAU2_OFFICIAL_SIZE.values())

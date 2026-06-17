@@ -8,16 +8,19 @@ from typing import Any, Dict, Optional
 
 @dataclass
 class SolverConfig:
-    #: solver kind: "llm" (real official-prompt agent) | "scripted" (offline plan-following stub).
-    #: The experiment runner (experiments/run.py) defaults to "llm"; the library default is the
-    #: offline stub so the env-agnostic unit tests need no benchmark packages or API access.
+    #: solver kind: "llm" (real official-prompt agent on the REAL env, reproduces the benchmark) |
+    #: "llm_wm" (the SAME official agent + user simulator, but tool execution routed through the
+    #: read-grounded world model: reads exact, writes predicted, real env untouched; the selected
+    #: trajectory is then committed to the real env) | "scripted" (offline, LLM-free plan-following
+    #: stub).  The experiment runner (experiments/run.py) defaults to "llm"; the library default is
+    #: the offline stub so the env-agnostic unit tests need no benchmark packages or API access.
     agent: str = "scripted"
     #: model the official benchmark is scored with (Azure deployment / litellm suffix)
     llm_agent: Optional[str] = None
     #: user-simulator model for τ² (defaults to ``llm_agent``)
     llm_user: Optional[str] = None
     #: sampling temperature for multi-rollout diversity (B1/B2/Ours)
-    temperature: float = 0.0
+    temperature: float = 0.7
     #: max agent steps per rollout (cohering to the official runners)
     max_steps: int = 100
     #: probability a *scripted* rollout follows the plan (offline stub only)

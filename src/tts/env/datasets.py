@@ -64,13 +64,14 @@ def appworld_subset_size(subset: str) -> int:
 # τ²-bench
 # ---------------------------------------------------------------------------
 
-TAU2_DOMAINS = ("airline", "retail", "telecom", "mock", "banking_knowledge")
+TAU2_DOMAINS = ("airline", "retail", "telecom", "telecom-workflow", "mock", "banking_knowledge")
 
 #: Official τ²-bench task counts (from tau2.registry.get_tasks_loader(domain)()).
 TAU2_OFFICIAL_SIZE = {
     "airline": 50,
     "retail": 114,
     "telecom": 114,
+    "telecom-workflow": 114,
     "mock": 10,
     "banking_knowledge": 97,
 }

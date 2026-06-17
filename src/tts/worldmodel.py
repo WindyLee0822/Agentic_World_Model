@@ -37,6 +37,46 @@ from .types import Action
 EntRef = Tuple[str, str]
 
 
+class _Reader:
+    """A privileged, read-only handle the agentic world-model subagent uses to *query* the DB.
+
+    Each :meth:`query` is one read turn: it reads a batch of ``(type, id)`` refs (budgeted, cached,
+    deep-copied) and logs them as a probe child node in the spawn tree, so the multi-turn read
+    interaction is recorded.  It exposes only reads — there is no write path."""
+
+    def __init__(self, wm: "ReadGroundedWorldModel", root: SpawnNode) -> None:
+        self._wm = wm
+        self._root = root
+
+    def query(self, refs: List[EntRef], label: str = "") -> Dict[EntRef, Optional[Dict]]:
+        refs = [(t, str(i)) for (t, i) in refs]
+        node = SpawnNode(self._wm._nid("q"), self._root.node_id, 1,
+                         label or f"query[{len(refs)}]", "probe")
+        out: Dict[EntRef, Optional[Dict]] = {}
+        for ref in refs:
+            row = self._wm._read_entity(ref)
+            node.n_reads += 1
+            out[ref] = row
+            self._wm._shadow[ref] = row
+        node.keys_covered = sum(1 for r in refs if out.get(r) is not None)
+        node.tokens, node.cost = self._wm._charge(len(refs))
+        self._root.children.append(node)
+        self._root.spawned = True
+        return out
+
+    def list_ids(self, entity_type: str, limit: int = 200) -> List[str]:
+        return list(self._wm._store.list_ids(entity_type))[:limit]
+
+    def probe(self, label: str) -> SpawnNode:
+        """Log a read-only probe (e.g. a read-tool/KB retrieval call) in the spawn tree."""
+        node = SpawnNode(self._wm._nid("p"), self._root.node_id, 1, label, "probe")
+        node.n_reads = 1
+        node.tokens, node.cost = self._wm._charge(1)
+        self._root.children.append(node)
+        self._root.spawned = True
+        return node
+
+
 class ReadGroundedWorldModel(WorldModel):
     """Flat or recursive read-grounded world model over an :class:`EntityStore`."""
 
@@ -70,6 +110,14 @@ class ReadGroundedWorldModel(WorldModel):
     @property
     def spawn_root(self) -> Optional[SpawnNode]:
         return self._root
+
+    def note(self, action: Action, content: str) -> None:
+        """Record an externally-served observation (e.g. an exactly-executed read) in the
+        evaluator's history so later predictions condition on it.  No-op if the evaluator has no
+        history channel."""
+        noter = getattr(self._eval, "note", None)
+        if callable(noter):
+            noter(action, content)
 
     def _nid(self, prefix: str = "n") -> str:
         self._n += 1
@@ -167,7 +215,18 @@ class ReadGroundedWorldModel(WorldModel):
         return node
 
     # -- public API ------------------------------------------------------ #
+    def _is_agentic(self) -> bool:
+        """Ours (non-flat) with an agentic evaluator drives a multi-turn LLM-led read loop."""
+        return bool(getattr(self._eval, "agentic", False)) and self.kind != "flat"
+
     def evaluate(self, trajectory: Trajectory) -> RewardInfo:
+        if self._is_agentic():
+            root = SpawnNode(self._nid(), None, 0, "agentic-eval", "simulator")
+            self._root = root
+            self._shadow = {}
+            info = self._eval.reward_agentic(_Reader(self, root), trajectory.actions)
+            return RewardInfo(reward=info.reward, success=info.success, grounded=False,
+                              reason=info.reason)
         seeds = self._dedup(self._eval.seed_entities(trajectory.actions))
         shadow: Dict[EntRef, Dict] = {}
         if self.kind == "flat":
@@ -178,24 +237,57 @@ class ReadGroundedWorldModel(WorldModel):
             root.confidence = covered / max(1, len(seeds))
             self._root = root
         else:
-            # Ours: recursive closure over the touched subgraph.
+            # Ours (non-agentic evaluators, e.g. the test double): recursive closure.
             self._root = self._node(seeds, 0, None, shadow)
         self._shadow = shadow
         info = self._eval.reward_from_shadow(shadow, trajectory.actions)
         return RewardInfo(reward=info.reward, success=info.success, grounded=False, reason=info.reason)
 
     def step(self, action: Action) -> Observation:
-        """Predict one action's observation against the read-grounded shadow (no real write).
-
-        Steps are advisory for an interactive agent; the terminal verdict comes from
-        :meth:`evaluate`.  Reads are grounded and budgeted; nothing is ever written to the real
-        environment (the shadow is private to this world model).
+        """Predict one action's observation (no real write).
+        For Ours with an agentic evaluator, the world-model subagent **proactively queries** the DB
+        (multi-turn, read-only) and then emits the predicted tool result.  For B1/flat or a
+        non-agentic evaluator it does a single bounded read and serves the evaluator's observation
+        (or an advisory presence signal).  Nothing is ever written to the real environment.
         """
+        if self._is_agentic():
+            root = SpawnNode(self._nid("s"), None, 0, "agentic-step", "simulator")
+            self._root = root
+            try:
+                content, is_error = self._eval.observe_agentic(_Reader(self, root), action)
+                return Observation(content=content, error=bool(is_error))
+            except Exception:  # never let observation prediction break sampling
+                return Observation(content="missing-state", error=True)
         refs = self._dedup(self._eval.seed_entities([action]))
         node = SpawnNode(self._nid("s"), None, 0, f"step[{len(refs)}]", "probe")
         self._read_into(refs[: max(1, self._cfg.node_read_limit)], self._shadow, node)
+        try:
+            served = self._eval.observe(self._shadow, action)
+        except Exception:  # never let observation prediction break sampling
+            served = None
+        if served is not None:
+            content, is_error = served
+            return Observation(content=content, error=bool(is_error))
         present = all(r in self._shadow and self._shadow[r] is not None for r in refs)
         return Observation(content=("ok" if present else "missing-state"), error=not present)
+
+    def predict_step(self, action: Action) -> Observation:
+        """Predict one action's observation, **always predicting** (never serving an exact read).
+
+        Used for a *dirty* read — a read of an entity a prior write in this rollout already changed —
+        so the observation reflects the predicted post-write state (the agentic predictor conditions
+        on the running write history) rather than the unmutated real backing state.  Falls back to
+        :meth:`step` for non-agentic evaluators (which already predict / serve advisory signals)."""
+        if self._is_agentic():
+            root = SpawnNode(self._nid("s"), None, 0, "agentic-step-predict", "simulator")
+            self._root = root
+            try:
+                content, is_error = self._eval.observe_agentic(_Reader(self, root), action,
+                                                               force_predict=True)
+                return Observation(content=content, error=bool(is_error))
+            except Exception:  # never let observation prediction break sampling
+                return Observation(content="missing-state", error=True)
+        return self.step(action)
 
 
 def make_world_model(

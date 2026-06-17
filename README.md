@@ -15,7 +15,7 @@ real environment through a single chokepoint.
 ```
                           +--------------------------------------------------------+
                           |   ONE REAL, NON-FORKABLE TASK ENVIRONMENT (per task)   |
-                          |   tau2 airline (Pydantic FlightDB) | AppWorld (REPL)   |
+                          |   tau2 (Pydantic DB; all domains) | AppWorld (REPL)   |
                           +------+--------------------------------------+----------+
    restricted view (instruction |                                       | privileged READ-ONLY
    + tool names; NO db, NO step,|                                       | EntityStore (deep copy /
@@ -49,15 +49,25 @@ real environment through a single chokepoint.
 
 ## How a single trajectory coheres to the official benchmark
 
-* **τ²-bench (airline).** A trajectory is a sequence of real airline tool-calls. The **real
+* **τ²-bench (all domains).** A trajectory is a sequence of real τ² tool-calls. The **real
   agent** is the official τ² LLM customer-service agent (the verbatim official prompt,
   `tau2.agent.llm_agent.AGENT_INSTRUCTION` / `SYSTEM_PROMPT`) conversing with the official user
   simulator over the real environment; stepping uses the official
-  `environment.get_response(ToolCall(...))` (the tool execution that mutates the Pydantic
-  `FlightDB`). The terminal reward is the official `evaluate_simulation(...)` over the whole
-  simulation (`EvaluationType.ALL`), so a single rollout (B0) is the genuine benchmark score. The
-  read-grounded world model (B1/Ours) replays tool-call sequences and compares DB-hashes against
+  `environment.get_response(ToolCall(...))` (the tool execution that mutates the domain's Pydantic
+  `DB`). The terminal reward is the official `evaluate_simulation(...)` over the whole simulation
+  (`EvaluationType.ALL`), so a single rollout (B0) is the genuine benchmark score — for **every**
+  registered domain (airline, retail, telecom, mock, banking_knowledge), selected with `--domains`.
+  The read-grounded world model (B1/Ours) replays tool-call sequences and compares DB-hashes against
   the gold `evaluation_criteria.actions` (a gold sequence scores **1.0**, a perturbed one **0.0**).
+  It is domain-generic — it introspects the backing `DB`'s entity buckets (dict- or list-keyed) and
+  follows each fetched row's id references to close over the touched subgraph
+  (`reservation → user + flights`, `order → user + products`, ...). Because it grounds on the
+  backing DB by replaying the *agent's* action sequence, it applies to **single-control** tasks
+  (every gold action is an assistant-side agent tool): all of airline/retail/mock. **Dual-control**
+  telecom (the user simulator mutates device state outside the agent's actions) and the
+  retrieval-only banking_knowledge domain expose no faithful read-grounded DB target, so the world
+  model falls back to the oracle grounded reward there (the same contract AppWorld uses) while B0
+  still reproduces their official numbers.
 * **AppWorld.** Official AppWorld tasks are solved with **free-form Python** in a stateful REPL
   and expose no replayable gold *action list*. A trajectory here is the realized sequence of
   code blocks emitted by the **official ReAct code agent** (the verbatim official prompt +
@@ -83,8 +93,20 @@ touches:
   `uncertainty` (descend while read-coverage `< tau`) or `fixed` (descend to depth `L`). Every
   read is budgeted; every node is logged in a spawn tree.
 * **B2 (snapshot, baseline only)** deep-copies the full τ² state and scores with the oracle — the
-  forking upper bound that **Ours matches without forking**. (AppWorld is non-forkable, so B2/Ours
-  there fall back to best-of-`N` over the realized official rewards.)
+  forking upper bound that **Ours matches without forking**. (AppWorld is non-forkable, so B2 there
+  falls back to best-of-`N` over the realized official rewards.)
+
+**AppWorld `llm_wm` (world-model interaction).** AppWorld also supports the `--agent llm_wm` mode: the
+official ReAct code agent runs, but every `apis.*` call is routed through the world model at the single
+chokepoint `requester.request` — read (`GET`) endpoints, the control-plane apps, and **auth endpoints
+(`login`/`logout`)** execute exactly against the real backing SQLite DBs (auth must be real so the agent's
+real reads are authorized), while task-mutating write endpoints (`POST`/`PATCH`/`DELETE`) are LLM-predicted
+from the call args + the endpoint's `response_schemas` + history (no mutation). A **read after a write** to an
+app is predicted by combining the exact *pre-write* result with the write history (the τ² dirty-read logic),
+so reads reflect the agent's prior writes. The selected trajectory is committed by re-executing its realized
+code on a fresh world and scoring with `AppWorld.evaluate()`. Measured: on dev tasks the WM rollout **matches
+the real agent** — query tasks 5/5 (B0 4/5) and write tasks 2/3 (B0 2/3), with 5–37 writes predicted per
+write-task.
 
 ## Non-negotiable constraints — and how they're enforced
 
@@ -105,10 +127,21 @@ touches:
 * **B2** — sample `N`, oracle reward per rollout, select best (τ²: forked snapshots; baseline only).
 * **Ours** — sample `N`, **recursive** read-grounded prediction (`uncertainty` | `fixed`), select best.
 
-The solver is selected with `--agent {llm,scripted}`: `llm` (default) is the real official-prompt
-agent (τ²: the official LLM agent + user simulator; AppWorld: the official ReAct code agent), so
-**B0 reproduces the official benchmark**. `scripted` is an offline, LLM-free plan-following stub
-used only to exercise the env-agnostic machinery (recursion/selection/budget) in unit tests.
+The solver is selected with `--agent {llm,llm_wm,scripted}`: `llm` (default) is the real
+official-prompt agent (τ²: the official LLM agent + user simulator; AppWorld: the official ReAct
+code agent) acting on the **real env**, so **B0 reproduces the official benchmark** and the world
+model only *scores* the finished trajectory. `llm_wm` runs the **same official agent + user
+simulator**, but routes the environment's single tool-execution chokepoint
+(`environment.get_response`) through the read-grounded **world model**: read-only tools (assistant
+*and* dual-control user tools) on *untouched* entities are served exactly, a read of an entity a
+prior write already changed is WM-predicted (so it reflects the post-write state), every write is
+WM-predicted, and the real backing DB is never mutated — so the official agent generates each
+candidate by interacting with the
+*simulated* env (receiving the same user-simulator information it would on the real env), and only
+the selected trajectory is committed to the real env (officially scored, dual-control-safe). It
+works for all single- and dual-control τ² domains. `scripted` is an offline, LLM-free
+plan-following stub used only to exercise the env-agnostic machinery
+(recursion/selection/budget) in unit tests.
 
 **Fair comparison.** Agent rollouts are generated by a single, **method-independent** path
 (`run_agent_rollout`, which depends only on `config.solver`, never on `config.method`), so B1, B2
@@ -177,13 +210,18 @@ APPWORLD_ROOT=/home/t-wendili/env-tts PYTHONPATH=src python experiments/run.py \
 # read-grounded TTS methods (τ², offline scripted solver + world model)
 python experiments/run.py --env tau2 --agent scripted --methods b1,b2,ours --tasks 12 --N 1,2,4,8
 
+# LLM solver that INTERACTS with the world model (τ²): the official agent + user simulator run
+# against the WM (read tools exact, writes WM-predicted, real env untouched); commit the selected
+# one to the real env. Works for all single- and dual-control domains.
+python experiments/run.py --env tau2 --agent llm_wm --methods b0,b1,ours --domains airline --tasks 12 --N 1,2,4,8
+
 # recursion-depth curve / subset sizes / re-aggregate a saved run
 python experiments/run.py --env tau2 --agent scripted --tasks 12 --depth-sweep
 python experiments/run.py --env tau2 --list-subsets
 python experiments/run.py --report experiments/results/records.jsonl
 ```
 
-Key knobs: `--agent {llm,scripted}`, `--llm-agent`/`--llm-user`/`--temperature`/`--max-steps`,
+Key knobs: `--agent {llm,llm_wm,scripted}`, `--llm-agent`/`--llm-user`/`--temperature`/`--max-steps`,
 `--workers` (parallel tasks — see below), `--all-tasks` (τ² official set vs mutating-only),
 `--recursion-mode {uncertainty,fixed}`, `--tau`, `--L`, `--branching`, `--node-read-limit`,
 `--hard-cap`, `--N`, `--success-score`, `--no-cache`, `--no-selective-invalidation`. Subset
@@ -216,9 +254,24 @@ deployment can trip its rate limit. The agent's chat client (`tts.llm.chat_clien
 absorbs this automatically: the underlying SDK retries 429s honouring the server's `Retry-After`
 hint, and the client adds an outer backoff-with-jitter backstop on a **dedicated** retry budget
 (so throttling never consumes the normal error-retry allowance and a transient 429 doesn't fail
-the rollout). Tunable via env vars: `TTS_LLM_RATE_LIMIT_RETRIES` (default `8`),
-`TTS_LLM_RATE_LIMIT_BASE_DELAY` (`2`s), `TTS_LLM_RATE_LIMIT_MAX_DELAY` (`60`s), and
+the rollout). Tunable via env vars: `TTS_LLM_RATE_LIMIT_RETRIES` (default `12`),
+`TTS_LLM_RATE_LIMIT_BASE_DELAY` (`2`s), `TTS_LLM_RATE_LIMIT_MAX_DELAY` (`120`s), and
 `TTS_LLM_RATE_LIMIT_JITTER` (`1`s). If you still see 429s, lower `--workers` or raise these.
+
+*`llm_wm` makes more calls.* The AppWorld/τ² `llm_wm` mode adds an LLM call per *predicted write*
+(and per dirty read / success verdict) on top of the agent's calls, so a write-heavy task can be
+several× the call volume of `B0` — and a loop that fires many writes in one code block (e.g. "follow
+19 artists") is a *burst* that trips the deployment's requests-per-minute quota even at `--workers 1`.
+Every write is **LLM-generated** (no synthesised template — `follow_artist` → `{"message": "Artist
+followed."}`, matching the real API), but the burst is folded into **one** call: status/message-only
+writes use a stable (args-free) prediction prompt, so the **deterministic response cache** (τ²'s
+`litellm.cache` lever; `TTS_LLM_RESPONSE_CACHE`) de-duplicates the 19 identical follows into a single
+LLM call. Additional 429 levers mirror τ²-bench: **bounded httpx connection pools**
+(`TTS_LLM_MAX_CONNECTIONS`, default 10) and the retry/backoff above. If you *still* see 429s (e.g. a
+`B0` run with many workers, or many distinct substantive writes), set a **min interval between LLM
+calls** via `TTS_LLM_MIN_INTERVAL_S` (e.g. `0.3`–`1.0` s — a simple per-process rate limiter) and/or
+**lower `--workers`** (e.g. `--workers 1`–`2`) so fewer processes contend for the deployment's quota.
+
 
 ## Representative results (real benchmarks)
 

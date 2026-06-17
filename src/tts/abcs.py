@@ -20,7 +20,7 @@ read/write asymmetry and the two subagent roles:
 from __future__ import annotations
 
 import abc
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from .config import SimulatorConfig
 from .trajectory import Observation, RewardInfo, Trajectory
@@ -172,6 +172,18 @@ class ShadowEvaluator(abc.ABC):
     def reward_from_shadow(self, shadow: Dict[tuple, Dict], candidate_actions: List[Action]) -> RewardInfo:
         """Predict the candidate trajectory's reward from the read-grounded shadow (no commit)."""
 
+    def observe(self, shadow: Dict[tuple, Dict], action: Action) -> Optional[Tuple[str, bool]]:
+        """Faithful read-grounded observation for one action (optional; default: advisory only).
+
+        When implemented, the env executes the **real tool function** for ``action`` against a
+        private scratch built from the read-grounded ``shadow`` (writes isolated to that scratch —
+        never the real env) and returns ``(content, is_error)``.  This lets the solver interact with
+        the world model and receive genuine tool returns rather than a pseudo presence signal, while
+        staying read-grounded and write-safe.  Returning ``None`` (the default) makes the world model
+        fall back to the coarse ``ok``/``missing-state`` advisory signal.
+        """
+        return None
+
 
 # --------------------------------------------------------------------------- #
 # The one real environment (single writer)
@@ -229,6 +241,19 @@ class TaskEnvironment(Stepper):
         rollout reproduces the official B0 number).  Real envs override this; the abstract test
         doubles (which exercise the env-agnostic machinery with a scripted stand-in) do not."""
         raise NotImplementedError("this environment has no real official agent wired")
+
+    def run_agent_rollout_wm(self, config, method: str, seed: int, budget, cache=None):
+        """Run the **official-prompt agent + user simulator against the WORLD MODEL** once.
+
+        The official orchestrator runs unchanged (faithful prompts + the user simulator dialogue, so
+        the agent receives the same kind of information it would on the real env), but every tool
+        call is served by the read-grounded world model instead of the real environment: read tools
+        are answered exactly (read-only), write tools are WM-predicted, and the real env is never
+        mutated.  Returns ``(Trajectory, predicted RewardInfo, spawn_root)`` — the trajectory carries
+        the realized official message log so the selected one can be committed/scored faithfully
+        (including dual-control user actions).  Only envs with a read-grounded world model override
+        this."""
+        raise NotImplementedError("this environment has no world-model agent rollout wired")
 
     @abc.abstractmethod
     def state_hash(self) -> str:

@@ -20,11 +20,11 @@ def make_chat_client(**kwargs: Any):
     return ChatClient(**kwargs)
 
 
-def ensure_litellm_azure_env() -> str:
+def ensure_litellm_azure_env(force_refresh: bool = False) -> str:
     """Populate litellm's Azure-AAD env vars and return the official model string."""
     from .azure import ensure_litellm_azure_env as _ensure
 
-    return _ensure()
+    return _ensure(force_refresh=force_refresh)
 
 
 __all__ = ["make_chat_client", "ensure_litellm_azure_env"]

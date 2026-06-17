@@ -25,6 +25,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 from typing import Dict, List, Optional, Tuple
 
 _PROMPT_PATH = os.path.join(os.path.dirname(__file__), "prompts", "appworld_react_code_agent.txt")
@@ -100,16 +101,22 @@ def run_react_code_agent(
     max_steps: int = 40,
     temperature: float = 0.0,
     max_tokens: int = 2048,
+    wall_clock_budget_s: Optional[float] = None,
 ) -> Tuple[List[str], List[str]]:
     """Run the official ReAct loop on an open :class:`appworld.AppWorld`.
 
     Returns ``(code_blocks, outputs)`` — the executed code per step and the environment stdout —
-    so the caller can build a trajectory.  Stops on ``world.task_completed()`` or ``max_steps``.
+    so the caller can build a trajectory.  Stops on ``world.task_completed()``, ``max_steps``, or
+    ``wall_clock_budget_s`` (a hard wall-clock backstop: a real agent can emit a non-terminating
+    API loop that AppWorld's own per-cell timeout fails to abort, so the loop is also bounded here).
     """
     messages = build_initial_messages(world)
     code_blocks: List[str] = []
     outputs: List[str] = []
+    deadline = (time.monotonic() + wall_clock_budget_s) if wall_clock_budget_s and wall_clock_budget_s > 0 else None
     for _ in range(max_steps):
+        if deadline is not None and time.monotonic() > deadline:
+            break  # hard wall-clock backstop (e.g. a non-terminating agent loop)
         content = chat_client.complete(messages, temperature=temperature, max_tokens=max_tokens)
         code = _extract_first_code(content or "")
         messages.append({"role": "assistant", "content": (content or "") + "\n\n"})

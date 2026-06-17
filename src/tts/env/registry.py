@@ -16,23 +16,20 @@ from .datasets import TaskSpec
 
 @lru_cache(maxsize=None)
 def _tau2_usable_tasks(domain: str):
-    """Real τ² tasks of a domain with a gold plan containing a DB-mutating action.
+    """Real τ² tasks of a domain that the read-grounded world model can ground on.
 
-    Restricting to mutating tasks is what makes the *read-grounded world model* discriminative:
-    read-only tasks score 1.0 for any trajectory, so they cannot exercise the flat-vs-recursive
-    world-model gap.  This filter is a world-model concern only; the **real LLM agent** (B0)
+    A task is *usable* when it is single-control with a DB-mutating agent action (see
+    :func:`tts.env.real_tau2.tau2_task_world_model_eligible`): read-only tasks score 1.0 for any
+    trajectory (no flat-vs-recursive gap) and dual-control / retrieval tasks expose no faithful
+    read-grounded DB target.  This filter is a world-model concern only; the **real LLM agent** (B0)
     handles every official task, so the official-benchmark path uses :func:`_tau2_all_tasks`.
     """
     from tau2.registry import registry
 
-    from .real_tau2 import MUTATING_TOOLS
+    from .real_tau2 import tau2_task_world_model_eligible
 
     tasks = registry.get_tasks_loader(domain)()
-    usable = [
-        t for t in tasks
-        if t.evaluation_criteria
-        and any((a.name in MUTATING_TOOLS) for a in (t.evaluation_criteria.actions or []))
-    ]
+    usable = [t for t in tasks if tau2_task_world_model_eligible(domain, t)]
     return tuple(usable)
 
 

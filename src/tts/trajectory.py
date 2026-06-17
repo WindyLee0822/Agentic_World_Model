@@ -43,6 +43,13 @@ class Trajectory:
     final_message: str = ""
     #: terminal flag set once the agent decides it is done (cohering to AGENT_STOP/USER_STOP).
     done: bool = True
+    #: the realized official message log (τ² ``SimulationRun.messages``) when a trajectory was
+    #: produced by the official orchestrator — including BOTH assistant and user (dual-control) tool
+    #: calls.  When present, the env commits/scores this faithful log directly (so dual-control
+    #: domains score correctly); otherwise it falls back to replaying ``actions`` as assistant calls.
+    sim_messages: Optional[List[Any]] = None
+    #: the official termination reason for ``sim_messages`` (kept for faithful evaluation).
+    termination_reason: Any = None
 
     @property
     def actions(self) -> List[Action]:

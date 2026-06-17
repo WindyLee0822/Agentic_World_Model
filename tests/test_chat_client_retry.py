@@ -14,6 +14,16 @@ import time
 import pytest
 
 from tts.llm.chat_client import ChatClient
+import tts.llm.chat_client as _cc
+
+
+@pytest.fixture(autouse=True)
+def _clear_response_cache():
+    """The deterministic response cache is process-global; clear it so each test's fake client is
+    actually exercised (identical prompts would otherwise return a cached reply)."""
+    _cc._RESPONSE_CACHE.clear()
+    yield
+    _cc._RESPONSE_CACHE.clear()
 
 
 class _Headers(dict):
