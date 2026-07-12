@@ -20,11 +20,12 @@ Requires the real ``appworld`` package + data (Python 3.11 - the ``env`` conda e
 from __future__ import annotations
 
 import contextlib
+import json
 import os
 import shutil
 import threading
 import uuid
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from ..abcs import EntityStore, RestrictedView, TaskEnvironment, WorldModel
 from ..config import SimulatorConfig
@@ -42,6 +43,70 @@ _EXP_BASE_ENV = "TTS_APPWORLD_EXP_BASE"
 
 _NAME_LOCK = threading.Lock()
 _NAME_COUNTER = 0
+
+
+def load_task_checklist(task_id: str) -> Optional[str]:
+    """Load a task's ground-truth success checklist (``test_data.json`` + gold ``private/public_data``).
+
+    AppWorld ships, per task, a human-readable list of the exact final-state assertions its evaluator
+    runs (``ground_truth/test_data.json``) plus the concrete gold values they compare against
+    (``private_data.json`` / ``public_data.json``).  Surfacing these to the WM verifier turns it from a
+    blind 'plan-coherence' judge into a **reference-grounded** one (the τ²-style setup): it can check the
+    agent's write log against the exact required changes.  NOTE: this uses the task's ground-truth spec
+    (the answer key) — it is reference-grounded verification, NOT blind WM-only judging, and it never
+    executes the candidate or observes its final state.  Returns ``None`` if the files are unavailable.
+    """
+    root = os.environ.get("APPWORLD_ROOT")
+    if not root:
+        return None
+    gt = os.path.join(root, "data", "tasks", task_id, "ground_truth")
+    try:
+        with open(os.path.join(gt, "test_data.json")) as fh:
+            reqs = [r.get("requirement", "") for r in json.load(fh)]
+    except Exception:
+        return None
+    parts = ["GROUND-TRUTH SUCCESS CHECKS (the exact final-state assertions the task is graded on):"]
+    parts += [f"- {r}" for r in reqs if r]
+    for name in ("private_data.json", "public_data.json"):
+        try:
+            with open(os.path.join(gt, name)) as fh:
+                vals = json.load(fh)
+            if vals:
+                parts.append(f"GOLD VALUES ({name[:-5]}): {json.dumps(vals, default=str)[:1000]}")
+        except Exception:
+            pass
+    return "\n".join(parts)
+
+
+def load_task_checks(task_id: str) -> Optional[Tuple[List[str], str]]:
+    """Structured form of the ground-truth spec for the PER-CHECK verifier.
+
+    Returns ``(requirements, gold_values_str)`` — the list of individual check strings (so each can be
+    audited by its own focused sub-pass) plus the concrete gold values blob (private + public data) that
+    the checks reference.  ``None`` if unavailable.  Same reference-grounded caveat as
+    :func:`load_task_checklist`.
+    """
+    root = os.environ.get("APPWORLD_ROOT")
+    if not root:
+        return None
+    gt = os.path.join(root, "data", "tasks", task_id, "ground_truth")
+    try:
+        with open(os.path.join(gt, "test_data.json")) as fh:
+            reqs = [r.get("requirement", "").strip() for r in json.load(fh)]
+            reqs = [r for r in reqs if r]
+    except Exception:
+        return None
+    gold_parts = []
+    for name in ("private_data.json", "public_data.json"):
+        try:
+            with open(os.path.join(gt, name)) as fh:
+                vals = json.load(fh)
+            if vals:
+                gold_parts.append(f"{name[:-5]}: {json.dumps(vals, default=str)[:1000]}")
+        except Exception:
+            pass
+    return (reqs, "\n".join(gold_parts) or "(none)")
+
 
 
 def _experiment_outputs_root() -> Optional[str]:
@@ -236,10 +301,17 @@ class AppWorldTaskEnv(TaskEnvironment):
         model = solver.llm_agent or azure_deployment()  # default: official benchmark model (gpt-4.1)
         chat = make_chat_client(model=model)
         max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 50 else 40
+        # Wall-clock backstop for the REAL-env loop too (the WM path already has one): a real agent
+        # can emit a non-terminating ``while True:`` API loop that AppWorld's per-cell SIGALRM does
+        # not abort in the process-pool context, which otherwise wedges the worker forever and hangs
+        # the whole sweep at the last sample. 0/unset disables it.
+        real_budget = float(os.environ.get("TTS_APPWORLD_REAL_TIME_BUDGET_S", "900") or "0")
+        wall_clock_budget = real_budget if real_budget > 0 else None
 
         with _world_session(self._task_id, self._experiment_base, f"s{seed}") as world:
             code_blocks, outputs = run_react_code_agent(
                 world, chat, max_steps=max_steps, temperature=solver.temperature,
+                wall_clock_budget_s=wall_clock_budget,
             )
             tracker = world.evaluate(suppress_errors=True)
             success = bool(tracker.success)
@@ -283,7 +355,12 @@ class AppWorldTaskEnv(TaskEnvironment):
         max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 50 else 40
 
         with _world_session(self._task_id, self._experiment_base, f"wm{seed}") as world:
-            install_wm_requester(world, predictor)  # reads exact, writes predicted (no mutation)
+            orig_request = install_wm_requester(world, predictor)  # reads exact, writes predicted
+            # Pre-fetch the WM's LLM auth token NOW, outside AppWorld's sandbox: the agent loop runs the
+            # WM predictions inside world.execute under a SafetyGuard that no-ops subprocess.run, which
+            # breaks the Azure AzureCliCredential (az) token fetch -> predictions would silently fall back
+            # to the _synth_success template. Warming the cached token here keeps writes LLM-faithful.
+            predictor.warm_up()
             # Bound the whole rollout by the predictor's hard timeout too: the predictor raises inside
             # a runaway API loop to end the offending cell, and this stops the step loop right after,
             # so a non-terminating agent can't spin forever (AppWorld's own per-cell timeout does not
@@ -294,7 +371,36 @@ class AppWorldTaskEnv(TaskEnvironment):
                 world, chat, max_steps=max_steps, temperature=solver.temperature,
                 wall_clock_budget_s=wall_clock_budget,
             )
-            predicted_confidence = predictor.predict_success(self._instruction, code_blocks, outputs)
+
+            # Read-only DB query tool for the grounded verifier. Route reads through the WM requester so
+            # a query to an app the agent WROTE returns the *post-write* predicted state (predict_read),
+            # i.e. the resulting state after the agent's simulated actions — what the verifier must judge.
+            # Writes are blocked so the verifier can only inspect, never mutate.
+            from .appworld_wm import _is_write as _wm_is_write
+
+            def _verifier_query(app, api, **qargs):
+                if _wm_is_write(app, api):
+                    return {"error": f"{app}.{api} is a write API; the verifier may only READ."}
+                return world.requester.request(app, api, raise_on_failure=False, **qargs)
+
+            # REAL pre-write read tool for the per-check auditor: routes through the ORIGINAL requester
+            # (exact, faithful starting state — NOT predict_read), so a per-check sub-pass can resolve
+            # entities / fetch the actual starting set. Writes are blocked.
+            def _verifier_real_read(app, api, **qargs):
+                if _wm_is_write(app, api):
+                    return {"error": f"{app}.{api} is a write API; the verifier may only READ."}
+                return orig_request(app, api, raise_on_failure=False, **qargs)
+
+            # Reference-grounded auditor (opt-in via TTS_APPWORLD_VERIFIER_REFERENCE=1): the task's
+            # ground-truth success checklist + gold values, used to audit the write log. Uses the task's
+            # ground-truth spec (reference-grounded, τ²-style) — never executes the candidate.
+            reference_checklist = load_task_checklist(self._task_id)
+            reference_checks = load_task_checks(self._task_id)  # structured form for the per-check auditor
+
+            predicted_confidence = predictor.predict_success(
+                self._instruction, code_blocks, outputs,
+                query_fn=_verifier_query, reference_checklist=reference_checklist,
+                reference_checks=reference_checks, real_read_fn=_verifier_real_read)
 
         steps = [
             Step(action=Action("execute_code", {"step": i, "code": code}),

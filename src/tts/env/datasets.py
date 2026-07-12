@@ -2,9 +2,10 @@
 
 This is the single source of truth for *which real tasks exist* in each benchmark, with no
 dependency on any synthetic/analog environment.  AppWorld is organised by ``split`` x
-``difficulty-level``; τ²-bench by ``domain``.  Counts are the official benchmark numbers
-(AppWorld: ``appworld.load_task_ids(split, difficulty=level)``; τ²-bench:
-``tau2.registry.get_tasks_loader(domain)()``) and are used so a whole subset can be run
+``difficulty-level``; τ²-bench by ``domain``; OfficeBench by ``app-count`` (1/2/3 apps).  Counts
+are the official benchmark numbers (AppWorld: ``appworld.load_task_ids(split, difficulty=level)``;
+τ²-bench: ``tau2.registry.get_tasks_loader(domain)()``; OfficeBench: the ``tasks/<id>/subtasks/*``
+tree grouped by the leading app-count digit of ``<id>``) and are used so a whole subset can be run
 without the caller knowing its size.
 """
 
@@ -88,10 +89,44 @@ def tau2_subset_size(domain: str) -> int:
 
 
 # ---------------------------------------------------------------------------
+# OfficeBench
+# ---------------------------------------------------------------------------
+
+#: OfficeBench groups its tasks by how many office apps a task spans (1, 2 or 3).  A task id is
+#: ``"<apps>-<n>"`` (e.g. ``"3-42"``) and its subtasks live in ``tasks/<id>/subtasks/<k>.json``;
+#: the leading digit is the app-count, which is also how the official leaderboard reports scores.
+OFFICEBENCH_APPS = (1, 2, 3)
+
+#: Official OfficeBench subtask counts per app-count (the leaderboard groups: 93 / 95 / 112 = 300),
+#: from the bundled ``tasks/*/subtasks/*.json`` tree.
+OFFICEBENCH_OFFICIAL_SIZE = {
+    "1app": 93,
+    "2app": 95,
+    "3app": 112,
+}
+
+
+def officebench_subsets() -> List[str]:
+    return [f"{n}app" for n in OFFICEBENCH_APPS]
+
+
+def parse_officebench_subset(subset: str) -> int:
+    """``"2app" -> 2`` (the app-count that names a subset)."""
+    n = subset[:-3] if subset.endswith("app") else subset
+    return int(n)
+
+
+def officebench_subset_size(subset: str) -> int:
+    if subset not in OFFICEBENCH_OFFICIAL_SIZE:
+        raise KeyError(f"unknown OfficeBench subset {subset!r}; use {officebench_subsets()}")
+    return OFFICEBENCH_OFFICIAL_SIZE[subset]
+
+
+# ---------------------------------------------------------------------------
 # Unified accessors + dataset enumeration
 # ---------------------------------------------------------------------------
 
-REAL_ENVS = ("appworld", "tau2")
+REAL_ENVS = ("appworld", "tau2", "officebench")
 
 
 def subsets(env: str) -> List[str]:
@@ -99,6 +134,8 @@ def subsets(env: str) -> List[str]:
         return appworld_subsets()
     if env == "tau2":
         return tau2_subsets()
+    if env == "officebench":
+        return officebench_subsets()
     raise KeyError(f"unknown env {env!r}; use {REAL_ENVS}")
 
 
@@ -107,6 +144,8 @@ def subset_size(env: str, subset: str) -> int:
         return appworld_subset_size(subset)
     if env == "tau2":
         return tau2_subset_size(subset)
+    if env == "officebench":
+        return officebench_subset_size(subset)
     raise KeyError(f"unknown env {env!r}; use {REAL_ENVS}")
 
 
@@ -165,6 +204,18 @@ def build_dataset(
                 continue
             for i in range(_n(d)):
                 out.append(TaskSpec("tau2", d, i, domain=d))
+    elif env == "officebench":
+        # OfficeBench subsets are app-counts; ``levels`` selects which (1/2/3 apps), mirroring how
+        # ``--levels`` selects AppWorld difficulty, so the same runner flag drives both.
+        sel_apps = list(levels) if levels else list(OFFICEBENCH_APPS)
+        for n in sel_apps:
+            if n not in OFFICEBENCH_APPS:
+                raise KeyError(f"unknown OfficeBench app-count {n!r}; use {OFFICEBENCH_APPS}")
+            sub = f"{n}app"
+            if subsets_filter and sub not in subsets_filter:
+                continue
+            for i in range(_n(sub)):
+                out.append(TaskSpec("officebench", sub, i, level=n))
     else:
         raise KeyError(f"unknown env {env!r}; use {REAL_ENVS}")
     return out
@@ -182,6 +233,8 @@ __all__ = [
     "APPWORLD_OFFICIAL_SIZE",
     "TAU2_DOMAINS",
     "TAU2_OFFICIAL_SIZE",
+    "OFFICEBENCH_APPS",
+    "OFFICEBENCH_OFFICIAL_SIZE",
     "TaskSpec",
     "subsets",
     "subset_size",
@@ -189,7 +242,10 @@ __all__ = [
     "appworld_subset_size",
     "tau2_subsets",
     "tau2_subset_size",
+    "officebench_subsets",
+    "officebench_subset_size",
     "parse_appworld_subset",
+    "parse_officebench_subset",
     "build_dataset",
     "dataset_size",
 ]

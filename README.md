@@ -1,11 +1,12 @@
 # Trajectory-level, Read-Grounded Test-Time Scaling over Real, Non-Forkable Environments
 
 A research prototype of LLM-agent **test-time scaling (TTS)** over **one real, stateful,
-non-forkable environment** — the genuine **τ²-bench** and **AppWorld** benchmarks, executed and
-scored through their **official** runners and the **official agent prompts**. A single rollout
-(**B0**) is the real official agent (τ²: the official LLM agent + user simulator; AppWorld: the
-official ReAct code agent) acting on the real environment and scored by the official evaluator —
-so B0 reproduces the official benchmark number. The read-grounded TTS methods then draw `N`
+non-forkable environment** — the genuine **τ²-bench**, **AppWorld** and **OfficeBench** benchmarks,
+executed and scored through their **official** runners and the **official agent prompts**. A single
+rollout (**B0**) is the real official agent (τ²: the official LLM agent + user simulator; AppWorld:
+the official ReAct code agent; OfficeBench: the official office-app agent) acting on the real
+environment and scored by the official evaluator — so B0 reproduces the official benchmark number.
+The read-grounded TTS methods then draw `N`
 trajectories and, instead of acting on the shared environment, each rollout's *world-simulator
 subagent* predicts the outcome by reading the **real backing database** (privileged, read-only)
 and, when one bounded read is insufficient, **recursively spawning region-scoped probe
@@ -78,6 +79,19 @@ real environment through a single chokepoint.
   reads under `ground_truth_mode="minimal"`, so the official `test_normal` / `test_challenge`
   splits are evaluated the same way as `dev` / `train` (only the reference *solution*, used by
   `full` mode, is withheld for the test splits).
+* **OfficeBench.** Official OfficeBench tasks are solved with **free-form office-app actions**
+  (JSON `{'app','action',...}` over calendar / email / excel / word / pdf / ocr / shell / llm) and,
+  like AppWorld, expose **no replayable gold action list**. A trajectory is the realized sequence of
+  actions emitted by the **official office-app agent** (the verbatim official prompts + app
+  state-machine, see `env/officebench_agent.py`): every action runs through the official `apps`
+  modules inside a Docker `/testbed` filesystem (the task's backing state), and the terminal reward is
+  the official **execution-based** evaluation (`utils/evaluate.py` file-state checks — contain /
+  file-exist / exact-match / calendar-no-overlap / excel-cell …, run via `officebench_driver.py`). All
+  OfficeBench-specific code (the `apps` and the evaluator) runs **inside the image**, so the host needs
+  only Docker + the `OFFICEBENCH_ROOT` clone. The official leaderboard groups by app-count, so the
+  subsets are `1app` / `2app` / `3app` (93 / 95 / 112 = 300). A single rollout reproduces the official
+  OfficeBench number; tasks are independent (each materialises a fresh `/testbed`), so there is no
+  shared mutable state across rollouts.
 
 ## Where recursion bites (the read-grounded world model)
 
@@ -93,8 +107,8 @@ touches:
   `uncertainty` (descend while read-coverage `< tau`) or `fixed` (descend to depth `L`). Every
   read is budgeted; every node is logged in a spawn tree.
 * **B2 (snapshot, baseline only)** deep-copies the full τ² state and scores with the oracle — the
-  forking upper bound that **Ours matches without forking**. (AppWorld is non-forkable, so B2 there
-  falls back to best-of-`N` over the realized official rewards.)
+  forking upper bound that **Ours matches without forking**. (AppWorld and OfficeBench are
+  non-forkable, so B2 there falls back to best-of-`N` over the realized official rewards.)
 
 **AppWorld `llm_wm` (world-model interaction).** AppWorld also supports the `--agent llm_wm` mode: the
 official ReAct code agent runs, but every `apis.*` call is routed through the world model at the single
@@ -107,6 +121,25 @@ so reads reflect the agent's prior writes. The selected trajectory is committed 
 code on a fresh world and scoring with `AppWorld.evaluate()`. Measured: on dev tasks the WM rollout **matches
 the real agent** — query tasks 5/5 (B0 4/5) and write tasks 2/3 (B0 2/3), with 5–37 writes predicted per
 write-task.
+
+**OfficeBench `llm_wm` (world-model interaction).** OfficeBench likewise supports `--agent llm_wm`,
+obeying the **same write-safe contract** as τ²/AppWorld: the official office-app agent runs, but tool
+execution is routed through the world model (`env/officebench_wm_predict.py::OfficeBenchWMPredictor`) —
+**read** actions execute exactly against the pristine `/testbed` (a read of a file a prior write changed
+is WM-predicted, the τ² dirty-read), while every **write action is LLM-predicted and NEVER executed**,
+so the shadow environment is never mutated. This is enforced structurally: the sampling container is
+opened `read_only`, and a write action reaching `exec_action` raises (a routing bug fails loudly rather
+than silently writing). Because the real files stay pristine during sampling, the success verifier
+(`env/officebench_wm.py::OfficeBenchVerifier`) judges the **predicted** final state — each gold-checked
+file's predicted content (initial content + the predicted write-log) — not real files. It is
+**reference-grounded by default** against OfficeBench's native ground truth (the per-task `evaluation`
+checks *with gold values* + the `reference/` gold expected-output files for exact-match tasks;
+`TTS_OFFICEBENCH_VERIFIER_REFERENCE=0` for a blind judge), and flags give-up/refusal answers.
+`TTS_OFFICEBENCH_VERIFIER_SAMPLES=K` self-consistency-ensembles K judgements into a graded confidence
+(rank on it with `--success-score simulator_confidence`). The single selected trajectory is then
+committed by re-executing its actions in a fresh container (**the only real writes**) and scoring with
+the official `utils/evaluate.py` checks. Write-safety is provable, not just asserted:
+`OfficeBenchSession.testbed_digest()` hashes `/testbed` before/after a WM rollout and it is unchanged.
 
 ## Non-negotiable constraints — and how they're enforced
 
@@ -158,7 +191,7 @@ src/tts/
   trajectory.py      Step / Trajectory / RewardInfo / RolloutResult
   worldmodel.py      ReadGroundedWorldModel (flat + recursive), budgeted/cached reads, spawn tree
   agents.py          ScriptedAgent (offline stub), LLMAgent (interactive adapter)
-  llm/               ChatClient (openai/azure) + azure.py (litellm Azure-AAD env) for the real agents
+  llm/               ChatClient (openai/azure) + azure.py (litellm Azure-AAD env) + local.py (--local self-hosted server) for the real agents
   harness.py         run_decision: B0/B1/B2/Ours; real-agent rollouts -> select -> commit
   selection.py       success_score rankers + Selector
   commit.py          CommitChokepoint (single writer)
@@ -168,6 +201,10 @@ src/tts/
     real_tau2.py        Tau2TaskEnv (official agent loop + AirlineShadowEvaluator + Tau2EntityStore)
     real_appworld.py    AppWorldTaskEnv (official ReAct agent + AppWorld.evaluate; real tasks)
     appworld_react_agent.py   the official AppWorld ReAct code-agent loop (verbatim prompt)
+    real_officebench.py officebench_lowlevel.py officebench_agent.py officebench_wm.py
+                        OfficeBenchTaskEnv (official office-app agent + official utils/evaluate.py),
+                        Docker session + in-container officebench_driver.py + WM success verifier
+    officebench_docker/ self-contained app/eval image (apps + evaluation run inside the container)
     prompts/            bundled official AppWorld ReAct prompt
     datasets.py         subset taxonomy + official sizes + build_dataset (+ dev/train local splits)
     registry.py         make_env_from_spec / make_env (all-tasks vs usable-task selection)
@@ -179,7 +216,10 @@ tests/               single-commit, never-writes, privilege, recursion modes, ca
 ## Two conda envs (the real benchmarks can't coexist)
 
 AppWorld pins **pydantic v1**; τ²-bench needs **pydantic v2 + Python ≥3.12** — so they live in
-separate environments.
+separate environments. **OfficeBench** runs all its app + evaluation code **inside a Docker image**,
+so it needs no Python deps on the host — only the `OFFICEBENCH_ROOT` clone + a usable Docker daemon —
+and can therefore be driven from *either* interpreter (the app/eval image is built on demand from
+`src/tts/env/officebench_docker/`).
 
 ```bash
 # τ²-bench  (Python 3.12)
@@ -189,6 +229,9 @@ python -m pytest
 # AppWorld  (Python 3.11, needs APPWORLD_ROOT)
 APPWORLD_ROOT=/home/t-wendili/env-tts PYTHONPATH=src \
   /home/t-wendili/miniconda3/envs/env/bin/python -m pytest
+
+# OfficeBench  (host needs only Docker + the OfficeBench clone)
+OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python -m pytest tests/test_officebench.py
 ```
 
 ## Run
@@ -196,6 +239,49 @@ APPWORLD_ROOT=/home/t-wendili/env-tts PYTHONPATH=src \
 The real agent talks to the official benchmark model (default `gpt-4.1`). For the Azure setup
 here: `export AZURE_OPENAI_ENDPOINT=...; export AZURE_OPENAI_API_VERSION=2024-12-01-preview;
 export AZURE_AUTH_MODE=gcr` (an `az login` identity provides the bearer token).
+
+### Local (self-hosted) models — `--local`
+
+To run against a **self-hosted** model instead of a hosted API (e.g. `Qwen-AgentWorld-35B-A3B`),
+serve it with any OpenAI-compatible server (vLLM / SGLang) and add `--local` — no Azure endpoint or
+`az login` token is needed. `--local` forces the OpenAI backend for AppWorld/OfficeBench
+(`ChatClient`) and routes τ² (litellm) through the `openai/` provider, all pointed at the local
+`/v1` endpoint. It works even while the Azure env vars above are still exported. A preflight ping
+fails fast with clear guidance if no server is up (bypass with `--skip-local-healthcheck`).
+
+```bash
+# 1. serve the model in its OWN env (keeps the tau2 `dw` / AppWorld `env` deps untouched):
+#    conda create -y -n awserve python=3.12 && conda activate awserve && pip install vllm
+#    The serve script defaults are tuned for the Qwen-AgentWorld family (adds --language-model-only,
+#    --reasoning-parser qwen3, --trust-remote-code, --enable-auto-tool-choice --tool-call-parser
+#    qwen3_xml; served-name Qwen-AgentWorld-35B-A3B, port 8000).
+# On ONE A100 80GB the 35B MoE (~67GB bf16) only fits with fp8 (weights ~33GB, ~37GB KV cache ->
+# ~52x concurrency, ~140 tok/s/req) — this is the validated single-GPU config:
+QUANTIZATION=fp8 MAX_MODEL_LEN=32768 bash scripts/serve_local_model.sh Qwen/Qwen-AgentWorld-35B-A3B
+
+# 2. point experiments at it (from the `dw`/`env` env) — pass the served id to --llm-agent
+PYTHONPATH=src python experiments/run.py --local --llm-agent Qwen-AgentWorld-35B-A3B \
+  --env appworld --splits test_normal --levels 1 --methods b0 --N 1 --workers 8
+PYTHONPATH=src python experiments/run.py --local --llm-agent Qwen-AgentWorld-35B-A3B \
+  --env tau2 --domains airline --methods b0,b1,ours --N 1,2,4 --tasks 15
+```
+
+Serve-script knobs (env vars): `TP_SIZE` (default = #GPUs), `MAX_MODEL_LEN` (default 32768),
+`GPU_MEM_UTIL` (0.92), `QUANTIZATION` (e.g. `fp8` to ~halve GPU memory — recommended on one GPU),
+`CPU_OFFLOAD_GB` (offload weights to host RAM), `TOOL_CALL_PARSER` (default `qwen3_xml`, needed by
+τ²), `REASONING_PARSER` (`qwen3`), `SERVE_BACKEND` (`vllm`|`sglang`). Qwen-AgentWorld is a **35B MoE
+(~67 GB bf16)** and a reasoning model: its card serves it on ~4×80 GB (`--tensor-parallel-size 4`);
+to fit one A100 80 GB use `QUANTIZATION=fp8`.
+
+Notes: the value passed to `--llm-agent` must match the server's `--served-model-name`. τ² uses
+function calling, so the server MUST be launched with `--enable-auto-tool-choice --tool-call-parser`
+(the serve script adds these by default). In local mode τ²'s `banking_knowledge` KB retrieval falls
+back to the offline BM25 approximation (a chat server exposes no embeddings); override with
+`TTS_BANKING_RETRIEVAL_VARIANT` if your server also serves embeddings.
+
+```bash
+# real τ²-bench B0 = official agent + user simulator (conda env dw)
+python experiments/run.py --env tau2 --domains airline --methods b0 --N 1 --tasks 15
 
 ```bash
 # real τ²-bench B0 = official agent + user simulator (conda env dw)
@@ -206,6 +292,11 @@ python experiments/run.py --env tau2 --domains airline --methods b0 --N 1 --task
 # --workers 8 runs 8 tasks in parallel (process pool) for a near-linear speed-up
 APPWORLD_ROOT=/home/t-wendili/env-tts PYTHONPATH=src python experiments/run.py \
   --env appworld --splits test_normal,test_challenge --levels 1,2,3 --methods b0 --N 1 --workers 8
+
+# real OfficeBench B0 = official office-app agent, scored by utils/evaluate.py (in-container)
+# --levels selects the app-count subsets (1,2,3 -> 1app/2app/3app); per-rollout Docker container
+OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/run.py \
+  --env officebench --levels 1,2,3 --methods b0 --N 1 --workers 8
 
 # read-grounded TTS methods (τ², offline scripted solver + world model)
 python experiments/run.py --env tau2 --agent scripted --methods b1,b2,ours --tasks 12 --N 1,2,4,8
@@ -222,6 +313,7 @@ python experiments/run.py --report experiments/results/records.jsonl
 ```
 
 Key knobs: `--agent {llm,llm_wm,scripted}`, `--llm-agent`/`--llm-user`/`--temperature`/`--max-steps`,
+`--local`/`--local-base-url`/`--local-api-key` (self-hosted OpenAI-compatible model),
 `--workers` (parallel tasks — see below), `--all-tasks` (τ² official set vs mutating-only),
 `--recursion-mode {uncertainty,fixed}`, `--tau`, `--L`, `--branching`, `--node-read-limit`,
 `--hard-cap`, `--N`, `--success-score`, `--no-cache`, `--no-selective-invalidation`. Subset

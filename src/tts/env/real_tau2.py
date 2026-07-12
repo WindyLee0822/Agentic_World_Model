@@ -108,6 +108,12 @@ def _align_tau2_embedder_azure() -> bool:
     embedder is active (a direct ``OPENAI_API_KEY`` short-circuits this and is used as-is).
     """
     global _EMBEDDER_AZURE_PATCHED
+    from ..llm.local import local_llm_configured
+
+    if local_llm_configured():
+        # Self-hosted chat server: don't route KB embeddings through Azure (banking falls back to
+        # the offline BM25 approximation in local mode — see ``_banking_env_kwargs``).
+        return False
     if os.environ.get("OPENAI_API_KEY"):
         return False  # a real OpenAI key is present — use the official embedder unchanged
     if _EMBEDDER_AZURE_PATCHED:
@@ -171,7 +177,10 @@ def _banking_env_kwargs() -> dict:
     # The official banking retrieval (default `alltools` variant) embeds KB queries with OpenAI
     # text-embedding-3-large.  Use it verbatim when we have a direct OpenAI key OR can route that exact
     # embedding model through Azure; only drop to the offline BM25 approximation when neither exists.
-    if os.environ.get("OPENAI_API_KEY") or _align_tau2_embedder_azure():
+    # A self-hosted chat server exposes no embeddings, so local mode uses the BM25 approximation.
+    from ..llm.local import local_llm_configured
+
+    if not local_llm_configured() and (os.environ.get("OPENAI_API_KEY") or _align_tau2_embedder_azure()):
         return {}  # official KB retrieval — identical to the real evaluation
     return {"retrieval_variant": "bm25_grep"}  # offline: real DB + BM25 KB approximation
 
@@ -194,9 +203,13 @@ def _align_tau2_judge_models(model: str) -> None:
     (``tau2.config.DEFAULT_LLM_NL_ASSERTIONS``) is a bare ``gpt-4.1-...`` name that litellm routes to
     **OpenAI** — failing with "Missing OPENAI_API_KEY" on Azure-only setups.  We rebind it (and the
     env-interface model) to the same Azure model string so every tau2 LLM call uses Azure.  Only
-    applied for ``azure/*`` models, so OpenAI/other setups are untouched.
+    applied for ``azure/*`` models (or when a local server is configured — the default judge string
+    ``gpt-4.1`` would otherwise hit OpenAI / the local server as a non-existent model), so plain
+    OpenAI setups are untouched.
     """
-    if not model.startswith("azure/"):
+    from ..llm.local import local_llm_configured
+
+    if not (model.startswith("azure/") or local_llm_configured()):
         return
     import importlib
 
@@ -1136,6 +1149,7 @@ class Tau2TaskEnv(TaskEnvironment):
         from tau2.run import run_single_task
 
         from ..llm import ensure_litellm_azure_env
+        from ..llm.local import litellm_model_for
 
         solver = config.solver
         llm_args = {"temperature": solver.temperature} if solver.temperature else {}
@@ -1150,9 +1164,9 @@ class Tau2TaskEnv(TaskEnvironment):
             _align_tau2_embedder_azure()  # route banking KB embeddings (text-embedding-3-large) to Azure
             run_cfg = TextRunConfig(
                 domain=self.domain, agent="llm_agent", user="user_simulator",
-                llm_agent=solver.llm_agent or default_model,
+                llm_agent=litellm_model_for(solver.llm_agent, default_model),
                 llm_args_agent=dict(llm_args),
-                llm_user=solver.llm_user or solver.llm_agent or default_model,
+                llm_user=litellm_model_for(solver.llm_user or solver.llm_agent, default_model),
                 llm_args_user=dict(llm_args),
                 max_steps=solver.max_steps, seed=seed,
             )
@@ -1190,12 +1204,15 @@ class Tau2TaskEnv(TaskEnvironment):
         """The official ``TextRunConfig`` (llm_agent + user_simulator) used for a rollout."""
         from tau2.data_model.simulation import TextRunConfig
 
+        from ..llm.local import litellm_model_for
+
         solver = config.solver
         llm_args = {"temperature": solver.temperature} if solver.temperature else {}
         return TextRunConfig(
             domain=self.domain, agent="llm_agent", user="user_simulator",
-            llm_agent=solver.llm_agent or default_model, llm_args_agent=dict(llm_args),
-            llm_user=solver.llm_user or solver.llm_agent or default_model, llm_args_user=dict(llm_args),
+            llm_agent=litellm_model_for(solver.llm_agent, default_model), llm_args_agent=dict(llm_args),
+            llm_user=litellm_model_for(solver.llm_user or solver.llm_agent, default_model),
+            llm_args_user=dict(llm_args),
             max_steps=solver.max_steps, seed=seed,
         )
 

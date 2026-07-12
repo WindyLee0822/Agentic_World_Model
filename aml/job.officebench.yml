@@ -1,0 +1,76 @@
+# AML command job: runs dw's experiments/run.py on OfficeBench.  ***SKETCH***
+#
+# ┌────────────────────────────────────────────────────────────────────────┐
+# │ OfficeBench runs its office apps + scoring INSIDE a Docker container     │
+# │ (image `officebench-tts:latest`, built on demand from                    │
+# │ src/tts/env/officebench_docker/). A standard AML **command job cannot**   │
+# │ start a Docker daemon, so this will fail on plain amlcompute clusters.   │
+# │ To actually run it you need compute that exposes Docker, e.g.:            │
+# │   * an AML **Compute Instance** / a self-managed VM you SSH into and run  │
+# │     `bash aml/src/run_dw.sh --env officebench ...` directly (simplest);   │
+# │   * a node where /var/run/docker.sock is mounted into the job container;  │
+# │   * a privileged / docker-in-docker capable cluster (e.g. AKS-attached).  │
+# │ The wrapper checks `docker info` and exits 3 with guidance if absent.     │
+# └────────────────────────────────────────────────────────────────────────┘
+#
+# Before submitting, register your OfficeBench clone as a data asset and point
+# `inputs.officebench_root` at it (the host needs only the clone + the docker
+# CLI; OfficeBench has no Python deps):
+#   az ml data create --name officebench_clone --version 1 \
+#       --type uri_folder --path /home/t-wendili/OfficeBench \
+#       -g Singularity -w M365Research
+#
+# Submit (on Docker-capable compute):
+#   AML_JOB_FILE=aml/job.officebench.yml bash aml/submit.sh \
+#       --set compute=azureml:<docker-capable-compute>
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-OfficeBench-BoN
+experiment_name: dw-officebench
+description: "[sketch] Run the dw harness on OfficeBench (requires Docker-capable compute)."
+compute: azureml:D15v2-NCUS-hipri
+code: ..
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+  conda_file: environment/conda.yml
+inputs:
+  env: officebench
+  officebench_root:
+    type: uri_folder
+    path: azureml:officebench_clone:1
+  levels: "1"            # OfficeBench uses --levels as app-counts: 1 / 2 / 3 apps
+  methods: b0,b1,b2,ours
+  n: "1,2,4,8"
+  agent: llm
+  workers: 8
+  max_steps: 40
+  temperature: 0.7
+  stall_timeout: "3600"
+  extra_args: none
+  aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
+  aoai_deployment: gpt-4.1
+  aoai_api_version: 2024-12-01-preview
+  aoai_api_key: none
+  managed_identity_client_id: 258f6dab-3e80-4254-83e3-bfb24a9ae8d9
+outputs:
+  output_dir:
+    type: uri_folder
+command: >-
+  bash aml/src/run_dw.sh
+  --env "${{inputs.env}}"
+  --officebench-root "${{inputs.officebench_root}}"
+  --output-dir "${{outputs.output_dir}}"
+  --levels "${{inputs.levels}}"
+  --methods "${{inputs.methods}}"
+  --n "${{inputs.n}}"
+  --agent "${{inputs.agent}}"
+  --workers ${{inputs.workers}}
+  --max-steps ${{inputs.max_steps}}
+  --temperature ${{inputs.temperature}}
+  --aoai-endpoint "${{inputs.aoai_endpoint}}"
+  --aoai-deployment "${{inputs.aoai_deployment}}"
+  --aoai-api-version "${{inputs.aoai_api_version}}"
+  --aoai-api-key "${{inputs.aoai_api_key}}"
+  --managed-identity-client-id "${{inputs.managed_identity_client_id}}"
+  --stall-timeout "${{inputs.stall_timeout}}"
+  --extra-args "${{inputs.extra_args}}"

@@ -18,6 +18,7 @@ Examples
 --------
     python experiments/run.py --env tau2 --tasks 12 --N 1,2,4,8
     APPWORLD_ROOT=/path PYTHONPATH=src python experiments/run.py --env appworld --splits test_normal --levels 1 --tasks 8
+    OFFICEBENCH_ROOT=/path PYTHONPATH=src python experiments/run.py --env officebench --levels 1 --tasks 8
     python experiments/run.py --depth-sweep --env tau2 --tasks 12
     python experiments/run.py --report results/records.jsonl
 """
@@ -193,7 +194,12 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
         progress.close()
         return records
 
-    from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+    from concurrent.futures import (
+        FIRST_COMPLETED,
+        ProcessPoolExecutor,
+        ThreadPoolExecutor,
+        wait,
+    )
 
     # AppWorld uses a process pool. Recycle workers after ``--max-tasks-per-child`` tasks so a long
     # run cannot accumulate unbounded per-worker memory (each AppWorld worker carries the ground-
@@ -202,7 +208,7 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
     # start method, so it is opt-in and switches to a ``forkserver`` context (which also forks
     # workers from a clean server with no inherited locks, avoiding result-queue deadlocks).
     pool_kwargs = {"max_workers": workers}
-    if env_name == "appworld":
+    if env_name in ("appworld", "officebench"):
         Executor = ProcessPoolExecutor
         mtpc = int(getattr(args, "max_tasks_per_child", 0) or 0)
         if mtpc > 0:
@@ -213,15 +219,52 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
     else:
         Executor = ThreadPoolExecutor
     payloads = [(env_name, spec, cells, args, usable_only) for spec in specs]
-    with Executor(**pool_kwargs) as ex:
+
+    # Hang-guard: a single AppWorld task can wedge a worker forever (e.g. an agent that emits a
+    # non-terminating ``while True:`` API loop, which AppWorld's own per-cell SIGALRM does not abort
+    # in the process-pool context). With a plain ``as_completed`` + ``with Executor`` that one task
+    # hangs the whole sweep ("stuck at the last sample") and then blocks ``shutdown(wait=True)``.
+    # Instead we wait in slices: if NO task completes for ``stall_s`` seconds we treat the remaining
+    # futures as wedged, abandon them (their records are already checkpointed), and force-terminate
+    # the workers so shutdown can't block.  A healthy slow batch still produces completions and is
+    # never abandoned.
+    stall_s = float(os.environ.get("TTS_RUN_STALL_TIMEOUT_S", "1200") or "1200")
+    ex = Executor(**pool_kwargs)
+    try:
         futures = {ex.submit(_run_task_cells, p): p[1] for p in payloads}
-        for fut in as_completed(futures):
+        pending = set(futures)
+        while pending:
+            done, pending = wait(pending, timeout=stall_s, return_when=FIRST_COMPLETED)
+            if not done:
+                print(f"\n[hang-guard] no task finished in {stall_s:.0f}s; abandoning "
+                      f"{len(pending)} wedged task(s) (records checkpointed). "
+                      f"Re-run with --resume to retry them.")
+                for fut in pending:
+                    fut.cancel()
+                break
+            for fut in done:
+                try:
+                    _emit(fut.result())
+                except Exception as err:  # noqa: BLE001 - report and continue the sweep
+                    spec = futures[fut]
+                    print(f"\n[task {getattr(spec, 'subset', '?')} "
+                          f"idx={getattr(spec, 'index', '?')}] failed: {type(err).__name__}: {err}")
+                progress.update(1, postfix=getattr(futures[fut], "subset", ""))
+    finally:
+        # Force the pool down without joining a wedged worker: cancel queued futures, then SIGTERM any
+        # still-alive worker processes (a ProcessPool exposes them via ``_processes``).  Threads can't
+        # be killed, but ``shutdown(wait=False)`` at least won't actively block on them.
+        procs = list(getattr(ex, "_processes", {}).values() or [])
+        try:
+            ex.shutdown(wait=False, cancel_futures=True)
+        except TypeError:  # pragma: no cover - Python < 3.9 has no cancel_futures
+            ex.shutdown(wait=False)
+        for proc in procs:
             try:
-                _emit(fut.result())
-            except Exception as err:  # noqa: BLE001 - report and continue the sweep
-                print(f"\n[task {getattr(futures[fut], 'subset', '?')} "
-                      f"idx={getattr(futures[fut], 'index', '?')}] failed: {type(err).__name__}: {err}")
-            progress.update(1, postfix=getattr(futures[fut], "subset", ""))
+                if proc.is_alive():
+                    proc.terminate()
+            except Exception:  # noqa: BLE001 - best-effort cleanup
+                pass
     progress.close()
     return records
 
@@ -381,18 +424,51 @@ def dump_spawn_tree(env_name, args) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--env", default=None, choices=["appworld", "tau2"])
+    p.add_argument("--env", default=None, choices=["appworld", "tau2", "officebench"])
     p.add_argument("--methods", default="b0,b1,b2,ours")
     p.add_argument("--N", default="1,2,4,8")
     p.add_argument("--tasks", type=int, default=None, help="tasks PER SUBSET (default: full usable size)")
     p.add_argument("--seed-base", type=int, default=0)
     p.add_argument("--success-score", default="simulator_success")
+    p.add_argument("--verifier-reference", action="store_true",
+                   help="AppWorld llm_wm: enable the REFERENCE-GROUNDED verifier (audits the agent's write "
+                        "log against the task's ground-truth checklist + gold values). Sets "
+                        "TTS_APPWORLD_VERIFIER_REFERENCE=1 and, unless --success-score is given explicitly, "
+                        "switches ranking to simulator_confidence. NOTE: uses the task answer key -> this is "
+                        "reference-grounded (tau2-style), not blind WM-only.")
+    p.add_argument("--verifier-samples", type=int, default=None,
+                   help="K self-consistency samples for the WM verifier (sets TTS_APPWORLD_VERIFIER_SAMPLES; "
+                        "K>=2 gives a graded confidence in {0,1/K,..,1}). Default 1 (binary).")
+    p.add_argument("--verifier-percheck", action="store_true",
+                   help="AppWorld llm_wm: PER-CHECK reference auditor — a focused sub-pass audits each "
+                        "ground-truth check in isolation (MET/UNMET/UNKNOWN) and scores graded MET/decidable. "
+                        "Implies --verifier-reference; sets TTS_APPWORLD_VERIFIER_PERCHECK=1.")
+    p.add_argument("--sandbox-prompt", action="store_true",
+                   help="AppWorld: prepend a truthful sandbox preamble to the agent prompt so safety-aligned "
+                        "models (e.g. gpt-5.2) don't REFUSE consequential actions (orders/payments). Sets "
+                        "TTS_APPWORLD_SANDBOX_PROMPT=1. NOTE: deviates from the official prompt — apply "
+                        "uniformly across compared models for a fair A/B.")
     p.add_argument("--agent", default="llm", choices=["llm", "llm_wm", "scripted"],
                    help="real official-prompt LLM agent on the real env (default, reproduces the "
                         "benchmark) | llm_wm: LLM solver that interacts with the world model | "
                         "scripted: offline stub")
     p.add_argument("--llm-agent", default=None, help="agent model (default: Azure deployment / WM_MODEL, e.g. gpt-4.1)")
     p.add_argument("--llm-user", default=None, help="τ² user-simulator model (default: --llm-agent)")
+    p.add_argument("--local", action="store_true",
+                   help="Route every LLM call to a LOCAL, OpenAI-compatible server (vLLM / SGLang) "
+                        "instead of the Azure/OpenAI API — for self-hosted models. Requires "
+                        "--llm-agent <served-model-id> (e.g. Qwen-AgentWorld-35B-A3B). Forces the "
+                        "openai backend for AppWorld/OfficeBench and routes τ² (litellm) via the "
+                        "openai/ provider; no Azure endpoint or `az login` token is needed.")
+    p.add_argument("--local-base-url", default=None,
+                   help="Base URL of the local OpenAI-compatible server (default "
+                        "$OPENAI_BASE_URL or http://localhost:8000/v1). Only used with --local.")
+    p.add_argument("--local-api-key", default=None,
+                   help="API key for the local server (default $OPENAI_API_KEY or 'EMPTY'; most "
+                        "vLLM/SGLang servers accept any value). Only used with --local.")
+    p.add_argument("--skip-local-healthcheck", action="store_true",
+                   help="Skip the --local preflight that pings the server before running "
+                        "(use if the server doesn't expose GET /v1/models).")
     p.add_argument("--temperature", type=float, default=0.7, help="agent sampling temperature (B1/B2/Ours diversity)")
     p.add_argument("--max-steps", type=int, default=100, help="max agent steps per rollout")
     p.add_argument("--all-tasks", action="store_true",
@@ -404,7 +480,8 @@ def main() -> None:
                         "All splits are locally scorable: every task ships its test checkers and is "
                         "scored by AppWorld.evaluate() (ground_truth_mode='minimal').")
     p.add_argument("--levels", default=None,
-                   help="AppWorld difficulty levels, COMMA-separated (e.g. 1 or 1,2,3).")
+                   help="AppWorld difficulty levels (e.g. 1 or 1,2,3); for OfficeBench, the app-counts "
+                        "to run (1,2,3 -> the 1app/2app/3app subsets), COMMA-separated.")
     p.add_argument("--domains", default=None, help="τ² domains, COMMA-separated (e.g. airline,retail).")
     p.add_argument("--subsets", default=None, help="subset ids to keep, COMMA-separated.")
     p.add_argument("--list-subsets", action="store_true")
@@ -448,6 +525,55 @@ def main() -> None:
     if args.keep_outputs:
         os.environ["TTS_KEEP_APPWORLD_OUTPUTS"] = "1"
 
+    # Verifier configuration -> env vars, set HERE (in the parent) so forked workers inherit them.
+    if args.verifier_samples is not None:
+        os.environ["TTS_APPWORLD_VERIFIER_SAMPLES"] = str(args.verifier_samples)
+    if args.verifier_reference:
+        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"
+        # The reference auditor yields a GRADED confidence; rank on it unless the user chose a score.
+        if args.success_score == "simulator_success":
+            args.success_score = "simulator_confidence"
+        print(f"[verifier] reference-grounded auditor ENABLED "
+              f"(TTS_APPWORLD_VERIFIER_SAMPLES={os.environ.get('TTS_APPWORLD_VERIFIER_SAMPLES','1')}, "
+              f"success_score={args.success_score})")
+    if args.verifier_percheck:
+        os.environ["TTS_APPWORLD_VERIFIER_PERCHECK"] = "1"
+        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"  # per-check is a reference-grounded variant
+        if args.success_score == "simulator_success":
+            args.success_score = "simulator_confidence"
+        print(f"[verifier] PER-CHECK reference auditor ENABLED (success_score={args.success_score})")
+    if args.sandbox_prompt:
+        os.environ["TTS_APPWORLD_SANDBOX_PROMPT"] = "1"
+        print("[agent] sandbox preamble ENABLED (reduces consequential-action refusals)")
+
+    # Local, self-hosted model -> configure HERE (in the parent) so forked/spawned workers inherit
+    # the OpenAI-compatible endpoint env vars (works for both the AppWorld process pool and the τ²
+    # thread pool). Must run before any rollout worker is created.
+    if args.local:
+        from tts.llm.local import DEFAULT_LOCAL_BASE_URL, configure_local_llm, probe_local_server
+
+        model = args.llm_agent or os.environ.get("TTS_LOCAL_MODEL")
+        if not model:
+            p.error("--local requires --llm-agent <served-model-id> "
+                    "(e.g. --llm-agent Qwen-AgentWorld-35B-A3B)")
+        base_url = args.local_base_url or os.environ.get("OPENAI_BASE_URL") or DEFAULT_LOCAL_BASE_URL
+        api_key = args.local_api_key or os.environ.get("OPENAI_API_KEY") or "EMPTY"
+        configure_local_llm(base_url=base_url, model=model, api_key=api_key)
+        print(f"[llm] LOCAL OpenAI-compatible backend ENABLED -> {base_url} (model={model})")
+        # Preflight: fail fast with actionable guidance instead of N cryptic per-task "Connection
+        # error"s when no server is up at base_url (the #1 --local pitfall).
+        if not args.skip_local_healthcheck:
+            reachable, detail = probe_local_server(base_url, model=model)
+            if not reachable:
+                print(f"[llm] ERROR: local server not reachable — {detail}\n"
+                      f"      Start it first, e.g.:\n"
+                      f"        bash scripts/serve_local_model.sh <MODEL_PATH_OR_HF_ID> {model} "
+                      f"{base_url.split('//',1)[-1].split('/')[0].rsplit(':',1)[-1] or '8000'}\n"
+                      f"      Wait until it logs 'Uvicorn running', then re-run. "
+                      f"(Bypass this check with --skip-local-healthcheck.)", file=sys.stderr)
+                sys.exit(2)
+            print(f"[llm] local server OK — {detail}")
+
     if args.report:
         print_report(load_records(args.report))
         return
@@ -456,7 +582,8 @@ def main() -> None:
     env_name = args.env or (avail[0] if avail else None)
     if env_name is None:
         print("No real environment available in this interpreter. "
-              "Activate `dw` (tau2) or `env` (appworld, with APPWORLD_ROOT).")
+              "Activate `dw` (tau2) or `env` (appworld, with APPWORLD_ROOT), or set OFFICEBENCH_ROOT "
+              "with a usable Docker daemon for officebench.")
         return
 
     if args.list_subsets:
@@ -481,8 +608,18 @@ def main() -> None:
         appworld_exp_base = f"tts_real_{_uuid.uuid4().hex[:8]}"
         os.environ["TTS_APPWORLD_EXP_BASE"] = appworld_exp_base
 
+    # OfficeBench runs each rollout in a Docker container cleaned up in a `finally`; additionally we
+    # stamp this run's containers with a unique run-id label so the parent can force-remove any
+    # orphans left by HARD-KILLED workers (SIGKILL on OOM/timeout skips the per-session close()).
+    officebench_run_id = None
+    if env_name == "officebench" and not os.environ.get("TTS_OFFICEBENCH_RUN_ID"):
+        import uuid as _uuid
+
+        officebench_run_id = f"tts_{_uuid.uuid4().hex[:8]}"
+        os.environ["TTS_OFFICEBENCH_RUN_ID"] = officebench_run_id
+
     specs = _specs_for(env_name, args)
-    usable_only = args.agent in ("scripted", "llm_wm") and not args.all_tasks
+    usable_only = False  # Run on all tasks, not just WM-eligible mutating tasks
 
     # Each task runs ALL its (method, N) cells together with a task-local rollout pool, so B0/B1/B2/
     # Ours over a task select from the SAME real-agent rollouts (fair best-of-N). Tasks are
@@ -526,6 +663,12 @@ def main() -> None:
             swept = sweep_experiment_outputs(appworld_exp_base)
             if swept:
                 print(f"(swept {swept} orphaned AppWorld output dir(s))")
+        if officebench_run_id:
+            from tts.env.officebench_lowlevel import sweep_officebench_containers
+
+            swept = sweep_officebench_containers(officebench_run_id)
+            if swept:
+                print(f"(swept {swept} orphaned OfficeBench container(s))")
 
     # Re-read the checkpoint so the report/aggregates reflect EVERYTHING on disk (prior + new),
     # de-duplicated per (env, spec_subset, spec_index, method, n_rollouts).

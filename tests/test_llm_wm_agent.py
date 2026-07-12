@@ -180,3 +180,23 @@ def test_predict_step_forces_prediction_vs_step():
     wm.step(Action("get_reservation_details", {"id": "r1"}))       # normal -> may serve exact
     wm.predict_step(Action("get_reservation_details", {"id": "r1"}))  # dirty -> must force predict
     assert ev.calls == [("get_reservation_details", False), ("get_reservation_details", True)]
+
+
+def test_sandbox_preamble_opt_in(monkeypatch):
+    from tts.env.appworld_react_agent import _maybe_add_sandbox_preamble, _SANDBOX_PREAMBLE
+
+    base = [{"role": "system", "content": "OFFICIAL"}, {"role": "user", "content": "task"}]
+
+    monkeypatch.delenv("TTS_APPWORLD_SANDBOX_PROMPT", raising=False)
+    off = _maybe_add_sandbox_preamble([dict(m) for m in base])
+    assert off[0]["content"] == "OFFICIAL"
+
+    monkeypatch.setenv("TTS_APPWORLD_SANDBOX_PROMPT", "1")
+    on = _maybe_add_sandbox_preamble([dict(m) for m in base])
+    assert on[0]["content"].startswith(_SANDBOX_PREAMBLE)
+    assert "OFFICIAL" in on[0]["content"]
+    assert on[1]["content"] == "task"  # other messages untouched
+
+    # inserts a system message when none exists
+    inserted = _maybe_add_sandbox_preamble([{"role": "user", "content": "x"}])
+    assert inserted[0]["role"] == "system" and inserted[1]["content"] == "x"

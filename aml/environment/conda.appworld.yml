@@ -1,0 +1,18 @@
+# AML environment for the `dw` AppWorld jobs.
+#
+# `dw`'s own core has no third-party runtime deps beyond pyyaml, so we use the
+# STOCK `appworld` package (which pins pydantic<2 and needs Python 3.11) — no
+# custom wheel required. `openai` is pinned <2 because openai>=2 requires
+# pydantic>=2, which conflicts with appworld's pydantic<2.
+name: tts-dw-aml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - appworld==0.1.3.post1
+      - openai>=1.30.0,<2
+      - azure-identity>=1.15.0
+      - tqdm>=4.66.0
+      - pyyaml>=6.0

@@ -1,0 +1,18 @@
+officebench tasks:   0%|          | 0/12 [00:00<?, ?task/s]officebench tasks:   0%|          | 0/12 [02:49<?, ?task/s, 2app]officebench tasks:   8%|▊         | 1/12 [02:49<31:01, 169.19s/task, 2app]officebench tasks:   8%|▊         | 1/12 [03:00<31:01, 169.19s/task, 2app]officebench tasks:  17%|█▋        | 2/12 [03:00<12:42, 76.22s/task, 2app] officebench tasks:  17%|█▋        | 2/12 [03:43<12:42, 76.22s/task, 2app]officebench tasks:  25%|██▌       | 3/12 [03:43<09:08, 60.95s/task, 2app]officebench tasks:  25%|██▌       | 3/12 [04:12<09:08, 60.95s/task, 2app]officebench tasks:  33%|███▎      | 4/12 [04:12<06:27, 48.45s/task, 2app]officebench tasks:  33%|███▎      | 4/12 [05:18<06:27, 48.45s/task, 2app]officebench tasks:  42%|████▏     | 5/12 [05:18<06:23, 54.75s/task, 2app]officebench tasks:  42%|████▏     | 5/12 [05:29<06:23, 54.75s/task, 2app]officebench tasks:  50%|█████     | 6/12 [05:29<03:59, 39.86s/task, 2app]officebench tasks:  50%|█████     | 6/12 [05:47<03:59, 39.86s/task, 3app]officebench tasks:  58%|█████▊    | 7/12 [05:47<02:43, 32.71s/task, 3app]officebench tasks:  58%|█████▊    | 7/12 [06:58<02:43, 32.71s/task, 3app]officebench tasks:  67%|██████▋   | 8/12 [06:58<03:00, 45.01s/task, 3app]officebench tasks:  67%|██████▋   | 8/12 [07:27<03:00, 45.01s/task, 3app]officebench tasks:  75%|███████▌  | 9/12 [07:27<01:59, 39.86s/task, 3app]officebench tasks:  75%|███████▌  | 9/12 [10:26<01:59, 39.86s/task, 3app]officebench tasks:  83%|████████▎ | 10/12 [10:26<02:45, 82.78s/task, 3app]officebench tasks:  83%|████████▎ | 10/12 [12:42<02:45, 82.78s/task, 3app]officebench tasks:  92%|█████████▏| 11/12 [12:42<01:39, 99.22s/task, 3app]officebench tasks:  92%|█████████▏| 11/12 [12:48<01:39, 99.22s/task, 3app]officebench tasks: 100%|██████████| 12/12 [12:48<00:00, 70.77s/task, 3app]officebench tasks: 100%|██████████| 12/12 [12:48<00:00, 64.02s/task, 3app]
+
+TTS curve — success vs N  [officebench | ALL subsets]
+-----------------------------------------------------
+  method | N=1    N=2    N=4   
+    ours | 0.25   0.25   0.25  
+
+TTS — success vs N  [officebench | 2app]
+----------------------------------------
+  method | N=1    N=2    N=4   
+    ours | 0.50   0.50   0.50  
+
+TTS — success vs N  [officebench | 3app]
+----------------------------------------
+  method | N=1    N=2    N=4   
+    ours | 0.00   0.00   0.00  
+
+Wrote 36 decisions and 6 aggregate rows to experiments/ab_old/

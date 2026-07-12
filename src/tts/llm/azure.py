@@ -245,6 +245,17 @@ def ensure_litellm_azure_env(force_refresh: bool = False) -> str:
     ``force_refresh=True`` (rollout retry) refreshes the token cache and flushes litellm's client
     cache.  Honours ``AZURE_AUTH_MODE=api_key`` by leaving the key in place.
     """
+    from .local import local_llm_configured, local_model, litellm_model_for
+
+    if local_llm_configured():
+        # Local, self-hosted server: litellm routes the openai/ provider via OPENAI_API_BASE /
+        # OPENAI_API_KEY (already set by configure_local_llm); no Azure endpoint or token needed.
+        base = os.environ.get("OPENAI_API_BASE") or os.environ.get("OPENAI_BASE_URL")
+        if base:
+            os.environ["OPENAI_API_BASE"] = base
+        os.environ.setdefault("OPENAI_API_KEY", "EMPTY")
+        return litellm_model_for(local_model(), litellm_model())
+
     endpoint = azure_endpoint()
     if not endpoint:
         return litellm_model()

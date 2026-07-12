@@ -56,7 +56,16 @@ class Trajectory:
         return [s.action for s in self.steps]
 
     def signature(self) -> str:
-        return " | ".join(str(a) for a in self.actions)
+        # A compact identity string for logging/selection: newlines and tabs are collapsed and each
+        # action is length-capped so a document-sized literal argument (e.g. a word ``write_to_file``
+        # content) cannot bloat or corrupt the committed-action record.  The same deterministic
+        # transform is applied on both sides wherever signatures are compared, so identical
+        # trajectories still compare equal.
+        parts = []
+        for a in self.actions:
+            s = str(a).replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+            parts.append(s[:400] + "…" if len(s) > 400 else s)
+        return " | ".join(parts)
 
     def __len__(self) -> int:
         return len(self.steps)

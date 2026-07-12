@@ -18,7 +18,7 @@ import json
 import pytest
 
 from tts.env import appworld_wm
-from tts.env.appworld_wm import AppWorldWMPredictor, install_wm_requester
+from tts.env.appworld_wm import AppWorldWMPredictor, install_wm_requester, WMPredictedHTTPError
 
 
 class _FakeChat:
@@ -125,3 +125,65 @@ def test_invariant_no_prediction_before_first_write(methods):
     assert pre["real"] is True
     assert chat.calls == 0
     assert predictor.first_write_seen is False
+
+
+class _RejectChat:
+    """Returns a fixed SUCCESS payload for the first-time stable-success prompt, and a FAILURE wrapper
+    for the rejection-aware prompt (which asks for an ``"outcome"`` field)."""
+
+    def __init__(self, success_payload, failure_body):
+        self.success_payload = success_payload
+        self.failure_body = failure_body
+        self.calls = 0
+
+    def complete(self, messages, **kwargs):
+        self.calls += 1
+        content = messages[0]["content"]
+        if '"outcome"' in content:  # rejection-aware prompt
+            return json.dumps({"outcome": "failure", "status_code": 422, "response": self.failure_body})
+        return json.dumps(self.success_payload)
+
+
+def test_repeat_write_predicts_rejection_and_raises(methods):
+    """A repeat of the same state-changing write to the same target is predicted as a real rejection."""
+    world = _FakeWorld()
+    chat = _RejectChat({"message": "Liked."}, {"message": "You have already liked this song."})
+    predictor = AppWorldWMPredictor(chat)
+    install_wm_requester(world, predictor)
+
+    first = world.requester.request("spotify", "like_song", song_id=7)
+    assert first == {"message": "Liked."}
+    assert predictor.applied_writes  # recorded as applied
+
+    # the SAME write again -> the WM raises the real-format HTTP error (the agent must react to it).
+    with pytest.raises(Exception) as exc:
+        world.requester.request("spotify", "like_song", song_id=7)
+    assert "Response status code is 422" in str(exc.value)
+    assert "already liked" in str(exc.value).lower()
+    # a rejected write does NOT mutate state: still a single applied write, n_writes counts the attempt.
+    assert len(predictor.applied_writes) == 1
+
+
+def test_rejected_write_returns_body_when_raise_on_failure_false(methods):
+    world = _FakeWorld()
+    chat = _RejectChat({"message": "Liked."}, {"message": "You have already liked this song."})
+    predictor = AppWorldWMPredictor(chat)
+    install_wm_requester(world, predictor)
+
+    world.requester.request("spotify", "like_song", song_id=7)
+    # raise_on_failure=False -> the real requester returns the failure body instead of raising.
+    out = world.requester.request("spotify", "like_song", song_id=7, raise_on_failure=False)
+    assert out == {"message": "You have already liked this song."}
+
+
+def test_distinct_writes_each_succeed(methods):
+    """Distinct targets are not duplicates -> each uses the success path (burst-dedup preserved)."""
+    world = _FakeWorld()
+    chat = _RejectChat({"message": "Liked."}, {"message": "already liked"})
+    predictor = AppWorldWMPredictor(chat)
+    install_wm_requester(world, predictor)
+
+    a = world.requester.request("spotify", "like_song", song_id=1)
+    b = world.requester.request("spotify", "like_song", song_id=2)
+    assert a == {"message": "Liked."} and b == {"message": "Liked."}
+    assert len(predictor.applied_writes) == 2

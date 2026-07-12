@@ -172,6 +172,7 @@ class DecisionRecord:
     wall_clock_s: float = 0.0
     prediction_correct: Optional[bool] = None
     predicted_success: Optional[bool] = None
+    predicted_confidence: Optional[float] = None  # selected rollout's verifier confidence (graded if K>1)
     simulator_writes: int = 0  # must always be 0 (simulator-never-writes invariant)
     split: Optional[str] = None
     level: Optional[int] = None

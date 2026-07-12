@@ -6,6 +6,7 @@ import pytest
 
 from tts.env import (
     APPWORLD_OFFICIAL_SIZE,
+    OFFICEBENCH_OFFICIAL_SIZE,
     TAU2_OFFICIAL_SIZE,
     build_dataset,
     dataset_size,
@@ -45,6 +46,39 @@ def test_build_dataset_whole_benchmark_uses_official_sizes():
     counts = Counter(s.subset for s in specs)
     for sub in subsets("appworld"):
         assert counts[sub] == subset_size("appworld", sub)
+
+
+def test_officebench_subsets_and_official_sizes():
+    assert subsets("officebench") == ["1app", "2app", "3app"]
+    # official OfficeBench leaderboard groups (93 / 95 / 112 = 300)
+    assert subset_size("officebench", "1app") == 93
+    assert subset_size("officebench", "2app") == 95
+    assert subset_size("officebench", "3app") == 112
+    assert dataset_size("officebench") == 300
+    assert dataset_size("officebench", levels=[1]) == 93
+    assert dataset_size("officebench", levels=[2, 3]) == 207
+    assert sum(OFFICEBENCH_OFFICIAL_SIZE.values()) == 300
+
+
+def test_officebench_build_dataset_and_taxonomy():
+    from collections import Counter
+
+    specs = build_dataset("officebench")  # whole benchmark
+    counts = Counter(s.subset for s in specs)
+    for sub in subsets("officebench"):
+        assert counts[sub] == subset_size("officebench", sub)
+    # ``levels`` selects app-counts -> the matching subsets, capped by tasks_per_subset
+    specs = build_dataset("officebench", tasks_per_subset=2, levels=[1, 3])
+    assert {s.subset for s in specs} == {"1app", "3app"} and len(specs) == 4
+    spec = build_dataset("officebench", tasks_per_subset=1, levels=[2])[0]
+    assert spec.env == "officebench" and spec.subset == "2app" and spec.level == 2
+
+
+def test_officebench_unknown_selectors_raise():
+    with pytest.raises(KeyError):
+        subset_size("officebench", "9app")
+    with pytest.raises(KeyError):
+        build_dataset("officebench", levels=[4])
 
 
 def test_build_dataset_filters():

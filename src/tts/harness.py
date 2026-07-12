@@ -302,8 +302,10 @@ def _build_outcome(env, config, method, rollouts, selected_index, actual, n_comm
 
     predicted_success: Optional[bool] = None
     prediction_correct: Optional[bool] = None
+    predicted_confidence: Optional[float] = None
     if method != "b0" and selected.predicted is not None:
         predicted_success = selected.predicted.success
+        predicted_confidence = float(selected.predicted.reward)
         prediction_correct = bool(selected.predicted.success) == bool(actual.success)
 
     spawn_trees = [r.spawn_root for r in rollouts if r.spawn_root is not None]
@@ -330,6 +332,7 @@ def _build_outcome(env, config, method, rollouts, selected_index, actual, n_comm
         wall_clock_s=wall,
         prediction_correct=prediction_correct,
         predicted_success=predicted_success,
+        predicted_confidence=predicted_confidence,
         simulator_writes=simulator_writes,
         split=getattr(env, "split", None),
         level=getattr(env, "level", None),

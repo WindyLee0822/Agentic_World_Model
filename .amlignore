@@ -1,0 +1,26 @@
+# Files NOT uploaded as the AML code snapshot (keeps the upload small + fast).
+data/
+experiments/results/
+experiments/results_*/
+experiments/tmp*/
+experiments/5.4_*/
+experiments/ofbench-*/
+experiments/*.jsonl
+experiments/*.summary.json
+experiments/*.pdf
+experiments/*.html
+bills_temp/
+.git/
+.tmp/
+.pytest_cache/
+.mypy_cache/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.png
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+aml/wheels/

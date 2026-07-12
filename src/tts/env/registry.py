@@ -68,6 +68,10 @@ def make_env_from_spec(spec: TaskSpec, usable_only: bool = True) -> TaskEnvironm
         env = AppWorldTaskEnv(split=spec.split or "dev", level=spec.level, index=spec.index,
                               subset=spec.subset)
         return env
+    if spec.env == "officebench":
+        from .real_officebench import OfficeBenchTaskEnv
+
+        return OfficeBenchTaskEnv(subset=spec.subset, index=spec.index)
     raise KeyError(f"unknown env {spec.env!r}")
 
 
@@ -78,6 +82,9 @@ def make_env(env_name: str, index: int = 0, domain: Optional[str] = None, **kw) 
         return make_env_from_spec(spec)
     if env_name == "appworld":
         spec = TaskSpec("appworld", "dev/L1", index, split="dev", level=1)
+        return make_env_from_spec(spec)
+    if env_name == "officebench":
+        spec = TaskSpec("officebench", "1app", index, level=1)
         return make_env_from_spec(spec)
     raise KeyError(f"unknown env {env_name!r}")
 
@@ -96,6 +103,13 @@ def available_real_envs() -> List[str]:
 
         if real_appworld_available():
             out.append("appworld")
+    except Exception:
+        pass
+    try:
+        from .real_officebench import real_officebench_available
+
+        if real_officebench_available():
+            out.append("officebench")
     except Exception:
         pass
     return out

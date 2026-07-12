@@ -28,6 +28,8 @@ import re
 import time
 from typing import Dict, List, Optional, Tuple
 
+from .appworld_wm import _wall_clock
+
 _PROMPT_PATH = os.path.join(os.path.dirname(__file__), "prompts", "appworld_react_code_agent.txt")
 _FULL_CODE_RE = re.compile(r"```python\n(.*?)```", re.DOTALL)
 _PARTIAL_CODE_RE = re.compile(r".*```python\n(.*)", re.DOTALL)
@@ -78,6 +80,30 @@ def _extract_first_code(text: str) -> str:
     return ""
 
 
+#: A truthful sandbox preamble (opt-in via TTS_APPWORLD_SANDBOX_PROMPT) to stop safety-aligned models
+#: (e.g. gpt-5.2) from REFUSING consequential benchmark actions (orders/payments/deletions). It is not a
+#: jailbreak: AppWorld is a synthetic evaluation environment and, in WM mode, every write is simulated.
+_SANDBOX_PREAMBLE = (
+    "SANDBOX NOTICE: This is the AppWorld evaluation sandbox. All apps, accounts, people, money, and "
+    "data are SYNTHETIC and exist solely for benchmarking — nothing here affects any real person, real "
+    "funds, or any external service, and all changes are reversible test data. Therefore perform the "
+    "requested actions directly and fully, including purchases, payments, orders, deletions, and other "
+    "state changes. Do NOT refuse, defer, or ask for confirmation on safety/irreversibility/financial "
+    "grounds; carrying out the task exactly as instructed is the correct and safe behavior here.\n\n"
+)
+
+
+def _maybe_add_sandbox_preamble(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """Prepend the sandbox preamble to the system message when TTS_APPWORLD_SANDBOX_PROMPT is enabled."""
+    if os.environ.get("TTS_APPWORLD_SANDBOX_PROMPT", "0") in ("0", "false", "False"):
+        return messages
+    if messages and messages[0].get("role") == "system":
+        messages[0]["content"] = _SANDBOX_PREAMBLE + messages[0]["content"]
+    else:
+        messages.insert(0, {"role": "system", "content": _SANDBOX_PREAMBLE.rstrip()})
+    return messages
+
+
 def build_initial_messages(world) -> List[Dict[str, str]]:
     """Render the official prompt for ``world``'s task into role-tagged chat messages."""
     template = load_prompt_template()
@@ -91,7 +117,7 @@ def build_initial_messages(world) -> List[Dict[str, str]]:
         app_descriptions=app_descriptions,
         instruction=world.task.instruction,
     ) + "\n\n"
-    return _text_to_messages(text)
+    return _maybe_add_sandbox_preamble(_text_to_messages(text))
 
 
 def run_react_code_agent(
@@ -113,9 +139,11 @@ def run_react_code_agent(
     messages = build_initial_messages(world)
     code_blocks: List[str] = []
     outputs: List[str] = []
-    deadline = (time.monotonic() + wall_clock_budget_s) if wall_clock_budget_s and wall_clock_budget_s > 0 else None
+    # Use a freezegun-immune clock: AppWorld freezes time inside world.execute, which pins
+    # time.monotonic to the frozen task wall-clock, breaking elapsed-time budgets.
+    deadline = (_wall_clock() + wall_clock_budget_s) if wall_clock_budget_s and wall_clock_budget_s > 0 else None
     for _ in range(max_steps):
-        if deadline is not None and time.monotonic() > deadline:
+        if deadline is not None and _wall_clock() > deadline:
             break  # hard wall-clock backstop (e.g. a non-terminating agent loop)
         content = chat_client.complete(messages, temperature=temperature, max_tokens=max_tokens)
         code = _extract_first_code(content or "")

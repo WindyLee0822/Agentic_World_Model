@@ -74,7 +74,15 @@ def _env_float(name: str, default: float) -> float:
 
 
 def detect_backend() -> str:
-    """``"azure"`` if an Azure endpoint is configured, else ``"openai"``."""
+    """``"azure"`` if an Azure endpoint is configured, else ``"openai"``.
+
+    An explicit ``TTS_LLM_BACKEND`` (``openai``/``azure``) overrides the auto-detection — this is
+    how ``--local`` forces the OpenAI backend (pointed at a self-hosted server via
+    ``OPENAI_BASE_URL``) even when ``AZURE_OPENAI_ENDPOINT`` is still exported in the shell.
+    """
+    override = os.environ.get("TTS_LLM_BACKEND")
+    if override:
+        return override.strip().lower()
     return "azure" if os.environ.get("AZURE_OPENAI_ENDPOINT") else "openai"
 
 
