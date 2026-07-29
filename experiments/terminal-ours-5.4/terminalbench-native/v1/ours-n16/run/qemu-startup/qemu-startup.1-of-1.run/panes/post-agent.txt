@@ -1,0 +1,111 @@
+root@dc18c1c7a2cf:/app# asciinema rec --stdin /logs/agent.cast
+asciinema: recording asciicast to /logs/agent.cast
+asciinema: press <ctrl-d> or type "exit" when you're done
+root@dc18c1c7a2cf:/app# clear
+root@dc18c1c7a2cf:/app# pwd; __tts_rc=$?; printf '\n__TTS_42417ab37a7040eab19af6e322c3f034__RC:%s\n' "$__tts_rc"; printf '__TTS_42417ab37a7040eab19af6e322c3f034
+__PWD:'; pwd; printf '__TTS_42417ab37a7040eab19af6e322c3f034__END\n'; tmux wait -S done
+/app
+
+__TTS_42417ab37a7040eab19af6e322c3f034__RC:0
+__TTS_42417ab37a7040eab19af6e322c3f034__PWD:/app
+__TTS_42417ab37a7040eab19af6e322c3f034__END
+root@dc18c1c7a2cf:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app#' | head -200; __tts_rc=$?; printf '\n__TTS_90181c8975314af08
+89cf9588309f56a__RC:%s\n' "$__tts_rc"; printf '__TTS_90181c8975314af0889cf9588309f56a__PWD:'; pwd; printf '__TTS_90181c8975314af0889cf9588309f56a__END\n'; tmux
+wait -S done
+total 980176
+drwxr-xr-x 1 root root       4096 Jul 17 00:03 .
+drwxr-xr-x 1 root root       4096 Jul 17 01:37 ..
+-rw-r--r-- 1 root root     197120 Jul 17 00:03 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+/app/app/alpine-disk.qcow2
+/app/app/alpine.iso
+
+__TTS_90181c8975314af0889cf9588309f56a__RC:0
+__TTS_90181c8975314af0889cf9588309f56a__PWD:/app
+__TTS_90181c8975314af0889cf9588309f56a__END
+root@dc18c1c7a2cf:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_9f081b10a3164c3eb9dfb
+1b088f0d4a5__RC:%s\n' "$__tts_rc"; printf '__TTS_9f081b10a3164c3eb9dfb1b088f0d4a5__PWD:'; pwd; printf '__TTS_9f081b10a3164c3eb9dfb1b088f0d4a5__END\n'; tmux wait
+ -S done
+f /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_9f081b10a3164c3eb9dfb1b088f0d4a5__RC:0
+__TTS_9f081b10a3164c3eb9dfb1b088f0d4a5__PWD:/app
+__TTS_9f081b10a3164c3eb9dfb1b088f0d4a5__END
+root@dc18c1c7a2cf:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_b76e82f6a9384218b503f
+c54c838ebc8__RC:%s\n' "$__tts_rc"; printf '__TTS_b76e82f6a9384218b503fc54c838ebc8__PWD:'; pwd; printf '__TTS_b76e82f6a9384218b503fc54c838ebc8__END\n'; tmux wait
+ -S done
+f /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_b76e82f6a9384218b503fc54c838ebc8__RC:0
+__TTS_b76e82f6a9384218b503fc54c838ebc8__PWD:/app
+__TTS_b76e82f6a9384218b503fc54c838ebc8__END
+root@dc18c1c7a2cf:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_5366ad23c6914a6eaf07f
+6000f191c23__RC:%s\n' "$__tts_rc"; printf '__TTS_5366ad23c6914a6eaf07f6000f191c23__PWD:'; pwd; printf '__TTS_5366ad23c6914a6eaf07f6000f191c23__END\n'; tmux wait
+ -S done
+f /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_5366ad23c6914a6eaf07f6000f191c23__RC:0
+__TTS_5366ad23c6914a6eaf07f6000f191c23__PWD:/app
+__TTS_5366ad23c6914a6eaf07f6000f191c23__END
+root@dc18c1c7a2cf:/app# cd -- /app && stat -c '%n %s bytes' /app/alpine.iso /app/alpine-disk.qcow2; __tts_rc=$?; printf '\n__TTS_8636e7da45ed4fc9a447667abc68655
+3__RC:%s\n' "$__tts_rc"; printf '__TTS_8636e7da45ed4fc9a447667abc686553__PWD:'; pwd; printf '__TTS_8636e7da45ed4fc9a447667abc686553__END\n'; tmux wait -S done
+/app/alpine.iso 1003487232 bytes
+/app/alpine-disk.qcow2 197120 bytes
+
+__TTS_8636e7da45ed4fc9a447667abc686553__RC:0
+__TTS_8636e7da45ed4fc9a447667abc686553__PWD:/app
+__TTS_8636e7da45ed4fc9a447667abc686553__END
+root@dc18c1c7a2cf:/app# cd -- /app && which pkill python3 qemu-system-x86_64; __tts_rc=$?; printf '\n__TTS_bbbde48008a046f5b5bf9d7ddad278f8__RC:%s\n' "$__tts_rc
+"; printf '__TTS_bbbde48008a046f5b5bf9d7ddad278f8__PWD:'; pwd; printf '__TTS_bbbde48008a046f5b5bf9d7ddad278f8__END\n'; tmux wait -S done
+/usr/bin/python3
+/usr/bin/qemu-system-x86_64
+
+__TTS_bbbde48008a046f5b5bf9d7ddad278f8__RC:1
+__TTS_bbbde48008a046f5b5bf9d7ddad278f8__PWD:/app
+__TTS_bbbde48008a046f5b5bf9d7ddad278f8__END
+root@dc18c1c7a2cf:/app# cd -- /app && sh -lc 'ls -l /app && (command -v qemu-system-x86_64 || command -v qemu-system-i386 || command -v qemu-system-aarch64) &&
+ls -l /app/alpine.iso'; __tts_rc=$?; printf '\n__TTS_71b8ed678d7847178485457c46fa9d47__RC:%s\n' "$__tts_rc"; printf '__TTS_71b8ed678d7847178485457c46fa9d47__PWD
+:'; pwd; printf '__TTS_71b8ed678d7847178485457c46fa9d47__END\n'; tmux wait -S done
+total 980168
+-rw-r--r-- 1 root root     197120 Jul 17 00:03 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+/usr/bin/qemu-system-x86_64
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 /app/alpine.iso
+
+__TTS_71b8ed678d7847178485457c46fa9d47__RC:0
+__TTS_71b8ed678d7847178485457c46fa9d47__PWD:/app
+__TTS_71b8ed678d7847178485457c46fa9d47__END
+root@dc18c1c7a2cf:/app# cd -- /app && sh -lc 'tmp=/tmp/qemu-iso-$$; rm -rf "$tmp"; mkdir -p "$tmp"; printf "%s\n" "d-i debian-installer/locale string en_US" > "
+$tmp"/README; (qemu-system-x86_64 -m 256 -nographic -serial telnet:127.0.0.1:6665,server=on,wait=off -cdrom /app/alpine.iso -boot d -snapshot </dev/null >/tmp/q
+emu-alpine.log 2>&1 &) ; for i in $(seq 1 60); do python3 - <<'"'"'PY'"'"'
+> import socket,sys
+> s=socket.socket(); s.settimeout(1)
+> try:
+>     s.connect(("127.0.0.1",6665)); print("ok")
+> except Exception:
+>     sys.exit(1)
+> finally:
+>     try: s.close()
+>     except: pass
+> PY
+> [ $? -eq 0 ] && exit 0; sleep 1; done; echo "qemu did not become ready" >&2; tail -n 50 /tmp/qemu-alpine.log >&2; exit 1'; __tts_rc=$?; printf '\n__TTS_3c012b
+439eb54c829079483f5cff7f2f__RC:%s\n' "$__tts_rc"; printf '__TTS_3c012b439eb54c829079483f5cff7f2f__PWD:'; pwd; printf '__TTS_3c012b439eb54c829079483f5cff7f2f__EN
+D\n'; tmux wait -S done
+ok
+
+__TTS_3c012b439eb54c829079483f5cff7f2f__RC:0
+__TTS_3c012b439eb54c829079483f5cff7f2f__PWD:/app
+__TTS_3c012b439eb54c829079483f5cff7f2f__END
+root@dc18c1c7a2cf:/app# cd -- __TTS_3c012b439eb54c829079483f5cff7f2f__PWD:/app && sh -lc 'ps -ef | grep -v grep | grep qemu-system || true; ls -l /app; file /ap
+p/alpine.iso /app/alpine-disk.qcow2 2>/dev/null || true; stat -c "%n %s" /app/alpine.iso /app/alpine-disk.qcow2'; __tts_rc=$?; printf '\n__TTS_c1e3cc4a428d40c5a
+1a7a7522b68809a__RC:%s\n' "$__tts_rc"; printf '__TTS_c1e3cc4a428d40c5a1a7a7522b68809a__PWD:'; pwd; printf '__TTS_c1e3cc4a428d40c5a1a7a7522b68809a__END\n'; tmux
+wait -S done
+bash: cd: __TTS_3c012b439eb54c829079483f5cff7f2f__PWD:/app: No such file or directory
+
+__TTS_c1e3cc4a428d40c5a1a7a7522b68809a__RC:1
+__TTS_c1e3cc4a428d40c5a1a7a7522b68809a__PWD:/app
+__TTS_c1e3cc4a428d40c5a1a7a7522b68809a__END
+root@dc18c1c7a2cf:/app#

@@ -1,0 +1,40 @@
+root@86442f622816:/app# pwd; __tts_rc=$?; printf '\n__TTS_1e96bebec0a8475cb7f6d79a6f73c66b__RC:%s\n' "$__tts_rc"; printf '__TTS_1e96bebec0a8475cb7f6d79a6f73c66b
+__PWD:'; pwd; printf '__TTS_1e96bebec0a8475cb7f6d79a6f73c66b__END\n'; tmux wait -S done
+/app
+
+__TTS_1e96bebec0a8475cb7f6d79a6f73c66b__RC:0
+__TTS_1e96bebec0a8475cb7f6d79a6f73c66b__PWD:/app
+__TTS_1e96bebec0a8475cb7f6d79a6f73c66b__END
+root@86442f622816:/app# cd -- /app && python - <<'PY'
+> import mteb,inspect
+> print(mteb.__version__)
+> PY; __tts_rc=$?; printf '\n__TTS_4c9094fe630b45e69d84ea388d99f3d5__RC:%s\n' "$__tts_rc"; printf '__TTS_4c9094fe630b45e69d84ea388d99f3d5__PWD:'; pwd; printf '_
+_TTS_4c9094fe630b45e69d84ea388d99f3d5__END\n'; tmux wait -S done
+> cd -- /app && python -c "import os,inspect,mteb;print(mteb.__version__);print(os.path.dirname(inspect.getfile(mteb)))"; __tts_rc=$?; printf '\n__TTS_d67e43355
+a11454888fcfebecc99195c__RC:%s\n' "$__tts_rc"; printf '__TTS_d67e43355a11454888fcfebecc99195c__PWD:'; pwd; printf '__TTS_d67e43355a11454888fcfebecc99195c__END\n
+'; tmux wait -S done
+> cd -- /app && python -c "from sentence_transformers import SentenceTransformer; import mteb; model=SentenceTransformer('BAAI/bge-small-en-v1.5', revision='5c3
+8ec7c405ec4b44b94cc5a9bb96e735b38267a'); mteb.MTEB(tasks=['STS12']).run(model, output_folder='results/BAAI__bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b
+38267a')"; __tts_rc=$?; printf '\n__TTS_650266d456544e4c830c35316c0c37d0__RC:%s\n' "$__tts_rc"; printf '__TTS_650266d456544e4c830c35316c0c37d0__PWD:'; pwd; prin
+tf '__TTS_650266d456544e4c830c35316c0c37d0__END\n'; tmux wait -S done
+> cd -- /app && python -c "from sentence_transformers import SentenceTransformer; import mteb; model=SentenceTransformer('BAAI/bge-small-en-v1.5', revision='5c3
+8ec7c405ec4b44b94cc5a9bb96e735b38267a'); evaluation=mteb.MTEB(tasks=['STS12']); evaluation.run(model, output_folder='results/BAAI__bge-small-en-v1.5/5c38ec7c405
+ec4b44b94cc5a9bb96e735b38267a')"; __tts_rc=$?; printf '\n__TTS_310794dcf9464eab89962c9885f3579e__RC:%s\n' "$__tts_rc"; printf '__TTS_310794dcf9464eab89962c9885f
+3579e__PWD:'; pwd; printf '__TTS_310794dcf9464eab89962c9885f3579e__END\n'; tmux wait -S done
+> cd -- /app && find /app/results -maxdepth 4 -type f -o -type d | sed 's#^/app/##' | sort | tail -n 50; __tts_rc=$?; printf '\n__TTS_b7e412d2c0564d27b0f68cd105
+359bbd__RC:%s\n' "$__tts_rc"; printf '__TTS_b7e412d2c0564d27b0f68cd105359bbd__PWD:'; pwd; printf '__TTS_b7e412d2c0564d27b0f68cd105359bbd__END\n'; tmux wait -S d
+one
+> cd -- /app && ls -R /app | head -n 200; __tts_rc=$?; printf '\n__TTS_3db6c8e488b746d4a18ac741781ee5be__RC:%s\n' "$__tts_rc"; printf '__TTS_3db6c8e488b746d4a18
+ac741781ee5be__PWD:'; pwd; printf '__TTS_3db6c8e488b746d4a18ac741781ee5be__END\n'; tmux wait -S done
+> cd -- /app && timeout 300 python -c "from sentence_transformers import SentenceTransformer; import mteb; model=SentenceTransformer('BAAI/bge-small-en-v1.5', r
+evision='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'); mteb.MTEB(tasks=['STS12']).run(model, output_folder='results/BAAI__bge-small-en-v1.5/5c38ec7c405ec4b44b94cc
+5a9bb96e735b38267a', overwrite_results=True)"; __tts_rc=$?; printf '\n__TTS_30ab829bf33c4743b6c5ea2a5fc01e04__RC:%s\n' "$__tts_rc"; printf '__TTS_30ab829bf33c47
+43b6c5ea2a5fc01e04__PWD:'; pwd; printf '__TTS_30ab829bf33c4743b6c5ea2a5fc01e04__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+

@@ -1,0 +1,204 @@
+]3008;start=a479d793-0cde-422e-ad12-284c9bfe275e;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=16311b8b296f;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@16311b8b296f:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l]3008;start=66e6da06-a08b-45ad-b682-bcabc7d42c45;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=16311b8b296f;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=command;cwd=/app\[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@16311b8b296f:/app# clear
+[?2004l[H[J[3J[?2004hroot@16311b8b296f:/app# pwd; __tts_rc=$?; printf '\n__TTS_ffe83664b6ec407ea4615c8500ff6b92__RC:%s\n' "$__tts_rc"; printf '__TTS_ffe83664b6ec407ea4615c8500ff6b92__PWD:'; pwd; printf '__TTS_ffe83664b6ec407ea4615c8500ff6b92__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_ffe83664b6ec407ea4615c8500ff6b92__RC:0
+__TTS_ffe83664b6ec407ea4615c8500ff6b92__PWD:/app
+__TTS_ffe83664b6ec407ea4615c8500ff6b92__END
+[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'pwd; ls -la /app; uname -a; id; git --version; nginx -v 2>&1; ssh -V 2>&1; sshd -T >/dev/null 2>&1; echo sshd:$?; ls -la /etc/nginx 2>/dev/null; ls -la /etc/ssh 2>/dev/null'; __tts_rc=$?; printf '\n__TTS_495e7a5a82c2443fa916e5ce65bac631__RC:%s\n' "$__tts_rc"; printf '__TTS_495e7a5a82c2443fa916e5ce65bac631__PWD:'; pwd; printf '__TTS_495e7a5a82c2443fa916e5ce65bac631__END\n'; tmux wait -S done
+[?2004l/app
+total 12
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root 4096 Jul 18 17:52 ..
+-rwxr-xr-x 1 root root 1281 Jul 16 19:53 solution.sh
+Linux 16311b8b296f 6.17.0-1013-azure #13~24.04.1-Ubuntu SMP Wed Apr 15 16:52:17 UTC 2026 x86_64 GNU/Linux
+uid=0(root) gid=0(root) groups=0(root)
+git version 2.53.0
+nginx version: nginx/1.28.3 (Ubuntu)
+OpenSSH_10.2p1 Ubuntu-2ubuntu3.4, OpenSSL 3.5.5 27 Jan 2026
+sshd:0
+total 84
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root 4096 Jul 18 17:52 ..
+drwxr-xr-x 2 root root 4096 Jun 19 13:25 conf.d
+-rw-r--r-- 1 root root 1125 Mar 27 14:26 fastcgi.conf
+-rw-r--r-- 1 root root 1126 Mar 27 14:26 fastcgi_params
+-rw-r--r-- 1 root root 2837 Mar 27 14:26 koi-utf
+-rw-r--r-- 1 root root 2223 Mar 27 14:26 koi-win
+-rw-r--r-- 1 root root 5527 Mar 27 14:26 mime.types
+drwxr-xr-x 2 root root 4096 Jun 19 13:25 modules-available
+drwxr-xr-x 2 root root 4096 Jun 19 13:25 modules-enabled
+-rw-r--r-- 1 root root 1547 Mar 27 21:03 nginx.conf
+-rw-r--r-- 1 root root  204 Mar 27 14:26 proxy_params
+-rw-r--r-- 1 root root  704 Mar 27 14:26 scgi_params
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 sites-available
+drwxr-xr-x 2 root root 4096 Jul 18 12:50 sites-enabled
+drwxr-xr-x 2 root root 4096 Jul 18 12:50 snippets
+-rw-r--r-- 1 root root  733 Mar 27 14:26 uwsgi_params
+-rw-r--r-- 1 root root 3071 Mar 27 14:26 win-utf
+total 628
+drwxr-xr-x 4 root root   4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root   4096 Jul 18 17:52 ..
+-rw-r--r-- 1 root root 581286 Jul  9 18:06 moduli
+-rw-r--r-- 1 root root   1637 Jul  9 18:06 ssh_config
+drwxr-xr-x 2 root root   4096 Jul 18 12:50 ssh_config.d
+-rw------- 1 root root    513 Jul 18 12:50 ssh_host_ecdsa_key
+-rw-r--r-- 1 root root    182 Jul 18 12:50 ssh_host_ecdsa_key.pub
+-rw------- 1 root root    411 Jul 18 12:50 ssh_host_ed25519_key
+-rw-r--r-- 1 root root    102 Jul 18 12:50 ssh_host_ed25519_key.pub
+-rw------- 1 root root   2610 Jul 18 12:50 ssh_host_rsa_key
+-rw-r--r-- 1 root root    574 Jul 18 12:50 ssh_host_rsa_key.pub
+-rw-r--r-- 1 root root    342 Dec  7  2020 ssh_import_id
+-rw-r--r-- 1 root root   4307 Jul  9 18:06 sshd_config
+drwxr-xr-x 2 root root   4096 Jul  9 18:06 sshd_config.d
+
+__TTS_495e7a5a82c2443fa916e5ce65bac631__RC:0
+__TTS_495e7a5a82c2443fa916e5ce65bac631__PWD:/app
+__TTS_495e7a5a82c2443fa916e5ce65bac631__END
+[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'ps -ef | egrep "[n]ginx|[s]shd"; ls -la /var/www /git 2>/dev/null; ls -la /etc/nginx/sites-enabled /etc/nginx/conf.d /etc/ssh/sshd_config.d 2>/dev/null; getent passwd git || true'; __tts_rc=$?; printf '\n__TTS_4e445f62a86d48a4ae01d6aa7528e346__RC:%s\n' "$__tts_rc"; printf '__TTS_4e445f62a86d48a4ae01d6aa7528e346__PWD:'; pwd; printf '__TTS_4e445f62a86d48a4ae01d6aa7528e346__END\n'; tmux wait -S done
+[?2004lroot         152      67  0 17:53 pts/1    00:00:00 sh -lc ps -ef | egrep "[n]ginx|[s]shd"; ls -la /var/www /git 2>/dev/null; ls -la /etc/nginx/sites-enabled /etc/nginx/conf.d /etc/ssh/sshd_config.d 2>/dev/null; getent passwd git || true
+/var/www:
+total 20
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 ..
+drwxr-xr-x 2 root root 4096 Jul 18 12:50 dev
+drwxr-xr-x 2 root root 4096 Jul 18 12:50 html
+/etc/nginx/conf.d:
+total 12
+drwxr-xr-x 2 root root 4096 Jun 19 13:25 .
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 ..
+
+/etc/nginx/sites-enabled:
+total 12
+drwxr-xr-x 2 root root 4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 ..
+lrwxrwxrwx 1 root root   34 Jul 18 12:50 default -> /etc/nginx/sites-available/default
+
+/etc/ssh/sshd_config.d:
+total 8
+drwxr-xr-x 2 root root 4096 Jul  9 18:06 .
+drwxr-xr-x 4 root root 4096 Jul 18 12:50 ..
+
+__TTS_4e445f62a86d48a4ae01d6aa7528e346__RC:0
+__TTS_4e445f62a86d48a4ae01d6aa7528e346__PWD:/app
+__TTS_4e445f62a86d48a4ae01d6aa7528e346__END
+[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'set -e; id -u git >/dev/null 2>&1 || useradd -m -d /home/git -s /bin/bash git; echo git:password | chpasswd; mkdir -p /git/project.git /var/www/html /var/www/dev /etc/nginx/certs /run/sshd; git init --bare /git/project.git; cat >/git/project.git/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -e
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h> b=${ref#refs/heads/}
+[?2004l[?2004h> case "$b" in
+[?2004l[?2004h> main) d=/var/www/html ;;
+[?2004l[?2004h> dev) d=/var/www/dev ;;
+[?2004l[?2004h> *) continue ;;
+[?2004l[?2004h> esac
+[?2004l[?2004h> mkdir -p "$d"
+[?2004l[?2004h> git --work-tree="$d" --git-dir=/git/project.git checkout -f "$b" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/project.git/hooks/post-receive; chown -R git:git /git /home/git; printf "PasswordAuthentication yes\nPermitRootLogin yes\nPubkeyAuthentication yes\nUsePAM no\nPidFile /run/sshd.pid\n" >/etc/ssh/sshd_config.d/git-server.conf; openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/nginx/certs/self.key -out /etc/nginx/certs/self.crt -subj "/CN=localhost" -days 365 >/dev/null 2>&1; rm -f /etc/nginx/sites-enabled/default; cat >/etc/nginx/sites-available/gitdeploy <<"EOF"
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8443 ssl;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     ssl_certificate /etc/nginx/certs/self.crt;
+[?2004l[?2004h>     ssl_certificate_key /etc/nginx/certs/self.key;
+[?2004l[?2004h>     root /var/www/html;
+[?2004l[?2004h>     location / { try_files $uri $uri/ =404; }
+[?2004l[?2004h>     location /dev/ { alias /var/www/dev/; try_files $uri $uri/ =404; }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> ln -sf /etc/nginx/sites-available/gitdeploy /etc/nginx/sites-enabled/gitdeploy; nginx -t; (pkill nginx || true); nginx; (pkill sshd || true); /usr/sbin/sshd; printf "done\n"'; __tts_rc=$?; printf '\n__TTS_5959560798be463e89619507e5e3a3aa__RC:%s\n' "$__tts_rc"; printf '__TTS_5959560798be463e89619507e5e3a3aa__PWD:'; pwd; printf '__TTS_5959560798be463e89619507e5e3a3aa__END\n'; tmux wait -S done
+[?2004l[33mhint: Using 'master' as the name for the initial branch. This default branch name[m
+[33mhint: will change to "main" in Git 3.0. To configure the initial branch name[m
+[33mhint: to use in all of your new repositories, which will suppress this warning,[m
+[33mhint: call:[m
+[33mhint:[m
+[33mhint: 	git config --global init.defaultBranch <name>[m
+[33mhint:[m
+[33mhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and[m
+[33mhint: 'development'. The just-created branch can be renamed via this command:[m
+[33mhint:[m
+[33mhint: 	git branch -m <name>[m
+[33mhint:[m
+[33mhint: Disable this message with "git config set advice.defaultBranchName false"[m
+Initialized empty Git repository in /git/project.git/
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+done
+
+__TTS_5959560798be463e89619507e5e3a3aa__RC:0
+__TTS_5959560798be463e89619507e5e3a3aa__PWD:/app
+__TTS_5959560798be463e89619507e5e3a3aa__END
+[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'set -e; rm -rf /tmp/t && mkdir /tmp/t && cd /tmp/t && git init -b main && git config user.email a@a && git config user.name a && printf main >/tmp/t/index.html && git add index.html && git commit -m main >/dev/null && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push ssh://git:password@localhost/git/project.git main && git checkout -b dev >/dev/null && printf dev >/tmp/t/index.html && git commit -am dev >/dev/null && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push ssh://git:password@localhost/git/project.git dev || true; curl -sk https://localhost:8443/index.html; echo; curl -sk https://localhost:8443/dev/index.html; echo; ls -l /var/www/html /var/www/dev'; __tts_rc=$?; printf '\n__TTS_654449532c0f4596ac39df70251c3d24__RC:%s\n' "$__tts_rc"; printf '__TTS_654449532c0f4596ac39df70251c3d24__PWD:'; pwd; printf '__TTS_654449532c0f4596ac39df70251c3d24__END\n'; tmux wait -S done
+[?2004lInitialized empty Git repository in /tmp/t/.git/
+Warning: Permanently added 'localhost' (ED25519) to the list of known hosts.
+git:password@localhost's password: 
+Connection closed by ::1 port 22
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+
+<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+
+/var/www/dev:
+total 0
+
+/var/www/html:
+total 4
+-rw-r--r-- 1 root root 615 Jul 18 12:50 index.nginx-debian.html
+
+__TTS_654449532c0f4596ac39df70251c3d24__RC:0
+__TTS_654449532c0f4596ac39df70251c3d24__PWD:/app
+__TTS_654449532c0f4596ac39df70251c3d24__END
+[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'pkill -9 -f "git push ssh://git:password@localhost/git/project.git|ssh://git:password@localhost/git/project.git|ssh .*localhost" || true; pkill -9 ssh || true; pkill -9 -f "/usr/lib/openssh/sftp-server|git-receive-pack /git/project.git" || true; ps -ef | egrep "[s]shd|[n]ginx|git-receive-pack" | head'; __tts_rc=$?; printf '\n__TTS_d616097472f84307bfadd4a431d8d83e__RC:%s\n' "$__tts_rc"; printf '__TTS_d616097472f84307bfadd4a431d8d83e__PWD:'; pwd; printf '__TTS_d616097472f84307bfadd4a431d8d83e__END\n'; tmux wait -S done
+[?2004lKilled                     sh -lc 'pkill -9 -f "git push ssh://git:password@localhost/git/project.git|ssh://git:password@localhost/git/project.git|ssh .*localhost" || true; pkill -9 ssh || true; pkill -9 -f "/usr/lib/openssh/sftp-server|git-receive-pack /git/project.git" || true; ps -ef | egrep "[s]shd|[n]ginx|git-receive-pack" | head'
+
+__TTS_d616097472f84307bfadd4a431d8d83e__RC:137
+__TTS_d616097472f84307bfadd4a431d8d83e__PWD:/app
+__TTS_d616097472f84307bfadd4a431d8d83e__END
+[?2004hroot@16311b8b296f:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+]3008;end=66e6da06-a08b-45ad-b682-bcabc7d42c45;exit=success\]3008;start=a479d793-0cde-422e-ad12-284c9bfe275e;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=16311b8b296f;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@16311b8b296f:/app# cd -- /app && sh -lc 'set -e; printf "PasswordAuthentication yes\nPermitRootLogin yes\nPubkeyAuthentication yes\nUsePAM no\nChallengeRespponseAuthentication no\nKbdInteractiveAuthentication no\n" >/etc/ssh/sshd_config.d/git-server.conf; printf "git\npassword\n" | passwd git >/dev/null; chown -R giit:git /git/project.git; install -d -o root -g root /var/www/html /var/www/dev; cat >/git/project.git/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -e
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h> b=${ref#refs/heads/}
+[?2004l[?2004h> case "$b" in
+[?2004l[?2004h> main) d=/var/www/html ;;
+[?2004l[?2004h> dev) d=/var/www/dev ;;
+[?2004l[?2004h> *) continue ;;
+[?2004l[?2004h> esac
+[?2004l[?2004h> mkdir -p "$d"
+[?2004l[?2004h> git --work-tree="$d" --git-dir=/git/project.git checkout -f "$b"
+[?2004l[?2004h> find "$d" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null || true
+[?2004l[?2004h> git --work-tree="$d" --git-dir=/git/project.git checkout -f "$b" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod 755 /git/project.git/hooks/post-receive; pkill -9 -x ssh || true; pkill -9 sshd || true; /usr/sbin/sshd; nginx -s reload || nginx'; __tts_rc=$?; printf ''\n__TTS_e172c9b47995482eab6a875a4e08ab2a__RC:%s\n' "$__tts_rc"; printf '__TTS_e172c9b47995482eab6a875a4e08ab2a__PWD:'; pwd; printf '__TTS_e172c9b47995482eab6a8775a4e08ab2a__END\n'; tmux wait -S done
+[?2004l]3008;start=6c360eb2-b156-42fa-81d6-940d78458be0;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=16311b8b296f;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=command;cwd=/app\New password: Retype new password: Sorry, passwords do not match.
+passwd: Authentication token manipulation error
+passwd: password unchanged
+
+__TTS_e172c9b47995482eab6a875a4e08ab2a__RC:10
+__TTS_e172c9b47995482eab6a875a4e08ab2a__PWD:/app
+__TTS_e172c9b47995482eab6a875a4e08ab2a__END
+]3008;end=6c360eb2-b156-42fa-81d6-940d78458be0;exit=success\]3008;start=a479d793-0cde-422e-ad12-284c9bfe275e;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=16311b8b296f;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@16311b8b296f:/app# 

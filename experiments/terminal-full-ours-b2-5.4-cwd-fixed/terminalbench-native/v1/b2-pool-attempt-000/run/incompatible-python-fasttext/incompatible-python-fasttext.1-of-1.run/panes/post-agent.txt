@@ -1,0 +1,40 @@
+root@ff8a9cc9d4c5:/app# pwd; __tts_rc=$?; printf '\n__TTS_997cd62168364c8a8f61b56ac7151c98__RC:%s\n' "$__tts_rc"; printf '__TTS_997cd62168364c8a8f61b56ac7151c98
+__PWD:'; pwd; printf '__TTS_997cd62168364c8a8f61b56ac7151c98__END\n'; tmux wait -S done
+/app
+
+__TTS_997cd62168364c8a8f61b56ac7151c98__RC:0
+__TTS_997cd62168364c8a8f61b56ac7151c98__PWD:/app
+__TTS_997cd62168364c8a8f61b56ac7151c98__END
+root@ff8a9cc9d4c5:/app# cd -- /app && python - <<'PY'
+> import sys,importlib.util
+> print(sys.version)
+> print(importlib.util.find_spec('fasttext'))
+> PY; __tts_rc=$?; printf '\n__TTS_fa87ac3befad43c69cbed35f51d0a548__RC:%s\n' "$__tts_rc"; printf '__TTS_fa87ac3befad43c69cbed35f51d0a548__PWD:'; pwd; printf '_
+_TTS_fa87ac3befad43c69cbed35f51d0a548__END\n'; tmux wait -S done
+> cd -- /app && python -c "import sys,importlib.util; print(sys.version); print(importlib.util.find_spec('fasttext'))"; __tts_rc=$?; printf '\n__TTS_780181b205a
+64eb8a78bb49bc6bf6979__RC:%s\n' "$__tts_rc"; printf '__TTS_780181b205a64eb8a78bb49bc6bf6979__PWD:'; pwd; printf '__TTS_780181b205a64eb8a78bb49bc6bf6979__END\n';
+ tmux wait -S done
+> cd -- /app && python -c "import sys; print(sys.version)"; __tts_rc=$?; printf '\n__TTS_e3ae6ac2f5d84cf9a70650fdf2ff550d__RC:%s\n' "$__tts_rc"; printf '__TTS_e
+3ae6ac2f5d84cf9a70650fdf2ff550d__PWD:'; pwd; printf '__TTS_e3ae6ac2f5d84cf9a70650fdf2ff550d__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

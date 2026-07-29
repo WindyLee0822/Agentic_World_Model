@@ -1,0 +1,21 @@
+{
+    "job_name": "job",
+    "jobs_dir": "/home/t-wendili/dw/experiments/terminal-debug-5.4-fixed/terminalbench-native/v2/b2-pool-attempt-000",
+    "n_concurrent_trials": 2,
+    "agents": [
+        {
+            "name": "tts.env.terminalbench_harbor:HarborTerminalBenchAgent",
+            "model_name": "gpt-5.4"
+        }
+    ],
+    "datasets": [
+        {
+            "name": "terminal-bench",
+            "version": "2.0",
+            "task_names": [
+                "cancel-async-tasks",
+                "hf-model-inference"
+            ]
+        }
+    ]
+}

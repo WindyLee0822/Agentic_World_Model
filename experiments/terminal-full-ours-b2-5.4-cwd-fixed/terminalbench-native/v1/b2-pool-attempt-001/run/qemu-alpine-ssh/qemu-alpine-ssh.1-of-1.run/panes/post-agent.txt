@@ -1,0 +1,166 @@
+root@93eeff09bfc1:/app# asciinema rec --stdin /logs/agent.cast
+asciinema: recording asciicast to /logs/agent.cast
+asciinema: press <ctrl-d> or type "exit" when you're done
+root@93eeff09bfc1:/app# clear
+root@93eeff09bfc1:/app# pwd; __tts_rc=$?; printf '\n__TTS_02f95c30a404448e9e053c34759da0a4__RC:%s\n' "$__tts_rc"; printf '__TTS_02f95c30a404448e9e053c34759da0a4
+__PWD:'; pwd; printf '__TTS_02f95c30a404448e9e053c34759da0a4__END\n'; tmux wait -S done
+/app
+
+__TTS_02f95c30a404448e9e053c34759da0a4__RC:0
+__TTS_02f95c30a404448e9e053c34759da0a4__PWD:/app
+__TTS_02f95c30a404448e9e053c34759da0a4__END
+root@93eeff09bfc1:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_3fc54003d57d456baa0a1591d35c20fb__RC:%s\n' "$__tts_rc"; printf '__TTS_3fc54003d5
+7d456baa0a1591d35c20fb__PWD:'; pwd; printf '__TTS_3fc54003d57d456baa0a1591d35c20fb__END\n'; tmux wait -S done
+total 980176
+drwxr-xr-x 1 root root       4096 Jul 18 12:18 .
+drwxr-xr-x 1 root root       4096 Jul 19 01:33 ..
+-rw-r--r-- 1 root root     197120 Jul 18 12:18 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+
+__TTS_3fc54003d57d456baa0a1591d35c20fb__RC:0
+__TTS_3fc54003d57d456baa0a1591d35c20fb__PWD:/app
+__TTS_3fc54003d57d456baa0a1591d35c20fb__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'ps -ef | grep -E "qemu-system|sshd .*2222|hostfwd=tcp::2222" | grep -v grep || true'; __tts_rc=$?; printf '\n__T
+TS_fec902ab2ba54265ab00ffde99ab1fff__RC:%s\n' "$__tts_rc"; printf '__TTS_fec902ab2ba54265ab00ffde99ab1fff__PWD:'; pwd; printf '__TTS_fec902ab2ba54265ab00ffde99a
+b1fff__END\n'; tmux wait -S done
+bash: line 1: ps: command not found
+
+__TTS_fec902ab2ba54265ab00ffde99ab1fff__RC:0
+__TTS_fec902ab2ba54265ab00ffde99ab1fff__PWD:/app
+__TTS_fec902ab2ba54265ab00ffde99ab1fff__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'busybox ps | grep qemu-system || true'; __tts_rc=$?; printf '\n__TTS_4c69ab76b94048328450bae4cf1af2c8__RC:%s\n'
+"$__tts_rc"; printf '__TTS_4c69ab76b94048328450bae4cf1af2c8__PWD:'; pwd; printf '__TTS_4c69ab76b94048328450bae4cf1af2c8__END\n'; tmux wait -S done
+bash: line 1: busybox: command not found
+
+__TTS_4c69ab76b94048328450bae4cf1af2c8__RC:0
+__TTS_4c69ab76b94048328450bae4cf1af2c8__PWD:/app
+__TTS_4c69ab76b94048328450bae4cf1af2c8__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'command -v qemu-system-x86_64; command -v expect; command -v sshpass; command -v socat; command -v telnet; comma
+nd -v nc; command -v python3'; __tts_rc=$?; printf '\n__TTS_7fba3da29d6a48a08965df67ebf08f7b__RC:%s\n' "$__tts_rc"; printf '__TTS_7fba3da29d6a48a08965df67ebf08f
+7b__PWD:'; pwd; printf '__TTS_7fba3da29d6a48a08965df67ebf08f7b__END\n'; tmux wait -S done
+/usr/bin/qemu-system-x86_64
+/usr/bin/expect
+/usr/bin/telnet
+/bin/nc
+/usr/bin/python3
+
+__TTS_7fba3da29d6a48a08965df67ebf08f7b__RC:0
+__TTS_7fba3da29d6a48a08965df67ebf08f7b__PWD:/app
+__TTS_7fba3da29d6a48a08965df67ebf08f7b__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'command -v tmux; ls -l /app/alpine-disk.qcow2 /app/alpine.iso'; __tts_rc=$?; printf '\n__TTS_81fcd146382f468e98e
+477ef68dc9036__RC:%s\n' "$__tts_rc"; printf '__TTS_81fcd146382f468e98e477ef68dc9036__PWD:'; pwd; printf '__TTS_81fcd146382f468e98e477ef68dc9036__END\n'; tmux wa
+it -S done
+/usr/bin/tmux
+-rw-r--r-- 1 root root     197120 Jul 18 12:18 /app/alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 /app/alpine.iso
+
+__TTS_81fcd146382f468e98e477ef68dc9036__RC:0
+__TTS_81fcd146382f468e98e477ef68dc9036__PWD:/app
+__TTS_81fcd146382f468e98e477ef68dc9036__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'tmux new-session -d -s alpinevm "qemu-system-x86_64 -m 512 -boot d -cdrom /app/alpine.iso -drive file=/app/alpin
+e-disk.qcow2,if=virtio,format=qcow2 -nic user,hostfwd=tcp::2222-:22 -nographic" && sleep 8 && tmux capture-pane -pt alpinevm | tail -n 60'; __tts_rc=$?; printf
+'\n__TTS_033c7d00a6b74e85a264057a1783064c__RC:%s\n' "$__tts_rc"; printf '__TTS_033c7d00a6b74e85a264057a1783064c__PWD:'; pwd; printf '__TTS_033c7d00a6b74e85a2640
+57a1783064c__END\n'; tmux wait -S done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+__TTS_033c7d00a6b74e85a264057a1783064c__RC:0
+__TTS_033c7d00a6b74e85a264057a1783064c__PWD:/app
+__TTS_033c7d00a6b74e85a264057a1783064c__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'tmux capture-pane -pt alpinevm | tail -n 120'; __tts_rc=$?; printf '\n__TTS_69ab3ab0afd240fdad793dd5247dfe24__RC
+:%s\n' "$__tts_rc"; printf '__TTS_69ab3ab0afd240fdad793dd5247dfe24__PWD:'; pwd; printf '__TTS_69ab3ab0afd240fdad793dd5247dfe24__END\n'; tmux wait -S done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+__TTS_69ab3ab0afd240fdad793dd5247dfe24__RC:0
+__TTS_69ab3ab0afd240fdad793dd5247dfe24__PWD:/app
+__TTS_69ab3ab0afd240fdad793dd5247dfe24__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'tmux send-keys -t alpinevm C-m C-m; sleep 3; tmux capture-pane -pt alpinevm | tail -n 120'; __tts_rc=$?; printf
+'\n__TTS_2a4ec0a0b8c441acb90fe27615e73534__RC:%s\n' "$__tts_rc"; printf '__TTS_2a4ec0a0b8c441acb90fe27615e73534__PWD:'; pwd; printf '__TTS_2a4ec0a0b8c441acb90fe
+27615e73534__END\n'; tmux wait -S done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+__TTS_2a4ec0a0b8c441acb90fe27615e73534__RC:0
+__TTS_2a4ec0a0b8c441acb90fe27615e73534__PWD:/app
+__TTS_2a4ec0a0b8c441acb90fe27615e73534__END
+root@93eeff09bfc1:/app# cd -- /app && bash -lc 'tmux list-sessions; tmux list-panes -t alpinevm -F "#{pane_pid} #{pane_dead} #{pane_current_command}"; q=$(tmux
+display-message -p -t alpinevm "#{pane_pid}"); [ -n "$q" ] && tr "\0" " " </proc/$q/cmdline; echo; ss -ltn | grep 2222 || true'; __tts_rc=$?; printf '\n__TTS_a2
+e2106540b04201a036e3db6c13174b__RC:%s\n' "$__tts_rc"; printf '__TTS_a2e2106540b04201a036e3db6c13174b__PWD:'; pwd; printf '__TTS_a2e2106540b04201a036e3db6c13174b
+__END\n'; tmux wait -S done
+agent: 1 windows (created Sun Jul 19 01:33:52 2026)
+alpinevm: 1 windows (created Sun Jul 19 01:34:12 2026)
+221 0 qemu-system-x86_64
+qemu-system-x86_64 -m 512 -boot d -cdrom /app/alpine.iso -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -nic user,hostfwd=tcp::2222-:22 -nographic
+bash: line 1: ss: command not found
+
+__TTS_a2e2106540b04201a036e3db6c13174b__RC:0
+__TTS_a2e2106540b04201a036e3db6c13174b__PWD:/app
+__TTS_a2e2106540b04201a036e3db6c13174b__END
+root@93eeff09bfc1:/app#

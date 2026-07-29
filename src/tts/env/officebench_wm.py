@@ -24,8 +24,15 @@ returns the success fraction as a confidence in ``[0, 1]``.
 
 from __future__ import annotations
 
+import json
 import os
-from typing import Dict, List, Optional
+import re
+from typing import Any, Dict, List, Optional
+
+from .officebench_wm_python import (
+    officebench_wm_tool_mode,
+    run_python_prediction_loop,
+)
 
 
 def _reference_enabled() -> bool:
@@ -47,6 +54,19 @@ def _verifier_samples() -> int:
         return 1
 
 
+def _percheck_enabled() -> bool:
+    return os.environ.get(
+        "TTS_OFFICEBENCH_VERIFIER_PERCHECK", "0"
+    ) not in ("0", "false", "False")
+
+
+def _float_env(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
 def _int_env(name: str, default: int) -> int:
     try:
         return max(1, int(os.environ.get(name, str(default))))
@@ -62,6 +82,37 @@ _STATE_FILE_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_FILE_CHARS", 4000)
 _GOLD_FILE_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_GOLD_CHARS", 4000)
 #: Per-step observation budget in the realized-trajectory dump (read observations can be whole tables).
 _TRAJ_OBS_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_OBS_CHARS", 600)
+
+_AUDIT_LENSES = (
+    "Completeness: look for any required app, output, or evaluator check the trajectory omitted.",
+    "Exactness: verify names, values, paths, formulas, dates, times, and cardinalities against the gold.",
+    "Execution: look for malformed, blocked, failed, stale-read, or no-op actions that break the plan.",
+    "Final state: compare every predicted result artifact with every ground-truth success check.",
+    "Adversarial review: actively try to prove the trajectory fails before accepting it as complete.",
+)
+
+
+def _atomic_requirements(config: Optional[Dict]) -> List[Dict]:
+    """Split small keyword/match lists into independently auditable evaluator checks."""
+    checks: List[Dict] = []
+    split_cap = _int_env("TTS_OFFICEBENCH_VERIFIER_ATOMIC_CAP", 4)
+    for item in (config or {}).get("evaluation", []) or []:
+        function = item.get("function", "")
+        args = dict(item.get("args", {}) or {})
+        split_key = None
+        for key in ("keywords", "matches"):
+            value = args.get(key)
+            if isinstance(value, list) and 1 < len(value) <= split_cap:
+                split_key = key
+                break
+        if split_key is None:
+            checks.append({"function": function, "args": args})
+            continue
+        for value in args[split_key]:
+            atomic_args = dict(args)
+            atomic_args[split_key] = [value]
+            checks.append({"function": function, "args": atomic_args})
+    return checks
 
 
 def _requirements_from_config(config: Dict) -> List[str]:
@@ -144,11 +195,194 @@ def _is_giveup(answer: str) -> bool:
                                 "no such", "does not exist", "i was unable"))
 
 
-class OfficeBenchVerifier:
-    """LLM judge: does a realized OfficeBench trajectory accomplish the task? (never executes)."""
+def _required_output_specs(config: Optional[Dict]) -> List[tuple[str, bool]]:
+    """Output files that must exist, plus whether their checks require substantive content."""
+    specs = {}
+    for item in (config or {}).get("evaluation", []) or []:
+        function = str(item.get("function", "")).lower()
+        if any(marker in function for marker in ("not_exist", "notexist", "delete", "remove")):
+            continue
+        args = item.get("args", {}) or {}
+        negative_content = any(
+            marker in function for marker in ("not_contain", "notcontain"))
+        if negative_content:
+            continue
+        requires_content = (
+            any(marker in function for marker in (
+                "contain", "cell", "value", "content", "keyword"))
+        )
+        for key in ("file", "result_file", "output_file"):
+            if args.get(key):
+                specs[str(args[key])] = specs.get(str(args[key]), False) or requires_content
+    return list(specs.items())
 
-    def __init__(self, chat_client) -> None:
+
+def _state_is_missing(content: object) -> bool:
+    text = str(content or "").strip().lower()
+    if text.startswith(("[file does not exist]", "[directory does not exist]")):
+        return True
+    return (
+        "initial content" in text
+        and "[file does not exist]" in text
+        and ("(none)" in text or "(no recorded transitions)" in text)
+    )
+
+
+def _state_is_empty(content: object) -> bool:
+    return str(content or "").strip().lower() in (
+        "", "[empty sheet]", "[empty document]", "[empty cell]")
+
+
+def _deterministic_failure(
+        config: Optional[Dict],
+        actions: List[Dict],
+        observations: List[str],
+        final_state: Optional[Dict],
+) -> Optional[str]:
+    """Return a proof of failure that does not require an LLM judgement."""
+    from .officebench_wm_predict import (
+        _content_arg,
+        _looks_like_failure,
+        _norm_path,
+        write_targets,
+    )
+
+    resource_status: Dict[str, str] = {}
+    read_targets = set()
+    task_text = str((config or {}).get("task", "")).lower()
+    requires_preserving_append = (
+        "end of" in task_text
+        and any(marker in task_text for marker in ("add ", "append ", "insert "))
+    )
+    for index, action in enumerate(actions):
+        if not isinstance(action, dict):
+            continue
+        observation = observations[index] if index < len(observations) else ""
+        if _looks_like_failure(observation):
+            continue
+        app, name = action.get("app"), action.get("action")
+        raw_targets = write_targets(action)
+        targets = [
+            target for target in raw_targets
+            if target not in ("<shell>", "<unknown>", "")
+        ]
+        if name == "read_file":
+            for key in ("file_path", "file", "path"):
+                if action.get(key):
+                    read_targets.add(_norm_path(str(action[key])))
+        if app in ("word", "excel") and name == "create_new_file":
+            for target in targets:
+                resource_status[target] = (
+                    "content" if _content_arg(action) else "empty")
+        elif app == "word" and name == "write_to_file":
+            for target in targets:
+                if requires_preserving_append and target not in read_targets:
+                    return (
+                        f"append/edit target {target} was overwritten without first reading "
+                        "the existing document"
+                    )
+                if _content_arg(action):
+                    resource_status[target] = "content"
+        elif app == "excel" and name == "set_cell":
+            text = str(action.get("text", ""))
+            if "," in text and not (
+                len(text) >= 2 and text.startswith('"') and text.endswith('"')
+            ):
+                return (
+                    "excel.set_cell comma-containing text was not wrapped in literal "
+                    "double-quote characters and will be rejected by the OfficeBench app"
+                )
+            for target in targets:
+                resource_status[target] = "content"
+        elif name in ("convert_to_pdf", "convert_to_image", "convert_to_word"):
+            for target in targets:
+                resource_status[target] = "derived"
+        elif app == "shell":
+            command = str(action.get("command", ""))
+            if any(target in ("<shell>", "<unknown>") for target in raw_targets):
+                resource_status.clear()
+            elif re.match(r"^\s*(?:rm|unlink|rmdir)(?:\s|$)", command):
+                for target in targets:
+                    resource_status[target] = "missing"
+            elif re.match(r"^\s*(?::|true)\s*>\s*\S+", command):
+                for target in targets:
+                    resource_status[target] = "empty"
+            else:
+                for target in targets:
+                    resource_status[target] = "derived"
+
+    if final_state is not None:
+        normalized_state = {
+            _norm_path(path): content
+            for path, content in final_state.items()
+            if path != "WRITE LOG (predicted)"
+        }
+        for path, require_content in _required_output_specs(config):
+            target = _norm_path(path)
+            content = normalized_state.get(target)
+            if content is None:
+                continue  # state reconstruction was unavailable; defer unknown evidence to the LLM
+            if _state_is_missing(content):
+                return f"required output {path} is missing"
+            if require_content and (
+                    resource_status.get(target) == "empty" or _state_is_empty(content)):
+                return f"required output {path} was created but left empty"
+    return None
+
+
+class OfficeBenchVerifier:
+    """Agentic LLM judge over a predicted OfficeBench trajectory (never executes writes)."""
+
+    MAX_TURNS = 6
+
+    def __init__(self, chat_client, *, sample_seed: Optional[int] = None) -> None:
         self._chat = chat_client
+        self._sample_seed = sample_seed
+        self._query = None
+        self.last_precheck_failure: Optional[str] = None
+        self.last_percheck_breakdown: Optional[Dict[str, Any]] = None
+        self.n_python_calls = 0
+        self.n_python_failures = 0
+        self.n_python_forced = 0
+        self.n_python_mode_misses = 0
+
+    def bind_query_interface(self, query) -> None:
+        """Allow the verifier to gather additional read-only evidence from the pristine session."""
+        self._query = query
+
+    def _record_python_result(self, result) -> None:
+        self.n_python_calls += result.python_calls
+        self.n_python_failures += result.python_failures
+        self.n_python_forced += result.python_forced
+        self.n_python_mode_misses += result.python_mode_misses
+
+    @staticmethod
+    def _python_context(
+        instruction: str,
+        actions: List[Dict],
+        observations: List[str],
+        config: Optional[Dict],
+        final_state: Optional[Dict],
+        final_answer: Optional[str],
+        gold_files: Optional[Dict],
+    ) -> Dict[str, Any]:
+        reference_config = config if _reference_enabled() else None
+        return {
+            "kind": "success_verdict",
+            "instruction": instruction,
+            "trajectory": [
+                {
+                    "action": action,
+                    "observation": observations[index] if index < len(observations) else "",
+                }
+                for index, action in enumerate(actions)
+            ],
+            "requirements": _requirements_from_config(reference_config or {}),
+            "config": reference_config or {},
+            "final_state": final_state or {},
+            "final_answer": final_answer,
+            "gold_files": gold_files or {},
+        }
 
     def predict_success(self, instruction: str, actions: List[Dict], observations: List[str],
                         *, config: Optional[Dict] = None, final_state: Optional[Dict] = None,
@@ -160,21 +394,205 @@ class OfficeBenchVerifier:
         gold expected-output file contents for ``exact_match`` tasks) turn this from a blind, optimistic
         log judge into a **state- and reference-grounded** one — the key precision fix.
         """
+        precheck_config = config if _reference_enabled() else None
+        self.last_precheck_failure = _deterministic_failure(
+            precheck_config, actions, observations, final_state)
+        if self.last_precheck_failure is not None:
+            return 0.0
+        if _percheck_enabled() and precheck_config:
+            atomic_score = self._predict_percheck(
+                instruction,
+                actions,
+                observations,
+                precheck_config,
+                final_state,
+                final_answer,
+                gold_files,
+            )
+            whole_weight = min(
+                1.0,
+                max(0.0, _float_env(
+                    "TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", 0.0)),
+            )
+            if whole_weight <= 0:
+                return atomic_score
+            whole_score = self._predict_whole(
+                instruction,
+                actions,
+                observations,
+                config,
+                final_state,
+                final_answer,
+                gold_files,
+                samples=1,
+            )
+            if self.last_percheck_breakdown is not None:
+                self.last_percheck_breakdown.update({
+                    "atomic_score": atomic_score,
+                    "whole_score": whole_score,
+                    "whole_weight": whole_weight,
+                })
+            return (1.0 - whole_weight) * atomic_score + whole_weight * whole_score
+        self.last_percheck_breakdown = None
+        return self._predict_whole(
+            instruction,
+            actions,
+            observations,
+            config,
+            final_state,
+            final_answer,
+            gold_files,
+        )
+
+    def _predict_whole(
+        self,
+        instruction: str,
+        actions: List[Dict],
+        observations: List[str],
+        config: Optional[Dict],
+        final_state: Optional[Dict],
+        final_answer: Optional[str],
+        gold_files: Optional[Dict],
+        *,
+        samples: Optional[int] = None,
+    ) -> float:
         prompt = self._build_prompt(instruction, actions, observations, config, final_state,
                                     final_answer, gold_files)
-        k = _verifier_samples()
+        python_context = self._python_context(
+            instruction, actions, observations, config, final_state, final_answer, gold_files)
+        k = samples if samples is not None else _verifier_samples()
         votes = 0
-        for i in range(k):
-            # K==1 -> deterministic (temp 0); K>1 -> sample for a calibrated confidence.
-            temp = 0.0 if k == 1 else 0.7
-            verdict = self._chat.chat(_SYSTEM, prompt, temperature=temp, max_tokens=8)
-            if _is_success(verdict):
-                votes += 1
+        seedable = self._sample_seed is not None and hasattr(self._chat, "seed")
+        original_seed = getattr(self._chat, "seed", None)
+        try:
+            for i in range(k):
+                # K==1 -> deterministic (temp 0); K>1 -> sampled, reproducible independent votes.
+                temp = 0.0 if k == 1 else 0.7
+                if seedable:
+                    self._chat.seed = self._sample_seed + i
+                vote_prompt = prompt
+                if k > 1:
+                    vote_prompt += (
+                        "\n\nINDEPENDENT AUDIT FOCUS:\n"
+                        f"{_AUDIT_LENSES[i % len(_AUDIT_LENSES)]}\n"
+                        "Still judge the complete task and return the required verdict format."
+                    )
+                if officebench_wm_tool_mode() == "python":
+                    result = run_python_prediction_loop(
+                        lambda text, budget: self._chat.chat(
+                            _SYSTEM, text, temperature=temp, max_tokens=budget),
+                        self._query,
+                        vote_prompt,
+                        "VERDICT: SUCCESS  or  VERDICT: FAILURE",
+                        context=python_context,
+                        max_turns=self.MAX_TURNS,
+                        max_tokens=600,
+                        output_kind="verdict",
+                    )
+                    self._record_python_result(result)
+                    verdict = result.output
+                elif self._query is None:
+                    verdict = self._chat.chat(
+                        _SYSTEM, vote_prompt, temperature=temp, max_tokens=8)
+                else:
+                    from .officebench_wm_predict import run_agentic_read_loop
+
+                    terminal = run_agentic_read_loop(
+                        lambda text, budget: self._chat.chat(
+                            _SYSTEM, text, temperature=temp, max_tokens=budget),
+                        self._query,
+                        vote_prompt,
+                        "VERDICT: SUCCESS  or  VERDICT: FAILURE",
+                        max_turns=self.MAX_TURNS,
+                        max_tokens=600,
+                    )
+                    verdict = terminal[1] if terminal else ""
+                if _is_success(verdict):
+                    votes += 1
+        finally:
+            if seedable:
+                self._chat.seed = original_seed
         return votes / float(k)
+
+    def _predict_percheck(
+        self,
+        instruction: str,
+        actions: List[Dict],
+        observations: List[str],
+        config: Dict,
+        final_state: Optional[Dict],
+        final_answer: Optional[str],
+        gold_files: Optional[Dict],
+    ) -> float:
+        checks = _atomic_requirements(config)
+        if not checks:
+            self.last_percheck_breakdown = None
+            return 0.0
+
+        met = unmet = unknown = 0
+        seedable = self._sample_seed is not None and hasattr(self._chat, "seed")
+        original_seed = getattr(self._chat, "seed", None)
+        try:
+            for index, check in enumerate(checks):
+                if seedable:
+                    self._chat.seed = self._sample_seed + index
+                check_config = {"evaluation": [check]}
+                prompt = self._build_prompt(
+                    instruction,
+                    actions,
+                    observations,
+                    check_config,
+                    final_state,
+                    final_answer,
+                    gold_files,
+                    status_check=check,
+                )
+                status = self._parse_status(self._chat.chat(
+                    _STATUS_SYSTEM,
+                    prompt,
+                    temperature=0.0,
+                    max_tokens=16,
+                ))
+                if status == "MET":
+                    met += 1
+                elif status == "UNMET":
+                    unmet += 1
+                else:
+                    unknown += 1
+        finally:
+            if seedable:
+                self._chat.seed = original_seed
+
+        unknown_credit = min(
+            1.0,
+            max(0.0, _float_env(
+                "TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", 0.25)),
+        )
+        self.last_percheck_breakdown = {
+            "met": met,
+            "unmet": unmet,
+            "unknown": unknown,
+            "total": len(checks),
+            "unknown_credit": unknown_credit,
+        }
+        return (met + unknown_credit * unknown) / len(checks)
+
+    @staticmethod
+    def _parse_status(response: str) -> str:
+        text = (response or "").strip().upper()
+        tail = text.rsplit("STATUS:", 1)[-1] if "STATUS:" in text else text
+        if "UNMET" in tail:
+            return "UNMET"
+        if "UNKNOWN" in tail:
+            return "UNKNOWN"
+        if "MET" in tail:
+            return "MET"
+        return "UNKNOWN"
 
     def _build_prompt(self, instruction: str, actions: List[Dict], observations: List[str],
                       config: Optional[Dict], final_state: Optional[Dict] = None,
-                      final_answer: Optional[str] = None, gold_files: Optional[Dict] = None) -> str:
+                      final_answer: Optional[str] = None, gold_files: Optional[Dict] = None,
+                      status_check: Optional[Dict] = None) -> str:
         lines = [f"TASK INSTRUCTION:\n{instruction}\n", "REALIZED AGENT TRAJECTORY (action -> observation):"]
         for i, action in enumerate(actions):
             obs = (observations[i] if i < len(observations) else "").replace("\n", "\\n")
@@ -207,9 +625,19 @@ class OfficeBenchVerifier:
                              "content must yield a file matching this exactly):")
                 for label, content in gold_files.items():
                     lines.append(f"  === gold {label} ===\n  {str(content)[:_GOLD_FILE_CHARS]}")
-        lines.append(
-            "\nUsing the PREDICTED resulting file state (not the agent's claims), did the agent correctly "
-            "and completely accomplish the task? Answer with exactly one word: SUCCESS or FAILURE.")
+        if status_check is None:
+            lines.append(
+                "\nUsing the PREDICTED resulting file state (not the agent's claims), did the agent "
+                "correctly and completely accomplish the task? Answer with exactly one word: SUCCESS "
+                "or FAILURE.")
+        else:
+            lines.append(
+                "\nONE ATOMIC GROUND-TRUTH CHECK:\n"
+                f"{json.dumps(status_check, ensure_ascii=True, sort_keys=True)}\n\n"
+                "Classify only this check as MET when the evidence proves it passes, UNMET when the "
+                "evidence proves it fails, or UNKNOWN when the predicted state/write log is insufficient. "
+                "Do not fail it because of unrelated task requirements. End with exactly one line: "
+                "STATUS: MET, STATUS: UNMET, or STATUS: UNKNOWN.")
         return "\n".join(lines)
 
 
@@ -223,6 +651,13 @@ _SYSTEM = (
     "change is missing, wrong, written as an uncomputed formula/string instead of a value, only "
     "partially done, a write failed, or the agent gave up, answer FAILURE. Reply with a single word: "
     "SUCCESS or FAILURE."
+)
+
+_STATUS_SYSTEM = (
+    "You are a strict evaluator for one atomic OfficeBench ground-truth check. Use the predicted "
+    "resulting state, trajectory, and gold evidence. Classify only the supplied check as MET, UNMET, "
+    "or UNKNOWN. Never infer MET from the agent's claim alone, and never mark unrelated omissions "
+    "against this check. Reply with exactly `STATUS: MET`, `STATUS: UNMET`, or `STATUS: UNKNOWN`."
 )
 
 

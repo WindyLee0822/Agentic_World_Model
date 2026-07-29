@@ -1,0 +1,21 @@
+{
+    "id": "4778cd06-ba53-4db4-9996-49601a28ff44",
+    "trial_name": "crack-7z-hash.1-of-1.run",
+    "task_id": "crack-7z-hash",
+    "instruction": "You need to create a file called \"solution.txt\" with the word found \"secrete_file.txt\" in the \"secrets.7z\" archive.\nThe password is unknown, but I know that the password is a 4-digit number.\nUse the john the ripper binaries in the \"/app/john/run\" directory.\nThe final \"solution.txt\" should be located at \"/app/solution.txt\".",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "test_solution_file": "failed",
+        "test_solution_content": "failed"
+    },
+    "recording_path": "run/crack-7z-hash/crack-7z-hash.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-18T19:14:46.586020+00:00",
+    "trial_ended_at": "2026-07-18T19:26:12.584180+00:00",
+    "agent_started_at": "2026-07-18T19:14:50.870068+00:00",
+    "agent_ended_at": "2026-07-18T19:25:50.983295+00:00",
+    "test_started_at": "2026-07-18T19:25:54.366759+00:00",
+    "test_ended_at": "2026-07-18T19:26:01.711303+00:00"
+}

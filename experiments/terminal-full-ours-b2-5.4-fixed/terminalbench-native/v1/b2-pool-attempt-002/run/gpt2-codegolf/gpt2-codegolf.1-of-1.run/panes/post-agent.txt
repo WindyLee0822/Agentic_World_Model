@@ -1,0 +1,40 @@
+root@45c221f74a50:/app# pwd; __tts_rc=$?; printf '\n__TTS_19913676f9a84729b05030b00640fc71__RC:%s\n' "$__tts_rc"; printf '__TTS_19913676f9a84729b05030b00640fc71
+__PWD:'; pwd; printf '__TTS_19913676f9a84729b05030b00640fc71__END\n'; tmux wait -S done
+/app
+
+__TTS_19913676f9a84729b05030b00640fc71__RC:0
+__TTS_19913676f9a84729b05030b00640fc71__PWD:/app
+__TTS_19913676f9a84729b05030b00640fc71__END
+root@45c221f74a50:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/#' | head -200; __tts_rc=$?; printf '\n__TTS_601235f7249f4d1d8b0c
+701969091569__RC:%s\n' "$__tts_rc"; printf '__TTS_601235f7249f4d1d8b0c701969091569__PWD:'; pwd; printf '__TTS_601235f7249f4d1d8b0c701969091569__END\n'; tmux wai
+t -S done
+total 486552
+drwxr-xr-x 1 root root      4096 Jul 18 08:49 .
+drwxr-xr-x 1 root root      4096 Jul 18 13:36 ..
+-rw-r--r-- 1 root root 497759232 Jul 18 08:50 gpt2-124M.ckpt
+-rw-r--r-- 1 root root    456318 Jul 18 08:49 vocab.bpe
+//app/gpt2-124M.ckpt
+//app/vocab.bpe
+
+__TTS_601235f7249f4d1d8b0c701969091569__RC:0
+__TTS_601235f7249f4d1d8b0c701969091569__PWD:/app
+__TTS_601235f7249f4d1d8b0c701969091569__END
+root@45c221f74a50:/app# cd -- /app && python3 - <<'PY'
+> import struct
+> p='gpt2-124M.ckpt'
+> with open(p,'rb') as f:
+>  d=f.read(64)
+> print(len(d),d[:32],list(d[:16]))
+> for off in [0,8,16,32]:
+>  print(off,struct.unpack('<4I',d[off:off+16]))
+> PY; __tts_rc=$?; printf '\n__TTS_25ed013a503b44538e7a77f3541f6808__RC:%s\n' "$__tts_rc"; printf '__TTS_25ed013a503b44538e7a77f3541f6808__PWD:'; pwd; printf '_
+_TTS_25ed013a503b44538e7a77f3541f6808__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import os,struct;f=open('gpt2-124M.ckpt','rb');d=f.read(64);print(len(d),list(d[:16]));print([struct.unpack('<4I',d[i:i+16]) for i i
+n (0,8,16,32)])"; __tts_rc=$?; printf '\n__TTS_285f174339a644c8a402ff42ae874cea__RC:%s\n' "$__tts_rc"; printf '__TTS_285f174339a644c8a402ff42ae874cea__PWD:'; pw
+d; printf '__TTS_285f174339a644c8a402ff42ae874cea__END\n'; tmux wait -S done
+> cd -- /app && dd if=/app/gpt2-124M.ckpt bs=64 count=1 2>/dev/null | od -An -t u4; __tts_rc=$?; printf '\n__TTS_83b7da2109184ec88aa8e3726f125025__RC:%s\n' "$__
+tts_rc"; printf '__TTS_83b7da2109184ec88aa8e3726f125025__PWD:'; pwd; printf '__TTS_83b7da2109184ec88aa8e3726f125025__END\n'; tmux wait -S done
+>
+
+
+

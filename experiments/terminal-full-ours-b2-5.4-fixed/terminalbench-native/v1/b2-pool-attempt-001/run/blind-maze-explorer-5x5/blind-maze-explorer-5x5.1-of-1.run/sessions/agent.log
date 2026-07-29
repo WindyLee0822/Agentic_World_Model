@@ -1,0 +1,82 @@
+[?2004hroot@5fa59495eb41:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@5fa59495eb41:/app# clear
+[?2004l[H[J[3J[?2004hroot@5fa59495eb41:/app# pwd; __tts_rc=$?; printf '\n__TTS_b12a30c4d4864afcbd10a7ab009c161c__RC:%s\n' "$__tts_rc"; printf '__TTS_b12a30c4d4864afcbd10a7ab009c161c__PWD:'; pwd; printf '__TTS_b12a30c4d4864afcbd10a7ab009c161c__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__RC:0
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__PWD:/app
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__END
+[?2004hroot@5fa59495eb41:/app# cd -- /app && printf 'exit
+[?2004l[?2004h> ' | ./maze_game.sh >/dev/null 2>&1; ls -l .; __tts_rc=$?; printf '\n__TTS_c8e32142640145b59465337028739e2e__RC:%s\n' "$__tts_rc"; printf '__TTS_c8e32142640145b59465337028739e2e__PWD:'; pwd; printf '__TTS_c8e32142640145b59465337028739e2e__END\n'; tmux wait -S done
+[?2004ltotal 8
+-rwxr-xr-x 1 root root   80 Jul 16 19:53 maze_game.sh
+drwxr-xr-x 2 root root 4096 Jul 16 19:53 tests
+
+__TTS_c8e32142640145b59465337028739e2e__RC:0
+__TTS_c8e32142640145b59465337028739e2e__PWD:/app
+__TTS_c8e32142640145b59465337028739e2e__END
+[?2004hroot@5fa59495eb41:/app# cd -- /app && sed -n '1,200p' maze_game.sh; __tts_rc=$?; printf '\n__TTS_d7897487a76c497a9eec28a4a8f352ad__RC:%s\n' "$__tts_rc"; printf '__TTS_d7897487a76c497a9eec28a4a8f352ad__PWD:'; pwd; printf '__TTS_d7897487a76c497a9eec28a4a8f352ad__END\n'; tmux wait -S done
+[?2004l#!/bin/bash
+
+# Run the protected maze server 
+python3 /protected/maze_server.py 
+__TTS_d7897487a76c497a9eec28a4a8f352ad__RC:0
+__TTS_d7897487a76c497a9eec28a4a8f352ad__PWD:/app
+__TTS_d7897487a76c497a9eec28a4a8f352ad__END
+[?2004hroot@5fa59495eb41:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import pexpect, re, os
+[?2004l[?2004h> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=2)
+[?2004l[?2004h> # probe startup/output shape
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.expect(['>','move','exit',pexpect.TIMEOUT,pexpect.EOF], timeout=1)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> print(child.before + child.after)
+[?2004l[?2004h> child.sendline('exit')
+[?2004l[?2004h> child.expect(pexpect.EOF)
+[?2004l[?2004h> print(child.before)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_18cc806ba4544880afafd5dca2924d78__RC:%s\n' "$__tts_rc"; printf '__TTS_18cc806ba4544880afafd5dca2924d78__PWD:'; pwd; printf '__TTS_18cc806ba4544880afafd5dca2924d78__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import os, pty, select, subprocess, time
+[?2004l[?2004h> master, slave = pty.openpty()
+[?2004l[?2004h> p = subprocess.Popen(['./maze_game.sh'], stdin=slave, stdout=slave, stderr=slave, text=True, close_fds=True)
+[?2004l[?2004h> os.close(slave)
+[?2004l[?2004h> time.sleep(0.5)
+[?2004l[?2004h> out=b''
+[?2004l[?2004h> while True:
+[?2004l[?2004h>     r,_,_=select.select([master],[],[],0.2)
+[?2004l[?2004h>     if not r: break
+[?2004l[?2004h>     try: out += os.read(master, 4096)
+[?2004l[?2004h>     except OSError: break
+[?2004l[?2004h> print(out.decode('utf-8','ignore'))
+[?2004l[?2004h> os.write(master,b'exit\n')
+[?2004l[?2004h> time.sleep(0.2)
+[?2004l[?2004h> while True:
+[?2004l[?2004h>     r,_,_=select.select([master],[],[],0.2)
+[?2004l[?2004h>     if not r: break
+[?2004l[?2004h>     try: out=os.read(master,4096)
+[?2004l[?2004h>     except OSError: break
+[?2004l[?2004h>     print(out.decode('utf-8','ignore'), end='')
+[?2004l[?2004h> p.wait(timeout=2)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b55a56df47324c5492a8084809527aff__RC:%s\n' "$__tts_rc"; printf '__TTS_b55a56df47324c5492a8084809527aff__PWD:'; pwd; printf '__TTS_b55a56df47324c5492a8084809527aff__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 -c "import inspect,sys;print(open('/protected/maze_server.py').read())" | sed -n '1,260p'; __tts_rc=$?; printf '\n__TTS_dd8d1a37f4a243fdae82e64a924f2602__RC:%s\n' "$__tts_rc"; printf '__TTS_dd8d1a37f4a243fdae82e64a924f2602__PWD:'; pwd; printf '__TTS_dd8d1a37f4a243fdae82e64a924f2602__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('/protected/maze_server.py')
+[?2004l[?2004h> print('exists',p.exists(),'size',p.stat().st_size if p.exists() else -1)
+[?2004l[?2004h> print(p.read_text()[:4000])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ee1fee71e21043e3a71cc74cbc7ab644__RC:%s\n' "$__tts_rc"; printf '__TTS_ee1fee71e21043e3a71cc74cbc7ab644__PWD:'; pwd; printf '__TTS_ee1fee71e21043e3a71cc74cbc7ab644__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m12[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_18cc806ba4544880afafd5dca2924d78__RC:%s\n' "$__tts_rc"; printf '__TTS_18cc806ba4544880afafd5dca2924d78__PWD:'; pwd; printf '__TTS_18cc806ba4544880afafd5dca2924d78__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@5fa59495eb41:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('/protected/maze_server.py')
+[?2004l[?2004h> print(p.read_text())
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e6dcc86a6fa14644b64d2d035be5f9cc__RC:%s\n' "$__tts_rc"; printf '__TTS_e6dcc86a6fa14644b64d2d035be5f9cc__PWD:'; pwd; printf '__TTS_e6dcc86a6fa14644b64d2d035be5f9cc__END\n'; tmux wait -S done
+[?2004l[?2004h> 

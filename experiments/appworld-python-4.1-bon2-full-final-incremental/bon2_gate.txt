@@ -1,0 +1,14 @@
+AppWorld GPT-4.1 Python-only multi-app BoN@2 gate
+tool modes: python
+solver agents: llm_wm
+models: gpt-4.1
+precision prompt: [True]
+agent reference contract: [True]
+deterministic dirty reads: [True]
+per-check verifier: [True]
+success scores: simulator_confidence
+test_normal/L2: 83.33% > 70.00% (PASS, n=48/48)
+test_challenge/L2: 68.00% > 60.00% (PASS, n=150/150)
+test_normal/L3: 68.25% > 63.00% (PASS, n=63/63)
+test_challenge/L3: 61.03% > 60.00% (PASS, n=195/195)
+OVERALL: PASS

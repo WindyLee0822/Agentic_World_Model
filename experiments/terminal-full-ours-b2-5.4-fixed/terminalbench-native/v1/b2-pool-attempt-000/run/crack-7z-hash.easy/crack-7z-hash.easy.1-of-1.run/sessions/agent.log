@@ -1,0 +1,142 @@
+[?2004hroot@62d796339443:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@62d796339443:/app# clear
+[?2004l[H[J[3J[?2004hroot@62d796339443:/app# pwd; __tts_rc=$?; printf '\n__TTS_1b85ef9bfc264670a2dde90c11aeab58__RC:%s\n' "$__tts_rc"; printf '__TTS_1b85ef9bfc264670a2dde90c11aeab58__PWD:'; pwd; printf '__TTS_1b85ef9bfc264670a2dde90c11aeab58__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_1b85ef9bfc264670a2dde90c11aeab58__RC:0
+__TTS_1b85ef9bfc264670a2dde90c11aeab58__PWD:/app
+__TTS_1b85ef9bfc264670a2dde90c11aeab58__END
+[?2004hroot@62d796339443:/app# cd -- /app && apt-get update && apt-get install -y p7zip-full libcompress-raw-lzma-perl; __tts_rc=$?; printf '\n__TTS_ff2068bf962e44f8a62ef2711c93fff5__RC:%s\n' "$__tts_rc"; printf '__TTS_ff2068bf962e44f8a62ef2711c93fff5__PWD:'; pwd; printf '__TTS_ff2068bf962e44f8a62ef2711c93fff5__END\n'; tmux wait -S done
+[?2004l0% [Working]            Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+0% [Waiting for headers]0% [Waiting for headers] [Waiting for headers]                                              Get:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+0% [2 InRelease 12.5 kB/126 kB 10%] [Waiting for headers]                                                         Get:3 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+0% [2 InRelease 15.4 kB/126 kB 12%] [3 InRelease 14.0 kB/126 kB 11%]                                                                    0% [3 InRelease 28.3 kB/126 kB 22%]0% [Waiting for headers] [3 InRelease 42.5 kB/126 kB 34%]                                                         Get:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+0% [4 InRelease 2548 B/126 kB 2%] [3 InRelease 42.5 kB/126 kB 34%]                                                                  0% [3 InRelease 62.5 kB/126 kB 50%]0% [Waiting for headers] [3 InRelease 85.4 kB/126 kB 68%]                                                         Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1385 kB]
+0% [5 Packages 2615 B/1385 kB 0%] [3 InRelease 88.2 kB/126 kB 70%]                                                                  0% [5 Packages 225 kB/1385 kB 16%]27% [5 Packages 367 kB/1385 kB 26%]                                   Get:6 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1055 kB]
+36% [5 Packages 1049 kB/1385 kB 76%] [6 Packages 2615 B/1055 kB 0%]                                                                   40% [Waiting for headers] [6 Packages 46.9 kB/1055 kB 4%]                                                         Get:7 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2114 kB]
+42% [7 Packages 121 kB/2114 kB 6%] [6 Packages 46.9 kB/1055 kB 4%]42% [5 Packages store 0 B] [7 Packages 121 kB/2114 kB 6%] [6 Packages 46.9 kB/1055 kB 4%]                                                                                         48% [7 Packages 489 kB/2114 kB 23%] [6 Packages 99.7 kB/1055 kB 9%]                                                                   69% [6 Packages 163 kB/1055 kB 15%]69% [7 Packages store 0 B] [6 Packages 163 kB/1055 kB 15%]                                                          70% [6 Packages 200 kB/1055 kB 19%]                                   81% [Working]81% [6 Packages store 0 B]                          81% [Waiting for headers]                         Get:8 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1456 kB]
+81% [8 Packages 6899 B/1456 kB 0%]                                  99% [Working]99% [8 Packages store 0 B]                          100% [Working]              Fetched 6389 kB in 2s (3044 kB/s)
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 63%Reading package lists... 63%Reading package lists... 63%Reading package lists... 63%Reading package lists... 64%Reading package lists... 64%Reading package lists... 69%Reading package lists... 69%Reading package lists... 77%Reading package lists... 77%Reading package lists... 83%Reading package lists... 83%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 88%Reading package lists... 88%Reading package lists... 93%Reading package lists... 93%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 63%Reading package lists... 63%Reading package lists... 63%Reading package lists... 63%Reading package lists... 64%Reading package lists... 64%Reading package lists... 69%Reading package lists... 69%Reading package lists... 77%Reading package lists... 77%Reading package lists... 83%Reading package lists... 83%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 88%Reading package lists... 88%Reading package lists... 93%Reading package lists... 93%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 39%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following additional packages will be installed:
+  7zip
+Suggested packages:
+  7zip-standalone 7zip-rar
+The following NEW packages will be installed:
+  7zip libcompress-raw-lzma-perl p7zip-full
+0 upgraded, 3 newly installed, 0 to remove and 42 not upgraded.
+Need to get 1884 kB of archives.
+After this operation, 6452 kB of additional disk space will be used.
+0% [Working]            Get:1 http://archive.ubuntu.com/ubuntu noble/universe amd64 7zip amd64 23.01+dfsg-11 [1846 kB]
+1% [1 7zip 14.0 kB/1846 kB 1%]26% [1 7zip 605 kB/1846 kB 33%]                               85% [Working]             Get:2 http://archive.ubuntu.com/ubuntu noble/universe amd64 libcompress-raw-lzma-perl amd64 2.209-1build2 [35.1 kB]
+85% [2 libcompress-raw-lzma-perl 6850 B/35.1 kB 20%]                                                    93% [Waiting for headers]                         Get:3 http://archive.ubuntu.com/ubuntu noble/universe amd64 p7zip-full all 16.02+transitional.1 [2500 B]
+                         100% [Working]              Fetched 1884 kB in 1s (2006 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package 7zip.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 17127 files and directories currently installed.)
+Preparing to unpack .../7zip_23.01+dfsg-11_amd64.deb ...
+Unpacking 7zip (23.01+dfsg-11) ...
+Selecting previously unselected package libcompress-raw-lzma-perl:amd64.
+Preparing to unpack .../libcompress-raw-lzma-perl_2.209-1build2_amd64.deb ...
+Unpacking libcompress-raw-lzma-perl:amd64 (2.209-1build2) ...
+Selecting previously unselected package p7zip-full.
+Preparing to unpack .../p7zip-full_16.02+transitional.1_all.deb ...
+Unpacking p7zip-full (16.02+transitional.1) ...
+Setting up 7zip (23.01+dfsg-11) ...
+Setting up libcompress-raw-lzma-perl:amd64 (2.209-1build2) ...
+Setting up p7zip-full (16.02+transitional.1) ...
+
+__TTS_ff2068bf962e44f8a62ef2711c93fff5__RC:0
+__TTS_ff2068bf962e44f8a62ef2711c93fff5__PWD:/app
+__TTS_ff2068bf962e44f8a62ef2711c93fff5__END
+[?2004hroot@62d796339443:/app# cd -- /app && ls -l /app && /app/john/run/7z2john.pl /app/secrets.7z > /app/secrets.hash && /app/john/run/john --mask='?d?d?d?d' /app/secrets.hash; __tts_rc=$?; printf '\n__TTS_a88c63bc34e149e5815c774938b68295__RC:%s\n' "$__tts_rc"; printf '__TTS_a88c63bc34e149e5815c774938b68295__PWD:'; pwd; printf '__TTS_a88c63bc34e149e5815c774938b68295__END\n'; tmux wait -S done
+[?2004ltotal 12
+drwxr-xr-x 1 root root 4096 Jul 16 21:18 [0m[01;34mjohn[0m
+-rwxr-xr-x 1 root root  215 Jul 16 19:53 [01;32msecrets.7z[0m
+ATTENTION: the hashes might contain sensitive encrypted data. Be careful when sharing or posting these hashes
+Using default input encoding: UTF-8
+Loaded 1 password hash (7z, 7-Zip archive encryption [SHA256 256/256 AVX2 8x AES])
+Cost 1 (iteration count) is 524288 for all loaded hashes
+Cost 2 (padding size) is 3 for all loaded hashes
+Cost 3 (compression type) is 2 for all loaded hashes
+Cost 4 (data length) is 13 for all loaded hashes
+Will run 24 OpenMP threads
+Press 'q' or Ctrl-C to abort, 'h' for help, almost any other key for status
+[0;33m1998[0m             ([0;33msecrets.7z[0m[0m)     
+1g 0:00:00:03 DONE (2026-07-17 22:24) 0.2618g/s 1457p/s 1457c/s 1457C/s 5438..4588
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+
+__TTS_a88c63bc34e149e5815c774938b68295__RC:0
+__TTS_a88c63bc34e149e5815c774938b68295__PWD:/app
+__TTS_a88c63bc34e149e5815c774938b68295__END
+[?2004hroot@62d796339443:/app# cd -- /app && 7z e -y -o/app -p1998 /app/secrets.7z >/dev/null && tr -d '\r' < /app/secrete_file.txt > /app/solution.txt; __tts_rc=$?; printf '\n__TTS_02d718fe66d643e2afee944593746a4c__RC:%s\n' "$__tts_rc"; printf '__TTS_02d718fe66d643e2afee944593746a4c__PWD:'; pwd; printf '__TTS_02d718fe66d643e2afee944593746a4c__END\n'; tmux wait -S done
+[?2004lbash: /app/secrete_file.txt: No such file or directory
+
+__TTS_02d718fe66d643e2afee944593746a4c__RC:1
+__TTS_02d718fe66d643e2afee944593746a4c__PWD:/app
+__TTS_02d718fe66d643e2afee944593746a4c__END
+[?2004hroot@62d796339443:/app# cd -- __TTS_02d718fe66d643e2afee944593746a4c__PWD:/app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_e1cee1ea70a247199d2aa890125bb41d__RC:%s\n' "$__tts_rc"; printf '__TTS_e1cee1ea70a247199d2aa890125bb41d__PWD:'; pwd; printf '__TTS_e1cee1ea70a247199d2aa890125bb41d__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_02d718fe66d643e2afee944593746a4c__PWD:/app: No such file or directory
+
+__TTS_e1cee1ea70a247199d2aa890125bb41d__RC:1
+__TTS_e1cee1ea70a247199d2aa890125bb41d__PWD:/app
+__TTS_e1cee1ea70a247199d2aa890125bb41d__END
+[?2004hroot@62d796339443:/app# cd -- /app && cd /app && 7z l -slt -p1998 /app/secrets.7z; __tts_rc=$?; printf '\n__TTS_d1377e175147408cbf92081b5ef043d2__RC:%s\n' "$__tts_rc"; printf '__TTS_d1377e175147408cbf92081b5ef043d2__PWD:'; pwd; printf '__TTS_d1377e175147408cbf92081b5ef043d2__END\n'; tmux wait -S done
+[?2004l
+7-Zip 23.01 (x64) : Copyright (c) 1999-2023 Igor Pavlov : 2023-06-20
+ 64-bit locale=C.UTF-8 Threads:24 OPEN_MAX:1024
+
+Scanning the drive for archives:
+  0M Scan /app/               1 file, 215 bytes (1 KiB)
+
+Listing archive: /app/secrets.7z
+
+--
+Path = /app/secrets.7z
+Type = 7z
+Physical Size = 215
+Headers Size = 199
+Method = LZMA2:12 7zAES
+Solid = -
+Blocks = 1
+
+----------
+Path = secrets
+Size = 0
+Packed Size = 0
+Modified = 2025-05-04 21:22:34.9811563
+Attributes = D drwxrwxr-x
+CRC = 
+Encrypted = -
+Method = 
+Block = 
+
+Path = secrets/secret_file.txt
+Size = 9
+Packed Size = 16
+Modified = 2025-05-04 21:22:39.4713124
+Attributes = A -rw-rw-r--
+CRC = 62D5D25F
+Encrypted = +
+Method = LZMA2:12 7zAES:19
+Block = 0
+
+
+__TTS_d1377e175147408cbf92081b5ef043d2__RC:0
+__TTS_d1377e175147408cbf92081b5ef043d2__PWD:/app
+__TTS_d1377e175147408cbf92081b5ef043d2__END
+[?2004hroot@62d796339443:/app# cd -- /app && cd /app && 7z e -y -o/app -p1998 /app/secrets.7z secrets/secret_file.txt >/dev/null && tr -d '\r' < /app/secret_file.txt > /app/solution.txt; __tts_rc=$?; printf '\n__TTS_7294b0b3493d456b82c8640ae8719746__RC:%s\n' "$__tts_rc"; printf '__TTS_7294b0b3493d456b82c8640ae8719746__PWD:'; pwd; printf '__TTS_7294b0b3493d456b82c8640ae8719746__END\n'; tmux wait -S done
+[?2004l
+__TTS_7294b0b3493d456b82c8640ae8719746__RC:0
+__TTS_7294b0b3493d456b82c8640ae8719746__PWD:/app
+__TTS_7294b0b3493d456b82c8640ae8719746__END
+[?2004hroot@62d796339443:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@62d796339443:/app# 

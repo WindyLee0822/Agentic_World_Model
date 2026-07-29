@@ -1,0 +1,74 @@
+root@06e7179d3b1c:/app# pwd; __tts_rc=$?; printf '\n__TTS_10d10d2808234522be0539947ce60f9e__RC:%s\n' "$__tts_rc"; printf '__TTS_10d10d2808234522be0539947ce60f9e
+__PWD:'; pwd; printf '__TTS_10d10d2808234522be0539947ce60f9e__END\n'; tmux wait -S done
+/app
+
+__TTS_10d10d2808234522be0539947ce60f9e__RC:0
+__TTS_10d10d2808234522be0539947ce60f9e__PWD:/app
+__TTS_10d10d2808234522be0539947ce60f9e__END
+root@06e7179d3b1c:/app# cd -- /app && ls -l /app && file /app/process_data.sh && sed -n '1,120p' /app/process_data.sh; __tts_rc=$?; printf '\n__TTS_c74d49dee4ad
+43b2aefcfe25e84dbfb8__RC:%s\n' "$__tts_rc"; printf '__TTS_c74d49dee4ad43b2aefcfe25e84dbfb8__PWD:'; pwd; printf '__TTS_c74d49dee4ad43b2aefcfe25e84dbfb8__END\n';
+tmux wait -S done
+total 4
+-rw-r--r-- 1 root root 49 Jul 16 19:53 process_data.sh
+bash: file: command not found
+
+__TTS_c74d49dee4ad43b2aefcfe25e84dbfb8__RC:127
+__TTS_c74d49dee4ad43b2aefcfe25e84dbfb8__PWD:/app
+__TTS_c74d49dee4ad43b2aefcfe25e84dbfb8__END
+root@06e7179d3b1c:/app# cd -- /app && ls -l /app/process_data.sh && sed -n '1,120p' /app/process_data.sh && od -An -tx1 -c /app/process_data.sh; __tts_rc=$?; pr
+intf '\n__TTS_32c2ce4ebdeb4f53a401b4ca3f499140__RC:%s\n' "$__tts_rc"; printf '__TTS_32c2ce4ebdeb4f53a401b4ca3f499140__PWD:'; pwd; printf '__TTS_32c2ce4ebdeb4f53
+a401b4ca3f499140__END\n'; tmux wait -S done
+-rw-r--r-- 1 root root 49 Jul 16 19:53 /app/process_data.sh
+#!/bin/bash
+
+echo "Data processed successfully!"   23  21  2f  62  69  6e  2f  62  61  73  68  0a  0a  65  63  68
+   #   !   /   b   i   n   /   b   a   s   h  \n  \n   e   c   h
+  6f  20  22  44  61  74  61  20  70  72  6f  63  65  73  73  65
+   o       "   D   a   t   a       p   r   o   c   e   s   s   e
+  64  20  73  75  63  63  65  73  73  66  75  6c  6c  79  21  22
+   d       s   u   c   c   e   s   s   f   u   l   l   y   !   "
+  20
+
+
+__TTS_32c2ce4ebdeb4f53a401b4ca3f499140__RC:0
+__TTS_32c2ce4ebdeb4f53a401b4ca3f499140__PWD:/app
+__TTS_32c2ce4ebdeb4f53a401b4ca3f499140__END
+root@06e7179d3b1c:/app# cd -- __TTS_32c2ce4ebdeb4f53a401b4ca3f499140__PWD:/app && cd /app && chmod +x process_data.sh && ./process_data.sh; __tts_rc=$?; printf
+'\n__TTS_ea691f74ea0442d9a62ae36cdd737047__RC:%s\n' "$__tts_rc"; printf '__TTS_ea691f74ea0442d9a62ae36cdd737047__PWD:'; pwd; printf '__TTS_ea691f74ea0442d9a62ae
+36cdd737047__END\n'; tmux wait -S done
+bash: cd: __TTS_32c2ce4ebdeb4f53a401b4ca3f499140__PWD:/app: No such file or directory
+
+__TTS_ea691f74ea0442d9a62ae36cdd737047__RC:1
+__TTS_ea691f74ea0442d9a62ae36cdd737047__PWD:/app
+__TTS_ea691f74ea0442d9a62ae36cdd737047__END
+root@06e7179d3b1c:/app# cd -- __TTS_ea691f74ea0442d9a62ae36cdd737047__PWD:/app && cd /app && chmod +x process_data.sh && ./process_data.sh; __tts_rc=$?; printf
+'\n__TTS_f68e13957be74b2c80e688d01c662813__RC:%s\n' "$__tts_rc"; printf '__TTS_f68e13957be74b2c80e688d01c662813__PWD:'; pwd; printf '__TTS_f68e13957be74b2c80e68
+8d01c662813__END\n'; tmux wait -S done
+bash: cd: __TTS_ea691f74ea0442d9a62ae36cdd737047__PWD:/app: No such file or directory
+
+__TTS_f68e13957be74b2c80e688d01c662813__RC:1
+__TTS_f68e13957be74b2c80e688d01c662813__PWD:/app
+__TTS_f68e13957be74b2c80e688d01c662813__END
+root@06e7179d3b1c:/app# cd -- __TTS_f68e13957be74b2c80e688d01c662813__PWD:/app && cd /app && ls -l process_data.sh && bash process_data.sh && chmod +x process_d
+ata.sh && ./process_data.sh; __tts_rc=$?; printf '\n__TTS_1666e634cc6447d491bc0c4fcf02bc8e__RC:%s\n' "$__tts_rc"; printf '__TTS_1666e634cc6447d491bc0c4fcf02bc8e
+__PWD:'; pwd; printf '__TTS_1666e634cc6447d491bc0c4fcf02bc8e__END\n'; tmux wait -S done
+bash: cd: __TTS_f68e13957be74b2c80e688d01c662813__PWD:/app: No such file or directory
+
+__TTS_1666e634cc6447d491bc0c4fcf02bc8e__RC:1
+__TTS_1666e634cc6447d491bc0c4fcf02bc8e__PWD:/app
+__TTS_1666e634cc6447d491bc0c4fcf02bc8e__END
+root@06e7179d3b1c:/app# cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> p=Path('/app/process_data.sh')
+> s=p.read_text()
+> p.write_text(s.rstrip()+"\n")
+> p.chmod(0o755)
+> PY; __tts_rc=$?; printf '\n__TTS_5eade7e2fc964ecaa4b826246c4b42ca__RC:%s\n' "$__tts_rc"; printf '__TTS_5eade7e2fc964ecaa4b826246c4b42ca__PWD:'; pwd; printf '_
+_TTS_5eade7e2fc964ecaa4b826246c4b42ca__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "from pathlib import Path; p=Path('/app/process_data.sh'); p.write_text(p.read_text().rstrip()+'\n'); p.chmod(0o755)" && /app/process
+_data.sh; __tts_rc=$?; printf '\n__TTS_391d416b56234541971849b55ca2b76a__RC:%s\n' "$__tts_rc"; printf '__TTS_391d416b56234541971849b55ca2b76a__PWD:'; pwd; print
+f '__TTS_391d416b56234541971849b55ca2b76a__END\n'; tmux wait -S done
+> cd -- /app && sed -n '1,5p' /app/process_data.sh && ls -l /app/process_data.sh && od -An -tx1 -c /app/process_data.sh; __tts_rc=$?; printf '\n__TTS_52ce8c6511
+1540e880876e473e35844d__RC:%s\n' "$__tts_rc"; printf '__TTS_52ce8c65111540e880876e473e35844d__PWD:'; pwd; printf '__TTS_52ce8c65111540e880876e473e35844d__END\n'
+; tmux wait -S done
+>

@@ -1,0 +1,40 @@
+root@dc60ae3e7a75:/app# pwd; __tts_rc=$?; printf '\n__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d__RC:%s\n' "$__tts_rc"; printf '__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d
+__PWD:'; pwd; printf '__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d__END\n'; tmux wait -S done
+/app
+
+__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d__RC:0
+__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d__PWD:/app
+__TTS_aca9bf82bb7b40d09d23b95ba3fdb73d__END
+root@dc60ae3e7a75:/app# cd -- /app && cat > /app/main.c.rs <<'EOF'
+> #if 0
+> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0u64,1u64);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
+> fn main(){let n: u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
+> #endif
+> #ifdef __GNUC__
+> #include <stdio.h>
+> #include <stdlib.h>
+> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
+> int main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\n",fib(n));return 0;}
+> #endif
+> EOF; __tts_rc=$?; printf '\n__TTS_f0d5c7ae6dde47ca9466fe6fe2a88b34__RC:%s\n' "$__tts_rc"; printf '__TTS_f0d5c7ae6dde47ca9466fe6fe2a88b34__PWD:'; pwd; printf '
+__TTS_f0d5c7ae6dde47ca9466fe6fe2a88b34__END\n'; tmux wait -S done
+> cd -- /app && sed -n '1,120p' /app/main.c.rs; __tts_rc=$?; printf '\n__TTS_904a768bb9044770a6172926dbf484b4__RC:%s\n' "$__tts_rc"; printf '__TTS_904a768bb9044
+770a6172926dbf484b4__PWD:'; pwd; printf '__TTS_904a768bb9044770a6172926dbf484b4__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+['asciinema rec --stdin /logs/agent.cast', 'Enter']
+['clear', 'Enter']
+['pwd; __tts_rc=$?; printf \'\\n__TTS_4424e6db20774add8da9763a8c08e0cf__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_4424e6db20774add8da9763a8c08e0cf__PWD:\'; pwd; printf \'__TTS_4424e6db20774add8da9763a8c08e0cf__END\\n\'', 'Enter']
+['cd -- /app && ls -la && find . -maxdepth 2 -type f | sort; __tts_rc=$?; printf \'\\n__TTS_47a0f51e8a594935aeb3300ed9789e49__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_47a0f51e8a594935aeb3300ed9789e49__PWD:\'; pwd; printf \'__TTS_47a0f51e8a594935aeb3300ed9789e49__END\\n\'', 'Enter']
+['cd -- /app && python3 - <<\'PY\'\nimport torch, json\nsd=torch.load(\'model.pth\', map_location=\'cpu\')\nprint(type(sd), list(sd.keys()))\nfor k,v in sd.items():\n    print(k, tuple(v.shape), v.dtype)\nPY; __tts_rc=$?; printf \'\\n__TTS_da0a7c920d2843e6914a29fb1336c283__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_da0a7c920d2843e6914a29fb1336c283__PWD:\'; pwd; printf \'__TTS_da0a7c920d2843e6914a29fb1336c283__END\\n\'', 'Enter']

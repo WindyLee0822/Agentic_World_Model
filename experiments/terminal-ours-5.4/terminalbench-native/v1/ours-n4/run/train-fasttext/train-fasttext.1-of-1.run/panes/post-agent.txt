@@ -1,0 +1,111 @@
+root@4002b57700a3:/app# pwd; __tts_rc=$?; printf '\n__TTS_939cce3cf00d47b187b355997a088059__RC:%s\n' "$__tts_rc"; printf '__TTS_939cce3cf00d47b187b355997a088059
+__PWD:'; pwd; printf '__TTS_939cce3cf00d47b187b355997a088059__END\n'; tmux wait -S done
+/app
+
+__TTS_939cce3cf00d47b187b355997a088059__RC:0
+__TTS_939cce3cf00d47b187b355997a088059__PWD:/app
+__TTS_939cce3cf00d47b187b355997a088059__END
+root@4002b57700a3:/app# cd -- /app && find /app/data -maxdepth 2 -type f | sed 's#^#/root#' | head; __tts_rc=$?; printf '\n__TTS_88fbf23d42264a11b71938489c9525a
+a__RC:%s\n' "$__tts_rc"; printf '__TTS_88fbf23d42264a11b71938489c9525aa__PWD:'; pwd; printf '__TTS_88fbf23d42264a11b71938489c9525aa__END\n'; tmux wait -S done
+/root/app/data/test-00000-of-00001.parquet
+/root/app/data/train-00000-of-00001.parquet
+
+__TTS_88fbf23d42264a11b71938489c9525aa__RC:0
+__TTS_88fbf23d42264a11b71938489c9525aa__PWD:/app
+__TTS_88fbf23d42264a11b71938489c9525aa__END
+root@4002b57700a3:/app# cd -- /app && find data -maxdepth 3 -type f | sort | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__RC:
+%s\n' "$__tts_rc"; printf '__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__PWD:'; pwd; printf '__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__END\n'; tmux wait -S done
+data/test-00000-of-00001.parquet
+data/train-00000-of-00001.parquet
+
+__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__RC:0
+__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__PWD:/app
+__TTS_184ae9dadf5b4e4b9d0850532e47cb9a__END
+root@4002b57700a3:/app# cd -- /app && find /app -maxdepth 3 -type f | sed 's#^/app/##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_427455ef244947569076b554
+d70236fa__RC:%s\n' "$__tts_rc"; printf '__TTS_427455ef244947569076b554d70236fa__PWD:'; pwd; printf '__TTS_427455ef244947569076b554d70236fa__END\n'; tmux wait -S
+ done
+data/test-00000-of-00001.parquet
+data/train-00000-of-00001.parquet
+
+__TTS_427455ef244947569076b554d70236fa__RC:0
+__TTS_427455ef244947569076b554d70236fa__PWD:/app
+__TTS_427455ef244947569076b554d70236fa__END
+root@4002b57700a3:/app# cd -- /app && sh -lc 'ls -R . && printf "\n---\n" && find data -maxdepth 2 -type f | sed "s#^#FILE #" | sort | xargs -r -I{} sh -lc "ech
+o ==== {}; file {}; wc -lc {}; head -n 2 {} | sed -e s/$/\\n/"'; __tts_rc=$?; printf '\n__TTS_4f4d72ac733d4a7f916f5b77d4c066e4__RC:%s\n' "$__tts_rc"; printf '__
+TTS_4f4d72ac733d4a7f916f5b77d4c066e4__PWD:'; pwd; printf '__TTS_4f4d72ac733d4a7f916f5b77d4c066e4__END\n'; tmux wait -S done
+.:
+data
+
+./data:
+test-00000-of-00001.parquet  train-00000-of-00001.parquet
+
+---
+==== FILE data/test-00000-of-00001.parquet
+sh: 1: file: not found
+wc: FILE: No such file or directory
+  28311 4776961 data/test-00000-of-00001.parquet
+  28311 4776961 total
+head: cannot open 'FILE' for reading: No such file or directory
+==> data/test-00000-of-00001.parquet <==n
+PAR1P:Ln
+(               <H 0
+                    hH0&
+                        LDInn
+==== FILE data/train-00000-of-00001.parquet
+sh: 1: file: not found
+wc: FILE: No such file or directory
+  1854241 299436850 data/train-00000-of-00001.parquet
+  1854241 299436850 total
+head: cannot open 'FILE' for reading: No such file or directory
+==> data/train-00000-of-00001.parquet <==n
+PAR1P4Ln
+4` %"Bb8%2(
+           CAnI%Tq2&"1#Í1 2˘n
+
+__TTS_4f4d72ac733d4a7f916f5b77d4c066e4__RC:0
+__TTS_4f4d72ac733d4a7f916f5b77d4c066e4__PWD:/app
+__TTS_4f4d72ac733d4a7f916f5b77d4c066e4__END
+root@4002b57700a3:/app# cd -- /app && python - <<'PY'
+> import os
+> for p in ['data/train.txt','data/valid.txt']:
+>     print('===',p)
+>     print('size',os.path.getsize(p))
+>     with open(p,'r',encoding='utf-8',errors='ignore') as f:
+>         for i in range(3):
+>             line=f.readline()
+>             if not line: break
+>             print(repr(line[:300]))
+> PY; __tts_rc=$?; printf '\n__TTS_516c478f3e894edb93d9c22dfd709c48__RC:%s\n' "$__tts_rc"; printf '__TTS_516c478f3e894edb93d9c22dfd709c48__PWD:'; pwd; printf '_
+_TTS_516c478f3e894edb93d9c22dfd709c48__END\n'; tmux wait -S done
+> cd -- /app && sh -lc 'python - <<"PY"
+> import importlib.util, os, subprocess, sys
+> # Ensure fasttext is available
+> if importlib.util.find_spec("fasttext") is None:
+>     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "fasttext"])
+> import fasttext
+> train="data/train.txt"
+> valid="data/valid.txt"
+> # Compact supervised model with strong text classification defaults
+> model = fasttext.train_supervised(
+>     input=train,
+>     lr=0.8,
+>     epoch=12,
+>     wordNgrams=2,
+>     dim=80,
+>     minn=2,
+>     maxn=5,
+>     bucket=300000,
+>     loss="softmax",
+>     thread=max(1, os.cpu_count() or 1),
+>     verbose=2,
+> )
+> res = model.test(valid)
+> print("VALID", res)
+> model.quantize(input=train, retrain=True, qnorm=True, cutoff=120000, dsub=2, thread=max(1, os.cpu_count() or 1), verbose=2)
+> model.save_model("model.bin")
+> print("MODEL_SIZE", os.path.getsize("model.bin"))
+> res2 = model.test(valid)
+> print("VALID_QUANT", res2)
+> PY'; __tts_rc=$?; printf '\n__TTS_3e356a07422f434dbbc1ec427f473c51__RC:%s\n' "$__tts_rc"; printf '__TTS_3e356a07422f434dbbc1ec427f473c51__PWD:'; pwd; printf '
+__TTS_3e356a07422f434dbbc1ec427f473c51__END\n'; tmux wait -S done
+>

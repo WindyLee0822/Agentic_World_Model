@@ -1,0 +1,42 @@
+[?2004hroot@1126a76dc771:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@1126a76dc771:/app# clear
+[?2004l[H[J[3J[?2004hroot@1126a76dc771:/app# pwd; __tts_rc=$?; printf '\n__TTS_381dcfad5a644970b3b5214e0904b0ca__RC:%s\n' "$__tts_rc"; printf '__TTS_381dcfad5a644970b3b5214e0904b0ca__PWD:'; pwd; printf '__TTS_381dcfad5a644970b3b5214e0904b0ca__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_381dcfad5a644970b3b5214e0904b0ca__RC:0
+__TTS_381dcfad5a644970b3b5214e0904b0ca__PWD:/app
+__TTS_381dcfad5a644970b3b5214e0904b0ca__END
+[?2004hroot@1126a76dc771:/app# cd -- /app && paste -d, daily_temp_sf_high.csv daily_temp_sf_low.csv | awk -F, '{s+=($1-$2); n++} END{if(n) printf "%.6f", s/n > "avg_temp.txt"}'; __tts_rc=$?; printf '\n__TTS_a9f225f4e40e4f27b093fea380630b54__RC:%s\n' "$__tts_rc"; printf '__TTS_a9f225f4e40e4f27b093fea380630b54__PWD:'; pwd; printf '__TTS_a9f225f4e40e4f27b093fea380630b54__END\n'; tmux wait -S done
+[?2004l
+__TTS_a9f225f4e40e4f27b093fea380630b54__RC:0
+__TTS_a9f225f4e40e4f27b093fea380630b54__PWD:/app
+__TTS_a9f225f4e40e4f27b093fea380630b54__END
+[?2004hroot@1126a76dc771:/app# cd -- /app && cat avg_temp.txt; __tts_rc=$?; printf '\n__TTS_d9cd092d19974fa9ba470bd87fe7abe2__RC:%s\n' "$__tts_rc"; printf '__TTS_d9cd092d19974fa9ba470bd87fe7abe2__PWD:'; pwd; printf '__TTS_d9cd092d19974fa9ba470bd87fe7abe2__END\n'; tmux wait -S done
+[?2004l1717.875000
+__TTS_d9cd092d19974fa9ba470bd87fe7abe2__RC:0
+__TTS_d9cd092d19974fa9ba470bd87fe7abe2__PWD:/app
+__TTS_d9cd092d19974fa9ba470bd87fe7abe2__END
+[?2004hroot@1126a76dc771:/app# cd -- /app && head -5 daily_temp_sf_high.csv && printf '---\n' && head -5 daily_temp_sf_low.csv; __tts_rc=$?; printf '\n__TTS_b65f7e78952b4ea49569e05c427c7acb__RC:%s\n' "$__tts_rc"; printf '__TTS_b65f7e78952b4ea49569e05c427c7acb__PWD:'; pwd; printf '__TTS_b65f7e78952b4ea49569e05c427c7acb__END\n'; tmux wait -S done
+[?2004ldate,temperature
+2025-04-19,64
+2025-04-20,63
+2025-04-21,70
+2025-04-22,66
+bash: printf: --: invalid option
+printf: usage: printf [-v var] format [arguments]
+
+__TTS_b65f7e78952b4ea49569e05c427c7acb__RC:2
+__TTS_b65f7e78952b4ea49569e05c427c7acb__PWD:/app
+__TTS_b65f7e78952b4ea49569e05c427c7acb__END
+[?2004hroot@1126a76dc771:/app# cd -- /app && awk -F, 'NR==FNR{if(FNR>1) h[$1]=$2; next} FNR>1 && ($1 in h){s+=h[$1]-$2; n++} END{if(n) printf "%g", s/n > "avg_temp.txt"}' daily_temp_sf_high.csv daily_temp_sf_low.csv; __tts_rc=$?; printf '\n__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__RC:%s\n' "$__tts_rc"; printf '__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__PWD:'; pwd; printf '__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__END\n'; tmux wait -S done
+[?2004l
+__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__RC:0
+__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__PWD:/app
+__TTS_baf08ccb68ff47c1b7f0c0f5d03eb6e5__END
+[?2004hroot@1126a76dc771:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@1126a76dc771:/app# 

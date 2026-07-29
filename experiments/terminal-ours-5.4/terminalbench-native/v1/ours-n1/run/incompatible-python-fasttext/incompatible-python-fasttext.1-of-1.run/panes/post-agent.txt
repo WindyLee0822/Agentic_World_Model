@@ -1,0 +1,99 @@
+root@441f6c2e46a6:/app# pwd; __tts_rc=$?; printf '\n__TTS_1d6b00f9412b4737870b85ac617c63a4__RC:%s\n' "$__tts_rc"; printf '__TTS_1d6b00f9412b4737870b85ac617c63a4
+__PWD:'; pwd; printf '__TTS_1d6b00f9412b4737870b85ac617c63a4__END\n'; tmux wait -S done
+/app
+
+__TTS_1d6b00f9412b4737870b85ac617c63a4__RC:0
+__TTS_1d6b00f9412b4737870b85ac617c63a4__PWD:/app
+__TTS_1d6b00f9412b4737870b85ac617c63a4__END
+root@441f6c2e46a6:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_4f3b40a8a227458086516
+3216b49e50e__RC:%s\n' "$__tts_rc"; printf '__TTS_4f3b40a8a2274580865163216b49e50e__PWD:'; pwd; printf '__TTS_4f3b40a8a2274580865163216b49e50e__END\n'; tmux wait
+ -S done
+f /app/model.bin
+
+__TTS_4f3b40a8a2274580865163216b49e50e__RC:0
+__TTS_4f3b40a8a2274580865163216b49e50e__PWD:/app
+__TTS_4f3b40a8a2274580865163216b49e50e__END
+root@441f6c2e46a6:/app# cd -- /app && bash -lc 'python - <<"PY"
+> import sys
+> print(sys.version)
+> try:
+>     import fasttext
+>     print("FASTTEXT_OK", fasttext)
+> except Exception as e:
+>     print("FASTTEXT_ERR", type(e).__name__, e)
+> PY'; __tts_rc=$?; printf '\n__TTS_d7285ceae9f24956a5420b638103a9da__RC:%s\n' "$__tts_rc"; printf '__TTS_d7285ceae9f24956a5420b638103a9da__PWD:'; pwd; printf '
+__TTS_d7285ceae9f24956a5420b638103a9da__END\n'; tmux wait -S done
+3.13.1 (main, Jan 14 2025, 02:51:49) [GCC 12.2.0]
+FASTTEXT_OK <module 'fasttext' from '/usr/local/lib/python3.13/site-packages/fasttext/__init__.py'>
+
+__TTS_d7285ceae9f24956a5420b638103a9da__RC:0
+__TTS_d7285ceae9f24956a5420b638103a9da__PWD:/app
+__TTS_d7285ceae9f24956a5420b638103a9da__END
+root@441f6c2e46a6:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
+> import sys,glob,os,importlib.util
+> print("PY",sys.version)
+> print("SITE",glob.glob("/usr/local/lib/python3.*/site-packages"))
+> spec=importlib.util.find_spec("fasttext")
+> print("SPEC",spec)
+> for p in glob.glob("/usr/local/lib/python3.*/site-packages/fasttext*"):
+>     print("PATH",p, "DIR" if os.path.isdir(p) else "FILE")
+> PY'; __tts_rc=$?; printf '\n__TTS_566e0818bbd543f78b29e39c12aa9d5b__RC:%s\n' "$__tts_rc"; printf '__TTS_566e0818bbd543f78b29e39c12aa9d5b__PWD:'; pwd; printf '
+__TTS_566e0818bbd543f78b29e39c12aa9d5b__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_566e0818bbd543f78b29e39c12aa9d5b__RC:1
+__TTS_566e0818bbd543f78b29e39c12aa9d5b__PWD:/app
+__TTS_566e0818bbd543f78b29e39c12aa9d5b__END
+root@441f6c2e46a6:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
+> import sys, glob, os, site, subprocess
+> print("PY", sys.version)
+> print("SITEPKG", site.getsitepackages())
+> for pat in ["/usr/local/lib/python3.11/site-packages/fasttext*", "/usr/local/lib/python3.11/site-packages/*fast*text*"]:
+>     for p in glob.glob(pat):
+>         print("FOUND", p, "DIR" if os.path.isdir(p) else "FILE")
+> res = subprocess.run([sys.executable, "-m", "pip", "show", "fasttext"], capture_output=True, text=True)
+> print("PIP_SHOW_RC", res.returncode)
+> print(res.stdout)
+> print(res.stderr)
+> PY'; __tts_rc=$?; printf '\n__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__RC:%s\n' "$__tts_rc"; printf '__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__PWD:'; pwd; printf '
+__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__RC:1
+__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__PWD:/app
+__TTS_6c5a3bd6771c4b96a059b4cd53f3855a__END
+root@441f6c2e46a6:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python -m pip install fasttext'; __tts_rc=$?; printf '\n__TTS_a8b634260b75479fa5fdf11b8ae0
+590a__RC:%s\n' "$__tts_rc"; printf '__TTS_a8b634260b75479fa5fdf11b8ae0590a__PWD:'; pwd; printf '__TTS_a8b634260b75479fa5fdf11b8ae0590a__END\n'; tmux wait -S don
+e
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_a8b634260b75479fa5fdf11b8ae0590a__RC:1
+__TTS_a8b634260b75479fa5fdf11b8ae0590a__PWD:/app
+__TTS_a8b634260b75479fa5fdf11b8ae0590a__END
+root@441f6c2e46a6:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python -m pip install fasttext-wheel && python - <<"PY"
+> import sys
+> import fasttext
+> print("PY", sys.version)
+> print("FASTTEXT_OK", fasttext.__file__)
+> PY'; __tts_rc=$?; printf '\n__TTS_d222fc1b0a0443689e115ac9d08bd549__RC:%s\n' "$__tts_rc"; printf '__TTS_d222fc1b0a0443689e115ac9d08bd549__PWD:'; pwd; printf '
+__TTS_d222fc1b0a0443689e115ac9d08bd549__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_d222fc1b0a0443689e115ac9d08bd549__RC:1
+__TTS_d222fc1b0a0443689e115ac9d08bd549__PWD:/app
+__TTS_d222fc1b0a0443689e115ac9d08bd549__END
+root@441f6c2e46a6:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
+> import sys
+> try:
+>     import fasttext
+>     print("FASTTEXT_OK", fasttext.__file__)
+> except Exception:
+>     raise SystemExit(1)
+> PY'; __tts_rc=$?; printf '\n__TTS_920a72697ac24014a840749813c38773__RC:%s\n' "$__tts_rc"; printf '__TTS_920a72697ac24014a840749813c38773__PWD:'; pwd; printf '
+__TTS_920a72697ac24014a840749813c38773__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_920a72697ac24014a840749813c38773__RC:1
+__TTS_920a72697ac24014a840749813c38773__PWD:/app
+__TTS_920a72697ac24014a840749813c38773__END
+root@441f6c2e46a6:/app#

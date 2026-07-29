@@ -1,0 +1,308 @@
+[?2004hroot@fa37b9485137:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@fa37b9485137:/app# clear
+[?2004l[H[J[3J[?2004hroot@fa37b9485137:/app# pwd; __tts_rc=$?; printf '\n__TTS_a81f3b214f424175b2362539dbcbb886__RC:%s\n' "$__tts_rc"; printf '__TTS_a81f3b214f424175b2362539dbcbb886__PWD:'; pwd; printf '__TTS_a81f3b214f424175b2362539dbcbb886__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_a81f3b214f424175b2362539dbcbb886__RC:0
+__TTS_a81f3b214f424175b2362539dbcbb886__PWD:/app
+__TTS_a81f3b214f424175b2362539dbcbb886__END
+[?2004hroot@fa37b9485137:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, math, json, shutil
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> 
+[?2004l[?2004h> base = Path('/app')
+[?2004l[?2004h> src = base/'c4_sample'
+[?2004l[?2004h> dst = base/'c4_reshard'
+[?2004l[?2004h> revert = base/'revert.py'
+[?2004l[?2004h> MAX_FILES = 30
+[?2004l[?2004h> MAX_SIZE = 15*1024*1024
+[?2004l[?2004h> 
+[?2004l[?2004h> assert src.is_dir(), 'c4_sample missing'
+[?2004l[?2004h> if dst.exists():
+[?2004l[?2004h>     shutil.rmtree(dst)
+[?2004l[?2004h> dst.mkdir()
+[?2004l[?2004h> 
+[?2004l[?2004h> files = sorted([p for p in src.rglob('*') if p.is_file()])
+[?2004l[?2004h> manifest = []
+[?2004l[?2004h> current_dir_idx = 1
+[?2004l[?2004h> current_file_count = 0
+[?2004l[?2004h> current_bytes = 0
+[?2004l[?2004h> current_dir = dst/f'part_{current_dir_idx:03d}'
+[?2004l[?2004h> current_dir.mkdir()
+[?2004l[?2004h> chunk_counters = {}
+[?2004l[?2004h> 
+[?2004l[?2004h> for f in files:
+[?2004l[?2004h>     rel = f.relative_to(src).as_posix()
+[?2004l[?2004h>     size = f.stat().st_size
+[?2004l[?2004h>     if size == 0:
+[?2004l[?2004h>         chunks = [b'']
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         nchunks = max(1, math.ceil(size / MAX_SIZE))
+[?2004l[?2004h>         with open(f, 'rb') as rf:
+[?2004l[?2004h>             data = rf.read()
+[?2004l[?2004h>         chunks = [data[i*MAX_SIZE:(i+1)*MAX_SIZE] for i in range(nchunks)]
+[?2004l[?2004h>     for idx, chunk in enumerate(chunks, start=1):
+[?2004l[?2004h>         chunk_size = len(chunk)
+[?2004l[?2004h>         if current_file_count >= MAX_FILES or (current_file_count > 0 and current_bytes + chunk_size > MAX_FILES*MAX_SIZE):
+[?2004l[?2004h>             current_dir_idx += 1
+[?2004l[?2004h>             current_file_count = 0
+[?2004l[?2004h>             current_bytes = 0
+[?2004l[?2004h>             current_dir = dst/f'part_{current_dir_idx:03d}'
+[?2004l[?2004h>             current_dir.mkdir()
+[?2004l[?2004h>         stem = rel.replace('/', '__')
+[?2004l[?2004h>         outname = f'{stem}.part{idx:04d}of{len(chunks):04d}'
+[?2004l[?2004h>         outpath = current_dir/outname
+[?2004l[?2004h>         with open(outpath, 'wb') as wf:
+[?2004l[?2004h>             wf.write(chunk)
+[?2004l[?2004h>         manifest.append({
+[?2004l[?2004h>             'original': rel,
+[?2004l[?2004h>             'size': size,
+[?2004l[?2004h>             'chunk_index': idx,
+[?2004l[?2004h>             'chunk_count': len(chunks),
+[?2004l[?2004h>             'stored': str(outpath.relative_to(dst)).replace('\\','/'),
+[?2004l[?2004h>             'chunk_size': chunk_size,
+[?2004l[?2004h>         })
+[?2004l[?2004h>         current_file_count += 1
+[?2004l[?2004h>         current_bytes += chunk_size
+[?2004l[?2004h> 
+[?2004l[?2004h> with open(dst/'manifest.json', 'w') as mf:
+[?2004l[?2004h>     json.dump({'source':'c4_sample','entries':manifest}, mf, indent=2)
+[?2004l[?2004h> 
+[?2004l[?2004h> script = '''#!/usr/bin/env python3
+[?2004l[?2004h> import json, shutil
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> 
+[?2004l[?2004h> base = Path(__file__).resolve().parent
+[?2004l[?2004h> src = base / "c4_reshard"
+[?2004l[?2004h> out = base / "c4_sample_restored"
+[?2004l[?2004h> manifest = json.loads((src / "manifest.json").read_text())
+[?2004l[?2004h> if out.exists():
+[?2004l[?2004h>     shutil.rmtree(out)
+[?2004l[?2004h> out.mkdir()
+[?2004l[?2004h> entries = manifest["entries"]
+[?2004l[?2004h> by_orig = {}
+[?2004l[?2004h> for e in entries:
+[?2004l[?2004h>     by_orig.setdefault(e["original"], []).append(e)
+[?2004l[?2004h> for rel, parts in by_orig.items():
+[?2004l[?2004h>     parts.sort(key=lambda x: x["chunk_index"])
+[?2004l[?2004h>     target = out / rel
+[?2004l[?2004h>     target.parent.mkdir(parents=True, exist_ok=True)
+[?2004l[?2004h>     with open(target, 'wb') as wf:
+[?2004l[?2004h>         for p in parts:
+[?2004l[?2004h>             wf.write((src / p["stored"]).read_bytes())
+[?2004l[?2004h> print(f"Restored {len(by_orig)} files to {out}")
+[?2004l[?2004h> '''
+[?2004l[?2004h> revert.write_text(script)
+[?2004l[?2004h> os.chmod(revert, 0o755)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_88cede5bc72544cd8507b35270757979__RC:%s\n' "$__tts_rc"; printf '__TTS_88cede5bc72544cd8507b35270757979__PWD:'; pwd; printf '__TTS_88cede5bc72544cd8507b35270757979__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> import json, os, shutil
+[?2004l[?2004h> base=Path('/app')
+[?2004l[?2004h> src=base/'c4_sample'
+[?2004l[?2004h> dst=base/'c4_reshard'
+[?2004l[?2004h> rev=base/'revert.py'
+[?2004l[?2004h> assert src.is_dir(), 'c4_sample missing'
+[?2004l[?2004h> assert dst.is_dir(), 'c4_reshard missing'
+[?2004l[?2004h> # validate constraints
+[?2004l[?2004h> viol=[]
+[?2004l[?2004h> subdirs=[p for p in dst.iterdir() if p.is_dir()]
+[?2004l[?2004h> for d in sorted(subdirs):
+[?2004l[?2004h>     files=[p for p in d.iterdir() if p.is_file()]
+[?2004l[?2004h>     if len(files)>30: viol.append(f'{d.name} has {len(files)} files')
+[?2004l[?2004h>     for f in files:
+[?2004l[?2004h>         if f.stat().st_size>15*1024*1024: viol.append(f'{f} exceeds 15MB')
+[?2004l[?2004h> # rewrite revert.py to restore exactly to c4_sample via backup swap
+[?2004l[?2004h> manifest=json.loads((dst/'manifest.json').read_text())
+[?2004l[?2004h> script='''#!/usr/bin/env python3
+[?2004l[?2004h> import json, shutil
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> 
+[?2004l[?2004h> base = Path(__file__).resolve().parent
+[?2004l[?2004h> src = base / "c4_reshard"
+[?2004l[?2004h> manifest = json.loads((src / "manifest.json").read_text())
+[?2004l[?2004h> out = base / manifest.get("source", "c4_sample")
+[?2004l[?2004h> backup = base / (out.name + ".backup_before_revert")
+[?2004l[?2004h> if backup.exists():
+[?2004l[?2004h>     shutil.rmtree(backup)
+[?2004l[?2004h> if out.exists():
+[?2004l[?2004h>     out.rename(backup)
+[?2004l[?2004h> out.mkdir(parents=True, exist_ok=True)
+[?2004l[?2004h> entries = manifest["entries"]
+[?2004l[?2004h> by_orig = {}
+[?2004l[?2004h> for e in entries:
+[?2004l[?2004h>     by_orig.setdefault(e["original"], []).append(e)
+[?2004l[?2004h> for rel, parts in by_orig.items():
+[?2004l[?2004h>     parts.sort(key=lambda x: x["chunk_index"])
+[?2004l[?2004h>     target = out / rel
+[?2004l[?2004h>     target.parent.mkdir(parents=True, exist_ok=True)
+[?2004l[?2004h>     with open(target, "wb") as wf:
+[?2004l[?2004h>         for p in parts:
+[?2004l[?2004h>             wf.write((src / p["stored"]).read_bytes())
+[?2004l[?2004h> print(f"Restored {len(by_orig)} files to {out}")
+[?2004l[?2004h> if backup.exists():
+[?2004l[?2004h>     print(f"Original moved to {backup}")
+[?2004l[?2004h> '''
+[?2004l[?2004h> rev.write_text(script)
+[?2004l[?2004h> os.chmod(rev,0o755)
+[?2004l[?2004h> if viol:
+[?2004l[?2004h>     raise SystemExit('\n'.join(viol))
+[?2004l[?2004h> print('ok')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_fd7cbc762a6b46d2b08a7426ca051695__RC:%s\n' "$__tts_rc"; printf '__TTS_fd7cbc762a6b46d2b08a7426ca051695__PWD:'; pwd; printf '__TTS_fd7cbc762a6b46d2b08a7426ca051695__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+cd -- /app && python - <<'PY'
+import os, math, json, shutil
+from pathlib import Path
+base=Path('/app')
+src=base/'c4_sample'
+dst=base/'c4_reshard'
+rev=base/'revert.py'
+MAX_FILES=30
+MAX_SIZE=15*1024*1024
+assert src.is_dir()
+if dst.exists(): shutil.rmtree(dst)
+dst.mkdir()
+files=sorted(p for p in src.rglob('*') if p.is_file())
+manifest=[]
+dir_idx=1
+file_count=0
+cur=dst/f'part_{dir_idx:03d}'
+cur.mkdir()
+for f in files:
+    rel=f.relative_to(src).as_posix()
+    size=f.stat().st_size
+    with open(f,'rb') as rf:
+        data=rf.read()
+    chunks=[data[i:i+MAX_SIZE] for i in range(0,len(data),MAX_SIZE)] or [b'']
+    total=len(chunks)
+    for i,chunk in enumerate(chunks,1):
+        if file_count>=MAX_FILES:
+            dir_idx+=1
+            file_count=0
+            cur=dst/f'part_{dir_idx:03d}'
+            cur.mkdir()
+        name=f"{rel.replace('/','__')}.part{i:04d}of{total:04d}"
+        out=cur/name
+        out.write_bytes(chunk)
+        manifest.append({'original':rel,'size':size,'chunk_index':i,'chunk_count':total,'stored':str(out.relative_to(dst)).replace('\\','/')})
+        file_count+=1
+(dst/'manifest.json').write_text(json.dumps({'source':'c4_sample','entries':manifest},indent=2))
+script='''#!/usr/bin/env python3
+import json, shutil
+from pathlib import Path
+base = Path(__file__).resolve().parent
+src = base / "c4_reshard"
+manifest = json.loads((src / "manifest.json").read_text())
+out = base / manifest.get("source", "c4_sample")
+backup = base / (out.name + ".backup_before_revert")
+if backup.exists():
+    shutil.rmtree(backup)
+if out.exists():
+    out.rename(backup)
+out.mkdir(parents=True, exist_ok=True)
+by_orig = {}
+for e in manifest["entries"]:
+    by_orig.setdefault(e["original"], []).append(e)
+for rel, parts in by_orig.items():
+    parts.sort(key=lambda x: x["chunk_index"])
+    target = out / rel
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with open(target, "wb") as wf:
+        for p in parts:
+            wf.write((src / p["stored"]).read_bytes())
+print(f"Restored {len(by_orig)} files to {out}")
+if backup.exists():
+    print(f"Original moved to {backup}")
+'''
+rev.write_text(script)
+os.chmod(rev,0o755)
+subdirs=sorted(p for p in dst.iterdir() if p.is_dir())
+for d in subdirs:
+    fs=[p for p in d.iterdir() if p.is_file()]
+    assert len(fs)<=MAX_FILES, f'{d} has {len(fs)} files'
+    for p in fs:
+        assert p.stat().st_size<=MAX_SIZE, f'{p} too large'
+print('done', len(subdirs), 'parts', len(manifest), 'stored files')
+PY; __tts_rc=$?; printf '\n__TTS_76d03241883b4e75b1367e006d325421__RC:%s\n' "$__tts_rc"; printf '__TTS_76d03241883b4e75b1367e006d325421__PWD:'; pwd; printf '__TTS_76d03241883b4e75b1367e006d325421__END\n'; tmux wait -S done
+  File [35m"<stdin>"[0m, line [35m88[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_88cede5bc72544cd8507b35270757979__RC:%s\n' "$__tts_rc"; printf '__TTS_88cede5bc72544cd8507b35270757979__PWD:'; pwd; printf '__TTS_88cede5bc72544cd8507b35270757979__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@fa37b9485137:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, math, json, shutil
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> base=Path('/app')
+[?2004l[?2004h> src=base/'c4_sample'
+[?2004l[?2004h> dst=base/'c4_reshard'
+[?2004l[?2004h> rev=base/'revert.py'
+[?2004l[?2004h> MAX_FILES=30
+[?2004l[?2004h> MAX_SIZE=15*1024*1024
+[?2004l[?2004h> assert src.is_dir()
+[?2004l[?2004h> if dst.exists(): shutil.rmtree(dst)
+[?2004l[?2004h> dst.mkdir()
+[?2004l[?2004h> files=sorted(p for p in src.rglob('*') if p.is_file())
+[?2004l[?2004h> manifest=[]
+[?2004l[?2004h> dir_idx=1
+[?2004l[?2004h> file_count=0
+[?2004l[?2004h> cur=dst/f'part_{dir_idx:03d}'
+[?2004l[?2004h> cur.mkdir()
+[?2004l[?2004h> for f in files:
+[?2004l[?2004h>     rel=f.relative_to(src).as_posix()
+[?2004l[?2004h>     size=f.stat().st_size
+[?2004l[?2004h>     with open(f,'rb') as rf:
+[?2004l[?2004h>         data=rf.read()
+[?2004l[?2004h>     chunks=[data[i:i+MAX_SIZE] for i in range(0,len(data),MAX_SIZE)] or [b'']
+[?2004l[?2004h>     total=len(chunks)
+[?2004l[?2004h>     for i,chunk in enumerate(chunks,1):
+[?2004l[?2004h>         if file_count>=MAX_FILES:
+[?2004l[?2004h>             dir_idx+=1
+[?2004l[?2004h>             file_count=0
+[?2004l[?2004h>             cur=dst/f'part_{dir_idx:03d}'
+[?2004l[?2004h>             cur.mkdir()
+[?2004l[?2004h>         name=f"{rel.replace('/','__')}.part{i:04d}of{total:04d}"
+[?2004l[?2004h>         out=cur/name
+[?2004l[?2004h>         out.write_bytes(chunk)
+[?2004l[?2004h>         manifest.append({'original':rel,'size':size,'chunk_index':i,'chunk_count':total,'stored':str(out.relative_to(dst)).replace('\\','/')})
+[?2004l[?2004h>         file_count+=1
+[?2004l[?2004h> (dst/'manifest.json').write_text(json.dumps({'source':'c4_sample','entries':manifest},indent=2))
+[?2004l[?2004h> script='''#!/usr/bin/env python3
+[?2004l[?2004h> import json, shutil
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> base = Path(__file__).resolve().parent
+[?2004l[?2004h> src = base / "c4_reshard"
+[?2004l[?2004h> manifest = json.loads((src / "manifest.json").read_text())
+[?2004l[?2004h> out = base / manifest.get("source", "c4_sample")
+[?2004l[?2004h> backup = base / (out.name + ".backup_before_revert")
+[?2004l[?2004h> if backup.exists():
+[?2004l[?2004h>     shutil.rmtree(backup)
+[?2004l[?2004h> if out.exists():
+[?2004l[?2004h>     out.rename(backup)
+[?2004l[?2004h> out.mkdir(parents=True, exist_ok=True)
+[?2004l[?2004h> by_orig = {}
+[?2004l[?2004h> for e in manifest["entries"]:
+[?2004l[?2004h>     by_orig.setdefault(e["original"], []).append(e)
+[?2004l[?2004h> for rel, parts in by_orig.items():
+[?2004l[?2004h>     parts.sort(key=lambda x: x["chunk_index"])
+[?2004l[?2004h>     target = out / rel
+[?2004l[?2004h>     target.parent.mkdir(parents=True, exist_ok=True)
+[?2004l[?2004h>     with open(target, "wb") as wf:
+[?2004l[?2004h>         for p in parts:
+[?2004l[?2004h>             wf.write((src / p["stored"]).read_bytes())
+[?2004l[?2004h> print(f"Restored {len(by_orig)} files to {out}")
+[?2004l[?2004h> if backup.exists():
+[?2004l[?2004h>     print(f"Original moved to {backup}")
+[?2004l[?2004h> '''
+[?2004l[?2004h> rev.write_text(script)
+[?2004l[?2004h> os.chmod(rev,0o755)
+[?2004l[?2004h> subdirs=sorted(p for p in dst.iterdir() if p.is_dir())
+[?2004l[?2004h> for d in subdirs:
+[?2004l[?2004h>     fs=[p for p in d.iterdir() if p.is_file()]
+[?2004l[?2004h>     assert len(fs)<=MAX_FILES, f'{d} has {len(fs)} files'
+[?2004l[?2004h>     for p in fs:
+[?2004l[?2004h>         assert p.stat().st_size<=MAX_SIZE, f'{p} too large'
+[?2004l[?2004h> print('done', len(subdirs), 'parts', len(manifest), 'stored files')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_76d03241883b4e75b1367e006d325421__RC:%s\n' "$__tts_rc"; printf '__TTS_76d03241883b4e75b1367e006d325421__PWD:'; pwd; printf '__TTS_76d03241883b4e75b1367e006d325421__END\n'; tmux wait -S done
+[?2004l[?2004h> 

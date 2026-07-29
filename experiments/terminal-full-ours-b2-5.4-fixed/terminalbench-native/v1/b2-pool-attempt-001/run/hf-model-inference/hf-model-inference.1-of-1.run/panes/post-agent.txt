@@ -1,0 +1,79 @@
+root@7b48696ff817:/app# pwd; __tts_rc=$?; printf '\n__TTS_f0d51c5294004cfdac73544685ab6f3d__RC:%s\n' "$__tts_rc"; printf '__TTS_f0d51c5294004cfdac73544685ab6f3d
+__PWD:'; pwd; printf '__TTS_f0d51c5294004cfdac73544685ab6f3d__END\n'; tmux wait -S done
+/app
+
+__TTS_f0d51c5294004cfdac73544685ab6f3d__RC:0
+__TTS_f0d51c5294004cfdac73544685ab6f3d__PWD:/app
+__TTS_f0d51c5294004cfdac73544685ab6f3d__END
+root@7b48696ff817:/app# cd -- /app && ls -la /app && python3 -V && python3 - <<'PY'
+> import importlib
+> mods=['flask','transformers','torch','requests']
+> for m in mods:
+>     try: importlib.import_module(m); print(m,'OK')
+>     except Exception as e: print(m,'MISSING')
+> PY; __tts_rc=$?; printf '\n__TTS_fb1fb62c66bd444a937be8ed1cb164d6__RC:%s\n' "$__tts_rc"; printf '__TTS_fb1fb62c66bd444a937be8ed1cb164d6__PWD:'; pwd; printf '_
+_TTS_fb1fb62c66bd444a937be8ed1cb164d6__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> import os, json, textwrap, pathlib, subprocess, sys
+> from pathlib import Path
+> base=Path('/app')
+> (base/'model_cache').mkdir(exist_ok=True)
+> (base/'service').mkdir(exist_ok=True)
+> app_py=base/'service'/'app.py'
+> test_py=base/'service'/'test_client.py'
+> app_py.write_text(textwrap.dedent('''
+> from flask import Flask, request, jsonify
+> from transformers import AutoTokenizer, AutoModelForSequenceClassification
+> import torch
+> from pathlib import Path
+>
+> MODEL_DIR = Path('/app/model_cache/sentiment_model')
+> tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
+> model = AutoModelForSequenceClassification.from_pretrained(str(MODEL_DIR))
+> model.eval()
+> labels = {0: 'negative', 1: 'positive'}
+>
+> app = Flask(__name__)
+>
+> @app.post('/sentiment')
+> def sentiment():
+>     data = request.get_json(silent=True)
+>     if not data or 'text' not in data or not isinstance(data['text'], str) or not data['text'].strip():
+>         return jsonify({'error': 'Request JSON must include a non-empty "text" string'}), 400
+>     inputs = tokenizer(data['text'], return_tensors='pt', truncation=True)
+>     with torch.no_grad():
+>         logits = model(**inputs).logits[0]
+>         probs = torch.softmax(logits, dim=0).tolist()
+>     return jsonify({
+>         'sentiment': labels[int(torch.argmax(logits).item())],
+>         'confidence': {'negative': float(probs[0]), 'positive': float(probs[1])}
+>     })
+>
+> if __name__ == '__main__':
+>     app.run(host='0.0.0.0', port=5000)
+> '''))
+> test_py.write_text(textwrap.dedent('''
+> import requests
+> samples = [
+>     'I absolutely loved this movie and would watch it again.',
+>     'This was the worst experience I have ever had.',
+>     'The product is okay, but the shipping was fantastic.'
+> ]
+> for text in samples:
+>     r = requests.post('http://127.0.0.1:5000/sentiment', json={'text': text}, timeout=30)
+>     print({'text': text, 'status': r.status_code, 'response': r.json()})
+> '''))
+> subprocess.run([sys.executable,'-m','pip','install','-q','flask','transformers','torch','requests','huggingface_hub'], check=True)
+> from transformers import AutoTokenizer, AutoModelForSequenceClassification
+> model_id='distilbert-base-uncased-finetuned-sst-2-english'
+> out='/app/model_cache/sentiment_model'
+> AutoTokenizer.from_pretrained(model_id).save_pretrained(out)
+> AutoModelForSequenceClassification.from_pretrained(model_id).save_pretrained(out)
+> log=open('/app/service/flask.log','w')
+> subprocess.Popen([sys.executable, str(app_py)], stdout=log, stderr=log, cwd=str(base/'service'))
+> print(json.dumps({'status':'ok'}))
+> PY; __tts_rc=$?; printf '\n__TTS_ea59803d4a1941eba974bc23229be410__RC:%s\n' "$__tts_rc"; printf '__TTS_ea59803d4a1941eba974bc23229be410__PWD:'; pwd; printf '_
+_TTS_ea59803d4a1941eba974bc23229be410__END\n'; tmux wait -S done
+> cd -- /app && ls -R /app/service /app/model_cache 2>/dev/null | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_df9c967aa77a4647b6101426e0392f3a__RC:%s\n' "$__t
+ts_rc"; printf '__TTS_df9c967aa77a4647b6101426e0392f3a__PWD:'; pwd; printf '__TTS_df9c967aa77a4647b6101426e0392f3a__END\n'; tmux wait -S done
+>

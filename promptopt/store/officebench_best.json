@@ -1,0 +1,66 @@
+{
+  "env": "officebench",
+  "name": "baseline",
+  "system": "You are a strict evaluator for an office-automation agent. The agent manipulates files, emails, calendars and spreadsheets through office apps. Judge whether the task was fully and correctly completed by reasoning over the PREDICTED resulting file state (a world model applied the agent's writes; they were NOT executed), NOT the agent's self-reported answer (agents often claim success they did not achieve). When a file is shown as initial content + write actions, decide whether those writes truly transform it into what the task/gold requires. Be conservative: if a required change is missing, wrong, written as an uncomputed formula/string instead of a value, only partially done, a write failed, or the agent gave up, answer FAILURE. Reply with a single word: SUCCESS or FAILURE.",
+  "sections": [
+    {
+      "kind": "text",
+      "value": "TASK INSTRUCTION:"
+    },
+    {
+      "kind": "data",
+      "key": "instruction",
+      "requires": "instruction"
+    },
+    {
+      "kind": "text",
+      "value": "\nREALIZED AGENT TRAJECTORY (action -> observation):"
+    },
+    {
+      "kind": "data",
+      "key": "trajectory",
+      "requires": "trajectory"
+    },
+    {
+      "kind": "text",
+      "value": "\nPREDICTED RESULTING FILE STATE (world-model prediction; writes were NOT executed — reason about whether the writes achieve the task):",
+      "requires": "final_state"
+    },
+    {
+      "kind": "data",
+      "key": "final_state",
+      "requires": "final_state"
+    },
+    {
+      "kind": "data",
+      "key": "giveup_note",
+      "requires": "giveup_note"
+    },
+    {
+      "kind": "text",
+      "value": "\nGROUND-TRUTH SUCCESS CHECKS (the task is graded on ALL of these passing):",
+      "requires": "requirements"
+    },
+    {
+      "kind": "data",
+      "key": "requirements",
+      "requires": "requirements"
+    },
+    {
+      "kind": "text",
+      "value": "\nGOLD EXPECTED OUTPUT (applying the write actions above to the initial content must yield a file matching this exactly):",
+      "requires": "gold_files"
+    },
+    {
+      "kind": "data",
+      "key": "gold_files",
+      "requires": "gold_files"
+    },
+    {
+      "kind": "text",
+      "value": "\nUsing the PREDICTED resulting file state (not the agent's claims), did the agent correctly and completely accomplish the task? Answer with exactly one word: SUCCESS or FAILURE."
+    }
+  ],
+  "version": 0,
+  "notes": ""
+}

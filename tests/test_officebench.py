@@ -15,8 +15,7 @@ import pytest
 
 from tts.config import Config, SolverConfig
 from tts.harness import run_decision
-from tts.trajectory import Trajectory
-from tts.trajectory import Step
+from tts.trajectory import RewardInfo, RolloutResult, Step, Trajectory
 from tts.types import Action
 
 try:
@@ -56,6 +55,115 @@ _FAKE_CONFIG = {"username": "Bob", "date": "2020-05-01", "weekday": "Friday", "t
 # --------------------------------------------------------------------------- #
 # Pure logic (no Docker, no LLM)
 # --------------------------------------------------------------------------- #
+
+
+def test_transition_log_indexes_applied_and_rejected_effects():
+    from tts.simulator.transition_log import TransitionLog
+
+    log = TransitionLog()
+    log.record({"action": "write"}, "ok", ["data/a.txt"], applied=True)
+    log.record({"action": "write"}, "failed", ["data/b.txt"], applied=False)
+    assert log.resources() == ["data/a.txt"]
+    assert len(log.entries("data/a.txt", applied_only=True)) == 1
+    assert "APPLIED" in log.render("data/a.txt")
+    assert "REJECTED" in log.render("data/b.txt")
+
+
+def test_officebench_wm_tool_mode_defaults_to_python(monkeypatch):
+    from tts.env.officebench_wm_python import officebench_wm_tool_mode
+
+    monkeypatch.delenv("TTS_OFFICEBENCH_WM_TOOL_MODE", raising=False)
+    assert officebench_wm_tool_mode() == "python"
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    assert officebench_wm_tool_mode() == "python"
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    assert officebench_wm_tool_mode() == "text"
+
+
+def test_officebench_comparative_parser():
+    from tts.env.real_officebench import _parse_comparative_best
+
+    assert _parse_comparative_best("BEST: 2\nREASON: complete", 4) == 2
+    with pytest.raises(ValueError):
+        _parse_comparative_best("BEST: 4", 4)
+
+
+def test_officebench_comparative_reranks_ambiguous_nested_pools(monkeypatch):
+    from tts.env.real_officebench import OfficeBenchTaskEnv
+
+    calls = []
+    responses = iter([
+        "BEST: 1\nREASON: candidate 1 is more complete",
+        "BEST: 3\nREASON: candidate 3 is more complete",
+    ])
+
+    class _FakeClient:
+        def chat(self, system, user, **kwargs):
+            calls.append((system, user, kwargs))
+            return next(responses)
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
+    monkeypatch.setattr("tts.llm.make_chat_client", lambda **kwargs: _FakeClient())
+    env = OfficeBenchTaskEnv.__new__(OfficeBenchTaskEnv)
+    env._instruction = "Create the requested artifact."
+    env._config = {"evaluation": [{"function": "evaluate_exists"}]}
+    rollouts = [
+        RolloutResult(index, Trajectory(steps=[]), RewardInfo(reward=0.75))
+        for index in range(2)
+    ]
+
+    env.refine_rollout_scores(
+        Config(seed=7, solver=SolverConfig(llm_agent="gpt-5.4")),
+        rollouts,
+    )
+
+    assert len(calls) == 1
+    assert [rollout.predicted.reward for rollout in rollouts] == [0.75, 0.75]
+    assert rollouts[1].predicted.metadata["comparative_rerank"]["best"] == 1
+    assert rollouts[1].predicted.metadata["selection_override"]["best"] == 1
+
+    rollouts.extend([
+        RolloutResult(index, Trajectory(steps=[]), RewardInfo(reward=0.75))
+        for index in range(2, 4)
+    ])
+    env.refine_rollout_scores(
+        Config(seed=7, solver=SolverConfig(llm_agent="gpt-5.4")),
+        rollouts,
+    )
+
+    assert len(calls) == 2
+    assert [rollout.predicted.reward for rollout in rollouts] == [0.75] * 4
+    decision = rollouts[3].predicted.metadata["comparative_rerank"]
+    assert decision["incumbent"] == 1
+    assert decision["contenders"] == [1, 2, 3]
+    assert decision["best"] == 3
+
+
+def test_officebench_python_disabled_uses_direct_prompt(monkeypatch):
+    from tts.env.officebench_wm_python import run_python_prediction_loop
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_PYTHON", "0")
+    responses = iter([
+        'PYTHON_FINAL:\nprint_json({"text": "not executed"})',
+        "OBSERVATION: direct fallback",
+    ])
+    prompts = []
+
+    def complete(prompt, _max_tokens):
+        prompts.append(prompt)
+        return next(responses)
+
+    result = run_python_prediction_loop(
+        complete,
+        None,
+        "Predict the observation.",
+        "PREDICT: <observation>",
+        context={"initial_content": "hello"},
+    )
+
+    assert result.valid and result.output == "OBSERVATION: direct fallback"
+    assert result.python_calls == 0 and result.python_mode_misses == 1
+    assert "PURE COMPUTATION OPTION" not in prompts[0]
 
 
 def test_proc_action_and_parse():
@@ -108,13 +216,16 @@ def test_driver_read_only_reverts_incidental_creates(tmp_path):
     (root / "data" / "keep.txt").write_text("original")
 
     before = drv._list_files(str(root))
+    before_dirs = drv._list_dirs(str(root))
     # simulate a create-if-missing read helper: a new blank calendar file appears during the read
     (root / "calendar").mkdir()
     (root / "calendar" / "Bob.ics").write_text("")
-    removed = drv._remove_new_files(str(root), before)
+    removed = drv._remove_new_files(str(root), before, before_dirs)
 
     assert str(root / "calendar" / "Bob.ics") in removed
+    assert str(root / "calendar") in removed
     assert drv._list_files(str(root)) == before  # pristine again
+    assert drv._list_dirs(str(root)) == before_dirs
     assert (root / "data" / "keep.txt").read_text() == "original"  # pre-existing files untouched
 
 
@@ -146,19 +257,605 @@ def test_readonly_session_passes_read_only_flag_to_driver(monkeypatch):
 
 
 def test_wm_action_classification():
-    """Reads vs writes (and the file each touches) are classified so writes are never executed."""
-    from tts.env.officebench_wm_predict import is_write_action, read_target, write_targets
+    """Reads, inputs and outputs use the official action argument names."""
+    from tts.env.officebench_wm_predict import (
+        action_inputs,
+        action_execution_kind,
+        is_write_action,
+        read_target,
+        shell_command_kind,
+        write_targets,
+    )
 
     assert is_write_action({"app": "excel", "action": "set_cell", "file_path": "/testbed/data/s.xlsx"})
     assert not is_write_action({"app": "excel", "action": "read_file", "file_path": "./data/s.xlsx"})
     assert is_write_action({"app": "calendar", "action": "create_event", "user": "Bob"})
     assert not is_write_action({"app": "calendar", "action": "list_events", "username": "Bob"})
     assert not is_write_action({"app": "shell", "action": "command", "command": "ls /testbed/data"})
+    assert not is_write_action({"app": "shell", "action": "command", "command": "cd /testbed/data"})
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "cd /testbed/data && rm x.txt"})
+    assert is_write_action({"app": "shell", "action": "command", "command": "cd"})
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "ls /testbed/data; rm /testbed/data/x"})
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "find /testbed -delete"})
+    assert not is_write_action({
+        "app": "shell", "action": "command",
+        "command": "find /testbed/data -maxdepth 2 -type f 2>/dev/null | sort | sed -n '1,200p'",
+    })
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "sed -f /testbed/data/script.sed /testbed/data/input.txt",
+    }) == "blocked"
+    assert not is_write_action({
+        "app": "shell", "action": "command",
+        "command": "ls -la /testbed/data && file /testbed/data/a.docx && wc -c /testbed/data/a.docx",
+    })
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "sort -o /testbed/data/out.txt /testbed/data/in.txt"})
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "sort -o /testbed/data/out.txt /testbed/data/in.txt",
+    }) == "write"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "cat /testbed/data/in.txt | sort -o /testbed/data/out.txt",
+    }) == "write"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "sort -ro /testbed/data/out.txt /testbed/data/in.txt",
+    }) == "write"
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "/testbed/data/ls /testbed"})
+    assert is_write_action({"app": "shell", "action": "command",
+                            "command": "cd `rm /testbed/data/x`"})
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "python -c \"import os; print(os.listdir('/testbed/data'))\"",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "cat /reference/gold.xlsx",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "cat ~/.bashrc",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "file --files-from=/reference/gold.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "wc --files0-from=/reference/gold.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "cd /reference",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "grep -f /reference/patterns /testbed/data/in.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "grep -Ff /reference/patterns /testbed/data/in.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "grep --regexp=. /reference/gold.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "sed --expression=p /reference/gold.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "grep -aR ''",
+    }, "/") == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "du",
+    }, "/") == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "tail --follow /testbed/data/log.txt",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "find -L /reference -type f",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "cat /testbed/*/../../reference/gold.xlsx",
+    }) == "blocked"
+    assert shell_command_kind({
+        "app": "shell", "action": "command",
+        "command": "file -bC -m /testbed/data/magic",
+    }) == "write"
+    assert action_execution_kind({
+        "app": "excel", "action": "read_file", "file_path": "/reference/gold.xlsx",
+    }) == "blocked"
+    assert action_execution_kind({
+        "app": "llm", "action": "complete_text", "prompt": "Summarize this document.",
+    }) == "read"
+    assert action_execution_kind({
+        "app": "llm", "action": "complete_text",
+        "prompt": "''' ; cat /reference/gold.xlsx ; echo '''",
+    }) == "write"
+    assert write_targets({
+        "app": "llm", "action": "complete_text",
+        "prompt": "''' ; cat /reference/gold.xlsx ; echo '''",
+    }) == []
     assert is_write_action({"app": "shell", "action": "command", "command": "rm /testbed/data/x"})
     assert is_write_action({"app": "shell", "action": "command", "command": "echo hi > /testbed/o.txt"})
     assert not is_write_action({"app": "system", "action": "finish_task", "answer": "None"})
     assert write_targets({"app": "excel", "action": "set_cell", "file_path": "./data/s.xlsx"}) == ["data/s.xlsx"]
     assert read_target({"app": "excel", "action": "read_file", "file_path": "/testbed/data/s.xlsx"}) == "data/s.xlsx"
+    word_pdf = {"app": "word", "action": "convert_to_pdf",
+                "word_file_path": "/testbed/data/a.docx", "pdf_file_path": "/testbed/data/a.pdf"}
+    assert action_inputs(word_pdf) == ["data/a.docx"]
+    assert write_targets(word_pdf) == ["data/a.pdf"]
+    pdf_image = {"app": "pdf", "action": "convert_to_image",
+                 "pdf_file_path": "/testbed/data/a.pdf", "image_file_path": "/testbed/data/a.jpg"}
+    assert action_inputs(pdf_image) == ["data/a.pdf"]
+    assert write_targets(pdf_image) == ["data/a.jpg"]
+    assert write_targets({"app": "shell", "action": "command", "command": "rm x.txt"},
+                         "/testbed/data") == ["data/x.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "rm /testbed/data/x.txt && touch /testbed/data/x.txt"}) == ["<shell>"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "mv /testbed/data/old.txt /testbed/data/new.txt"}) == [
+                              "data/new.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "cp /testbed/data/old.txt /testbed/data/new.txt"}) == [
+                              "data/new.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "cp /testbed/data/old.txt /testbed/data/"}) == [
+                              "data/old.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "cp -rt /testbed/data/dest /testbed/data/src"}) == [
+                              "data/dest/src"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "cp --target-directory=/testbed/data/dest /testbed/data/src"}) == [
+                              "data/dest/src"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "sort -o /testbed/data/out.txt /testbed/data/in.txt"}) == [
+                              "data/out.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "sort -ro /testbed/data/out.txt /testbed/data/in.txt"}) == [
+                              "data/out.txt"]
+    assert write_targets({"app": "shell", "action": "command",
+                          "command": "printf x >> /testbed/data/a.txt"}) == ["data/a.txt"]
+    assert read_target({"app": "pdf", "action": "read_file",
+                        "pdf_file_path": "/testbed/data/a.pdf"}) == "data/a.pdf"
+    assert read_target({"app": "shell", "action": "command", "command": "cat report.txt"},
+                       "/testbed/data") == "data/report.txt"
+    assert read_target({"app": "shell", "action": "command", "command": "cat < report.txt"},
+                       "/testbed/data") == "data/report.txt"
+    assert read_target({
+        "app": "shell", "action": "command",
+        "command": "grep -f patterns.txt input.txt",
+    }, "/testbed/data") == "data"
+    assert read_target({"app": "shell", "action": "command",
+                        "command": "cat a.txt b.txt"}, "/testbed/data") == "data"
+    assert read_target({
+        "app": "shell", "action": "command",
+        "command": "find /testbed/data -type f 2>/dev/null | sort | sed -n '1,20p'",
+    }, "/") == "data"
+    assert shell_command_kind({
+        "app": "shell", "action": "command", "command": "ls /testbed/data/*.txt",
+    }, "/") == "blocked"
+    assert read_target({"app": "shell", "action": "command", "command": "ls ."},
+                       "/testbed/data") == "data"
+    assert read_target({"app": "shell", "action": "command", "command": "ls /testbed"},
+                       "/") == ""
+
+
+def test_wm_query_exposes_only_read_only_testbed_tools():
+    """READ/LIST/CALL inspect testbed state and reject writes or paths outside it."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMQuery, _parse_agentic
+
+    class _Session:
+        def __init__(self):
+            self.exec_calls = []
+
+        def apps_catalogue(self):
+            return {
+                "actions": {
+                    "excel": ["read_file", "set_cell"],
+                    "shell": ["command"],
+                    "system": ["finish_task"],
+                }
+            }
+
+        def read_state(self, files):
+            return {files[0]["path"]: "(1, 1): 10"}
+
+        def exec_action(self, action, workdir):
+            self.exec_calls.append((action, workdir))
+            return {"observation": "read result"}
+
+    session = _Session()
+    q = OfficeBenchWMQuery(session, lambda: "/testbed/data")
+    assert q.available_calls == ["excel.read_file"]
+    assert q.read("./s.xlsx") == "(1, 1): 10"
+    assert q.list("/testbed/data") == "read result"
+    assert q.call("excel.read_file", {"file_path": "./s.xlsx"}) == "read result"
+    assert session.exec_calls[-1][0]["file_path"] == "/testbed/data/s.xlsx"
+    assert "requires one JSON object" in q.call("excel.read_file", ["not", "an", "object"])
+    assert _parse_agentic('CALL excel.read_file ["not", "an", "object"]')[2] == [
+        ("excel.read_file", None)]
+    assert "not an available read-only tool" in q.call(
+        "excel.set_cell", {"file_path": "./data/s.xlsx", "row_idx": 1, "column_idx": 1})
+    assert "unsafe argument characters" in q.call(
+        "excel.read_file", {"file_path": "s.xlsx; rm /testbed/data/s.xlsx"})
+    assert "unsafe argument characters" in q.call(
+        "excel.read_file", {"file_path": "s.xlsx", "sheet_name": "x; rm /testbed/data/s.xlsx"})
+    assert "unsafe argument characters" in q.call(
+        "excel.read_file", {"file_path": "s.xlsx", "username": "../../reference/probe"})
+    assert "only files under /testbed" in q.read("/reference/gold.xlsx")
+    assert "only directories under /testbed" in q.list("../../reference")
+    assert all(call[0]["action"] != "set_cell" for call in session.exec_calls)
+
+
+def test_wm_query_tools_are_overlay_aware():
+    """READ/LIST/CALL/TRACE expose predicted resources instead of stale pristine absence."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    class _Session:
+        def apps_catalogue(self):
+            return {"actions": {"pdf": ["read_file"], "word": ["convert_to_pdf"]}}
+
+        def read_state(self, files):
+            path = files[0]["path"]
+            content = "SOURCE DOCUMENT" if path.endswith(".docx") else "[file does not exist]"
+            return {path: content}
+
+        def exec_action(self, action, workdir):
+            return {"observation": "base listing"}
+
+    session = _Session()
+    predictor = OfficeBenchWMPredictor(
+        _StubChat("PREDICT: OBSERVATION: Successfully converted the file."))
+    query = OfficeBenchWMQuery(session, lambda: "/")
+    predictor.bind_query_interface(query)
+    predictor.predict_write({
+        "app": "word",
+        "action": "convert_to_pdf",
+        "word_file_path": "/testbed/data/a.docx",
+        "pdf_file_path": "/testbed/data/a.pdf",
+    })
+
+    logical = query.read("/testbed/data/a.pdf")
+    assert "LOGICAL OVERLAY RESOURCE: data/a.pdf" in logical
+    assert "data/a.docx" in logical and "convert_to_pdf" in logical
+    assert "data/a.pdf" in query.list("/testbed/data")
+    assert "APPLIED" in query.trace("/testbed/data/a.pdf")
+    assert "LOGICAL OVERLAY RESOURCE" in query.call(
+        "pdf.read_file", {"pdf_file_path": "/testbed/data/a.pdf"})
+
+
+def test_wm_relative_paths_follow_current_workdir():
+    """Action footprints and query tools resolve relative paths from the agent's current directory."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    class _Session:
+        def apps_catalogue(self):
+            return {"actions": {"excel": ["read_file", "set_cell"]}}
+
+        def read_state(self, files):
+            return {files[0]["path"]: "(1, 1): old"}
+
+        def exec_action(self, action, workdir):
+            return {"observation": "exact read"}
+
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: Successfully set the cell."))
+    predictor.bind_query_interface(OfficeBenchWMQuery(_Session(), lambda: "/testbed/data"))
+    predictor.predict_write({
+        "app": "excel", "action": "set_cell", "file_path": "scores.xlsx",
+        "row_idx": 1, "column_idx": 1, "text": "new",
+    })
+
+    assert "data/scores.xlsx" in predictor.applied_writes
+    assert "scores.xlsx" not in predictor.applied_writes
+    assert predictor.was_written("data")
+    assert predictor.was_written("")
+
+
+def test_wm_delete_tombstone_overrides_pristine_state():
+    """A successful predicted delete hides the pristine file from READ/LIST until a later write."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    class _Session:
+        def __init__(self):
+            self.exec_calls = 0
+
+        def apps_catalogue(self):
+            return {"actions": {"shell": ["command"]}}
+
+        def read_state(self, files):
+            return {files[0]["path"]: "PRISTINE"}
+
+        def exec_action(self, action, workdir):
+            self.exec_calls += 1
+            return {"observation": "s.xlsx\nother.xlsx"}
+
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: Successfully executed shell.command."))
+    session = _Session()
+    query = OfficeBenchWMQuery(session, lambda: "/testbed/data")
+    predictor.bind_query_interface(query)
+    predictor.predict_write({"app": "shell", "action": "command", "command": "rm s.xlsx"})
+
+    assert "data/s.xlsx" in predictor.deleted_paths
+    assert "[file does not exist]" in query.read("s.xlsx")
+    listing = query.list(".")
+    assert "PREDICTED DELETIONS" in listing and "data/s.xlsx" in listing
+    assert "data/s.xlsx" not in predictor.overlay_paths()
+
+    predictor.predict_write({
+        "app": "shell", "action": "command", "command": "rm -r archive",
+    })
+    assert predictor.was_written("data/archive/old.xlsx")
+    assert "[file does not exist]" in predictor.logical_read("data/archive/old.xlsx", "PRISTINE")
+    calls_before = session.exec_calls
+    assert "[directory does not exist]" in query.list("archive/subdir")
+    assert session.exec_calls == calls_before
+
+    predictor.predict_write({
+        "app": "word", "action": "create_new_file",
+        "file_path": "/testbed/data/archive/new.docx",
+    })
+    assert not predictor.is_deleted("data/archive")
+    assert not predictor.is_deleted("data/archive/new.docx")
+    revived_listing = query.list("archive")
+    assert "PREDICTED LOGICAL DIRECTORY" in revived_listing
+    assert "data/archive/new.docx" in revived_listing
+    assert session.exec_calls == calls_before
+
+    predictor.predict_write({
+        "app": "shell", "action": "command", "command": "python3 restore.py",
+    })
+    assert predictor.global_dirty and not predictor.deleted_paths
+    assert "current state may differ" in predictor.logical_read("data/s.xlsx", "PRISTINE")
+
+
+def test_wm_move_tombstones_source(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    predictor = OfficeBenchWMPredictor(
+        _StubChat("PREDICT: OBSERVATION: Successfully moved the file."))
+    predictor.predict_write({
+        "app": "shell",
+        "action": "command",
+        "command": "mv /testbed/data/old.txt /testbed/data/new.txt",
+    })
+
+    assert predictor.is_deleted("data/old.txt")
+    assert predictor.was_written("data/old.txt")
+    assert predictor.was_written("data/new.txt")
+    assert "data/old.txt" not in predictor.overlay_paths()
+
+
+def test_wm_opaque_write_qualifies_pristine_reads():
+    """After an unattributed write, logical READ labels pristine content as potentially stale."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: ok"))
+    predictor.predict_write({"app": "shell", "action": "command", "command": "python3 munge.py"})
+    logical = predictor.logical_read("data/s.xlsx", "OLD")
+    assert "PRISTINE CONTENT (current state may differ" in logical
+    assert "python3 munge.py" in logical
+
+    predictor.applied_writes["data/s.xlsx"] = [
+        ({"app": "excel", "action": "set_cell", "row_idx": 1, "column_idx": 1, "text": "new"}, "ok")]
+    assert "current state may differ" in predictor.logical_read("data/s.xlsx", "(1, 1): old")
+
+    compound = OfficeBenchWMPredictor(_StubChat("OBSERVATION: ok"))
+    compound.predict_write({
+        "app": "shell", "action": "command",
+        "command": "rm /testbed/data/x.txt && touch /testbed/data/x.txt",
+    })
+    assert compound.global_dirty and not compound.deleted_paths
+
+
+def test_wm_directory_copy_dirties_descendants():
+    """A copied directory makes every destination descendant part of the logical overlay."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: Successfully copied directory."))
+    predictor.predict_write({
+        "app": "shell", "action": "command",
+        "command": "cp -r /testbed/data/src /testbed/data/dest/",
+    })
+
+    assert "data/dest/src" in predictor.applied_writes
+    assert predictor.was_written("data/dest/src/report.txt")
+    assert "cp -r" in predictor.file_write_log("data/dest/src/report.txt")
+
+
+def test_wm_exact_delete_and_answer_bypass_llm_reconstruction():
+    """Exact overlay transitions stay exact in dirty reads and final-state rendering."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    class _NoPrediction:
+        def chat(self, *args, **kwargs):
+            raise AssertionError("exact overlay state must not call the LLM")
+
+    predictor = OfficeBenchWMPredictor(_NoPrediction())
+    predictor.applied_writes["data/old.txt"] = [
+        ({"app": "shell", "action": "command", "command": "rm /testbed/data/old.txt"}, "ok")]
+    predictor.deleted_paths.add("data/old.txt")
+    assert predictor.predict_read(
+        {"app": "word", "action": "read_file", "file_path": "/testbed/data/old.txt"},
+        "PRISTINE",
+    ) == "[file does not exist]"
+    assert predictor.predict_file_state("data/old.txt", "PRISTINE") == "[file does not exist]"
+
+    predictor.record_answer('O\'Brien said "done"')
+    assert predictor.predict_file_state(
+        "data/answer.txt", "[file does not exist]") == "OBrien said done\n"
+
+
+class _GroundingQuery:
+    """In-memory READ/LIST/CALL/TRACE stub for the agentic WM loop."""
+
+    available_calls = ["excel.read_file"]
+
+    def __init__(self):
+        self.read_paths = []
+        self.list_paths = []
+        self.tool_calls = []
+        self.trace_paths = []
+
+    def read(self, path):
+        self.read_paths.append(path)
+        return f"content of {path}"
+
+    def list(self, path):
+        self.list_paths.append(path)
+        return "a.xlsx\nb.xlsx"
+
+    def call(self, name, args):
+        self.tool_calls.append((name, args))
+        return "OBSERVATION: exact app read"
+
+    def trace(self, path):
+        self.trace_paths.append(path)
+        return "APPLIED write"
+
+
+def test_wm_agentic_loop_uses_read_list_call_before_prediction(monkeypatch):
+    """The OfficeBench WM can gather evidence over multiple turns before predicting a write."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    chat = _ScriptChat([
+        "LIST /testbed/data",
+        "READ /testbed/data/s.xlsx",
+        'CALL excel.read_file {"file_path": "/testbed/data/s.xlsx"}',
+        "TRACE /testbed/data/s.xlsx",
+        "PREDICT: OBSERVATION: Successfully set the cell.",
+    ])
+    query = _GroundingQuery()
+    predictor = OfficeBenchWMPredictor(chat)
+    predictor.bind_query_interface(query)
+    obs = predictor.predict_write({
+        "app": "excel", "action": "set_cell", "file_path": "/testbed/data/s.xlsx",
+        "row_idx": 1, "column_idx": 1, "text": 5,
+    })
+
+    assert obs == "OBSERVATION: Successfully set the cell."
+    assert query.list_paths == ["/testbed/data"]
+    assert query.read_paths == ["/testbed/data/s.xlsx"]
+    assert query.tool_calls == [
+        ("excel.read_file", {"file_path": "/testbed/data/s.xlsx"})]
+    assert query.trace_paths == ["/testbed/data/s.xlsx"]
+    assert chat.calls == 5
+
+
+def test_wm_agentic_loop_forces_prediction_after_read_budget(monkeypatch):
+    """As in τ², the read-turn limit is followed by one forced prediction call."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    chat = _ScriptChat([
+        "READ /testbed/data/a.xlsx",
+        "READ /testbed/data/b.xlsx",
+        "PREDICT: OBSERVATION: write result",
+    ])
+    query = _GroundingQuery()
+    predictor = OfficeBenchWMPredictor(chat)
+    predictor.MAX_TURNS = 2
+    predictor.bind_query_interface(query)
+    obs = predictor.predict_write({"app": "word", "action": "write_to_file",
+                                   "file_path": "/testbed/data/out.docx", "contents": "x"})
+
+    assert query.read_paths == ["/testbed/data/a.xlsx", "/testbed/data/b.xlsx"]
+    assert obs == "OBSERVATION: write result"
+    assert chat.calls == 3
+
+
+def test_wm_python_loop_uses_copied_read_results(monkeypatch):
+    """Python mode requests host-mediated reads and computes the final observation from copied data."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    chat = _ScriptChat([
+        (
+            "PYTHON_READ:\n"
+            'print_json({"queries": [{"op": "read", "path": "/testbed/data/s.xlsx"}]})'
+        ),
+        (
+            "PYTHON_FINAL:\n"
+            'print_json({"text": "OBSERVATION: Successfully set the cell."})'
+        ),
+    ])
+    query = _GroundingQuery()
+    predictor = OfficeBenchWMPredictor(chat)
+    predictor.bind_query_interface(query)
+    obs = predictor.predict_write({
+        "app": "excel", "action": "set_cell", "file_path": "/testbed/data/s.xlsx",
+        "row_idx": 1, "column_idx": 1, "text": 5,
+    })
+
+    assert obs == "OBSERVATION: Successfully set the cell."
+    assert query.read_paths == ["/testbed/data/s.xlsx"]
+    assert predictor.n_python_calls == 2
+    assert predictor.n_python_failures == 0
+
+
+def test_wm_python_forces_long_file_transform(monkeypatch):
+    """Long copied state rejects direct regeneration and requires a PYTHON_FINAL transform."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_PYTHON_FORCE_CHARS", "10")
+    initial = "  unchanged-\ntrailing  "
+    chat = _ScriptChat([
+        "DIRECT OUTPUT IS NOT ACCEPTED",
+        'PYTHON_FINAL:\nprint_json({"text": data["initial_content"]})',
+    ])
+    predictor = OfficeBenchWMPredictor(chat)
+    predictor.applied_writes["data/out.txt"] = [(
+        {
+            "app": "shell",
+            "action": "command",
+            "command": "cp /testbed/data/in.txt /testbed/data/out.txt",
+        },
+        "OBSERVATION: copied",
+    )]
+
+    assert predictor.predict_file_state("data/out.txt", initial) == initial
+    assert predictor.n_python_forced == 1
+    assert predictor.n_python_mode_misses == 1
+    assert predictor.n_python_calls == 1
+
+
+def test_wm_python_preserves_valid_empty_file_results(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_PYTHON_FORCE_CHARS", "10")
+    action = {
+        "app": "shell",
+        "action": "command",
+        "command": "cp /testbed/data/in.txt /testbed/data/out.txt",
+    }
+
+    final_predictor = OfficeBenchWMPredictor(_ScriptChat([
+        "DIRECT OUTPUT IS NOT ACCEPTED",
+        'PYTHON_FINAL:\nprint_json({"text": ""})',
+    ]))
+    final_predictor.applied_writes["data/out.txt"] = [(action, "OBSERVATION: copied")]
+    assert final_predictor.predict_file_state("data/out.txt", "non-empty initial") == ""
+
+    read_predictor = OfficeBenchWMPredictor(_ScriptChat([
+        "DIRECT OUTPUT IS NOT ACCEPTED",
+        'PYTHON_FINAL:\nprint_json({"text": ""})',
+    ]))
+    read_predictor.applied_writes["data/out.txt"] = [(action, "OBSERVATION: copied")]
+    assert read_predictor.predict_read(
+        {"app": "word", "action": "read_file", "file_path": "/testbed/data/out.txt"},
+        "non-empty initial",
+    ) == ""
 
 
 def test_wm_global_dirty_fallback():
@@ -238,6 +935,9 @@ def test_wm_predictor_never_executes_writes():
     assert any(a.get("action") == "read_file" for a in session.exec_calls)
     # finish_task did NOT write answer.txt to the shadow (predicted only)
     assert session.write_answer_calls == [] and run.final_answer == "done"
+    assert "data/answer.txt" in predictor.applied_writes
+    assert predictor.logical_read("data/answer.txt", "[file does not exist]") == "done\n"
+    assert "finish_task" in predictor.trace_text("data/answer.txt")
 
 
 def test_wm_dirty_read_uses_predictor():
@@ -268,6 +968,55 @@ def test_wm_dirty_read_uses_predictor():
     run = run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
     assert predictor.dirty_read_called  # the read-after-write went through predict_read
     assert "predicted post-write" in run.observations[-2]  # the dirty-read observation
+
+
+def test_wm_cd_executes_exactly_even_after_opaque_write():
+    """Directory changes are read-only control flow and remain executable after global-dirty writes."""
+    from tts.env.officebench_agent import run_officebench_agent
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    class _CdSession(_RecordingSession):
+        def exec_action(self, action, workdir):
+            result = super().exec_action(action, workdir)
+            if action.get("command") == "cd /testbed/data":
+                result.update({"is_cd": True, "new_workdir": "/testbed/data"})
+            return result
+
+    agent = _ScriptChat([
+        repr({"app": "system", "action": "switch_app", "target_app": "shell"}),
+        repr({"app": "shell", "action": "command",
+              "command": "python3 -c \"open('/testbed/data/x.txt', 'w').write('x')\""}),
+        repr({"app": "shell", "action": "command", "command": "cd /testbed/data"}),
+        repr({"app": "system", "action": "finish_task", "answer": "None"}),
+    ])
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: ok"))
+    session = _CdSession(read_only=True)
+    cfg = {"username": "B", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
+    run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+
+    assert predictor.global_dirty
+    assert any(a.get("command") == "cd /testbed/data" for a in session.exec_calls)
+
+
+def test_wm_blocks_ambiguous_shell_inspection_without_dirtying_state():
+    """Unprovable inspection is neither executed nor recorded as a predicted write."""
+    from tts.env.officebench_agent import run_officebench_agent
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    command = "python -c \"import os; print(os.listdir('/testbed/data'))\""
+    agent = _ScriptChat([
+        repr({"app": "system", "action": "switch_app", "target_app": "shell"}),
+        repr({"app": "shell", "action": "command", "command": command}),
+        repr({"app": "system", "action": "finish_task", "answer": "None"}),
+    ])
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: should not be used"))
+    session = _RecordingSession(read_only=True)
+    cfg = {"username": "B", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
+    run = run_officebench_agent(session, cfg, agent, max_steps=5, predictor=predictor)
+
+    assert all(a.get("command") != command for a in session.exec_calls)
+    assert not predictor.global_dirty and predictor.n_writes == 0
+    assert any("cannot be proven read-only" in observation for observation in run.observations)
 
 
 def test_wm_predicts_write_failure_leaves_state_clean(monkeypatch):
@@ -328,6 +1077,42 @@ def test_predicted_state_gold_backed_uses_writelog_not_reconstruction():
     assert "INITIAL content" in entry and "WRITE actions" in entry and "set_cell" in entry
 
 
+def test_predicted_state_gold_backed_ignores_global_dirty_reconstruction():
+    from tts.env.real_officebench import OfficeBenchTaskEnv
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    class _FakeSession:
+        def read_state(self, files):
+            return {f["path"]: "(1, 1): Alice" for f in files}
+
+    class _P(OfficeBenchWMPredictor):
+        def __init__(self):
+            super().__init__(_StubChat("x"))
+            self.reconstructed = False
+
+        def predict_file_state(self, path, init):
+            self.reconstructed = True
+            return "FABRICATED"
+
+    predictor = _P()
+    predictor.global_dirty = True
+    predictor.applied_writes["data/result.xlsx"] = [
+        ({"app": "shell", "action": "command", "command": "python3 transform.py"},
+         "OBSERVATION: Successfully executed.")]
+
+    out = OfficeBenchTaskEnv._predicted_state(
+        None,
+        _FakeSession(),
+        predictor,
+        [{"path": "./data/result.xlsx", "doc_type": "xlsx"}],
+        gold_labels={"result.xlsx"},
+    )
+
+    assert not predictor.reconstructed
+    assert "INITIAL content" in out["./data/result.xlsx"]
+    assert "transform.py" in out["./data/result.xlsx"]
+
+
 def test_predicted_state_no_gold_reconstructs():
     """A written file WITHOUT a gold reference falls back to the conservative reconstruction."""
     from tts.env.real_officebench import OfficeBenchTaskEnv
@@ -355,6 +1140,25 @@ def test_predicted_state_no_gold_reconstructs():
     assert p.reconstructed and out["./data/score.xlsx"] == "RECONSTRUCTED"
 
 
+def test_predicted_state_respects_recursive_tombstones():
+    """Verifier input routes files below a deleted directory through the logical overlay."""
+    from tts.env.real_officebench import OfficeBenchTaskEnv
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    class _FakeSession:
+        def read_state(self, files):
+            return {f["path"]: "PRISTINE" for f in files}
+
+    predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: Successfully removed directory."))
+    predictor.predict_write({
+        "app": "shell", "action": "command", "command": "rm -r /testbed/data/archive",
+    })
+    files = [{"path": "./data/archive/old.txt", "doc_type": "txt"}]
+    out = OfficeBenchTaskEnv._predicted_state(
+        None, _FakeSession(), predictor, files, gold_labels={"old.txt"})
+    assert out["./data/archive/old.txt"] == "[file does not exist]"
+
+
 class _StubChat:
     """Records the last prompt and returns a fixed verdict (no network)."""
 
@@ -365,6 +1169,174 @@ class _StubChat:
     def chat(self, system, user, **kw):
         self.last_prompt = user
         return self.verdict
+
+
+def test_verifier_deterministic_prechecks_reject_proven_failures():
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    class _NoChat:
+        def chat(self, *args, **kwargs):
+            raise AssertionError("deterministic failure must bypass the LLM verifier")
+
+    config = {"evaluation": [{
+        "function": "evaluate_exact_match",
+        "args": {"result_file": "./data/result.pdf", "expected_file": "reference/result.pdf"},
+    }]}
+
+    missing = OfficeBenchVerifier(_NoChat())
+    assert missing.predict_success(
+        "create result.pdf", [], [], config=config,
+        final_state={"./data/result.pdf": "[file does not exist]"},
+    ) == 0.0
+    assert "required output" in missing.last_precheck_failure
+
+    empty_output = OfficeBenchVerifier(_NoChat())
+    empty_config = {"evaluation": [{
+        "function": "evaluate_contain",
+        "args": {"file": "./data/result.docx", "keywords": ["hello"]},
+    }]}
+    actions = [{"app": "word", "action": "create_new_file",
+                "file_path": "/testbed/data/result.docx"}]
+    assert empty_output.predict_success(
+        "write hello", actions, ["Successfully created"],
+        config=empty_config, final_state={"./data/result.docx": ""},
+    ) == 0.0
+    assert "left empty" in empty_output.last_precheck_failure
+
+    empty_redirect = OfficeBenchVerifier(_NoChat())
+    redirect = {
+        "app": "shell", "action": "command",
+        "command": ": > /testbed/data/result.docx",
+    }
+    assert empty_redirect.predict_success(
+        "write hello", [redirect], ["Successfully executed"],
+        config=empty_config, final_state={"./data/result.docx": ""},
+    ) == 0.0
+    assert "left empty" in empty_redirect.last_precheck_failure
+
+    overwrite_append = OfficeBenchVerifier(_NoChat())
+    append_config = {
+        "task": "Add the sentence hello to the end of result.docx.",
+        "evaluation": [{
+            "function": "evaluate_contain",
+            "args": {"file": "./data/result.docx", "keywords": ["hello"]},
+        }],
+    }
+    overwrite = {
+        "app": "word", "action": "write_to_file",
+        "file_path": "/testbed/data/result.docx", "contents": "hello",
+    }
+    assert overwrite_append.predict_success(
+        append_config["task"], [overwrite], ["Successfully wrote"],
+        config=append_config, final_state={"./data/result.docx": "hello"},
+    ) == 0.0
+    assert "without first reading" in overwrite_append.last_precheck_failure
+
+    comma_cell = OfficeBenchVerifier(_NoChat())
+    comma_config = {
+        "task": "Write a formatted amount.",
+        "evaluation": [{
+            "function": "evaluate_excel_cell_value",
+            "args": {
+                "file": "./data/result.xlsx",
+                "matches": [{"row": "1", "col": "1", "value": "2,100,000"}],
+            },
+        }],
+    }
+    comma_write = {
+        "app": "excel", "action": "set_cell",
+        "file_path": "/testbed/data/result.xlsx",
+        "row_idx": "1", "column_idx": "1", "text": "2,100,000",
+    }
+    assert comma_cell.predict_success(
+        comma_config["task"], [comma_write], ["Successfully wrote"],
+        config=comma_config, final_state={"./data/result.xlsx": "2,100,000"},
+    ) == 0.0
+    assert "comma-containing text" in comma_cell.last_precheck_failure
+
+
+def test_verifier_prechecks_allow_substantive_output():
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    config = {"evaluation": [{
+        "function": "evaluate_contain",
+        "args": {"file": "./data/result.docx", "keywords": ["hello"]},
+    }]}
+    chat = _StubChat("SUCCESS")
+    verifier = OfficeBenchVerifier(chat)
+    actions = [
+        {"app": "word", "action": "create_new_file",
+         "file_path": "/testbed/data/result.docx"},
+        {"app": "word", "action": "write_to_file",
+         "file_path": "/testbed/data/result.docx", "contents": "hello"},
+        {"app": "word", "action": "write_to_file",
+         "file_path": "/testbed/data/result.docx", "contents": ""},
+    ]
+    assert verifier.predict_success(
+        "write hello", actions,
+        ["Successfully created", "Successfully wrote", "Successfully wrote"],
+        config=config, final_state={"./data/result.docx": "hello"},
+    ) == 1.0
+    assert verifier.last_precheck_failure is None and chat.last_prompt is not None
+
+    # Unknown state evidence and shell-produced binary files are deferred to the LLM, not rejected.
+    unknown = _StubChat("SUCCESS")
+    unknown_verifier = OfficeBenchVerifier(unknown)
+    binary_action = {
+        "app": "shell", "action": "command",
+        "command": "cat /testbed/data/source.pdf > /testbed/data/result.pdf",
+    }
+    assert unknown_verifier.predict_success(
+        "copy the PDF", [binary_action], ["Successfully executed"],
+        config={"evaluation": [{
+            "function": "evaluate_exact_match",
+            "args": {"result_file": "./data/result.pdf", "expected_file": "reference/result.pdf"},
+        }]},
+        final_state={"WRITE LOG (predicted)": "APPLIED shell.command"},
+    ) == 1.0
+    assert unknown_verifier.last_precheck_failure is None and unknown.last_prompt is not None
+
+    copied = _StubChat("SUCCESS")
+    copied_verifier = OfficeBenchVerifier(copied)
+    copied_actions = [
+        {"app": "shell", "action": "command",
+         "command": ": > /testbed/data/result.txt"},
+        {"app": "shell", "action": "command",
+         "command": "cp /testbed/data/source.txt /testbed/data/result.txt"},
+    ]
+    assert copied_verifier.predict_success(
+        "copy hello", copied_actions, ["Successfully executed", "Successfully executed"],
+        config={"evaluation": [{
+            "function": "evaluate_contain",
+            "args": {"file": "./data/result.txt", "keywords": ["hello"]},
+        }]},
+        final_state={"./data/result.txt": "hello"},
+    ) == 1.0
+    assert copied_verifier.last_precheck_failure is None
+
+    negative = _StubChat("SUCCESS")
+    negative_verifier = OfficeBenchVerifier(negative)
+    assert negative_verifier.predict_success(
+        "ensure forbidden text is absent",
+        [{"app": "word", "action": "create_new_file",
+          "file_path": "/testbed/data/result.txt"}],
+        ["Successfully created"],
+        config={"evaluation": [{
+            "function": "evaluate_not_contain",
+            "args": {"file": "./data/result.txt", "keywords": ["forbidden"]},
+        }]},
+        final_state={"./data/result.txt": ""},
+    ) == 1.0
+    assert negative_verifier.last_precheck_failure is None
+    assert negative_verifier.predict_success(
+        "ensure forbidden text is absent", [], [],
+        config={"evaluation": [{
+            "function": "evaluate_not_contain",
+            "args": {"file": "./data/result.txt", "keywords": ["forbidden"]},
+        }]},
+        final_state={"./data/result.txt": "[file does not exist]"},
+    ) == 1.0
+    assert negative_verifier.last_precheck_failure is None
 
 
 def test_verifier_blind_and_reference(monkeypatch):
@@ -389,6 +1361,186 @@ def test_verifier_blind_and_reference(monkeypatch):
     blind = _StubChat("SUCCESS")
     OfficeBenchVerifier(blind).predict_success(_FAKE_CONFIG["task"], actions, obs, config=_FAKE_CONFIG)
     assert "GROUND-TRUTH SUCCESS CHECKS" not in blind.last_prompt
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    python_blind = _ScriptChat([
+        (
+            "PYTHON_FINAL:\n"
+            'print_json({"verdict": "SUCCESS" if data["config"] == {} '
+            'and data["requirements"] == [] else "FAILURE"})'
+        ),
+    ])
+    confidence = OfficeBenchVerifier(python_blind).predict_success(
+        _FAKE_CONFIG["task"],
+        actions,
+        obs,
+        config=_FAKE_CONFIG,
+        final_state={"./calendar/Bob.ics": "[file does not exist]"},
+    )
+    assert confidence == 1.0
+
+
+def test_verifier_self_consistency_uses_distinct_reproducible_seeds(monkeypatch):
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    class _SeededChat:
+        def __init__(self):
+            self.seed = None
+            self.seen = []
+            self.prompts = []
+
+        def chat(self, _system, user, **_kwargs):
+            self.seen.append(self.seed)
+            self.prompts.append(user)
+            return "SUCCESS" if self.seed % 2 == 0 else "FAILURE"
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "3")
+    chat = _SeededChat()
+    confidence = OfficeBenchVerifier(chat, sample_seed=20).predict_success(
+        _FAKE_CONFIG["task"],
+        [{"app": "calendar", "action": "create_event", "user": "Bob"}],
+        ["Successfully created"],
+        config=_FAKE_CONFIG,
+    )
+
+    assert confidence == pytest.approx(2 / 3)
+    assert chat.seen == [20, 21, 22]
+    assert len(set(chat.prompts)) == 3
+    assert chat.seed is None
+
+
+def test_verifier_atomic_requirements_split_small_lists():
+    from tts.env.officebench_wm import _atomic_requirements
+
+    checks = _atomic_requirements({
+        "evaluation": [
+            {
+                "function": "evaluate_contain",
+                "args": {"file": "a.txt", "keywords": ["a", "b", "c"]},
+            },
+            {
+                "function": "evaluate_excel_cell_value",
+                "args": {"file": "b.xlsx", "matches": list(range(5))},
+            },
+        ],
+    })
+
+    assert [check["args"]["keywords"] for check in checks[:3]] == [["a"], ["b"], ["c"]]
+    assert checks[3]["args"]["matches"] == list(range(5))
+
+
+def test_verifier_percheck_returns_coverage_aware_confidence(monkeypatch):
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0")
+    chat = _ScriptChat(["STATUS: MET", "STATUS: UNKNOWN", "STATUS: UNMET"])
+    verifier = OfficeBenchVerifier(chat)
+    confidence = verifier.predict_success(
+        "write three keywords",
+        [{"app": "word", "action": "write_to_file"}],
+        ["Successfully wrote"],
+        config={
+            "evaluation": [{
+                "function": "evaluate_contain",
+                "args": {"file": "a.txt", "keywords": ["a", "b", "c"]},
+            }],
+        },
+        final_state={"a.txt": "a"},
+    )
+
+    assert confidence == pytest.approx((1 + 0.25) / 3)
+    assert verifier.last_percheck_breakdown == {
+        "met": 1,
+        "unmet": 1,
+        "unknown": 1,
+        "total": 3,
+        "unknown_credit": 0.25,
+    }
+
+
+def test_verifier_percheck_blends_whole_task_calibration(monkeypatch):
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_PYTHON", "0")
+    chat = _ScriptChat(["STATUS: MET", "FAILURE"])
+    verifier = OfficeBenchVerifier(chat)
+
+    confidence = verifier.predict_success(
+        "create a.txt",
+        [{"app": "word", "action": "create_new_file"}],
+        ["Successfully created"],
+        config={
+            "evaluation": [{
+                "function": "evaluate_file_exist",
+                "args": {"file": "a.txt"},
+            }],
+        },
+        final_state={"a.txt": "content"},
+    )
+
+    assert confidence == pytest.approx(0.75)
+    assert verifier.last_percheck_breakdown["atomic_score"] == 1.0
+    assert verifier.last_percheck_breakdown["whole_score"] == 0.0
+    assert verifier.last_percheck_breakdown["whole_weight"] == 0.25
+
+
+def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
+    from argparse import Namespace
+
+    from experiments.run import _configure_officebench_bon
+
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_PERCHECK", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_COMPARATIVE_RERANK", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", raising=False)
+    args = Namespace(
+        agent="llm_wm",
+        llm_agent="gpt-5.4",
+        verifier_samples=None,
+        success_score="simulator_success",
+        _success_score_explicit=False,
+    )
+    _configure_officebench_bon(args)
+
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "5"
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_PERCHECK"] == "1"
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT"] == "0.25"
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT"] == "0.25"
+    assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_RERANK"] == "1"
+    assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN"] == "0.25"
+    assert args.success_score == "simulator_confidence_guarded"
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "7")
+    explicit = Namespace(
+        agent="llm_wm",
+        llm_agent="gpt-5.4",
+        verifier_samples=7,
+        success_score="simulator_success",
+        _success_score_explicit=True,
+    )
+    _configure_officebench_bon(explicit)
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "7"
+    assert explicit.success_score == "simulator_success"
+
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", raising=False)
+    monkeypatch.setenv("AZURE_OPENAI_DEPLOYMENT", "gpt-5.4")
+    deployment_only = Namespace(
+        agent="llm_wm",
+        llm_agent=None,
+        verifier_samples=None,
+        success_score="simulator_success",
+        _success_score_explicit=False,
+    )
+    _configure_officebench_bon(deployment_only)
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "5"
 
 
 def test_verifier_gold_expected_file(monkeypatch):
@@ -423,11 +1575,63 @@ def test_verifier_state_grounding_and_giveup():
     OfficeBenchVerifier(grounded).predict_success(
         _FAKE_CONFIG["task"], [{"app": "excel", "action": "set_cell"}], [""],
         config=_FAKE_CONFIG,
-        final_state={"data/score.xlsx": "(2, 2): 1000+2000000\t"},
+        final_state={
+            "data/score.xlsx": "(2, 2): 1000+2000000\t",
+            "./calendar/Bob.ics": "BEGIN:VCALENDAR\nEND:VCALENDAR",
+        },
         final_answer="None")
     assert "PREDICTED RESULTING FILE STATE" in grounded.last_prompt
     assert "1000+2000000" in grounded.last_prompt  # judge sees the literal string, not the claim
     assert "give-up/refusal" in grounded.last_prompt  # the give-up note fired for answer "None"
+
+
+def test_verifier_agentic_loop_can_gather_read_only_evidence(monkeypatch):
+    """The final OfficeBench WM verdict uses the same bounded grounding protocol."""
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "1")
+    chat = _ScriptChat([
+        "READ /testbed/data/result.xlsx",
+        "VERDICT: SUCCESS",
+    ])
+    query = _GroundingQuery()
+    verifier = OfficeBenchVerifier(chat)
+    verifier.bind_query_interface(query)
+    confidence = verifier.predict_success(
+        "update the sheet", [{"app": "excel", "action": "set_cell"}],
+        ["OBSERVATION: Successfully set the cell."])
+
+    assert confidence == 1.0
+    assert query.read_paths == ["/testbed/data/result.xlsx"]
+    assert chat.calls == 2
+
+
+def test_verifier_python_loop_uses_host_mediated_evidence(monkeypatch):
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "1")
+    chat = _ScriptChat([
+        (
+            "PYTHON_READ:\n"
+            'print_json({"queries": [{"op": "read", "path": "/testbed/data/result.xlsx"}]})'
+        ),
+        'PYTHON_FINAL:\nprint_json({"verdict": "SUCCESS"})',
+    ])
+    query = _GroundingQuery()
+    verifier = OfficeBenchVerifier(chat)
+    verifier.bind_query_interface(query)
+    confidence = verifier.predict_success(
+        "update the sheet",
+        [{"app": "excel", "action": "set_cell"}],
+        ["OBSERVATION: Successfully set the cell."],
+    )
+
+    assert confidence == 1.0
+    assert query.read_paths == ["/testbed/data/result.xlsx"]
+    assert verifier.n_python_calls == 2
+    assert verifier.n_python_failures == 0
 
 
 def test_state_files_from_config():
@@ -461,6 +1665,34 @@ def test_symbolic_set_cell_applies_exactly():
     assert "(3, 1): Cara" in out  # a new cell is appended
 
 
+def test_symbolic_new_workbook_create_set_delete():
+    """A new workbook is an empty symbolic grid that supports subsequent cell edits exactly."""
+    from tts.env.officebench_wm_predict import symbolic_file_state
+
+    writes = [
+        ({"app": "excel", "action": "create_new_file", "file_path": "/testbed/data/new.xlsx"}, "o"),
+        ({"app": "excel", "action": "set_cell", "row_idx": "1", "column_idx": "1",
+          "text": "Name"}, "o"),
+        ({"app": "excel", "action": "set_cell", "row_idx": 1, "column_idx": 2,
+          "text": "Alice"}, "o"),
+        ({"app": "excel", "action": "delete_cell", "row_idx": 1, "column_idx": 1}, "o"),
+    ]
+    out = symbolic_file_state("data/new.xlsx", "[file does not exist]", writes)
+    assert out == "(1, 1): [Empty Cell]\t(1, 2): Alice"
+
+
+def test_symbolic_create_existing_file_is_noop():
+    """OfficeBench create_new_file preserves an existing workbook instead of truncating it."""
+    from tts.env.officebench_wm_predict import symbolic_file_state
+
+    initial = "(1, 1): keep"
+    writes = [(
+        {"app": "excel", "action": "create_new_file", "file_path": "/testbed/data/existing.xlsx"},
+        "OBSERVATION: File already exists.",
+    )]
+    assert symbolic_file_state("data/existing.xlsx", initial, writes) == initial
+
+
 def test_symbolic_word_carries_literal_verbatim():
     """An in-trajectory-authored word file returns its literal contents verbatim (no re-derivation)."""
     from tts.env.officebench_wm_predict import symbolic_file_state
@@ -472,6 +1704,10 @@ def test_symbolic_word_carries_literal_verbatim():
     ]
     out = symbolic_file_state("data/h.docx", "[file does not exist]", writes)
     assert out == "Line1\nLine2 | with a pipe"
+
+    overwrite = [(
+        {"app": "word", "action": "create_new_file", "file_path": "/testbed/data/h.docx"}, "o")]
+    assert symbolic_file_state("data/h.docx", "OLD CONTENT", overwrite) == ""
 
 
 def test_symbolic_falls_back_when_not_modelable():
@@ -569,15 +1805,21 @@ def test_signature_bounds_and_collapses_content():
 # --------------------------------------------------------------------------- #
 
 
-def test_scaled_max_steps_by_app_count(monkeypatch):
-    """The default step budget keeps the 1app floor and adds headroom per extra app (capped)."""
-    from tts.env.real_officebench import _scaled_max_steps
+def test_default_step_budget_is_uniformly_increased(monkeypatch):
+    """Every OfficeBench subset gets 40 productive steps by default."""
+    import inspect
+
+    from tts.env.officebench_agent import run_officebench_agent
+    from tts.env.real_officebench import _rollout_max_steps, _scaled_max_steps
 
     monkeypatch.delenv("TTS_OFFICEBENCH_STEPS_FLOOR", raising=False)
     monkeypatch.delenv("TTS_OFFICEBENCH_STEPS_PER_APP", raising=False)
     monkeypatch.delenv("TTS_OFFICEBENCH_STEPS_CAP", raising=False)
-    assert _scaled_max_steps(1) == 20 and _scaled_max_steps(2) == 26 and _scaled_max_steps(3) == 32
-    assert _scaled_max_steps(20) == 40  # capped
+    assert _scaled_max_steps(1) == 40
+    assert _scaled_max_steps(2) == 40
+    assert _scaled_max_steps(3) == 40
+    assert _rollout_max_steps(48, 3) == 48
+    assert inspect.signature(run_officebench_agent).parameters["max_steps"].default == 40
 
 
 def test_prune_repeated_reads_saves_budget():
@@ -766,4 +2008,3 @@ def test_officebench_wm_rollout_leaves_testbed_pristine():
         assert predictor.n_writes >= 1  # the agent DID issue writes — they were predicted, not run
     finally:
         s.close()
-

@@ -1,0 +1,74 @@
+root@fac71b250fe4:/app# pwd; __tts_rc=$?; printf '\n__TTS_2438342d3e684893ad688b419f764e6d__RC:%s\n' "$__tts_rc"; printf '__TTS_2438342d3e684893ad688b419f764e6d
+__PWD:'; pwd; printf '__TTS_2438342d3e684893ad688b419f764e6d__END\n'; tmux wait -S done
+/app
+
+__TTS_2438342d3e684893ad688b419f764e6d__RC:0
+__TTS_2438342d3e684893ad688b419f764e6d__PWD:/app
+__TTS_2438342d3e684893ad688b419f764e6d__END
+root@fac71b250fe4:/app# cd -- /app && cat > /app/main.c.rs <<'EOF'
+> #if 0
+> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0,1);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
+> fn main(){let n: u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
+> #endif
+> #include <stdio.h>
+> #include <stdlib.h>
+> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
+> int main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\n",fib(n));return 0;}
+> /*
+> EOF
+root@fac71b250fe4:/app# rustc /app/main.c.rs -o /app/main && /app/main 10 >/dev/null 2>&1 || true; __tts_rc=$?; printf '\n__TTS_ef818e1bca23432fa069a4d3b3682418
+__RC:%s\n' "$__tts_rc"; printf '__TTS_ef818e1bca23432fa069a4d3b3682418__PWD:'; pwd; printf '__TTS_ef818e1bca23432fa069a4d3b3682418__END\n'; tmux wait -S done
+error[E0758]: unterminated block comment
+ --> /app/main.c.rs:9:1
+  |
+9 | /*
+  | ^^^
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0758`.
+
+__TTS_ef818e1bca23432fa069a4d3b3682418__RC:0
+__TTS_ef818e1bca23432fa069a4d3b3682418__PWD:/app
+__TTS_ef818e1bca23432fa069a4d3b3682418__END
+root@fac71b250fe4:/app# cd -- /app && cat >/app/main.c.rs <<'EOF'
+> #if 0
+> #include <stdio.h>
+> #include <stdlib.h>
+> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
+> int main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\n",fib(n));return 0;}
+> #else
+> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0,1);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
+> fn main(){let n:u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
+> #endif
+> EOF; __tts_rc=$?; printf '\n__TTS_ca35899138f44024ab74edf8651f091a__RC:%s\n' "$__tts_rc"; printf '__TTS_ca35899138f44024ab74edf8651f091a__PWD:'; pwd; printf '
+__TTS_ca35899138f44024ab74edf8651f091a__END\n'; tmux wait -S done
+> cd -- /app && sed -n '1,200p' /app/main.c.rs && printf '%s
+> ' '---' && (rustc /app/main.c.rs -o /tmp/rmain 2>&1 || true) && printf '%s
+> ' '---' && (gcc /app/main.c.rs -o /tmp/cmain 2>&1 || true); __tts_rc=$?; printf '\n__TTS_22289d30f2b94216b6532011072725ed__RC:%s\n' "$__tts_rc"; printf '__TTS
+_22289d30f2b94216b6532011072725ed__PWD:'; pwd; printf '__TTS_22289d30f2b94216b6532011072725ed__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> open('/app/main.c.rs','w').write('#include/*
+> */<stdio.h>
+> #include/*
+> */<stdlib.h>
+> #define FN fn
+> #define U u64
+> #define RET ->
+> #define LET let
+> #define WH while
+> #define IFN int
+> #define MAIN main
+> #define PRINT printf
+> #define PARSE strtoull(v[1],0,10)
+> #if 0
+> FN fib(mut n:U) RET U{LET(mut a,mut b)=(0,1);WH n>0{LET t=a+b;a=b;b=t;n-=1;}a}
+> FN MAIN(){LET n:U=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
+> #else
+> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
+> IFN MAIN(int c,char**v){unsigned long long n=PARSE;PRINT("%llu\\n",fib(n));return 0;}
+> #endif
+> ')
+> PY; __tts_rc=$?; printf '\n__TTS_eb2e122840524fcca554f50687eef00d__RC:%s\n' "$__tts_rc"; printf '__TTS_eb2e122840524fcca554f50687eef00d__PWD:'; pwd; printf '_
+_TTS_eb2e122840524fcca554f50687eef00d__END\n'; tmux wait -S done
+>

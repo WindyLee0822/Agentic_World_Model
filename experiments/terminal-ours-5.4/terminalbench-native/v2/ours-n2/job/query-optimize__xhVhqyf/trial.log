@@ -1,0 +1,5 @@
+Trial query-optimize__xhVhqyf failed: Docker compose command failed for environment query-optimize. Command: docker compose --project-name query-optimize__xhvhqyf__env --project-directory /home/t-wendili/.cache/harbor/tasks/55spjFHXbhXqhkHUB3xfBL/query-optimize/environment -f /tmp/tmp43mnos_w/query-optimize__xhVhqyf__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp1ii6n6h2/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network query-optimize__xhvhqyf__env_default Creating 
+ Network query-optimize__xhvhqyf__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network query-optimize__xhvhqyf__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

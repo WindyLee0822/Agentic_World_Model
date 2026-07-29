@@ -1,0 +1,276 @@
+]3008;start=143b8cb4-6602-496e-8cd4-02769d1990e7;machineid=4cfe8b87786b442392abb62286db520d;user=;hostname=aa8dade1d4b3;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@aa8dade1d4b3:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l]3008;start=b218cc1f-632f-46c3-ac92-674d0002f8ff;machineid=4cfe8b87786b442392abb62286db520d;user=;hostname=aa8dade1d4b3;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=command;cwd=/app\[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@aa8dade1d4b3:/app# clear
+[?2004l[H[J[3J[?2004hroot@aa8dade1d4b3:/app# pwd; __tts_rc=$?; printf '\n__TTS_0fdc99737efe46edbe6ee75bd12d50f8__RC:%s\n' "$__tts_rc"; printf '__TTS_0fdc99737efe46edbe6ee75bd12d50f8__PWD:'; pwd; printf '__TTS_0fdc99737efe46edbe6ee75bd12d50f8__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_0fdc99737efe46edbe6ee75bd12d50f8__RC:0
+__TTS_0fdc99737efe46edbe6ee75bd12d50f8__PWD:/app
+__TTS_0fdc99737efe46edbe6ee75bd12d50f8__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'ls -la /app && uname -a && id && command -v git sshd nginx openssl || true'; __tts_rc=$?; printf '\n__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__RC:%s\n' "$__tts_rc"; printf '__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__PWD:'; pwd; printf '__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__END\n'; tmux wait -S done
+[?2004ltotal 12
+drwxr-xr-x 1 root root 4096 Jul 19 01:47 .
+drwxr-xr-x 1 root root 4096 Jul 19 01:47 ..
+-rwxr-xr-x 1 root root 1281 Jul 16 19:53 solution.sh
+Linux aa8dade1d4b3 6.17.0-1013-azure #13~24.04.1-Ubuntu SMP Wed Apr 15 16:52:17 UTC 2026 x86_64 GNU/Linux
+uid=0(root) gid=0(root) groups=0(root)
+/usr/bin/git
+
+__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__RC:0
+__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__PWD:/app
+__TTS_65ad4a3963f84eda828b7b7a9e0e97ac__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'command -v apt-get >/dev/null && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server nginx openssl >/tmp/setup.log 2>&1; tail -n 40 /tmp/setup.log'; __tts_rc=$?; printf '\n__TTS_e85d1220e92d41e9a58945203eaa0a47__RC:%s\n' "$__tts_rc"; printf '__TTS_e85d1220e92d41e9a58945203eaa0a47__PWD:'; pwd; printf '__TTS_e85d1220e92d41e9a58945203eaa0a47__END\n'; tmux wait -S done
+[?2004l0% [Working]            Get:1 http://security.ubuntu.com/ubuntu resolute-security InRelease [137 kB]
+0% [Connecting to archive.ubuntu.com (91.189.92.23)] [1 InRelease 14.0 kB/137 kB 10%]                                                                                     Get:2 http://archive.ubuntu.com/ubuntu resolute InRelease [136 kB]
+                                                                                     0% [2 InRelease 14.0 kB/136 kB 10%] [1 InRelease 25.4 kB/137 kB 18%]                                                                    0% [2 InRelease 59.7 kB/136 kB 44%]0% [2 InRelease 65.4 kB/136 kB 48%]                                   0% [Waiting for headers]0% [Waiting for headers] [Waiting for headers]                                              Get:3 http://security.ubuntu.com/ubuntu resolute-security/restricted amd64 Packages [303 kB]
+0% [Waiting for headers] [3 Packages 14.0 kB/303 kB 5%]                                                       Get:4 http://archive.ubuntu.com/ubuntu resolute-updates InRelease [137 kB]
+0% [4 InRelease 2548 B/137 kB 2%] [3 Packages 14.0 kB/303 kB 5%]                                                                0% [Waiting for headers] [3 Packages 42.6 kB/303 kB 14%]0% [Waiting for headers] [3 Packages 42.6 kB/303 kB 14%]                                                        Get:5 http://archive.ubuntu.com/ubuntu resolute-backports InRelease [136 kB]
+0% [5 InRelease 2548 B/136 kB 2%] [3 Packages 82.6 kB/303 kB 27%]                                                                 0% [3 Packages 114 kB/303 kB 38%]16% [Waiting for headers] [3 Packages 117 kB/303 kB 39%]                                                        Get:6 http://archive.ubuntu.com/ubuntu resolute/main amd64 Packages [1874 kB]
+16% [6 Packages 2615 B/1874 kB 0%] [3 Packages 198 kB/303 kB 65%]                                                                 17% [6 Packages 201 kB/1874 kB 11%]17% [3 Packages store 0 B] [6 Packages 201 kB/1874 kB 11%] [Waiting for headers]                                                                                18% [6 Packages 215 kB/1874 kB 11%] [Waiting for headers]                                                         Get:7 http://security.ubuntu.com/ubuntu resolute-security/universe amd64 Packages [170 kB]
+19% [6 Packages 468 kB/1874 kB 25%] [7 Packages 2617 B/170 kB 2%]                                                                 20% [6 Packages 675 kB/1874 kB 36%]20% [7 Packages store 0 B] [6 Packages 675 kB/1874 kB 36%] [Waiting for headers]                                                                                21% [6 Packages 699 kB/1874 kB 37%] [Waiting for headers]                                                         Get:8 http://security.ubuntu.com/ubuntu resolute-security/main amd64 Packages [361 kB]
+22% [6 Packages 1085 kB/1874 kB 58%] [8 Packages 2617 B/361 kB 1%]                                                                  25% [Waiting for headers] [8 Packages 273 kB/361 kB 76%]                                                        Get:9 http://archive.ubuntu.com/ubuntu resolute/multiverse amd64 Packages [352 kB]
+25% [9 Packages 8568 B/352 kB 2%] [8 Packages 273 kB/361 kB 76%]25% [6 Packages store 0 B] [9 Packages 8568 B/352 kB 2%] [8 Packages 273 kB/361 kB 76%]                                                                                       26% [6 Packages store 0 B] [9 Packages 255 kB/352 kB 72%]                                                         27% [9 Packages 308 kB/352 kB 87%]27% [8 Packages store 0 B] [9 Packages 308 kB/352 kB 87%]                                                         28% [9 Packages 337 kB/352 kB 96%]                                  28% [Waiting for headers]                         Get:10 http://archive.ubuntu.com/ubuntu resolute/restricted amd64 Packages [189 kB]
+28% [10 Packages 10.5 kB/189 kB 6%]28% [9 Packages store 0 B] [10 Packages 10.5 kB/189 kB 6%]                                                          29% [10 Packages 139 kB/189 kB 74%]                                   29% [Waiting for headers]                         Get:11 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages [20.1 MB]
+29% [11 Packages 4267 B/20.1 MB 0%]29% [10 Packages store 0 B] [11 Packages 4267 B/20.1 MB 0%]                                                           30% [11 Packages 88.8 kB/20.1 MB 0%]54% [11 Packages 7665 kB/20.1 MB 38%]92% [11 Packages 19.5 MB/20.1 MB 97%]                                     94% [Waiting for headers]                         Get:12 http://archive.ubuntu.com/ubuntu resolute-updates/multiverse amd64 Packages [3584 B]
+94% [12 Packages 3584 B/3584 B 100%]                                    94% [Waiting for headers]                         Get:13 http://archive.ubuntu.com/ubuntu resolute-updates/main amd64 Packages [442 kB]
+94% [11 Packages store 0 B] [13 Packages 46.0 kB/442 kB 10%]                                                            95% [11 Packages store 0 B] [Waiting for headers]                                                 Get:14 http://archive.ubuntu.com/ubuntu resolute-updates/restricted amd64 Packages [316 kB]
+95% [11 Packages store 0 B] [14 Packages 3300 B/316 kB 1%]                                                          96% [11 Packages store 0 B] [Waiting for headers]                                                 Get:15 http://archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages [261 kB]
+96% [11 Packages store 0 B] [15 Packages 4096 B/261 kB 2%]                                                          97% [11 Packages store 0 B]97% [11 Packages store 0 B]                           98% [Working]98% [12 Packages store 0 B]                           98% [Working]98% [13 Packages store 0 B]                           99% [Working]99% [14 Packages store 0 B]                           99% [Working]99% [15 Packages store 0 B]                           100% [Working]              Fetched 24.9 MB in 4s (6054 kB/s)
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 7%Reading package lists... 7%Reading package lists... 88%Reading package lists... 88%Reading package lists... 89%Reading package lists... 89%Reading package lists... 90%Reading package lists... 90%Reading package lists... 92%Reading package lists... 92%Reading package lists... 93%Reading package lists... 93%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Reading package lists...
+Building dependency tree...
+Reading state information...
+openssh-server is already the newest version (1:10.2p1-2ubuntu3.4).
+nginx is already the newest version (1.28.3-2ubuntu1.6).
+openssl is already the newest version (3.5.5-1ubuntu3.2).
+Solving dependencies...
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+
+__TTS_e85d1220e92d41e9a58945203eaa0a47__RC:0
+__TTS_e85d1220e92d41e9a58945203eaa0a47__PWD:/app
+__TTS_e85d1220e92d41e9a58945203eaa0a47__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'set -e; u=git; id -u $u >/dev/null 2>&1 || useradd -m -s /bin/bash $u; echo git:password | chpasswd; mkdir -p /git/project.git /var/www/project-main /var/www/project-dev /etc/nginx/ssl; git init --bare /git/project.git >/dev/null; cat >/git/project.git/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -e
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   case "$ref" in
+[?2004l[?2004h>     refs/heads/main) GIT_WORK_TREE=/var/www/project-main git --git-dir=/git/project.git checkout -f main ;;
+[?2004l[?2004h>     refs/heads/dev) GIT_WORK_TREE=/var/www/project-dev git --git-dir=/git/project.git checkout -f dev ;;
+[?2004l[?2004h>   esac
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/project.git/hooks/post-receive; chown -R git:git /git /home/git; openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/nginx/ssl/self.key -out /etc/nginx/ssl/self.crt -days 365 -subj /CN=localhost >/dev/null 2>&1; cat >/etc/nginx/sites-available/gitdeploy <<"EOF"
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8443 ssl;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     ssl_certificate /etc/nginx/ssl/self.crt;
+[?2004l[?2004h>     ssl_certificate_key /etc/nginx/ssl/self.key;
+[?2004l[?2004h>     location = /index.html { root /var/www/project-main; }
+[?2004l[?2004h>     location /dev/ { alias /var/www/project-dev/; }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> rm -f /etc/nginx/sites-enabled/default; ln -sf /etc/nginx/sites-available/gitdeploy /etc/nginx/sites-enabled/gitdeploy; grep -q "^PasswordAuthentication yes" /etc/ssh/sshd_config || printf "\nPasswordAuthentication yes\nPermitRootLogin yes\nPubkeyAuthentication yes\nUsePAM yes\n" >> /etc/ssh/sshd_config; mkdir -p /run/sshd; nginx -t && nginx -s stop >/dev/null 2>&1 || true; nginx; pkill sshd >/dev/null 2>&1 || true; /usr/sbin/sshd; printf done'; __tts_rc=$?; printf '\n__TTS_d21c62572be6458c9ef5f44e2d7f1720__RC:%s\n' "$__tts_rc"; printf '__TTS_d21c62572be6458c9ef5f44e2d7f1720__PWD:'; pwd; printf '__TTS_d21c62572be6458c9ef5f44e2d7f1720__END\n'; tmux wait -S done
+[?2004l[33mhint: Using 'master' as the name for the initial branch. This default branch name[m
+[33mhint: will change to "main" in Git 3.0. To configure the initial branch name[m
+[33mhint: to use in all of your new repositories, which will suppress this warning,[m
+[33mhint: call:[m
+[33mhint:[m
+[33mhint: 	git config --global init.defaultBranch <name>[m
+[33mhint:[m
+[33mhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and[m
+[33mhint: 'development'. The just-created branch can be renamed via this command:[m
+[33mhint:[m
+[33mhint: 	git branch -m <name>[m
+[33mhint:[m
+[33mhint: Disable this message with "git config set advice.defaultBranchName false"[m
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+done
+__TTS_d21c62572be6458c9ef5f44e2d7f1720__RC:0
+__TTS_d21c62572be6458c9ef5f44e2d7f1720__PWD:/app
+__TTS_d21c62572be6458c9ef5f44e2d7f1720__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'which sshpass >/dev/null 2>&1 || apt-get install -y sshpass >/dev/null 2>&1; rm -rf /tmp/src && mkdir -p /tmp/src && cd /tmp/src && git init -b main >/dev/null && git config user.email a@a && git config user.name a && printf main >/tmp/src/index.html && git add index.html && git commit -m main >/dev/null && git remote add origin ssh://git@localhost/git/project.git && sshpass -p password git -c StrictHostKeyChecking=no push -u origin main >/tmp/p1 2>&1 && git checkout -b dev >/dev/null && mkdir -p dev && printf dev >/tmp/src/index.html && printf dev >/tmp/src/dev/index.html && git add index.html dev/index.html && git commit -m dev >/dev/null && sshpass -p password git -c StrictHostKeyChecking=no push -u origin dev >/tmp/p2 2>&1 && sleep 1 && curl -sk https://localhost:8443/index.html && printf "|" && curl -sk https://localhost:8443/dev/index.html'; __tts_rc=$?; printf '\n__TTS_303f06fecdca4ccba25ad8a8c3b765b4__RC:%s\n' "$__tts_rc"; printf '__TTS_303f06fecdca4ccba25ad8a8c3b765b4__PWD:'; pwd; printf '__TTS_303f06fecdca4ccba25ad8a8c3b765b4__END\n'; tmux wait -S done
+[?2004l
+__TTS_303f06fecdca4ccba25ad8a8c3b765b4__RC:128
+__TTS_303f06fecdca4ccba25ad8a8c3b765b4__PWD:/app
+__TTS_303f06fecdca4ccba25ad8a8c3b765b4__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'cat /tmp/p1 2>/dev/null; echo ---; ls -ld /var/www/project-main /var/www/project-dev /git/project.git; echo ---; tail -n 50 /var/log/nginx/error.log 2>/dev/null || true; echo ---; grep -n "PasswordAuthentication\|UsePAM" /etc/ssh/sshd_config'; __tts_rc=$?; printf '\n__TTS_f147bedd554842358d3869e3e57a01d5__RC:%s\n' "$__tts_rc"; printf '__TTS_f147bedd554842358d3869e3e57a01d5__PWD:'; pwd; printf '__TTS_f147bedd554842358d3869e3e57a01d5__END\n'; tmux wait -S done
+[?2004lerror: key does not contain a section: StrictHostKeyChecking
+fatal: unable to parse command-line config
+---
+drwxr-xr-x 6 git  git  4096 Jul 19 01:47 /git/project.git
+drwxr-xr-x 2 root root 4096 Jul 19 01:47 /var/www/project-dev
+drwxr-xr-x 2 root root 4096 Jul 19 01:47 /var/www/project-main
+---
+---
+78:#PasswordAuthentication yes
+102:# PasswordAuthentication.  Depending on your PAM configuration,
+106:# PAM authentication, then enable this but set PasswordAuthentication
+108:UsePAM yes
+147:PasswordAuthentication yes
+150:UsePAM yes
+
+__TTS_f147bedd554842358d3869e3e57a01d5__RC:0
+__TTS_f147bedd554842358d3869e3e57a01d5__PWD:/app
+__TTS_f147bedd554842358d3869e3e57a01d5__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'rm -rf /tmp/src; mkdir -p /tmp/src; cd /tmp/src; git init -b main >/dev/null && git config user.email a@a && git config user.name a && printf main >index.html && git add index.html && git commit -m main >/dev/null && git remote add origin ssh://git@localhost/git/project.git && sshpass -p password git -c core.sshCommand="ssh -o StrictHostKeyChecking=no" push -u origin main >/tmp/p1 2>&1 && git checkout -b dev >/dev/null && mkdir -p dev && printf dev >index.html && printf dev >dev/index.html && git add index.html dev/index.html && git commit -m dev >/dev/null && sshpass -p password git -c core.sshCommand="ssh -o StrictHostKeyChecking=no" push -u origin dev >/tmp/p2 2>&1 && sleep 1 && printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)"'; __tts_rc=$?; printf '\n__TTS_82bf40d2dd1047bf9b7769adad17a902__RC:%s\n' "$__tts_rc"; printf '__TTS_82bf40d2dd1047bf9b7769adad17a902__PWD:'; pwd; printf '__TTS_82bf40d2dd1047bf9b7769adad17a902__END\n'; tmux wait -S done
+[?2004lSwitched to a new branch 'dev'
+<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>|<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+__TTS_82bf40d2dd1047bf9b7769adad17a902__RC:0
+__TTS_82bf40d2dd1047bf9b7769adad17a902__PWD:/app
+__TTS_82bf40d2dd1047bf9b7769adad17a902__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'printf %s "server { listen 8443 ssl; server_name localhost; ssl_certificate /etc/nginx/ssl/self.crt; ssl_certificate_key /etc/nginx/ssl/self.key; root /var/www/project-main; location = /index.html { try_files /index.html =404; } location /dev/ { alias /var/www/project-dev/; try_files $uri $uri/ =404; } }" >/etc/nginx/sites-available/gitdeploy && nginx -t && nginx -s reload'; __tts_rc=$?; printf '\n__TTS_22e55b3aac7645dfb97c58c1a870ee3b__RC:%s\n' "$__tts_rc"; printf '__TTS_22e55b3aac7645dfb97c58c1a870ee3b__PWD:'; pwd; printf '__TTS_22e55b3aac7645dfb97c58c1a870ee3b__END\n'; tmux wait -S done
+[?2004lnginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+2026/07/19 01:48:10 [notice] 501#501: signal process started
+
+__TTS_22e55b3aac7645dfb97c58c1a870ee3b__RC:0
+__TTS_22e55b3aac7645dfb97c58c1a870ee3b__PWD:/app
+__TTS_22e55b3aac7645dfb97c58c1a870ee3b__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'sleep 1; printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)"'; __tts_rc=$?; printf '\n__TTS_cf318cb3738b47c991d571e67df036f2__RC:%s\n' "$__tts_rc"; printf '__TTS_cf318cb3738b47c991d571e67df036f2__PWD:'; pwd; printf '__TTS_cf318cb3738b47c991d571e67df036f2__END\n'; tmux wait -S done
+[?2004l<html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>|<html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+__TTS_cf318cb3738b47c991d571e67df036f2__RC:0
+__TTS_cf318cb3738b47c991d571e67df036f2__PWD:/app
+__TTS_cf318cb3738b47c991d571e67df036f2__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'echo ---p1---; cat /tmp/p1; echo ---p2---; cat /tmp/p2; echo ---tree-main---; find /var/www/project-main -maxdepth 2 -ls; echo ---tree-dev---; find /var/www/project-dev -maxdepth 3 -ls; echo ---hook---; sed -n "1,120p" /git/project.git/hooks/post-receive; echo ---refs---; git --git-dir=/git/project.git show-ref'; __tts_rc=$?; printf '\n__TTS_ec92726d935243b2bf828a6381c5585a__RC:%s\n' "$__tts_rc"; printf '__TTS_ec92726d935243b2bf828a6381c5585a__PWD:'; pwd; printf '__TTS_ec92726d935243b2bf828a6381c5585a__END\n'; tmux wait -S done
+[?2004l---p1---
+Warning: Permanently added 'localhost' (ED25519) to the list of known hosts.
+remote: error: unable to create file index.html: Permission denied        
+remote: Switched to branch 'main'        
+To ssh://localhost/git/project.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+---p2---
+remote: fatal: cannot create directory at 'dev': Permission denied        
+To ssh://localhost/git/project.git
+ * [new branch]      dev -> dev
+branch 'dev' set up to track 'origin/dev'.
+---tree-main---
+ 34145919      4 drwxr-xr-x   2 root     root         4096 Jul 19 01:47 /var/www/project-main
+---tree-dev---
+ 34145920      4 drwxr-xr-x   2 root     root         4096 Jul 19 01:47 /var/www/project-dev
+---hook---
+#!/bin/sh
+set -e
+while read old new ref; do
+  case "$ref" in
+    refs/heads/main) GIT_WORK_TREE=/var/www/project-main git --git-dir=/git/project.git checkout -f main ;;
+    refs/heads/dev) GIT_WORK_TREE=/var/www/project-dev git --git-dir=/git/project.git checkout -f dev ;;
+  esac
+done
+---refs---
+fe745ce5abf71883a6991a947fb400897f4009bd refs/heads/dev
+df89e11c6d9d0828ee6ec2179adbdad54f8ceeea refs/heads/main
+
+__TTS_ec92726d935243b2bf828a6381c5585a__RC:0
+__TTS_ec92726d935243b2bf828a6381c5585a__PWD:/app
+__TTS_ec92726d935243b2bf828a6381c5585a__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'chown -R git:git /var/www/project-main /var/www/project-dev && su -s /bin/sh git -c "GIT_WORK_TREE=/var/www/project-main git --git-dir=/git/project.git checkout -f main && GIT_WORK_TREE=/var/www/project-dev git --git-dir=/git/project.git checkout -f dev" && printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)"'; __tts_rc=$?; printf '\n__TTS_5c772313f20e40998025a381e05217b5__RC:%s\n' "$__tts_rc"; printf '__TTS_5c772313f20e40998025a381e05217b5__PWD:'; pwd; printf '__TTS_5c772313f20e40998025a381e05217b5__END\n'; tmux wait -S done
+[?2004lAlready on 'main'
+Switched to branch 'dev'
+main|<html>
+<head><title>500 Internal Server Error</title></head>
+<body>
+<center><h1>500 Internal Server Error</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+__TTS_5c772313f20e40998025a381e05217b5__RC:0
+__TTS_5c772313f20e40998025a381e05217b5__PWD:/app
+__TTS_5c772313f20e40998025a381e05217b5__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'cat >/etc/nginx/sites-available/gitdeploy <<"EOF"
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8443 ssl;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     ssl_certificate /etc/nginx/ssl/self.crt;
+[?2004l[?2004h>     ssl_certificate_key /etc/nginx/ssl/self.key;
+[?2004l[?2004h>     root /var/www/project-main;
+[?2004l[?2004h>     location = /index.html { try_files /index.html =404; }
+[?2004l[?2004h>     location /dev/ {
+[?2004l[?2004h>         alias /var/www/project-dev/;
+[?2004l[?2004h>         index index.html;
+[?2004l[?2004h>         try_files $uri /index.html =404;
+[?2004l[?2004h>     }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> nginx -t && nginx -s reload && printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)'; __tts_rc=$?; printf '\n__TTS_d1d79555dd8743c69f4e6833850b67fa__RC:%s\n' "$__tts_rc"; printf '__TTS_d1d79555dd8743c69f4e6833850b67fa__PWD:'; pwd; printf '__TTS_d1d79555dd8743c69f4e6833850b67fa__END\n'; tmux wait -S done
+[?2004lsh: 16: Syntax error: Unterminated quoted string
+
+__TTS_d1d79555dd8743c69f4e6833850b67fa__RC:2
+__TTS_d1d79555dd8743c69f4e6833850b67fa__PWD:/app
+__TTS_d1d79555dd8743c69f4e6833850b67fa__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'cat >/etc/nginx/sites-available/gitdeploy <<"EOF"
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8443 ssl;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     ssl_certificate /etc/nginx/ssl/self.crt;
+[?2004l[?2004h>     ssl_certificate_key /etc/nginx/ssl/self.key;
+[?2004l[?2004h>     root /var/www/project-main;
+[?2004l[?2004h>     location = /index.html { try_files /index.html =404; }
+[?2004l[?2004h>     location /dev/index.html { alias /var/www/project-dev/index.html; }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> nginx -t && nginx -s reload && printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)"'; __tts_rc=$?; printf '\n__TTS_49cdd462d5a14211b19125c82566c5c0__RC:%s\n' "$__tts_rc"; printf '__TTS_49cdd462d5a14211b19125c82566c5c0__PWD:'; pwd; printf '__TTS_49cdd462d5a14211b19125c82566c5c0__END\n'; tmux wait -S done
+[?2004lnginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+2026/07/19 01:48:30 [notice] 667#667: signal process started
+main|<html>
+<head><title>500 Internal Server Error</title></head>
+<body>
+<center><h1>500 Internal Server Error</h1></center>
+<hr><center>nginx/1.28.3 (Ubuntu)</center>
+</body>
+</html>
+__TTS_49cdd462d5a14211b19125c82566c5c0__RC:0
+__TTS_49cdd462d5a14211b19125c82566c5c0__PWD:/app
+__TTS_49cdd462d5a14211b19125c82566c5c0__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'tail -n 50 /var/log/nginx/error.log && ls -l /var/www/project-dev/index.html /var/www/project-main/index.html'; __tts_rc=$?; printf '\n__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__RC:%s\n' "$__tts_rc"; printf '__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__PWD:'; pwd; printf '__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__END\n'; tmux wait -S done
+[?2004l2026/07/19 01:48:07 [error] 239#239: *1 open() "/var/www/project-main/index.html" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /index.html HTTP/1.1", host: "localhost:8443"
+2026/07/19 01:48:07 [error] 241#241: *2 open() "/var/www/project-dev/index.html" failed (2: No such file or directory), client: 127.0.0.1, server: localhost, request: "GET /dev/index.html HTTP/1.1", host: "localhost:8443"
+2026/07/19 01:48:14 [error] 504#504: *4 directory index of "/var/www/project-dev/" is forbidden, client: 127.0.0.1, server: localhost, request: "GET /dev/index.html HTTP/1.1", host: "localhost:8443"
+2026/07/19 01:48:21 [error] 506#506: *6 rewrite or internal redirection cycle while internally redirecting to "/dev/index.html", client: 127.0.0.1, server: localhost, request: "GET /dev/index.html HTTP/1.1", host: "localhost:8443"
+2026/07/19 01:48:30 [error] 508#508: *8 rewrite or internal redirection cycle while internally redirecting to "/dev/index.html", client: 127.0.0.1, server: localhost, request: "GET /dev/index.html HTTP/1.1", host: "localhost:8443"
+-rw-rw-r-- 1 git git 3 Jul 19 01:48 /var/www/project-dev/index.html
+-rw-rw-r-- 1 git git 4 Jul 19 01:48 /var/www/project-main/index.html
+
+__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__RC:0
+__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__PWD:/app
+__TTS_712aee12ad844fb6bcc4f07c98d8b4ac__END
+[?2004hroot@aa8dade1d4b3:/app# cd -- /app && sh -lc 'printf %s "server { listen 8443 ssl; server_name localhost; ssl_certificate /etc/nginx/ssl/self.crt; ssl_certificate_key /etc/nginx/ssl/self.key; root /var/www/project-main; location = /index.html { try_files /index.html =404; } location = /dev/index.html { alias /var/www/project-dev/index.html; } }" >/etc/nginx/sites-available/gitdeploy && nginx -t && nginx -s reload && printf "%s|%s" "$(curl -sk https://localhost:8443/index.html)" "$(curl -sk https://localhost:8443/dev/index.html)"'; __tts_rc=$?; printf '\n__TTS_af4065ea0d8548298129c8c4f30dad35__RC:%s\n' "$__tts_rc"; printf '__TTS_af4065ea0d8548298129c8c4f30dad35__PWD:'; pwd; printf '__TTS_af4065ea0d8548298129c8c4f30dad35__END\n'; tmux wait -S done
+[?2004lnginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+2026/07/19 01:48:38 [notice] 745#745: signal process started
+main|dev
+__TTS_af4065ea0d8548298129c8c4f30dad35__RC:0
+__TTS_af4065ea0d8548298129c8c4f30dad35__PWD:/app
+__TTS_af4065ea0d8548298129c8c4f30dad35__END
+[?2004hroot@aa8dade1d4b3:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+]3008;end=b218cc1f-632f-46c3-ac92-674d0002f8ff;exit=success\]3008;start=143b8cb4-6602-496e-8cd4-02769d1990e7;machineid=4cfe8b87786b442392abb62286db520d;user=;hostname=aa8dade1d4b3;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@aa8dade1d4b3:/app# 

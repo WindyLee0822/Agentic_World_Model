@@ -77,13 +77,14 @@ class _StubPredictor:
 
     # agentic, multi-turn (Ours)
     def predict_success_agentic(self, domain, candidate_actions, gold_actions, reader, entity_types,
-                                tool_docs="") -> bool:
+                                tool_docs="", **kwargs) -> bool:
         self.success_calls += 1
         self._query(reader, entity_types, list(candidate_actions) + list(gold_actions))
         return ([a.name for a in candidate_actions] == [a.name for a in gold_actions]
                 and [a.args for a in candidate_actions] == [a.args for a in gold_actions])
 
-    def predict_observation_agentic(self, domain, action, history, reader, entity_types, tool_doc=""):
+    def predict_observation_agentic(self, domain, action, history, reader, entity_types,
+                                    tool_doc="", **kwargs):
         self.obs_calls += 1
         self._query(reader, entity_types, [action])
         return (f"stub::{action.name}", False)
@@ -105,6 +106,17 @@ def test_tau2_official_gold_trajectory_scores_one():
     gold = env.gold_trajectory()
     ri = env.evaluate(gold)
     assert ri.grounded and ri.success and ri.reward == 1.0  # official ENV evaluation
+
+
+@tau2
+def test_tau2_gold_trajectory_includes_required_communication():
+    from tts.env.registry import make_env
+
+    env = make_env("tau2", index=0)
+    criteria = env._task.evaluation_criteria
+    required = list(getattr(criteria, "communicate_info", None) or [])
+    final_message = env.gold_trajectory().final_message
+    assert all(str(value) in final_message for value in required)
 
 
 @tau2
@@ -419,6 +431,33 @@ def test_appworld_sweep_removes_only_matching_base(tmp_path, monkeypatch):
     monkeypatch.setenv("TTS_KEEP_APPWORLD_OUTPUTS", "1")
     assert real_appworld.sweep_experiment_outputs("run_B") == 0
     assert (root / "run_B_z").is_dir()
+
+
+def test_appworld_open_world_only_attempts_minimal_mode(monkeypatch):
+    """A minimal-mode failure must be reported directly, not masked by a full-mode retry."""
+    import sys
+    from types import ModuleType
+
+    from tts.env import appworld_lowlevel, real_appworld
+
+    attempts = []
+    expected = RuntimeError("minimal initialization failed")
+
+    class FakeAppWorld:
+        def __init__(self, *, task_id, experiment_name, ground_truth_mode):
+            attempts.append((task_id, experiment_name, ground_truth_mode))
+            raise expected
+
+    fake_appworld = ModuleType("appworld")
+    fake_appworld.AppWorld = FakeAppWorld
+    monkeypatch.setitem(sys.modules, "appworld", fake_appworld)
+    monkeypatch.setattr(appworld_lowlevel, "_ensure_root", lambda root: None)
+
+    with pytest.raises(RuntimeError, match="minimal initialization failed") as raised:
+        real_appworld._open_world("task_1", "experiment")
+
+    assert raised.value is expected
+    assert attempts == [("task_1", "experiment", "minimal")]
 
 
 @appworld

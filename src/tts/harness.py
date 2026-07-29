@@ -97,6 +97,7 @@ def _solver_signature(solver) -> tuple:
         getattr(solver, "llm_user", None),
         getattr(solver, "temperature", 0.0),
         getattr(solver, "max_steps", 100),
+        getattr(solver, "rollout_retries", 2),
     )
 
 
@@ -162,15 +163,48 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
     written).  The selection signal (``predicted``) is the WM's success belief; the realized
     official message log rides on the trajectory so the selected one can be committed and officially
     scored.  Generation is method-independent (same prompts/seeds); only the WM read depth differs
-    (flat for B1, recursive for Ours/B0)."""
+    (    flat for B1, recursive for Ours/B0)."""
     rollouts: List[RolloutResult] = []
     for i in range(n):
-        key = (env.env_name, env.task_id, config.seed + i, _solver_signature(config.solver), method)
+        rollout_seed = config.seed + i
+        key = (env.env_name, env.task_id, rollout_seed, _solver_signature(config.solver), method)
         if rollout_cache is not None and key in rollout_cache:
             traj, predicted, root = rollout_cache[key]
         else:
-            traj, predicted, root = env.run_agent_rollout_wm(config, method, config.seed + i, budget, cache)
-            if rollout_cache is not None:
+            retries = max(0, int(getattr(config.solver, "rollout_retries", 2) or 0))
+            error = None
+            for attempt in range(retries + 1):
+                try:
+                    traj, predicted, root = env.run_agent_rollout_wm(
+                        config, method, rollout_seed, budget, cache)
+                    error = None
+                    break
+                except NotImplementedError:
+                    raise
+                except Exception as err:  # noqa: BLE001 - preserve N with an explicit failed candidate
+                    error = err
+                    if attempt < retries:
+                        continue
+            if error is not None:
+                reason = (
+                    f"WM rollout seed {rollout_seed} failed after {retries + 1} attempt(s): "
+                    f"{type(error).__name__}: {error}"
+                )
+                print(f"[rollout-error] {env.env_name}/{env.task_id}: {reason}")
+                traj = Trajectory(
+                    steps=[],
+                    final_message=reason,
+                    done=False,
+                    termination_reason="rollout_error",
+                )
+                predicted = RewardInfo(
+                    reward=0.0,
+                    success=False,
+                    grounded=False,
+                    reason=reason,
+                )
+                root = None
+            if rollout_cache is not None and error is None:
                 rollout_cache[key] = (traj, predicted, root)
         rollouts.append(RolloutResult(
             index=i, trajectory=traj, predicted=predicted, spawn_root=root,
@@ -179,6 +213,11 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
             depth=root.max_depth() if root else 0,
             tokens=root.total_tokens() if root else 0,
             cost=root.total_cost() if root else 0.0,
+            n_python_calls=int((predicted.metadata or {}).get("python_calls", 0)),
+            n_python_failures=int((predicted.metadata or {}).get("python_failures", 0)),
+            n_python_forced=int((predicted.metadata or {}).get("python_forced", 0)),
+            n_python_mode_misses=int(
+                (predicted.metadata or {}).get("python_mode_misses", 0)),
         ))
     return rollouts
 
@@ -223,12 +262,26 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         else:
             # The official agent+user-sim generated each trajectory against the WM (no real write);
             # select by the WM's predicted success, then commit the chosen one to the real env.
+            refine_fn = getattr(env, "refine_rollout_scores", None)
+            if callable(refine_fn):
+                refine_fn(config, rollouts)
             if method == "b0":
                 selected_index = 0
             else:
                 selected_index, rollouts = Selector(config.success_score).select(rollouts)
             simulator_writes = 0 if env.state_hash() == pre_hash else 1
             selected = rollouts[selected_index]
+            if not selected.trajectory.done:
+                actual = RewardInfo(
+                    reward=0.0,
+                    success=False,
+                    grounded=True,
+                    reason="no valid world-model rollout was available to commit",
+                )
+                return _build_outcome(
+                    env, config, method, rollouts, selected_index, actual,
+                    0, simulator_writes, budget, cache, time.perf_counter() - t0,
+                )
             chokepoint = CommitChokepoint(env)
             actual = chokepoint.commit(selected.trajectory)  # the ONLY real write
             return _build_outcome(env, config, method, rollouts, selected_index, actual,
@@ -334,6 +387,13 @@ def _build_outcome(env, config, method, rollouts, selected_index, actual, n_comm
         predicted_success=predicted_success,
         predicted_confidence=predicted_confidence,
         simulator_writes=simulator_writes,
+        n_rollout_errors=sum(not rollout.trajectory.done for rollout in rollouts),
+        n_python_calls=sum(rollout.n_python_calls for rollout in rollouts),
+        n_python_failures=sum(rollout.n_python_failures for rollout in rollouts),
+        n_python_forced=sum(rollout.n_python_forced for rollout in rollouts),
+        n_python_mode_misses=sum(rollout.n_python_mode_misses for rollout in rollouts),
+        selected_python_calls=selected.n_python_calls,
+        selected_python_failures=selected.n_python_failures,
         split=getattr(env, "split", None),
         level=getattr(env, "level", None),
         domain=getattr(env, "domain", None),

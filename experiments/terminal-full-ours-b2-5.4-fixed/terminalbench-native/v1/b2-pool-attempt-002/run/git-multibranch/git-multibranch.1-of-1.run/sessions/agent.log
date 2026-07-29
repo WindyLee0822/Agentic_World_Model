@@ -1,0 +1,112 @@
+]3008;start=d3f4d23a-fc94-459e-82ee-0110ed7a8f04;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=932a909e045c;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=shell;cwd=/app\[?2004hroot@932a909e045c:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l]3008;start=c8361370-aa5c-463d-8c87-230f02b14029;machineid=41e343677aeb4359a0c9335713de5ce9;user=;hostname=932a909e045c;bootid=6347cd4a-5f19-4a33-acba-9a5256cd5f35;pid=00000000000000000034;type=command;cwd=/app\[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@932a909e045c:/app# clear
+[?2004l[H[J[3J[?2004hroot@932a909e045c:/app# pwd; __tts_rc=$?; printf '\n__TTS_8fdbc3a269404eea81850f2e6ec14872__RC:%s\n' "$__tts_rc"; printf '__TTS_8fdbc3a269404eea81850f2e6ec14872__PWD:'; pwd; printf '__TTS_8fdbc3a269404eea81850f2e6ec14872__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_8fdbc3a269404eea81850f2e6ec14872__RC:0
+__TTS_8fdbc3a269404eea81850f2e6ec14872__PWD:/app
+__TTS_8fdbc3a269404eea81850f2e6ec14872__END
+[?2004hroot@932a909e045c:/app# cd -- /app && bash -lc 'ls -la /app && uname -a && id && cat /etc/os-release | sed -n "1,6p"'; __tts_rc=$?; printf '\n__TTS_1defbe0bfd6249c781147fb4ce67f707__RC:%s\n' "$__tts_rc"; printf '__TTS_1defbe0bfd6249c781147fb4ce67f707__PWD:'; pwd; printf '__TTS_1defbe0bfd6249c781147fb4ce67f707__END\n'; tmux wait -S done
+[?2004ltotal 12
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 .
+drwxr-xr-x 1 root root 4096 Jul 18 12:50 ..
+-rwxr-xr-x 1 root root 1281 Jul 16 19:53 solution.sh
+Linux 932a909e045c 6.17.0-1013-azure #13~24.04.1-Ubuntu SMP Wed Apr 15 16:52:17 UTC 2026 x86_64 GNU/Linux
+uid=0(root) gid=0(root) groups=0(root)
+PRETTY_NAME="Ubuntu 26.04 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+
+__TTS_1defbe0bfd6249c781147fb4ce67f707__RC:0
+__TTS_1defbe0bfd6249c781147fb4ce67f707__PWD:/app
+__TTS_1defbe0bfd6249c781147fb4ce67f707__END
+[?2004hroot@932a909e045c:/app# cd -- /app && bash -lc 'ps -ef | grep -E "(sshd|nginx)" | grep -v grep; dpkg -l | grep -E "openssh-server|nginx|git"'; __tts_rc=$?; printf '\n__TTS_f41a04bba2504ed08837be227c6d7268__RC:%s\n' "$__tts_rc"; printf '__TTS_f41a04bba2504ed08837be227c6d7268__PWD:'; pwd; printf '__TTS_f41a04bba2504ed08837be227c6d7268__END\n'; tmux wait -S done
+[?2004lii  git                            1:2.53.0-1ubuntu1                amd64        fast, scalable, distributed revision control system
+ii  git-man                        1:2.53.0-1ubuntu1                all          fast, scalable, distributed revision control system (manual pages)
+ii  librtmp1:amd64                 2.4+20151223.gitfa8646d.1-3      amd64        toolkit for RTMP streams (shared library)
+ii  nginx                          1.28.3-2ubuntu1.6                amd64        small, powerful, scalable web/proxy server
+ii  nginx-common                   1.28.3-2ubuntu1.6                all          small, powerful, scalable web/proxy server - common files
+ii  openssh-server                 1:10.2p1-2ubuntu3.4              amd64        secure shell (SSH) server, for secure access from remote machines
+
+__TTS_f41a04bba2504ed08837be227c6d7268__RC:0
+__TTS_f41a04bba2504ed08837be227c6d7268__PWD:/app
+__TTS_f41a04bba2504ed08837be227c6d7268__END
+[?2004hroot@932a909e045c:/app# cd -- __TTS_f41a04bba2504ed08837be227c6d7268__PWD:/app && bash -lc 'set -e; u=git; id -u $u >/dev/null 2>&1 || useradd -m -s /bin/bash $u; echo git:password | chpasswd; mkdir -p /git/project.git /var/www/main /var/www/dev /etc/nginx/certs; git init --bare /git/project.git >/dev/null; cat >/git/project.git/hooks/post-receive <<'"'"'EOF'"'"'
+[?2004l[?2004h> #!/bin/bash
+[?2004l[?2004h> set -e
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   case "$ref" in
+[?2004l[?2004h>     refs/heads/main) GIT_WORK_TREE=/var/www/main git --git-dir=/git/project.git checkout -f main ;;
+[?2004l[?2004h>     refs/heads/dev) GIT_WORK_TREE=/var/www/dev git --git-dir=/git/project.git checkout -f dev ;;
+[?2004l[?2004h>   esac
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/project.git/hooks/post-receive; chown -R git:git /git; openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/nginx/certs/self.key -out /etc/nginx/certs/self.crt -days 365 -subj /CN=localhost >/dev/null 2>&1; cat >/etc/nginx/sites-available/gitdeploy <<'"'"'EOF'"'"'
+[?2004l[?2004h> server {
+[?2004l[?2004h>   listen 8443 ssl;
+[?2004l[?2004h>   server_name localhost;
+[?2004l[?2004h>   ssl_certificate /etc/nginx/certs/self.crt;
+[?2004l[?2004h>   ssl_certificate_key /etc/nginx/certs/self.key;
+[?2004l[?2004h>   root /var/www/main;
+[?2004l[?2004h>   location / { try_files $uri $uri/ =404; }
+[?2004l[?2004h>   location /dev/ { alias /var/www/dev/; try_files $uri $uri/ =404; }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> rm -f /etc/nginx/sites-enabled/default; ln -sf /etc/nginx/sites-available/gitdeploy /etc/nginx/sites-enabled/gitdeploy; grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config || echo 'PasswordAuthentication yes' >>/etc/ssh/sshd_config; grep -q '^PermitRootLogin' /etc/ssh/sshd_config || true; mkdir -p /run/sshd; nginx -t >/dev/null; nginx -s stop >/dev/null 2>&1 || true; nginx; /usr/sbin/sshd'; __tts_rc=$?; printf '\n__TTS_056a76650cc54331a0dac0ae67b08f94__RC:%s\n' "$__tts_rc"; printf '__TTS_056a76650cc54331a0dac0ae67b08f94__PWD:'; pwd; printf '__TTS_056a76650cc54331a0dac0ae67b08f94__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_f41a04bba2504ed08837be227c6d7268__PWD:/app: No such file or directory
+
+__TTS_056a76650cc54331a0dac0ae67b08f94__RC:1
+__TTS_056a76650cc54331a0dac0ae67b08f94__PWD:/app
+__TTS_056a76650cc54331a0dac0ae67b08f94__END
+[?2004hroot@932a909e045c:/app# cd -- /app && bash -lc 'set -e; id -u git >/dev/null 2>&1 || useradd -m -s /bin/bash git; echo git:password | chpasswd; mkdir -p /git/project.git /var/www/main /var/www/dev /etc/nginx/certs /run/sshd; [ -d /git/project.git/refs ] || git init --bare /git/project.git >/dev/null; cat >/git/project.git/hooks/post-receive <<'"'"'EOF'"'"'
+[?2004l[?2004h> #!/bin/bash
+[?2004l[?2004h> set -e
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   case "$ref" in
+[?2004l[?2004h>     refs/heads/main) mkdir -p /var/www/main; GIT_WORK_TREE=/var/www/main git --git-dir=/git/project.git checkout -f main ;;
+[?2004l[?2004h>     refs/heads/dev) mkdir -p /var/www/dev; GIT_WORK_TREE=/var/www/dev git --git-dir=/git/project.git checkout -f dev ;;
+[?2004l[?2004h>   esac
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/project.git/hooks/post-receive; chown -R git:git /git; openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/nginx/certs/self.key -out /etc/nginx/certs/self.crt -days 365 -subj /CN=localhost >/dev/null 2>&1; cat >/etc/nginx/sites-available/gitdeploy <<'"'"'EOF'"'"'
+[?2004l[?2004h> server {
+[?2004l[?2004h>   listen 8443 ssl;
+[?2004l[?2004h>   server_name localhost;
+[?2004l[?2004h>   ssl_certificate /etc/nginx/certs/self.crt;
+[?2004l[?2004h>   ssl_certificate_key /etc/nginx/certs/self.key;
+[?2004l[?2004h>   root /var/www/main;
+[?2004l[?2004h>   location / { try_files $uri $uri/ =404; }
+[?2004l[?2004h>   location /dev/ { alias /var/www/dev/; try_files $uri $uri/ =404; }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> rm -f /etc/nginx/sites-enabled/default; ln -sf /etc/nginx/sites-available/gitdeploy /etc/nginx/sites-enabled/gitdeploy; grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config || echo PasswordAuthentication yes >>/etc/ssh/sshd_config; nginx -t >/dev/null; nginx -s stop >/dev/null 2>&1 || true; nginx; pgrep -x sshd >/dev/null || /usr/sbin/sshd'; __tts_rc=$?; printf '\n__TTS_99913043500242d1bfcac061e87bede8__RC:%s\n' "$__tts_rc"; printf '__TTS_99913043500242d1bfcac061e87bede8__PWD:'; pwd; printf '__TTS_99913043500242d1bfcac061e87bede8__END\n'; tmux wait -S done
+[?2004l[33mhint: Using 'master' as the name for the initial branch. This default branch name[m
+[33mhint: will change to "main" in Git 3.0. To configure the initial branch name[m
+[33mhint: to use in all of your new repositories, which will suppress this warning,[m
+[33mhint: call:[m
+[33mhint:[m
+[33mhint: 	git config --global init.defaultBranch <name>[m
+[33mhint:[m
+[33mhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and[m
+[33mhint: 'development'. The just-created branch can be renamed via this command:[m
+[33mhint:[m
+[33mhint: 	git branch -m <name>[m
+[33mhint:[m
+[33mhint: Disable this message with "git config set advice.defaultBranchName false"[m
+cd -- /app && bash -lc 'ps -ef | grep -E "[s]shd|[n]ginx"; tail -n 50 /var/log/nginx/error.log 2>/dev/null; tail -n 50 /var/log/auth.log 2>/dev/null; ss -ltnp | grep -E ":(22|8443)\b" || true'; __tts_rc=$?; printf '\n__TTS_1c365c77ae304a1a9171517fb7e0fe1e__RC:%s\n' "$__tts_rc"; printf '__TTS_1c365c77ae304a1a9171517fb7e0fe1e__PWD:'; pwd; printf '__TTS_1c365c77ae304a1a9171517fb7e0fe1e__END\n'; tmux wait -S done
+cd -- /app && timeout 20 bash -lc 'ps -ef | grep -E "[s]shd|[n]ginx"; ss -ltnp | grep -E ":(22|8443)\b" || true; ls -l /git/project.git/hooks/post-receive /etc/nginx/sites-enabled/gitdeploy 2>/dev/null; tail -n 20 /etc/ssh/sshd_config /etc/nginx/sites-available/gitdeploy 2>/dev/null'; __tts_rc=$?; printf '\n__TTS_cccc670478614304a248dbe4ee5734d6__RC:%s\n' "$__tts_rc"; printf '__TTS_cccc670478614304a248dbe4ee5734d6__PWD:'; pwd; printf '__TTS_cccc670478614304a248dbe4ee5734d6__END\n'; tmux wait -S done
+
+__TTS_99913043500242d1bfcac061e87bede8__RC:1
+__TTS_99913043500242d1bfcac061e87bede8__PWD:/app
+__TTS_99913043500242d1bfcac061e87bede8__END
+[?2004hroot@932a909e045c:/app# cd -- /app && timeout 30 bash -lc 'set -e; pkill -f "cd -- /app && bash -lc" || true; pkill -x sshd || true; pkill -x nginx || true; nohup nginx >/tmp/nginx.out 2>&1 </dev/null & nohup /usr/sbin/sshd >/tmp/sshd.out 2>&1 </dev/null & sleep 1; ss -ltnp | grep -E ":(22|8443)\b"'; __tts_rc=$?; printf '\n__TTS_d8fb69f41f674c4d9264bd8331cbefbe__RC:%s\n' "$__tts_rc"; printf '__TTS_d8fb69f41f674c4d9264bd8331cbefbe__PWD:'; pwd; printf '__TTS_d8fb69f41f674c4d9264bd8331cbefbe__END\n'; tmux wait -S done
+[?2004l
+__TTS_d8fb69f41f674c4d9264bd8331cbefbe__RC:15
+__TTS_d8fb69f41f674c4d9264bd8331cbefbe__PWD:/app
+__TTS_d8fb69f41f674c4d9264bd8331cbefbe__END
+[?2004hroot@932a909e045c:/app# 

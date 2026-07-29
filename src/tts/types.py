@@ -174,6 +174,13 @@ class DecisionRecord:
     predicted_success: Optional[bool] = None
     predicted_confidence: Optional[float] = None  # selected rollout's verifier confidence (graded if K>1)
     simulator_writes: int = 0  # must always be 0 (simulator-never-writes invariant)
+    n_rollout_errors: int = 0  # candidates that exhausted retries and were retained as invalid failures
+    n_python_calls: int = 0
+    n_python_failures: int = 0
+    n_python_forced: int = 0
+    n_python_mode_misses: int = 0
+    selected_python_calls: int = 0
+    selected_python_failures: int = 0
     split: Optional[str] = None
     level: Optional[int] = None
     domain: Optional[str] = None

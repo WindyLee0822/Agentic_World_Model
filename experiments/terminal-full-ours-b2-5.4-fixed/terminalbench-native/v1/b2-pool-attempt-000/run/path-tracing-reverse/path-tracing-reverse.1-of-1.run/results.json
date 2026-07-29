@@ -1,0 +1,22 @@
+{
+    "id": "6752db60-cd74-4a5f-8f6c-828280f5b2bd",
+    "trial_name": "path-tracing-reverse.1-of-1.run",
+    "task_id": "path-tracing-reverse",
+    "instruction": "I've compiled a program at ./mystery. Write a C program called mystery.c that performs an identical operation.\nYou can do this by observing input output behavior, decompiling the program, or anything else.\nThe effect of running ./mystery should be identical to running gcc -o reversed mystery.c -lm && ./reversed\nshould be completely identical.\nYour c program must be <10k when compressed.",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "test_image_c_exists": "failed",
+        "test_image_compiles": "failed",
+        "test_image_similarity": "failed"
+    },
+    "recording_path": "run/path-tracing-reverse/path-tracing-reverse.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-17T23:00:41.775602+00:00",
+    "trial_ended_at": "2026-07-17T23:12:26.946436+00:00",
+    "agent_started_at": "2026-07-17T23:01:08.350015+00:00",
+    "agent_ended_at": "2026-07-17T23:12:08.452314+00:00",
+    "test_started_at": "2026-07-17T23:12:11.853586+00:00",
+    "test_ended_at": "2026-07-17T23:12:16.155137+00:00"
+}

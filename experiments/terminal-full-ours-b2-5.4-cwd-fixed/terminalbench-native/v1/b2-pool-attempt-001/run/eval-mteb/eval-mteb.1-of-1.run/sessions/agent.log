@@ -1,0 +1,93 @@
+[?2004hroot@349f2214b571:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@349f2214b571:/app# clear
+[?2004l[H[J[3J[?2004hroot@349f2214b571:/app# pwd; __tts_rc=$?; printf '\n__TTS_fd55784d3dab4142b098fdf3503059e1__RC:%s\n' "$__tts_rc"; printf '__TTS_fd55784d3dab4142b098fdf3503059e1__PWD:'; pwd; printf '__TTS_fd55784d3dab4142b098fdf3503059e1__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_fd55784d3dab4142b098fdf3503059e1__RC:0
+__TTS_fd55784d3dab4142b098fdf3503059e1__PWD:/app
+__TTS_fd55784d3dab4142b098fdf3503059e1__END
+[?2004hroot@349f2214b571:/app# cd -- /app && python -c "import inspect,mteb; print(mteb.__version__); from mteb import MTEB; import mteb.tasks as t; print('STS12' in dir(t))"; __tts_rc=$?; printf '\n__TTS_d2c27a758c044693a55ab8ec91f4235c__RC:%s\n' "$__tts_rc"; printf '__TTS_d2c27a758c044693a55ab8ec91f4235c__PWD:'; pwd; printf '__TTS_d2c27a758c044693a55ab8ec91f4235c__END\n'; tmux wait -S done
+[?2004lTraceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/local/lib/python3.10/site-packages/mteb/__init__.py", line 5, in <module>
+    from mteb.benchmarks.benchmarks import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/__init__.py", line 3, in <module>
+    from mteb.benchmarks.benchmark import Benchmark
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/benchmark.py", line 9, in <module>
+    from mteb.load_results.load_results import load_results
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/__init__.py", line 3, in <module>
+    from .benchmark_results import BenchmarkResults, ModelResult
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/benchmark_results.py", line 15, in <module>
+    from mteb.abstasks.AbsTask import AbsTask, ScoresDict
+  File "/usr/local/lib/python3.10/site-packages/mteb/abstasks/__init__.py", line 3, in <module>
+    from ..evaluation.LangMapping import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/__init__.py", line 3, in <module>
+    from .MTEB import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py", line 23, in <module>
+    from mteb.models import model_meta_from_sentence_transformers
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/__init__.py", line 5, in <module>
+    from mteb.models.overview import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/overview.py", line 14, in <module>
+    from mteb.models import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py", line 13, in <module>
+    from transformers import AutoModelForVision2Seq, AutoProcessor
+ImportError: cannot import name 'AutoModelForVision2Seq' from 'transformers' (/usr/local/lib/python3.10/site-packages/transformers/__init__.py)
+
+__TTS_d2c27a758c044693a55ab8ec91f4235c__RC:1
+__TTS_d2c27a758c044693a55ab8ec91f4235c__PWD:/app
+__TTS_d2c27a758c044693a55ab8ec91f4235c__END
+[?2004hroot@349f2214b571:/app# cd -- /app && python -c "import inspect,os,mteb; print(mteb.__file__)"; __tts_rc=$?; printf '\n__TTS_46601449c66143d7a432e894f3e75378__RC:%s\n' "$__tts_rc"; printf '__TTS_46601449c66143d7a432e894f3e75378__PWD:'; pwd; printf '__TTS_46601449c66143d7a432e894f3e75378__END\n'; tmux wait -S done
+[?2004lTraceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/local/lib/python3.10/site-packages/mteb/__init__.py", line 5, in <module>
+    from mteb.benchmarks.benchmarks import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/__init__.py", line 3, in <module>
+    from mteb.benchmarks.benchmark import Benchmark
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/benchmark.py", line 9, in <module>
+    from mteb.load_results.load_results import load_results
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/__init__.py", line 3, in <module>
+    from .benchmark_results import BenchmarkResults, ModelResult
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/benchmark_results.py", line 15, in <module>
+    from mteb.abstasks.AbsTask import AbsTask, ScoresDict
+  File "/usr/local/lib/python3.10/site-packages/mteb/abstasks/__init__.py", line 3, in <module>
+    from ..evaluation.LangMapping import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/__init__.py", line 3, in <module>
+    from .MTEB import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py", line 23, in <module>
+    from mteb.models import model_meta_from_sentence_transformers
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/__init__.py", line 5, in <module>
+    from mteb.models.overview import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/overview.py", line 14, in <module>
+    from mteb.models import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py", line 13, in <module>
+    from transformers import AutoModelForVision2Seq, AutoProcessor
+ImportError: cannot import name 'AutoModelForVision2Seq' from 'transformers' (/usr/local/lib/python3.10/site-packages/transformers/__init__.py)
+
+__TTS_46601449c66143d7a432e894f3e75378__RC:1
+__TTS_46601449c66143d7a432e894f3e75378__PWD:/app
+__TTS_46601449c66143d7a432e894f3e75378__END
+[?2004hroot@349f2214b571:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import pathlib; p=pathlib.Path('/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py'); print(p.exists()); print(p.read_text().splitlines()[:40])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_c4d88a64166f49cd9875767807620e3e__RC:%s\n' "$__tts_rc"; printf '__TTS_c4d88a64166f49cd9875767807620e3e__PWD:'; pwd; printf '__TTS_c4d88a64166f49cd9875767807620e3e__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "from pathlib import Path; p=Path('/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py'); print(p.exists()); print('\n'.join(p.read_text().splitlines()[:40]))"; __tts_rc=$?; printf '\n__TTS_cf791f1efc9e4782b2b2e204a7efcf61__RC:%s\n' "$__tts_rc"; printf '__TTS_cf791f1efc9e4782b2b2e204a7efcf61__PWD:'; pwd; printf '__TTS_cf791f1efc9e4782b2b2e204a7efcf61__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "from pathlib import Path; p=Path('/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py'); print(p.exists(), p.stat().st_size if p.exists() else None)"; __tts_rc=$?; printf '\n__TTS_355a7640777248558f9f4aa32b84a44a__RC:%s\n' "$__tts_rc"; printf '__TTS_355a7640777248558f9f4aa32b84a44a__PWD:'; pwd; printf '__TTS_355a7640777248558f9f4aa32b84a44a__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && ls -l /usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py; __tts_rc=$?; printf '\n__TTS_2875e966b44e42e9b03409e1594e6a45__RC:%s\n' "$__tts_rc"; printf '__TTS_2875e966b44e42e9b03409e1594e6a45__PWD:'; pwd; printf '__TTS_2875e966b44e42e9b03409e1594e6a45__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && find /usr/local/lib/python3.10/site-packages/mteb -maxdepth 2 -type f | head; __tts_rc=$?; printf '\n__TTS_3b79caeddad0490689c83d69a98f2d37__RC:%s\n' "$__tts_rc"; printf '__TTS_3b79caeddad0490689c83d69a98f2d37__PWD:'; pwd; printf '__TTS_3b79caeddad0490689c83d69a98f2d37__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import transformers; print(transformers.__version__); print(hasattr(transformers,'AutoModelForVision2Seq'))"; __tts_rc=$?; printf '\n__TTS_1be664c5b99c4bdf8237c20468d8049f__RC:%s\n' "$__tts_rc"; printf '__TTS_1be664c5b99c4bdf8237c20468d8049f__PWD:'; pwd; printf '__TTS_1be664c5b99c4bdf8237c20468d8049f__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "print('ok')"; __tts_rc=$?; printf '\n__TTS_7f3dab2b288041cd853f7e169851bd37__RC:%s\n' "$__tts_rc"; printf '__TTS_7f3dab2b288041cd853f7e169851bd37__PWD:'; pwd; printf '__TTS_7f3dab2b288041cd853f7e169851bd37__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 2
+    PY; __tts_rc=$?; printf '\n__TTS_c4d88a64166f49cd9875767807620e3e__RC:%s\n' "$__tts_rc"; printf '__TTS_c4d88a64166f49cd9875767807620e3e__PWD:'; pwd; printf '__TTS_c4d88a64166f49cd9875767807620e3e__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@349f2214b571:/app# cd -- /app && ps -ef | head; __tts_rc=$?; printf '\n__TTS_93a5e90c38294d05893104bdab6ae7f4__RC:%s\n' "$__tts_rc"; printf '__TTS_93a5e90c38294d05893104bdab6ae7f4__PWD:'; pwd; printf '__TTS_93a5e90c38294d05893104bdab6ae7f4__END\n'; tmux wait -S done
+[?2004lbash: ps: command not found
+
+__TTS_93a5e90c38294d05893104bdab6ae7f4__RC:0
+__TTS_93a5e90c38294d05893104bdab6ae7f4__PWD:/app
+__TTS_93a5e90c38294d05893104bdab6ae7f4__END
+[?2004hroot@349f2214b571:/app# cd -- /app && python -c "import sys,types,transformers; transformers.AutoModelForVision2Seq=type('AutoModelForVision2Seq',(),{}); m=types.ModuleType('mteb.models.gme_v_models'); m.gme_v_model_meta=[]; sys.modules['mteb.models.gme_v_models']=m; import mteb; print(mteb.__version__)"; __tts_rc=$?; printf '\n__TTS_ba5afe3baac846d6931007694775ae84__RC:%s\n' "$__tts_rc"; printf '__TTS_ba5afe3baac846d6931007694775ae84__PWD:'; pwd; printf '__TTS_ba5afe3baac846d6931007694775ae84__END\n'; tmux wait -S done
+[?2004l

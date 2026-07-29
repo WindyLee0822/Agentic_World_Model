@@ -1,0 +1,20 @@
+{
+    "id": "a4d983e3-79c0-4650-8cf8-31844c2b5a31",
+    "trial_name": "build-tcc-qemu.1-of-1.run",
+    "task_id": "build-tcc-qemu",
+    "instruction": "I have QEMU running a custom linux kernel. To run it you can run\nqemu-system-x86_64 -kernel ./linux-6.9/arch/x86/boot/bzImage -initrd ramfs/initramfs.cpio.gz -append \"console=ttyS0\" -nographic\nI want you to compile tcc and put it on an iso that's attached to my cdrom so that I can run\nqemu-system-x86_64 -kernel ./linux-6.9/arch/x86/boot/bzImage -initrd ramfs/initramfs.cpio.gz -append \"console=ttyS0\" -nographic -cdrom /tmp/tcc.iso\nand then be able to use tcc from within the qemu machine.",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "../tests/test_outputs.py - IndexError: list index out of range": "failed"
+    },
+    "recording_path": "run/build-tcc-qemu/build-tcc-qemu.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-17T21:47:19.562068+00:00",
+    "trial_ended_at": "2026-07-17T21:58:54.650732+00:00",
+    "agent_started_at": "2026-07-17T21:47:34.665716+00:00",
+    "agent_ended_at": "2026-07-17T21:58:34.853989+00:00",
+    "test_started_at": "2026-07-17T21:58:38.262092+00:00",
+    "test_ended_at": "2026-07-17T21:58:43.789912+00:00"
+}

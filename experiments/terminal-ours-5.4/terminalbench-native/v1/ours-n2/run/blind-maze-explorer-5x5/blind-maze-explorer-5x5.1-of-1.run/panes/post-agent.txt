@@ -1,0 +1,419 @@
+root@bbfe3ff39709:/app# pwd; __tts_rc=$?; printf '\n__TTS_3007330af89646409cffe47b0e29564d__RC:%s\n' "$__tts_rc"; printf '__TTS_3007330af89646409cffe47b0e29564d
+__PWD:'; pwd; printf '__TTS_3007330af89646409cffe47b0e29564d__END\n'; tmux wait -S done
+/app
+
+__TTS_3007330af89646409cffe47b0e29564d__RC:0
+__TTS_3007330af89646409cffe47b0e29564d__PWD:/app
+__TTS_3007330af89646409cffe47b0e29564d__END
+root@bbfe3ff39709:/app# cd -- /app && python3 - <<'PY'
+> import pexpect, os, sys
+> from collections import deque
+>
+> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=2)
+> # collect initial output if any
+> try:
+>     child.expect(['\n', pexpect.TIMEOUT, pexpect.EOF], timeout=0.5)
+> except Exception:
+>     pass
+>
+> dirs = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+> opp = {'N':'S','S':'N','E':'W','W':'E'}
+> order = ['N','E','S','W']
+> open_cells={(0,0):'S'}
+> walls=set()
+> exit_pos=None
+> cur=(0,0)
+>
+>
+> def send(cmd):
+>     child.sendline(cmd)
+>     child.expect('\r?\n')
+>     line = child.readline().strip()
+>     return line
+>
+> def move_seq(seq):
+>     global cur, exit_pos
+>     if not seq: return []
+>     resp = send('move ' + ' & '.join(seq))
+>     parts = [p.strip() for p in resp.split('&')]
+>     pos = cur
+>     for d,r in zip(seq,parts):
+>         dx,dy=dirs[d]
+>         np=(pos[0]+dx,pos[1]+dy)
+>         if 'hit wall' in r:
+>             walls.add(np)
+>         else:
+>             pos=np
+>             if 'reached exit' in r:
+>                 exit_pos=pos
+>                 open_cells[pos]='E'
+>             else:
+>                 open_cells.setdefault(pos,' ')
+>     cur=pos
+>     return parts
+>
+> def bfs_path(start,target):
+>     q=deque([start]); prev={start:None}
+>     while q:
+>         p=q.popleft()
+>         if p==target: break
+>         for d,(dx,dy) in dirs.items():
+>             np=(p[0]+dx,p[1]+dy)
+>             if np in open_cells and np not in prev:
+>                 prev[np]=(p,d); q.append(np)
+>     path=[]; p=target
+>     while p!=start:
+>         p2,d=prev[p]; path.append(d); p=p2
+>     return path[::-1]
+>
+> while True:
+>     frontier=[]
+>     for p in list(open_cells):
+>         for d,(dx,dy) in dirs.items():
+>             np=(p[0]+dx,p[1]+dy)
+>             if np not in open_cells and np not in walls:
+>                 frontier.append((p,d))
+>     if not frontier:
+>         break
+>     target_cell, test_dir = frontier[0]
+>     path = bfs_path(cur, target_cell)
+>     if path: move_seq(path)
+>     move_seq([test_dir])
+>
+> # compute bounds with outer walls
+> xs=[p[0] for p in open_cells]+[w[0] for w in walls]
+> ys=[p[1] for p in open_cells]+[w[1] for w in walls]
+> minx,maxx=min(xs),max(xs)
+> miny,maxy=min(ys),max(ys)
+> lines=[]
+> for y in range(miny,maxy+1):
+>     row=[]
+>     for x in range(minx,maxx+1):
+>         p=(x,y)
+>         if p in open_cells:
+>             ch=open_cells[p]
+>             if p==(0,0): ch='S'
+>             elif p==exit_pos: ch='E'
+>             elif ch not in 'SE': ch=' '
+>             row.append(ch)
+>         else:
+>             row.append('#')
+>     lines.append(''.join(row))
+>
+> # exit game
+> child.sendline('exit')
+> try:
+>     child.expect(pexpect.EOF, timeout=1)
+> except Exception:
+>     pass
+>
+> with open('/app/maze_map.txt','w') as f:
+>     f.write('\n'.join(lines)+'\n')
+> # verify exists and print for debug
+> assert os.path.exists('/app/maze_map.txt')
+> print('\n'.join(lines))
+> PY; __tts_rc=$?; printf '\n__TTS_9f6d7d000b744380a70fa65e81e2b911__RC:%s\n' "$__tts_rc"; printf '__TTS_9f6d7d000b744380a70fa65e81e2b911__PWD:'; pwd; printf '_
+_TTS_9f6d7d000b744380a70fa65e81e2b911__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> import os, pexpect, sys
+> from collections import deque
+>
+> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=1)
+> child.logfile = None
+>
+> # Drain any startup text
+> try:
+>     child.read_nonblocking(size=4096, timeout=0.2)
+> except Exception:
+>     pass
+>
+> dirs = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+> opp = {'N':'S','S':'N','E':'W','W':'E'}
+> order = ['N','E','S','W']
+> open_cells = {(0,0): 'S'}
+> walls = set()
+> exit_pos = None
+> cur = (0,0)
+>
+>
+> def send(cmd):
+>     child.sendline(cmd)
+>     try:
+>         child.expect('.*\r?\n', timeout=1)
+>         return child.after.strip()
+>     except Exception:
+>         try:
+>             return child.readline().strip()
+>         except Exception:
+>             return ''
+>
+>
+> def move_seq(seq):
+>     global cur, exit_pos
+>     if not seq:
+>         return []
+>     resp = send('move ' + ' & '.join(seq))
+>     parts = [p.strip() for p in resp.split('&')] if resp else []
+>     if len(parts) < len(seq):
+>         parts += [''] * (len(seq) - len(parts))
+>     pos = cur
+>     for d, r in zip(seq, parts):
+>         dx, dy = dirs[d]
+>         np = (pos[0] + dx, pos[1] + dy)
+>         if 'hit wall' in r:
+>             walls.add(np)
+>         else:
+>             pos = np
+>             if 'reached exit' in r:
+>                 exit_pos = pos
+>                 open_cells[pos] = 'E'
+>             else:
+>                 open_cells.setdefault(pos, ' ')
+>     cur = pos
+>     return parts
+>
+>
+> def bfs_path(start, target):
+>     q = deque([start])
+>     prev = {start: None}
+>     while q:
+>         p = q.popleft()
+>         if p == target:
+>             break
+>         for d in order:
+>             dx, dy = dirs[d]
+>             np = (p[0] + dx, p[1] + dy)
+>             if np in open_cells and np not in prev:
+>                 prev[np] = (p, d)
+>                 q.append(np)
+>     if target not in prev:
+>         return None
+>     path = []
+>     p = target
+>     while p != start:
+>         p, d = prev[p]
+>         path.append(d)
+>     return path[::-1]
+>
+> # Systematic exploration
+> while True:
+>     frontier = []
+>     for p in list(open_cells):
+>         for d in order:
+>             dx, dy = dirs[d]
+>             np = (p[0] + dx, p[1] + dy)
+>             if np not in open_cells and np not in walls:
+>                 frontier.append((p, d))
+>     if not frontier:
+>         break
+>     target_cell, test_dir = frontier[0]
+>     path = bfs_path(cur, target_cell)
+>     if path is None:
+>         break
+>     if path:
+>         move_seq(path)
+>     move_seq([test_dir])
+>
+> # Ensure an outer wall border is present in rendered map
+> xs = [p[0] for p in open_cells] + [w[0] for w in walls]
+> ys = [p[1] for p in open_cells] + [w[1] for w in walls]
+> minx, maxx = min(xs), max(xs)
+> miny, maxy = min(ys), max(ys)
+>
+> lines = []
+> for y in range(miny, maxy + 1):
+>     row = []
+>     for x in range(minx, maxx + 1):
+>         p = (x, y)
+>         if p in open_cells:
+>             if p == (0,0):
+>                 row.append('S')
+>             elif p == exit_pos:
+>                 row.append('E')
+>             else:
+>                 row.append(' ')
+>         else:
+>             row.append('#')
+>     lines.append(''.join(row))
+>
+> # Exit game before writing file
+> try:
+>     child.sendline('exit')
+>     child.close(force=True)
+> except Exception:
+>     pass
+>
+> with open('/app/maze_map.txt', 'w', encoding='utf-8') as f:
+>     f.write('\n'.join(lines) + '\n')
+>
+> # Verify file creation/content
+> with open('/app/maze_map.txt', 'r', encoding='utf-8') as f:
+>     data = f.read()
+> assert data == '\n'.join(lines) + '\n'
+> print(data, end='')
+> PY; __tts_rc=$?; printf '\n__TTS_5c5b492da0b74982bdee46b083a3cf99__RC:%s\n' "$__tts_rc"; printf '__TTS_5c5b492da0b74982bdee46b083a3cf99__PWD:'; pwd; printf '_
+_TTS_5c5b492da0b74982bdee46b083a3cf99__END\n'; tmux wait -S done
+> cd -- /app && ls -l /app && echo '---' && sed -n '1,200p' /app/maze_map.txt 2>/dev/null; __tts_rc=$?; printf '\n__TTS_3768a1a1917b434da6d0c291cea3456c__RC:%s\
+n' "$__tts_rc"; printf '__TTS_3768a1a1917b434da6d0c291cea3456c__PWD:'; pwd; printf '__TTS_3768a1a1917b434da6d0c291cea3456c__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+cells):
+        for d in order:
+            dx,dy=dirs[d]
+            np=(p[0]+dx,p[1]+dy)
+            if np not in open_cells and np not in walls:
+                frontier.append((p,d))
+    if not frontier:
+        break
+    cell,d=frontier[0]
+    path=bfs(cur,cell)
+    move_seq(path)
+    move_seq([d])
+
+xs=[p[0] for p in open_cells|walls]
+ys=[p[1] for p in open_cells|walls]
+minx,maxx=min(xs),max(xs)
+miny,maxy=min(ys),max(ys)
+lines=[]
+for y in range(miny,maxy+1):
+    row=[]
+    for x in range(minx,maxx+1):
+        p=(x,y)
+        if p in open_cells:
+            row.append('S' if p==(0,0) else 'E' if p==exit_pos else ' ')
+        else:
+            row.append('#')
+    lines.append(''.join(row))
+
+try:
+    child.sendline('exit')
+    child.close(force=True)
+except Exception:
+    pass
+
+with open('/app/maze_map.txt','w',encoding='utf-8') as f:
+    f.write('\n'.join(lines)+'\n')
+assert os.path.exists('/app/maze_map.txt')
+with open('/app/maze_map.txt','r',encoding='utf-8') as f:
+    assert f.read()=='\n'.join(lines)+'\n'
+PY; __tts_rc=$?; printf '\n__TTS_3147e60f22094796a0b8beb013e344b9__RC:%s\n' "$__tts_rc"; printf '__TTS_3147e60f22094796a0b8beb013e344b9__PWD:'; pwd; printf '__T
+TS_3147e60f22094796a0b8beb013e344b9__END\n'; tmux wait -S done
+> import os, pexpect
+> from collections import deque
+>
+> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=1)
+> try:
+>     child.read_nonblocking(size=4096, timeout=0.2)
+> except Exception:
+>     pass
+>
+> dirs={'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+> order=['N','E','S','W']
+> open_cells={(0,0)}
+> walls=set()
+> exit_pos=None
+> cur=(0,0)
+>
+> def sendline_get(cmd):
+>     child.sendline(cmd)
+>     out=''
+>     try:
+>         out += child.readline().strip()
+>     except Exception:
+>         pass
+>     try:
+>         while True:
+>             more = child.read_nonblocking(size=4096, timeout=0.05)
+>             if not more:
+>                 break
+>             out += ('\n' if out else '') + more.strip()
+>     except Exception:
+>         pass
+>     lines=[x.strip() for x in out.splitlines() if x.strip()]
+>     for line in reversed(lines):
+>         if 'hit wall' in line or 'moved' in line or 'reached exit' in line:
+>             return line
+>     return lines[-1] if lines else ''
+>
+> def move_seq(seq):
+>     global cur, exit_pos
+>     if not seq:
+>         return
+>     resp=sendline_get('move ' + ' & '.join(seq))
+>     parts=[p.strip() for p in resp.split('&')]
+>     if len(parts)<len(seq):
+>         parts += ['']*(len(seq)-len(parts))
+>     pos=cur
+>     for d,r in zip(seq,parts):
+>         dx,dy=dirs[d]
+>         np=(pos[0]+dx,pos[1]+dy)
+>         if 'hit wall' in r:
+>             walls.add(np)
+>         else:
+>             pos=np
+>             open_cells.add(pos)
+>             if 'reached exit' in r:
+>                 exit_pos=pos
+>     cur=pos
+>
+> def bfs(start,target):
+>     q=deque([start]); prev={start:(None,None)}
+>     while q:
+>         p=q.popleft()
+>         if p==target: break
+>         for d in order:
+>             dx,dy=dirs[d]
+>             np=(p[0]+dx,p[1]+dy)
+>             if np in open_cells and np not in prev:
+>                 prev[np]=(p,d)
+>                 q.append(np)
+>     if target not in prev: return []
+>     path=[]; p=target
+>     while prev[p][0] is not None:
+>         p,d=prev[p]
+>         path.append(d)
+>     return path[::-1]
+>
+> while True:
+>     frontier=[]
+>     for p in list(open_cells):
+>         for d in order:
+>             dx,dy=dirs[d]
+>             np=(p[0]+dx,p[1]+dy)
+>             if np not in open_cells and np not in walls:
+>                 frontier.append((p,d))
+>     if not frontier:
+>         break
+>     cell,d=frontier[0]
+>     path=bfs(cur,cell)
+>     move_seq(path)
+>     move_seq([d])
+>
+> xs=[p[0] for p in open_cells|walls]
+> ys=[p[1] for p in open_cells|walls]
+> minx,maxx=min(xs),max(xs)
+> miny,maxy=min(ys),max(ys)
+> lines=[]
+> for y in range(miny,maxy+1):
+>     row=[]
+>     for x in range(minx,maxx+1):
+>         p=(x,y)
+>         if p in open_cells:
+>             row.append('S' if p==(0,0) else 'E' if p==exit_pos else ' ')
+>         else:
+>             row.append('#')
+>     lines.append(''.join(row))
+>
+> try:
+>     child.sendline('exit')
+>     child.close(force=True)
+> except Exception:
+>     pass
+>
+> with open('/app/maze_map.txt','w',encoding='utf-8') as f:
+>     f.write('\n'.join(lines)+'\n')
+> assert os.path.exists('/app/maze_map.txt')
+> with open('/app/maze_map.txt','r',encoding='utf-8') as f:
+>     assert f.read()=='\n'.join(lines)+'\n'
+> PY; __tts_rc=$?; printf '\n__TTS_3147e60f22094796a0b8beb013e344b9__RC:%s\n' "$__tts_rc"; printf '__TTS_3147e60f22094796a0b8beb013e344b9__PWD:'; pwd; printf '_
+_TTS_3147e60f22094796a0b8beb013e344b9__END\n'; tmux wait -S done
+>

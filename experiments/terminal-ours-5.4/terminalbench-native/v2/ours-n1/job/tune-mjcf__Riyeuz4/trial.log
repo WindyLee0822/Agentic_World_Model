@@ -1,0 +1,5 @@
+Trial tune-mjcf__Riyeuz4 failed: Docker compose command failed for environment tune-mjcf. Command: docker compose --project-name tune-mjcf__riyeuz4__env --project-directory /home/t-wendili/.cache/harbor/tasks/jWu5FXBKfqdBD9LqMa9a2N/tune-mjcf/environment -f /tmp/tmp1dcbfnch/tune-mjcf__Riyeuz4__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp0sif0arf/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network tune-mjcf__riyeuz4__env_default Creating 
+ Network tune-mjcf__riyeuz4__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network tune-mjcf__riyeuz4__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

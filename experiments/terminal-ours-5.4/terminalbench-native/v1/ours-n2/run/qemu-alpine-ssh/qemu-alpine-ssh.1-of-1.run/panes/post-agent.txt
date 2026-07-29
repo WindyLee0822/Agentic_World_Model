@@ -1,0 +1,143 @@
+root@d67d6e57fc03:/app# asciinema rec --stdin /logs/agent.cast
+asciinema: recording asciicast to /logs/agent.cast
+asciinema: press <ctrl-d> or type "exit" when you're done
+root@d67d6e57fc03:/app# clear
+root@d67d6e57fc03:/app# pwd; __tts_rc=$?; printf '\n__TTS_f3bcbed84bf442cd91a1ff555f34e7bd__RC:%s\n' "$__tts_rc"; printf '__TTS_f3bcbed84bf442cd91a1ff555f34e7bd
+__PWD:'; pwd; printf '__TTS_f3bcbed84bf442cd91a1ff555f34e7bd__END\n'; tmux wait -S done
+/app
+
+__TTS_f3bcbed84bf442cd91a1ff555f34e7bd__RC:0
+__TTS_f3bcbed84bf442cd91a1ff555f34e7bd__PWD:/app
+__TTS_f3bcbed84bf442cd91a1ff555f34e7bd__END
+root@d67d6e57fc03:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_aa2f7781b2d44b8d9284a
+0822818ac7f__RC:%s\n' "$__tts_rc"; printf '__TTS_aa2f7781b2d44b8d9284a0822818ac7f__PWD:'; pwd; printf '__TTS_aa2f7781b2d44b8d9284a0822818ac7f__END\n'; tmux wait
+ -S done
+f /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_aa2f7781b2d44b8d9284a0822818ac7f__RC:0
+__TTS_aa2f7781b2d44b8d9284a0822818ac7f__PWD:/app
+__TTS_aa2f7781b2d44b8d9284a0822818ac7f__END
+root@d67d6e57fc03:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_85f43a672c8b466c9fcd8
+0b69b16607b__RC:%s\n' "$__tts_rc"; printf '__TTS_85f43a672c8b466c9fcd80b69b16607b__PWD:'; pwd; printf '__TTS_85f43a672c8b466c9fcd80b69b16607b__END\n'; tmux wait
+ -S done
+f /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_85f43a672c8b466c9fcd80b69b16607b__RC:0
+__TTS_85f43a672c8b466c9fcd80b69b16607b__PWD:/app
+__TTS_85f43a672c8b466c9fcd80b69b16607b__END
+root@d67d6e57fc03:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | head -200; __tts_rc=$?; printf '\n__TTS_d63aea600633414c
+90e708f8224cc79d__RC:%s\n' "$__tts_rc"; printf '__TTS_d63aea600633414c90e708f8224cc79d__PWD:'; pwd; printf '__TTS_d63aea600633414c90e708f8224cc79d__END\n'; tmux
+ wait -S done
+total 980176
+drwxr-xr-x 1 root root       4096 Jul 16 22:55 .
+drwxr-xr-x 1 root root       4096 Jul 16 23:40 ..
+-rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+/app:/app/alpine-disk.qcow2
+/app:/app/alpine.iso
+
+__TTS_d63aea600633414c90e708f8224cc79d__RC:0
+__TTS_d63aea600633414c90e708f8224cc79d__PWD:/app
+__TTS_d63aea600633414c90e708f8224cc79d__END
+root@d67d6e57fc03:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | head -200; __tts_rc=$?; printf '\n__TTS_8dd85995d80a4cd4
+bd9e45df2714e71d__RC:%s\n' "$__tts_rc"; printf '__TTS_8dd85995d80a4cd4bd9e45df2714e71d__PWD:'; pwd; printf '__TTS_8dd85995d80a4cd4bd9e45df2714e71d__END\n'; tmux
+ wait -S done
+total 980176
+drwxr-xr-x 1 root root       4096 Jul 16 22:55 .
+drwxr-xr-x 1 root root       4096 Jul 16 23:40 ..
+-rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+/app:/app/alpine-disk.qcow2
+/app:/app/alpine.iso
+
+__TTS_8dd85995d80a4cd4bd9e45df2714e71d__RC:0
+__TTS_8dd85995d80a4cd4bd9e45df2714e71d__PWD:/app
+__TTS_8dd85995d80a4cd4bd9e45df2714e71d__END
+root@d67d6e57fc03:/app# cd -- ''"'"'; pwd; printf '"'"'' && python3 - <<'PY'
+> import os, pty, subprocess, time, signal, sys
+> iso='/app/alpine.iso'
+> disk='/app/alpine-disk.qcow2'
+> log='/app/qemu-install.log'
+> qemu=['qemu-system-x86_64','-m','1024','-smp','2','-nographic','-cdrom',iso,'-drive',f'file={disk},if=virtio,format=qcow2','-boot','d','-netdev','user,id=n1,h
+ostfwd=tcp::2222-:22','-device','virtio-net-pci,netdev=n1']
+> master, slave = pty.openpty()
+> with open(log,'wb') as lf:
+>     p = subprocess.Popen(qemu, stdin=slave, stdout=slave, stderr=slave, close_fds=True)
+> os.close(slave)
+> def send(s): os.write(master, s.encode())
+> def read_for(seconds=1.0):
+>     end=time.time()+seconds
+>     out=b''
+>     while time.time()<end:
+>         try:
+>             chunk=os.read(master, 65536)
+>             if chunk:
+>                 out+=chunk
+>                 if len(out)>200000: out=out[-200000:]
+>             else:
+>                 time.sleep(0.1)
+>         except OSError:
+>             time.sleep(0.1)
+>     return out.decode('utf-8','ignore')
+> # wait for boot prompt/login
+> buf=''
+> for _ in range(120):
+>     buf += read_for(1.0)
+>     if 'login:' in buf or 'localhost login:' in buf or 'Welcome to Alpine' in buf:
+>         break
+> # login as root if prompted
+> send('root\n')
+> time.sleep(1)
+> buf += read_for(2.0)
+> # install to disk using setup-alpine with scripted answers
+> script='''export PATH=/sbin:/usr/sbin:/bin:/usr/bin\nsetup-alpine -q <<'EOF'\nKEYMAPOPTS=us us\nHOSTNAMEOPTS -n alpine\nINTERFACESOPTS auto lo\nDNSOPTS -n 1.1
+.1.1\nTIMEZONEOPTS -z UTC\nPROXYOPTS none\nAPKREPOSOPTS -1\nSSHDOPTS openssh\nNTPOPTS none\nDISKOPTS -m sys /dev/vda\nEOF\n'''
+> send(script)
+> # wait for install completion and then reboot
+> for _ in range(300):
+>     txt=read_for(1.0)
+>     buf += txt
+>     if 'Installation is complete' in buf or '==> syslinux' in buf or 'reboot' in buf.lower():
+>         break
+> send('reboot\n')
+> # give time to reboot, then terminate and restart booting from disk only in background detached with same forwarding
+> for _ in range(90):
+>     txt=read_for(1.0)
+>     if 'login:' in txt:
+>         break
+> try:
+>     p.terminate(); time.sleep(2)
+> except Exception:
+>     pass
+> cmd="nohup qemu-system-x86_64 -m 1024 -smp 2 -nographic -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -netdev user,id=n1,hostfwd=tcp::2222-:22 -de
+vice virtio-net-pci,netdev=n1 >/app/qemu-run.log 2>&1 </dev/null &"
+> subprocess.check_call(['sh','-lc',cmd])
+> # wait for ssh to come up by interacting on serial through a transient console-attached qemu is impossible now; instead poll tcp port
+> import socket
+> ok=False
+> for _ in range(120):
+>     s=socket.socket(); s.settimeout(1)
+>     try:
+>         s.connect(('127.0.0.1',2222)); ok=True; s.close(); break
+>     except Exception:
+>         time.sleep(1)
+>     finally:
+>         try: s.close()
+>         except: pass
+> # set root password and ensure ssh password auth by booting a one-off qemu with monitor? fallback: use expect over serial on installed system before detach
+> print('OK' if ok else 'STARTED')
+> PY; __tts_rc=$?; printf '\n__TTS_bdf40d61db86472a9978f98ac50d9c9d__RC:%s\n' "$__tts_rc"; printf '__TTS_bdf40d61db86472a9978f98ac50d9c9d__PWD:'; pwd; printf '_
+_TTS_bdf40d61db86472a9978f98ac50d9c9d__END\n'; tmux wait -S done
+> cd -- ''"'"'; pwd; printf '"'"'' && sh -lc 'command -v qemu-system-x86_64 || command -v qemu-system-x86_64-headless || command -v qemu-kvm || find / -type f \
+( -name "qemu-system-x86_64*" -o -name qemu-kvm \) 2>/dev/null | head -20'; __tts_rc=$?; printf '\n__TTS_74ada5935a0a4f02870dd9cc33e0651e__RC:%s\n' "$__tts_rc";
+ printf '__TTS_74ada5935a0a4f02870dd9cc33e0651e__PWD:'; pwd; printf '__TTS_74ada5935a0a4f02870dd9cc33e0651e__END\n'; tmux wait -S done
+> cd -- ''"'"'; pwd; printf '"'"'' && python3 - <<'PY'
+> import os, shutil, sys
+> bins=['qemu-system-x86_64','qemu-system-x86_64-headless','qemu-kvm']
+> found=[b for b in bins if shutil.which(b)]
+> print('FOUND='+','.join(found) if found else 'NO_QEMU')
+> PY; __tts_rc=$?; printf '\n__TTS_509a6ec7bdb64d9a9e09d120b36380b9__RC:%s\n' "$__tts_rc"; printf '__TTS_509a6ec7bdb64d9a9e09d120b36380b9__PWD:'; pwd; printf '_
+_TTS_509a6ec7bdb64d9a9e09d120b36380b9__END\n'; tmux wait -S done
+>

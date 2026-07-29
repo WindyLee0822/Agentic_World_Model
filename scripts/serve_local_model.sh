@@ -20,6 +20,7 @@
 #   TP_SIZE           tensor-parallel size (default: number of visible GPUs, else 1)
 #   MAX_MODEL_LEN     context length       (default: 32768)
 #   GPU_MEM_UTIL      vLLM --gpu-memory-utilization (default: 0.92)
+#   ENABLE_THINKING   1 | 0                (default: 1)
 #   EXTRA_ARGS        extra args forwarded verbatim to the server
 #
 # Examples:
@@ -50,6 +51,7 @@ TRUST_REMOTE_CODE="${TRUST_REMOTE_CODE:-1}"
 # tool_choice requests unless BOTH are set. Harmless for AppWorld/OfficeBench (they don't tool-call).
 TOOL_CALL_PARSER="${TOOL_CALL_PARSER:-qwen3_xml}"
 ENABLE_AUTO_TOOL_CHOICE="${ENABLE_AUTO_TOOL_CHOICE:-1}"
+ENABLE_THINKING="${ENABLE_THINKING:-1}"
 CPU_OFFLOAD_GB="${CPU_OFFLOAD_GB:-0}"   # offload N GB of weights to host RAM (helps single-GPU fit)
 QUANTIZATION="${QUANTIZATION:-}"        # e.g. fp8 to roughly halve the GPU memory footprint
 
@@ -80,10 +82,18 @@ if [[ "${ENABLE_AUTO_TOOL_CHOICE}" == "1" && -n "${TOOL_CALL_PARSER}" && "${TOOL
 fi
 [[ "${CPU_OFFLOAD_GB}" != "0" ]] && VLLM_FLAGS+=(--cpu-offload-gb "${CPU_OFFLOAD_GB}")
 [[ -n "${QUANTIZATION}" ]] && VLLM_FLAGS+=(--quantization "${QUANTIZATION}")
+case "${ENABLE_THINKING}" in
+  0) VLLM_FLAGS+=(--default-chat-template-kwargs '{"enable_thinking":false}') ;;
+  1) ;;
+  *)
+    echo "error: ENABLE_THINKING must be 0 or 1; got '${ENABLE_THINKING}'." >&2
+    exit 2
+    ;;
+esac
 
 echo "[serve] backend=${BACKEND} model=${MODEL} served-name=${SERVED_NAME}"
 echo "[serve] host=${HOST} port=${PORT} tp=${TP_SIZE} max_model_len=${MAX_MODEL_LEN} gpu_mem_util=${GPU_MEM_UTIL}"
-echo "[serve] model flags: reasoning_parser=${REASONING_PARSER} language_model_only=${LANG_MODEL_ONLY} trust_remote_code=${TRUST_REMOTE_CODE} tool_parser=${TOOL_CALL_PARSER} cpu_offload_gb=${CPU_OFFLOAD_GB} quant=${QUANTIZATION:-none}"
+echo "[serve] model flags: reasoning_parser=${REASONING_PARSER} language_model_only=${LANG_MODEL_ONLY} enable_thinking=${ENABLE_THINKING} trust_remote_code=${TRUST_REMOTE_CODE} tool_parser=${TOOL_CALL_PARSER} cpu_offload_gb=${CPU_OFFLOAD_GB} quant=${QUANTIZATION:-none}"
 echo "[serve] once up, run experiments with:  --local --llm-agent ${SERVED_NAME}"
 
 case "${BACKEND}" in

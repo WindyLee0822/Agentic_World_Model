@@ -1,0 +1,5 @@
+Trial financial-document-processor__JWwTgFS failed: Docker compose command failed for environment financial-document-processor. Command: docker compose --project-name financial-document-processor__jwwtgfs__env --project-directory /home/t-wendili/.cache/harbor/tasks/T9eC49XFCYopUM2bDKgar3/financial-document-processor/environment -f /tmp/tmp46eirr5i/financial-document-processor__JWwTgFS__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmppbf42d7d/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network financial-document-processor__jwwtgfs__env_default Creating 
+ Network financial-document-processor__jwwtgfs__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network financial-document-processor__jwwtgfs__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

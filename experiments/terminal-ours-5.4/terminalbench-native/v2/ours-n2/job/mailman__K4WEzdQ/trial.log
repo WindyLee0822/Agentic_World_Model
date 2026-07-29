@@ -1,0 +1,5 @@
+Trial mailman__K4WEzdQ failed: Docker compose command failed for environment mailman. Command: docker compose --project-name mailman__k4wezdq__env --project-directory /home/t-wendili/.cache/harbor/tasks/oJLBu7weukw33iq9PEf26P/mailman/environment -f /tmp/tmpyfsspnl9/mailman__K4WEzdQ__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp6gc7nzv8/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network mailman__k4wezdq__env_default Creating 
+ Network mailman__k4wezdq__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network mailman__k4wezdq__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

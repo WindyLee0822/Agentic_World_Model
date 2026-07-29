@@ -3,5 +3,6 @@
 from __future__ import annotations
 
 from .spawn_tree import SpawnNode
+from .transition_log import Transition, TransitionLog
 
-__all__ = ["SpawnNode"]
+__all__ = ["SpawnNode", "Transition", "TransitionLog"]

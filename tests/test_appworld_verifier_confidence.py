@@ -9,11 +9,26 @@ false positives a single verdict produces.  These tests use a fake chat client (
 
 from __future__ import annotations
 
+import importlib.util
+import os
+import sys
+from pathlib import Path
+
 import pytest
 
-from tts.env.appworld_wm import AppWorldWMPredictor
+from tts.env.appworld_wm import AppWorldWMPredictor, AppWorldWMQuery
 from tts.selection import Selector
 from tts.trajectory import RewardInfo, RolloutResult, Trajectory
+
+
+def _load_experiment_runner():
+    path = Path(__file__).parents[1] / "experiments" / "run.py"
+    spec = importlib.util.spec_from_file_location("test_experiments_run", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 class _ScriptChat:
@@ -49,12 +64,59 @@ def test_default_makes_one_call(monkeypatch):
     assert chat.calls == 1
 
 
+def test_app_activity_uses_catalog_without_treating_every_app_as_required():
+    chat = _ScriptChat(["SUCCESS"])
+    pred = AppWorldWMPredictor(chat)
+    pred.bind_app_catalog(("gmail", "phone", "spotify"))
+    pred.note_read("gmail", "login", {}, {"access_token": "secret"})
+    pred.note_read("gmail", "search_threads", {}, {"threads": []})
+    pred.note_read("phone", "show_events", {}, {"events": []})
+
+    assert pred.active_task_apps() == ("gmail", "phone")
+
+
 def test_self_consistency_returns_vote_fraction(monkeypatch):
     monkeypatch.setenv("TTS_APPWORLD_VERIFIER_SAMPLES", "4")
     chat = _ScriptChat(["SUCCESS", "FAIL", "SUCCESS", "FAIL"])
     conf = _pred(chat).predict_success("task", ["code"], ["out"])
     assert chat.calls == 4
     assert conf == 0.5
+
+
+def test_grounded_verifier_python_can_compute_over_query_results(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_GROUNDED", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PYTHON", "1")
+    monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
+    seen = []
+
+    def query_fn(app, api, **args):
+        seen.append((app, api, args))
+        return {"cart_entries": [{"product_id": 101}]}
+
+    code = """PYTHON_FINAL:
+remaining = {
+    item["product_id"]
+    for item in data["reads"][0]["result"]["cart_entries"]
+}
+print_json({"success": remaining == {101, 102}})
+"""
+    chat = _GroundedChat([
+        'PYTHON_READ:\nprint_json({"queries":[{"app":"amazon","api":"show_cart","args":{}}]})',
+        code,
+    ])
+    pred = AppWorldWMPredictor(chat)
+
+    confidence = pred.predict_success(
+        "Keep exactly products 101 and 102 in the cart",
+        ["code"],
+        ["out"],
+        query_fn=query_fn,
+    )
+
+    assert seen == [("amazon", "show_cart", {})]
+    assert confidence == 0.0
+    assert pred.n_python_calls == 2
+    assert pred.n_python_failures == 0
 
 
 def test_self_consistency_strong_majority(monkeypatch):
@@ -113,6 +175,7 @@ class _GroundedChat:
 
 def test_grounded_verifier_queries_then_judges(monkeypatch):
     monkeypatch.setenv("TTS_APPWORLD_VERIFIER_GROUNDED", "1")
+    monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
     monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
     seen = []
 
@@ -172,13 +235,68 @@ def test_reference_verifier_audits_write_log(monkeypatch):
     assert chat.calls == 1  # one reference-audit call
 
 
-def test_reference_verifier_disabled_by_default(monkeypatch):
+def test_reference_verifier_normalizes_direct_json_false(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_REFERENCE", "1")
+    monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
+
+    confidence = AppWorldWMPredictor(
+        _GroundedChat(['{"success":false}'])
+    ).predict_success("t", ["c"], ["o"], reference_checklist="CHECKS")
+
+    assert confidence == 0.0
+
+
+def test_reference_verifier_enabled_by_default_with_explicit_opt_out(monkeypatch):
     monkeypatch.delenv("TTS_APPWORLD_VERIFIER_REFERENCE", raising=False)
     monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
-    # checklist provided but flag off -> falls back to the prompt-only judge
-    conf = AppWorldWMPredictor(_ScriptChat(["SUCCESS"])).predict_success(
+    # Match OfficeBench: a supplied native checklist is audited by default.
+    conf = AppWorldWMPredictor(_ScriptChat(["FAIL"])).predict_success(
         "t", ["c"], ["o"], reference_checklist="CHECKS")
-    assert conf == 1.0
+    assert conf == 0.0
+
+    # Explicit opt-out restores the blind prompt-only ablation.
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_REFERENCE", "0")
+    blind = AppWorldWMPredictor(_ScriptChat(["SUCCESS"])).predict_success(
+        "t", ["c"], ["o"], reference_checklist="CHECKS")
+    assert blind == 1.0
+
+
+def test_reference_verifier_uses_uniform_read_trace_loop(monkeypatch):
+    monkeypatch.delenv("TTS_APPWORLD_VERIFIER_REFERENCE", raising=False)
+    monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+    chat = _GroundedChat(["TRACE venmo", "VERDICT: FAILURE"])
+    pred = AppWorldWMPredictor(chat)
+    pred.transition_log.record(
+        {"app": "venmo", "api": "approve_payment_request", "args": {"id": 7}},
+        '{"message":"approved"}',
+        ["venmo", "venmo.approve_payment_request"],
+        applied=True,
+    )
+    query = AppWorldWMQuery(lambda *args, **kwargs: {}, pred)
+    pred.bind_query_interface(query)
+
+    conf = pred.predict_success(
+        "Approve the correct request", ["code"], ["out"],
+        reference_checklist="CHECKS:\n- approved_request_id == 8")
+
+    assert conf == 0.0
+    assert query.traces == 1
+    assert chat.calls == 2
+
+
+def test_reference_write_log_keeps_tail_and_long_arguments(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_WRITE_ARG_CHARS", "500")
+    pred = AppWorldWMPredictor(_ScriptChat(["FAIL"]))
+    pred.write_history = [
+        ("gmail", "send_email", {"subject": f"message-{i}", "body": "x" * 250}, {"message": "ok"})
+        for i in range(65)
+    ]
+
+    log = pred._write_log(cap=10)
+
+    assert "intermediate writes omitted" in log
+    assert "message-0" in log and "message-64" in log
+    assert "x" * 200 in log
 
 
 def test_reference_verifier_self_consistency(monkeypatch):
@@ -188,6 +306,43 @@ def test_reference_verifier_self_consistency(monkeypatch):
     conf = AppWorldWMPredictor(chat).predict_success(
         "t", ["c"], ["o"], reference_checklist="CHECKS")
     assert conf == 0.75
+
+
+def test_reference_verifier_can_compute_exact_write_set_with_python(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_REFERENCE", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PYTHON", "1")
+    monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
+    code = """PYTHON:
+required = set(data["gold"]["sections"]["private_data"]["product_ids"])
+written = {
+    write["args"]["product_id"]
+    for write in data["writes"]
+    if write["name"] == "amazon.delete_from_cart"
+}
+print(f"MISSING = {sorted(required - written)}")
+print("VERDICT: SUCCESS" if written == required else "VERDICT: FAIL")
+"""
+    chat = _GroundedChat([code])
+    pred = AppWorldWMPredictor(chat)
+    pred.write_history = [
+        ("amazon", "delete_from_cart", {"product_id": 101}, {"message": "ok"}),
+    ]
+
+    confidence = pred.predict_success(
+        "Remove products 101 and 102",
+        ["code"],
+        ["out"],
+        reference_checklist=(
+            "CHECKS:\n- deleted_product_ids == [101, 102]\n"
+            'GOLD VALUES (private_data): {"product_ids": [101, 102]}'
+        ),
+    )
+
+    assert confidence == 0.0
+    assert pred.n_python_calls == 1
+    assert pred.n_python_failures == 0
+    assert pred.n_python_forced == 0
+    assert chat.calls == 1
 
 
 class _StatusChat:
@@ -223,6 +378,119 @@ def test_percheck_all_unknown_is_neutral(monkeypatch):
     assert conf == 0.5
 
 
+def test_percheck_coverage_aware_penalizes_unknown_checks(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT", "0.25")
+    chat = _StatusChat(["MET", "UNKNOWN", "UNKNOWN", "UNKNOWN"])
+    pred = AppWorldWMPredictor(chat)
+
+    conf = pred.predict_success(
+        "t", ["c"], ["o"],
+        reference_checks=(["c1", "c2", "c3", "c4"], "gold"),
+    )
+
+    assert conf == pytest.approx(0.4375)
+    assert pred.last_percheck_breakdown == {
+        "met": 1,
+        "unmet": 0,
+        "unknown": 3,
+        "failed": 0,
+        "total": 4,
+        "coverage_aware": True,
+        "unknown_credit": 0.25,
+    }
+
+
+def test_appworld_gpt54_bon_defaults_are_coverage_aware_and_agent_fair(monkeypatch):
+    from argparse import Namespace
+
+    _configure_appworld_bon = _load_experiment_runner()._configure_appworld_bon
+
+    for name in (
+        "TTS_APPWORLD_VERIFIER_PERCHECK",
+        "TTS_APPWORLD_VERIFIER_REFERENCE",
+        "TTS_APPWORLD_VERIFIER_COVERAGE_AWARE",
+        "TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT",
+        "TTS_APPWORLD_INSTRUCTION_PREFLIGHTS",
+        "TTS_SELECTION_CONFIDENCE_MARGIN",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    args = Namespace(
+        agent="llm_wm",
+        llm_agent="gpt-5.4",
+        no_verifier_reference=False,
+        verifier_percheck=False,
+        appworld_instruction_preflights=None,
+        success_score="simulator_success",
+        _success_score_explicit=False,
+    )
+
+    _configure_appworld_bon(args)
+
+    assert args.verifier_percheck is True
+    assert args.appworld_instruction_preflights is False
+    assert args.success_score == "simulator_confidence_guarded"
+    assert os.environ["TTS_APPWORLD_VERIFIER_COVERAGE_AWARE"] == "1"
+    assert os.environ["TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT"] == "0.25"
+    assert os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] == "0"
+    assert os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] == "0.1"
+
+
+def test_appworld_gpt54_bon_allows_explicit_noncomparable_preflight_ablation(monkeypatch):
+    from argparse import Namespace
+
+    _configure_appworld_bon = _load_experiment_runner()._configure_appworld_bon
+
+    monkeypatch.delenv("TTS_APPWORLD_INSTRUCTION_PREFLIGHTS", raising=False)
+    args = Namespace(
+        agent="llm_wm",
+        llm_agent="gpt-5.4",
+        no_verifier_reference=False,
+        verifier_percheck=False,
+        appworld_instruction_preflights=True,
+        success_score="simulator_success",
+        _success_score_explicit=False,
+    )
+
+    _configure_appworld_bon(args)
+
+    assert args.appworld_instruction_preflights is True
+    assert os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] == "1"
+
+
+def test_percheck_verifier_python_receives_structured_gold_and_writes(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PYTHON", "1")
+    code = """PYTHON:
+required = set(data["gold"]["sections"]["private_data"]["product_ids"])
+written = {
+    write["args"]["product_id"]
+    for write in data["writes"]
+    if write["api"] == "delete_from_cart"
+}
+print_json({"status": "MET" if written == required else "UNMET"})
+"""
+    pred = AppWorldWMPredictor(_GroundedChat([code]))
+    pred.write_history = [
+        ("amazon", "delete_from_cart", {"product_id": 101}, {"message": "ok"}),
+    ]
+
+    confidence = pred.predict_success(
+        "Remove products 101 and 102",
+        ["code"],
+        ["out"],
+        reference_checks=(
+            ["deleted_product_ids match private_data.product_ids"],
+            'private_data: {"product_ids": [101, 102]}',
+        ),
+    )
+
+    assert confidence == 0.0
+    assert pred.n_python_calls == 1
+    assert pred.n_python_failures == 0
+
+
 def test_percheck_disabled_falls_back(monkeypatch):
     monkeypatch.delenv("TTS_APPWORLD_VERIFIER_PERCHECK", raising=False)
     monkeypatch.delenv("TTS_APPWORLD_VERIFIER_REFERENCE", raising=False)
@@ -249,6 +517,7 @@ class _ReadThenVerdictChat:
 
 def test_percheck_with_reads_queries_then_verdicts(monkeypatch):
     monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
     seen = []
 
     def read_fn(app, api, **a):
@@ -264,3 +533,68 @@ def test_percheck_with_reads_queries_then_verdicts(monkeypatch):
     assert seen == [("venmo", "show_friends")]   # the per-check sub-pass actually read the DB
     assert conf == 1.0                            # 1 check, MET -> met/decidable = 1/1
 
+
+def test_percheck_python_can_compute_over_exact_read_facts(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PERCHECK", "1")
+    monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PYTHON", "1")
+    seen = []
+
+    def read_fn(app, api, **args):
+        seen.append((app, api, args))
+        return {"friends": ["a@example.com", "b@example.com"]}
+
+    code = """PYTHON_FINAL:
+existing = set(data["reads"][0]["result"]["friends"])
+removed = {
+    write["args"]["user_email"]
+    for write in data["writes"]
+    if write["api"] == "remove_friend"
+}
+print_json({"status": "MET" if existing == removed else "UNMET"})
+"""
+    chat = _GroundedChat([
+        'PYTHON_READ:\nprint_json({"queries":[{"app":"venmo","api":"show_friends","args":{}}]})',
+        code,
+    ])
+    pred = AppWorldWMPredictor(chat)
+    pred.write_history = [
+        ("venmo", "remove_friend", {"user_email": "a@example.com"}, {"message": "ok"}),
+    ]
+
+    confidence = pred.predict_success(
+        "Remove all friends",
+        ["code"],
+        ["out"],
+        reference_checks=(["friends == []"], "(none)"),
+        real_read_fn=read_fn,
+    )
+
+    assert seen == [("venmo", "show_friends", {})]
+    assert confidence == 0.0
+    assert pred.n_python_calls == 2
+    assert pred.n_python_failures == 0
+
+
+def test_bound_query_uses_uniform_agentic_success_loop_by_default(monkeypatch):
+    monkeypatch.delenv("TTS_APPWORLD_WM_AGENTIC", raising=False)
+    monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+    monkeypatch.delenv("TTS_APPWORLD_VERIFIER_SAMPLES", raising=False)
+    chat = _GroundedChat([
+        "TRACE venmo",
+        "VERDICT: SUCCESS",
+    ])
+    pred = AppWorldWMPredictor(chat)
+    pred.transition_log.record(
+        {"app": "venmo", "api": "approve_payment_request", "args": {"id": 6098}},
+        '{"message":"approved"}',
+        ["venmo", "venmo.approve_payment_request"],
+        applied=True,
+    )
+    query = AppWorldWMQuery(lambda *args, **kwargs: {}, pred)
+    pred.bind_query_interface(query)
+
+    confidence = pred.predict_success("Approve request 6098", ["code"], ["out"])
+
+    assert confidence == 1.0
+    assert query.traces == 1
+    assert chat.calls == 2

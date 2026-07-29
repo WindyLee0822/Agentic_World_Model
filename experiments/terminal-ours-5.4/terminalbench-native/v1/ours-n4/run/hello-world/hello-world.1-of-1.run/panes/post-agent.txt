@@ -1,0 +1,42 @@
+root@e439f4f60255:/app# pwd; __tts_rc=$?; printf '\n__TTS_7550129c846c4a2ca20919c7805e3464__RC:%s\n' "$__tts_rc"; printf '__TTS_7550129c846c4a2ca20919c7805e3464
+__PWD:'; pwd; printf '__TTS_7550129c846c4a2ca20919c7805e3464__END\n'; tmux wait -S done
+/app
+
+__TTS_7550129c846c4a2ca20919c7805e3464__RC:0
+__TTS_7550129c846c4a2ca20919c7805e3464__PWD:/app
+__TTS_7550129c846c4a2ca20919c7805e3464__END
+root@e439f4f60255:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_f967b8422a6d4bb499ca3
+52f139a1838__RC:%s\n' "$__tts_rc"; printf '__TTS_f967b8422a6d4bb499ca352f139a1838__PWD:'; pwd; printf '__TTS_f967b8422a6d4bb499ca352f139a1838__END\n'; tmux wait
+ -S done
+
+__TTS_f967b8422a6d4bb499ca352f139a1838__RC:0
+__TTS_f967b8422a6d4bb499ca352f139a1838__PWD:/app
+__TTS_f967b8422a6d4bb499ca352f139a1838__END
+root@e439f4f60255:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_274934d733d04f71949ca
+ac8b3b117e2__RC:%s\n' "$__tts_rc"; printf '__TTS_274934d733d04f71949caac8b3b117e2__PWD:'; pwd; printf '__TTS_274934d733d04f71949caac8b3b117e2__END\n'; tmux wait
+ -S done
+
+__TTS_274934d733d04f71949caac8b3b117e2__RC:0
+__TTS_274934d733d04f71949caac8b3b117e2__PWD:/app
+__TTS_274934d733d04f71949caac8b3b117e2__END
+root@e439f4f60255:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_beb5fc1c3a564a94bfc04
+313cbd399c0__RC:%s\n' "$__tts_rc"; printf '__TTS_beb5fc1c3a564a94bfc04313cbd399c0__PWD:'; pwd; printf '__TTS_beb5fc1c3a564a94bfc04313cbd399c0__END\n'; tmux wait
+ -S done
+
+__TTS_beb5fc1c3a564a94bfc04313cbd399c0__RC:0
+__TTS_beb5fc1c3a564a94bfc04313cbd399c0__PWD:/app
+__TTS_beb5fc1c3a564a94bfc04313cbd399c0__END
+root@e439f4f60255:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_292c55dfcb5f4e48a514c
+52d46c67e12__RC:%s\n' "$__tts_rc"; printf '__TTS_292c55dfcb5f4e48a514c52d46c67e12__PWD:'; pwd; printf '__TTS_292c55dfcb5f4e48a514c52d46c67e12__END\n'; tmux wait
+ -S done
+
+__TTS_292c55dfcb5f4e48a514c52d46c67e12__RC:0
+__TTS_292c55dfcb5f4e48a514c52d46c67e12__PWD:/app
+__TTS_292c55dfcb5f4e48a514c52d46c67e12__END
+root@e439f4f60255:/app# cd -- /app && printf 'Hello, world!\n' > hello.txt; __tts_rc=$?; printf '\n__TTS_49f6366f94164aae9a63af9be65dec47__RC:%s\n' "$__tts_rc";
+ printf '__TTS_49f6366f94164aae9a63af9be65dec47__PWD:'; pwd; printf '__TTS_49f6366f94164aae9a63af9be65dec47__END\n'; tmux wait -S done
+
+__TTS_49f6366f94164aae9a63af9be65dec47__RC:0
+__TTS_49f6366f94164aae9a63af9be65dec47__PWD:/app
+__TTS_49f6366f94164aae9a63af9be65dec47__END
+root@e439f4f60255:/app#

@@ -1,0 +1,81 @@
+[?2004hroot@8295db68e8ea:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@8295db68e8ea:/app# clear
+[?2004l[H[J[?2004hroot@8295db68e8ea:/app# pwd; __tts_rc=$?; printf '\n__TTS_c4c58a1a289b4d16a50c30d903061f01__RC:%s\n' "$__tts_rc"; printf '__TTS_c4c58a1a289b4d16a50c30d903061f01__PWD:'; pwd; printf '__TTS_c4c58a1a289b4d16a50c30d903061f01__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_c4c58a1a289b4d16a50c30d903061f01__RC:0
+__TTS_c4c58a1a289b4d16a50c30d903061f01__PWD:/app
+__TTS_c4c58a1a289b4d16a50c30d903061f01__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_7b5d4762f2d7424786c6b4da4f22e630__RC:%s\n' "$__tts_rc"; printf '__TTS_7b5d4762f2d7424786c6b4da4f22e630__PWD:'; pwd; printf '__TTS_7b5d4762f2d7424786c6b4da4f22e630__END\n'; tmux wait -S done
+[?2004lf /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_7b5d4762f2d7424786c6b4da4f22e630__RC:0
+__TTS_7b5d4762f2d7424786c6b4da4f22e630__PWD:/app
+__TTS_7b5d4762f2d7424786c6b4da4f22e630__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_cb252c4a654c4db7a09c4c10ceded9df__RC:%s\n' "$__tts_rc"; printf '__TTS_cb252c4a654c4db7a09c4c10ceded9df__PWD:'; pwd; printf '__TTS_cb252c4a654c4db7a09c4c10ceded9df__END\n'; tmux wait -S done
+[?2004lf /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_cb252c4a654c4db7a09c4c10ceded9df__RC:0
+__TTS_cb252c4a654c4db7a09c4c10ceded9df__PWD:/app
+__TTS_cb252c4a654c4db7a09c4c10ceded9df__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && ls -la /app && file /app/* 2>/dev/null; __tts_rc=$?; printf '\n__TTS_c06fbaf1683d4c428d890005a50c8767__RC:%s\n' "$__tts_rc"; printf '__TTS_c06fbaf1683d4c428d890005a50c8767__PWD:'; pwd; printf '__TTS_c06fbaf1683d4c428d890005a50c8767__END\n'; tmux wait -S done
+[?2004ltotal 980176
+drwxr-xr-x 1 root root       4096 Jul 17 00:03 .
+drwxr-xr-x 1 root root       4096 Jul 17 00:51 ..
+-rw-r--r-- 1 root root     197120 Jul 17 00:03 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+
+__TTS_c06fbaf1683d4c428d890005a50c8767__RC:127
+__TTS_c06fbaf1683d4c428d890005a50c8767__PWD:/app
+__TTS_c06fbaf1683d4c428d890005a50c8767__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_144b5f14b46a41998550cf3606dcc2ee__RC:%s\n' "$__tts_rc"; printf '__TTS_144b5f14b46a41998550cf3606dcc2ee__PWD:'; pwd; printf '__TTS_144b5f14b46a41998550cf3606dcc2ee__END\n'; tmux wait -S done
+[?2004lf /app/alpine-disk.qcow2
+f /app/alpine.iso
+
+__TTS_144b5f14b46a41998550cf3606dcc2ee__RC:0
+__TTS_144b5f14b46a41998550cf3606dcc2ee__PWD:/app
+__TTS_144b5f14b46a41998550cf3606dcc2ee__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && ls -la /app && file /app/* 2>/dev/null | sed 's#^#/app/#'; __tts_rc=$?; printf '\n__TTS_840a2e87c62c4001a1d25f7223057459__RC:%s\n' "$__tts_rc"; printf '__TTS_840a2e87c62c4001a1d25f7223057459__PWD:'; pwd; printf '__TTS_840a2e87c62c4001a1d25f7223057459__END\n'; tmux wait -S done
+[?2004ltotal 980176
+drwxr-xr-x 1 root root       4096 Jul 17 00:03 .
+drwxr-xr-x 1 root root       4096 Jul 17 00:51 ..
+-rw-r--r-- 1 root root     197120 Jul 17 00:03 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+
+__TTS_840a2e87c62c4001a1d25f7223057459__RC:0
+__TTS_840a2e87c62c4001a1d25f7223057459__PWD:/app
+__TTS_840a2e87c62c4001a1d25f7223057459__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && find /app /tmp /root /var /home /mnt /media -maxdepth 4 \( -type f -o -type l \) \( -iname 'alpine*.iso' -o -iname '*.iso' -o -iname 'alpine*' \) 2>/dev/null | sort | head -200; __tts_rc=$?; printf '\n__TTS_c9a05551ed884993aff12602de498342__RC:%s\n' "$__tts_rc"; printf '__TTS_c9a05551ed884993aff12602de498342__PWD:'; pwd; printf '__TTS_c9a05551ed884993aff12602de498342__END\n'; tmux wait -S done
+[?2004l/app/alpine-disk.qcow2
+/app/alpine.iso
+
+__TTS_c9a05551ed884993aff12602de498342__RC:0
+__TTS_c9a05551ed884993aff12602de498342__PWD:/app
+__TTS_c9a05551ed884993aff12602de498342__END
+[?2004hroot@8295db68e8ea:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/##' | head -200; __tts_rc=$?; printf '\n__TTS_acaedbc2db064fc1a4dc014ad139d414__RC:%s\n' "$__tts_rc"; printf '__TTS_acaedbc2db064fc1a4dc014ad139d414__PWD:'; pwd; printf '__TTS_acaedbc2db064fc1a4dc014ad139d414__END\n'; tmux wait -S done
+[?2004ltotal 980176
+drwxr-xr-x 1 root root       4096 Jul 17 00:03 .
+drwxr-xr-x 1 root root       4096 Jul 17 00:51 ..
+-rw-r--r-- 1 root root     197120 Jul 17 00:03 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+//app/alpine-disk.qcow2
+//app/alpine.iso
+
+__TTS_acaedbc2db064fc1a4dc014ad139d414__RC:0
+__TTS_acaedbc2db064fc1a4dc014ad139d414__PWD:/app
+__TTS_acaedbc2db064fc1a4dc014ad139d414__END
+[?2004hroot@8295db68e8ea:/app# cd -- ''"'"'; pwd; printf '"'"'' && file /app/alpine.iso /app/alpine-disk.qcow2 && ls -lh /app/alpine.iso /app/alpine-disk.qcow2 && which qemu-system-x86_64 || which qemu-system-x86_64-static || which qemu-kvm; __tts_rc=$?; printf '\n__TTS_9710d672af8b46649e05bc0e9b8b04ed__RC:%s\n' "$__tts_rc"; printf '__TTS_9710d672af8b46649e05bc0e9b8b04ed__PWD:'; pwd; printf '__TTS_9710d672af8b46649e05bc0e9b8b04ed__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_9710d672af8b46649e05bc0e9b8b04ed__RC:1
+__TTS_9710d672af8b46649e05bc0e9b8b04ed__PWD:/app
+__TTS_9710d672af8b46649e05bc0e9b8b04ed__END
+[?2004hroot@8295db68e8ea:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@8295db68e8ea:/app# 

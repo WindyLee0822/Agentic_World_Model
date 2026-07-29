@@ -1,0 +1,40 @@
+root@f585e54e2bf2:/app# pwd; __tts_rc=$?; printf '\n__TTS_9fc8a082e9e2478bb3458cf89503bd65__RC:%s\n' "$__tts_rc"; printf '__TTS_9fc8a082e9e2478bb3458cf89503bd65
+__PWD:'; pwd; printf '__TTS_9fc8a082e9e2478bb3458cf89503bd65__END\n'; tmux wait -S done
+/app
+
+__TTS_9fc8a082e9e2478bb3458cf89503bd65__RC:0
+__TTS_9fc8a082e9e2478bb3458cf89503bd65__PWD:/app
+__TTS_9fc8a082e9e2478bb3458cf89503bd65__END
+root@f585e54e2bf2:/app# cd -- /app && python - <<'PY'
+> import shutil
+> print('yt-dlp' if shutil.which('yt-dlp') else 'youtube-dl' if shutil.which('youtube-dl') else 'none')
+> PY; __tts_rc=$?; printf '\n__TTS_2c0fed56666c488793e8d548624d9dea__RC:%s\n' "$__tts_rc"; printf '__TTS_2c0fed56666c488793e8d548624d9dea__PWD:'; pwd; printf '_
+_TTS_2c0fed56666c488793e8d548624d9dea__END\n'; tmux wait -S done
+> cd -- /app && which yt-dlp youtube-dl ffmpeg || true; __tts_rc=$?; printf '\n__TTS_27fa0f8f3e264fbaa30438af74fec1d6__RC:%s\n' "$__tts_rc"; printf '__TTS_27fa0
+f8f3e264fbaa30438af74fec1d6__PWD:'; pwd; printf '__TTS_27fa0f8f3e264fbaa30438af74fec1d6__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import shutil;print(' '.join([p for p in ['yt-dlp','youtube-dl','ffmpeg','python3'] if shutil.which(p)]))"; __tts_rc=$?; printf '\n_
+_TTS_6c5e349ca6f0410db3cee861367cf89f__RC:%s\n' "$__tts_rc"; printf '__TTS_6c5e349ca6f0410db3cee861367cf89f__PWD:'; pwd; printf '__TTS_6c5e349ca6f0410db3cee8613
+67cf89f__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,137 @@
+[?2004hroot@45c221f74a50:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@45c221f74a50:/app# clear
+[?2004l[H[J[3J[?2004hroot@45c221f74a50:/app# pwd; __tts_rc=$?; printf '\n__TTS_19913676f9a84729b05030b00640fc71__RC:%s\n' "$__tts_rc"; printf '__TTS_19913676f9a84729b05030b00640fc71__PWD:'; pwd; printf '__TTS_19913676f9a84729b05030b00640fc71__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_19913676f9a84729b05030b00640fc71__RC:0
+__TTS_19913676f9a84729b05030b00640fc71__PWD:/app
+__TTS_19913676f9a84729b05030b00640fc71__END
+[?2004hroot@45c221f74a50:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/#' | head -200; __tts_rc=$?; printf '\n__TTS_601235f7249f4d1d8b0c701969091569__RC:%s\n' "$__tts_rc"; printf '__TTS_601235f7249f4d1d8b0c701969091569__PWD:'; pwd; printf '__TTS_601235f7249f4d1d8b0c701969091569__END\n'; tmux wait -S done
+[?2004ltotal 486552
+drwxr-xr-x 1 root root      4096 Jul 18 08:49 [0m[01;34m.[0m
+drwxr-xr-x 1 root root      4096 Jul 18 13:36 [01;34m..[0m
+-rw-r--r-- 1 root root 497759232 Jul 18 08:50 gpt2-124M.ckpt
+-rw-r--r-- 1 root root    456318 Jul 18 08:49 vocab.bpe
+//app/gpt2-124M.ckpt
+//app/vocab.bpe
+
+__TTS_601235f7249f4d1d8b0c701969091569__RC:0
+__TTS_601235f7249f4d1d8b0c701969091569__PWD:/app
+__TTS_601235f7249f4d1d8b0c701969091569__END
+[?2004hroot@45c221f74a50:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import struct
+[?2004l[?2004h> p='gpt2-124M.ckpt'
+[?2004l[?2004h> with open(p,'rb') as f:
+[?2004l[?2004h>  d=f.read(64)
+[?2004l[?2004h> print(len(d),d[:32],list(d[:16]))
+[?2004l[?2004h> for off in [0,8,16,32]:
+[?2004l[?2004h>  print(off,struct.unpack('<4I',d[off:off+16]))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_25ed013a503b44538e7a77f3541f6808__RC:%s\n' "$__tts_rc"; printf '__TTS_25ed013a503b44538e7a77f3541f6808__PWD:'; pwd; printf '__TTS_25ed013a503b44538e7a77f3541f6808__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 -c "import os,struct;f=open('gpt2-124M.ckpt','rb');d=f.read(64);print(len(d),list(d[:16]));print([struct.unpack('<4I',d[i:i+16]) for i in (0,8,16,32)])"; __tts_rc=$?; printf '\n__TTS_285f174339a644c8a402ff42ae874cea__RC:%s\n' "$__tts_rc"; printf '__TTS_285f174339a644c8a402ff42ae874cea__PWD:'; pwd; printf '__TTS_285f174339a644c8a402ff42ae874cea__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && dd if=/app/gpt2-124M.ckpt bs=64 count=1 2>/dev/null | od -An -t u4; __tts_rc=$?; printf '\n__TTS_83b7da2109184ec88aa8e3726f125025__RC:%s\n' "$__tts_rc"; printf '__TTS_83b7da2109184ec88aa8e3726f125025__PWD:'; pwd; printf '__TTS_83b7da2109184ec88aa8e3726f125025__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 10
+    cd -- /app && dd if=/app/gpt2-124M.ckpt bs=64 count=1 2>/dev/null | od -An -t u4; __tts_rc=$?; printf '\n__TTS_83b7da2109184ec88aa8e3726f125025__RC:%s\n' "$__tts_rc"; printf '__TTS_83b7da2109184ec88aa8e3726f125025__PWD:'; pwd; printf '__TTS_83b7da2109184ec88aa8e3726f125025__END\n'; tmux wait -S done
+                                    ^
+SyntaxError: invalid decimal literal
+[?2004hroot@45c221f74a50:/app# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && head -c 64 gpt2-124M.ckpt | od -An -tx1 -v; __tts_rc=$?; printf '\n__TTS_a26c7ca950124d668ebd38528445f1da__RC:%s\n' "$__tts_rc"; printf '__TTS_a26c7ca950124d668ebd38528445f1da__PWD:'; pwd; printf '__TTS_a26c7ca950124d668ebd38528445f1da__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_a26c7ca950124d668ebd38528445f1da__RC:1
+__TTS_a26c7ca950124d668ebd38528445f1da__PWD:/app
+__TTS_a26c7ca950124d668ebd38528445f1da__END
+[?2004hroot@45c221f74a50:/app# cd -- /app && cd /app && file gpt2-124M.ckpt vocab.bpe && sed -n '1,40p' vocab.bpe; __tts_rc=$?; printf '\n__TTS_214b8312e06942a081592d226bbaaa0e__RC:%s\n' "$__tts_rc"; printf '__TTS_214b8312e06942a081592d226bbaaa0e__PWD:'; pwd; printf '__TTS_214b8312e06942a081592d226bbaaa0e__END\n'; tmux wait -S done
+[?2004lbash: file: command not found
+
+__TTS_214b8312e06942a081592d226bbaaa0e__RC:127
+__TTS_214b8312e06942a081592d226bbaaa0e__PWD:/app
+__TTS_214b8312e06942a081592d226bbaaa0e__END
+[?2004hroot@45c221f74a50:/app# cd -- /app && cd /app && sed -n '1,80p' vocab.bpe | cat; __tts_rc=$?; printf '\n__TTS_092ef16fa83a4edaa7e9ccec81482aed__RC:%s\n' "$__tts_rc"; printf '__TTS_092ef16fa83a4edaa7e9ccec81482aed__PWD:'; pwd; printf '__TTS_092ef16fa83a4edaa7e9ccec81482aed__END\n'; tmux wait -S done
+[?2004l#version: 0.2
+Ġ t
+Ġ a
+h e
+i n
+r e
+o n
+Ġt he
+e r
+Ġ s
+a t
+Ġ w
+Ġ o
+e n
+Ġ c
+i t
+i s
+a n
+o r
+e s
+Ġ b
+e d
+Ġ f
+in g
+Ġ p
+o u
+Ġa n
+a l
+a r
+Ġt o
+Ġ m
+Ġo f
+Ġ in
+Ġ d
+Ġ h
+Ġan d
+i c
+a s
+l e
+Ġt h
+i on
+o m
+l l
+en t
+Ġ n
+Ġ l
+s t
+Ġ re
+v e
+Ġ e
+r o
+l y
+Ġb e
+Ġ g
+Ġ T
+c t
+Ġ S
+i d
+o t
+Ġ I
+u t
+e t
+Ġ A
+Ġ is
+Ġ on
+i m
+a m
+o w
+a y
+a d
+s e
+Ġth at
+Ġ C
+i g
+Ġf or
+a c
+Ġ y
+v er
+u r
+Ġ u
+
+__TTS_092ef16fa83a4edaa7e9ccec81482aed__RC:0
+__TTS_092ef16fa83a4edaa7e9ccec81482aed__PWD:/app
+__TTS_092ef16fa83a4edaa7e9ccec81482aed__END
+[?2004hroot@45c221f74a50:/app# 

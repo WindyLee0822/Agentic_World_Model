@@ -1,0 +1,5 @@
+Trial build-pov-ray__ZE85a8z failed: Docker compose command failed for environment build-pov-ray. Command: docker compose --project-name build-pov-ray__ze85a8z__env --project-directory /home/t-wendili/.cache/harbor/tasks/H9EGgCK3p6caXKKnhsqu6a/build-pov-ray/environment -f /tmp/tmpmhukzd5b/build-pov-ray__ZE85a8z__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpkj6d9f67/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network build-pov-ray__ze85a8z__env_default Creating 
+ Network build-pov-ray__ze85a8z__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network build-pov-ray__ze85a8z__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

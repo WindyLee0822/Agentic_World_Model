@@ -1,0 +1,46 @@
+[?2004hroot@c185fc989d3f:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@c185fc989d3f:/app# clear
+[?2004l[H[J[3J[?2004hroot@c185fc989d3f:/app# pwd; __tts_rc=$?; printf '\n__TTS_be1fc89ec83e49648a686e6db2815ebb__RC:%s\n' "$__tts_rc"; printf '__TTS_be1fc89ec83e49648a686e6db2815ebb__PWD:'; pwd; printf '__TTS_be1fc89ec83e49648a686e6db2815ebb__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_be1fc89ec83e49648a686e6db2815ebb__RC:0
+__TTS_be1fc89ec83e49648a686e6db2815ebb__PWD:/app
+__TTS_be1fc89ec83e49648a686e6db2815ebb__END
+[?2004hroot@c185fc989d3f:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os
+[?2004l[?2004h> from sentence_transformers import SentenceTransformer
+[?2004l[?2004h> from mteb import MTEB
+[?2004l[?2004h> model_name='sentence-transformers/all-MiniLM-L6-v2'
+[?2004l[?2004h> model=SentenceTransformer(model_name)
+[?2004l[?2004h> commit=model._model_card_vars.get('model_id',None)
+[?2004l[?2004h> try:
+[?2004l[?2004h>     commit=model._first_module().auto_model.config._commit_hash
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     commit=None
+[?2004l[?2004h> out='results'
+[?2004l[?2004h> eval_splits=['test']
+[?2004l[?2004h> task='STS12'
+[?2004l[?2004h> try:
+[?2004l[?2004h>     evaluation=MTEB(tasks=[task], task_langs=['en'])
+[?2004l[?2004h> except TypeError:
+[?2004l[?2004h>     evaluation=MTEB(tasks=[task])
+[?2004l[?2004h> evaluation.run(model, output_folder=out, eval_splits=eval_splits)
+[?2004l[?2004h> print('done', model_name, commit)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b5472c3f9cbb457c96f51245fc315392__RC:%s\n' "$__tts_rc"; printf '__TTS_b5472c3f9cbb457c96f51245fc315392__PWD:'; pwd; printf '__TTS_b5472c3f9cbb457c96f51245fc315392__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && find /app/results -maxdepth 4 -type f | sort | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_1d2acac32df040e78de9506d9b8117ed__RC:%s\n' "$__tts_rc"; printf '__TTS_1d2acac32df040e78de9506d9b8117ed__PWD:'; pwd; printf '__TTS_1d2acac32df040e78de9506d9b8117ed__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import json
+[?2004l[?2004h> p='/app/results/sentence-transformers__all-MiniLM-L6-v2/no_revision_available/STS12.json'
+[?2004l[?2004h> with open(p) as f:
+[?2004l[?2004h>     d=json.load(f)
+[?2004l[?2004h> print(d)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_da1c508193eb47bda30f7d4581127a5f__RC:%s\n' "$__tts_rc"; printf '__TTS_da1c508193eb47bda30f7d4581127a5f__PWD:'; pwd; printf '__TTS_da1c508193eb47bda30f7d4581127a5f__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 20
+    PY; __tts_rc=$?; printf '\n__TTS_b5472c3f9cbb457c96f51245fc315392__RC:%s\n' "$__tts_rc"; printf '__TTS_b5472c3f9cbb457c96f51245fc315392__PWD:'; pwd; printf '__TTS_b5472c3f9cbb457c96f51245fc315392__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@c185fc989d3f:/app# 

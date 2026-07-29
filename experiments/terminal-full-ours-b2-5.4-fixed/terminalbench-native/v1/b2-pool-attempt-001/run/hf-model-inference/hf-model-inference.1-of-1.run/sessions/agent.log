@@ -1,0 +1,100 @@
+[?2004hroot@7b48696ff817:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@7b48696ff817:/app# clear
+[?2004l[H[J[3J[?2004hroot@7b48696ff817:/app# pwd; __tts_rc=$?; printf '\n__TTS_f0d51c5294004cfdac73544685ab6f3d__RC:%s\n' "$__tts_rc"; printf '__TTS_f0d51c5294004cfdac73544685ab6f3d__PWD:'; pwd; printf '__TTS_f0d51c5294004cfdac73544685ab6f3d__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_f0d51c5294004cfdac73544685ab6f3d__RC:0
+__TTS_f0d51c5294004cfdac73544685ab6f3d__PWD:/app
+__TTS_f0d51c5294004cfdac73544685ab6f3d__END
+[?2004hroot@7b48696ff817:/app# cd -- /app && ls -la /app && python3 -V && python3 - <<'PY'
+[?2004l[?2004h> import importlib
+[?2004l[?2004h> mods=['flask','transformers','torch','requests']
+[?2004l[?2004h> for m in mods:
+[?2004l[?2004h>     try: importlib.import_module(m); print(m,'OK')
+[?2004l[?2004h>     except Exception as e: print(m,'MISSING')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_fb1fb62c66bd444a937be8ed1cb164d6__RC:%s\n' "$__tts_rc"; printf '__TTS_fb1fb62c66bd444a937be8ed1cb164d6__PWD:'; pwd; printf '__TTS_fb1fb62c66bd444a937be8ed1cb164d6__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import os, json, textwrap, pathlib, subprocess, sys
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> base=Path('/app')
+[?2004l[?2004h> (base/'model_cache').mkdir(exist_ok=True)
+[?2004l[?2004h> (base/'service').mkdir(exist_ok=True)
+[?2004l[?2004h> app_py=base/'service'/'app.py'
+[?2004l[?2004h> test_py=base/'service'/'test_client.py'
+[?2004l[?2004h> app_py.write_text(textwrap.dedent('''
+[?2004l[?2004h> from flask import Flask, request, jsonify
+[?2004l[?2004h> from transformers import AutoTokenizer, AutoModelForSequenceClassification
+[?2004l[?2004h> import torch
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> 
+[?2004l[?2004h> MODEL_DIR = Path('/app/model_cache/sentiment_model')
+[?2004l[?2004h> tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
+[?2004l[?2004h> model = AutoModelForSequenceClassification.from_pretrained(str(MODEL_DIR))
+[?2004l[?2004h> model.eval()
+[?2004l[?2004h> labels = {0: 'negative', 1: 'positive'}
+[?2004l[?2004h> 
+[?2004l[?2004h> app = Flask(__name__)
+[?2004l[?2004h> 
+[?2004l[?2004h> @app.post('/sentiment')
+[?2004l[?2004h> def sentiment():
+[?2004l[?2004h>     data = request.get_json(silent=True)
+[?2004l[?2004h>     if not data or 'text' not in data or not isinstance(data['text'], str) or not data['text'].strip():
+[?2004l[?2004h>         return jsonify({'error': 'Request JSON must include a non-empty "text" string'}), 400
+[?2004l[?2004h>     inputs = tokenizer(data['text'], return_tensors='pt', truncation=True)
+[?2004l[?2004h>     with torch.no_grad():
+[?2004l[?2004h>         logits = model(**inputs).logits[0]
+[?2004l[?2004h>         probs = torch.softmax(logits, dim=0).tolist()
+[?2004l[?2004h>     return jsonify({
+[?2004l[?2004h>         'sentiment': labels[int(torch.argmax(logits).item())],
+[?2004l[?2004h>         'confidence': {'negative': float(probs[0]), 'positive': float(probs[1])}
+[?2004l[?2004h>     })
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == '__main__':
+[?2004l[?2004h>     app.run(host='0.0.0.0', port=5000)
+[?2004l[?2004h> '''))
+[?2004l[?2004h> test_py.write_text(textwrap.dedent('''
+[?2004l[?2004h> import requests
+[?2004l[?2004h> samples = [
+[?2004l[?2004h>     'I absolutely loved this movie and would watch it again.',
+[?2004l[?2004h>     'This was the worst experience I have ever had.',
+[?2004l[?2004h>     'The product is okay, but the shipping was fantastic.'
+[?2004l[?2004h> ]
+[?2004l[?2004h> for text in samples:
+[?2004l[?2004h>     r = requests.post('http://127.0.0.1:5000/sentiment', json={'text': text}, timeout=30)
+[?2004l[?2004h>     print({'text': text, 'status': r.status_code, 'response': r.json()})
+[?2004l[?2004h> '''))
+[?2004l[?2004h> subprocess.run([sys.executable,'-m','pip','install','-q','flask','transformers','torch','requests','huggingface_hub'], check=True)
+[?2004l[?2004h> from transformers import AutoTokenizer, AutoModelForSequenceClassification
+[?2004l[?2004h> model_id='distilbert-base-uncased-finetuned-sst-2-english'
+[?2004l[?2004h> out='/app/model_cache/sentiment_model'
+[?2004l[?2004h> AutoTokenizer.from_pretrained(model_id).save_pretrained(out)
+[?2004l[?2004h> AutoModelForSequenceClassification.from_pretrained(model_id).save_pretrained(out)
+[?2004l[?2004h> log=open('/app/service/flask.log','w')
+[?2004l[?2004h> subprocess.Popen([sys.executable, str(app_py)], stdout=log, stderr=log, cwd=str(base/'service'))
+[?2004l[?2004h> print(json.dumps({'status':'ok'}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ea59803d4a1941eba974bc23229be410__RC:%s\n' "$__tts_rc"; printf '__TTS_ea59803d4a1941eba974bc23229be410__PWD:'; pwd; printf '__TTS_ea59803d4a1941eba974bc23229be410__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && ls -R /app/service /app/model_cache 2>/dev/null | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_df9c967aa77a4647b6101426e0392f3a__RC:%s\n' "$__tts_rc"; printf '__TTS_df9c967aa77a4647b6101426e0392f3a__PWD:'; pwd; printf '__TTS_df9c967aa77a4647b6101426e0392f3a__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+total 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 08:11 ..
+Python 3.13.1
+  File [35m"<stdin>"[0m, line [35m6[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_fb1fb62c66bd444a937be8ed1cb164d6__RC:%s\n' "$__tts_rc"; printf '__TTS_fb1fb62c66bd444a937be8ed1cb164d6__PWD:'; pwd; printf '__TTS_fb1fb62c66bd444a937be8ed1cb164d6__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@7b48696ff817:/app# cd -- ''"'"'; pwd; printf '"'"'' && python3 - <<'PY'
+[?2004l[?2004h> import os, json, urllib.request
+[?2004l[?2004h> for p in ['/app/service/app.py','/app/service/test_client.py']:
+[?2004l[?2004h>     print(p, os.path.exists(p), os.path.getsize(p) if os.path.exists(p) else -1)
+[?2004l[?2004h> for p in ['/app/model_cache/sentiment_model','/app/model_cache/sentiment_model/config.json']:
+[?2004l[?2004h>     print(p, os.path.exists(p))
+[?2004l[?2004h> try:
+[?2004l[?2004h>     print('api', urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:5000/sentiment', data=b'{"text":"I love it"}', headers={'Content-Type':'application/json'}), timeout=10).read().decode())
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print('api_err', e)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_285ae8f445424b0b85f7251c049e578a__RC:%s\n' "$__tts_rc"; printf '__TTS_285ae8f445424b0b85f7251c049e578a__PWD:'; pwd; printf '__TTS_285ae8f445424b0b85f7251c049e578a__END\n'; tmux wait -S done
+[?2004l[?2004h> 

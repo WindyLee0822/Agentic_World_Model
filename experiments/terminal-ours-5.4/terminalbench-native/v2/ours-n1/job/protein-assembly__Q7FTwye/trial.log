@@ -1,0 +1,5 @@
+Trial protein-assembly__Q7FTwye failed: Docker compose command failed for environment protein-assembly. Command: docker compose --project-name protein-assembly__q7ftwye__env --project-directory /home/t-wendili/.cache/harbor/tasks/mJUNThPAPTj7sAa9DCoPrh/protein-assembly/environment -f /tmp/tmph73pmwh5/protein-assembly__Q7FTwye__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp8quifw6d/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network protein-assembly__q7ftwye__env_default Creating 
+ Network protein-assembly__q7ftwye__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network protein-assembly__q7ftwye__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

@@ -1,0 +1,51 @@
+[?2004hroot@593078de9973:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@593078de9973:/app# clear
+[?2004l[H[J[3J[?2004hroot@593078de9973:/app# pwd; __tts_rc=$?; printf '\n__TTS_521d7a0cd3b146c09dc42ed70c152697__RC:%s\n' "$__tts_rc"; printf '__TTS_521d7a0cd3b146c09dc42ed70c152697__PWD:'; pwd; printf '__TTS_521d7a0cd3b146c09dc42ed70c152697__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_521d7a0cd3b146c09dc42ed70c152697__RC:0
+__TTS_521d7a0cd3b146c09dc42ed70c152697__PWD:/app
+__TTS_521d7a0cd3b146c09dc42ed70c152697__END
+[?2004hroot@593078de9973:/app# cd -- /app && find data -maxdepth 2 -type f | sort | sed -n '1,50p'; __tts_rc=$?; printf '\n__TTS_bc413930e2fb4a72accff7525f2b3e57__RC:%s\n' "$__tts_rc"; printf '__TTS_bc413930e2fb4a72accff7525f2b3e57__PWD:'; pwd; printf '__TTS_bc413930e2fb4a72accff7525f2b3e57__END\n'; tmux wait -S done
+[?2004ldata/test-00000-of-00001.parquet
+data/train-00000-of-00001.parquet
+
+__TTS_bc413930e2fb4a72accff7525f2b3e57__RC:0
+__TTS_bc413930e2fb4a72accff7525f2b3e57__PWD:/app
+__TTS_bc413930e2fb4a72accff7525f2b3e57__END
+[?2004hroot@593078de9973:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import pandas as pd
+[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+[?2004l[?2004h>  df=pd.read_parquet(f)
+[?2004l[?2004h>  print(f, df.shape, df.columns.tolist(), df.head(2).to_dict('records'))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d1be8667f5394e9294cd849e78389533__RC:%s\n' "$__tts_rc"; printf '__TTS_d1be8667f5394e9294cd849e78389533__PWD:'; pwd; printf '__TTS_d1be8667f5394e9294cd849e78389533__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import pyarrow.parquet as pq
+[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+[?2004l[?2004h>  t=pq.read_table(f,columns=None)
+[?2004l[?2004h>  print(f,t.num_rows,t.num_columns,t.schema)
+[?2004l[?2004h>  print(t.slice(0,2).to_pydict())
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_3a3cef9fa0ad4377adb9963d7e3b899c__RC:%s\n' "$__tts_rc"; printf '__TTS_3a3cef9fa0ad4377adb9963d7e3b899c__PWD:'; pwd; printf '__TTS_3a3cef9fa0ad4377adb9963d7e3b899c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os
+[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+[?2004l[?2004h>  st=os.stat(f)
+[?2004l[?2004h>  print(f,st.st_size)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9ac884cf4f794bf7a154f671646bcef4__RC:%s\n' "$__tts_rc"; printf '__TTS_9ac884cf4f794bf7a154f671646bcef4__PWD:'; pwd; printf '__TTS_9ac884cf4f794bf7a154f671646bcef4__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m5[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_d1be8667f5394e9294cd849e78389533__RC:%s\n' "$__tts_rc"; printf '__TTS_d1be8667f5394e9294cd849e78389533__PWD:'; pwd; printf '__TTS_d1be8667f5394e9294cd849e78389533__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@593078de9973:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import pyarrow.parquet as pq
+[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+[?2004l[?2004h>  pf=pq.ParquetFile(f)
+[?2004l[?2004h>  print(f,'rows',pf.metadata.num_rows,'cols',pf.metadata.num_columns,'rg',pf.num_row_groups)
+[?2004l[?2004h>  print(pf.schema_arrow)
+[?2004l[?2004h>  print(pf.read_row_group(0).slice(0,2).to_pydict())
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_0a7b95ba7f0e469aa26b0f6ebf820d47__RC:%s\n' "$__tts_rc"; printf '__TTS_0a7b95ba7f0e469aa26b0f6ebf820d47__PWD:'; pwd; printf '__TTS_0a7b95ba7f0e469aa26b0f6ebf820d47__END\n'; tmux wait -S done
+[?2004l[?2004h> 

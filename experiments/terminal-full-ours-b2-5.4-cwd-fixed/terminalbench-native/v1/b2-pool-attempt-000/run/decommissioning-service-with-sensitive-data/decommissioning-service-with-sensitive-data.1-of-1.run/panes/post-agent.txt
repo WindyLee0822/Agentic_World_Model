@@ -1,0 +1,40 @@
+root@655b80b2c171:/app# pwd; __tts_rc=$?; printf '\n__TTS_ffa725d2365b4b5ea2b89383860acc93__RC:%s\n' "$__tts_rc"; printf '__TTS_ffa725d2365b4b5ea2b89383860acc93
+__PWD:'; pwd; printf '__TTS_ffa725d2365b4b5ea2b89383860acc93__END\n'; tmux wait -S done
+/app
+
+__TTS_ffa725d2365b4b5ea2b89383860acc93__RC:0
+__TTS_ffa725d2365b4b5ea2b89383860acc93__PWD:/app
+__TTS_ffa725d2365b4b5ea2b89383860acc93__END
+root@655b80b2c171:/app# cd -- /app && cd /app && tar -czf sensitive_files.tar.gz /opt/sensitive_service_data && gpg --batch --yes --passphrase 't-bench-passphra
+se' --symmetric --cipher-algo AES256 -o /app/service_archive.gpg sensitive_files.tar.gz && find /opt/sensitive_service_data -type f -exec shred -u -n 3 {} + &&
+find /opt/sensitive_service_data -depth -type d -empty -delete && rm -f /etc/service_config.ini /tmp/service.pid sensitive_files.tar.gz; __tts_rc=$?; printf '\n
+__TTS_a5f491b64b894f9a871bb205258955cd__RC:%s\n' "$__tts_rc"; printf '__TTS_a5f491b64b894f9a871bb205258955cd__PWD:'; pwd; printf '__TTS_a5f491b64b894f9a871bb205
+258955cd__END\n'; tmux wait -S done
+tar: Removing leading `/' from member names
+gpg: directory '/root/.gnupg' created
+gpg: keybox '/root/.gnupg/pubring.kbx' created
+
+__TTS_a5f491b64b894f9a871bb205258955cd__RC:0
+__TTS_a5f491b64b894f9a871bb205258955cd__PWD:/app
+__TTS_a5f491b64b894f9a871bb205258955cd__END
+root@655b80b2c171:/app# cd -- /app && find /opt/sensitive_service_data -depth \( -type f -o -type l \) -exec shred -u -n 3 {} +; rm -rf /opt/sensitive_service_d
+ata; rm -f /etc/service_config.ini /tmp/service.pid /app/sensitive_files.tar.gz; __tts_rc=$?; printf '\n__TTS_e038e7b199814d639ca3bd1a1f367d95__RC:%s\n' "$__tts
+_rc"; printf '__TTS_e038e7b199814d639ca3bd1a1f367d95__PWD:'; pwd; printf '__TTS_e038e7b199814d639ca3bd1a1f367d95__END\n'; tmux wait -S done
+find: ‘/opt/sensitive_service_data’: No such file or directory
+
+__TTS_e038e7b199814d639ca3bd1a1f367d95__RC:0
+__TTS_e038e7b199814d639ca3bd1a1f367d95__PWD:/app
+__TTS_e038e7b199814d639ca3bd1a1f367d95__END
+root@655b80b2c171:/app# cd -- /app && test -f /app/service_archive.gpg && ! test -e /app/sensitive_files.tar.gz && ! test -e /opt/sensitive_service_data && ! te
+st -e /etc/service_config.ini && ! test -e /tmp/service.pid; __tts_rc=$?; printf '\n__TTS_0224f27921bf4d9f9d0eede877134ca5__RC:%s\n' "$__tts_rc"; printf '__TTS_
+0224f27921bf4d9f9d0eede877134ca5__PWD:'; pwd; printf '__TTS_0224f27921bf4d9f9d0eede877134ca5__END\n'; tmux wait -S done
+
+__TTS_0224f27921bf4d9f9d0eede877134ca5__RC:0
+__TTS_0224f27921bf4d9f9d0eede877134ca5__PWD:/app
+__TTS_0224f27921bf4d9f9d0eede877134ca5__END
+root@655b80b2c171:/app#
+
+
+
+
+

@@ -1,0 +1,22 @@
+[
+  {
+    "env": "tau2_airline",
+    "subset": "airline",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 10,
+    "success_rate": 0.6,
+    "reward": 0.6,
+    "mean_spawns": 1.2,
+    "mean_max_depth": 0.2,
+    "mean_reads": 0.0,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 1.0,
+    "mean_tokens": 120.0,
+    "mean_cost": 0.00012000000000000002,
+    "mean_cache_hits": 0.0,
+    "mean_wall_clock_s": 170.38718900801615,
+    "mean_rollout_errors": 0.0
+  }
+]

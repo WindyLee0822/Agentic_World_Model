@@ -1,0 +1,95 @@
+[?2004hroot@b9e6027950a2:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@b9e6027950a2:/app# clear
+[?2004l[H[J[3J[?2004hroot@b9e6027950a2:/app# pwd; __tts_rc=$?; printf '\n__TTS_43fc563c92154c2aaa87486d49e3ba82__RC:%s\n' "$__tts_rc"; printf '__TTS_43fc563c92154c2aaa87486d49e3ba82__PWD:'; pwd; printf '__TTS_43fc563c92154c2aaa87486d49e3ba82__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_43fc563c92154c2aaa87486d49e3ba82__RC:0
+__TTS_43fc563c92154c2aaa87486d49e3ba82__PWD:/app
+__TTS_43fc563c92154c2aaa87486d49e3ba82__END
+[?2004hroot@b9e6027950a2:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_c0e47ba372ed4e279422feb4e58506a6__RC:%s\n' "$__tts_rc"; printf '__TTS_c0e47ba372ed4e279422feb4e58506a6__PWD:'; pwd; printf '__TTS_c0e47ba372ed4e279422feb4e58506a6__END\n'; tmux wait -S done
+[?2004lf /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_c0e47ba372ed4e279422feb4e58506a6__RC:0
+__TTS_c0e47ba372ed4e279422feb4e58506a6__PWD:/app
+__TTS_c0e47ba372ed4e279422feb4e58506a6__END
+[?2004hroot@b9e6027950a2:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/appfile #'; __tts_rc=$?; printf '\n__TTS_0ebd3790b38640c59fe4bd91e82497ad__RC:%s\n' "$__tts_rc"; printf '__TTS_0ebd3790b38640c59fe4bd91e82497ad__PWD:'; pwd; printf '__TTS_0ebd3790b38640c59fe4bd91e82497ad__END\n'; tmux wait -S done
+[?2004ltotal 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 17 00:02 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+/appfile /app/lodepng.h
+/appfile /app/model.pth
+/appfile /app/cJSON.c
+/appfile /app/lodepng.cpp
+/appfile /app/cJSON.h
+/appfile /app/model.py
+/appfile /app/image.png
+
+__TTS_0ebd3790b38640c59fe4bd91e82497ad__RC:0
+__TTS_0ebd3790b38640c59fe4bd91e82497ad__PWD:/app
+__TTS_0ebd3790b38640c59fe4bd91e82497ad__END
+[?2004hroot@b9e6027950a2:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_07ecfcd8c6be41b2a7eec867b4131b89__RC:%s\n' "$__tts_rc"; printf '__TTS_07ecfcd8c6be41b2a7eec867b4131b89__PWD:'; pwd; printf '__TTS_07ecfcd8c6be41b2a7eec867b4131b89__END\n'; tmux wait -S done
+[?2004lf /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_07ecfcd8c6be41b2a7eec867b4131b89__RC:0
+__TTS_07ecfcd8c6be41b2a7eec867b4131b89__PWD:/app
+__TTS_07ecfcd8c6be41b2a7eec867b4131b89__END
+[?2004hroot@b9e6027950a2:/app# cd -- /app && find /app -maxdepth 2 -type f | sed 's#^/app/##' | sort; __tts_rc=$?; printf '\n__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__RC:%s\n' "$__tts_rc"; printf '__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__PWD:'; pwd; printf '__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__END\n'; tmux wait -S done
+[?2004lcJSON.c
+cJSON.h
+image.png
+lodepng.cpp
+lodepng.h
+model.pth
+model.py
+
+__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__RC:0
+__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__PWD:/app
+__TTS_1ca4d1d8005646ba9732a9b7e1ad3107__END
+[?2004hroot@b9e6027950a2:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/appfile #'; __tts_rc=$?; printf '\n__TTS_624f3c0c6c9e483f8c6582646350149a__RC:%s\n' "$__tts_rc"; printf '__TTS_624f3c0c6c9e483f8c6582646350149a__PWD:'; pwd; printf '__TTS_624f3c0c6c9e483f8c6582646350149a__END\n'; tmux wait -S done
+[?2004ltotal 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 17 00:02 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+/appfile /app/lodepng.h
+/appfile /app/model.pth
+/appfile /app/cJSON.c
+/appfile /app/lodepng.cpp
+/appfile /app/cJSON.h
+/appfile /app/model.py
+/appfile /app/image.png
+
+__TTS_624f3c0c6c9e483f8c6582646350149a__RC:0
+__TTS_624f3c0c6c9e483f8c6582646350149a__PWD:/app
+__TTS_624f3c0c6c9e483f8c6582646350149a__END
+[?2004hroot@b9e6027950a2:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@b9e6027950a2:/app# 

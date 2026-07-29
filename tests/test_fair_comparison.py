@@ -144,3 +144,57 @@ def test_b2_samples_real_env_and_selects_by_real_success():
     env3 = _FairFakeEnv([])
     cfg3 = Config(method="b2", env="fake", N=1, seed=1, solver=SolverConfig(agent="llm"))  # seed 1 only
     assert run_decision(env3, cfg3).record.success is False  # only a failing rollout available
+
+
+def test_tau2_wm_agent_policy_hook_is_disabled():
+    """τ² WM sampling must not inject verifier guidance into the official agent prompt."""
+    from tts.env.real_tau2 import _add_wm_agent_policy_reminder
+
+    class Agent:
+        def __init__(self):
+            self.get_init_state = object()
+
+    agent = Agent()
+    original = agent.get_init_state
+    _add_wm_agent_policy_reminder(agent, "airline")
+    assert agent.get_init_state is original
+
+
+def test_tau2_real_and_wm_use_same_agent_sampling_config_and_unmodified_loop():
+    """Both paths share run config; WM changes only the environment response transport."""
+    import inspect
+
+    from tts.env.real_tau2 import Tau2TaskEnv
+
+    real_source = inspect.getsource(Tau2TaskEnv.run_agent_rollout)
+    wm_source = inspect.getsource(Tau2TaskEnv.run_agent_rollout_wm)
+
+    assert "self._build_run_cfg(config, seed, default_model)" in real_source
+    assert "self._build_run_cfg(config, seed, default_model)" in wm_source
+    assert "_add_wm_agent_policy_reminder(" not in wm_source
+    assert "_add_airline_cancel_preflight(" not in wm_source
+    assert "_add_airline_baggage_preflight(" not in wm_source
+    assert "_add_airline_certificate_preflight(" not in wm_source
+    assert "orch.environment.get_response =" in wm_source
+
+
+def test_tau2_wm_reference_audit_rejects_duplicate_writes():
+    """Selection quality comes from the WM verifier, not from steering the τ² agent."""
+    from tts.env.real_tau2 import Tau2ShadowEvaluator
+
+    required = Action("cancel_reservation", {"reservation_id": "ABC123"})
+    evaluator = Tau2ShadowEvaluator(
+        "airline",
+        [required],
+        model=object(),
+        gold_action_specs=[required],
+    )
+    exact = Trajectory(steps=[Step(required)])
+    duplicate = Trajectory(steps=[Step(required), Step(required)])
+
+    exact_mismatch, exact_score = evaluator._reference_assessment(exact)
+    duplicate_mismatch, duplicate_score = evaluator._reference_assessment(duplicate)
+
+    assert exact_mismatch is None and exact_score == 1.0
+    assert "duplicate or unreferenced" in duplicate_mismatch
+    assert duplicate_score < exact_score

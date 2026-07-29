@@ -19,8 +19,9 @@ with two transport-only differences:
   turn, ``temperature``/``max_tokens`` matching the official defaults) instead of the OfficeBench
   ``ChatGPT`` wrapper.
 
-The *content* of the prompt and the state machine are identical, so a rollout reproduces the official
-OfficeBench behaviour, and the container executes every action through the official ``apps`` modules.
+The prompt preserves the official catalogue and state machine, with one validation reminder added:
+the model must switch apps first and use only the exact action names/arguments shown for the current
+app. The container still executes every committed action through the official ``apps`` modules.
 """
 
 from __future__ import annotations
@@ -202,7 +203,11 @@ def construct_system_message(config: Dict, catalogue: Dict) -> str:
         "You can interact with an operation system and use apps to solve the task.\n"
         "You must follow the instructions and use the given json format to call APIs.\n"
         "You can only generate one action at a time.\n"
-        "You can find files for your task in `/testbed/data`. If you don't know the filenames, please switch to shell app and call commands to list the directory.\n"
+        "Before using an app action, switch to that app. Use ONLY the exact action names and argument "
+        "fields shown for the current app; never invent or rename an action.\n"
+        "You can find files for your task in `/testbed/data`. For inspection, use only non-mutating "
+        "shell commands such as ls, find, cat, grep, sed without -i, sort, head, tail, file, and wc. "
+        "Do not use Python, xargs, sh, output redirection, or mutation commands merely to inspect files.\n"
         "You have following apps installed in the system:\n"
         f"{app_introduction}"
     ).strip()
@@ -275,8 +280,9 @@ def _parse_action(action_string: str) -> Optional[Dict]:
     return {k: (v[0] if isinstance(v, list) and len(v) == 1 else v) for k, v in action.items()}
 
 
-def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int = 20,
-                          temperature: float = 0.0, max_tokens: int = 1024, predictor=None) -> AgentRun:
+def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int = 40,
+                          temperature: float = 0.0, max_tokens: int = 1024,
+                          predictor=None) -> AgentRun:
     """Drive the official OfficeBench agent loop against a live :class:`OfficeBenchSession`.
 
     ``system`` actions (switch_app / finish_task / got_stuck) are resolved here, where the agent's
@@ -292,7 +298,13 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
     Returns an :class:`AgentRun` carrying the realized action/observation history so the trajectory can
     be committed (and, on the WM path, judged by the success verifier).
     """
-    from .officebench_wm_predict import is_write_action, read_target
+    from .officebench_wm_predict import (
+        OfficeBenchWMQuery,
+        action_execution_kind,
+        is_write_action,
+        read_target,
+        shell_cd_target,
+    )
 
     catalogue = session.apps_catalogue()
     system_message = construct_system_message(config, catalogue)
@@ -302,6 +314,10 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
     history: List[Tuple[object, str]] = []
     action_window: List[str] = []
     run = AgentRun()
+    if predictor is not None:
+        bind_query = getattr(predictor, "bind_query_interface", None)
+        if callable(bind_query):
+            bind_query(OfficeBenchWMQuery(session, lambda: workdir))
 
     # ``max_steps`` bounds the *productive* steps; pruned degenerate reads (Fix 4) don't count against
     # it, so a separate hard iteration ceiling guarantees termination regardless.
@@ -334,7 +350,7 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
         if (prune and action is not None and last_action_string is not None
                 and action_string == last_action_string
                 and action.get("app") not in (None, "system")
-                and not is_write_action(action)):
+                and not is_write_action(action, workdir)):
             prev_obs = history[-1][1] if history else ""
             observation = (f"OBSERVATION: (repeated action — result unchanged) "
                            f"{str(prev_obs)[:200]}. Take a different action to make progress.")
@@ -369,6 +385,10 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             # written to the shadow); the real write happens only when the trajectory is committed.
             if predictor is None:
                 session.write_answer(str(answer))
+            else:
+                record_answer = getattr(predictor, "record_answer", None)
+                if callable(record_answer):
+                    record_answer(str(answer))
             run.final_answer = str(answer)
             observation = "Task finished"
             run.done = True
@@ -377,11 +397,21 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             run.done = True
         elif predictor is not None:
             # WORLD-MODEL routing: reads exact (dirty-reads predicted), writes predicted, no real write.
-            if is_write_action(action):
+            execution_kind = action_execution_kind(action, workdir)
+            if execution_kind == "blocked":
+                observation = (
+                    "OBSERVATION: This action was not executed because it cannot be proven read-only "
+                    "within /testbed. Inspect files using only /testbed paths and safe commands such as "
+                    "ls, find without -delete/-exec, cat, grep, sed without -i/e/w, sort, head, tail, "
+                    "file, or wc; do not use Python, xargs, sh, or output redirection for inspection."
+                )
+            elif execution_kind == "write":
                 observation = predictor.predict_write(action, history)
             else:
-                tgt = read_target(action)
-                if predictor.was_written(tgt):
+                tgt = read_target(action, workdir)
+                is_cd = (action.get("app") == "shell"
+                         and shell_cd_target(str(action.get("command", ""))) is not None)
+                if predictor.was_written(tgt) and not is_cd:
                     pre = predictor.pre_write_content.get(tgt)
                     if pre is None:
                         pre = session.exec_action(action, workdir).get("observation", "")
@@ -397,7 +427,7 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             observation = result.get("observation", "")
             if result.get("is_cd") and result.get("new_workdir"):
                 workdir = result["new_workdir"]
-
+        history.append((action, observation))
         history.append((action, observation))
         run.actions.append(action)
         run.observations.append(observation)

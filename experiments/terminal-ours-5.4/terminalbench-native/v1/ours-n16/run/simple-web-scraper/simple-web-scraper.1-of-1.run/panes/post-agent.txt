@@ -1,0 +1,191 @@
+root@29ab1faf3060:/app# pwd; __tts_rc=$?; printf '\n__TTS_9e57c68855604b368778a807d72e7e1b__RC:%s\n' "$__tts_rc"; printf '__TTS_9e57c68855604b368778a807d72e7e1b
+__PWD:'; pwd; printf '__TTS_9e57c68855604b368778a807d72e7e1b__END\n'; tmux wait -S done
+/app
+
+__TTS_9e57c68855604b368778a807d72e7e1b__RC:0
+__TTS_9e57c68855604b368778a807d72e7e1b__PWD:/app
+__TTS_9e57c68855604b368778a807d72e7e1b__END
+root@29ab1faf3060:/app# cd -- /app && sh -lc 'cat > /app/scrape_books.py <<'"'"'PY'"'"'
+> import re
+> import requests
+> import pandas as pd
+> from bs4 import BeautifulSoup
+>
+> URL = "http://server:8000"
+>
+>
+> def extract_first_number(text, cast=float):
+>     m = re.search(r"[-+]?\d*\.?\d+", text or "")
+>     if not m:
+>         return None
+>     return cast(float(m.group())) if cast is int else cast(m.group())
+>
+>
+> def main():
+>     response = requests.get(URL, timeout=10)
+>     response.raise_for_status()
+>     soup = BeautifulSoup(response.text, "html.parser")
+>
+>     books = []
+>     for book in soup.select("div.book"):
+>         title = book.select_one("div.book-title")
+>         author = book.select_one("div.book-author")
+>         year = book.select_one("span.book-year")
+>         rating = book.select_one("span.book-rating")
+>         price = book.select_one("span.book-price")
+>
+>         title_text = title.get_text(strip=True) if title else ""
+>         author_text = author.get_text(strip=True) if author else ""
+>         author_text = re.sub(r"^by\s+", "", author_text, flags=re.I)
+>         year_val = extract_first_number(year.get_text(" ", strip=True) if year else "", int)
+>         rating_val = extract_first_number(rating.get_text(" ", strip=True) if rating else "", float)
+>         price_val = extract_first_number(price.get_text(" ", strip=True) if price else "", float)
+>
+>         books.append({
+>             "title": title_text,
+>             "author": author_text,
+>             "year": year_val,
+>             "rating": rating_val,
+>             "price": price_val,
+>         })
+>
+>     df = pd.DataFrame(books, columns=["title", "author", "year", "rating", "price"])
+>     df.to_csv("/app/books.csv", index=False)
+>
+>     total_books = len(df)
+>     avg_price = df["price"].dropna().mean() if total_books else 0
+>     highest = df.sort_values(["rating", "title"], ascending=[False, True]).iloc[0] if total_books else None
+>
+>     with open("/app/report.txt", "w", encoding="utf-8") as f:
+>         f.write(f"Total number of books scraped: {total_books}\n")
+>         f.write(f"Average book price: ${avg_price:.2f}\n")
+>         if highest is not None:
+>             f.write(
+>                 "Highest rated book: "
+>                 f"{highest['title']} by {highest['author']} "
+>                 f"(Rating: {highest['rating']}/5, Price: ${highest['price']:.2f})\n"
+>             )
+>         else:
+>             f.write("Highest rated book: N/A\n")
+>
+>
+> if __name__ == "__main__":
+>     main()
+> PY
+> python3 /app/scrape_books.py'; __tts_rc=$?; printf '\n__TTS_b4a4fcef4520436cb5447eecfa11c3b3__RC:%s\n' "$__tts_rc"; printf '__TTS_b4a4fcef4520436cb5447eecfa11
+c3b3__PWD:'; pwd; printf '__TTS_b4a4fcef4520436cb5447eecfa11c3b3__END\n'; tmux wait -S done
+Traceback (most recent call last):
+  File "/app/scrape_books.py", line 65, in <module>
+    main()
+    ~~~~^^
+  File "/app/scrape_books.py", line 57, in main
+    f"{highest[title]} by {highest[author]} "
+       ~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/series.py", line 947, in __getitem__
+    key = com.apply_if_callable(key, self)
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/common.py", line 391, in apply_if_callable
+    return maybe_callable(obj, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/bs4/element.py", line 2576, in __call__
+    return self._find_all(name, attrs, string, limit, self._generator_for_recursive(recursive), **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/bs4/element.py", line 1373, in _find_all
+    matcher = SoupStrainer(name, attrs, string, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/bs4/filter.py", line 400, in __init__
+    List[TagNameMatchRule], list(self._make_match_rules(name, TagNameMatchRule))
+                            ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/bs4/filter.py", line 516, in _make_match_rules
+    if not obj:
+           ^^^
+  File "/usr/local/lib/python3.13/site-packages/pandas/core/generic.py", line 1513, in __bool__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+__TTS_b4a4fcef4520436cb5447eecfa11c3b3__RC:1
+__TTS_b4a4fcef4520436cb5447eecfa11c3b3__PWD:/app
+__TTS_b4a4fcef4520436cb5447eecfa11c3b3__END
+root@29ab1faf3060:/app# cd -- /app && sh -lc 'python3 - <<"PY"
+> from pathlib import Path
+> for p in [Path("/app/scrape_books.py"), Path("/app/books.csv"), Path("/app/report.txt")]:
+>     print("FILE", p)
+>     if p.exists():
+>         print(p.read_text()[:2000])
+>     else:
+>         print("MISSING")
+> PY'; __tts_rc=$?; printf '\n__TTS_aeadaac428a8413880fc994e957e310d__RC:%s\n' "$__tts_rc"; printf '__TTS_aeadaac428a8413880fc994e957e310d__PWD:'; pwd; printf '
+__TTS_aeadaac428a8413880fc994e957e310d__END\n'; tmux wait -S done
+FILE /app/scrape_books.py
+import re
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+
+URL = "http://server:8000"
+
+
+def extract_first_number(text, cast=float):
+    m = re.search(r"[-+]?\d*\.?\d+", text or "")
+    if not m:
+        return None
+    return cast(float(m.group())) if cast is int else cast(m.group())
+
+
+def main():
+    response = requests.get(URL, timeout=10)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    books = []
+    for book in soup.select("div.book"):
+        title = book.select_one("div.book-title")
+        author = book.select_one("div.book-author")
+        year = book.select_one("span.book-year")
+        rating = book.select_one("span.book-rating")
+        price = book.select_one("span.book-price")
+
+        title_text = title.get_text(strip=True) if title else ""
+        author_text = author.get_text(strip=True) if author else ""
+        author_text = re.sub(r"^by\s+", "", author_text, flags=re.I)
+        year_val = extract_first_number(year.get_text(" ", strip=True) if year else "", int)
+        rating_val = extract_first_number(rating.get_text(" ", strip=True) if rating else "", float)
+        price_val = extract_first_number(price.get_text(" ", strip=True) if price else "", float)
+
+        books.append({
+            "title": title_text,
+            "author": author_text,
+            "year": year_val,
+            "rating": rating_val,
+            "price": price_val,
+        })
+
+    df = pd.DataFrame(books, columns=["title", "author", "year", "rating", "price"])
+    df.to_csv("/app/books.csv", index=False)
+
+    total_books = len(df)
+    avg_price = df["price"].dropna().mean() if total_books else 0
+    highest = df.sort_values(["rating", "title"], ascending=[False, True]).iloc[0] if total_books else None
+
+    with open("/app/report.txt", "w", encoding="utf-8") as f:
+        f.write(f"Total number of books scraped: {total_books}\n")
+        f.write(f"Average book price: ${avg_price:.2f}\n")
+        if highest is no
+FILE /app/books.csv
+title,author,year,rating,price
+The Great Gatsby,F. Scott Fitzgerald,1925,4.2,12.99
+To Kill a Mockingbird,Harper Lee,1960,4.8,14.99
+1984,George Orwell,1949,4.6,11.99
+Pride and Prejudice,Jane Austen,1813,4.5,9.99
+The Catcher in the Rye,J.D. Salinger,1951,4.1,13.99
+Moby Dick,Herman Melville,1851,4.0,15.99
+The Hobbit,J.R.R. Tolkien,1937,4.7,16.99
+
+FILE /app/report.txt
+Total number of books scraped: 7
+Average book price: $13.85
+
+
+__TTS_aeadaac428a8413880fc994e957e310d__RC:0
+__TTS_aeadaac428a8413880fc994e957e310d__PWD:/app
+__TTS_aeadaac428a8413880fc994e957e310d__END
+root@29ab1faf3060:/app#

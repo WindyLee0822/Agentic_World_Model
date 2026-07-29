@@ -1,0 +1,24 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.02,
+      "n_reads": 0,
+      "n_spawns": 1,
+      "max_depth": 1,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python3 - <<'PY'\\nimport os, json, subprocess, textwrap, pathlib, importlib.util\\nfrom copy import deepcopy\\n\\ndef run(cmd, cwd=None, check=True):\\n    return subprocess.run(cmd, cwd=cwd, shell=True, check=check, text=True, capture_output=True)\\n\\nrepo='/app/repo'\\nos.makedirs(repo, exist_ok=True)\\nrun('git init', cwd=repo)\\n\\ndef heads(bundle):\\n    out=run(f'git bundle list-heads {bundle}').stdout.strip().splitlines()\\n    refs=[]\\n    for line in out:\\n        parts=line.strip().s",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 3212
+      }
+    }
+  ],
+  "commit_results": []
+}

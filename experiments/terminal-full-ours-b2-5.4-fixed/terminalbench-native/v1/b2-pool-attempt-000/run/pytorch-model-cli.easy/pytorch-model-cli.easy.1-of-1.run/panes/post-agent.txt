@@ -1,0 +1,67 @@
+root@06636df3cb7a:/app# pwd; __tts_rc=$?; printf '\n__TTS_d661eae976ad4a42ae0b816a787b5541__RC:%s\n' "$__tts_rc"; printf '__TTS_d661eae976ad4a42ae0b816a787b5541
+__PWD:'; pwd; printf '__TTS_d661eae976ad4a42ae0b816a787b5541__END\n'; tmux wait -S done
+/app
+
+__TTS_d661eae976ad4a42ae0b816a787b5541__RC:0
+__TTS_d661eae976ad4a42ae0b816a787b5541__PWD:/app
+__TTS_d661eae976ad4a42ae0b816a787b5541__END
+root@06636df3cb7a:/app# cd -- /app && ls -la; __tts_rc=$?; printf '\n__TTS_63a75a8a819046649e4458419bcf5c69__RC:%s\n' "$__tts_rc"; printf '__TTS_63a75a8a8190466
+49e4458419bcf5c69__PWD:'; pwd; printf '__TTS_63a75a8a819046649e4458419bcf5c69__END\n'; tmux wait -S done
+total 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 17 21:43 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+
+__TTS_63a75a8a819046649e4458419bcf5c69__RC:0
+__TTS_63a75a8a819046649e4458419bcf5c69__PWD:/app
+__TTS_63a75a8a819046649e4458419bcf5c69__END
+root@06636df3cb7a:/app# cd -- /app && cd /app && sed -n '1,220p' model.py; __tts_rc=$?; printf '\n__TTS_eadf3cac3763418a9ff6c465b13abebf__RC:%s\n' "$__tts_rc";
+printf '__TTS_eadf3cac3763418a9ff6c465b13abebf__PWD:'; pwd; printf '__TTS_eadf3cac3763418a9ff6c465b13abebf__END\n'; tmux wait -S done
+import torch
+import torch.nn as nn
+
+
+class MnistModel(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        num_classes: int,
+    ) -> torch.nn.Module:
+        super().__init__()
+
+        self.input_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+        self.activation = nn.ReLU()
+
+    def forward(self, x):
+        x = self.input_layer(x)
+        x = self.activation(x)
+
+        x = self.hidden_layer(x)
+        x = self.activation(x)
+
+        x = self.output_layer(x)
+        return x
+
+__TTS_eadf3cac3763418a9ff6c465b13abebf__RC:0
+__TTS_eadf3cac3763418a9ff6c465b13abebf__PWD:/app
+__TTS_eadf3cac3763418a9ff6c465b13abebf__END
+root@06636df3cb7a:/app# cd -- /app && cd /app && python3 - <<'PY'
+> import torch
+> sd=torch.load('model.pth',map_location='cpu')
+> print(type(sd))
+> print(list(sd.keys()))
+> for k,v in sd.items(): print(k, tuple(v.shape), v.flatten()[:5].tolist())
+> PY; __tts_rc=$?; printf '\n__TTS_6291c95537c549a5829dcd191cc0e153__RC:%s\n' "$__tts_rc"; printf '__TTS_6291c95537c549a5829dcd191cc0e153__PWD:'; pwd; printf '_
+_TTS_6291c95537c549a5829dcd191cc0e153__END\n'; tmux wait -S done
+> cd -- /app && cd /app && apt-get update && apt-get install -y build-essential python3 python3-pip; __tts_rc=$?; printf '\n__TTS_0e42f6a463274ff3a9c5dcb9ca0039
+b0__RC:%s\n' "$__tts_rc"; printf '__TTS_0e42f6a463274ff3a9c5dcb9ca0039b0__PWD:'; pwd; printf '__TTS_0e42f6a463274ff3a9c5dcb9ca0039b0__END\n'; tmux wait -S done
+>

@@ -1,0 +1,13 @@
+{
+  "env": "terminalbench",
+  "subset": "v1",
+  "method": "b2",
+  "n_rollouts": 1,
+  "decisions": 80,
+  "successes": 11,
+  "success_rate": 0.1375,
+  "reward": 0.1375,
+  "mean_tokens": 6999.6,
+  "mean_wall_clock_s": 753.7577347624999,
+  "single_commit_rate": 1.0
+}

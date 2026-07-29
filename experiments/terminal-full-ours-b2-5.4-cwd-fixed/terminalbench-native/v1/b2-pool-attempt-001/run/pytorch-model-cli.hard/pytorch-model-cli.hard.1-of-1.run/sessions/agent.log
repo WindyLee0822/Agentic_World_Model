@@ -1,0 +1,32 @@
+[?2004hroot@a5812194b34e:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@a5812194b34e:/app# clear
+[?2004l[H[J[3J[?2004hroot@a5812194b34e:/app# pwd; __tts_rc=$?; printf '\n__TTS_3aed0d3ab88341ce89a43c9c5240b00a__RC:%s\n' "$__tts_rc"; printf '__TTS_3aed0d3ab88341ce89a43c9c5240b00a__PWD:'; pwd; printf '__TTS_3aed0d3ab88341ce89a43c9c5240b00a__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_3aed0d3ab88341ce89a43c9c5240b00a__RC:0
+__TTS_3aed0d3ab88341ce89a43c9c5240b00a__PWD:/app
+__TTS_3aed0d3ab88341ce89a43c9c5240b00a__END
+[?2004hroot@a5812194b34e:/app# cd -- /app && ls -la; __tts_rc=$?; printf '\n__TTS_079975156a2a4e5daef0276cd007c445__RC:%s\n' "$__tts_rc"; printf '__TTS_079975156a2a4e5daef0276cd007c445__PWD:'; pwd; printf '__TTS_079975156a2a4e5daef0276cd007c445__END\n'; tmux wait -S done
+[?2004ltotal 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 19 02:01 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+
+__TTS_079975156a2a4e5daef0276cd007c445__RC:0
+__TTS_079975156a2a4e5daef0276cd007c445__PWD:/app
+__TTS_079975156a2a4e5daef0276cd007c445__END
+[?2004hroot@a5812194b34e:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import os,torch
+[?2004l[?2004h> ck=torch.load('model.pth',map_location='cpu')
+[?2004l[?2004h> print(type(ck))
+[?2004l[?2004h> print(list(ck.keys()) if hasattr(ck,'keys') else ck)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__RC:%s\n' "$__tts_rc"; printf '__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__PWD:'; pwd; printf '__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__END\n'; tmux wait -S done
+[?2004l[?2004h> 

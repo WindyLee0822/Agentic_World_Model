@@ -1,0 +1,40 @@
+root@5041ad9bc43e:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_46c9513a5d5d453aad569f961e17045f__RC:%s\n' "$__tts_rc"; printf '__TTS_46c9513a5d5d453aad569f96
+1e17045f__PWD:'; pwd; printf '__TTS_46c9513a5d5d453aad569f961e17045f__END\n'; tmux wait -S done
+/app/astropy
+
+__TTS_46c9513a5d5d453aad569f961e17045f__RC:0
+__TTS_46c9513a5d5d453aad569f961e17045f__PWD:/app/astropy
+__TTS_46c9513a5d5d453aad569f961e17045f__END
+root@5041ad9bc43e:/app/astropy# cd -- /app/astropy && python - <<'PY'
+> from astropy.modeling import models as m
+> from astropy.modeling.separable import separability_matrix
+> cm = m.Linear1D(10) & m.Linear1D(5)
+> print(separability_matrix(cm))
+> print(separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5)))
+> print(separability_matrix(m.Pix2Sky_TAN() & cm))
+> PY; __tts_rc=$?; printf '\n__TTS_ecc3f2d9ffd84606acdf8afd6379d642__RC:%s\n' "$__tts_rc"; printf '__TTS_ecc3f2d9ffd84606acdf8afd6379d642__PWD:'; pwd; printf '_
+_TTS_ecc3f2d9ffd84606acdf8afd6379d642__END\n'; tmux wait -S done
+> cd -- /app/astropy && python - <<'PY'
+> from pathlib import Path
+> p=Path('astropy/modeling/separable.py')
+> print(p.read_text())
+> PY; __tts_rc=$?; printf '\n__TTS_288fece522194118a60d1c6452de0a29__RC:%s\n' "$__tts_rc"; printf '__TTS_288fece522194118a60d1c6452de0a29__PWD:'; pwd; printf '_
+_TTS_288fece522194118a60d1c6452de0a29__END\n'; tmux wait -S done
+> cd -- /app/astropy && grep -R -n "def separability_matrix\|_separable\|CompoundModel" astropy/modeling/separable.py astropy/modeling | head -200; __tts_rc=$?;
+ printf '\n__TTS_46e6b944c6a14278b9058545475171ea__RC:%s\n' "$__tts_rc"; printf '__TTS_46e6b944c6a14278b9058545475171ea__PWD:'; pwd; printf '__TTS_46e6b944c6a14
+278b9058545475171ea__END\n'; tmux wait -S done
+> cd -- /app/astropy && sed -n '1,240p' astropy/modeling/separable.py; __tts_rc=$?; printf '\n__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__RC:%s\n' "$__tts_rc"; prin
+tf '__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__PWD:'; pwd; printf '__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__END\n'; tmux wait -S done
+> cd -- /app/astropy && python - <<'PY'
+> from pathlib import Path
+> p=Path('astropy/modeling/separable.py')
+> with p.open() as f:
+>     import itertools
+>     print(''.join(itertools.islice(f,240)))
+> PY; __tts_rc=$?; printf '\n__TTS_5e53d07272034c1693cc2252e283f2c7__RC:%s\n' "$__tts_rc"; printf '__TTS_5e53d07272034c1693cc2252e283f2c7__PWD:'; pwd; printf '_
+_TTS_5e53d07272034c1693cc2252e283f2c7__END\n'; tmux wait -S done
+>
+
+
+
+

@@ -1,0 +1,45 @@
+root@a5ae6f2e300c:/app# pwd; __tts_rc=$?; printf '\n__TTS_c57aa47821ab40e591060106b05bebfd__RC:%s\n' "$__tts_rc"; printf '__TTS_c57aa47821ab40e591060106b05bebfd
+__PWD:'; pwd; printf '__TTS_c57aa47821ab40e591060106b05bebfd__END\n'; tmux wait -S done
+/app
+
+__TTS_c57aa47821ab40e591060106b05bebfd__RC:0
+__TTS_c57aa47821ab40e591060106b05bebfd__PWD:/app
+__TTS_c57aa47821ab40e591060106b05bebfd__END
+root@a5ae6f2e300c:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_0ef88e32f1ae4767a0fd588ab05009fa__RC:%s\n' "$__tts_rc";
+ printf '__TTS_0ef88e32f1ae4767a0fd588ab05009fa__PWD:'; pwd; printf '__TTS_0ef88e32f1ae4767a0fd588ab05009fa__END\n'; tmux wait -S done
+/app/cJSON.c
+/app/cJSON.h
+/app/image.png
+/app/lodepng.cpp
+/app/lodepng.h
+/app/model.pth
+/app/model.py
+
+__TTS_0ef88e32f1ae4767a0fd588ab05009fa__RC:0
+__TTS_0ef88e32f1ae4767a0fd588ab05009fa__PWD:/app
+__TTS_0ef88e32f1ae4767a0fd588ab05009fa__END
+root@a5ae6f2e300c:/app# cd -- /app && bash -lc 'ls -la /app && find /app -maxdepth 2 -type f | sed "s#^#/appfile #" | sort | head -200'; __tts_rc=$?; printf '\n
+__TTS_cc5aac01d971444c9ef1d8b0aa89f116__RC:%s\n' "$__tts_rc"; printf '__TTS_cc5aac01d971444c9ef1d8b0aa89f116__PWD:'; pwd; printf '__TTS_cc5aac01d971444c9ef1d8b0
+aa89f116__END\n'; tmux wait -S done
+total 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 16 23:40 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+/appfile /app/cJSON.c
+/appfile /app/cJSON.h
+/appfile /app/image.png
+/appfile /app/lodepng.cpp
+/appfile /app/lodepng.h
+/appfile /app/model.pth
+/appfile /app/model.py
+
+__TTS_cc5aac01d971444c9ef1d8b0aa89f116__RC:0
+__TTS_cc5aac01d971444c9ef1d8b0aa89f116__PWD:/app
+__TTS_cc5aac01d971444c9ef1d8b0aa89f116__END
+root@a5ae6f2e300c:/app#

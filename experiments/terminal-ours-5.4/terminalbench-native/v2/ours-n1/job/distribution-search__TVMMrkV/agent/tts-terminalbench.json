@@ -1,0 +1,24 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.02,
+      "n_reads": 0,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python - <<'PY'\\nimport numpy as np\\nfrom math import log\\nfrom scipy.optimize import root\\n\\nN = 150000\\nTARGET = 10.0\\nOUT = '/app/dist.npy'\\n\\n# Two-mass distribution: one token with prob a, m tokens with prob b, rest with prob c.\\n# Solve for a,b,c,m such that sum=1 and both KLs hit target.\\n\\ndef equations(x):\\n    a, b, m = x\\n    m_int = int(round(m))\\n    if m_int < 1 or m_int > N-2 or a <= 0 or b <= 0:\\n        return [1e6, 1e6, 1e6]\\n    c = (1.0 - a - m_int*b) / (N - 1 - m",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 2374
+      }
+    }
+  ],
+  "commit_results": []
+}

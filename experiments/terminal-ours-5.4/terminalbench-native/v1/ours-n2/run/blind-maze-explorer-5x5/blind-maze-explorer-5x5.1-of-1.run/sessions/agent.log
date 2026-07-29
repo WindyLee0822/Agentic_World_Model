@@ -1,0 +1,423 @@
+[?2004hroot@bbfe3ff39709:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@bbfe3ff39709:/app# clear
+[?2004l[H[J[3J[?2004hroot@bbfe3ff39709:/app# pwd; __tts_rc=$?; printf '\n__TTS_3007330af89646409cffe47b0e29564d__RC:%s\n' "$__tts_rc"; printf '__TTS_3007330af89646409cffe47b0e29564d__PWD:'; pwd; printf '__TTS_3007330af89646409cffe47b0e29564d__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_3007330af89646409cffe47b0e29564d__RC:0
+__TTS_3007330af89646409cffe47b0e29564d__PWD:/app
+__TTS_3007330af89646409cffe47b0e29564d__END
+[?2004hroot@bbfe3ff39709:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import pexpect, os, sys
+[?2004l[?2004h> from collections import deque
+[?2004l[?2004h> 
+[?2004l[?2004h> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=2)
+[?2004l[?2004h> # collect initial output if any
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.expect(['\n', pexpect.TIMEOUT, pexpect.EOF], timeout=0.5)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> dirs = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+[?2004l[?2004h> opp = {'N':'S','S':'N','E':'W','W':'E'}
+[?2004l[?2004h> order = ['N','E','S','W']
+[?2004l[?2004h> open_cells={(0,0):'S'}
+[?2004l[?2004h> walls=set()
+[?2004l[?2004h> exit_pos=None
+[?2004l[?2004h> cur=(0,0)
+[?2004l[?2004h> 
+[?2004l[?2004h> 
+[?2004l[?2004h> def send(cmd):
+[?2004l[?2004h>     child.sendline(cmd)
+[?2004l[?2004h>     child.expect('\r?\n')
+[?2004l[?2004h>     line = child.readline().strip()
+[?2004l[?2004h>     return line
+[?2004l[?2004h> 
+[?2004l[?2004h> def move_seq(seq):
+[?2004l[?2004h>     global cur, exit_pos
+[?2004l[?2004h>     if not seq: return []
+[?2004l[?2004h>     resp = send('move ' + ' & '.join(seq))
+[?2004l[?2004h>     parts = [p.strip() for p in resp.split('&')]
+[?2004l[?2004h>     pos = cur
+[?2004l[?2004h>     for d,r in zip(seq,parts):
+[?2004l[?2004h>         dx,dy=dirs[d]
+[?2004l[?2004h>         np=(pos[0]+dx,pos[1]+dy)
+[?2004l[?2004h>         if 'hit wall' in r:
+[?2004l[?2004h>             walls.add(np)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             pos=np
+[?2004l[?2004h>             if 'reached exit' in r:
+[?2004l[?2004h>                 exit_pos=pos
+[?2004l[?2004h>                 open_cells[pos]='E'
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 open_cells.setdefault(pos,' ')
+[?2004l[?2004h>     cur=pos
+[?2004l[?2004h>     return parts
+[?2004l[?2004h> 
+[?2004l[?2004h> def bfs_path(start,target):
+[?2004l[?2004h>     q=deque([start]); prev={start:None}
+[?2004l[?2004h>     while q:
+[?2004l[?2004h>         p=q.popleft()
+[?2004l[?2004h>         if p==target: break
+[?2004l[?2004h>         for d,(dx,dy) in dirs.items():
+[?2004l[?2004h>             np=(p[0]+dx,p[1]+dy)
+[?2004l[?2004h>             if np in open_cells and np not in prev:
+[?2004l[?2004h>                 prev[np]=(p,d); q.append(np)
+[?2004l[?2004h>     path=[]; p=target
+[?2004l[?2004h>     while p!=start:
+[?2004l[?2004h>         p2,d=prev[p]; path.append(d); p=p2
+[?2004l[?2004h>     return path[::-1]
+[?2004l[?2004h> 
+[?2004l[?2004h> while True:
+[?2004l[?2004h>     frontier=[]
+[?2004l[?2004h>     for p in list(open_cells):
+[?2004l[?2004h>         for d,(dx,dy) in dirs.items():
+[?2004l[?2004h>             np=(p[0]+dx,p[1]+dy)
+[?2004l[?2004h>             if np not in open_cells and np not in walls:
+[?2004l[?2004h>                 frontier.append((p,d))
+[?2004l[?2004h>     if not frontier:
+[?2004l[?2004h>         break
+[?2004l[?2004h>     target_cell, test_dir = frontier[0]
+[?2004l[?2004h>     path = bfs_path(cur, target_cell)
+[?2004l[?2004h>     if path: move_seq(path)
+[?2004l[?2004h>     move_seq([test_dir])
+[?2004l[?2004h> 
+[?2004l[?2004h> # compute bounds with outer walls
+[?2004l[?2004h> xs=[p[0] for p in open_cells]+[w[0] for w in walls]
+[?2004l[?2004h> ys=[p[1] for p in open_cells]+[w[1] for w in walls]
+[?2004l[?2004h> minx,maxx=min(xs),max(xs)
+[?2004l[?2004h> miny,maxy=min(ys),max(ys)
+[?2004l[?2004h> lines=[]
+[?2004l[?2004h> for y in range(miny,maxy+1):
+[?2004l[?2004h>     row=[]
+[?2004l[?2004h>     for x in range(minx,maxx+1):
+[?2004l[?2004h>         p=(x,y)
+[?2004l[?2004h>         if p in open_cells:
+[?2004l[?2004h>             ch=open_cells[p]
+[?2004l[?2004h>             if p==(0,0): ch='S'
+[?2004l[?2004h>             elif p==exit_pos: ch='E'
+[?2004l[?2004h>             elif ch not in 'SE': ch=' '
+[?2004l[?2004h>             row.append(ch)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             row.append('#')
+[?2004l[?2004h>     lines.append(''.join(row))
+[?2004l[?2004h> 
+[?2004l[?2004h> # exit game
+[?2004l[?2004h> child.sendline('exit')
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.expect(pexpect.EOF, timeout=1)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/app/maze_map.txt','w') as f:
+[?2004l[?2004h>     f.write('\n'.join(lines)+'\n')
+[?2004l[?2004h> # verify exists and print for debug
+[?2004l[?2004h> assert os.path.exists('/app/maze_map.txt')
+[?2004l[?2004h> print('\n'.join(lines))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9f6d7d000b744380a70fa65e81e2b911__RC:%s\n' "$__tts_rc"; printf '__TTS_9f6d7d000b744380a70fa65e81e2b911__PWD:'; pwd; printf '__TTS_9f6d7d000b744380a70fa65e81e2b911__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import os, pexpect, sys
+[?2004l[?2004h> from collections import deque
+[?2004l[?2004h> 
+[?2004l[?2004h> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=1)
+[?2004l[?2004h> child.logfile = None
+[?2004l[?2004h> 
+[?2004l[?2004h> # Drain any startup text
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.read_nonblocking(size=4096, timeout=0.2)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> dirs = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+[?2004l[?2004h> opp = {'N':'S','S':'N','E':'W','W':'E'}
+[?2004l[?2004h> order = ['N','E','S','W']
+[?2004l[?2004h> open_cells = {(0,0): 'S'}
+[?2004l[?2004h> walls = set()
+[?2004l[?2004h> exit_pos = None
+[?2004l[?2004h> cur = (0,0)
+[?2004l[?2004h> 
+[?2004l[?2004h> 
+[?2004l[?2004h> def send(cmd):
+[?2004l[?2004h>     child.sendline(cmd)
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         child.expect('.*\r?\n', timeout=1)
+[?2004l[?2004h>         return child.after.strip()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             return child.readline().strip()
+[?2004l[?2004h>         except Exception:
+[?2004l[?2004h>             return ''
+[?2004l[?2004h> 
+[?2004l[?2004h> 
+[?2004l[?2004h> def move_seq(seq):
+[?2004l[?2004h>     global cur, exit_pos
+[?2004l[?2004h>     if not seq:
+[?2004l[?2004h>         return []
+[?2004l[?2004h>     resp = send('move ' + ' & '.join(seq))
+[?2004l[?2004h>     parts = [p.strip() for p in resp.split('&')] if resp else []
+[?2004l[?2004h>     if len(parts) < len(seq):
+[?2004l[?2004h>         parts += [''] * (len(seq) - len(parts))
+[?2004l[?2004h>     pos = cur
+[?2004l[?2004h>     for d, r in zip(seq, parts):
+[?2004l[?2004h>         dx, dy = dirs[d]
+[?2004l[?2004h>         np = (pos[0] + dx, pos[1] + dy)
+[?2004l[?2004h>         if 'hit wall' in r:
+[?2004l[?2004h>             walls.add(np)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             pos = np
+[?2004l[?2004h>             if 'reached exit' in r:
+[?2004l[?2004h>                 exit_pos = pos
+[?2004l[?2004h>                 open_cells[pos] = 'E'
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 open_cells.setdefault(pos, ' ')
+[?2004l[?2004h>     cur = pos
+[?2004l[?2004h>     return parts
+[?2004l[?2004h> 
+[?2004l[?2004h> 
+[?2004l[?2004h> def bfs_path(start, target):
+[?2004l[?2004h>     q = deque([start])
+[?2004l[?2004h>     prev = {start: None}
+[?2004l[?2004h>     while q:
+[?2004l[?2004h>         p = q.popleft()
+[?2004l[?2004h>         if p == target:
+[?2004l[?2004h>             break
+[?2004l[?2004h>         for d in order:
+[?2004l[?2004h>             dx, dy = dirs[d]
+[?2004l[?2004h>             np = (p[0] + dx, p[1] + dy)
+[?2004l[?2004h>             if np in open_cells and np not in prev:
+[?2004l[?2004h>                 prev[np] = (p, d)
+[?2004l[?2004h>                 q.append(np)
+[?2004l[?2004h>     if target not in prev:
+[?2004l[?2004h>         return None
+[?2004l[?2004h>     path = []
+[?2004l[?2004h>     p = target
+[?2004l[?2004h>     while p != start:
+[?2004l[?2004h>         p, d = prev[p]
+[?2004l[?2004h>         path.append(d)
+[?2004l[?2004h>     return path[::-1]
+[?2004l[?2004h> 
+[?2004l[?2004h> # Systematic exploration
+[?2004l[?2004h> while True:
+[?2004l[?2004h>     frontier = []
+[?2004l[?2004h>     for p in list(open_cells):
+[?2004l[?2004h>         for d in order:
+[?2004l[?2004h>             dx, dy = dirs[d]
+[?2004l[?2004h>             np = (p[0] + dx, p[1] + dy)
+[?2004l[?2004h>             if np not in open_cells and np not in walls:
+[?2004l[?2004h>                 frontier.append((p, d))
+[?2004l[?2004h>     if not frontier:
+[?2004l[?2004h>         break
+[?2004l[?2004h>     target_cell, test_dir = frontier[0]
+[?2004l[?2004h>     path = bfs_path(cur, target_cell)
+[?2004l[?2004h>     if path is None:
+[?2004l[?2004h>         break
+[?2004l[?2004h>     if path:
+[?2004l[?2004h>         move_seq(path)
+[?2004l[?2004h>     move_seq([test_dir])
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure an outer wall border is present in rendered map
+[?2004l[?2004h> xs = [p[0] for p in open_cells] + [w[0] for w in walls]
+[?2004l[?2004h> ys = [p[1] for p in open_cells] + [w[1] for w in walls]
+[?2004l[?2004h> minx, maxx = min(xs), max(xs)
+[?2004l[?2004h> miny, maxy = min(ys), max(ys)
+[?2004l[?2004h> 
+[?2004l[?2004h> lines = []
+[?2004l[?2004h> for y in range(miny, maxy + 1):
+[?2004l[?2004h>     row = []
+[?2004l[?2004h>     for x in range(minx, maxx + 1):
+[?2004l[?2004h>         p = (x, y)
+[?2004l[?2004h>         if p in open_cells:
+[?2004l[?2004h>             if p == (0,0):
+[?2004l[?2004h>                 row.append('S')
+[?2004l[?2004h>             elif p == exit_pos:
+[?2004l[?2004h>                 row.append('E')
+[?2004l[?2004h>             else:
+[?2004l[?2004h>                 row.append(' ')
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             row.append('#')
+[?2004l[?2004h>     lines.append(''.join(row))
+[?2004l[?2004h> 
+[?2004l[?2004h> # Exit game before writing file
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.sendline('exit')
+[?2004l[?2004h>     child.close(force=True)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/app/maze_map.txt', 'w', encoding='utf-8') as f:
+[?2004l[?2004h>     f.write('\n'.join(lines) + '\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> # Verify file creation/content
+[?2004l[?2004h> with open('/app/maze_map.txt', 'r', encoding='utf-8') as f:
+[?2004l[?2004h>     data = f.read()
+[?2004l[?2004h> assert data == '\n'.join(lines) + '\n'
+[?2004l[?2004h> print(data, end='')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_5c5b492da0b74982bdee46b083a3cf99__RC:%s\n' "$__tts_rc"; printf '__TTS_5c5b492da0b74982bdee46b083a3cf99__PWD:'; pwd; printf '__TTS_5c5b492da0b74982bdee46b083a3cf99__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && ls -l /app && echo '---' && sed -n '1,200p' /app/maze_map.txt 2>/dev/null; __tts_rc=$?; printf '\n__TTS_3768a1a1917b434da6d0c291cea3456c__RC:%s\n' "$__tts_rc"; printf '__TTS_3768a1a1917b434da6d0c291cea3456c__PWD:'; pwd; printf '__TTS_3768a1a1917b434da6d0c291cea3456c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 - <<'PY'
+[?2004lcells):
+        for d in order:
+            dx,dy=dirs[d]
+            np=(p[0]+dx,p[1]+dy)
+            if np not in open_cells and np not in walls:
+                frontier.append((p,d))
+    if not frontier:
+        break
+    cell,d=frontier[0]
+    path=bfs(cur,cell)
+    move_seq(path)
+    move_seq([d])
+
+xs=[p[0] for p in open_cells|walls]
+ys=[p[1] for p in open_cells|walls]
+minx,maxx=min(xs),max(xs)
+miny,maxy=min(ys),max(ys)
+lines=[]
+for y in range(miny,maxy+1):
+    row=[]
+    for x in range(minx,maxx+1):
+        p=(x,y)
+        if p in open_cells:
+            row.append('S' if p==(0,0) else 'E' if p==exit_pos else ' ')
+        else:
+            row.append('#')
+    lines.append(''.join(row))
+
+try:
+    child.sendline('exit')
+    child.close(force=True)
+except Exception:
+    pass
+
+with open('/app/maze_map.txt','w',encoding='utf-8') as f:
+    f.write('\n'.join(lines)+'\n')
+assert os.path.exists('/app/maze_map.txt')
+with open('/app/maze_map.txt','r',encoding='utf-8') as f:
+    assert f.read()=='\n'.join(lines)+'\n'
+PY; __tts_rc=$?; printf '\n__TTS_3147e60f22094796a0b8beb013e344b9__RC:%s\n' "$__tts_rc"; printf '__TTS_3147e60f22094796a0b8beb013e344b9__PWD:'; pwd; printf '__TTS_3147e60f22094796a0b8beb013e344b9__END\n'; tmux wait -S done
+[?2004h> import os, pexpect
+[?2004l[?2004h> from collections import deque
+[?2004l[?2004h> 
+[?2004l[?2004h> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=1)
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.read_nonblocking(size=4096, timeout=0.2)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> dirs={'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+[?2004l[?2004h> order=['N','E','S','W']
+[?2004l[?2004h> open_cells={(0,0)}
+[?2004l[?2004h> walls=set()
+[?2004l[?2004h> exit_pos=None
+[?2004l[?2004h> cur=(0,0)
+[?2004l[?2004h> 
+[?2004l[?2004h> def sendline_get(cmd):
+[?2004l[?2004h>     child.sendline(cmd)
+[?2004l[?2004h>     out=''
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         out += child.readline().strip()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         pass
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         while True:
+[?2004l[?2004h>             more = child.read_nonblocking(size=4096, timeout=0.05)
+[?2004l[?2004h>             if not more:
+[?2004l[?2004h>                 break
+[?2004l[?2004h>             out += ('\n' if out else '') + more.strip()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         pass
+[?2004l[?2004h>     lines=[x.strip() for x in out.splitlines() if x.strip()]
+[?2004l[?2004h>     for line in reversed(lines):
+[?2004l[?2004h>         if 'hit wall' in line or 'moved' in line or 'reached exit' in line:
+[?2004l[?2004h>             return line
+[?2004l[?2004h>     return lines[-1] if lines else ''
+[?2004l[?2004h> 
+[?2004l[?2004h> def move_seq(seq):
+[?2004l[?2004h>     global cur, exit_pos
+[?2004l[?2004h>     if not seq:
+[?2004l[?2004h>         return
+[?2004l[?2004h>     resp=sendline_get('move ' + ' & '.join(seq))
+[?2004l[?2004h>     parts=[p.strip() for p in resp.split('&')]
+[?2004l[?2004h>     if len(parts)<len(seq):
+[?2004l[?2004h>         parts += ['']*(len(seq)-len(parts))
+[?2004l[?2004h>     pos=cur
+[?2004l[?2004h>     for d,r in zip(seq,parts):
+[?2004l[?2004h>         dx,dy=dirs[d]
+[?2004l[?2004h>         np=(pos[0]+dx,pos[1]+dy)
+[?2004l[?2004h>         if 'hit wall' in r:
+[?2004l[?2004h>             walls.add(np)
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             pos=np
+[?2004l[?2004h>             open_cells.add(pos)
+[?2004l[?2004h>             if 'reached exit' in r:
+[?2004l[?2004h>                 exit_pos=pos
+[?2004l[?2004h>     cur=pos
+[?2004l[?2004h> 
+[?2004l[?2004h> def bfs(start,target):
+[?2004l[?2004h>     q=deque([start]); prev={start:(None,None)}
+[?2004l[?2004h>     while q:
+[?2004l[?2004h>         p=q.popleft()
+[?2004l[?2004h>         if p==target: break
+[?2004l[?2004h>         for d in order:
+[?2004l[?2004h>             dx,dy=dirs[d]
+[?2004l[?2004h>             np=(p[0]+dx,p[1]+dy)
+[?2004l[?2004h>             if np in open_cells and np not in prev:
+[?2004l[?2004h>                 prev[np]=(p,d)
+[?2004l[?2004h>                 q.append(np)
+[?2004l[?2004h>     if target not in prev: return []
+[?2004l[?2004h>     path=[]; p=target
+[?2004l[?2004h>     while prev[p][0] is not None:
+[?2004l[?2004h>         p,d=prev[p]
+[?2004l[?2004h>         path.append(d)
+[?2004l[?2004h>     return path[::-1]
+[?2004l[?2004h> 
+[?2004l[?2004h> while True:
+[?2004l[?2004h>     frontier=[]
+[?2004l[?2004h>     for p in list(open_cells):
+[?2004l[?2004h>         for d in order:
+[?2004l[?2004h>             dx,dy=dirs[d]
+[?2004l[?2004h>             np=(p[0]+dx,p[1]+dy)
+[?2004l[?2004h>             if np not in open_cells and np not in walls:
+[?2004l[?2004h>                 frontier.append((p,d))
+[?2004l[?2004h>     if not frontier:
+[?2004l[?2004h>         break
+[?2004l[?2004h>     cell,d=frontier[0]
+[?2004l[?2004h>     path=bfs(cur,cell)
+[?2004l[?2004h>     move_seq(path)
+[?2004l[?2004h>     move_seq([d])
+[?2004l[?2004h> 
+[?2004l[?2004h> xs=[p[0] for p in open_cells|walls]
+[?2004l[?2004h> ys=[p[1] for p in open_cells|walls]
+[?2004l[?2004h> minx,maxx=min(xs),max(xs)
+[?2004l[?2004h> miny,maxy=min(ys),max(ys)
+[?2004l[?2004h> lines=[]
+[?2004l[?2004h> for y in range(miny,maxy+1):
+[?2004l[?2004h>     row=[]
+[?2004l[?2004h>     for x in range(minx,maxx+1):
+[?2004l[?2004h>         p=(x,y)
+[?2004l[?2004h>         if p in open_cells:
+[?2004l[?2004h>             row.append('S' if p==(0,0) else 'E' if p==exit_pos else ' ')
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             row.append('#')
+[?2004l[?2004h>     lines.append(''.join(row))
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     child.sendline('exit')
+[?2004l[?2004h>     child.close(force=True)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     pass
+[?2004l[?2004h> 
+[?2004l[?2004h> with open('/app/maze_map.txt','w',encoding='utf-8') as f:
+[?2004l[?2004h>     f.write('\n'.join(lines)+'\n')
+[?2004l[?2004h> assert os.path.exists('/app/maze_map.txt')
+[?2004l[?2004h> with open('/app/maze_map.txt','r',encoding='utf-8') as f:
+[?2004l[?2004h>     assert f.read()=='\n'.join(lines)+'\n'
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_3147e60f22094796a0b8beb013e344b9__RC:%s\n' "$__tts_rc"; printf '__TTS_3147e60f22094796a0b8beb013e344b9__PWD:'; pwd; printf '__TTS_3147e60f22094796a0b8beb013e344b9__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m107[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_9f6d7d000b744380a70fa65e81e2b911__RC:%s\n' "$__tts_rc"; printf '__TTS_9f6d7d000b744380a70fa65e81e2b911__PWD:'; pwd; printf '__TTS_9f6d7d000b744380a70fa65e81e2b911__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@bbfe3ff39709:/app# 

@@ -21,13 +21,15 @@ built on demand from ``officebench_docker/``).
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
+import json
 import os
+import re
 
 from ..abcs import EntityStore, RestrictedView, TaskEnvironment, WorldModel
 from ..config import SimulatorConfig
-from ..trajectory import Observation, RewardInfo, Step, Trajectory
+from ..trajectory import Observation, RewardInfo, RolloutResult, Step, Trajectory
 from ..types import Action
 from .datasets import parse_officebench_subset
 from .officebench_lowlevel import (
@@ -62,19 +64,30 @@ def _int_env(name: str, default: int) -> int:
         return default
 
 
-def _scaled_max_steps(level: int) -> int:
-    """Default step budget scaled by the task's app-count (Fix 4).
+def _parse_comparative_best(response: str, n_candidates: int) -> int:
+    match = re.search(r"\bBEST\s*:\s*(\d+)\b", response or "", flags=re.IGNORECASE)
+    if not match:
+        raise ValueError(f"OfficeBench comparative verifier omitted BEST index: {response!r}")
+    best = int(match.group(1))
+    if not 0 <= best < n_candidates:
+        raise ValueError(
+            f"OfficeBench comparative verifier returned invalid BEST index {best} "
+            f"for {n_candidates} candidates"
+        )
+    return best
 
-    A fixed 20-step budget starves multi-app OfficeBench tasks — 3app trajectories need to switch
-    between apps and author several files, and the ofbench-ours-5.4 run showed a cluster of 3app
-    failures hitting the cap mid-task.  This keeps the 1app floor unchanged (20) and adds headroom per
-    extra app, capped so a runaway rollout still terminates.  Overridable via the env tunables; an
-    explicit ``solver.max_steps`` (≤ cap) still wins over this default.
-    """
-    floor = _int_env("TTS_OFFICEBENCH_STEPS_FLOOR", 20)
-    per_app = _int_env("TTS_OFFICEBENCH_STEPS_PER_APP", 6)
-    cap = _int_env("TTS_OFFICEBENCH_STEPS_CAP", 40)
+
+def _scaled_max_steps(level: int) -> int:
+    """Default productive-step budget, uniformly raised for every OfficeBench subset."""
+    floor = _int_env("TTS_OFFICEBENCH_STEPS_FLOOR", 40)
+    per_app = _int_env("TTS_OFFICEBENCH_STEPS_PER_APP", 0)
+    cap = _int_env("TTS_OFFICEBENCH_STEPS_CAP", 80)
     return min(cap, floor + per_app * max(0, int(level) - 1))
+
+
+def _rollout_max_steps(configured: int, level: int) -> int:
+    cap = _int_env("TTS_OFFICEBENCH_STEPS_CAP", 80)
+    return configured if configured and configured <= cap else _scaled_max_steps(level)
 
 
 def _action_of(step_action: Dict) -> Dict:
@@ -150,6 +163,172 @@ class OfficeBenchTaskEnv(TaskEnvironment):
     def restricted_view(self) -> RestrictedView:
         return _OfficeBenchRestrictedView(self)
 
+    def refine_rollout_scores(
+        self,
+        config,
+        rollouts: Sequence[RolloutResult],
+    ) -> None:
+        """Comparatively audit ambiguous additions while preserving the lower-N winner."""
+        enabled = os.environ.get(
+            "TTS_OFFICEBENCH_COMPARATIVE_RERANK",
+            os.environ.get("TTS_OFFICEBENCH_COMPARATIVE_ZERO_RERANK", "0"),
+        ).strip().lower() in {"1", "true", "yes", "on"}
+        if not enabled or len(rollouts) < 2:
+            return
+
+        try:
+            selection_margin = max(
+                0.0,
+                float(os.environ.get(
+                    "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")),
+            )
+        except (TypeError, ValueError):
+            selection_margin = 0.05
+        try:
+            audit_margin = max(
+                selection_margin,
+                float(os.environ.get(
+                    "TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")),
+            )
+        except (TypeError, ValueError):
+            audit_margin = 0.25
+
+        previous = []
+        for rollout in rollouts:
+            record = (rollout.predicted.metadata or {}).get("comparative_rerank")
+            if (
+                isinstance(record, dict)
+                and 1 < int(record.get("pool_size", 0)) < len(rollouts)
+            ):
+                previous.append(record)
+        prior = max(previous, key=lambda item: int(item["pool_size"])) if previous else None
+        prior_pool_size = int(prior["pool_size"]) if prior else 1
+        incumbent = int(prior["best"]) if prior else 0
+        if not 0 <= incumbent < prior_pool_size:
+            raise ValueError(
+                f"invalid prior OfficeBench comparative winner {incumbent} "
+                f"for pool size {prior_pool_size}"
+            )
+
+        def priority(index: int) -> tuple[bool, bool]:
+            rollout = rollouts[index]
+            metadata = rollout.predicted.metadata if rollout.predicted is not None else {}
+            return (
+                bool(rollout.trajectory.done),
+                not bool((metadata or {}).get("hard_invalid", False)),
+            )
+
+        new_indices = list(range(prior_pool_size, len(rollouts)))
+        if not new_indices:
+            return
+        challenger = max(
+            new_indices,
+            key=lambda index: (
+                priority(index),
+                float(rollouts[index].predicted.reward),
+                -float(rollouts[index].cost),
+                -index,
+            ),
+        )
+        incumbent_priority = priority(incumbent)
+        challenger_priority = priority(challenger)
+        incumbent_score = float(rollouts[incumbent].predicted.reward)
+        challenger_score = float(rollouts[challenger].predicted.reward)
+        native_best = incumbent
+        if (
+            challenger_priority > incumbent_priority
+            or (
+                challenger_priority == incumbent_priority
+                and challenger_score > incumbent_score + selection_margin
+            )
+        ):
+            native_best = challenger
+
+        native_priority = priority(native_best)
+        native_score = float(rollouts[native_best].predicted.reward)
+        contenders = [
+            index
+            for index in [incumbent, *new_indices]
+            if priority(index) == native_priority
+            and float(rollouts[index].predicted.reward) >= native_score - audit_margin
+        ]
+        contenders = list(dict.fromkeys(contenders))
+        best = native_best
+        response = None
+
+        from ..llm import make_chat_client
+        from ..llm.azure import azure_deployment
+
+        if len(contenders) >= 2:
+            rendered = []
+            for index in contenders:
+                rollout = rollouts[index]
+                steps = "\n".join(
+                    f"  {step_index}. action={_action_of(step.action)}\n"
+                    f"     observation={str(step.observation.content)[:500]}"
+                    for step_index, step in enumerate(rollout.trajectory.steps)
+                )
+                metadata = rollout.predicted.metadata or {}
+                state = metadata.get("verifier_final_state") or {}
+                rendered.append(
+                    f"### Candidate {index}\n"
+                    f"confidence={float(rollout.predicted.reward):.4f}; "
+                    f"done={rollout.trajectory.done}; "
+                    f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
+                    f"termination={rollout.trajectory.termination_reason!r}\n"
+                    f"per-check audit={json.dumps(metadata.get('verifier_percheck'), default=str)}\n"
+                    f"predicted final state={json.dumps(state, default=str)[:12000]}\n"
+                    f"trajectory:\n{steps or '  (no actions)'}"
+                )
+            prompt = (
+                "Choose the ONE candidate most likely to pass every native OfficeBench evaluator check. "
+                "Audit the predicted final state against every check, then use the action/observation "
+                "trace to detect malformed, failed, incomplete, or destructive edits. Confidence values "
+                "are noisy and tied candidates are common, so do not prefer the incumbent or a higher "
+                "index without evaluator-visible evidence. If all candidates are flawed, choose the "
+                "least flawed.\n\n"
+                f"## User task\n{self._instruction}\n\n"
+                f"## Native evaluator checks\n"
+                f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
+                f"{chr(10).join(rendered)}\n\n"
+                f"Valid candidate IDs: {contenders}\n"
+                "Return exactly:\nBEST: <candidate ID>\nREASON: <one concise sentence>"
+            )
+            model = config.solver.llm_agent or azure_deployment()
+            response = make_chat_client(
+                model=model,
+                seed=20_000_000 + int(config.seed) + len(rollouts),
+            ).chat(
+                "You are a precise comparative OfficeBench trajectory verifier.",
+                prompt,
+                temperature=0.0,
+                max_tokens=256,
+            )
+            best = _parse_comparative_best(response, len(rollouts))
+            if best not in contenders:
+                raise ValueError(
+                    f"OfficeBench comparative verifier selected non-contender {best}; "
+                    f"valid contenders were {contenders}"
+                )
+
+        decision = {
+            "pool_size": len(rollouts),
+            "prior_pool_size": prior_pool_size,
+            "incumbent": incumbent,
+            "native_best": native_best,
+            "contenders": contenders,
+            "best": best,
+            "response": response,
+        }
+        override = {
+            "pool_size": len(rollouts),
+            "best": best,
+            "source": "officebench_comparative",
+        }
+        for rollout in rollouts:
+            rollout.predicted.metadata["comparative_rerank"] = decision
+            rollout.predicted.metadata["selection_override"] = override
+
     def entity_store(self) -> EntityStore:  # free-form file tasks: no read-grounded entity store
         raise NotImplementedError("OfficeBench tasks expose no entity store for the world model")
 
@@ -219,7 +398,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         solver = config.solver
         model = solver.llm_agent or azure_deployment()
         chat = make_chat_client(model=model, seed=seed)
-        max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 40 else _scaled_max_steps(self.level)
+        max_steps = _rollout_max_steps(solver.max_steps, self.level)
 
         session = self._new_session(f"s{seed}").start()
         try:
@@ -242,6 +421,10 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         state (predicted file contents + the write-log), not real files — because in this mode the real
         files are still the initial ones.  The realized actions ride on the trajectory so the selected
         one can be committed (really executed) and officially scored.
+
+        Observation and success predictions use a bounded agentic grounding loop.  The WM subagent may
+        ``READ`` files, ``LIST`` directories, or ``CALL`` whitelisted read-only OfficeBench actions
+        against the pristine sampling container before emitting a prediction or verdict.
         Returns ``(Trajectory, predicted RewardInfo, None)``.
         """
         from ..llm import make_chat_client
@@ -255,13 +438,18 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         )
         from .officebench_wm import _reference_enabled
         from .officebench_wm_predict import OfficeBenchWMPredictor
+        from .officebench_wm_python import prepare_officebench_python_tool
 
         solver = config.solver
         model = solver.llm_agent or azure_deployment()
         chat = make_chat_client(model=model, seed=seed)
         predictor = OfficeBenchWMPredictor(make_chat_client(model=model))
-        verifier = OfficeBenchVerifier(make_chat_client(model=model))
-        max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 40 else _scaled_max_steps(self.level)
+        verifier = OfficeBenchVerifier(
+            make_chat_client(model=model),
+            sample_seed=10_000_000 + seed * 100,
+        )
+        prepare_officebench_python_tool()
+        max_steps = _rollout_max_steps(solver.max_steps, self.level)
 
         # read_only: the sampling container is used for EXACT READS ONLY; a write action would raise.
         session = self._new_session(f"wm{seed}")
@@ -272,8 +460,14 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             # rollout — sampling AND judging (the verifier's state/reference reads) — so that no write
             # (predicted or incidental) ever mutates the environment during selection.
             pristine_before = session.testbed_digest() if _assert_write_safe() else None
-            run = run_officebench_agent(session, self._config, chat, max_steps=max_steps,
-                                        temperature=solver.temperature, predictor=predictor)
+            run = run_officebench_agent(
+                session,
+                self._config,
+                chat,
+                max_steps=max_steps,
+                temperature=solver.temperature,
+                predictor=predictor,
+            )
             traj = self._trajectory_from_run(run)
             # Reference-ground on OfficeBench's native ground truth: the gold expected-output files
             # (exact_match tasks) are read-only starting artifacts, so they are read exactly.  Resolved
@@ -301,6 +495,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                         session, predictor, state_files_from_config(self._config), gold_labels)
                 except Exception:  # noqa: BLE001 - fall back to the write-log-only judge on any error
                     final_state = {"WRITE LOG (predicted)": predictor.predicted_write_log()}
+            verifier.bind_query_interface(predictor.query_interface)
             confidence = verifier.predict_success(
                 self._instruction, run.actions, run.observations, config=self._config,
                 final_state=final_state, final_answer=run.final_answer, gold_files=gold_files)
@@ -312,12 +507,29 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                         "during sampling/judging (no write must reach the environment before commit)")
         finally:
             session.close()
+        python_calls = predictor.n_python_calls + verifier.n_python_calls
+        python_failures = predictor.n_python_failures + verifier.n_python_failures
+        python_forced = predictor.n_python_forced + verifier.n_python_forced
+        python_mode_misses = (
+            predictor.n_python_mode_misses + verifier.n_python_mode_misses)
         predicted = RewardInfo(reward=float(confidence), success=confidence >= 0.5, grounded=False,
                                reason=(f"OfficeBench WM verifier confidence {confidence:.2f} "
                                        f"({predictor.n_writes} writes predicted, "
                                        f"{predictor.n_failed_writes} predicted-failed, "
                                        f"{predictor.n_dirty_reads} dirty reads predicted, "
-                                       f"{predictor.n_reads} reads exact)"))
+                                       f"{predictor.n_reads} reads exact, "
+                                       f"{python_calls} Python calls)"
+                                       + (f"; deterministic failure: {verifier.last_precheck_failure}"
+                                          if verifier.last_precheck_failure else "")),
+                               metadata={
+                                   "python_calls": python_calls,
+                                   "python_failures": python_failures,
+                                   "python_forced": python_forced,
+                                   "python_mode_misses": python_mode_misses,
+                                   "verifier_percheck": verifier.last_percheck_breakdown,
+                                   "verifier_final_state": final_state,
+                                   "hard_invalid": verifier.last_precheck_failure is not None,
+                               })
         return traj, predicted, None
 
     def _predicted_state(self, session, predictor, files, gold_labels=None) -> dict:
@@ -348,13 +560,18 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             path = spec.get("path", "")
             key = path
             init = initial.get(path, "[file does not exist]")
-            if not predictor.applied_writes.get(_norm_path(path)):
+            target = _norm_path(path)
+            if not predictor.was_written(target):
                 out[key] = init  # untouched by the trajectory
-            elif os.path.basename(_norm_path(path)) in gold_labels and not reconstruct_gold:
+            elif predictor.is_deleted(target):
+                out[key] = predictor.predict_file_state(path, init)
+            elif os.path.basename(target) in gold_labels and not reconstruct_gold:
                 # gold-backed: judge from initial + write-log vs the gold (no reconstruction).
                 out[key] = (f"INITIAL content (before the trajectory):\n{init}\n\n"
                             f"WRITE actions the agent applied to this file (predicted, not executed):\n"
                             f"{predictor.file_write_log(path)}")
+            elif predictor.global_dirty:
+                out[key] = predictor.predict_file_state(path, init)
             else:
                 out[key] = predictor.predict_file_state(path, init)
         # always include the write-log + the agent's answer so give-ups/other-file writes are visible

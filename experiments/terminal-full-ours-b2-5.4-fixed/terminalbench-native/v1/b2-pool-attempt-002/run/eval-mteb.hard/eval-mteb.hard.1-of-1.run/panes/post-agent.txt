@@ -1,0 +1,40 @@
+root@9bec123aa640:/app# pwd; __tts_rc=$?; printf '\n__TTS_58ef5b7978184339bdf7e3497d138049__RC:%s\n' "$__tts_rc"; printf '__TTS_58ef5b7978184339bdf7e3497d138049
+__PWD:'; pwd; printf '__TTS_58ef5b7978184339bdf7e3497d138049__END\n'; tmux wait -S done
+/app
+
+__TTS_58ef5b7978184339bdf7e3497d138049__RC:0
+__TTS_58ef5b7978184339bdf7e3497d138049__PWD:/app
+__TTS_58ef5b7978184339bdf7e3497d138049__END
+root@9bec123aa640:/app# cd -- /app && ls -la && find . -maxdepth 2 -type f | sed 's#^./##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_b85986772167467b8cc6
+18ea823fcc59__RC:%s\n' "$__tts_rc"; printf '__TTS_b85986772167467b8cc618ea823fcc59__PWD:'; pwd; printf '__TTS_b85986772167467b8cc618ea823fcc59__END\n'; tmux wai
+t -S done
+total 8
+drwxr-xr-x 2 root root 4096 Jul 18 09:56 .
+drwxr-xr-x 1 root root 4096 Jul 18 09:58 ..
+
+__TTS_b85986772167467b8cc618ea823fcc59__RC:0
+__TTS_b85986772167467b8cc618ea823fcc59__PWD:/app
+__TTS_b85986772167467b8cc618ea823fcc59__END
+root@9bec123aa640:/app# cd -- /app && cd /app && python - <<'PY'
+> import importlib.util as u
+> mods=['mteb','sentence_transformers','transformers','torch']
+> for m in mods:
+>  print(m, bool(u.find_spec(m)))
+> PY; __tts_rc=$?; printf '\n__TTS_d70b8fc63f3d4243a1ee3feba7c17d85__RC:%s\n' "$__tts_rc"; printf '__TTS_d70b8fc63f3d4243a1ee3feba7c17d85__PWD:'; pwd; printf '_
+_TTS_d70b8fc63f3d4243a1ee3feba7c17d85__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python -c "import importlib.util as u;mods=['mteb','sentence_transformers','transformers','torch'];print({m:bool(u.find_spec(m)) for
+m in mods})"; __tts_rc=$?; printf '\n__TTS_ee81f1679aef4522b15b52e91ca2d0a0__RC:%s\n' "$__tts_rc"; printf '__TTS_ee81f1679aef4522b15b52e91ca2d0a0__PWD:'; pwd; p
+rintf '__TTS_ee81f1679aef4522b15b52e91ca2d0a0__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python -V; __tts_rc=$?; printf '\n__TTS_3f444193b09043d4b11fd78993a6ca83__RC:%s\n' "$__tts_rc"; printf '__TTS_3f444193b09043d4b11fd78
+993a6ca83__PWD:'; pwd; printf '__TTS_3f444193b09043d4b11fd78993a6ca83__END\n'; tmux wait -S done
+> cd -- /app && cd /app && which python python3 && ls -l /usr/bin/python* /usr/local/bin/python* 2>/dev/null | sed -n '1,20p'; __tts_rc=$?; printf '\n__TTS_98c5
+93c521754ee8a0d975a81868c098__RC:%s\n' "$__tts_rc"; printf '__TTS_98c593c521754ee8a0d975a81868c098__PWD:'; pwd; printf '__TTS_98c593c521754ee8a0d975a81868c098__
+END\n'; tmux wait -S done
+> cd -- /app && cd /app && command -v python3 && python3 -V; __tts_rc=$?; printf '\n__TTS_15f0b8906a7c40af8f6c59c7e51b9c15__RC:%s\n' "$__tts_rc"; printf '__TTS_
+15f0b8906a7c40af8f6c59c7e51b9c15__PWD:'; pwd; printf '__TTS_15f0b8906a7c40af8f6c59c7e51b9c15__END\n'; tmux wait -S done
+> cd -- /app && cd /app && command -v timeout && timeout 10s sh -lc 'command -v python3; python3 -V; command -v pip3'; __tts_rc=$?; printf '\n__TTS_edc40cd785f2
+401aa10e110c44927b6f__RC:%s\n' "$__tts_rc"; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__PWD:'; pwd; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__END\n';
+tmux wait -S done
+> cd -- /app && cd /app && ps -ef | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_f603d9befd594299b12567b261b6bcb7__RC:%s\n' "$__tts_rc"; printf '__TTS_f603d9be
+fd594299b12567b261b6bcb7__PWD:'; pwd; printf '__TTS_f603d9befd594299b12567b261b6bcb7__END\n'; tmux wait -S done
+>

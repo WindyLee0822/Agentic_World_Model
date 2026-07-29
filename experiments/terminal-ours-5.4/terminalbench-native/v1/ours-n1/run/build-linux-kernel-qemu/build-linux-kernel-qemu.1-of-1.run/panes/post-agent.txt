@@ -1,0 +1,82 @@
+root@c11fcb9a318e:/app# pwd; __tts_rc=$?; printf '\n__TTS_ffd96df5cfe8422c8448ffb0e66801f9__RC:%s\n' "$__tts_rc"; printf '__TTS_ffd96df5cfe8422c8448ffb0e66801f9
+__PWD:'; pwd; printf '__TTS_ffd96df5cfe8422c8448ffb0e66801f9__END\n'; tmux wait -S done
+/app
+
+__TTS_ffd96df5cfe8422c8448ffb0e66801f9__RC:0
+__TTS_ffd96df5cfe8422c8448ffb0e66801f9__PWD:/app
+__TTS_ffd96df5cfe8422c8448ffb0e66801f9__END
+root@c11fcb9a318e:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_16f08a6397114a8980ec1
+1fccf6cf8ee__RC:%s\n' "$__tts_rc"; printf '__TTS_16f08a6397114a8980ec11fccf6cf8ee__PWD:'; pwd; printf '__TTS_16f08a6397114a8980ec11fccf6cf8ee__END\n'; tmux wait
+ -S done
+
+__TTS_16f08a6397114a8980ec11fccf6cf8ee__RC:0
+__TTS_16f08a6397114a8980ec11fccf6cf8ee__PWD:/app
+__TTS_16f08a6397114a8980ec11fccf6cf8ee__END
+root@c11fcb9a318e:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_3a48d0795b114c1094a9a
+ede32a2bc73__RC:%s\n' "$__tts_rc"; printf '__TTS_3a48d0795b114c1094a9aede32a2bc73__PWD:'; pwd; printf '__TTS_3a48d0795b114c1094a9aede32a2bc73__END\n'; tmux wait
+ -S done
+
+__TTS_3a48d0795b114c1094a9aede32a2bc73__RC:0
+__TTS_3a48d0795b114c1094a9aede32a2bc73__PWD:/app
+__TTS_3a48d0795b114c1094a9aede32a2bc73__END
+root@c11fcb9a318e:/app# cd -- /app && bash -lc 'ls -la /app && find /app -maxdepth 2 -mindepth 1 -type d -printf "%p\n" | sort | sed -n "1,80p"'; __tts_rc=$?; p
+rintf '\n__TTS_acc300fe737f4ce9b6ee6bd89a0a779d__RC:%s\n' "$__tts_rc"; printf '__TTS_acc300fe737f4ce9b6ee6bd89a0a779d__PWD:'; pwd; printf '__TTS_acc300fe737f4ce
+9b6ee6bd89a0a779d__END\n'; tmux wait -S done
+total 8
+drwxr-xr-x 2 root root 4096 May 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 16 22:54 ..
+
+__TTS_acc300fe737f4ce9b6ee6bd89a0a779d__RC:0
+__TTS_acc300fe737f4ce9b6ee6bd89a0a779d__PWD:/app
+__TTS_acc300fe737f4ce9b6ee6bd89a0a779d__END
+root@c11fcb9a318e:/app# cd -- __TTS_acc300fe737f4ce9b6ee6bd89a0a779d__PWD:/app && bash -lc 'cd /app/linux-6.9 && grep -n "start_kernel" -n init/main.c | head &&
+ grep -n "rest_init" init/main.c | head && sed -n "1,220p" init/main.c | grep -n "pr_notice\|printk\|start_kernel" | sed -n "1,40p"'; __tts_rc=$?; printf '\n__T
+TS_ba256f6500014866bb8186ac8d42e874__RC:%s\n' "$__tts_rc"; printf '__TTS_ba256f6500014866bb8186ac8d42e874__PWD:'; pwd; printf '__TTS_ba256f6500014866bb8186ac8d4
+2e874__END\n'; tmux wait -S done
+bash: cd: __TTS_acc300fe737f4ce9b6ee6bd89a0a779d__PWD:/app: No such file or directory
+
+__TTS_ba256f6500014866bb8186ac8d42e874__RC:1
+__TTS_ba256f6500014866bb8186ac8d42e874__PWD:/app
+__TTS_ba256f6500014866bb8186ac8d42e874__END
+root@c11fcb9a318e:/app# cd -- __TTS_ba256f6500014866bb8186ac8d42e874__PWD:/app && bash -lc 'cd /app/linux-6.9 && python3 - <<"PY"
+> from pathlib import Path
+> p=Path("init/main.c")
+> s=p.read_text()
+> old="""asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+> {"""
+> new="""asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+> {
+> printk(KERN_INFO \"Hello, this is a custom kernel\");
+> """
+> if "Hello, this is a custom kernel" not in s:
+>     s=s.replace(old,new,1)
+>     p.write_text(s)
+> PY
+> make defconfig -j"$(nproc)" && make -j"$(nproc)" bzImage gen_init_cpio'}; __tts_rc=$?; printf '\n__TTS_eaf3b74c36db4967ac7e65fef6ab3737__RC:%s\n' "$__tts_rc";
+ printf '__TTS_eaf3b74c36db4967ac7e65fef6ab3737__PWD:'; pwd; printf '__TTS_eaf3b74c36db4967ac7e65fef6ab3737__END\n'; tmux wait -S done
+bash: cd: __TTS_ba256f6500014866bb8186ac8d42e874__PWD:/app: No such file or directory
+
+__TTS_eaf3b74c36db4967ac7e65fef6ab3737__RC:1
+__TTS_eaf3b74c36db4967ac7e65fef6ab3737__PWD:/app
+__TTS_eaf3b74c36db4967ac7e65fef6ab3737__END
+root@c11fcb9a318e:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'cd /app/linux-6.9 && test -f arch/x86/boot/bzImage -a -x usr/gen_init_cpio && grep -q "Hel
+lo, this is a custom kernel" init/main.c && echo OK || (python3 - <<"PY"
+> from pathlib import Path
+> p=Path("init/main.c")
+> s=p.read_text()
+> needle="printk(KERN_INFO \"Hello, this is a custom kernel\");"
+> if needle not in s:
+>     old="asmlinkage __visible void __init __no_sanitize_address start_kernel(void)\n{"
+>     new=old+"\n\t"+needle
+>     s=s.replace(old,new,1)
+>     p.write_text(s)
+> PY
+> make defconfig >/tmp/kernel-defconfig.log 2>&1 && make -j"$(nproc)" bzImage gen_init_cpio >/tmp/kernel-build.log 2>&1 && test -f arch/x86/boot/bzImage -a -x u
+sr/gen_init_cpio && grep -q "Hello, this is a custom kernel" init/main.c && echo BUILT)'; __tts_rc=$?; printf '\n__TTS_a35813c768fb45d5a26d93da4e66d523__RC:%s\n
+' "$__tts_rc"; printf '__TTS_a35813c768fb45d5a26d93da4e66d523__PWD:'; pwd; printf '__TTS_a35813c768fb45d5a26d93da4e66d523__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_a35813c768fb45d5a26d93da4e66d523__RC:1
+__TTS_a35813c768fb45d5a26d93da4e66d523__PWD:/app
+__TTS_a35813c768fb45d5a26d93da4e66d523__END
+root@c11fcb9a318e:/app#

@@ -1,0 +1,24 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.98,
+      "n_reads": 0,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python3 - <<'PY'\\nimport os, sqlite3, json, struct\\nDB='/app/trunc.db'\\nOUT='/app/recover.json'\\n# First try normal sqlite access in readonly mode and integrity-tolerant querying\\nrows=[]\\nseen=set()\\ntry:\\n    conn=sqlite3.connect(f'file:{DB}?mode=ro', uri=True)\\n    cur=conn.cursor()\\n    for q in [\\\"SELECT name FROM sqlite_master WHERE type='table'\\\", \\\"PRAGMA table_list\\\"]:\\n        try:\\n            cur.execute(q)\\n            names=[r[0] if q.startswith('SELECT') else r[1] for ",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 2146
+      }
+    }
+  ],
+  "commit_results": []
+}

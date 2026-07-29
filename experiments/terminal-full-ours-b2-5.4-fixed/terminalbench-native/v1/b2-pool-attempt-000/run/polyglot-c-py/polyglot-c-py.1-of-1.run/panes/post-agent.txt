@@ -1,0 +1,48 @@
+root@13af199129d0:/app# pwd; __tts_rc=$?; printf '\n__TTS_932005cdbbd046f6a89a09688dfd6e96__RC:%s\n' "$__tts_rc"; printf '__TTS_932005cdbbd046f6a89a09688dfd6e96
+__PWD:'; pwd; printf '__TTS_932005cdbbd046f6a89a09688dfd6e96__END\n'; tmux wait -S done
+/app
+
+__TTS_932005cdbbd046f6a89a09688dfd6e96__RC:0
+__TTS_932005cdbbd046f6a89a09688dfd6e96__PWD:/app
+__TTS_932005cdbbd046f6a89a09688dfd6e96__END
+root@13af199129d0:/app# cd -- /app && cat > /app/main.c.py <<'EOF'
+> #!/usr/bin/env python3
+> #/*
+> import sys
+>
+> def fib(n):
+>     a, b = 0, 1
+>     for _ in range(n):
+>         a, b = b, a + b
+>     return a
+>
+> if __name__ == '__main__':
+>     n = int(sys.argv[1])
+>     print(fib(n))
+>     raise SystemExit
+> #*/
+> #include <stdio.h>
+> #include <stdlib.h>
+>
+> int main(int argc, char **argv) {
+>     long long n = atoll(argv[1]);
+>     unsigned long long a = 0, b = 1, t;
+>     while (n-- > 0) {
+>         t = a + b;
+>         a = b;
+>         b = t;
+>     }
+>     printf("%llu\n", a);
+>     return 0;
+> }
+> EOF; __tts_rc=$?; printf '\n__TTS_2fa71bb052b849ee93dc56eb5aa9f3d9__RC:%s\n' "$__tts_rc"; printf '__TTS_2fa71bb052b849ee93dc56eb5aa9f3d9__PWD:'; pwd; printf '
+__TTS_2fa71bb052b849ee93dc56eb5aa9f3d9__END\n'; tmux wait -S done
+> cd -- /app && sed -n '1,200p' /app/main.c.py; __tts_rc=$?; printf '\n__TTS_9de07853ebe24adbbe00c16a93506d46__RC:%s\n' "$__tts_rc"; printf '__TTS_9de07853ebe24
+adbbe00c16a93506d46__PWD:'; pwd; printf '__TTS_9de07853ebe24adbbe00c16a93506d46__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> open('/app/main.c.py','w').write('#if 0\n"""\n#!/usr/bin/env python3\nimport sys\na,b=0,1\nfor _ in range(int(sys.argv[1])): a,b=b,a+b\nprint(a)\nsys.exit()\n
+"""\n#endif\n#include <stdio.h>\n#include <stdlib.h>\nint main(int argc,char**argv){ unsigned long long a=0,b=1,t; long long n=atoll(argv[1]); while(n-->0){ t=a
++b; a=b; b=t; } printf("%llu\\n",a); return 0; }\n')
+> PY; __tts_rc=$?; printf '\n__TTS_895a32b56ee24d26a71cedfb27de092b__RC:%s\n' "$__tts_rc"; printf '__TTS_895a32b56ee24d26a71cedfb27de092b__PWD:'; pwd; printf '_
+_TTS_895a32b56ee24d26a71cedfb27de092b__END\n'; tmux wait -S done
+>

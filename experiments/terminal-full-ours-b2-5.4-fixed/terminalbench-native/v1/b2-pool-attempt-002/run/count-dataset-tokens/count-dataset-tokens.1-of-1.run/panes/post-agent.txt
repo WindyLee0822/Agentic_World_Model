@@ -1,0 +1,40 @@
+root@19883ad1bb20:/app# pwd; __tts_rc=$?; printf '\n__TTS_42061ac255124fb4b34ba761bfe8100a__RC:%s\n' "$__tts_rc"; printf '__TTS_42061ac255124fb4b34ba761bfe8100a
+__PWD:'; pwd; printf '__TTS_42061ac255124fb4b34ba761bfe8100a__END\n'; tmux wait -S done
+/app
+
+__TTS_42061ac255124fb4b34ba761bfe8100a__RC:0
+__TTS_42061ac255124fb4b34ba761bfe8100a__PWD:/app
+__TTS_42061ac255124fb4b34ba761bfe8100a__END
+root@19883ad1bb20:/app# cd -- /app && python - <<'PY'
+> from huggingface_hub import hf_hub_download
+> print(hf_hub_download('open-thoughts/OpenThoughts-114k','README.md',repo_type='dataset'))
+> PY; __tts_rc=$?; printf '\n__TTS_96e3de7de2e94a94adaefd4eb40b18a6__RC:%s\n' "$__tts_rc"; printf '__TTS_96e3de7de2e94a94adaefd4eb40b18a6__PWD:'; pwd; printf '_
+_TTS_96e3de7de2e94a94adaefd4eb40b18a6__END\n'; tmux wait -S done
+> cd -- /app && python -c "from datasets import load_dataset; ds=load_dataset('open-thoughts/OpenThoughts-114k',split='train[:1]'); print(ds.column_names); prin
+t(ds[0])"; __tts_rc=$?; printf '\n__TTS_eacc65cb81e14bbaa5ec1df3f3593266__RC:%s\n' "$__tts_rc"; printf '__TTS_eacc65cb81e14bbaa5ec1df3f3593266__PWD:'; pwd; prin
+tf '__TTS_eacc65cb81e14bbaa5ec1df3f3593266__END\n'; tmux wait -S done
+> cd -- /app && python -c "from huggingface_hub import HfApi; print(HfApi().dataset_info('open-thoughts/OpenThoughts-114k').siblings[:10])"; __tts_rc=$?; printf
+ '\n__TTS_3e7d369753484feba66e9fed88edabbf__RC:%s\n' "$__tts_rc"; printf '__TTS_3e7d369753484feba66e9fed88edabbf__PWD:'; pwd; printf '__TTS_3e7d369753484feba66e
+9fed88edabbf__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

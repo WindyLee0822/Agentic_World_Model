@@ -1,0 +1,40 @@
+root@33f54e69dcd1:/app# pwd; __tts_rc=$?; printf '\n__TTS_1f3f7c57e6e2412894799784aadd070d__RC:%s\n' "$__tts_rc"; printf '__TTS_1f3f7c57e6e2412894799784aadd070d
+__PWD:'; pwd; printf '__TTS_1f3f7c57e6e2412894799784aadd070d__END\n'; tmux wait -S done
+/app
+
+__TTS_1f3f7c57e6e2412894799784aadd070d__RC:0
+__TTS_1f3f7c57e6e2412894799784aadd070d__PWD:/app
+__TTS_1f3f7c57e6e2412894799784aadd070d__END
+root@33f54e69dcd1:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_2f703acc36114cbd85e66fff76067646__RC:%s\n' "$__tts_rc"; printf '__TTS_2f703acc36
+114cbd85e66fff76067646__PWD:'; pwd; printf '__TTS_2f703acc36114cbd85e66fff76067646__END\n'; tmux wait -S done
+total 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 09:01 ..
+
+__TTS_2f703acc36114cbd85e66fff76067646__RC:0
+__TTS_2f703acc36114cbd85e66fff76067646__PWD:/app
+__TTS_2f703acc36114cbd85e66fff76067646__END
+root@33f54e69dcd1:/app# cd -- /app && cd /app && python3 - <<'PY'
+> import os
+> print('python ok')
+> PY; __tts_rc=$?; printf '\n__TTS_f7a55c439d024d22a75116eb3fde6e2f__RC:%s\n' "$__tts_rc"; printf '__TTS_f7a55c439d024d22a75116eb3fde6e2f__PWD:'; pwd; printf '_
+_TTS_f7a55c439d024d22a75116eb3fde6e2f__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python3 --version; __tts_rc=$?; printf '\n__TTS_fb01dd44641f4f6eafe9d75a221d3fbb__RC:%s\n' "$__tts_rc"; printf '__TTS_fb01dd44641f4f6
+eafe9d75a221d3fbb__PWD:'; pwd; printf '__TTS_fb01dd44641f4f6eafe9d75a221d3fbb__END\n'; tmux wait -S done
+> cd -- /app && cd /app && which python3 || which python || which node || which npm || which apt-get; __tts_rc=$?; printf '\n__TTS_e0a039bd1fb94b5a9bef80db4769d
+786__RC:%s\n' "$__tts_rc"; printf '__TTS_e0a039bd1fb94b5a9bef80db4769d786__PWD:'; pwd; printf '__TTS_e0a039bd1fb94b5a9bef80db4769d786__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

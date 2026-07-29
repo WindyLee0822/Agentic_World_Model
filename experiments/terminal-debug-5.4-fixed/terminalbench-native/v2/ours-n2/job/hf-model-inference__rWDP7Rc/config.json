@@ -1,0 +1,16 @@
+{
+    "task": {
+        "path": "hf-model-inference",
+        "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+        "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+        "source": "terminal-bench"
+    },
+    "trial_name": "hf-model-inference__rWDP7Rc",
+    "trials_dir": "/home/t-wendili/dw/experiments/terminal-debug-5.4-fixed/terminalbench-native/v2/ours-n2/job",
+    "agent_timeout_multiplier": 2.0,
+    "agent": {
+        "name": "tts.env.terminalbench_harbor:HarborTerminalBenchAgent",
+        "model_name": "gpt-5.4"
+    },
+    "job_id": "c45c5161-bd53-4439-b2df-a476e6869792"
+}

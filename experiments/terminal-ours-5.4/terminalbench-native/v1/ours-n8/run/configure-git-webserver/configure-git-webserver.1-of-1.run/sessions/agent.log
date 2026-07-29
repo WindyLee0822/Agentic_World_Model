@@ -1,0 +1,570 @@
+[?2004hroot@15267d831b70:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@15267d831b70:/app# clear
+[?2004l[H[J[3J[?2004hroot@15267d831b70:/app# pwd; __tts_rc=$?; printf '\n__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__RC:%s\n' "$__tts_rc"; printf '__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__PWD:'; pwd; printf '__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__RC:0
+__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__PWD:/app
+__TTS_99a9e8a5e8ad43a5b66202b57f019fa1__END
+[?2004hroot@15267d831b70:/app# cd -- /app && pwd; __tts_rc=$?; printf '\n__TTS_c22ae1417558437fb039cb526b54fde0__RC:%s\n' "$__tts_rc"; printf '__TTS_c22ae1417558437fb039cb526b54fde0__PWD:'; pwd; printf '__TTS_c22ae1417558437fb039cb526b54fde0__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_c22ae1417558437fb039cb526b54fde0__RC:0
+__TTS_c22ae1417558437fb039cb526b54fde0__PWD:/app
+__TTS_c22ae1417558437fb039cb526b54fde0__END
+[?2004hroot@15267d831b70:/app# cd -- /app && ps -ef | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_3ee95c40e365478abbd2ad0e56d147c2__RC:%s\n' "$__tts_rc"; printf '__TTS_3ee95c40e365478abbd2ad0e56d147c2__PWD:'; pwd; printf '__TTS_3ee95c40e365478abbd2ad0e56d147c2__END\n'; tmux wait -S done
+[?2004lUID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 00:51 ?        00:00:00 sh -c sleep infinity
+root           7       1  0 00:51 ?        00:00:00 sleep infinity
+root          32       1  0 00:51 ?        00:00:00 tmux new-session -x 160 -y 40 -d -s agent ; set-option -t agent history-limit 50000 ; pipe-pane -t agent cat > /logs/agent.log
+root          33      32  0 00:51 pts/0    00:00:00 -bash
+root          35      32  0 00:51 ?        00:00:00 sh -c cat > /logs/agent.log
+root          37      35  0 00:51 ?        00:00:00 cat
+root          47      33  0 00:51 pts/0    00:00:00 /usr/bin/python3 /usr/bin/asciinema rec --stdin /logs/agent.cast
+root          48      47  0 00:51 pts/0    00:00:00 /usr/bin/python3 /usr/bin/asciinema rec --stdin /logs/agent.cast
+root          49      47  0 00:51 pts/0    00:00:00 /usr/bin/python3 /usr/bin/asciinema rec --stdin /logs/agent.cast
+root          50      47  0 00:51 pts/1    00:00:00 sh -c /bin/bash
+root          51      50  0 00:51 pts/1    00:00:00 /bin/bash
+root         118      51  0 00:52 pts/1    00:00:00 ps -ef
+root         119      51  0 00:52 pts/1    00:00:00 sed -n 1,120p
+
+__TTS_3ee95c40e365478abbd2ad0e56d147c2__RC:0
+__TTS_3ee95c40e365478abbd2ad0e56d147c2__PWD:/app
+__TTS_3ee95c40e365478abbd2ad0e56d147c2__END
+[?2004hroot@15267d831b70:/app# cd -- /app && find /etc /usr -maxdepth 3 \( -name sshd_config -o -name git-shell -o -name 'python3*' -o -name nginx.conf -o -name apache2.conf \) 2>/dev/null | sort | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_34b22fccd2c84fd193555cccd15d9c56__RC:%s\n' "$__tts_rc"; printf '__TTS_34b22fccd2c84fd193555cccd15d9c56__PWD:'; pwd; printf '__TTS_34b22fccd2c84fd193555cccd15d9c56__END\n'; tmux wait -S done
+[?2004l/etc/python3
+/etc/python3.12
+/usr/bin/python3
+/usr/bin/python3.12
+/usr/lib/binfmt.d/python3.12.conf
+/usr/lib/python3
+/usr/lib/python3.12
+/usr/lib/valgrind/python3.supp
+/usr/local/lib/python3.12
+/usr/share/applications/python3.12.desktop
+/usr/share/binfmts/python3.12
+/usr/share/doc-base/python3.python-policy
+/usr/share/doc/python3
+/usr/share/doc/python3-minimal
+/usr/share/doc/python3-pkg-resources
+/usr/share/doc/python3.12
+/usr/share/doc/python3.12-minimal
+/usr/share/pixmaps/python3.12.xpm
+/usr/share/pixmaps/python3.xpm
+/usr/share/python3
+
+__TTS_34b22fccd2c84fd193555cccd15d9c56__RC:0
+__TTS_34b22fccd2c84fd193555cccd15d9c56__PWD:/app
+__TTS_34b22fccd2c84fd193555cccd15d9c56__END
+[?2004hroot@15267d831b70:/app# cd -- /app && ls -la / /app /etc /usr/sbin /usr/bin 2>/dev/null | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_20ab9b2f026c4dce961befaf2c241ff5__RC:%s\n' "$__tts_rc"; printf '__TTS_20ab9b2f026c4dce961befaf2c241ff5__PWD:'; pwd; printf '__TTS_20ab9b2f026c4dce961befaf2c241ff5__END\n'; tmux wait -S done
+[?2004l/:
+total 76
+drwxr-xr-x    1 root      root  4096 Jul 17 00:51 .
+drwxr-xr-x    1 root      root  4096 Jul 17 00:51 ..
+-rwxr-xr-x    1 root      root     0 Jul 17 00:51 .dockerenv
+drwxr-xr-x    2 root      root  4096 May 28  2025 app
+lrwxrwxrwx    1 root      root     7 Apr 22  2024 bin -> usr/bin
+drwxr-xr-x    2 root      root  4096 Apr 22  2024 boot
+drwxr-xr-x    5 root      root   340 Jul 17 00:51 dev
+drwxr-xr-x    1 root      root  4096 Jul 17 00:51 etc
+drwxr-xr-x    3 root      root  4096 Apr  4  2025 home
+lrwxrwxrwx    1 root      root     7 Apr 22  2024 lib -> usr/lib
+lrwxrwxrwx    1 root      root     9 Apr 22  2024 lib64 -> usr/lib64
+drwxr-xr-x    2 588311805 users 4096 Jul 17 00:51 logs
+drwxr-xr-x    2 root      root  4096 Apr  4  2025 media
+drwxr-xr-x    2 root      root  4096 Apr  4  2025 mnt
+drwxr-xr-x    2 root      root  4096 Apr  4  2025 opt
+dr-xr-xr-x 1021 root      root     0 Jul 17 00:51 proc
+drwx------    1 root      root  4096 Jul 17 00:51 root
+drwxr-xr-x    4 root      root  4096 Apr  4  2025 run
+lrwxrwxrwx    1 root      root     8 Apr 22  2024 sbin -> usr/sbin
+drwxr-xr-x    2 root      root  4096 Apr  4  2025 srv
+dr-xr-xr-x   12 root      root     0 Jul 17 00:51 sys
+drwxrwxrwt    1 root      root  4096 Jul 17 00:51 tmp
+drwxr-xr-x    1 root      root  4096 Apr  4  2025 usr
+drwxr-xr-x    1 root      root  4096 Apr  4  2025 var
+
+/app:
+total 8
+drwxr-xr-x 2 root root 4096 May 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 17 00:51 ..
+
+/etc:
+total 436
+drwxr-xr-x 1 root root    4096 Jul 17 00:51 .
+drwxr-xr-x 1 root root    4096 Jul 17 00:51 ..
+-rw------- 1 root root       0 Apr  4  2025 .pwd.lock
+drwxr-xr-x 2 root root    4096 Apr  4  2025 alternatives
+drwxr-xr-x 8 root root    4096 Apr  4  2025 apt
+-rw-r--r-- 1 root root    2319 Mar 31  2024 bash.bashrc
+-rw-r--r-- 1 root root     367 Aug  2  2022 bindresvport.blacklist
+drwxr-xr-x 3 root root    4096 May 28  2025 ca-certificates
+-rw-r--r-- 1 root root    6288 May 28  2025 ca-certificates.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 cloud
+drwxr-xr-x 2 root root    4096 Apr  4  2025 cron.d
+drwxr-xr-x 2 root root    4096 Apr  4  2025 cron.daily
+-rw-r--r-- 1 root root    2967 Apr 12  2024 debconf.conf
+-rw-r--r-- 1 root root      11 Apr 22  2024 debian_version
+drwxr-xr-x 2 root root    4096 Apr  4  2025 default
+drwxr-xr-x 4 root root    4096 Apr  4  2025 dpkg
+-rw-r--r-- 1 root root     685 Apr  8  2024 e2scrub.conf
+-rw-r--r-- 1 root root     106 Apr  4  2025 environment
+-rw-r--r-- 1 root root    1853 Oct 17  2022 ethertypes
+-rw-r--r-- 1 root root      37 Apr  4  2025 fstab
+-rw-r--r-- 1 root root    2584 Jan 31  2024 gai.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 gnutls
+-rw-r--r-- 1 root root     503 Apr  4  2025 group
+-rw-r--r-- 1 root root     434 Apr  4  2025 group-
+-rw-r----- 1 root shadow   429 Apr  4  2025 gshadow
+-rw-r----- 1 root shadow   364 Apr  4  2025 gshadow-
+-rw-r--r-- 1 root root      92 Apr 22  2024 host.conf
+-rw-r--r-- 1 root root      13 Jul 17 00:51 hostname
+-rw-r--r-- 1 root root     175 Jul 17 00:51 hosts
+drwxr-xr-x 2 root root    4096 Apr  4  2025 init.d
+-rw-r--r-- 1 root root    1875 Mar 31  2024 inputrc
+-rw-r--r-- 1 root root      26 Feb  5  2025 issue
+-rw-r--r-- 1 root root      19 Feb  5  2025 issue.net
+drwxr-xr-x 3 root root    4096 Apr  4  2025 kernel
+-rw-r--r-- 1 root root    5507 May 28  2025 ld.so.cache
+-rw-r--r-- 1 root root      34 Aug  2  2022 ld.so.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 ld.so.conf.d
+-rw-r--r-- 1 root root     267 Apr 22  2024 legal
+-rw-r--r-- 1 root root     191 Mar 31  2024 libaudit.conf
+lrwxrwxrwx 1 root root      24 May 28  2025 localtime -> /usr/share/zoneinfo//UTC
+-rw-r--r-- 1 root root   12345 Feb 22  2024 login.defs
+drwxr-xr-x 2 root root    4096 Apr  4  2025 logrotate.d
+-rw-r--r-- 1 root root     104 Feb  5  2025 lsb-release
+-rw-r--r-- 1 root root       0 Apr  4  2025 machine-id
+-rw-r--r-- 1 root root   75113 Jul 12  2023 mime.types
+-rw-r--r-- 1 root root     744 Apr  8  2024 mke2fs.conf
+lrwxrwxrwx 1 root root      12 Jul 17 00:51 mtab -> /proc/mounts
+-rw-r--r-- 1 root root      91 Apr 22  2024 networks
+-rw-r--r-- 1 root root     494 Aug  2  2022 nsswitch.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 opt
+lrwxrwxrwx 1 root root      21 Feb  5  2025 os-release -> ../usr/lib/os-release
+-rw-r--r-- 1 root root     552 Oct 13  2022 pam.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 pam.d
+-rw-r--r-- 1 root root     888 Apr  4  2025 passwd
+-rw-r--r-- 1 root root     839 Apr  4  2025 passwd-
+-rw-r--r-- 1 root root     582 Apr 22  2024 profile
+drwxr-xr-x 2 root root    4096 Apr  4  2025 profile.d
+-rw-r--r-- 1 root root    3144 Oct 17  2022 protocols
+drwxr-xr-x 2 root root    4096 May 28  2025 python3
+drwxr-xr-x 2 root root    4096 May 28  2025 python3.12
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc0.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc1.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc2.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc3.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc4.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc5.d
+drwxr-xr-x 2 root root    4096 Dec  6  2023 rc6.d
+drwxr-xr-x 2 root root    4096 Apr  4  2025 rcS.d
+-rw-r--r-- 1 root root     386 Jul 17 00:51 resolv.conf
+lrwxrwxrwx 1 root root      13 Apr  8  2024 rmt -> /usr/sbin/rmt
+-rw-r--r-- 1 root root     911 Oct 17  2022 rpc
+drwxr-xr-x 4 root root    4096 Apr  4  2025 security
+drwxr-xr-x 2 root root    4096 Apr  4  2025 selinux
+-rw-r--r-- 1 root root   12813 Mar 27  2021 services
+-rw-r----- 1 root shadow   502 Apr  4  2025 shadow
+-rw-r----- 1 root shadow   474 Apr  4  2025 shadow-
+-rw-r--r-- 1 root root     132 May 28  2025 shells
+drwxr-xr-x 2 root root    4096 Apr  4  2025 skel
+drwxr-xr-x 4 root root    4096 May 28  2025 ssl
+-rw-r--r-- 1 root root      20 Apr  4  2025 subgid
+-rw-r--r-- 1 root root       0 Apr  4  2025 subgid-
+-rw-r--r-- 1 root root      20 Apr  4  2025 subuid
+-rw-r--r-- 1 root root       0 Apr  4  2025 subuid-
+-rw-r--r-- 1 root root    2209 Mar 24  2024 sysctl.conf
+drwxr-xr-x 2 root root    4096 Apr  4  2025 sysctl.d
+drwxr-xr-x 4 root root    4096 Dec  6  2023 systemd
+drwxr-xr-x 2 root root    4096 Apr  4  2025 terminfo
+-rw-r--r-- 1 root root       5 May 28  2025 timezone
+drwxr-xr-x 2 root root    4096 Apr  4  2025 update-motd.d
+-rw-r--r-- 1 root root     681 Apr  8  2024 xattr.conf
+
+/usr/bin:
+total 32512
+drwxr-xr-x 1 root root      4096 May 28  2025 .
+drwxr-xr-x 1 root root      4096 Apr  4  2025 ..
+-rwxr-xr-x 1 root root     55744 Apr  5  2024 [
+-rwxr-xr-x 1 root root     14720 Dec  5  2024 addpart
+-rwxr-xr-x 1 root root     18824 Mar 31  2024 apt
+-rwxr-xr-x 1 root root     88544 Mar 31  2024 apt-cache
+-rwxr-xr-x 1 root root     27104 Mar 31  2024 apt-cdrom
+-rwxr-xr-x 1 root root     31120 Mar 31  2024 apt-config
+-rwxr-xr-x 1 root root     51680 Mar 31  2024 apt-get
+-rwxr-xr-x 1 root root     28664 Mar 31  2024 apt-key
+-rwxr-xr-x 1 root root     55776 Mar 31  2024 apt-mark
+-rwxr-xr-x 1 root root     35336 Apr  5  2024 arch
+-rwxr-xr-x 1 root root       217 Nov  8  2023 asciinema
+lrwxrwxrwx 1 root root        21 Apr  8  2024 awk -> /etc/alternatives/awk
+-rwxr-xr-x 1 root root     55816 Apr  5  2024 b2sum
+-rwxr-xr-x 1 root root     39432 Apr  5  2024 base32
+-rwxr-xr-x 1 root root     39432 Apr  5  2024 base64
+-rwxr-xr-x 1 root root     35336 Apr  5  2024 basename
+-rwxr-xr-x 1 root root     47624 Apr  5  2024 basenc
+-rwxr-xr-x 1 root root   1446024 Mar 31  2024 bash
+-rwxr-xr-x 1 root root      6988 Mar 31  2024 bashbug
+-rwxr-xr-x 1 root root      6841 Feb  5  2025 c_rehash
+lrwxrwxrwx 1 root root         3 Apr  8  2024 captoinfo -> tic
+-rwxr-xr-x 1 root root     39384 Apr  5  2024 cat
+-rwxr-sr-x 1 root shadow   72184 May 30  2024 chage
+-rwxr-xr-x 1 root root     14656 Apr 28  2024 chattr
+-rwxr-xr-x 1 root root     59912 Apr  5  2024 chcon
+-rwsr-xr-x 1 root root     72792 May 30  2024 chfn
+-rwxr-xr-x 1 root root     59912 Apr  5  2024 chgrp
+-rwxr-xr-x 1 root root     55816 Apr  5  2024 chmod
+-rwxr-xr-x 1 root root     22912 Dec  5  2024 choom
+-rwxr-xr-x 1 root root     59912 Apr  5  2024 chown
+-rwxr-xr-x 1 root root     31104 Dec  5  2024 chrt
+-rwsr-xr-x 1 root root     44760 May 30  2024 chsh
+-rwxr-xr-x 1 root root    104984 Apr  5  2024 cksum
+-rwxr-xr-x 1 root root     14656 Apr  8  2024 clear
+-rwxr-xr-x 1 root root     14568 Mar 31  2024 clear_console
+-rwxr-xr-x 1 root root     43408 Apr  8  2024 cmp
+-rwxr-xr-x 1 root root     39440 Apr  5  2024 comm
+-rwxr-xr-x 1 root root    141848 Apr  5  2024 cp
+-rwxr-xr-x 1 root root     51720 Apr  5  2024 csplit
+-rwxr-xr-x 1 root root     39432 Apr  5  2024 cut
+-rwxr-xr-x 1 root root    129784 Mar 31  2024 dash
+-rwxr-xr-x 1 root root    109064 Apr  5  2024 date
+-rwxr-xr-x 1 root root     72232 Apr  5  2024 dd
+-rwxr-xr-x 1 root root     24358 Dec  6  2023 deb-systemd-helper
+-rwxr-xr-x 1 root root      7135 Dec  6  2023 deb-systemd-invoke
+-rwxr-xr-x 1 root root      2870 Apr 12  2024 debconf
+-rwxr-xr-x 1 root root     11846 Apr 12  2024 debconf-apt-progress
+-rwxr-xr-x 1 root root       623 Apr 12  2024 debconf-communicate
+-rwxr-xr-x 1 root root      1718 Apr 12  2024 debconf-copydb
+-rwxr-xr-x 1 root root       668 Apr 12  2024 debconf-escape
+-rwxr-xr-x 1 root root      3216 Apr 12  2024 debconf-set-selections
+-rwxr-xr-x 1 root root      1825 Apr 12  2024 debconf-show
+-rwxr-xr-x 1 root root     14720 Dec  5  2024 delpart
+-rwxr-xr-x 1 root root     89168 Apr  5  2024 df
+-rwxr-xr-x 1 root root    137776 Apr  8  2024 diff
+-rwxr-xr-x 1 root root     59920 Apr  8  2024 diff3
+-rwxr-xr-x 1 root root    142312 Apr  5  2024 dir
+-rwxr-xr-x 1 root root     47632 Apr  5  2024 dircolors
+-rwxr-xr-x 1 root root     35208 Apr  5  2024 dirname
+-rwxr-xr-x 1 root root     70288 Dec  5  2024 dmesg
+lrwxrwxrwx 1 root root         8 Apr  8  2024 dnsdomainname -> hostname
+lrwxrwxrwx 1 root root         8 Apr  8  2024 domainname -> hostname
+-rwxr-xr-x 1 root root    318176 Jul 17  2024 dpkg
+-rwxr-xr-x 1 root root    146000 Jul 17  2024 dpkg-deb
+-rwxr-xr-x 1 root root    121416 Jul 17  2024 dpkg-divert
+-rwxr-xr-x 1 root root     21205 Jul 17  2024 dpkg-maintscript-helper
+-rwxr-xr-x 1 root root    137792 Jul 17  2024 dpkg-query
+-rwxr-xr-x 1 root root      4185 Jul 17  2024 dpkg-realpath
+-rwxr-xr-x 1 root root    100896 Jul 17  2024 dpkg-split
+-rwxr-xr-x 1 root root     51592 Jul 17  2024 dpkg-statoverride
+-rwxr-xr-x 1 root root     43552 Jul 17  2024 dpkg-trigger
+-rwxr-xr-x 1 root root    100872 Apr  5  2024 du
+-rwxr-xr-x 1 root root     35208 Apr  5  2024 echo
+-rwxr-xr-x 1 root root        41 Apr  8  2024 egrep
+-rwxr-xr-x 1 root root     48072 Apr  5  2024 env
+-rwxr-xr-x 1 root root     35360 Apr  5  2024 expand
+-rwxr-sr-x 1 root shadow   27152 May 30  2024 expiry
+-rwxr-xr-x 1 root root     43432 Apr  5  2024 expr
+-rwxr-xr-x 1 root root     64008 Apr  5  2024 factor
+-rwxr-xr-x 1 root root     23168 May 30  2024 faillog
+-rwxr-xr-x 1 root root     27008 Dec  5  2024 fallocate
+-rwxr-xr-x 1 root root     26936 Apr  5  2024 false
+-rwxr-xr-x 1 root root        41 Apr  8  2024 fgrep
+-rwxr-xr-x 1 root root    204264 Apr  8  2024 find
+-rwxr-xr-x 1 root root     69280 Dec  5  2024 findmnt
+-rwxr-xr-x 1 root root     23024 Dec  5  2024 flock
+-rwxr-xr-x 1 root root     39432 Apr  5  2024 fmt
+-rwxr-xr-x 1 root root     35336 Apr  5  2024 fold
+-rwxr-xr-x 1 root root     27008 Sep 26  2024 free
+-rwxr-xr-x 1 root root     26992 Jan 28  2025 getconf
+-rwxr-xr-x 1 root root     39648 Jan 28  2025 getent
+
+__TTS_20ab9b2f026c4dce961befaf2c241ff5__RC:0
+__TTS_20ab9b2f026c4dce961befaf2c241ff5__PWD:/app
+__TTS_20ab9b2f026c4dce961befaf2c241ff5__END
+[?2004hroot@15267d831b70:/app# cd -- /app && find /app -maxdepth 3 -type f | sort; __tts_rc=$?; printf '\n__TTS_db9e1f7cd21942bfacd9562bb68cd51f__RC:%s\n' "$__tts_rc"; printf '__TTS_db9e1f7cd21942bfacd9562bb68cd51f__PWD:'; pwd; printf '__TTS_db9e1f7cd21942bfacd9562bb68cd51f__END\n'; tmux wait -S done
+[?2004l
+__TTS_db9e1f7cd21942bfacd9562bb68cd51f__RC:0
+__TTS_db9e1f7cd21942bfacd9562bb68cd51f__PWD:/app
+__TTS_db9e1f7cd21942bfacd9562bb68cd51f__END
+[?2004hroot@15267d831b70:/app# cd -- /app && bash -lc 'pwd; ls -la; find /app -maxdepth 3 -type f | sort | sed -n "1,200p"'; __tts_rc=$?; printf '\n__TTS_f8b7843280ea43828603ba72ac0033b6__RC:%s\n' "$__tts_rc"; printf '__TTS_f8b7843280ea43828603ba72ac0033b6__PWD:'; pwd; printf '__TTS_f8b7843280ea43828603ba72ac0033b6__END\n'; tmux wait -S done
+[?2004l/app
+total 8
+drwxr-xr-x 2 root root 4096 May 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 17 00:51 ..
+
+__TTS_f8b7843280ea43828603ba72ac0033b6__RC:0
+__TTS_f8b7843280ea43828603ba72ac0033b6__PWD:/app
+__TTS_f8b7843280ea43828603ba72ac0033b6__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -e; uname -a; id; ls -la /; find / -maxdepth 3 \( -name "*ssh*" -o -name "*git*" -o -name "nginx*" -o -name "apache*" -o -name "busybox" \) 2>/dev/null | sort | sed -n "1,200p"'; __tts_rc=$?; printf '\n__TTS_125b260fab86480ea1706ac469217362__RC:%s\n' "$__tts_rc"; printf '__TTS_125b260fab86480ea1706ac469217362__PWD:'; pwd; printf '__TTS_125b260fab86480ea1706ac469217362__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_125b260fab86480ea1706ac469217362__RC:1
+__TTS_125b260fab86480ea1706ac469217362__PWD:/app
+__TTS_125b260fab86480ea1706ac469217362__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -e
+[?2004l[?2004h> which sshd >/dev/null 2>&1 || (apt-get update >/dev/null && DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server >/dev/null)
+[?2004l[?2004h> mkdir -p /git /var/www/html /run/sshd /home/user/.ssh
+[?2004l[?2004h> id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user
+[?2004l[?2004h> chown -R user:user /home/user
+[?2004l[?2004h> ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa >/dev/null 2>&1 || true
+[?2004l[?2004h> cat /root/.ssh/id_rsa.pub >> /home/user/.ssh/authorized_keys
+[?2004l[?2004h> chown user:user /home/user/.ssh/authorized_keys
+[?2004l[?2004h> chmod 700 /home/user/.ssh
+[?2004l[?2004h> chmod 600 /home/user/.ssh/authorized_keys
+[?2004l[?2004h> git init --bare /git/server >/dev/null
+[?2004l[?2004h> cat > /git/server/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> branch=$(git rev-parse --symbolic --abbrev-ref HEAD 2>/dev/null || true)
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   tmp=$(mktemp -d)
+[?2004l[?2004h>   git --work-tree="$tmp" checkout -f "$new" -- . >/dev/null 2>&1 || exit 1
+[?2004l[?2004h>   mkdir -p /var/www/html
+[?2004l[?2004h>   cp -a "$tmp"/. /var/www/html/
+[?2004l[?2004h>   rm -rf "$tmp"
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive
+[?2004l[?2004h> cat > /etc/ssh/sshd_config.d/gitserver.conf <<"EOF"
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd || true
+[?2004l[?2004h> /usr/sbin/sshd
+[?2004l[?2004h> pkill -f "http.server 8080" || true
+[?2004l[?2004h> nohup python3 -m http.server 8080 --directory /var/www/html >/tmp/webserver.log 2>&1 &
+[?2004l[?2004h> ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true
+[?2004l[?2004h> rm -rf /tmp/client && git clone user@localhost:/git/server /tmp/client >/dev/null 2>&1 || true
+[?2004l[?2004h> cd /tmp/client
+[?2004l[?2004h> git config user.email root@localhost
+[?2004l[?2004h> git config user.name root
+[?2004l[?2004h> echo "hello world" > hello.html
+[?2004l[?2004h> git add hello.html
+[?2004l[?2004h> git commit -m "add index" >/dev/null
+[?2004l[?2004h> git push origin HEAD:webserver >/dev/null
+[?2004l[?2004h> sleep 1
+[?2004l[?2004h> curl -s http://localhost:8080/hello.html | grep -qx "hello world"'; __tts_rc=$?; printf '\n__TTS_e8e4be25489b44a29aa71a298e51741a__RC:%s\n' "$__tts_rc"; printf '__TTS_e8e4be25489b44a29aa71a298e51741a__PWD:'; pwd; printf '__TTS_e8e4be25489b44a29aa71a298e51741a__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_e8e4be25489b44a29aa71a298e51741a__RC:1
+__TTS_e8e4be25489b44a29aa71a298e51741a__PWD:/app
+__TTS_e8e4be25489b44a29aa71a298e51741a__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -e; which sshd; ls -ld /git /git/server /var/www/html /home/user /home/user/.ssh 2>/dev/null; ls -l /git/server/hooks 2>/dev/null; sed -n "1,200p" /git/server/hooks/post-receive 2>/dev/null; ps -ef | grep -E "[s]shd|http.server 8080"; ssh -o StrictHostKeyChecking=no user@localhost "echo ssh-ok"; rm -rf /tmp/client; git clone user@localhost:/git/server /tmp/client; cd /tmp/client; git config user.email root@localhost; git config user.name root; echo "hello world" > hello.html; git add hello.html; git commit -m "add index"; git push origin HEAD:webserver; sleep 1; printf "HTTP:"; curl -s http://localhost:8080/hello.html || true'; __tts_rc=$?; printf '\n__TTS_10ea54e354004d598dc0b85d8541072e__RC:%s\n' "$__tts_rc"; printf '__TTS_10ea54e354004d598dc0b85d8541072e__PWD:'; pwd; printf '__TTS_10ea54e354004d598dc0b85d8541072e__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_10ea54e354004d598dc0b85d8541072e__RC:1
+__TTS_10ea54e354004d598dc0b85d8541072e__PWD:/app
+__TTS_10ea54e354004d598dc0b85d8541072e__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -euxo pipefail; export DEBIAN_FRONTEND=noninteractive; command -v sshd >/dev/null 2>&1 || (apt-get update && apt-get install -y openssh-server); id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /var/www/html /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; chown -R user:user /home/user; [ -f /root/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user/.ssh; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server; cat > /git/server/hooks/post-receive <<'\''EOF'\''
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   tmp=$(mktemp -d)
+[?2004l[?2004h>   git --work-tree="$tmp" checkout -f "$new" -- .
+[?2004l[?2004h>   mkdir -p /var/www/html
+[?2004l[?2004h>   cp -a "$tmp"/. /var/www/html/
+[?2004l[?2004h>   rm -rf "$tmp"
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; cat > /etc/ssh/sshd_config.d/gitserver.conf <<'\''EOF'\''
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd || true; /usr/sbin/sshd; pkill -f "http.server 8080" || true; nohup python3 -m http.server 8080 --directory /var/www/html >/tmp/webserver.log 2>&1 & disown || true; ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; git clone user@localhost:/git/server /tmp/client; cd /tmp/client; git config user.email root@localhost; git config user.name root; echo "hello world" > hello.html; git add hello.html; git commit -m "add index"; git push origin HEAD:webserver; sleep 1; grep -qx "hello world" <(curl -fsS http://localhost:8080/hello.html)'; __tts_rc=$?; printf '\n__TTS_b79473ad1e784d7c8639257f9ac98c47__RC:%s\n' "$__tts_rc"; printf '__TTS_b79473ad1e784d7c8639257f9ac98c47__PWD:'; pwd; printf '__TTS_b79473ad1e784d7c8639257f9ac98c47__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_b79473ad1e784d7c8639257f9ac98c47__RC:1
+__TTS_b79473ad1e784d7c8639257f9ac98c47__PWD:/app
+__TTS_b79473ad1e784d7c8639257f9ac98c47__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -eux; command -v sshd || true; command -v python3 || true; command -v git; ls -ld /etc/ssh /etc/ssh/sshd_config.d /root/.ssh /home /var/www /var/www/html /git /run /usr/sbin 2>/dev/null || true; id user 2>/dev/null || true; ls -l /usr/sbin/sshd 2>/dev/null || true; sed -n "1,220p" /etc/ssh/sshd_config 2>/dev/null || true; find /etc/ssh -maxdepth 2 -type f | sort | xargs -r -I{} sh -c "echo ==== {}; sed -n 1,200p {}"'; __tts_rc=$?; printf '\n__TTS_6f1d66285bdf4b24ad897b4538bfb075__RC:%s\n' "$__tts_rc"; printf '__TTS_6f1d66285bdf4b24ad897b4538bfb075__PWD:'; pwd; printf '__TTS_6f1d66285bdf4b24ad897b4538bfb075__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_6f1d66285bdf4b24ad897b4538bfb075__RC:1
+__TTS_6f1d66285bdf4b24ad897b4538bfb075__PWD:/app
+__TTS_6f1d66285bdf4b24ad897b4538bfb075__END
+[?2004hroot@15267d831b70:/app# cd -- ' printf '"'"'' && bash -lc 'set -euxo pipefail; export DEBIAN_FRONTEND=noninteractive; command -v sshd >/dev/null 2>&1 || { apt-get update && apt-get install -y openssh-server; }; id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /var/www/html /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; [ -f /etc/ssh/ssh_host_rsa_key ] || ssh-keygen -A; [ -f /root/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server; cat > /git/server/hooks/post-receive <<'\''EOF'\''
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   rm -rf /var/www/html/*
+[?2004l[?2004h>   GIT_WORK_TREE=/var/www/html git checkout -f "$new" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; chown -R user:user /git/server; cat > /etc/ssh/sshd_config.d/gitserver.conf <<'\''EOF'\''
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> StrictModes no
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd || true; /usr/sbin/sshd -E /tmp/sshd.log; pkill -f "http.server 8080" || true; nohup python3 -m http.server 8080 --directory /var/www/html >/tmp/webserver.log 2>&1 & ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; git clone user@localhost:/git/server /tmp/client; cd /tmp/client; git config user.email root@localhost; git config user.name root; echo "hello world" > hello.html; git add hello.html; git commit -m "add index"; git push origin HEAD:webserver; sleep 1; curl -fsS http://localhost:8080/hello.html | grep -qx "hello world"'; __tts_rc=$?; printf '\n__TTS_e3d519cb80c840b6956dbe9db02e1cdd__RC:%s\n' "$__tts_rc"; printf '__TTS_e3d519cb80c840b6956dbe9db02e1cdd__PWD:'; pwd; printf '__TTS_e3d519cb80c840b6956dbe9db02e1cdd__END\n'; tmux wait -S done
+[?2004lbash: cd:  printf ': No such file or directory
+
+__TTS_e3d519cb80c840b6956dbe9db02e1cdd__RC:1
+__TTS_e3d519cb80c840b6956dbe9db02e1cdd__PWD:/app
+__TTS_e3d519cb80c840b6956dbe9db02e1cdd__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -euxo pipefail; export DEBIAN_FRONTEND=noninteractive; command -v sshd >/dev/null 2>&1 || { apt-get update && apt-get install -y openssh-server; }; id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /srv/web /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; [ -f /etc/ssh/ssh_host_rsa_key ] || ssh-keygen -A; [ -f /root/.ssh/id_rsa ] || ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user/.ssh /git; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server; cat > /git/server/hooks/post-receive <<'\''EOF'\''
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   rm -rf /srv/web/*
+[?2004l[?2004h>   GIT_WORK_TREE=/srv/web git checkout -f "$new" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; cat > /etc/ssh/sshd_config.d/gitserver.conf <<'\''EOF'\''
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> StrictModes no
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd || true; /usr/sbin/sshd -E /tmp/sshd.log; pkill -f "http.server 8080" || true; nohup python3 -m http.server 8080 --directory /srv/web >/tmp/webserver.log 2>&1 & ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; git clone user@localhost:/git/server /tmp/client; cd /tmp/client; git config user.email root@localhost; git config user.name root; echo "hello world" > hello.html; git add hello.html; git commit -m "add index"; git push origin HEAD:webserver; sleep 1; curl -fsS http://localhost:8080/hello.html | grep -qx "hello world"'; __tts_rc=$?; printf '\n__TTS_2908d8c3233749a1a0ce80e65567a060__RC:%s\n' "$__tts_rc"; printf '__TTS_2908d8c3233749a1a0ce80e65567a060__PWD:'; pwd; printf '__TTS_2908d8c3233749a1a0ce80e65567a060__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_2908d8c3233749a1a0ce80e65567a060__RC:1
+__TTS_2908d8c3233749a1a0ce80e65567a060__PWD:/app
+__TTS_2908d8c3233749a1a0ce80e65567a060__END
+[?2004hroot@15267d831b70:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -eux; export DEBIAN_FRONTEND=noninteractive; command -v sshd >/dev/null 2>&1 || { apt-get update && apt-get install -y openssh-server; }; id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /srv/web /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; ssh-keygen -A; [ -f /root/.ssh/id_rsa ] || ssh-keygen -q -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server; cat > /git/server/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   rm -rf /srv/web/*
+[?2004l[?2004h>   GIT_WORK_TREE=/srv/web git --git-dir=/git/server checkout -f "$new" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; cat > /etc/ssh/sshd_config.d/gitserver.conf <<"EOF"
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> StrictModes no
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd || true; /usr/sbin/sshd -D -E /tmp/sshd.log >/dev/null 2>&1 & sleep 1; pkill -f "http.server 8080" || true; nohup python3 -m http.server 8080 --directory /srv/web >/tmp/webserver.log 2>&1 & sleep 1; ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git clone user@localhost:/git/server /tmp/client; cd /tmp/client; git config user.email root@localhost; git config user.name root; echo "hello world" > hello.html; git add hello.html; git commit -m "add index"; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git push origin HEAD:webserver; sleep 1; curl -fsS http://localhost:8080/hello.html | grep -qx "hello world"'; __tts_rc=$?; printf '\n__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__RC:%s\n' "$__tts_rc"; printf '__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__PWD:'; pwd; printf '__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__RC:1
+__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__PWD:/app
+__TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__END
+[?2004hroot@15267d831b70:/app# cd -- __TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__PWD:/app && bash -lc 'set -e; export DEBIAN_FRONTEND=noninteractive; if ! command -v sshd >/dev/null 2>&1; then apt-get update >/dev/null && apt-get install -y openssh-server >/dev/null; fi; id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /srv/web /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; ssh-keygen -A >/dev/null; [ -f /root/.ssh/id_rsa ] || ssh-keygen -q -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server >/dev/null; cat > /git/server/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   mkdir -p /srv/web
+[?2004l[?2004h>   find /srv/web -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[?2004l[?2004h>   GIT_WORK_TREE=/srv/web git --git-dir=/git/server checkout -f "$new" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; chown -R user:user /git/server; cat > /etc/ssh/sshd_config.d/gitserver.conf <<"EOF"
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> StrictModes no
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd >/dev/null 2>&1 || true; /usr/sbin/sshd -E /tmp/sshd.log; pkill -f "http.server 8080 --directory /srv/web" >/dev/null 2>&1 || true; nohup python3 -m http.server 8080 --directory /srv/web >/tmp/webserver.log 2>&1 & sleep 1; ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git clone user@localhost:/git/server /tmp/client >/dev/null; cd /tmp/client; git config user.email root@localhost; git config user.name root; printf "hello world\n" > hello.html; git add hello.html; git commit -m "add index" >/dev/null; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git push origin HEAD:webserver >/dev/null; sleep 1; grep -qx "hello world" <(curl -fsS http://localhost:8080/hello.html)'; __tts_rc=$?; printf '\n__TTS_d96c798281a94b358b4e08b356223d06__RC:%s\n' "$__tts_rc"; printf '__TTS_d96c798281a94b358b4e08b356223d06__PWD:'; pwd; printf '__TTS_d96c798281a94b358b4e08b356223d06__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_47dca7ccfc6a40d1ba2aec9d0c0fa16f__PWD:/app: No such file or directory
+
+__TTS_d96c798281a94b358b4e08b356223d06__RC:1
+__TTS_d96c798281a94b358b4e08b356223d06__PWD:/app
+__TTS_d96c798281a94b358b4e08b356223d06__END
+[?2004hroot@15267d831b70:/app# cd -- /app && bash -lc 'set -x; command -v sshd || true; ls -l /usr/sbin/sshd 2>/dev/null || true; tail -n +1 /tmp/sshd.log /tmp/webserver.log 2>/dev/null || true; ps -ef | grep -E "[s]shd|[h]ttp.server" || true; ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa user@localhost true || true; rm -rf /tmp/client; GIT_SSH_COMMAND="ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git clone user@localhost:/git/server /tmp/client || true; [ -d /tmp/client/.git ] && { cd /tmp/client && git config user.email root@localhost && git config user.name root && printf "hello world\n" > hello.html && git add hello.html && git commit -m test || true && GIT_SSH_COMMAND="ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git push origin HEAD:webserver || true; }; ls -la /srv/web /git/server /git/server/hooks 2>/dev/null || true; sed -n "1,200p" /git/server/hooks/post-receive 2>/dev/null || true; curl -v http://localhost:8080/hello.html || true'; __tts_rc=$?; printf '\n__TTS_ef3577b45de44d6baa70166b074abfb7__RC:%s\n' "$__tts_rc"; printf '__TTS_ef3577b45de44d6baa70166b074abfb7__PWD:'; pwd; printf '__TTS_ef3577b45de44d6baa70166b074abfb7__END\n'; tmux wait -S done
+[?2004l+ command -v sshd
++ true
++ ls -l /usr/sbin/sshd
++ true
++ tail -n +1 /tmp/sshd.log /tmp/webserver.log
++ true
++ ps -ef
++ grep -E '[s]shd|[h]ttp.server'
+root         414      51  0 01:00 pts/1    00:00:00 bash -lc set -x; command -v sshd || true; ls -l /usr/sbin/sshd 2>/dev/null || true; tail -n +1 /tmp/sshd.log /tmp/webserver.log 2>/dev/null || true; ps -ef | grep -E "[s]shd|[h]ttp.server" || true; ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa user@localhost true || true; rm -rf /tmp/client; GIT_SSH_COMMAND="ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git clone user@localhost:/git/server /tmp/client || true; [ -d /tmp/client/.git ] && { cd /tmp/client && git config user.email root@localhost && git config user.name root && printf "hello world\n" > hello.html && git add hello.html && git commit -m test || true && GIT_SSH_COMMAND="ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git push origin HEAD:webserver || true; }; ls -la /srv/web /git/server /git/server/hooks 2>/dev/null || true; sed -n "1,200p" /git/server/hooks/post-receive 2>/dev/null || true; curl -v http://localhost:8080/hello.html || true
++ ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa user@localhost true
+bash: line 1: ssh: command not found
++ true
++ rm -rf /tmp/client
++ GIT_SSH_COMMAND='ssh -vvv -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa'
++ git clone user@localhost:/git/server /tmp/client
+bash: line 1: git: command not found
++ true
++ '[' -d /tmp/client/.git ']'
++ ls -la /srv/web /git/server /git/server/hooks
++ true
++ sed -n 1,200p /git/server/hooks/post-receive
++ true
++ curl -v http://localhost:8080/hello.html
+bash: line 1: curl: command not found
++ true
+
+__TTS_ef3577b45de44d6baa70166b074abfb7__RC:0
+__TTS_ef3577b45de44d6baa70166b074abfb7__PWD:/app
+__TTS_ef3577b45de44d6baa70166b074abfb7__END
+[?2004hroot@15267d831b70:/app# cd -- /app && bash -lc 'set -euxo pipefail; export DEBIAN_FRONTEND=noninteractive; command -v sshd >/dev/null 2>&1 || { apt-get update >/dev/null; apt-get install -y openssh-server >/dev/null; }; id -u user >/dev/null 2>&1 || useradd -m -s /bin/bash user; mkdir -p /git /srv/web /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d; ssh-keygen -A >/dev/null; [ -f /root/.ssh/id_rsa ] || ssh-keygen -q -t rsa -N "" -f /root/.ssh/id_rsa; cat /root/.ssh/id_rsa.pub > /home/user/.ssh/authorized_keys; chown -R user:user /home/user; chmod 700 /home/user/.ssh; chmod 600 /home/user/.ssh/authorized_keys; [ -d /git/server ] || git init --bare /git/server >/dev/null; chown -R user:user /git/server; cat > /git/server/hooks/post-receive <<"EOF"
+[?2004l[?2004h> #!/bin/sh
+[?2004l[?2004h> set -eu
+[?2004l[?2004h> while read old new ref; do
+[?2004l[?2004h>   [ "$ref" = "refs/heads/webserver" ] || continue
+[?2004l[?2004h>   mkdir -p /srv/web
+[?2004l[?2004h>   find /srv/web -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[?2004l[?2004h>   git --git-dir=/git/server --work-tree=/srv/web checkout -f "$new" -- .
+[?2004l[?2004h> done
+[?2004l[?2004h> EOF
+[?2004l[?2004h> chmod +x /git/server/hooks/post-receive; cat > /etc/ssh/sshd_config.d/gitserver.conf <<"EOF"
+[?2004l[?2004h> Port 22
+[?2004l[?2004h> PubkeyAuthentication yes
+[?2004l[?2004h> PasswordAuthentication no
+[?2004l[?2004h> PermitRootLogin yes
+[?2004l[?2004h> AuthorizedKeysFile .ssh/authorized_keys
+[?2004l[?2004h> StrictModes no
+[?2004l[?2004h> PidFile /run/sshd.pid
+[?2004l[?2004h> EOF
+[?2004l[?2004h> pkill sshd >/dev/null 2>&1 || true; /usr/sbin/sshd -E /tmp/sshd.log; pkill -f "python3 -m http.server 8080 --directory /srv/web" >/dev/null 2>&1 || true; nohup python3 -m http.server 8080 --directory /srv/web >/tmp/webserver.log 2>&1 & sleep 1; ssh-keyscan -H localhost >> /root/.ssh/known_hosts 2>/dev/null || true; rm -rf /tmp/client; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git clone user@localhost:/git/server /tmp/client >/dev/null; cd /tmp/client; git config user.email root@localhost; git config user.name root; printf "hello world\n" > hello.html; git add hello.html; git commit -m "add index" >/dev/null; GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa" git push origin HEAD:webserver >/dev/null; sleep 1; curl -fsS http://localhost:8080/hello.html | grep -qx "hello world"'; __tts_rc=$?; printf '\n__TTS_5148ea14b0fd4b2f854928165b9e0864__RC:%s\n' "$__tts_rc"; printf '__TTS_5148ea14b0fd4b2f854928165b9e0864__PWD:'; pwd; printf '__TTS_5148ea14b0fd4b2f854928165b9e0864__END\n'; tmux wait -S done
+[?2004l+ export DEBIAN_FRONTEND=noninteractive
++ DEBIAN_FRONTEND=noninteractive
++ command -v sshd
++ apt-get update
++ apt-get install -y openssh-server
+debconf: delaying package configuration, since apt-utils is not installed
++ id -u user
++ useradd -m -s /bin/bash user
++ mkdir -p /git /srv/web /run/sshd /home/user/.ssh /root/.ssh /etc/ssh/sshd_config.d
++ ssh-keygen -A
++ '[' -f /root/.ssh/id_rsa ']'
++ ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa
++ cat /root/.ssh/id_rsa.pub
++ chown -R user:user /home/user
++ chmod 700 /home/user/.ssh
++ chmod 600 /home/user/.ssh/authorized_keys
++ '[' -d /git/server ']'
++ git init --bare /git/server
+bash: line 1: git: command not found
+
+__TTS_5148ea14b0fd4b2f854928165b9e0864__RC:127
+__TTS_5148ea14b0fd4b2f854928165b9e0864__PWD:/app
+__TTS_5148ea14b0fd4b2f854928165b9e0864__END
+[?2004hroot@15267d831b70:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@15267d831b70:/app# 

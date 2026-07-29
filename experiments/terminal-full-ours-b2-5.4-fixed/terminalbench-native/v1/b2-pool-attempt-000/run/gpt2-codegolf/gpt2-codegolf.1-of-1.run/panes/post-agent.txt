@@ -1,0 +1,40 @@
+root@0f119f852d8a:/app# pwd; __tts_rc=$?; printf '\n__TTS_3e37c9344dc64081a8402044e8c18966__RC:%s\n' "$__tts_rc"; printf '__TTS_3e37c9344dc64081a8402044e8c18966
+__PWD:'; pwd; printf '__TTS_3e37c9344dc64081a8402044e8c18966__END\n'; tmux wait -S done
+/app
+
+__TTS_3e37c9344dc64081a8402044e8c18966__RC:0
+__TTS_3e37c9344dc64081a8402044e8c18966__PWD:/app
+__TTS_3e37c9344dc64081a8402044e8c18966__END
+root@0f119f852d8a:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_75937292870f4c8797213da7867695e4__RC:%s\n' "$__tts_rc"; printf '__TTS_7593729287
+0f4c8797213da7867695e4__PWD:'; pwd; printf '__TTS_75937292870f4c8797213da7867695e4__END\n'; tmux wait -S done
+total 486552
+drwxr-xr-x 1 root root      4096 Jul 17 22:36 .
+drwxr-xr-x 1 root root      4096 Jul 17 22:36 ..
+-rw-r--r-- 1 root root 497759232 Jul 17 22:36 gpt2-124M.ckpt
+-rw-r--r-- 1 root root    456318 Jul 17 22:36 vocab.bpe
+
+__TTS_75937292870f4c8797213da7867695e4__RC:0
+__TTS_75937292870f4c8797213da7867695e4__PWD:/app
+__TTS_75937292870f4c8797213da7867695e4__END
+root@0f119f852d8a:/app# cd -- /app && cd /app && python3 - <<'PY'
+> import os,struct
+> p='gpt2-124M.ckpt'
+> with open(p,'rb') as f:
+>  d=f.read(64)
+> print(len(d),d[:32],list(d[:16]))
+> for off in [0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60]:
+>  if off+4<=len(d): print(off,struct.unpack('<I',d[off:off+4])[0],struct.unpack('<f',d[off:off+4])[0])
+> PY; __tts_rc=$?; printf '\n__TTS_5cde59ce3e2a41ebbfec28096e810594__RC:%s\n' "$__tts_rc"; printf '__TTS_5cde59ce3e2a41ebbfec28096e810594__PWD:'; pwd; printf '_
+_TTS_5cde59ce3e2a41ebbfec28096e810594__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python3 -c "import struct,itertools;f=open('gpt2-124M.ckpt','rb');d=f.read(64);print(len(d),list(d[:16]));print([(i,struct.unpack('<I
+',d[i:i+4])[0],struct.unpack('<f',d[i:i+4])[0]) for i in range(0,64,4)])"; __tts_rc=$?; printf '\n__TTS_12c32a325cff44c0b0d017737856697c__RC:%s\n' "$__tts_rc";
+printf '__TTS_12c32a325cff44c0b0d017737856697c__PWD:'; pwd; printf '__TTS_12c32a325cff44c0b0d017737856697c__END\n'; tmux wait -S done
+> cd -- /app && cd /app && hexdump -C -n 64 gpt2-124M.ckpt; __tts_rc=$?; printf '\n__TTS_170a5170d41f494e978c7722d670b578__RC:%s\n' "$__tts_rc"; printf '__TTS_1
+70a5170d41f494e978c7722d670b578__PWD:'; pwd; printf '__TTS_170a5170d41f494e978c7722d670b578__END\n'; tmux wait -S done
+>
+
+
+
+
+
+

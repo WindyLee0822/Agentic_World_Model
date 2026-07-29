@@ -1,0 +1,250 @@
+[?2004hroot@f7d4e635d54c:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@f7d4e635d54c:/app# clear
+[?2004l[H[J[3J[?2004hroot@f7d4e635d54c:/app# pwd; __tts_rc=$?; printf '\n__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__RC:%s\n' "$__tts_rc"; printf '__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__PWD:'; pwd; printf '__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__RC:0
+__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__PWD:/app
+__TTS_63e0cc6293ae4d1f938a7a44e048f3d4__END
+[?2004hroot@f7d4e635d54c:/app# cd -- /app && bash -lc 'ls -la /app && python --version 2>/dev/null || python3 --version && pip show transformers flask torch requests 2>/dev/null | sed -n "1,120p"'; __tts_rc=$?; printf '\n__TTS_153cb760431b4bc58be0a6eba5dfc960__RC:%s\n' "$__tts_rc"; printf '__TTS_153cb760431b4bc58be0a6eba5dfc960__PWD:'; pwd; printf '__TTS_153cb760431b4bc58be0a6eba5dfc960__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 21:02 ..
+Python 3.13.1
+Name: requests
+Version: 2.34.2
+Summary: Python HTTP for Humans.
+Home-page: 
+Author: 
+Author-email: Kenneth Reitz <me@kennethreitz.org>
+License: Apache-2.0
+Location: /usr/local/lib/python3.13/site-packages
+Requires: certifi, charset_normalizer, idna, urllib3
+Required-by: 
+
+__TTS_153cb760431b4bc58be0a6eba5dfc960__RC:0
+__TTS_153cb760431b4bc58be0a6eba5dfc960__PWD:/app
+__TTS_153cb760431b4bc58be0a6eba5dfc960__END
+[?2004hroot@f7d4e635d54c:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import os
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> base=Path("/app")
+[?2004l[?2004h> (base/"model_cache").mkdir(parents=True,exist_ok=True)
+[?2004l[?2004h> (base/"app.py").write_text("""from flask import Flask, request, jsonify\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nimport torch\n\nMODEL_DIR = \"/app/model_cache/sentiment_model\"\ntokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)\nmodel = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)\nmodel.eval()\napp = Flask(__name__)\n\n@app.post(\"/sentiment\")\ndef sentiment():\n    data = request.get_json(silent=True)\n    if not data or not isinstance(data.get(\"text\"), str) or not data[\"text\"].strip():\n        return jsonify({\"error\": \"Request JSON must include a non-empty text field\"}), 400\n    inputs = tokenizer(data[\"text\"], return_tensors=\"pt\", truncation=True)\n    with torch.no_grad():\n        logits = model(**inputs).logits\n        probs = torch.softmax(logits, dim=-1)[0].tolist()\n    negative, positive = float(probs[0]), float(probs[1])\n    return jsonify({\n        \"sentiment\": \"positive\" if positive >= negative else \"negative\",\n        \"confidence\": {\"positive\": positive, \"negative\": negative}\n    })\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=5000)\n""")
+[?2004l[?2004h> (base/"test_api.py").write_text("""import requests\ntexts = [\n    \"I absolutely loved this movie, it was fantastic!\",\n    \"This was the worst experience I have ever had.\",\n    \"The product is okay, not great but not terrible either.\"\n]\nfor text in texts:\n    r = requests.post(\"http://127.0.0.1:5000/sentiment\", json={\"text\": text}, timeout=30)\n    print({\"text\": text, \"status\": r.status_code, \"response\": r.json()})\n""")
+[?2004l[?2004h> PY
+[?2004l[?2004h> pip install -q flask transformers torch huggingface_hub && python - <<"PY"
+[?2004l[?2004h> from huggingface_hub import snapshot_download
+[?2004l[?2004h> snapshot_download(repo_id="distilbert-base-uncased-finetuned-sst-2-english", local_dir="/app/model_cache/sentiment_model", local_dir_use_symlinks=False)
+[?2004l[?2004h> PY
+[?2004l[?2004h> nohup python /app/app.py >/app/flask.log 2>&1 &'}; __tts_rc=$?; printf '\n__TTS_34fa6c6e75474402bfd958ed36726e59__RC:%s\n' "$__tts_rc"; printf '__TTS_34fa6c6e75474402bfd958ed36726e59__PWD:'; pwd; printf '__TTS_34fa6c6e75474402bfd958ed36726e59__END\n'; tmux wait -S done
+[?2004l[33mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.[0m[33m
+[0m
+[1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m A new release of pip is available: [0m[31;49m24.3.1[0m[39;49m -> [0m[32;49m26.1.2[0m
+[1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m To update, run: [0m[32;49mpip install --upgrade pip[0m
+/usr/local/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `snapshot_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Downloading bytes:                                                                                                                         |  0.00B            
+Reconstructing (incomplete total...): |                                                                                           |  0.00B /  0.00B            [A
+
+Fetching 17 files:   0%|                                                                                                                | 0/17 [00:00<?, ?it/s][A[A
+Reconstructing (incomplete total...):   0%|                                                                                       |  0.00B /  268MB            [AWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Reconstructing (incomplete total...):   0%|                                                                                       |  0.00B /  536MB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |  0.00B /  536MB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |   735B /  536MB            [ADownloading bytes:                                                                                                                         |   735B            
+Reconstructing (incomplete total...):   0%|                                                                                       |   735B /  536MB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.36kB /  536MB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.45kB /  804MB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.45kB / 1.07GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.45kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.45kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.84kB / 1.34GB            [ADownloading bytes:                                                                                                                         | 1.84kB            
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.84kB / 1.34GB            [A
+
+Fetching 17 files:   6%|██████                                                                                                  | 1/17 [00:00<00:04,  3.83it/s][A[A
+Reconstructing (incomplete total...):   0%|                                                                                       | 83.5kB / 1.34GB            [AFetching 17 files:  24%|████████████████████████▍                                                                               | 4/17 [00:00<00:00, 14.72it/s]
+
+Reconstructing (incomplete total...):   0%|                                                                                       | 94.0kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 94.1kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |  806kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |  807kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |  807kB / 1.34GB            [ADownloading bytes:                                                                                                                         |  807kB            
+Reconstructing (incomplete total...):   0%|                                                                                       |  807kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       |  807kB / 1.34GB            [A
+Reconstructing (incomplete total...):   0%|                                                                                       | 1.27MB / 1.34GB            [ADownloading bytes:                                                                                                                         | 1.27MB            Traceback (most recent call last):
+  File [35m"<stdin>"[0m, line [35m2[0m, in [35m<module>[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py"[0m, line [35m88[0m, in [35m_inner_fn[0m
+    return fn(*args, **kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/_snapshot_download.py"[0m, line [35m515[0m, in [35msnapshot_download[0m
+    [31mthread_map[0m[1;31m([0m
+    [31m~~~~~~~~~~[0m[1;31m^[0m
+        [1;31m_inner_hf_hub_download,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<3 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/tqdm/contrib/concurrent.py"[0m, line [35m69[0m, in [35mthread_map[0m
+    return _executor_map(ThreadPoolExecutor, fn, *iterables, **tqdm_kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/tqdm/contrib/concurrent.py"[0m, line [35m51[0m, in [35m_executor_map[0m
+    return list(tqdm_class(ex.map(fn, *iterables, chunksize=chunksize), **kwargs))
+  File [35m"/usr/local/lib/python3.13/site-packages/tqdm/std.py"[0m, line [35m1187[0m, in [35m__iter__[0m
+    for obj in [1;31miterable[0m:
+               [1;31m^^^^^^^^[0m
+  File [35m"/usr/local/lib/python3.13/concurrent/futures/_base.py"[0m, line [35m619[0m, in [35mresult_iterator[0m
+    yield [31m_result_or_cancel[0m[1;31m(fs.pop())[0m
+          [31m~~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^[0m
+  File [35m"/usr/local/lib/python3.13/concurrent/futures/_base.py"[0m, line [35m317[0m, in [35m_result_or_cancel[0m
+    return [31mfut.result[0m[1;31m(timeout)[0m
+           [31m~~~~~~~~~~[0m[1;31m^^^^^^^^^[0m
+  File [35m"/usr/local/lib/python3.13/concurrent/futures/_base.py"[0m, line [35m449[0m, in [35mresult[0m
+    return [31mself.__get_result[0m[1;31m()[0m
+           [31m~~~~~~~~~~~~~~~~~[0m[1;31m^^[0m
+  File [35m"/usr/local/lib/python3.13/concurrent/futures/_base.py"[0m, line [35m401[0m, in [35m__get_result[0m
+    raise self._exception
+  File [35m"/usr/local/lib/python3.13/concurrent/futures/thread.py"[0m, line [35m59[0m, in [35mrun[0m
+    result = self.fn(*self.args, **self.kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/_snapshot_download.py"[0m, line [35m495[0m, in [35m_inner_hf_hub_download[0m
+    [31mhf_hub_download[0m[1;31m(  # type: ignore[0m
+    [31m~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+        [1;31mrepo_id,[0m
+        [1;31m^^^^^^^^[0m
+    ...<14 lines>...
+        [1;31mdry_run=dry_run,[0m
+        [1;31m^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py"[0m, line [35m88[0m, in [35m_inner_fn[0m
+    return fn(*args, **kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m992[0m, in [35mhf_hub_download[0m
+    return _hf_hub_download_to_local_dir(
+        # Destination
+    ...<16 lines>...
+        dry_run=dry_run,
+    )
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1451[0m, in [35m_hf_hub_download_to_local_dir[0m
+    [31m_download_to_tmp_and_move[0m[1;31m([0m
+    [31m~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mincomplete_path=paths.incomplete_path(etag),[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<8 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1920[0m, in [35m_download_to_tmp_and_move[0m
+    [31mxet_get[0m[1;31m([0m
+    [31m~~~~~~~[0m[1;31m^[0m
+        [1;31mincomplete_path=tmp_path,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<4 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m563[0m, in [35mxet_get[0m
+    with [31msession.new_file_download_group[0m[1;31m([0m
+         [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mtoken_refresh_url=xet_file_data.refresh_route,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<2 lines>...
+        [1;31mprogress_callback=progress.update_progress,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m as group:
+    [1;31m^[0m
+[1;35mConnectionError[0m: [35mNetwork error: Request error: HTTP status client error (404 Not Found), domain: https://huggingface.co/api/models/distilbert-base-uncased-finetuned-sst-2-english/xet-read-token/714eb0fa89d2f80546fda750413ed43d93601a13[0m
+bash: line 12:   138 Segmentation fault      (core dumped) python - <<'PY'
+from huggingface_hub import snapshot_download
+snapshot_download(repo_id="distilbert-base-uncased-finetuned-sst-2-english", local_dir="/app/model_cache/sentiment_model", local_dir_use_symlinks=False)
+PY
+
+bash: -c: line 13: syntax error near unexpected token `}'
+bash: -c: line 13: `nohup python /app/app.py >/app/flask.log 2>&1 &}'
+
+__TTS_34fa6c6e75474402bfd958ed36726e59__RC:2
+__TTS_34fa6c6e75474402bfd958ed36726e59__PWD:/app
+__TTS_34fa6c6e75474402bfd958ed36726e59__END
+[?2004hroot@f7d4e635d54c:/app# cd -- /app && bash -lc 'ls -R /app/model_cache/sentiment_model 2>/dev/null | sed -n "1,120p" && python - <<"PY"
+[?2004l[?2004h> from transformers import AutoTokenizer,AutoModelForSequenceClassification
+[?2004l[?2004h> try:
+[?2004l[?2004h>  t=AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+[?2004l[?2004h>  m=AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+[?2004l[?2004h>  print("ok")
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>  print(type(e).__name__, e)
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_a626fabe8e8d4da0b742de9d6088c801__RC:%s\n' "$__tts_rc"; printf '__TTS_a626fabe8e8d4da0b742de9d6088c801__PWD:'; pwd; printf '__TTS_a626fabe8e8d4da0b742de9d6088c801__END\n'; tmux wait -S done
+[?2004l/app/model_cache/sentiment_model:
+README.md
+config.json
+map.jpeg
+onnx
+tokenizer_config.json
+vocab.txt
+
+/app/model_cache/sentiment_model/onnx:
+added_tokens.json
+config.json
+special_tokens_map.json
+tokenizer.json
+tokenizer_config.json
+vocab.txt
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+config.json:   0%|                                                                                                                   | 0.00/629 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 629/629 [00:00<00:00, 3.52MB/s]
+tokenizer_config.json:   0%|                                                                                                        | 0.00/48.0 [00:00<?, ?B/s]tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 48.0/48.0 [00:00<00:00, 301kB/s]
+vocab.txt:   0%|                                                                                                                    | 0.00/232k [00:00<?, ?B/s]vocab.txt: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 232k/232k [00:00<00:00, 4.46MB/s]
+
+model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B /  268MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes:                                                                                                      | 66.4kB            model.safetensors: downloading bytes: ▎                                                                                                    |  726kB, 6.56kB/s  model.safetensors: downloading bytes: █                                                                                                    | 2.67MB, 71.5kB/s  model.safetensors: downloading bytes: ██▉                                                                                                  | 7.83MB,  261kB/s  model.safetensors: downloading bytes: ████████▏                                                                                            | 21.6MB,  764kB/s  model.safetensors: downloading bytes: ████████████████████▌                                                                                | 54.6MB, 2.10MB/s  model.safetensors: downloading bytes: █████████████████████████████████████                                                                | 98.4MB, 5.30MB/s  model.safetensors: downloading bytes: ██████████████████████████████████████████████████████▎                                              |  144MB, 9.49MB/s  model.safetensors: downloading bytes: ████████████████████████████████████████████████████████████████████████                             |  191MB, 13.8MB/s  model.safetensors: downloading bytes: ████████████████████████████████████████████████████████████████████████████████████████             |  233MB, 18.2MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████|  268MB /  268MB            [Amodel.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████|  250MB, 23.3MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████|  250MB, 23.3MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████|  268MB /  268MB, 25.6MB/s  
+Loading weights:   0%|                                                                                                                 | 0/104 [00:00<?, ?it/s]Loading weights: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 104/104 [00:00<00:00, 4851.23it/s]
+ok
+
+__TTS_a626fabe8e8d4da0b742de9d6088c801__RC:0
+__TTS_a626fabe8e8d4da0b742de9d6088c801__PWD:/app
+__TTS_a626fabe8e8d4da0b742de9d6088c801__END
+[?2004hroot@f7d4e635d54c:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l)\n@app.post("/sentiment")\ndef sentiment():\n data=request.get_json(silent=True)\n if not data or not isinstance(data.get("text"),str) or not data["text"].strip():\n  return jsonify({"error":"Request JSON must include a non-empty text field"}),400\n inputs=tokenizer(data["text"],return_tensors="pt",truncation=True)\n with torch.no_grad(): probs=torch.softmax(model(**inputs).logits,dim=-1)[0].tolist()\n neg,pos=float(probs[0]),float(probs[1])\n return jsonify({"sentiment":"positive" if pos>=neg else "negative","confidence":{"positive":pos,"negative":neg}})\nif __name__=="__main__": app.run(host="0.0.0.0",port=5000)\n')
+Path('/app/test_api.py').write_text('import requests\ntexts=["I absolutely loved this movie, it was fantastic!","This was the worst experience I have ever had.","The product is okay, not great but not terrible either."]\nfor text in texts:\n r=requests.post("http://127.0.0.1:5000/sentiment",json={"text":text},timeout=30)\n print({"text":text,"status":r.status_code,"response":r.json()})\n')
+PY
+n[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path("/app/model_cache/sentiment_model")
+[?2004l[?2004h> if not (p/"model.safetensors").exists():
+[?2004l[?2004h>  from transformers import AutoTokenizer,AutoModelForSequenceClassification
+[?2004l[?2004h>  AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english",cache_dir="/app/model_cache")
+[?2004l[?2004h>  AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english",cache_dir="/app/model_cache").save_pretrained(str(p))
+[?2004l[?2004h>  (p/"tokenizer_config.json")
+[?2004l[?2004h>  AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english",cache_dir="/app/model_cache").save_pretrained(str(p))
+[?2004l[?2004h> app=Path('/app/app.py')
+[?2004l[?2004h> app.write_text('from flask import Flask,request,jsonify\nfrom transformers import AutoTokenizer,AutoModelForSequenceClassification\nimport torch\nMODEL_DIR="/app/model_cache/sentiment_model"\ntokenizer=AutoTokenizer.from_pretrained(MODEL_DIR)\nmodel=AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)\nmodel.eval()\napp=Flask(__name__)\n@app.post("/sentiment")\ndef sentiment():\n data=request.get_json(silent=True)\n if not data or not isinstance(data.get("text"),str) or not data["text"].strip():\n  return jsonify({"error":"Request JSON must include a non-empty text field"}),400\n inputs=tokenizer(data["text"],return_tensors="pt",truncation=True)\n with torch.no_grad(): probs=torch.softmax(model(**inputs).logits,dim=-1)[0].tolist()\n neg,pos=float(probs[0]),float(probs[1])\n return jsonify({"sentiment":"positive" if pos>=neg else "negative","confidence":{"positive":pos,"negative":neg}})\nif __name__=="__main__": app.run(host="0.0.0.0",port=5000)\n')
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@f7d4e635d54c:/app# Path('/app/test_api.py').write_text('import requests\ntexts=["I absolutely loved this movie, it was fantastic!","This was the worst experience I have ever had.","The product is okay, not great but not terrible either."]\nfor text in texts:\n r=requests.post("http://127.0.0.1:5000/sentiment",json={"text":text},timeout=30)\n print({"text":text,"status":r.status_code,"response":r.json()})\n')
+[?2004lbash: syntax error near unexpected token `'/app/test_api.py''
+[?2004hroot@f7d4e635d54c:/app# PY
+[?2004lbash: PY: command not found
+[?2004hroot@f7d4e635d54c:/app# nohup python /app/app.py >/app/flask.log 2>&1 & sleep 8
+[?2004l[1] 282
+[1]+  Exit 1                  nohup python /app/app.py > /app/flask.log 2>&1
+[?2004hroot@f7d4e635d54c:/app# python /app/test_api.py'; __tts_rc=$?; printf '\n__TTS_901a45df16a54ee8bfeb37aec4ce6cad__RC:%s\n' "$__tts_rc"; printf '__TTS_901a45df16a54ee8bfeb37aec4ce6cad__PWD:'; pwd; printf '__TTS_901a45df16a54ee8bfeb37aec4ce6cad__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'sed -n "1,200p" /app/flask.log; ps -ef | grep -E "python /app/app.py|python3 /app/app.py" | grep -v grep; ls -l /app/model_cache/sentiment_model | sed -n "1,80p"'; __tts_rc=$?; printf '\n__TTS_ce270dbc98b34b68b2025b5d1f55921e__RC:%s\n' "$__tts_rc"; printf '__TTS_ce270dbc98b34b68b2025b5d1f55921e__PWD:'; pwd; printf '__TTS_ce270dbc98b34b68b2025b5d1f55921e__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: unexpected EOF while looking for matching `''
+[?2004h> cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> from transformers import AutoTokenizer,AutoModelForSequenceClassification
+[?2004l[?2004h> p=Path("/app/model_cache/sentiment_model"); p.mkdir(parents=True,exist_ok=True)
+[?2004l[?2004h> if not (p/"model.safetensors").exists():
+[?2004l[?2004h>  t=AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+[?2004l[?2004h>  m=AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+[?2004l[?2004h>  t.save_pretrained(p); m.save_pretrained(p)
+[?2004l[?2004h> Path("/app/app.py").write_text("from flask import Flask,request,jsonify\nfrom transformers import AutoTokenizer,AutoModelForSequenceClassification\nimport torch\nMODEL_DIR=\"/app/model_cache/sentiment_model\"\ntokenizer=AutoTokenizer.from_pretrained(MODEL_DIR)\nmodel=AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)\nmodel.eval()\napp=Flask(__name__)\n@app.post(\"/sentiment\")\ndef sentiment():\n    data=request.get_json(silent=True)\n    if not data or not isinstance(data.get(\"text\"),str) or not data[\"text\"].strip():\n        return jsonify({\"error\":\"Request JSON must include a non-empty text field\"}),400\n    inputs=tokenizer(data[\"text\"],return_tensors=\"pt\",truncation=True)\n    with torch.no_grad():\n        probs=torch.softmax(model(**inputs).logits,dim=-1)[0].tolist()\n    neg,pos=float(probs[0]),float(probs[1])\n    return jsonify({\"sentiment\":\"positive\" if pos>=neg else \"negative\",\"confidence\":{\"positive\":pos,\"negative\":neg}})\nif __name__==\"__main__\":\n    app.run(host=\"0.0.0.0\",port=5000)\n")
+[?2004l[?2004h> Path("/app/test_api.py").write_text("import requests\ntexts=[\"I absolutely loved this movie, it was fantastic!\",\"This was the worst experience I have ever had.\",\"The product is okay, not great but not terrible either.\"]\nfor text in texts:\n    r=requests.post(\"http://127.0.0.1:5000/sentiment\",json={\"text\":text},timeout=30)\n    print({\"text\":text,\"status\":r.status_code,\"response\":r.json()})\n")
+[?2004l[?2004h> PY
+[?2004l[?2004h> nohup python /app/app.py >/app/flask.log 2>&1 & sleep 12
+[?2004l[?2004h> python /app/test_api.py'; __tts_rc=$?; printf '\n__TTS_eb62f46f9c3d4bffaad5c824a4a86d5c__RC:%s\n' "$__tts_rc"; printf '__TTS_eb62f46f9c3d4bffaad5c824a4a86d5c__PWD:'; pwd; printf '__TTS_eb62f46f9c3d4bffaad5c824a4a86d5c__END\n'; tmux wait -S done
+[?2004l[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@f7d4e635d54c:/app# 

@@ -80,6 +80,7 @@ class RewardInfo:
     #: ``True`` for a real/official evaluation, ``False`` for a world-model prediction.
     grounded: bool = False
     reason: str = ""
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -98,6 +99,10 @@ class RolloutResult:
     depth: int = 0
     tokens: int = 0
     cost: float = 0.0
+    n_python_calls: int = 0
+    n_python_failures: int = 0
+    n_python_forced: int = 0
+    n_python_mode_misses: int = 0
     score: float = 0.0
 
 

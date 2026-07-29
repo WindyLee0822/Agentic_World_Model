@@ -1,0 +1,60 @@
+root@e07b2f90ffdd:/app# pwd; __tts_rc=$?; printf '\n__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd__RC:%s\n' "$__tts_rc"; printf '__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd
+__PWD:'; pwd; printf '__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd__END\n'; tmux wait -S done
+/app
+
+__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd__RC:0
+__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd__PWD:/app
+__TTS_1f58c44c274645d29ae5d2d6cbe9c2cd__END
+root@e07b2f90ffdd:/app# cd -- /app && env | grep -Ei 'minio|access|secret' > /app/result.txt; __tts_rc=$?; printf '\n__TTS_e635e4b2f5814c8ba5a68c84a58d0479__RC:
+%s\n' "$__tts_rc"; printf '__TTS_e635e4b2f5814c8ba5a68c84a58d0479__PWD:'; pwd; printf '__TTS_e635e4b2f5814c8ba5a68c84a58d0479__END\n'; tmux wait -S done
+
+__TTS_e635e4b2f5814c8ba5a68c84a58d0479__RC:1
+__TTS_e635e4b2f5814c8ba5a68c84a58d0479__PWD:/app
+__TTS_e635e4b2f5814c8ba5a68c84a58d0479__END
+root@e07b2f90ffdd:/app# cd -- /app && kubectl get pods -A -o wide; __tts_rc=$?; printf '\n__TTS_4169129168ec47a585f4c7afb05a5449__RC:%s\n' "$__tts_rc"; printf '
+__TTS_4169129168ec47a585f4c7afb05a5449__PWD:'; pwd; printf '__TTS_4169129168ec47a585f4c7afb05a5449__END\n'; tmux wait -S done
+bash: kubectl: command not found
+
+__TTS_4169129168ec47a585f4c7afb05a5449__RC:127
+__TTS_4169129168ec47a585f4c7afb05a5449__PWD:/app
+__TTS_4169129168ec47a585f4c7afb05a5449__END
+root@e07b2f90ffdd:/app# cd -- /app && find / -maxdepth 3 -type f \( -name '*.env' -o -name 'config*' -o -name '*minio*' \) 2>/dev/null | head -200; __tts_rc=$?;
+ printf '\n__TTS_f6ea8ddfeff546e6bd50751367691456__RC:%s\n' "$__tts_rc"; printf '__TTS_f6ea8ddfeff546e6bd50751367691456__PWD:'; pwd; printf '__TTS_f6ea8ddfeff54
+6e6bd50751367691456__END\n'; tmux wait -S done
+/etc/gnutls/config
+
+__TTS_f6ea8ddfeff546e6bd50751367691456__RC:0
+__TTS_f6ea8ddfeff546e6bd50751367691456__PWD:/app
+__TTS_f6ea8ddfeff546e6bd50751367691456__END
+root@e07b2f90ffdd:/app# cd -- __TTS_f6ea8ddfeff546e6bd50751367691456__PWD:/app && grep -RHiE 'minio|access.?key|secret.?key|MINIO_ROOT' /etc /var /root /home 2>
+/dev/null | head -200 | tee /app/result.txt; __tts_rc=$?; printf '\n__TTS_3e47984f66b8485b91cdf045c0c275dd__RC:%s\n' "$__tts_rc"; printf '__TTS_3e47984f66b8485b
+91cdf045c0c275dd__PWD:'; pwd; printf '__TTS_3e47984f66b8485b91cdf045c0c275dd__END\n'; tmux wait -S done
+bash: cd: __TTS_f6ea8ddfeff546e6bd50751367691456__PWD:/app: No such file or directory
+
+__TTS_3e47984f66b8485b91cdf045c0c275dd__RC:1
+__TTS_3e47984f66b8485b91cdf045c0c275dd__PWD:/app
+__TTS_3e47984f66b8485b91cdf045c0c275dd__END
+root@e07b2f90ffdd:/app# cd -- /app && python - <<'PY'
+> import os,glob
+> hits=[]
+> for p in ['/proc/*/environ','/proc/1/environ']:
+>   for f in glob.glob(p):
+>     try:
+>       s=open(f,'rb').read().decode('utf-8','ignore').split('\x00')
+>       m=[x for x in s if any(k in x.upper() for k in ['MINIO','ACCESS','SECRET'])]
+>       if m: hits.extend(m)
+>     except: pass
+> open('/app/result.txt','w').write('\n'.join(dict.fromkeys(hits))+'\n')
+> PY; __tts_rc=$?; printf '\n__TTS_998a13619a7d4c49866a0197817b3ebe__RC:%s\n' "$__tts_rc"; printf '__TTS_998a13619a7d4c49866a0197817b3ebe__PWD:'; pwd; printf '_
+_TTS_998a13619a7d4c49866a0197817b3ebe__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import os,re; out=[]; [out.extend([l for l in open(f'/proc/{p}/environ','rb').read().decode('utf-8','ignore').split('\0') if re.sear
+ch(r'(MINIO|ACCESS|SECRET)',l,re.I)]) for p in os.listdir('/proc') if p.isdigit() and os.path.exists(f'/proc/{p}/environ')]; open('/app/result.txt','w').write('
+\n'.join(dict.fromkeys(out))+'\n')"; __tts_rc=$?; printf '\n__TTS_1d08fd9bfe6f4ab59ee2c27e270aa0de__RC:%s\n' "$__tts_rc"; printf '__TTS_1d08fd9bfe6f4ab59ee2c27e
+270aa0de__PWD:'; pwd; printf '__TTS_1d08fd9bfe6f4ab59ee2c27e270aa0de__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import glob,re; out=[]
+> for f in glob.glob('/proc/[0-9]*/environ'):
+>   try: s=open(f,'rb').read().decode('utf-8','ignore').split('\0'); out += [x for x in s if re.search(r'(MINIO|ACCESS|SECRET)',x,re.I)]
+>   except: pass
+> open('/app/result.txt','w').write('\n'.join(dict.fromkeys(out))+'\n')"; __tts_rc=$?; printf '\n__TTS_ada592a134ee44a4bc8c2dd43daa318f__RC:%s\n' "$__tts_rc"; p
+rintf '__TTS_ada592a134ee44a4bc8c2dd43daa318f__PWD:'; pwd; printf '__TTS_ada592a134ee44a4bc8c2dd43daa318f__END\n'; tmux wait -S done
+>

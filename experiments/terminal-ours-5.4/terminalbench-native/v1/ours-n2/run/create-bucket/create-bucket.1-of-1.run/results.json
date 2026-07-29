@@ -1,0 +1,21 @@
+{
+    "id": "6fd58c51-3bf0-47bd-8f9c-e4d5ffb05646",
+    "trial_name": "create-bucket.1-of-1.run",
+    "task_id": "create-bucket",
+    "instruction": "Create an S3 bucket named \"sample-bucket\" using the aws cli and set it to public read.",
+    "is_resolved": true,
+    "failure_mode": "unset",
+    "parser_results": {
+        "test_bucket_exists": "passed",
+        "test_bucket_public_access": "passed"
+    },
+    "recording_path": "run/create-bucket/create-bucket.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 42985,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-16T23:40:23.633231+00:00",
+    "trial_ended_at": "2026-07-16T23:42:18.091932+00:00",
+    "agent_started_at": "2026-07-16T23:40:32.765508+00:00",
+    "agent_ended_at": "2026-07-16T23:41:56.631966+00:00",
+    "test_started_at": "2026-07-16T23:42:00.030688+00:00",
+    "test_ended_at": "2026-07-16T23:42:06.370580+00:00"
+}

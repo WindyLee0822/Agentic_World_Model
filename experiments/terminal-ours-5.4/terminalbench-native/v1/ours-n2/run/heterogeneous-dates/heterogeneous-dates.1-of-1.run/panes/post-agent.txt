@@ -1,0 +1,40 @@
+root@a1ac2fd0d36e:/app# pwd; __tts_rc=$?; printf '\n__TTS_8a7bc97d175b411dabfbc36f5f11a27a__RC:%s\n' "$__tts_rc"; printf '__TTS_8a7bc97d175b411dabfbc36f5f11a27a
+__PWD:'; pwd; printf '__TTS_8a7bc97d175b411dabfbc36f5f11a27a__END\n'; tmux wait -S done
+/app
+
+__TTS_8a7bc97d175b411dabfbc36f5f11a27a__RC:0
+__TTS_8a7bc97d175b411dabfbc36f5f11a27a__PWD:/app
+__TTS_8a7bc97d175b411dabfbc36f5f11a27a__END
+root@a1ac2fd0d36e:/app# cd -- /app && python - <<'PY'
+> import csv
+> with open('daily_temp_sf_high.csv', newline='') as fh:
+>     highs=[float(x) for row in csv.reader(fh) for x in row if x.strip()]
+> with open('daily_temp_sf_low.csv', newline='') as fl:
+>     lows=[float(x) for row in csv.reader(fl) for x in row if x.strip()]
+> if len(highs)!=len(lows):
+>     raise SystemExit('Mismatched lengths')
+> avg=sum(h-l for h,l in zip(highs,lows))/len(highs)
+> with open('avg_temp.txt','w') as out:
+>     out.write(str(avg))
+> PY; __tts_rc=$?; printf '\n__TTS_2d1cda318e56452083b66f8fc90c4066__RC:%s\n' "$__tts_rc"; printf '__TTS_2d1cda318e56452083b66f8fc90c4066__PWD:'; pwd; printf '_
+_TTS_2d1cda318e56452083b66f8fc90c4066__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

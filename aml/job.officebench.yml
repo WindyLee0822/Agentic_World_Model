@@ -1,33 +1,25 @@
-# AML command job: runs dw's experiments/run.py on OfficeBench.  ***SKETCH***
+# AML command job: runs dw's experiments/run.py on OfficeBench.
 #
 # ┌────────────────────────────────────────────────────────────────────────┐
-# │ OfficeBench runs its office apps + scoring INSIDE a Docker container     │
-# │ (image `officebench-tts:latest`, built on demand from                    │
-# │ src/tts/env/officebench_docker/). A standard AML **command job cannot**   │
-# │ start a Docker daemon, so this will fail on plain amlcompute clusters.   │
-# │ To actually run it you need compute that exposes Docker, e.g.:            │
-# │   * an AML **Compute Instance** / a self-managed VM you SSH into and run  │
-# │     `bash aml/src/run_dw.sh --env officebench ...` directly (simplest);   │
-# │   * a node where /var/run/docker.sock is mounted into the job container;  │
-# │   * a privileged / docker-in-docker capable cluster (e.g. AKS-attached).  │
-# │ The wrapper checks `docker info` and exits 3 with guidance if absent.     │
+# │ Standard AML command compute cannot start nested Docker. This job uses   │
+# │ the Docker CLI as a client and can connect over SSH to a separate Linux  │
+# │ VM with Docker. The SSH private key is fetched from Azure Key Vault by   │
+# │ the job's managed identity; it is never embedded in this YAML.           │
 # └────────────────────────────────────────────────────────────────────────┘
 #
-# Before submitting, register your OfficeBench clone as a data asset and point
-# `inputs.officebench_root` at it (the host needs only the clone + the docker
-# CLI; OfficeBench has no Python deps):
+# Register the OfficeBench clone:
 #   az ml data create --name officebench_clone --version 1 \
 #       --type uri_folder --path /home/t-wendili/OfficeBench \
 #       -g Singularity -w M365Research
 #
-# Submit (on Docker-capable compute):
-#   AML_JOB_FILE=aml/job.officebench.yml bash aml/submit.sh \
-#       --set compute=azureml:<docker-capable-compute>
+# `aml/submit.sh` creates or reuses the Docker VM, stores its SSH credentials in
+# the workspace Key Vault, and injects these four inputs automatically. They
+# remain overrideable for an existing Docker host.
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 display_name: dw-OfficeBench-BoN
 experiment_name: dw-officebench
-description: "[sketch] Run the dw harness on OfficeBench (requires Docker-capable compute)."
+description: Run OfficeBench from AML using a Docker daemon on a separate SSH-accessible VM.
 compute: azureml:D15v2-NCUS-hipri
 code: ..
 environment:
@@ -38,6 +30,10 @@ inputs:
   officebench_root:
     type: uri_folder
     path: azureml:officebench_clone:1
+  docker_host: none
+  docker_key_vault_url: none
+  docker_ssh_key_secret: none
+  docker_ssh_known_hosts_secret: none
   levels: "1"            # OfficeBench uses --levels as app-counts: 1 / 2 / 3 apps
   methods: b0,b1,b2,ours
   n: "1,2,4,8"
@@ -59,6 +55,10 @@ command: >-
   bash aml/src/run_dw.sh
   --env "${{inputs.env}}"
   --officebench-root "${{inputs.officebench_root}}"
+  --docker-host "${{inputs.docker_host}}"
+  --docker-key-vault-url "${{inputs.docker_key_vault_url}}"
+  --docker-ssh-key-secret "${{inputs.docker_ssh_key_secret}}"
+  --docker-ssh-known-hosts-secret "${{inputs.docker_ssh_known_hosts_secret}}"
   --output-dir "${{outputs.output_dir}}"
   --levels "${{inputs.levels}}"
   --methods "${{inputs.methods}}"

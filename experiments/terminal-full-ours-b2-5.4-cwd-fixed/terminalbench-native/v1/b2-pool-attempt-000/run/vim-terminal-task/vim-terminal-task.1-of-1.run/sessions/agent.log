@@ -1,0 +1,28 @@
+[?2004hroot@f50369967c9c:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@f50369967c9c:/app# clear
+[?2004l[H[J[3J[?2004hroot@f50369967c9c:/app# pwd; __tts_rc=$?; printf '\n__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__RC:%s\n' "$__tts_rc"; printf '__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__PWD:'; pwd; printf '__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__RC:0
+__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__PWD:/app
+__TTS_aaa48e88ac7f48a9b69af38697bcc9bb__END
+[?2004hroot@f50369967c9c:/app# cd -- /app && vim -Es -u NONE -c "set nomore" -c "call writefile(['import sys, string','from collections import Counter','','def main():','    if len(sys.argv) < 2:','        raise SystemExit(\"Usage: python text_processor.py <filename>\")','    with open(sys.argv[1], \"r\", encoding=\"utf-8\") as f:','        text = f.read().lower().translate(str.maketrans(\"\", \"\", string.punctuation))','    counts = Counter(text.split())','    for word, freq in counts.most_common(3):','        print(f\"{word}: {freq}\")','','if __name__ == \"__main__\":','    main()'], 'text_processor.py') | call writefile(['The quick brown fox jumps over the lazy dog. The dog barks at the fox.'], 'sample.txt') | qall!"; __tts_rc=$?; printf '\n__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__RC:%s\n' "$__tts_rc"; printf '__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__PWD:'; pwd; printf '__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__END\n'; tmux wait -S done
+[?2004l
+__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__RC:0
+__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__PWD:/app
+__TTS_c2edc7e850a74c98a806ca0cd3aae9b9__END
+[?2004hroot@f50369967c9c:/app# cd -- /app && python3 text_processor.py sample.txt; __tts_rc=$?; printf '\n__TTS_9a031725be9a4c60adbc186d0137b8e9__RC:%s\n' "$__tts_rc"; printf '__TTS_9a031725be9a4c60adbc186d0137b8e9__PWD:'; pwd; printf '__TTS_9a031725be9a4c60adbc186d0137b8e9__END\n'; tmux wait -S done
+[?2004lthe: 4
+fox: 2
+dog: 2
+
+__TTS_9a031725be9a4c60adbc186d0137b8e9__RC:0
+__TTS_9a031725be9a4c60adbc186d0137b8e9__PWD:/app
+__TTS_9a031725be9a4c60adbc186d0137b8e9__END
+[?2004hroot@f50369967c9c:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@f50369967c9c:/app# 

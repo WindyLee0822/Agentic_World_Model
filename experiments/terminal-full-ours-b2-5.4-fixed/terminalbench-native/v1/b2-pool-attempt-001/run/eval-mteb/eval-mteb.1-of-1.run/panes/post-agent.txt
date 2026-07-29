@@ -1,0 +1,126 @@
+root@7d8a0c6249df:/app# pwd; __tts_rc=$?; printf '\n__TTS_3554363d4e3d42bd875e49d53efded3b__RC:%s\n' "$__tts_rc"; printf '__TTS_3554363d4e3d42bd875e49d53efded3b
+__PWD:'; pwd; printf '__TTS_3554363d4e3d42bd875e49d53efded3b__END\n'; tmux wait -S done
+/app
+
+__TTS_3554363d4e3d42bd875e49d53efded3b__RC:0
+__TTS_3554363d4e3d42bd875e49d53efded3b__PWD:/app
+__TTS_3554363d4e3d42bd875e49d53efded3b__END
+root@7d8a0c6249df:/app# cd -- /app && python -c "import mteb, inspect; print(mteb.__version__)"; __tts_rc=$?; printf '\n__TTS_e41fbc838cdc49cbb61a64eeafe4e676__
+RC:%s\n' "$__tts_rc"; printf '__TTS_e41fbc838cdc49cbb61a64eeafe4e676__PWD:'; pwd; printf '__TTS_e41fbc838cdc49cbb61a64eeafe4e676__END\n'; tmux wait -S done
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/local/lib/python3.10/site-packages/mteb/__init__.py", line 5, in <module>
+    from mteb.benchmarks.benchmarks import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/__init__.py", line 3, in <module>
+    from mteb.benchmarks.benchmark import Benchmark
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/benchmark.py", line 9, in <module>
+    from mteb.load_results.load_results import load_results
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/__init__.py", line 3, in <module>
+    from .benchmark_results import BenchmarkResults, ModelResult
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/benchmark_results.py", line 15, in <module>
+    from mteb.abstasks.AbsTask import AbsTask, ScoresDict
+  File "/usr/local/lib/python3.10/site-packages/mteb/abstasks/__init__.py", line 3, in <module>
+    from ..evaluation.LangMapping import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/__init__.py", line 3, in <module>
+    from .MTEB import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py", line 23, in <module>
+    from mteb.models import model_meta_from_sentence_transformers
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/__init__.py", line 5, in <module>
+    from mteb.models.overview import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/overview.py", line 14, in <module>
+    from mteb.models import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py", line 13, in <module>
+    from transformers import AutoModelForVision2Seq, AutoProcessor
+ImportError: cannot import name 'AutoModelForVision2Seq' from 'transformers' (/usr/local/lib/python3.10/site-packages/transformers/__init__.py)
+
+__TTS_e41fbc838cdc49cbb61a64eeafe4e676__RC:1
+__TTS_e41fbc838cdc49cbb61a64eeafe4e676__PWD:/app
+__TTS_e41fbc838cdc49cbb61a64eeafe4e676__END
+root@7d8a0c6249df:/app# cd -- /app && python - <<'PY'
+> import os, json, shutil
+> from pathlib import Path
+> site=Path('/usr/local/lib/python3.10/site-packages')
+> src=site/'mteb'
+> dst=Path('/app/mteb_patched')
+> if dst.exists(): shutil.rmtree(dst)
+> shutil.copytree(src,dst)
+> p=dst/'models'/'__init__.py'
+> s=p.read_text()
+> s=s.replace('from mteb.models.overview import (\n    ModelMeta,\n    get_model_metas,\n    get_model_meta,\n    get_model,\n)\n\n__all__ = ["ModelMeta", "get_
+model_metas", "get_model_meta", "get_model"]\n','try:\n    from mteb.models.overview import (\n        ModelMeta,\n        get_model_metas,\n        get_model_m
+eta,\n        get_model,\n    )\nexcept Exception:\n    class ModelMeta: pass\n    def get_model_metas(*args, **kwargs): return []\n    def get_model_meta(*args
+, **kwargs): return None\n    def get_model(*args, **kwargs): return None\n\n__all__ = ["ModelMeta", "get_model_metas", "get_model_meta", "get_model"]\n')
+> p.write_text(s)
+> print('patched',dst)
+> PY; __tts_rc=$?; printf '\n__TTS_ecb150928503405eb712117d10d4ff63__RC:%s\n' "$__tts_rc"; printf '__TTS_ecb150928503405eb712117d10d4ff63__PWD:'; pwd; printf '_
+_TTS_ecb150928503405eb712117d10d4ff63__END\n'; tmux wait -S done
+> cd -- /app && find /usr/local/lib/python3.10/site-packages/mteb -maxdepth 2 -type f | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_1e89f840b17146aa97aedab8ea9
+e8e18__RC:%s\n' "$__tts_rc"; printf '__TTS_1e89f840b17146aa97aedab8ea9e8e18__PWD:'; pwd; printf '__TTS_1e89f840b17146aa97aedab8ea9e8e18__END\n'; tmux wait -S do
+ne
+> cd -- /app && python - <<'PY'
+> import os; os.environ['HF_HUB_DISABLE_XET']='1'
+> from sentence_transformers import SentenceTransformer
+> import numpy as np
+> from scipy.stats import spearmanr
+> from datasets import load_dataset
+> from pathlib import Path
+> model_id='BAAI/bge-small-en-v1.5'; rev='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'; task='STS12'
+> model=SentenceTransformer(model_id, revision=rev)
+> ds=load_dataset('mteb/sts12-sts', split='test')
+> s1=ds['sentence1']; s2=ds['sentence2']; y=np.array(ds['score'],dtype=float)
+> e1=model.encode(s1, batch_size=64, normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=True)
+> e2=model.encode(s2, batch_size=64, normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=True)
+> s=(e1*e2).sum(1)
+> score=float(spearmanr(y,s).correlation)*100
+> out=Path('results/BAAI__bge-small-en-v1.5')/rev; out.mkdir(parents=True, exist_ok=True)
+> (out/f'{task}.json').write_text(__import__('json').dumps({'dataset_revision':None,'mteb_dataset_name':task,'test':{'en':{'cos_sim':{'spearman':score}}},'model
+_name':model_id,'revision':rev}, indent=2))
+> print(score)
+> PY; __tts_rc=$?; printf '\n__TTS_1d31d3b73c0e4a29a22a628471c39e79__RC:%s\n' "$__tts_rc"; printf '__TTS_1d31d3b73c0e4a29a22a628471c39e79__PWD:'; pwd; printf '_
+_TTS_1d31d3b73c0e4a29a22a628471c39e79__END\n'; tmux wait -S done
+> cd -- /app && python -c "import os; os.environ['HF_HUB_DISABLE_XET']='1'; from sentence_transformers import SentenceTransformer; from mteb.encoder_interface i
+mport PromptType; import inspect; m=SentenceTransformer('BAAI/bge-small-en-v1.5', revision='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'); print('loaded'); print(h
+asattr(m,'mteb_model_meta')); print(inspect.signature(m.encode))"; __tts_rc=$?; printf '\n__TTS_4c9e3cffcd3244f7bdb7d570195f4627__RC:%s\n' "$__tts_rc"; printf '
+__TTS_4c9e3cffcd3244f7bdb7d570195f4627__PWD:'; pwd; printf '__TTS_4c9e3cffcd3244f7bdb7d570195f4627__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import os, json
+> os.environ['HF_HUB_DISABLE_XET']='1'
+> os.environ['TRANSFORMERS_OFFLINE']='0'
+> os.environ['HF_HUB_ENABLE_HF_TRANSFER']='0'
+> from sentence_transformers import SentenceTransformer
+> from datasets import load_dataset
+> from scipy.stats import spearmanr
+> import numpy as np
+> from pathlib import Path
+> model_id='BAAI/bge-small-en-v1.5'; rev='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'; task='STS12'
+> model=SentenceTransformer(model_id, revision=rev, device='cpu')
+> ds=load_dataset('mteb/sts12-sts', split='test')
+> s1=ds['sentence1']; s2=ds['sentence2']; y=np.array(ds['score'], dtype=float)
+> e1=model.encode(s1, batch_size=256, normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=False)
+> e2=model.encode(s2, batch_size=256, normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=False)
+> score=float(spearmanr(y, (e1*e2).sum(1)).correlation)*100
+> out=Path('results/BAAI__bge-small-en-v1.5')/rev; out.mkdir(parents=True, exist_ok=True)
+> res={'mteb_version':'1.36.8','dataset_revision':None,'mteb_dataset_name':task,'model_name':model_id,'revision':rev,'test':{'en':{'cos_sim':{'spearman':score}}
+}}
+> (out/f'{task}.json').write_text(json.dumps(res, indent=2))
+> print(json.dumps({'score':score,'path':str(out/f'{task}.json')}))
+> PY; __tts_rc=$?; printf '\n__TTS_ee213aac12064764bd12e9a197fe1064__RC:%s\n' "$__tts_rc"; printf '__TTS_ee213aac12064764bd12e9a197fe1064__PWD:'; pwd; printf '_
+_TTS_ee213aac12064764bd12e9a197fe1064__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import os, json, types, sys
+> os.environ['HF_HUB_DISABLE_XET']='1'
+> import transformers
+> if not hasattr(transformers,'AutoModelForVision2Seq'): transformers.AutoModelForVision2Seq=object
+> import mteb
+> from sentence_transformers import SentenceTransformer
+> model_id='BAAI/bge-small-en-v1.5'; rev='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'
+> model=SentenceTransformer(model_id, revision=rev, device='cpu')
+> eval=mteb.MTEB(tasks=['STS12'])
+> eval.run(model, output_folder='results', overwrite_results=True)
+> print('done')
+> PY; __tts_rc=$?; printf '\n__TTS_249a2c72249a46d8af26efcfc59b3834__RC:%s\n' "$__tts_rc"; printf '__TTS_249a2c72249a46d8af26efcfc59b3834__PWD:'; pwd; printf '_
+_TTS_249a2c72249a46d8af26efcfc59b3834__END\n'; tmux wait -S done
+> cd -- /app && find results -maxdepth 3 -type f -name 'STS12.json' -o -path 'results/*/*' | sed -n '1,20p'; __tts_rc=$?; printf '\n__TTS_81717eb82837475192d590
+7724cf5433__RC:%s\n' "$__tts_rc"; printf '__TTS_81717eb82837475192d5907724cf5433__PWD:'; pwd; printf '__TTS_81717eb82837475192d5907724cf5433__END\n'; tmux wait
+-S done
+>

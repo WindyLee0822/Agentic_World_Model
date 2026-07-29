@@ -1,0 +1,76 @@
+[?2004hroot@af6acb333b3a:/app/personal-site# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@af6acb333b3a:/app/personal-site# clear
+[?2004l[H[J[3J[?2004hroot@af6acb333b3a:/app/personal-site# pwd; __tts_rc=$?; printf '\n__TTS_d0be204fb7a54965b1feb732f6851158__RC:%s\n' "$__tts_rc"; printf '__TTS_d0be204fb7a54965b1feb732f6851158__PWD:'; pwd; printf '__TTS_d0be204fb7a54965b1feb732f6851158__END\n'; tmux wait -S done
+[?2004l/app/personal-site
+
+__TTS_d0be204fb7a54965b1feb732f6851158__RC:0
+__TTS_d0be204fb7a54965b1feb732f6851158__PWD:/app/personal-site
+__TTS_d0be204fb7a54965b1feb732f6851158__END
+[?2004hroot@af6acb333b3a:/app/personal-site# cd -- /app/personal-site && git status --short --branch && echo '---' && git branch -vv && echo '---' && git reflog --date=iso --decorate -n 20; __tts_rc=$?; printf '\n__TTS_8e293936accd419a9d36e4def78a669d__RC:%s\n' "$__tts_rc"; printf '__TTS_8e293936accd419a9d36e4def78a669d__PWD:'; pwd; printf '__TTS_8e293936accd419a9d36e4def78a669d__END\n'; tmux wait -S done
+[?2004l## [32mmaster[m
+---
+[?1h=* [32mmaster[m d7d3e4b off the job market woo[m
+[K[?1l>---
+[?1h=[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 01:07:59 +0000}: checkout: moving from 00bf4a940bae49d286210719dec6d80d6c5ecd07 to master[m
+[33m00bf4a9[m HEAD@{2026-07-18 01:07:59 +0000}: commit: Move to Stanford[m
+[33mc4e38a1[m HEAD@{2026-07-18 01:07:59 +0000}: checkout: moving from master to HEAD~1[m
+[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 01:07:59 +0000}: reset: moving to d7d3e4b[m
+[33m19b5d10[m HEAD@{2026-07-18 01:07:59 +0000}: clone: from https://github.com/TheMikeMerrill/personal-site.git[m
+[K[?1l>
+__TTS_8e293936accd419a9d36e4def78a669d__RC:0
+__TTS_8e293936accd419a9d36e4def78a669d__PWD:/app/personal-site
+__TTS_8e293936accd419a9d36e4def78a669d__END
+[?2004hroot@af6acb333b3a:/app/personal-site# cd -- /app/personal-site && git branch recovered-work 00bf4a9 && git merge --no-ff recovered-work; __tts_rc=$?; printf '\n__TTS_372300c04ae4457eb1e49eeee31aade9__RC:%s\n' "$__tts_rc"; printf '__TTS_372300c04ae4457eb1e49eeee31aade9__PWD:'; pwd; printf '__TTS_372300c04ae4457eb1e49eeee31aade9__END\n'; tmux wait -S done
+[?2004lAuto-merging _includes/about.md
+CONFLICT (content): Merge conflict in _includes/about.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+__TTS_372300c04ae4457eb1e49eeee31aade9__RC:1
+__TTS_372300c04ae4457eb1e49eeee31aade9__PWD:/app/personal-site
+__TTS_372300c04ae4457eb1e49eeee31aade9__END
+[?2004hroot@af6acb333b3a:/app/personal-site# cd -- __TTS_372300c04ae4457eb1e49eeee31aade9__PWD:/app/personal-site && git status --short --branch && echo '---' && git diff --name-only --diff-filter=U && echo '---' && git diff -- _includes/about.md; __tts_rc=$?; printf '\n__TTS_31844b96a50140a4922d69c2e7bce998__RC:%s\n' "$__tts_rc"; printf '__TTS_31844b96a50140a4922d69c2e7bce998__PWD:'; pwd; printf '__TTS_31844b96a50140a4922d69c2e7bce998__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_372300c04ae4457eb1e49eeee31aade9__PWD:/app/personal-site: No such file or directory
+
+__TTS_31844b96a50140a4922d69c2e7bce998__RC:1
+__TTS_31844b96a50140a4922d69c2e7bce998__PWD:/app/personal-site
+__TTS_31844b96a50140a4922d69c2e7bce998__END
+[?2004hroot@af6acb333b3a:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git status --short --branch && echo '---' && git diff --name-only --diff-filter=U && echo '---' && git diff -- _includes/about.md; __tts_rc=$?; printf '\n__TTS_685b52a3579f45bd9561f7b2e59585da__RC:%s\n' "$__tts_rc"; printf '__TTS_685b52a3579f45bd9561f7b2e59585da__PWD:'; pwd; printf '__TTS_685b52a3579f45bd9561f7b2e59585da__END\n'; tmux wait -S done
+[?2004l## [32mmaster[m
+[31mUU[m _includes/about.md
+[32mM[m  _layouts/default.html
+---
+[?1h=_includes/about.md[m
+[K[?1l>---
+[?1h=[1mdiff --cc _includes/about.md[m[m
+[1mindex ebf11b4,7561d9e..0000000[m[m
+[1m--- a/_includes/about.md[m[m
+[1m+++ b/_includes/about.md[m[m
+[36m@@@ -1,3 -1,3 +1,9 @@@[m[m
+[32m++<<<<<<< HEAD[m[m
+[32m +I am a sixth PhD candidate at the [Paul G. Allen School of Computer Science & Engineering](https://www.cs.washington.edu/) at The University of Washington, wh[m [32mere I am advised by [Tim Althoff](http://www.timalthoff.com/). I am affiliated with [UW NLP](https://twitter.com/uwnlp).[m[m
+[32m +[m[m
+[31m-  Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.app[m [31mle.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
+[32m++ Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.app[m [32mle.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
+[32m++=======[m[m
+[32m+ I am a Postdoctoral Researcher at Stanford CS.[m[m
+[32m+ [m[m
+[31m -Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.appl[m [31me.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
+[32m++Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.appl[m [32me.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
+[32m++>>>>>>> recovered-work[m[m
+[K[?1l>
+__TTS_685b52a3579f45bd9561f7b2e59585da__RC:0
+__TTS_685b52a3579f45bd9561f7b2e59585da__PWD:/app/personal-site
+__TTS_685b52a3579f45bd9561f7b2e59585da__END
+[?2004hroot@af6acb333b3a:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && printf 'I am a Postdoctoral Researcher at Stanford CS.\n\nPreviously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.apple.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com).\n' > _includes/about.md && git add _includes/about.md _layouts/default.html && git commit -m 'Merge recovered work into master'; __tts_rc=$?; printf '\n__TTS_d71c72645a804021a5751275fdb3d4dd__RC:%s\n' "$__tts_rc"; printf '__TTS_d71c72645a804021a5751275fdb3d4dd__PWD:'; pwd; printf '__TTS_d71c72645a804021a5751275fdb3d4dd__END\n'; tmux wait -S done
+[?2004l[master 0354cdd] Merge recovered work into master
+
+__TTS_d71c72645a804021a5751275fdb3d4dd__RC:0
+__TTS_d71c72645a804021a5751275fdb3d4dd__PWD:/app/personal-site
+__TTS_d71c72645a804021a5751275fdb3d4dd__END
+[?2004hroot@af6acb333b3a:/app/personal-site# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@af6acb333b3a:/app/personal-site# 

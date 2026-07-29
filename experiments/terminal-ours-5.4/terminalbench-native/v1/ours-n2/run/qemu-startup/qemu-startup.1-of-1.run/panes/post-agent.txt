@@ -1,0 +1,223 @@
+root@8a2abf2f0563:/app# asciinema rec --stdin /logs/agent.cast
+asciinema: recording asciicast to /logs/agent.cast
+asciinema: press <ctrl-d> or type "exit" when you're done
+root@8a2abf2f0563:/app# clear
+root@8a2abf2f0563:/app# pwd; __tts_rc=$?; printf '\n__TTS_756a75c430a446e79cdf6ba42d464192__RC:%s\n' "$__tts_rc"; printf '__TTS_756a75c430a446e79cdf6ba42d464192
+__PWD:'; pwd; printf '__TTS_756a75c430a446e79cdf6ba42d464192__END\n'; tmux wait -S done
+/app
+
+__TTS_756a75c430a446e79cdf6ba42d464192__RC:0
+__TTS_756a75c430a446e79cdf6ba42d464192__PWD:/app
+__TTS_756a75c430a446e79cdf6ba42d464192__END
+root@8a2abf2f0563:/app# cd -- /app && sh -lc 'ls -l /app && find /app -maxdepth 2 \( -name "alpine.iso" -o -name "*.iso" -o -name "*qemu*" \) -print'; __tts_rc=
+$?; printf '\n__TTS_c97df906612443238757611788596f24__RC:%s\n' "$__tts_rc"; printf '__TTS_c97df906612443238757611788596f24__PWD:'; pwd; printf '__TTS_c97df90661
+2443238757611788596f24__END\n'; tmux wait -S done
+total 980168
+-rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+/app/alpine.iso
+
+__TTS_c97df906612443238757611788596f24__RC:0
+__TTS_c97df906612443238757611788596f24__PWD:/app
+__TTS_c97df906612443238757611788596f24__END
+root@8a2abf2f0563:/app# cd -- __TTS_c97df906612443238757611788596f24__PWD:/app && sh -lc 'set -eu; rm -f /tmp/alpine-telnet.pid /tmp/alpine-telnet.log; qemu-sys
+tem-x86_64 -m 512 -cdrom /app/alpine.iso -boot d -serial telnet:127.0.0.1:6665,server,nowait -display none -monitor none -no-reboot > /tmp/alpine-telnet.log 2>&
+1 & echo $! > /tmp/alpine-telnet.pid; for i in $(seq 1 120); do ss -ltn 2>/dev/null | grep -q ":6665 " && exit 0; sleep 1; done; echo "qemu did not open telnet
+port 6665" >&2; tail -n 50 /tmp/alpine-telnet.log >&2; exit 1'; __tts_rc=$?; printf '\n__TTS_9734e88241b0415493ec7162fa23095e__RC:%s\n' "$__tts_rc"; printf '__T
+TS_9734e88241b0415493ec7162fa23095e__PWD:'; pwd; printf '__TTS_9734e88241b0415493ec7162fa23095e__END\n'; tmux wait -S done
+bash: cd: __TTS_c97df906612443238757611788596f24__PWD:/app: No such file or directory
+
+__TTS_9734e88241b0415493ec7162fa23095e__RC:1
+__TTS_9734e88241b0415493ec7162fa23095e__PWD:/app
+__TTS_9734e88241b0415493ec7162fa23095e__END
+root@8a2abf2f0563:/app# cd -- /app && sh -lc 'set -eu; test -s /tmp/alpine-telnet.pid && kill -0 "$(cat /tmp/alpine-telnet.pid)" 2>/dev/null; for i in $(seq 1 1
+80); do if timeout 2 sh -lc "exec 3<>/dev/tcp/127.0.0.1/6665; dd bs=1 count=512 <&3 2>/dev/null | tr -d \"\\r\" | grep -Eiq \"login:|Welcome to Alpine|localhost
+ login\""; then exit 0; fi; sleep 1; done; echo "login prompt not detected on 127.0.0.1:6665" >&2; test -f /tmp/alpine-telnet.log && tail -n 100 /tmp/alpine-tel
+net.log >&2; exit 1'; __tts_rc=$?; printf '\n__TTS_880a84af61a9454bac359aff36a27c99__RC:%s\n' "$__tts_rc"; printf '__TTS_880a84af61a9454bac359aff36a27c99__PWD:'
+; pwd; printf '__TTS_880a84af61a9454bac359aff36a27c99__END\n'; tmux wait -S done
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+sh: 1: cannot create /dev/tcp/127.0.0.1/6665: Directory nonexistent
+login prompt not detected on 127.0.0.1:6665
+
+__TTS_880a84af61a9454bac359aff36a27c99__RC:1
+__TTS_880a84af61a9454bac359aff36a27c99__PWD:/app
+__TTS_880a84af61a9454bac359aff36a27c99__END
+root@8a2abf2f0563:/app#

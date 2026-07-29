@@ -23,6 +23,8 @@ class SolverConfig:
     temperature: float = 0.7
     #: max agent steps per rollout (cohering to the official runners)
     max_steps: int = 100
+    #: retries after a WM-interactive rollout raises before producing a candidate
+    rollout_retries: int = 2
     #: probability a *scripted* rollout follows the plan (offline stub only)
     p_correct: float = 0.0
 

@@ -1,0 +1,86 @@
+[?2004hroot@f5ea0219d33d:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@f5ea0219d33d:/app# clear
+[?2004l[H[J[3J[?2004hroot@f5ea0219d33d:/app# pwd; __tts_rc=$?; printf '\n__TTS_61a6d3279a974153b48aff94f7d52f5f__RC:%s\n' "$__tts_rc"; printf '__TTS_61a6d3279a974153b48aff94f7d52f5f__PWD:'; pwd; printf '__TTS_61a6d3279a974153b48aff94f7d52f5f__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_61a6d3279a974153b48aff94f7d52f5f__RC:0
+__TTS_61a6d3279a974153b48aff94f7d52f5f__PWD:/app
+__TTS_61a6d3279a974153b48aff94f7d52f5f__END
+[?2004hroot@f5ea0219d33d:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, shutil, subprocess, sys
+[?2004l[?2004h> url='https://www.youtube.com/watch?v=jNQXAC9IVRw'
+[?2004l[?2004h> out='full.%(ext)s'
+[?2004l[?2004h> ytdlp=shutil.which('yt-dlp') or shutil.which('youtube-dl')
+[?2004l[?2004h> if not ytdlp:
+[?2004l[?2004h>     sys.exit('yt-dlp not found')
+[?2004l[?2004h> subprocess.check_call([ytdlp,'-f','mp4/bestvideo+bestaudio/best','-o',out,url])
+[?2004l[?2004h> full=None
+[?2004l[?2004h> for fn in os.listdir('.'):
+[?2004l[?2004h>     if fn.startswith('full.') and fn.endswith('.mp4'):
+[?2004l[?2004h>         full=fn; break
+[?2004l[?2004h> if not full:
+[?2004l[?2004h>     cands=[fn for fn in os.listdir('.') if fn.startswith('full.')]
+[?2004l[?2004h>     if cands: full=cands[0]
+[?2004l[?2004h> if not full:
+[?2004l[?2004h>     sys.exit('download failed')
+[?2004l[?2004h> probe=shutil.which('ffprobe')
+[?2004l[?2004h> ffmpeg=shutil.which('ffmpeg')
+[?2004l[?2004h> if not (probe and ffmpeg):
+[?2004l[?2004h>     sys.exit('ffmpeg/ffprobe not found')
+[?2004l[?2004h> dur=float(subprocess.check_output([probe,'-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',full], text=True).strip())
+[?2004l[?2004h> start=max(0,dur-10)
+[?2004l[?2004h> subprocess.check_call([ffmpeg,'-y','-ss',str(start),'-i',full,'-t','10','-c','copy','result.mp4'])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_707d835b3a50425e9ebf1e735b74795a__RC:%s\n' "$__tts_rc"; printf '__TTS_707d835b3a50425e9ebf1e735b74795a__PWD:'; pwd; printf '__TTS_707d835b3a50425e9ebf1e735b74795a__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+cd -- /app && sh -lc 'pwd; ls -la; for x in python3 python yt-dlp youtube-dl ffmpeg ffprobe wget curl; do which "$x" 2>/dev/null && echo FOUND:$x; done'; __tts_rc=$?; printf '\n__TTS_520f2ae60e224399ba7f91931201dd8e__RC:%s\n' "$__tts_rc"; printf '__TTS_520f2ae60e224399ba7f91931201dd8e__PWD:'; pwd; printf '__TTS_520f2ae60e224399ba7f91931201dd8e__END\n'; tmux wait -S done
+  File [35m"<stdin>"[0m, line [35m24[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_707d835b3a50425e9ebf1e735b74795a__RC:%s\n' "$__tts_rc"; printf '__TTS_707d835b3a50425e9ebf1e735b74795a__PWD:'; pwd; printf '__TTS_707d835b3a50425e9ebf1e735b74795a__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@f5ea0219d33d:/app# cd -- /app && sh -lc 'pwd; ls -la; for x in python3 python yt-dlp youtube-dl ffmpeg ffprobe wget curl; do which "$x" 2>/dev/null && echo FOUND:$x; done'; __tts_rc=$?; printf '\n__TTS_520f2ae60e224399ba7f91931201dd8e__RC:%s\n' "$__tts_rc"; printf '__TTS_520f2ae60e224399ba7f91931201dd8e__PWD:'; pwd; printf '__TTS_520f2ae60e224399ba7f91931201dd8e__END\n'; tmux wait -S done
+[?2004l/app
+total 44
+drwxr-xr-x 1 root root  4096 Jul 17 01:02 .
+drwxr-xr-x 1 root root  4096 Jul 17 01:02 ..
+-rw-r--r-- 1 root root     5 Jul 17 01:02 .python-version
+drwxr-xr-x 4 root root  4096 Jul 17 01:02 .venv
+-rw-r--r-- 1 root root     0 Jul 17 01:02 README.md
+-rw-r--r-- 1 root root    81 Jul 17 01:02 main.py
+-rw-r--r-- 1 root root   222 Jul 17 01:02 pyproject.toml
+-rw-r--r-- 1 root root 18285 Jul 17 01:02 uv.lock
+/usr/local/bin/python3
+FOUND:python3
+/usr/local/bin/python
+FOUND:python
+/usr/bin/curl
+FOUND:curl
+
+__TTS_520f2ae60e224399ba7f91931201dd8e__RC:0
+__TTS_520f2ae60e224399ba7f91931201dd8e__PWD:/app
+__TTS_520f2ae60e224399ba7f91931201dd8e__END
+[?2004hroot@f5ea0219d33d:/app# cd -- 'd; printf '"'"'' && python3 - <<'PY'
+[?2004l[?2004h> import os, subprocess, sys, urllib.request, json, re
+[?2004l[?2004h> url='https://www.youtube.com/watch?v=jNQXAC9IVRw'
+[?2004l[?2004h> html=urllib.request.urlopen(url).read().decode('utf-8','ignore')
+[?2004l[?2004h> m=re.search(r'ytInitialPlayerResponse\s*=\s*(\{.+?\});', html)
+[?2004l[?2004h> if not m:
+[?2004l[?2004h>     print('no player response', file=sys.stderr); sys.exit(1)
+[?2004l[?2004h> pr=json.loads(m.group(1))
+[?2004l[?2004h> fmts=pr.get('streamingData',{}).get('formats',[])+pr.get('streamingData',{}).get('adaptiveFormats',[])
+[?2004l[?2004h> chosen=None
+[?2004l[?2004h> for f in fmts:
+[?2004l[?2004h>     if f.get('mimeType','').startswith('video/mp4') and f.get('url'):
+[?2004l[?2004h>         chosen=f; break
+[?2004l[?2004h> if not chosen:
+[?2004l[?2004h>     print('no direct mp4 url', file=sys.stderr); sys.exit(1)
+[?2004l[?2004h> video_url=chosen['url']
+[?2004l[?2004h> subprocess.check_call(['wget','-O','full.mp4',video_url])
+[?2004l[?2004h> dur=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1','full.mp4'], text=True).strip())
+[?2004l[?2004h> start=max(0,dur-10)
+[?2004l[?2004h> subprocess.check_call(['ffmpeg','-y','-ss',str(start),'-i','full.mp4','-t','10','-c','copy','result.mp4'])
+[?2004l[?2004h> print('done')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f8d06999cca446dda8d8cf8d485548ef__RC:%s\n' "$__tts_rc"; printf '__TTS_f8d06999cca446dda8d8cf8d485548ef__PWD:'; pwd; printf '__TTS_f8d06999cca446dda8d8cf8d485548ef__END\n'; tmux wait -S done
+[?2004l[?2004h> 

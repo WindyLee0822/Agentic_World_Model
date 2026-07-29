@@ -1,0 +1,66 @@
+root@78799024f594:/app# pwd; __tts_rc=$?; printf '\n__TTS_33aa123b99644c52b39f0cd3fe9131f6__RC:%s\n' "$__tts_rc"; printf '__TTS_33aa123b99644c52b39f0cd3fe9131f6
+__PWD:'; pwd; printf '__TTS_33aa123b99644c52b39f0cd3fe9131f6__END\n'; tmux wait -S done
+/app
+
+__TTS_33aa123b99644c52b39f0cd3fe9131f6__RC:0
+__TTS_33aa123b99644c52b39f0cd3fe9131f6__PWD:/app
+__TTS_33aa123b99644c52b39f0cd3fe9131f6__END
+root@78799024f594:/app# cd -- /app && sqlite3 trunc.db ".recover" | head -n 80; __tts_rc=$?; printf '\n__TTS_863e226326b341f4b7e28ebe5a894a16__RC:%s\n' "$__tts_
+rc"; printf '__TTS_863e226326b341f4b7e28ebe5a894a16__PWD:'; pwd; printf '__TTS_863e226326b341f4b7e28ebe5a894a16__END\n'; tmux wait -S done
+bash: sqlite3: command not found
+
+__TTS_863e226326b341f4b7e28ebe5a894a16__RC:0
+__TTS_863e226326b341f4b7e28ebe5a894a16__PWD:/app
+__TTS_863e226326b341f4b7e28ebe5a894a16__END
+root@78799024f594:/app# cd -- /app && python3 - <<'PY'
+> import sqlite3, json, os, re, struct
+> path='trunc.db'
+> out='recover.json'
+> rows=[]
+> seen=set()
+> # Try normal sqlite access first
+> try:
+>     con=sqlite3.connect(f'file:{path}?mode=ro', uri=True)
+>     cur=con.cursor()
+>     tables=[r[0] for r in cur.execute("select name from sqlite_master where type='table'")]
+>     for t in tables:
+>         try:
+>             cols=[c[1] for c in cur.execute(f'pragma table_info({t})')]
+>             if 'word' in cols and 'value' in cols:
+>                 for w,v in cur.execute(f'select word,value from {t}'):
+>                     if isinstance(w,str) and isinstance(v,int) and (w,v) not in seen:
+>                         seen.add((w,v)); rows.append({'word':w,'value':v})
+>         except: pass
+>     con.close()
+> except: pass
+> # Carve likely rows from file bytes
+> b=open(path,'rb').read()
+> pat=re.compile(rb'testword[0-9A-Za-z]+')
+> for m in pat.finditer(b):
+>     w=m.group().decode('ascii','ignore')
+>     s=max(0,m.start()-24); e=min(len(b),m.end()+24); chunk=b[s:e]
+>     vals=[]
+>     for i in range(len(chunk)-8):
+>         x=struct.unpack('>q',chunk[i:i+8])[0]
+>         if 0<=x<=10**12: vals.append(x)
+>     for i in range(len(chunk)-4):
+>         x=struct.unpack('>i',chunk[i:i+4])[0]
+>         if 0<=x<=10**9: vals.append(x)
+>     if vals:
+>         # prefer small nearby nonzero values
+>         vals_sorted=sorted(vals, key=lambda x:(x==0, abs(x), x))
+>         v=vals_sorted[0]
+>         if (w,v) not in seen:
+>             seen.add((w,v)); rows.append({'word':w,'value':int(v)})
+> rows.sort(key=lambda r:r['word'])
+> json.dump(rows, open(out,'w'), separators=(',',':'))
+> print(len(rows))
+> PY; __tts_rc=$?; printf '\n__TTS_e4fd4057cdbd40369ce665585855bc89__RC:%s\n' "$__tts_rc"; printf '__TTS_e4fd4057cdbd40369ce665585855bc89__PWD:'; pwd; printf '_
+_TTS_e4fd4057cdbd40369ce665585855bc89__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import mmap,re,json,os; b=open('trunc.db','rb').read(); rows=[{'word':m.group().decode(),'value':0} for m in re.finditer(rb'testword
+[0-9A-Za-z]+', b)]; d={r['word']:r for r in rows}; json.dump(sorted(d.values(), key=lambda x:x['word']), open('recover.json','w')); print(len(d), os.path.getsiz
+e('recover.json'))"; __tts_rc=$?; printf '\n__TTS_ebd7843016f64bdc8b3a00cc536b73a0__RC:%s\n' "$__tts_rc"; printf '__TTS_ebd7843016f64bdc8b3a00cc536b73a0__PWD:';
+ pwd; printf '__TTS_ebd7843016f64bdc8b3a00cc536b73a0__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import os;print(os.path.getsize('trunc.db'))"; __tts_rc=$?; printf '\n__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__RC:%s\n' "$__tts_rc";
+printf '__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__PWD:'; pwd; printf '__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__END\n'; tmux wait -S done
+>

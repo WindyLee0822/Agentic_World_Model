@@ -1,0 +1,40 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.98,
+      "n_reads": 0,
+      "n_spawns": 3,
+      "max_depth": 1,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"bash -lc 'set -e; mkdir -p /app/repo; cd /app/repo; git init -q; git fetch /app/bundle1.bundle HEAD:branch1 || { ref=$(git bundle list-heads /app/bundle1.bundle | awk \\\"NR==1{print \\\\$1}\\\"); git fetch /app/bundle1.bundle \\\"$ref\\\":branch1; }; git fetch /app/bundle2.bundle HEAD:branch2 || { ref=$(git bundle list-heads /app/bundle2.bundle | awk \\\"NR==1{print \\\\$1}\\\"); git fetch /app/bundle2.bundle \\\"$ref\\\":branch2; }; git checkout -q branch1; git merge --no-edit branch2 || true; python3",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 4170
+      }
+    },
+    {
+      "index": 1,
+      "confidence": 0.02,
+      "n_reads": 0,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python3 - <<'PY'\\nimport os, json, subprocess, textwrap\\nfrom pathlib import Path\\n\\nrepo = Path('/app/repo')\\nrepo.mkdir(exist_ok=True)\\n\\ndef run(cmd, cwd=repo, check=True):\\n    return subprocess.run(cmd, cwd=str(cwd), shell=True, text=True, capture_output=True, check=check)\\n\\nif not (repo/'.git').exists():\\n    run('git init')\\n\\n# helper to inspect bundle refs\\n\\ndef bundle_head_or_ref(bundle):\\n    r = subprocess.run(f'git bundle list-heads {bundle}', shell=True, text=True, ca",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 2505
+      }
+    }
+  ],
+  "commit_results": []
+}

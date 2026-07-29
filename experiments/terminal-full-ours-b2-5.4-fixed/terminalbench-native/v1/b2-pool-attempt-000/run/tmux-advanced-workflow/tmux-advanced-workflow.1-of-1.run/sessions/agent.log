@@ -1,0 +1,17 @@
+[?2004hroot@e995722d2524:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@e995722d2524:/app# clear
+[?2004l[H[J[3J[?2004hroot@e995722d2524:/app# pwd; __tts_rc=$?; printf '\n__TTS_cb17d98cdeb74790964ed45a4e7580aa__RC:%s\n' "$__tts_rc"; printf '__TTS_cb17d98cdeb74790964ed45a4e7580aa__PWD:'; pwd; printf '__TTS_cb17d98cdeb74790964ed45a4e7580aa__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_cb17d98cdeb74790964ed45a4e7580aa__RC:0
+__TTS_cb17d98cdeb74790964ed45a4e7580aa__PWD:/app
+__TTS_cb17d98cdeb74790964ed45a4e7580aa__END
+[?2004hroot@e995722d2524:/app# cd -- /app && tmux new-session -d -s workflow -c /app/project 'python /app/project/src/monitor.py' \; split-window -v -c /app/project \; split-window -h -t workflow:0.1 -c /app/project \; send-keys -t workflow:0.1 'python /app/project/src/process_data.py /app/project/data/input.csv /app/project/data/output.csv' C-m \; send-keys -t workflow:0.2 'vim /app/project/src/process_data.py' C-m; __tts_rc=$?; printf '\n__TTS_a4fd4906e89045e19483154767a1412e__RC:%s\n' "$__tts_rc"; printf '__TTS_a4fd4906e89045e19483154767a1412e__PWD:'; pwd; printf '__TTS_a4fd4906e89045e19483154767a1412e__END\n'; tmux wait -S done
+[?2004lcan't find pane: 1
+
+__TTS_a4fd4906e89045e19483154767a1412e__RC:1
+__TTS_a4fd4906e89045e19483154767a1412e__PWD:/app
+__TTS_a4fd4906e89045e19483154767a1412e__END
+[?2004hroot@e995722d2524:/app# 

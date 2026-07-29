@@ -1,0 +1,16 @@
+{
+    "task": {
+        "path": "cancel-async-tasks",
+        "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+        "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+        "source": "terminal-bench"
+    },
+    "trial_name": "cancel-async-tasks__tC7G7bq",
+    "trials_dir": "/home/t-wendili/dw/experiments/terminal-debug-5.4-fixed/terminalbench-native/v2/ours-n1/job",
+    "agent_timeout_multiplier": 1.0,
+    "agent": {
+        "name": "tts.env.terminalbench_harbor:HarborTerminalBenchAgent",
+        "model_name": "gpt-5.4"
+    },
+    "job_id": "c45f5dd8-e721-4ab1-ad82-ad1a1db49c2a"
+}

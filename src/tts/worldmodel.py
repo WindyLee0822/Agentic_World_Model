@@ -224,9 +224,9 @@ class ReadGroundedWorldModel(WorldModel):
             root = SpawnNode(self._nid(), None, 0, "agentic-eval", "simulator")
             self._root = root
             self._shadow = {}
-            info = self._eval.reward_agentic(_Reader(self, root), trajectory.actions)
+            info = self._eval.reward_agentic(_Reader(self, root), trajectory)
             return RewardInfo(reward=info.reward, success=info.success, grounded=False,
-                              reason=info.reason)
+                              reason=info.reason, metadata=dict(info.metadata or {}))
         seeds = self._dedup(self._eval.seed_entities(trajectory.actions))
         shadow: Dict[EntRef, Dict] = {}
         if self.kind == "flat":
@@ -241,7 +241,8 @@ class ReadGroundedWorldModel(WorldModel):
             self._root = self._node(seeds, 0, None, shadow)
         self._shadow = shadow
         info = self._eval.reward_from_shadow(shadow, trajectory.actions)
-        return RewardInfo(reward=info.reward, success=info.success, grounded=False, reason=info.reason)
+        return RewardInfo(reward=info.reward, success=info.success, grounded=False,
+                          reason=info.reason, metadata=dict(info.metadata or {}))
 
     def step(self, action: Action) -> Observation:
         """Predict one action's observation (no real write).

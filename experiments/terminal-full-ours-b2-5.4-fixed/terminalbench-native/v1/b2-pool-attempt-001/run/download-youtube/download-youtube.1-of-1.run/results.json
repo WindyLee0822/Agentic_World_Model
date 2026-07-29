@@ -1,0 +1,20 @@
+{
+    "id": "2e7336ce-a776-48ac-bf93-f4bd7349ba11",
+    "trial_name": "download-youtube.1-of-1.run",
+    "task_id": "download-youtube",
+    "instruction": "Download the first video ever uploaded to YouTube as an mp4. Then, trim the video to the final 10 seconds and save it as `result.mp4`.",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "../tests/test_outputs.py": "failed"
+    },
+    "recording_path": "run/download-youtube/download-youtube.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-18T04:55:02.545843+00:00",
+    "trial_ended_at": "2026-07-18T05:06:28.849078+00:00",
+    "agent_started_at": "2026-07-18T04:55:06.846407+00:00",
+    "agent_ended_at": "2026-07-18T05:06:06.966400+00:00",
+    "test_started_at": "2026-07-18T05:06:10.342256+00:00",
+    "test_ended_at": "2026-07-18T05:06:17.712327+00:00"
+}

@@ -1,0 +1,40 @@
+root@3d020b4cc09a:/app# pwd; __tts_rc=$?; printf '\n__TTS_b09539f96a8b48bfa6c91971dbd0c4df__RC:%s\n' "$__tts_rc"; printf '__TTS_b09539f96a8b48bfa6c91971dbd0c4df
+__PWD:'; pwd; printf '__TTS_b09539f96a8b48bfa6c91971dbd0c4df__END\n'; tmux wait -S done
+/app
+
+__TTS_b09539f96a8b48bfa6c91971dbd0c4df__RC:0
+__TTS_b09539f96a8b48bfa6c91971dbd0c4df__PWD:/app
+__TTS_b09539f96a8b48bfa6c91971dbd0c4df__END
+root@3d020b4cc09a:/app# cd -- /app && python -c "from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m,
+cache_dir='/app/hf-cache'); AutoModel.from_pretrained(m, cache_dir='/app/hf-cache'); print('cached', m, 'in /app/hf-cache')"; __tts_rc=$?; printf '\n__TTS_2584a
+832759943f49824c4d22be3e780__RC:%s\n' "$__tts_rc"; printf '__TTS_2584a832759943f49824c4d22be3e780__PWD:'; pwd; printf '__TTS_2584a832759943f49824c4d22be3e780__E
+ND\n'; tmux wait -S done
+config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 684/684 [00:00<00:00, 4.29MB/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 186kB/s]
+spiece.model: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 760k/760k [00:00<00:00, 53.5MB/s]
+tokenizer.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 1.31M/1.31M [00:00<00:00, 135MB/s]
+model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.8MB, 4.26MB/s
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████| 47.4MB / 47.4MB, 4.56MB/s
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 8082.76it/s]
+[transformers] AlbertModel LOAD REPORT from: albert/albert-base-v2
+Key                          | Status     |  |
+-----------------------------+------------+--+-
+predictions.LayerNorm.weight | UNEXPECTED |  |
+predictions.LayerNorm.bias   | UNEXPECTED |  |
+predictions.dense.weight     | UNEXPECTED |  |
+predictions.bias             | UNEXPECTED |  |
+predictions.decoder.bias     | UNEXPECTED |  |
+predictions.dense.bias       | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+cached albert/albert-base-v2 in /app/hf-cache
+
+__TTS_2584a832759943f49824c4d22be3e780__RC:0
+__TTS_2584a832759943f49824c4d22be3e780__PWD:/app
+__TTS_2584a832759943f49824c4d22be3e780__END
+root@3d020b4cc09a:/app#
+
+
+

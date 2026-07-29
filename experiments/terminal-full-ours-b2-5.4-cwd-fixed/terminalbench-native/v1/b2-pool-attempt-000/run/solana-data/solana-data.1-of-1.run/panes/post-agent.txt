@@ -1,0 +1,40 @@
+root@a997ac5b71d5:/app# pwd; __tts_rc=$?; printf '\n__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec__RC:%s\n' "$__tts_rc"; printf '__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec
+__PWD:'; pwd; printf '__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec__END\n'; tmux wait -S done
+/app
+
+__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec__RC:0
+__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec__PWD:/app
+__TTS_dd4b1ceb9e614d7b94b841a2b03a65ec__END
+root@a997ac5b71d5:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_83d1062fa3c84cd4a9d1c77fffa1b132__RC:%s\n' "$__tts_rc"; printf '__TTS_83d1062fa3
+c84cd4a9d1c77fffa1b132__PWD:'; pwd; printf '__TTS_83d1062fa3c84cd4a9d1c77fffa1b132__END\n'; tmux wait -S done
+total 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 18:42 ..
+
+__TTS_83d1062fa3c84cd4a9d1c77fffa1b132__RC:0
+__TTS_83d1062fa3c84cd4a9d1c77fffa1b132__PWD:/app
+__TTS_83d1062fa3c84cd4a9d1c77fffa1b132__END
+root@a997ac5b71d5:/app# cd -- /app && cd /app && python3 - <<'PY'
+> import os
+> print('python ok')
+> PY; __tts_rc=$?; printf '\n__TTS_adf9af7197704590b4bfb97087559dbf__RC:%s\n' "$__tts_rc"; printf '__TTS_adf9af7197704590b4bfb97087559dbf__PWD:'; pwd; printf '_
+_TTS_adf9af7197704590b4bfb97087559dbf__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python3 --version; __tts_rc=$?; printf '\n__TTS_18c7c5821cb64ba8ae9787daa1b63901__RC:%s\n' "$__tts_rc"; printf '__TTS_18c7c5821cb64ba
+8ae9787daa1b63901__PWD:'; pwd; printf '__TTS_18c7c5821cb64ba8ae9787daa1b63901__END\n'; tmux wait -S done
+> cd -- /app && cd /app && which python3 || which python || which node || which npm || which pip; __tts_rc=$?; printf '\n__TTS_83faa58c0fc94daeb0607d326a3f9d90_
+_RC:%s\n' "$__tts_rc"; printf '__TTS_83faa58c0fc94daeb0607d326a3f9d90__PWD:'; pwd; printf '__TTS_83faa58c0fc94daeb0607d326a3f9d90__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

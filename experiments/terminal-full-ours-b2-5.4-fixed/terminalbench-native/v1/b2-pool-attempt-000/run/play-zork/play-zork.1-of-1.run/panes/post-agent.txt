@@ -1,0 +1,40 @@
+root@a7be038ca4a8:/app# pwd; __tts_rc=$?; printf '\n__TTS_6a4850efe0d749cfb40790b5f055559b__RC:%s\n' "$__tts_rc"; printf '__TTS_6a4850efe0d749cfb40790b5f055559b
+__PWD:'; pwd; printf '__TTS_6a4850efe0d749cfb40790b5f055559b__END\n'; tmux wait -S done
+/app
+
+__TTS_6a4850efe0d749cfb40790b5f055559b__RC:0
+__TTS_6a4850efe0d749cfb40790b5f055559b__PWD:/app
+__TTS_6a4850efe0d749cfb40790b5f055559b__END
+root@a7be038ca4a8:/app# cd -- /app && cd /app/frotz && printf 'look
+> quit
+> y
+> ' | ./frotz zork1.z5 | tail -n 80; __tts_rc=$?; printf '\n__TTS_58bec6489c09466c9739e81c3ef8aad7__RC:%s\n' "$__tts_rc"; printf '__TTS_58bec6489c09466c9739e81c
+3ef8aad7__PWD:'; pwd; printf '__TTS_58bec6489c09466c9739e81c3ef8aad7__END\n'; tmux wait -S done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

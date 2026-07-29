@@ -1,0 +1,237 @@
+root@c1b73e517798:/app# pwd; __tts_rc=$?; printf '\n__TTS_862dde90503b440fbef9d91fa31af995__RC:%s\n' "$__tts_rc"; printf '__TTS_862dde90503b440fbef9d91fa31af995
+__PWD:'; pwd; printf '__TTS_862dde90503b440fbef9d91fa31af995__END\n'; tmux wait -S done
+/app
+
+__TTS_862dde90503b440fbef9d91fa31af995__RC:0
+__TTS_862dde90503b440fbef9d91fa31af995__PWD:/app
+__TTS_862dde90503b440fbef9d91fa31af995__END
+root@c1b73e517798:/app# cd -- /app && ls -l /app && ls -l /app/john/run && 7z l /app/secrets.7z; __tts_rc=$?; printf '\n__TTS_12882127ed1f41d18195e52529b5e101__
+RC:%s\n' "$__tts_rc"; printf '__TTS_12882127ed1f41d18195e52529b5e101__PWD:'; pwd; printf '__TTS_12882127ed1f41d18195e52529b5e101__END\n'; tmux wait -S done
+total 12
+drwxr-xr-x 1 root root 4096 Jul 16 21:18 john
+-rwxr-xr-x 1 root root  215 Jul 16 19:53 secrets.7z
+total 82704
+-rwxr-xr-x 1 root root    11545 Jul 16 21:18 1password2john.py
+-rwxr-xr-x 1 root root    97726 Jul 16 21:18 7z2john.pl
+-rwxr-xr-x 1 root root    26197 Jul 16 21:18 DPAPImk2john.py
+-rwxr-xr-x 1 root root     3800 Jul 16 21:18 adxcsouf2john.py
+-rwxr-xr-x 1 root root     2729 Jul 16 21:18 aem2john.py
+-rwxr-xr-x 1 root root      894 Jul 16 21:18 aix2john.pl
+-rwxr-xr-x 1 root root     1958 Jul 16 21:18 aix2john.py
+-rw-r--r-- 1 root root  4086722 Jul 16 21:18 alnum.chr
+-rw-r--r-- 1 root root  4174257 Jul 16 21:18 alnumspace.chr
+-rw-r--r-- 1 root root  1950539 Jul 16 21:18 alpha.chr
+-rwxr-xr-x 1 root root     1368 Jul 16 21:18 andotp2john.py
+-rwxr-xr-x 1 root root     3455 Jul 16 21:18 androidbackup2john.py
+-rwxr-xr-x 1 root root     7471 Jul 16 21:18 androidfde2john.py
+-rwxr-xr-x 1 root root     1758 Jul 16 21:18 ansible2john.py
+-rwxr-xr-x 1 root root      731 Jul 16 21:18 apex2john.py
+-rwxr-xr-x 1 root root     2140 Jul 16 21:18 apop2john.py
+-rwxr-xr-x 1 root root     2074 Jul 16 21:18 applenotes2john.py
+-rwxr-xr-x 1 root root     1447 Jul 16 21:18 aruba2john.py
+-rw-r--r-- 1 root root  5720262 Jul 16 21:18 ascii.chr
+-rwxr-xr-x 1 root root      614 Jul 16 21:18 atmail2john.pl
+-rwxr-xr-x 1 root root     6299 Jul 16 21:18 axcrypt2john.py
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 base64conv -> john
+-rwxr-xr-x 1 root root    10577 Jul 16 21:18 benchmark-unify
+-rwxr-xr-x 1 root root    10174 Jul 16 21:18 bestcrypt2john.py
+-rwxr-xr-x 1 root root     2314 Jul 16 21:18 bestcryptve2john.py
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 bip-0039
+-rwxr-xr-x 1 root root     9421 Jul 16 21:18 bitcoin2john.py
+-rwxr-xr-x 1 root root   206872 Jul 16 21:22 bitlocker2john
+-rwxr-xr-x 1 root root    10001 Jul 16 21:18 bitlocker2john.py
+-rwxr-xr-x 1 root root     2725 Jul 16 21:18 bitshares2john.py
+-rwxr-xr-x 1 root root     4315 Jul 16 21:18 bitwarden2john.py
+-rwxr-xr-x 1 root root     7754 Jul 16 21:18 bks2john.py
+-rwxr-xr-x 1 root root     2940 Jul 16 21:18 blockchain2john.py
+-rwxr-xr-x 1 root root    26864 Jul 16 21:22 calc_stat
+-rwxr-xr-x 1 root root     2057 Jul 16 21:18 cardano2john.py
+-rwxr-xr-x 1 root root    26774 Jul 16 21:18 ccache2john.py
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 ccl_chrome_indexeddb
+-rwxr-xr-x 1 root root     7054 Jul 16 21:18 cisco2john.pl
+-rwxr-xr-x 1 root root      898 Jul 16 21:18 codepage.pl
+-rwxr-xr-x 1 root root     2830 Jul 16 21:18 coinomi2john.py
+-rwxr-xr-x 1 root root   106848 Jul 16 21:22 cprepair
+-rwxr-xr-x 1 root root      880 Jul 16 21:18 cracf2john.py
+-rwxr-xr-x 1 root root     2573 Jul 16 21:18 dashlane2john.py
+-rwxr-xr-x 1 root root     3771 Jul 16 21:18 deepsound2john.py
+-rw-r--r-- 1 root root     4099 Jul 16 21:18 dictionary.rfc2865
+-rw-r--r-- 1 root root   465097 Jul 16 21:18 digits.chr
+-rwxr-xr-x 1 root root     7341 Jul 16 21:18 diskcryptor2john.py
+-rwxr-xr-x 1 root root    72336 Jul 16 21:22 dmg2john
+-rwxr-xr-x 1 root root     5249 Jul 16 21:18 dmg2john.py
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 dns
+-rw-r--r-- 1 root root    54555 Jul 16 21:18 dumb16.conf
+-rw-r--r-- 1 root root   109149 Jul 16 21:18 dumb32.conf
+-rw-r--r-- 1 root root    60347 Jul 16 21:18 dynamic.conf
+-rw-r--r-- 1 root root     8539 Jul 16 21:18 dynamic_disabled.conf
+-rw-r--r-- 1 root root     9542 Jul 16 21:18 dynamic_flat_sse_formats.conf
+-rwxr-xr-x 1 root root     2053 Jul 16 21:18 ecryptfs2john.py
+-rwxr-xr-x 1 root root     5081 Jul 16 21:18 ejabberd2john.py
+-rwxr-xr-x 1 root root     9523 Jul 16 21:18 electrum2john.py
+-rwxr-xr-x 1 root root     3625 Jul 16 21:18 encdatavault2john.py
+-rwxr-xr-x 1 root root     2717 Jul 16 21:18 encfs2john.py
+-rwxr-xr-x 1 root root     1107 Jul 16 21:18 enpass2john.py
+-rwxr-xr-x 1 root root     1113 Jul 16 21:18 enpass5tojohn.py
+-rwxr-xr-x 1 root root     3773 Jul 16 21:18 ethereum2john.py
+-rwxr-xr-x 1 root root     1725 Jul 16 21:18 filezilla2john.py
+-rw-r--r-- 1 root root    99202 Jul 16 21:18 fuzz.dic
+-rwxr-xr-x 1 root root     3324 Jul 16 21:18 fuzz_option.pl
+-rw-r--r-- 1 root root     8910 Jul 16 21:18 fvde2john.py
+-rwxr-xr-x 1 root root     3439 Jul 16 21:18 geli2john.py
+-rwxr-xr-x 1 root root     1867 Jul 16 21:18 genincstats.rb
+-rwxr-xr-x 1 root root   190680 Jul 16 21:22 genmkvpwd
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 gpg2john -> john
+-rwxr-xr-x 1 root root    60880 Jul 16 21:22 hccap2john
+-rwxr-xr-x 1 root root     7096 Jul 16 21:18 hccapx2john.py
+-rwxr-xr-x 1 root root      428 Jul 16 21:18 hextoraw.pl
+-rwxr-xr-x 1 root root     1059 Jul 16 21:18 htdigest2john.py
+-rw-r--r-- 1 root root     7536 Jul 16 21:18 hybrid.conf
+-rwxr-xr-x 1 root root     1458 Jul 16 21:18 ibmiscanner2john.py
+-rwxr-xr-x 1 root root      710 Jul 16 21:18 ikescan2john.py
+-rwxr-xr-x 1 root root     1626 Jul 16 21:18 ios7tojohn.pl
+-rwxr-xr-x 1 root root     5715 Jul 16 21:18 itunes_backup2john.pl
+-rwxr-xr-x 1 root root     4810 Jul 16 21:18 iwork2john.py
+-rwxr-xr-x 1 root root 22647952 Jul 16 21:22 john
+-rw-r--r-- 1 root root    33024 Jul 16 21:18 john.bash_completion
+-rw-r--r-- 1 root root   126985 Jul 16 21:18 john.conf
+-rw-r--r-- 1 root root     8928 Jul 16 21:18 john.zsh_completion
+-rw-r--r-- 1 root root    35525 Jul 16 21:18 jtr_rulez.pm
+-rw-r--r-- 1 root root     3620 Jul 16 21:18 jtrconf.pm
+-rwxr-xr-x 1 root root     1110 Jul 16 21:18 kdcdump2john.py
+-rwxr-xr-x 1 root root   290600 Jul 16 21:22 keepass2john
+-rwxr-xr-x 1 root root    11994 Jul 16 21:18 keplr2john.py
+-rwxr-xr-x 1 root root     2955 Jul 16 21:18 keychain2john.py
+-rwxr-xr-x 1 root root     3534 Jul 16 21:18 keyring2john.py
+-rwxr-xr-x 1 root root     5416 Jul 16 21:18 keystore2john.py
+-rwxr-xr-x 1 root root     2643 Jul 16 21:18 kirbi2john.py
+-rwxr-xr-x 1 root root      849 Jul 16 21:18 known_hosts2john.py
+-rw-r--r-- 1 root root    22635 Jul 16 21:18 korelogic.conf
+-rwxr-xr-x 1 root root     9677 Jul 16 21:18 krb2john.py
+-rwxr-xr-x 1 root root     4431 Jul 16 21:18 kwallet2john.py
+-rw-r--r-- 1 root root  1466791 Jul 16 21:18 lanman.chr
+-rwxr-xr-x 1 root root     4297 Jul 16 21:18 lastpass2john.py
+-rw-r--r-- 1 root root  7449800 Jul 16 21:18 latin1.chr
+-rwxr-xr-x 1 root root      472 Jul 16 21:18 ldif2john.pl
+-rwxr-xr-x 1 root root     2628 Jul 16 21:18 leet.pl
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 lib
+-rwxr-xr-x 1 root root     7228 Jul 16 21:18 libreoffice2john.py
+-rwxr-xr-x 1 root root      878 Jul 16 21:18 lion2john-alt.pl
+-rwxr-xr-x 1 root root      994 Jul 16 21:18 lion2john.pl
+-rw-r--r-- 1 root root  1184244 Jul 16 21:18 lm_ascii.chr
+-rwxr-xr-x 1 root root     1525 Jul 16 21:18 lotus2john.py
+-rw-r--r-- 1 root root  1161863 Jul 16 21:18 lower.chr
+-rw-r--r-- 1 root root  2464980 Jul 16 21:18 lowernum.chr
+-rw-r--r-- 1 root root  1209621 Jul 16 21:18 lowerspace.chr
+-rwxr-xr-x 1 root root     4590 Jul 16 21:18 luks2john.py
+-rwxr-xr-x 1 root root     2602 Jul 16 21:18 mac2john-alt.py
+-rwxr-xr-x 1 root root    24611 Jul 16 21:18 mac2john.py
+-rwxr-xr-x 1 root root     1432 Jul 16 21:18 mailer
+-rwxr-xr-x 1 root root      842 Jul 16 21:18 makechr
+-rwxr-xr-x 1 root root     2297 Jul 16 21:18 mcafee_epo2john.py
+-rwxr-xr-x 1 root root    26520 Jul 16 21:22 mkvcalcproba
+-rwxr-xr-x 1 root root     1221 Jul 16 21:18 monero2john.py
+-rwxr-xr-x 1 root root     2495 Jul 16 21:18 money2john.py
+-rw-r--r-- 1 root root     3015 Jul 16 21:18 mongodb2john.js
+-rwxr-xr-x 1 root root     6267 Jul 16 21:18 mosquitto2john.py
+-rwxr-xr-x 1 root root     2578 Jul 16 21:18 mozilla2john.py
+-rwxr-xr-x 1 root root     5440 Jul 16 21:18 multibit2john.py
+-rwxr-xr-x 1 root root      942 Jul 16 21:18 neo2john.py
+-rwxr-xr-x 1 root root     9676 Jul 16 21:18 netntlm.pl
+-rwxr-xr-x 1 root root     5186 Jul 16 21:18 netscreen.py
+-rwxr-xr-x 1 root root    11395 Jul 16 21:18 network2john.lua
+-rwxr-xr-x 1 root root   133905 Jul 16 21:18 office2john.py
+-rwxr-xr-x 1 root root     3072 Jul 16 21:18 openbsd_softraid2john.py
+drwxr-xr-x 1 root root     4096 Jul 16 21:18 opencl
+-rwxr-xr-x 1 root root     3911 Jul 16 21:18 openssl2john.py
+-rwxr-xr-x 1 root root     3973 Jul 16 21:18 oracle2john.py
+-rwxr-xr-x 1 root root     2046 Jul 16 21:18 oubliette2john.py
+-rwxr-xr-x 1 root root     2844 Jul 16 21:18 padlock2john.py
+-rwxr-xr-x 1 root root   203600 Jul 16 21:18 pass_gen.pl
+-rw-r--r-- 1 root root 15327454 Jul 16 21:18 password.lst
+-rwxr-xr-x 1 root root    52809 Jul 16 21:18 pcap2john.py
+-rwxr-xr-x 1 root root    59808 Jul 16 21:18 pdf2john.pl
+-rwxr-xr-x 1 root root     4960 Jul 16 21:18 pdf2john.py
+-rwxr-xr-x 1 root root     4901 Jul 16 21:18 pem2john.py
+-rwxr-xr-x 1 root root     3329 Jul 16 21:18 pfx2john.py
+-rwxr-xr-x 1 root root     9861 Jul 16 21:18 pgpdisk2john.py
+-rwxr-xr-x 1 root root     2751 Jul 16 21:18 pgpsda2john.py
+-rwxr-xr-x 1 root root     9647 Jul 16 21:18 pgpwde2john.py
+-rw-r--r-- 1 root root     6305 Jul 16 21:18 pkcs12kdf.py
+-rwxr-xr-x 1 root root     4198 Jul 16 21:18 potcheck.pl
+-rwxr-xr-x 1 root root     1462 Jul 16 21:18 prosody2john.py
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 protobuf
+-rwxr-xr-x 1 root root     1438 Jul 16 21:18 ps_token2john.py
+-rwxr-xr-x 1 root root     2480 Jul 16 21:18 pse2john.py
+-rwxr-xr-x 1 root root    60136 Jul 16 21:22 putty2john
+-rwxr-xr-x 1 root root     1686 Jul 16 21:18 pwsafe2john.py
+-rwxr-xr-x 1 root root    41952 Jul 16 21:22 racf2john
+-rwxr-xr-x 1 root root     7165 Jul 16 21:18 radius2john.pl
+-rwxr-xr-x 1 root root     5926 Jul 16 21:18 radius2john.py
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 rar2john -> john
+-rwxr-xr-x 1 root root    34808 Jul 16 21:22 raw2dyna
+-rw-r--r-- 1 root root     5712 Jul 16 21:18 regex_alphabets.conf
+-rwxr-xr-x 1 root root     8377 Jul 16 21:18 relbench
+-rw-r--r-- 1 root root    54154 Jul 16 21:18 repeats16.conf
+-rw-r--r-- 1 root root   108843 Jul 16 21:18 repeats32.conf
+-rwxr-xr-x 1 root root     1606 Jul 16 21:18 restic2john.py
+-rwxr-xr-x 1 root root    16427 Jul 16 21:18 rexgen2rules.pl
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 rules
+-rw-r--r-- 1 root root   107926 Jul 16 21:18 rules-by-rate.conf
+-rw-r--r-- 1 root root   107977 Jul 16 21:18 rules-by-score.conf
+-rwxr-xr-x 1 root root     2363 Jul 16 21:18 rulestack.pl
+-rwxr-xr-x 1 root root     9541 Jul 16 21:18 sap2john.pl
+-rwxr-xr-x 1 root root     1234 Jul 16 21:18 sense2john.py
+-rwxr-xr-x 1 root root      544 Jul 16 21:18 sha-dump.pl
+-rwxr-xr-x 1 root root      510 Jul 16 21:18 sha-test.pl
+-rwxr-xr-x 1 root root    20433 Jul 16 21:18 signal2john.py
+-rwxr-xr-x 1 root root      899 Jul 16 21:18 sipdump2john.py
+-rwxr-xr-x 1 root root    10005 Jul 16 21:18 ssh2john.py
+-rwxr-xr-x 1 root root    25114 Jul 16 21:18 sspr2john.py
+-rwxr-xr-x 1 root root     3814 Jul 16 21:18 staroffice2john.py
+-rw-r--r-- 1 root root   107571 Jul 16 21:18 stats
+-rwxr-xr-x 1 root root      760 Jul 16 21:18 strip2john.py
+-rwxr-xr-x 1 root root    15588 Jul 16 21:18 telegram2john.py
+-rw-r--r-- 1 root root    20198 Jul 16 21:18 test_tezos2john.py
+-rwxr-xr-x 1 root root    11581 Jul 16 21:18 tezos2john.py
+-rwxr-xr-x 1 root root    36480 Jul 16 21:22 tgtsnarf
+-rwxr-xr-x 1 root root     2769 Jul 16 21:18 tokenize.pl
+-rwxr-xr-x 1 root root     3238 Jul 16 21:18 truecrypt2john.py
+-rwxr-xr-x 1 root root    75296 Jul 16 21:22 uaf2john
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 unafs -> john
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 undrop -> john
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 unique -> john
+-rw-r--r-- 1 root root    21798 Jul 16 21:18 unisubst.conf
+-rwxr-xr-x 1 root root     1087 Jul 16 21:18 unrule.pl
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 unshadow -> john
+-rw-r--r-- 1 root root   668568 Jul 16 21:18 upper.chr
+-rw-r--r-- 1 root root  1220961 Jul 16 21:18 uppernum.chr
+-rw-r--r-- 1 root root  9286825 Jul 16 21:18 utf8.chr
+-rwxr-xr-x 1 root root     2250 Jul 16 21:18 vdi2john.pl
+-rwxr-xr-x 1 root root     2185 Jul 16 21:18 vmx2john.py
+-rwxr-xr-x 1 root root   227416 Jul 16 21:22 wpapcap2john
+-rwxr-xr-x 1 root root     4576 Jul 16 21:18 zed2john.py
+lrwxrwxrwx 1 root root        4 Jul 16 21:22 zip2john -> john
+drwxr-xr-x 2 root root     4096 Jul 16 21:18 ztex
+bash: 7z: command not found
+
+__TTS_12882127ed1f41d18195e52529b5e101__RC:127
+__TTS_12882127ed1f41d18195e52529b5e101__PWD:/app
+__TTS_12882127ed1f41d18195e52529b5e101__END
+root@c1b73e517798:/app# cd -- /app && python3 - <<'PY'
+> import subprocess,sys
+> open('/app/hash.txt','w').write(subprocess.check_output(['/app/john/run/7z2john.pl','/app/secrets.7z'],text=True))
+> subprocess.run(['/app/john/run/john','--format=7z','--mask=?d?d?d?d','/app/hash.txt'],check=True)
+> pw=subprocess.check_output(['/app/john/run/john','--show','--format=7z','/app/hash.txt'],text=True).splitlines()[0].split(':',1)[1].split(':')[0]
+> word=subprocess.check_output(['7z','x','-so',f'-p{pw}','/app/secrets.7z','secrete_file.txt'],text=True).strip()
+> open('/app/solution.txt','w').write(word+'\n')
+> print(word)
+> PY; __tts_rc=$?; printf '\n__TTS_1b575eedcf3e43b682ca7c7d4e728b8c__RC:%s\n' "$__tts_rc"; printf '__TTS_1b575eedcf3e43b682ca7c7d4e728b8c__PWD:'; pwd; printf '_
+_TTS_1b575eedcf3e43b682ca7c7d4e728b8c__END\n'; tmux wait -S done
+> cd -- /app && ls -l /app/solution.txt /app/hash.txt /root/.john/john.pot 2>/dev/null && sed -n '1,5p' /root/.john/john.pot 2>/dev/null; __tts_rc=$?; printf '\
+n__TTS_c8654d4c0d6847e3b999de7cab17ff73__RC:%s\n' "$__tts_rc"; printf '__TTS_c8654d4c0d6847e3b999de7cab17ff73__PWD:'; pwd; printf '__TTS_c8654d4c0d6847e3b999de7
+cab17ff73__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import os,subprocess,sys; p=''.join([line.split(':',1)[1].split(':')[0] for line in open('/root/.john/john.pot','r',errors='ignore')
+ if '/app/secrets.7z' in line][:1]); print(p if p else 'NOPOT')"; __tts_rc=$?; printf '\n__TTS_1b1ce8fd56ff4bc593d48d53b49d1074__RC:%s\n' "$__tts_rc"; printf '_
+_TTS_1b1ce8fd56ff4bc593d48d53b49d1074__PWD:'; pwd; printf '__TTS_1b1ce8fd56ff4bc593d48d53b49d1074__END\n'; tmux wait -S done
+>

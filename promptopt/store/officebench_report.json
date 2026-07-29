@@ -1,0 +1,32 @@
+{
+  "env": "officebench",
+  "objective": "balanced_accuracy",
+  "baseline_score": 0.75,
+  "best_score": 0.75,
+  "improved": false,
+  "baseline_metrics": "n=15 acc=0.667 bal_acc=0.750 f1=0.667 (tp=5 tn=5 fp=0 fn=5) | slices: officebench/1app=1.00, officebench/2app=0.00, officebench/3app=1.00",
+  "best_metrics": "n=15 acc=0.667 bal_acc=0.750 f1=0.667 (tp=5 tn=5 fp=0 fn=5) | slices: officebench/1app=1.00, officebench/2app=0.00, officebench/3app=1.00",
+  "history": [
+    {
+      "round": 0,
+      "score": 0.75,
+      "accepted": true,
+      "lessons": "baseline",
+      "metrics_summary": "n=15 acc=0.667 bal_acc=0.750 f1=0.667 (tp=5 tn=5 fp=0 fn=5) | slices: officebench/1app=1.00, officebench/2app=0.00, officebench/3app=1.00"
+    },
+    {
+      "round": 1,
+      "score": 0.75,
+      "accepted": false,
+      "lessons": "The verifier is being too strict on document-generation tasks from OCR/images. It appears to over-penalize minor OCR noise, paraphrased summaries, intermediate app-switch failures, or use of a DOCX-to-PDF workflow even when the predicted final PDF content satisfies the task. It should judge the predicted final artifact against the task and provided success checks/gold, allowing harmless formatting/wording variation for 'summarize' tasks and OCR-imperfect but substantively correct text for 'extract text' tasks unless the checks/gold demand exact text.",
+      "metrics_summary": "n=15 acc=0.667 bal_acc=0.750 f1=0.667 (tp=5 tn=5 fp=0 fn=5) | slices: officebench/1app=1.00, officebench/2app=0.00, officebench/3app=1.00"
+    },
+    {
+      "round": 2,
+      "score": 0.75,
+      "accepted": false,
+      "lessons": "The verifier was too strict about OCR-derived document tasks and likely treated minor OCR noise, formatting differences, intermediate .docx creation, failed exploratory actions, or absence of explicit self-reported completion as failures even when the predicted final file satisfied the graded checks. It needs to prioritize the predicted final artifact and the provided success checks/gold output, allow benign OCR imperfections when consistent with the expected output/checks, and ignore irrelevant failed attempts or extra intermediate files unless they prevent the required final state.",
+      "metrics_summary": "n=15 acc=0.667 bal_acc=0.750 f1=0.667 (tp=5 tn=5 fp=0 fn=5) | slices: officebench/1app=1.00, officebench/2app=0.00, officebench/3app=1.00"
+    }
+  ]
+}

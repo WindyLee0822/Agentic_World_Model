@@ -82,8 +82,19 @@ def _list_files(root: str) -> set:
     return out
 
 
-def _remove_new_files(root: str, before: set) -> list:
-    """Delete files created under ``root`` since the ``before`` snapshot; return what was removed.
+def _list_dirs(root: str) -> set:
+    """The set of directories currently under ``root`` (excluding ``root`` itself)."""
+    import os
+
+    return {
+        os.path.join(dirpath, name)
+        for dirpath, dirs, _files in os.walk(root)
+        for name in dirs
+    }
+
+
+def _remove_new_files(root: str, before: set, before_dirs: set | None = None) -> list:
+    """Delete files/directories created since the snapshots; return what was removed.
 
     Some official OfficeBench *read* helpers create-if-missing (``calendar.list_events`` writes a blank
     ``<user>.ics``; ``email.list_emails`` makedirs an account dir), so an exact read on the world-model
@@ -99,6 +110,13 @@ def _remove_new_files(root: str, before: set) -> list:
             removed.append(path)
         except OSError:
             pass
+    if before_dirs is not None:
+        for path in sorted(_list_dirs(root) - before_dirs, key=len, reverse=True):
+            try:
+                os.rmdir(path)
+                removed.append(path)
+            except OSError:
+                pass
     return removed
 
 
@@ -132,6 +150,7 @@ def handle_exec(req: dict) -> dict:
     # read incidentally creates (create-if-missing read helpers) can be reverted, keeping it pristine.
     read_only = bool(req.get("read_only"))
     pre_files = _list_files(_TESTBED) if read_only else None
+    pre_dirs = _list_dirs(_TESTBED) if read_only else None
     is_cd = False
     new_workdir = None
 
@@ -158,8 +177,9 @@ def handle_exec(req: dict) -> dict:
 
     if is_cd and exit_code != 0:
         new_workdir = None  # the cd failed — keep the old workdir
-    if read_only and pre_files is not None:
-        _remove_new_files(_TESTBED, pre_files)  # revert any incidental read-helper writes
+    if read_only and pre_files is not None and pre_dirs is not None:
+        _remove_new_files(
+            _TESTBED, pre_files, pre_dirs)  # revert any incidental read-helper writes
     return {"observation": observation, "exit_code": exit_code,
             "is_cd": is_cd, "new_workdir": new_workdir, "command": command}
 

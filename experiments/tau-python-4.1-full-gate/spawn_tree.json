@@ -1,0 +1,16 @@
+{
+  "node_id": "n6",
+  "parent_id": null,
+  "depth": 0,
+  "region": "agentic-eval",
+  "role": "simulator",
+  "confidence": 0.0,
+  "n_reads": 0,
+  "keys_covered": 0,
+  "tokens": 0,
+  "cost": 0.0,
+  "spawned": false,
+  "success": null,
+  "note": "",
+  "children": []
+}

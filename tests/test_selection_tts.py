@@ -54,3 +54,105 @@ def test_selector_prefers_predicted_success(score):
     bad = RolloutResult(1, Trajectory(steps=[]), RewardInfo(0.0, False))
     idx, _ = Selector(score).select([bad, good])
     assert idx == 1  # the predicted-successful rollout is selected
+
+
+def test_selector_never_prefers_invalid_rollout_over_valid_failure():
+    invalid = RolloutResult(
+        0,
+        Trajectory(steps=[], done=False, termination_reason="rollout_error"),
+        RewardInfo(0.0, False),
+    )
+    valid_failure = RolloutResult(1, Trajectory(steps=[]), RewardInfo(0.0, False))
+
+    idx, _ = Selector("simulator_success").select([invalid, valid_failure])
+    assert idx == 1
+
+
+def test_selector_never_prefers_hard_invalid_answer_over_uncertain_failure():
+    wrong_answer = RolloutResult(
+        index=0,
+        trajectory=Trajectory(steps=[], final_message="wrong answer"),
+        predicted=RewardInfo(
+            reward=0.0,
+            success=False,
+            grounded=False,
+            metadata={"hard_invalid": True},
+        ),
+    )
+    uncertain = RolloutResult(
+        index=1,
+        trajectory=Trajectory(steps=[], final_message="uncertain"),
+        predicted=RewardInfo(reward=0.0, success=False, grounded=False),
+    )
+
+    idx, _ = Selector("simulator_success").select([wrong_answer, uncertain])
+
+    assert idx == 1
+
+
+def test_confidence_selector_breaks_binary_success_ties():
+    lower = RolloutResult(
+        0, Trajectory(steps=[]), RewardInfo(reward=0.6, success=True))
+    higher = RolloutResult(
+        1, Trajectory(steps=[]), RewardInfo(reward=0.8, success=True))
+
+    idx, _ = Selector("simulator_confidence").select([lower, higher])
+
+    assert idx == 1
+
+
+def test_confidence_selector_uses_new_candidates_as_bon_pool_grows():
+    candidates = [
+        RolloutResult(
+            index, Trajectory(steps=[]),
+            RewardInfo(reward=confidence, success=confidence >= 0.5),
+        )
+        for index, confidence in enumerate((0.2, 0.6, 0.4, 1.0))
+    ]
+
+    selected = [
+        Selector("simulator_confidence").select(candidates[:n])[0]
+        for n in (1, 2, 4)
+    ]
+
+    assert selected == [0, 1, 3]
+
+
+def test_guarded_confidence_selector_requires_clear_improvement(monkeypatch):
+    monkeypatch.setenv("TTS_SELECTION_CONFIDENCE_MARGIN", "0.1")
+    candidates = [
+        RolloutResult(
+            index, Trajectory(steps=[]),
+            RewardInfo(reward=confidence, success=confidence >= 0.5),
+        )
+        for index, confidence in enumerate((0.20, 0.25, 0.31, 0.80))
+    ]
+
+    selected = [
+        Selector("simulator_confidence_guarded").select(candidates[:n])[0]
+        for n in (1, 2, 4)
+    ]
+
+    assert selected == [0, 0, 3]
+
+
+def test_guarded_confidence_selector_replaces_hard_invalid_incumbent(monkeypatch):
+    monkeypatch.setenv("TTS_SELECTION_CONFIDENCE_MARGIN", "0.1")
+    invalid = RolloutResult(
+        0,
+        Trajectory(steps=[]),
+        RewardInfo(
+            reward=1.0,
+            success=True,
+            metadata={"hard_invalid": True},
+        ),
+    )
+    valid = RolloutResult(
+        1,
+        Trajectory(steps=[]),
+        RewardInfo(reward=0.0, success=False),
+    )
+
+    idx, _ = Selector("simulator_confidence_guarded").select([invalid, valid])
+
+    assert idx == 1

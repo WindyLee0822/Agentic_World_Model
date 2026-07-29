@@ -1,0 +1,40 @@
+root@2017b0ff011b:/app# pwd; __tts_rc=$?; printf '\n__TTS_cc488a79a85c4c5cba85a94867d3d6e9__RC:%s\n' "$__tts_rc"; printf '__TTS_cc488a79a85c4c5cba85a94867d3d6e9
+__PWD:'; pwd; printf '__TTS_cc488a79a85c4c5cba85a94867d3d6e9__END\n'; tmux wait -S done
+/app
+
+__TTS_cc488a79a85c4c5cba85a94867d3d6e9__RC:0
+__TTS_cc488a79a85c4c5cba85a94867d3d6e9__PWD:/app
+__TTS_cc488a79a85c4c5cba85a94867d3d6e9__END
+root@2017b0ff011b:/app# cd -- /app && cat > grid_transform.py <<'PY'
+> def solve(input_grid):
+>     a,b=input_grid[0]
+>     c,d=input_grid[1]
+>     return [[(a,b)[j%2] if i%2==0 else (c,d)[j%2] for j in range(6)] if i<2 or i%4<2 else [(b,a)[j%2] if i%2==0 else (d,c)[j%2] for j in range(6)] for i in ra
+nge(6)]
+> PY; __tts_rc=$?; printf '\n__TTS_8a0f8036e2ef4c2d962fbc154743cb99__RC:%s\n' "$__tts_rc"; printf '__TTS_8a0f8036e2ef4c2d962fbc154743cb99__PWD:'; pwd; printf '_
+_TTS_8a0f8036e2ef4c2d962fbc154743cb99__END\n'; tmux wait -S done
+> cd -- /app && printf '%s
+> ' 'def solve(input_grid):' '    a,b=input_grid[0]' '    c,d=input_grid[1]' '    out=[]' '    for i in range(6):' '        if i%4<2:' '            r=(a,b) if i
+%2==0 else (c,d)' '        else:' '            r=(b,a) if i%2==0 else (d,c)' '        out.append([r[j%2] for j in range(6)])' '    return out' > grid_transform.
+py; __tts_rc=$?; printf '\n__TTS_132bc1190ab549518546e9b75b3427ff__RC:%s\n' "$__tts_rc"; printf '__TTS_132bc1190ab549518546e9b75b3427ff__PWD:'; pwd; printf '__T
+TS_132bc1190ab549518546e9b75b3427ff__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> open('grid_transform.py','w').write('def solve(input_grid):\n    a,b=input_grid[0]\n    c,d=input_grid[1]\n    return [[(a,b)[j%2] if i%4<2 and i%2==0 else (c
+,d)[j%2] if i%4<2 else (b,a)[j%2] if i%2==0 else (d,c)[j%2] for j in range(6)] for i in range(6)]\n')
+> PY; __tts_rc=$?; printf '\n__TTS_b4667bbbcccd42aeaa15f318a816f206__RC:%s\n' "$__tts_rc"; printf '__TTS_b4667bbbcccd42aeaa15f318a816f206__PWD:'; pwd; printf '_
+_TTS_b4667bbbcccd42aeaa15f318a816f206__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,73 @@
+root@224af214043c:/app# asciinema rec --stdin /logs/agent.cast
+asciinema: recording asciicast to /logs/agent.cast
+asciinema: press <ctrl-d> or type "exit" when you're done
+root@224af214043c:/app# clear
+root@224af214043c:/app# pwd; __tts_rc=$?; printf '\n__TTS_5c70777c4a8f408db1b21bbc2b4ee044__RC:%s\n' "$__tts_rc"; printf '__TTS_5c70777c4a8f408db1b21bbc2b4ee044
+__PWD:'; pwd; printf '__TTS_5c70777c4a8f408db1b21bbc2b4ee044__END\n'; tmux wait -S done
+/app
+
+__TTS_5c70777c4a8f408db1b21bbc2b4ee044__RC:0
+__TTS_5c70777c4a8f408db1b21bbc2b4ee044__PWD:/app
+__TTS_5c70777c4a8f408db1b21bbc2b4ee044__END
+root@224af214043c:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_e4826d0405334cc4b87d19259f422d92__RC:%s\n' "$__tts_rc"; printf '__TTS_e4826d0405
+334cc4b87d19259f422d92__PWD:'; pwd; printf '__TTS_e4826d0405334cc4b87d19259f422d92__END\n'; tmux wait -S done
+total 980176
+drwxr-xr-x 1 root root       4096 Jul 18 12:18 .
+drwxr-xr-x 1 root root       4096 Jul 19 01:23 ..
+-rw-r--r-- 1 root root     197120 Jul 18 12:18 alpine-disk.qcow2
+-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
+
+__TTS_e4826d0405334cc4b87d19259f422d92__RC:0
+__TTS_e4826d0405334cc4b87d19259f422d92__PWD:/app
+__TTS_e4826d0405334cc4b87d19259f422d92__END
+root@224af214043c:/app# cd -- /app && sh -lc 'which qemu-system-x86_64 && qemu-system-x86_64 --version | head -n1 && file /app/alpine-disk.qcow2 /app/alpine.iso
+'; __tts_rc=$?; printf '\n__TTS_a0e77d783df44dbb8bfcf6f83b4be80c__RC:%s\n' "$__tts_rc"; printf '__TTS_a0e77d783df44dbb8bfcf6f83b4be80c__PWD:'; pwd; printf '__TT
+S_a0e77d783df44dbb8bfcf6f83b4be80c__END\n'; tmux wait -S done
+/usr/bin/qemu-system-x86_64
+QEMU emulator version 5.2.0 (Debian 1:5.2+dfsg-11+deb11u5)
+sh: 1: file: not found
+
+__TTS_a0e77d783df44dbb8bfcf6f83b4be80c__RC:127
+__TTS_a0e77d783df44dbb8bfcf6f83b4be80c__PWD:/app
+__TTS_a0e77d783df44dbb8bfcf6f83b4be80c__END
+root@224af214043c:/app# cd -- /app && sh -lc 'nohup qemu-system-x86_64 -m 512 -nographic -serial telnet:127.0.0.1:6665,server,nowait -drive file=/app/alpine-dis
+k.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d >/app/qemu.log 2>&1 & for i in $(seq 1 120); do grep -Eq "(login:|Welcome to Alpine)" /app/qemu.lo
+g && exit 0; sleep 2; done; tail -n 50 /app/qemu.log; exit 1'; __tts_rc=$?; printf '\n__TTS_e1a5744d69b14716b044851b2bb9d35b__RC:%s\n' "$__tts_rc"; printf '__TT
+S_e1a5744d69b14716b044851b2bb9d35b__PWD:'; pwd; printf '__TTS_e1a5744d69b14716b044851b2bb9d35b__END\n'; tmux wait -S done
+QEMU 5.2.0 monitor - type 'help' for more information
+(qemu)
+__TTS_e1a5744d69b14716b044851b2bb9d35b__RC:1
+__TTS_e1a5744d69b14716b044851b2bb9d35b__PWD:/app
+__TTS_e1a5744d69b14716b044851b2bb9d35b__END
+root@224af214043c:/app# cd -- /app && sh -lc 'pkill -f "qemu-system-x86_64.*6665" 2>/dev/null || true; : >/app/qemu.log; nohup qemu-system-x86_64 -m 512 -nograp
+hic -monitor none -serial telnet:127.0.0.1:6665,server,nowait -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d >/app/qem
+u.log 2>&1 & for i in $(seq 1 180); do grep -Eq "(login:|Welcome to Alpine|localhost login:)" /app/qemu.log && exit 0; sleep 2; done; tail -n 80 /app/qemu.log;
+exit 1'; __tts_rc=$?; printf '\n__TTS_7cfcd73f81c04416ae4f876f8d54b80d__RC:%s\n' "$__tts_rc"; printf '__TTS_7cfcd73f81c04416ae4f876f8d54b80d__PWD:'; pwd; printf
+ '__TTS_7cfcd73f81c04416ae4f876f8d54b80d__END\n'; tmux wait -S done
+cd -- /app && sh -lc 'ps -ef | grep qemu-system-x86_64 | grep -v grep; echo ---; tail -n 120 /app/qemu.log 2>/dev/null | sed -n "1,120p"; echo ---; ss -ltn spor
+t = :6665 2>/dev/null || netstat -ltn 2>/dev/null | grep 6665 || true'; __tts_rc=$?; printf '\n__TTS_fab4347cb25c4ec88b47f39023ac3f3a__RC:%s\n' "$__tts_rc"; pri
+ntf '__TTS_fab4347cb25c4ec88b47f39023ac3f3a__PWD:'; pwd; printf '__TTS_fab4347cb25c4ec88b47f39023ac3f3a__END\n'; tmux wait -S done
+qemu-system-x86_64: -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2: Failed to get "write" lock
+Is another process using the image [/app/alpine-disk.qcow2]?
+
+__TTS_7cfcd73f81c04416ae4f876f8d54b80d__RC:1
+__TTS_7cfcd73f81c04416ae4f876f8d54b80d__PWD:/app
+__TTS_7cfcd73f81c04416ae4f876f8d54b80d__END
+root@224af214043c:/app# cd -- /app && sh -lc 'ps -ef | grep qemu-system-x86_64 | grep -v grep; echo ---; tail -n 120 /app/qemu.log 2>/dev/null | sed -n "1,120p"
+; echo ---; ss -ltn sport = :6665 2>/dev/null || netstat -ltn 2>/dev/null | grep 6665 || true'; __tts_rc=$?; printf '\n__TTS_fab4347cb25c4ec88b47f39023ac3f3a__R
+C:%s\n' "$__tts_rc"; printf '__TTS_fab4347cb25c4ec88b47f39023ac3f3a__PWD:'; pwd; printf '__TTS_fab4347cb25c4ec88b47f39023ac3f3a__END\n'; tmux wait -S done
+sh: 1: ps: not found
+---
+qemu-system-x86_64: -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2: Failed to get "write" lock
+Is another process using the image [/app/alpine-disk.qcow2]?
+---
+
+__TTS_fab4347cb25c4ec88b47f39023ac3f3a__RC:0
+__TTS_fab4347cb25c4ec88b47f39023ac3f3a__PWD:/app
+__TTS_fab4347cb25c4ec88b47f39023ac3f3a__END
+root@224af214043c:/app# cd -- /app && sh -lc 'pkill -9 qemu-system-x86_64 2>/dev/null || true; rm -f /app/qemu.log; nohup qemu-system-x86_64 -m 512 -nographic -
+monitor none -serial telnet:127.0.0.1:6665,server,nowait -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d >/app/qemu.log
+ 2>&1 & for i in $(seq 1 180); do grep -Eq "(login:|Welcome to Alpine|localhost login:)" /app/qemu.log && exit 0; sleep 2; done; tail -n 80 /app/qemu.log; exit
+1'; __tts_rc=$?; printf '\n__TTS_297129e9df7b43bbaa9586ce9284e4b6__RC:%s\n' "$__tts_rc"; printf '__TTS_297129e9df7b43bbaa9586ce9284e4b6__PWD:'; pwd; printf '__T
+TS_297129e9df7b43bbaa9586ce9284e4b6__END\n'; tmux wait -S done
+

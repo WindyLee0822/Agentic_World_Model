@@ -1,0 +1,259 @@
+[?2004hroot@dc093a12e435:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@dc093a12e435:/app# clear
+[?2004l[H[J[3J[?2004hroot@dc093a12e435:/app# pwd; __tts_rc=$?; printf '\n__TTS_b58c7d62acd34fdc96066c70e88bbc6e__RC:%s\n' "$__tts_rc"; printf '__TTS_b58c7d62acd34fdc96066c70e88bbc6e__PWD:'; pwd; printf '__TTS_b58c7d62acd34fdc96066c70e88bbc6e__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_b58c7d62acd34fdc96066c70e88bbc6e__RC:0
+__TTS_b58c7d62acd34fdc96066c70e88bbc6e__PWD:/app
+__TTS_b58c7d62acd34fdc96066c70e88bbc6e__END
+[?2004hroot@dc093a12e435:/app# cd -- /app && ls -la; __tts_rc=$?; printf '\n__TTS_924a07d194b64d8f8be2c5ce8df13476__RC:%s\n' "$__tts_rc"; printf '__TTS_924a07d194b64d8f8be2c5ce8df13476__PWD:'; pwd; printf '__TTS_924a07d194b64d8f8be2c5ce8df13476__END\n'; tmux wait -S done
+[?2004ltotal 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 19 01:49 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+
+__TTS_924a07d194b64d8f8be2c5ce8df13476__RC:0
+__TTS_924a07d194b64d8f8be2c5ce8df13476__PWD:/app
+__TTS_924a07d194b64d8f8be2c5ce8df13476__END
+[?2004hroot@dc093a12e435:/app# cd -- /app && cd /app && sed -n '1,220p' model.py; __tts_rc=$?; printf '\n__TTS_d52c59b3e0f34c449fc6702950f8f7dd__RC:%s\n' "$__tts_rc"; printf '__TTS_d52c59b3e0f34c449fc6702950f8f7dd__PWD:'; pwd; printf '__TTS_d52c59b3e0f34c449fc6702950f8f7dd__END\n'; tmux wait -S done
+[?2004limport torch
+import torch.nn as nn
+
+
+class MnistModel(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        num_classes: int,
+    ) -> torch.nn.Module:
+        super().__init__()
+
+        self.input_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+        self.activation = nn.ReLU()
+
+    def forward(self, x):
+        x = self.input_layer(x)
+        x = self.activation(x)
+
+        x = self.hidden_layer(x)
+        x = self.activation(x)
+
+        x = self.output_layer(x)
+        return x
+
+__TTS_d52c59b3e0f34c449fc6702950f8f7dd__RC:0
+__TTS_d52c59b3e0f34c449fc6702950f8f7dd__PWD:/app
+__TTS_d52c59b3e0f34c449fc6702950f8f7dd__END
+[?2004hroot@dc093a12e435:/app# cd -- /app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import torch, json
+[?2004l[?2004h> sd=torch.load('model.pth', map_location='cpu')
+[?2004l[?2004h> out={k:v.tolist() for k,v in sd.items()}
+[?2004l[?2004h> json.dump(out, open('weights.json','w'))
+[?2004l[?2004h> print(list(sd.keys()))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_8edbbfb8e28f4276ab3947dad6cc935b__RC:%s\n' "$__tts_rc"; printf '__TTS_8edbbfb8e28f4276ab3947dad6cc935b__PWD:'; pwd; printf '__TTS_8edbbfb8e28f4276ab3947dad6cc935b__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import os, json, torch
+[?2004l[?2004h> print(os.path.getsize('model.pth'))
+[?2004l[?2004h> sd=torch.load('model.pth', map_location='cpu', weights_only=True)
+[?2004l[?2004h> print(sd.keys())
+[?2004l[?2004h> json.dump({k:v.tolist() for k,v in sd.items()}, open('weights.json','w'))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_459d6a52795b45b5b2ae34ebf826d414__RC:%s\n' "$__tts_rc"; printf '__TTS_459d6a52795b45b5b2ae34ebf826d414__PWD:'; pwd; printf '__TTS_459d6a52795b45b5b2ae34ebf826d414__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python3 -c "import zipfile;print(zipfile.is_zipfile('model.pth'))"; __tts_rc=$?; printf '\n__TTS_0b67633303d84898b984634abae7d9da__RC:%s\n' "$__tts_rc"; printf '__TTS_0b67633303d84898b984634abae7d9da__PWD:'; pwd; printf '__TTS_0b67633303d84898b984634abae7d9da__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m6[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_8edbbfb8e28f4276ab3947dad6cc935b__RC:%s\n' "$__tts_rc"; printf '__TTS_8edbbfb8e28f4276ab3947dad6cc935b__PWD:'; pwd; printf '__TTS_8edbbfb8e28f4276ab3947dad6cc935b__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@dc093a12e435:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_0b67633303d84898b984634abae7d9da__END\n'"'"'; tmux wait -S done' && cd /app && python3 -c "import zipfile;z=zipfile.ZipFile('model.pth');print(z.namelist())"; __tts_rc=$?; printf '\n__TTS_9697adfc09544adfac3b88714bd27783__RC:%s\n' "$__tts_rc"; printf '__TTS_9697adfc09544adfac3b88714bd27783__PWD:'; pwd; printf '__TTS_9697adfc09544adfac3b88714bd27783__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf '__TTS_0b67633303d84898b984634abae7d9da__END\n'; tmux wait -S done: No such file or directory
+
+__TTS_9697adfc09544adfac3b88714bd27783__RC:1
+__TTS_9697adfc09544adfac3b88714bd27783__PWD:/app
+__TTS_9697adfc09544adfac3b88714bd27783__END
+[?2004hroot@dc093a12e435:/app# cd -- /app && cd /app && apt-get update && apt-get install -y build-essential python3-pip && python3 -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu; __tts_rc=$?; printf '\n__TTS_75368ce04d75436fb91c5cb23a37cea8__RC:%s\n' "$__tts_rc"; printf '__TTS_75368ce04d75436fb91c5cb23a37cea8__PWD:'; pwd; printf '__TTS_75368ce04d75436fb91c5cb23a37cea8__END\n'; tmux wait -S done
+[?2004l0% [Working]            Hit:1 http://deb.debian.org/debian bookworm InRelease
+0% [Working]            Hit:2 http://deb.debian.org/debian bookworm-updates InRelease
+0% [Working]            Hit:3 http://deb.debian.org/debian-security bookworm-security InRelease
+0% [Working]0% [Working]0% [Working]20% [Working]             Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following additional packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu bzip2 cpp cpp-12 dirmngr dpkg dpkg-dev fakeroot g++ g++-12 gcc gcc-12 gnupg gnupg-l10n gnupg-utils gpg
+  gpg-agent gpg-wks-client gpg-wks-server gpgconf gpgsm gpgv javascript-common libabsl20220623 libalgorithm-diff-perl libalgorithm-diff-xs-perl
+  libalgorithm-merge-perl libasan8 libassuan0 libatomic1 libavif15 libbinutils libc-bin libc-dev-bin libc-devtools libc6 libc6-dev libcc1-0 libcrypt-dev
+  libctf-nobfd0 libctf0 libde265-0 libdpkg-perl libexpat1 libexpat1-dev libfakeroot libfile-fcntllock-perl libgav1-1 libgcc-12-dev libgd3 libgdbm-compat4
+  libgprofng0 libheif1 libisl23 libitm1 libjansson4 libjs-jquery libjs-sphinxdoc libjs-underscore libksba8 libldap-2.5-0 libldap-common liblocale-gettext-perl
+  liblsan0 liblzma5 libmpc3 libmpfr6 libnpth0 libnsl-dev libperl5.36 libpython3-dev libpython3.11 libpython3.11-dev libpython3.11-minimal libpython3.11-stdlib
+  libsasl2-2 libsasl2-modules libsasl2-modules-db libstdc++-12-dev libtirpc-dev libtsan2 libubsan1 libxpm4 libyuv0 linux-libc-dev make manpages manpages-dev
+  patch perl perl-base perl-modules-5.36 pinentry-curses python3-dev python3-distutils python3-lib2to3 python3-pkg-resources python3-setuptools python3-wheel
+  python3.11 python3.11-dev python3.11-minimal rpcsvc-proto xz-utils zlib1g-dev
+Suggested packages:
+  binutils-doc bzip2-doc cpp-doc gcc-12-locales cpp-12-doc dbus-user-session libpam-systemd pinentry-gnome3 tor debsig-verify debian-keyring g++-multilib
+  g++-12-multilib gcc-12-doc gcc-multilib autoconf automake libtool flex bison gdb gcc-doc gcc-12-multilib parcimonie xloadimage scdaemon apache2 | lighttpd
+  | httpd glibc-doc libc-l10n locales libnss-nis libnss-nisplus sensible-utils git bzr libgd-tools libsasl2-modules-gssapi-mit
+  | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql libstdc++-12-doc make-doc man-browser ed diffutils-doc
+  perl-doc libterm-readline-gnu-perl | libterm-readline-perl-perl libtap-harness-archive-perl pinentry-doc python-setuptools-doc python3.11-venv
+  python3.11-doc binfmt-support
+The following NEW packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2 cpp cpp-12 dirmngr dpkg-dev fakeroot g++ g++-12 gcc gcc-12 gnupg gnupg-l10n
+  gnupg-utils gpg gpg-agent gpg-wks-client gpg-wks-server gpgconf gpgsm javascript-common libabsl20220623 libalgorithm-diff-perl libalgorithm-diff-xs-perl
+  libalgorithm-merge-perl libasan8 libassuan0 libatomic1 libavif15 libbinutils libc-dev-bin libc-devtools libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0
+  libctf0 libde265-0 libdpkg-perl libexpat1-dev libfakeroot libfile-fcntllock-perl libgav1-1 libgcc-12-dev libgd3 libgdbm-compat4 libgprofng0 libheif1
+  libisl23 libitm1 libjansson4 libjs-jquery libjs-sphinxdoc libjs-underscore libksba8 libldap-2.5-0 libldap-common liblocale-gettext-perl liblsan0 libmpc3
+  libmpfr6 libnpth0 libnsl-dev libperl5.36 libpython3-dev libpython3.11 libpython3.11-dev libsasl2-2 libsasl2-modules libsasl2-modules-db libstdc++-12-dev
+  libtirpc-dev libtsan2 libubsan1 libxpm4 libyuv0 linux-libc-dev make manpages manpages-dev patch perl perl-modules-5.36 pinentry-curses python3-dev
+  python3-distutils python3-lib2to3 python3-pip python3-setuptools python3-wheel python3.11-dev rpcsvc-proto xz-utils zlib1g-dev
+The following packages will be upgraded:
+  dpkg gpgv libc-bin libc6 libexpat1 liblzma5 libpython3.11-minimal libpython3.11-stdlib perl-base python3-pkg-resources python3.11 python3.11-minimal
+12 upgraded, 97 newly installed, 0 to remove and 32 not upgraded.
+Need to get 111 MB of archives.
+After this operation, 392 MB of additional disk space will be used.
+0% [Working]            Get:1 http://deb.debian.org/debian bookworm/main amd64 dpkg amd64 1.21.23 [1568 kB]
+0% [1 dpkg 11.4 kB/1568 kB 1%]                              1% [Working]            Get:2 http://deb.debian.org/debian bookworm/main amd64 perl-base amd64 5.36.0-7+deb12u3 [1608 kB]
+1% [2 perl-base 51.4 kB/1608 kB 3%]                                   3% [Waiting for headers]                        Get:3 http://deb.debian.org/debian bookworm/main amd64 libc6 amd64 2.36-9+deb12u14 [2759 kB]
+3% [3 libc6 75.9 kB/2759 kB 3%]                               5% [Waiting for headers]                        Get:4 http://deb.debian.org/debian bookworm/main amd64 libc-bin amd64 2.36-9+deb12u14 [609 kB]
+5% [4 libc-bin 91.4 kB/609 kB 15%]                                  5% [Waiting for headers]                        Get:5 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+5% [5 perl-modules-5.36 71.3 kB/2815 kB 3%]                                           8% [Waiting for headers]                        Get:6 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+8% [6 libgdbm-compat4 45.1 kB/48.2 kB 94%]                                          8% [Working]            Get:7 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+8% [7 libperl5.36 24.4 kB/4196 kB 1%]                                     11% [Waiting for headers]                         Get:8 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+11% [8 perl 87.6 kB/239 kB 37%]                               11% [Waiting for headers]                         Get:9 http://deb.debian.org/debian bookworm/main amd64 liblocale-gettext-perl amd64 1.07-5 [15.4 kB]
+11% [9 liblocale-gettext-perl 15.4 kB/15.4 kB 100%]                                                   12% [Working]             Get:10 http://deb.debian.org/debian bookworm/main amd64 python3.11 amd64 3.11.2-6+deb12u8 [574 kB]
+12% [10 python3.11 0 B/574 kB 0%]                                 12% [Waiting for headers]                         Get:11 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-stdlib amd64 3.11.2-6+deb12u8 [1799 kB]
+12% [11 libpython3.11-stdlib 1428 B/1799 kB 0%]                                               14% [Waiting for headers]                         Get:12 http://deb.debian.org/debian bookworm/main amd64 python3.11-minimal amd64 3.11.2-6+deb12u8 [2065 kB]
+14% [12 python3.11-minimal 34.4 kB/2065 kB 2%]                                              15% [Waiting for headers]                         Get:13 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-minimal amd64 3.11.2-6+deb12u8 [818 kB]
+15% [13 libpython3.11-minimal 44.6 kB/818 kB 5%]                                                16% [Waiting for headers]                         Get:14 http://deb.debian.org/debian bookworm/main amd64 liblzma5 amd64 5.4.1-1+deb12u1 [206 kB]
+16% [14 liblzma5 33.6 kB/206 kB 16%]                                    16% [Waiting for headers]                         Get:15 http://deb.debian.org/debian bookworm/main amd64 libexpat1 amd64 2.5.0-1+deb12u2 [99.9 kB]
+17% [15 libexpat1 23.6 kB/99.9 kB 24%]                                      17% [Waiting for headers]                         Get:16 http://deb.debian.org/debian bookworm/main amd64 gpgv amd64 2.2.40-1.1+deb12u2 [649 kB]
+17% [16 gpgv 32.9 kB/649 kB 5%]                               17% [Waiting for headers]                         Get:17 http://deb.debian.org/debian bookworm/main amd64 bzip2 amd64 1.0.8-5+b1 [49.8 kB]
+17% [17 bzip2 38.7 kB/49.8 kB 78%]                                  18% [Working]             Get:18 http://deb.debian.org/debian bookworm/main amd64 manpages all 6.03-2 [1332 kB]
+18% [18 manpages 119 kB/1332 kB 9%]                                   19% [Waiting for headers]                         Get:19 http://deb.debian.org/debian bookworm/main amd64 xz-utils amd64 5.4.1-1+deb12u1 [471 kB]
+19% [19 xz-utils 97.5 kB/471 kB 21%]                                    19% [Waiting for headers]                         Get:20 http://deb.debian.org/debian bookworm/main amd64 binutils-common amd64 2.40-2 [2487 kB]
+19% [20 binutils-common 84.3 kB/2487 kB 3%]                                           21% [Waiting for headers]                         Get:21 http://deb.debian.org/debian bookworm/main amd64 libbinutils amd64 2.40-2 [572 kB]
+21% [21 libbinutils 32.9 kB/572 kB 6%]                                      22% [Waiting for headers]                         Get:22 http://deb.debian.org/debian bookworm/main amd64 libctf-nobfd0 amd64 2.40-2 [153 kB]
+22% [22 libctf-nobfd0 49.9 kB/153 kB 33%]                                         22% [Waiting for headers]                         Get:23 http://deb.debian.org/debian bookworm/main amd64 libctf0 amd64 2.40-2 [89.8 kB]
+22% [23 libctf0 81.2 kB/89.8 kB 90%]                                    22% [Working]             Get:24 http://deb.debian.org/debian bookworm/main amd64 libgprofng0 amd64 2.40-2 [812 kB]
+22% [24 libgprofng0 122 kB/812 kB 15%]                                      23% [Waiting for headers]                         Get:25 http://deb.debian.org/debian bookworm/main amd64 libjansson4 amd64 2.14-2 [40.8 kB]
+23% [25 libjansson4 40.8 kB/40.8 kB 100%]                                         23% [Working]             Get:26 http://deb.debian.org/debian bookworm/main amd64 binutils-x86-64-linux-gnu amd64 2.40-2 [2246 kB]
+23% [26 binutils-x86-64-linux-gnu 130 kB/2246 kB 6%]                                                    25% [Waiting for headers]                         Get:27 http://deb.debian.org/debian bookworm/main amd64 binutils amd64 2.40-2 [65.0 kB]
+25% [27 binutils 35.5 kB/65.0 kB 55%]                                     25% [Working]             Get:28 http://deb.debian.org/debian bookworm/main amd64 libc-dev-bin amd64 2.36-9+deb12u14 [48.1 kB]
+25% [28 libc-dev-bin 35.3 kB/48.1 kB 73%]                                         26% [Working]             Get:29 http://deb.debian.org/debian-security bookworm-security/main amd64 linux-libc-dev amd64 6.1.177-1 [2307 kB]
+26% [29 linux-libc-dev 183 kB/2307 kB 8%]                                         27% [Waiting for headers]                         Get:30 http://deb.debian.org/debian bookworm/main amd64 libcrypt-dev amd64 1:4.4.33-2 [118 kB]
+28% [30 libcrypt-dev 48.8 kB/118 kB 41%]                                        28% [Waiting for headers]                         Get:31 http://deb.debian.org/debian bookworm/main amd64 libtirpc-dev amd64 1.3.3+ds-1 [191 kB]
+28% [31 libtirpc-dev 50.0 kB/191 kB 26%]                                        28% [Waiting for headers]                         Get:32 http://deb.debian.org/debian bookworm/main amd64 libnsl-dev amd64 1.3.0-2 [66.4 kB]
+28% [32 libnsl-dev 46.5 kB/66.4 kB 70%]                                       28% [Working]             Get:33 http://deb.debian.org/debian bookworm/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+28% [33 rpcsvc-proto 25.6 kB/63.3 kB 40%]                                         29% [Working]             Get:34 http://deb.debian.org/debian bookworm/main amd64 libc6-dev amd64 2.36-9+deb12u14 [1904 kB]
+29% [34 libc6-dev 54.2 kB/1904 kB 3%]                                     30% [Waiting for headers]                         Get:35 http://deb.debian.org/debian bookworm/main amd64 libisl23 amd64 0.25-1.1 [683 kB]
+30% [35 libisl23 50.4 kB/683 kB 7%]                                   31% [Waiting for headers]                         Get:36 http://deb.debian.org/debian bookworm/main amd64 libmpfr6 amd64 4.2.0-1 [701 kB]
+31% [36 libmpfr6 87.5 kB/701 kB 12%]                                    31% [Waiting for headers]                         Get:37 http://deb.debian.org/debian bookworm/main amd64 libmpc3 amd64 1.3.1-1 [51.5 kB]
+31% [37 libmpc3 51.5 kB/51.5 kB 100%]                                     32% [Working]             Get:38 http://deb.debian.org/debian bookworm/main amd64 cpp-12 amd64 12.2.0-14+deb12u1 [9768 kB]
+32% [38 cpp-12 57.3 kB/9768 kB 1%]                                  39% [Waiting for headers]                         Get:39 http://deb.debian.org/debian bookworm/main amd64 cpp amd64 4:12.2.0-3 [6836 B]
+39% [Waiting for headers]                         Get:40 http://deb.debian.org/debian bookworm/main amd64 libcc1-0 amd64 12.2.0-14+deb12u1 [41.7 kB]
+                         Get:41 http://deb.debian.org/debian bookworm/main amd64 libitm1 amd64 12.2.0-14+deb12u1 [26.1 kB]
+39% [41 libitm1 26.1 kB/26.1 kB 100%]                                     Get:42 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14+deb12u1 [9376 B]
+39% [42 libatomic1 9376 B/9376 B 100%]                                      Get:43 http://deb.debian.org/debian bookworm/main amd64 libasan8 amd64 12.2.0-14+deb12u1 [2193 kB]
+                                      40% [43 libasan8 95.0 kB/2193 kB 4%]                                    41% [Waiting for headers]                         Get:44 http://deb.debian.org/debian bookworm/main amd64 liblsan0 amd64 12.2.0-14+deb12u1 [969 kB]
+41% [44 liblsan0 34.1 kB/969 kB 4%]                                   42% [Waiting for headers]                         Get:45 http://deb.debian.org/debian bookworm/main amd64 libtsan2 amd64 12.2.0-14+deb12u1 [2197 kB]
+42% [45 libtsan2 47.1 kB/2197 kB 2%]                                    44% [Waiting for headers]                         Get:46 http://deb.debian.org/debian bookworm/main amd64 libubsan1 amd64 12.2.0-14+deb12u1 [883 kB]
+44% [46 libubsan1 12.1 kB/883 kB 1%]                                    45% [Waiting for headers]                         Get:47 http://deb.debian.org/debian bookworm/main amd64 libgcc-12-dev amd64 12.2.0-14+deb12u1 [2437 kB]
+45% [47 libgcc-12-dev 49.2 kB/2437 kB 2%]                                         47% [Waiting for headers]                         Get:48 http://deb.debian.org/debian bookworm/main amd64 gcc-12 amd64 12.2.0-14+deb12u1 [19.3 MB]
+47% [48 gcc-12 4284 B/19.3 MB 0%]                                 61% [Waiting for headers]                         Get:49 http://deb.debian.org/debian bookworm/main amd64 gcc amd64 4:12.2.0-3 [5216 B]
+61% [Waiting for headers]                         Get:50 http://deb.debian.org/debian bookworm/main amd64 libstdc++-12-dev amd64 12.2.0-14+deb12u1 [2047 kB]
+61% [50 libstdc++-12-dev 54.7 kB/2047 kB 3%]                                            63% [Waiting for headers]                         Get:51 http://deb.debian.org/debian bookworm/main amd64 g++-12 amd64 12.2.0-14+deb12u1 [10.7 MB]
+63% [51 g++-12 38.2 kB/10.7 MB 0%]                                  71% [Waiting for headers]                         Get:52 http://deb.debian.org/debian bookworm/main amd64 g++ amd64 4:12.2.0-3 [1356 B]
+71% [Waiting for headers]                         Get:53 http://deb.debian.org/debian bookworm/main amd64 make amd64 4.3-4.1 [396 kB]
+71% [53 make 64.8 kB/396 kB 16%]                                71% [Waiting for headers]                         Get:54 http://deb.debian.org/debian bookworm/main amd64 libdpkg-perl all 1.21.23 [604 kB]
+71% [54 libdpkg-perl 61.6 kB/604 kB 10%]                                        72% [Waiting for headers]                         Get:55 http://deb.debian.org/debian bookworm/main amd64 patch amd64 2.7.6-7 [128 kB]
+72% [55 patch 47.0 kB/128 kB 37%]                                 72% [Waiting for headers]                         Get:56 http://deb.debian.org/debian bookworm/main amd64 dpkg-dev all 1.21.23 [1354 kB]
+72% [56 dpkg-dev 49.4 kB/1354 kB 4%]                                    73% [Waiting for headers]                         Get:57 http://deb.debian.org/debian bookworm/main amd64 build-essential amd64 12.9 [7704 B]
+73% [57 build-essential 7704 B/7704 B 100%]                                           74% [Working]             Get:58 http://deb.debian.org/debian bookworm/main amd64 libassuan0 amd64 2.5.5-5 [48.5 kB]
+74% [58 libassuan0 21.2 kB/48.5 kB 44%]                                       74% [Working]             Get:59 http://deb.debian.org/debian bookworm/main amd64 gpgconf amd64 2.2.40-1.1+deb12u2 [565 kB]
+74% [59 gpgconf 37.5 kB/565 kB 7%]                                  74% [Waiting for headers]                         Get:60 http://deb.debian.org/debian bookworm/main amd64 libksba8 amd64 1.6.3-2 [128 kB]
+74% [60 libksba8 20.5 kB/128 kB 16%]                                    75% [Waiting for headers]                         Get:61 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+75% [61 libsasl2-modules-db 20.3 kB/20.3 kB 100%]                                                 75% [Working]             Get:62 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+75% [62 libsasl2-2 42.4 kB/59.7 kB 71%]                                       75% [Working]             Get:63 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+75% [63 libldap-2.5-0 0 B/183 kB 0%]                                    75% [Waiting for headers]                         Get:64 http://deb.debian.org/debian bookworm/main amd64 libnpth0 amd64 1.6-3 [19.0 kB]
+75% [64 libnpth0 19.0 kB/19.0 kB 100%]                                      Get:65 http://deb.debian.org/debian bookworm/main amd64 dirmngr amd64 2.2.40-1.1+deb12u2 [793 kB]
+                                      76% [65 dirmngr 237 kB/793 kB 30%]                                  76% [Waiting for headers]                         Get:66 http://deb.debian.org/debian bookworm/main amd64 libfakeroot amd64 1.31-1.2 [28.3 kB]
+76% [66 libfakeroot 28.3 kB/28.3 kB 100%]                                         77% [Waiting for headers]                         Get:67 http://deb.debian.org/debian bookworm/main amd64 fakeroot amd64 1.31-1.2 [66.9 kB]
+77% [67 fakeroot 4446 B/66.9 kB 7%]                                   77% [Working]             Get:68 http://deb.debian.org/debian bookworm/main amd64 gnupg-l10n all 2.2.40-1.1+deb12u2 [1093 kB]
+77% [68 gnupg-l10n 7140 B/1093 kB 1%]                                     78% [Waiting for headers]                         Get:69 http://deb.debian.org/debian bookworm/main amd64 gnupg-utils amd64 2.2.40-1.1+deb12u2 [927 kB]
+78% [69 gnupg-utils 30.5 kB/927 kB 3%]                                      79% [Waiting for headers]                         Get:70 http://deb.debian.org/debian bookworm/main amd64 gpg amd64 2.2.40-1.1+deb12u2 [950 kB]
+79% [70 gpg 20.0 kB/950 kB 2%]                              79% [Waiting for headers]                         Get:71 http://deb.debian.org/debian bookworm/main amd64 pinentry-curses amd64 1.2.1-1 [77.4 kB]
+79% [71 pinentry-curses 45.0 kB/77.4 kB 58%]                                            80% [Working]             Get:72 http://deb.debian.org/debian bookworm/main amd64 gpg-agent amd64 2.2.40-1.1+deb12u2 [695 kB]
+80% [72 gpg-agent 32.3 kB/695 kB 5%]                                    80% [Waiting for headers]                         Get:73 http://deb.debian.org/debian bookworm/main amd64 gpg-wks-client amd64 2.2.40-1.1+deb12u2 [541 kB]
+80% [73 gpg-wks-client 32.8 kB/541 kB 6%]                                         81% [Waiting for headers]                         Get:74 http://deb.debian.org/debian bookworm/main amd64 gpg-wks-server amd64 2.2.40-1.1+deb12u2 [531 kB]
+81% [74 gpg-wks-server 40.4 kB/531 kB 8%]                                         81% [Waiting for headers]                         Get:75 http://deb.debian.org/debian bookworm/main amd64 gpgsm amd64 2.2.40-1.1+deb12u2 [671 kB]
+82% [75 gpgsm 32.5 kB/671 kB 5%]                                82% [Waiting for headers]                         Get:76 http://deb.debian.org/debian bookworm/main amd64 gnupg all 2.2.40-1.1+deb12u2 [846 kB]
+82% [76 gnupg 22.5 kB/846 kB 3%]                                83% [Waiting for headers]                         Get:77 http://deb.debian.org/debian bookworm/main amd64 javascript-common all 11+nmu1 [6260 B]
+83% [77 javascript-common 6260 B/6260 B 100%]                                             83% [Working]             Get:78 http://deb.debian.org/debian bookworm/main amd64 libabsl20220623 amd64 20220623.1-1+deb12u2 [391 kB]
+83% [78 libabsl20220623 13.7 kB/391 kB 3%]                                          84% [Waiting for headers]                         Get:79 http://deb.debian.org/debian bookworm/main amd64 libalgorithm-diff-perl all 1.201-1 [43.3 kB]
+84% [79 libalgorithm-diff-perl 15.5 kB/43.3 kB 36%]                                                   84% [Working]             Get:80 http://deb.debian.org/debian bookworm/main amd64 libalgorithm-diff-xs-perl amd64 0.04-8+b1 [11.4 kB]
+84% [80 libalgorithm-diff-xs-perl 11.4 kB/11.4 kB 100%]                                                       84% [Working]             Get:81 http://deb.debian.org/debian bookworm/main amd64 libalgorithm-merge-perl all 0.08-5 [11.8 kB]
+84% [81 libalgorithm-merge-perl 11.8 kB/11.8 kB 100%]                                                     84% [Working]             Get:82 http://deb.debian.org/debian bookworm/main amd64 libgav1-1 amd64 0.18.0-1+b1 [332 kB]
+84% [82 libgav1-1 0 B/332 kB 0%]                                85% [Waiting for headers]                         Get:83 http://deb.debian.org/debian bookworm/main amd64 libyuv0 amd64 0.0~git20230123.b2528b0-1 [168 kB]
+85% [83 libyuv0 0 B/168 kB 0%]                              85% [Waiting for headers]                         Get:84 http://deb.debian.org/debian bookworm/main amd64 libavif15 amd64 0.11.1-1+deb12u1 [94.4 kB]
+85% [84 libavif15 0 B/94.4 kB 0%]                                 85% [Waiting for headers]                         Get:85 http://deb.debian.org/debian bookworm/main amd64 libde265-0 amd64 1.0.11-1+deb12u2 [185 kB]
+85% [85 libde265-0 0 B/185 kB 0%]                                 86% [Waiting for headers]                         Get:86 http://deb.debian.org/debian bookworm/main amd64 libheif1 amd64 1.15.1-1+deb12u1 [215 kB]
+86% [86 libheif1 0 B/215 kB 0%]                               86% [Waiting for headers]                         Get:87 http://deb.debian.org/debian bookworm/main amd64 libxpm4 amd64 1:3.5.12-1.1+deb12u1 [48.6 kB]
+86% [87 libxpm4 0 B/48.6 kB 0%]                               86% [Working]             Get:88 http://deb.debian.org/debian bookworm/main amd64 libgd3 amd64 2.3.3-9 [124 kB]
+86% [88 libgd3 12.7 kB/124 kB 10%]                                  86% [Waiting for headers]                         Get:89 http://deb.debian.org/debian bookworm/main amd64 libc-devtools amd64 2.36-9+deb12u14 [55.7 kB]
+86% [89 libc-devtools 19.4 kB/55.7 kB 35%]                                          87% [Working]             Get:90 http://deb.debian.org/debian bookworm/main amd64 libexpat1-dev amd64 2.5.0-1+deb12u2 [151 kB]
+87% [90 libexpat1-dev 28.3 kB/151 kB 19%]                                         87% [Waiting for headers]                         Get:91 http://deb.debian.org/debian bookworm/main amd64 libfile-fcntllock-perl amd64 0.22-4+b1 [34.8 kB]
+87% [91 libfile-fcntllock-perl 33.5 kB/34.8 kB 96%]                                                   87% [Working]             Get:92 http://deb.debian.org/debian bookworm/main amd64 libjs-jquery all 3.6.1+dfsg+~3.5.14-1 [326 kB]
+87% [92 libjs-jquery 37.6 kB/326 kB 12%]                                        87% [Waiting for headers]                         Get:93 http://deb.debian.org/debian bookworm/main amd64 libjs-underscore all 1.13.4~dfsg+~1.11.4-3 [116 kB]
+87% [93 libjs-underscore 14.8 kB/116 kB 13%]                                            88% [Waiting for headers]                         Get:94 http://deb.debian.org/debian bookworm/main amd64 libjs-sphinxdoc all 5.3.0-4 [130 kB]
+88% [94 libjs-sphinxdoc 14.9 kB/130 kB 11%]                                           88% [Waiting for headers]                         Get:95 http://deb.debian.org/debian bookworm/main amd64 libldap-common all 2.5.13+dfsg-5 [29.3 kB]
+88% [95 libldap-common 4947 B/29.3 kB 17%]                                          88% [Working]             Get:96 http://deb.debian.org/debian bookworm/main amd64 libpython3.11 amd64 3.11.2-6+deb12u8 [1988 kB]
+88% [96 libpython3.11 0 B/1988 kB 0%]                                     90% [Waiting for headers]                         Get:97 http://deb.debian.org/debian bookworm/main amd64 zlib1g-dev amd64 1:1.2.13.dfsg-1 [916 kB]
+90% [97 zlib1g-dev 0 B/916 kB 0%]                                 91% [Waiting for headers]                         Get:98 http://deb.debian.org/debian bookworm/main amd64 libpython3.11-dev amd64 3.11.2-6+deb12u8 [4738 kB]
+91% [98 libpython3.11-dev 1428 B/4738 kB 0%]                                            94% [Waiting for headers]                         Get:99 http://deb.debian.org/debian bookworm/main amd64 libpython3-dev amd64 3.11.2-1+b1 [9572 B]
+94% [Waiting for headers]                         Get:100 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules amd64 2.1.28+dfsg-10 [66.6 kB]
+95% [100 libsasl2-modules 64.8 kB/66.6 kB 97%]                                              95% [Working]             Get:101 http://deb.debian.org/debian bookworm/main amd64 manpages-dev all 6.03-2 [2030 kB]
+95% [101 manpages-dev 33.6 kB/2030 kB 2%]                                         96% [Waiting for headers]                         Get:102 http://deb.debian.org/debian bookworm/main amd64 python3.11-dev amd64 3.11.2-6+deb12u8 [619 kB]
+96% [102 python3.11-dev 34.1 kB/619 kB 6%]                                          97% [Waiting for headers]                         Get:103 http://deb.debian.org/debian bookworm/main amd64 python3-lib2to3 all 3.11.2-3 [76.3 kB]
+97% [103 python3-lib2to3 33.2 kB/76.3 kB 43%]                                             97% [Working]             Get:104 http://deb.debian.org/debian bookworm/main amd64 python3-distutils all 3.11.2-3 [131 kB]
+97% [104 python3-distutils 21.7 kB/131 kB 17%]                                              97% [Waiting for headers]                         Get:105 http://deb.debian.org/debian bookworm/main amd64 python3-dev amd64 3.11.2-1+b1 [26.2 kB]
+98% [105 python3-dev 21.1 kB/26.2 kB 81%]                                         98% [Waiting for headers]                         Get:106 http://deb.debian.org/debian bookworm/main amd64 python3-pkg-resources all 66.1.1-1+deb12u2 [297 kB]
+98% [106 python3-pkg-resources 30.1 kB/297 kB 10%]                                                  98% [Waiting for headers]                         Get:107 http://deb.debian.org/debian bookworm/main amd64 python3-setuptools all 66.1.1-1+deb12u2 [522 kB]
+98% [107 python3-setuptools 24.3 kB/522 kB 5%]                                              99% [Waiting for headers]                         Get:108 http://deb.debian.org/debian bookworm/main amd64 python3-wheel all 0.38.4-2 [30.8 kB]
+99% [108 python3-wheel 26.3 kB/30.8 kB 85%]                                           99% [Waiting for headers]                         Get:109 http://deb.debian.org/debian bookworm/main amd64 python3-pip all 23.0.1+dfsg-1 [1325 kB]
+99% [109 python3-pip 30.8 kB/1325 kB 2%]                                        100% [Working]              Fetched 111 MB in 1s (172 MB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 11117 files and directories currently installed.)
+Preparing to unpack .../dpkg_1.21.23_amd64.deb ...
+Unpacking dpkg (1.21.23) over (1.21.22) ...
+Setting up dpkg (1.21.23) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 11117 files and directories currently installed.)
+Preparing to unpack .../perl-base_5.36.0-7+deb12u3_amd64.deb ...
+Unpacking perl-base (5.36.0-7+deb12u3) over (5.36.0-7+deb12u1) ...
+Setting up perl-base (5.36.0-7+deb12u3) ...
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 11118 files and directories currently installed.)
+Preparing to unpack .../libc6_2.36-9+deb12u14_amd64.deb ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Unpacking libc6:amd64 (2.36-9+deb12u14) over (2.36-9+deb12u9) ...
+Setting up libc6:amd64 (2.36-9+deb12u14) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%

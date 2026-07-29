@@ -1,0 +1,40 @@
+root@c185fc989d3f:/app# pwd; __tts_rc=$?; printf '\n__TTS_be1fc89ec83e49648a686e6db2815ebb__RC:%s\n' "$__tts_rc"; printf '__TTS_be1fc89ec83e49648a686e6db2815ebb
+__PWD:'; pwd; printf '__TTS_be1fc89ec83e49648a686e6db2815ebb__END\n'; tmux wait -S done
+/app
+
+__TTS_be1fc89ec83e49648a686e6db2815ebb__RC:0
+__TTS_be1fc89ec83e49648a686e6db2815ebb__PWD:/app
+__TTS_be1fc89ec83e49648a686e6db2815ebb__END
+root@c185fc989d3f:/app# cd -- /app && python - <<'PY'
+> import os
+> from sentence_transformers import SentenceTransformer
+> from mteb import MTEB
+> model_name='sentence-transformers/all-MiniLM-L6-v2'
+> model=SentenceTransformer(model_name)
+> commit=model._model_card_vars.get('model_id',None)
+> try:
+>     commit=model._first_module().auto_model.config._commit_hash
+> except Exception:
+>     commit=None
+> out='results'
+> eval_splits=['test']
+> task='STS12'
+> try:
+>     evaluation=MTEB(tasks=[task], task_langs=['en'])
+> except TypeError:
+>     evaluation=MTEB(tasks=[task])
+> evaluation.run(model, output_folder=out, eval_splits=eval_splits)
+> print('done', model_name, commit)
+> PY; __tts_rc=$?; printf '\n__TTS_b5472c3f9cbb457c96f51245fc315392__RC:%s\n' "$__tts_rc"; printf '__TTS_b5472c3f9cbb457c96f51245fc315392__PWD:'; pwd; printf '_
+_TTS_b5472c3f9cbb457c96f51245fc315392__END\n'; tmux wait -S done
+> cd -- /app && find /app/results -maxdepth 4 -type f | sort | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_1d2acac32df040e78de9506d9b8117ed__RC:%s\n' "$__tts_
+rc"; printf '__TTS_1d2acac32df040e78de9506d9b8117ed__PWD:'; pwd; printf '__TTS_1d2acac32df040e78de9506d9b8117ed__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import json
+> p='/app/results/sentence-transformers__all-MiniLM-L6-v2/no_revision_available/STS12.json'
+> with open(p) as f:
+>     d=json.load(f)
+> print(d)
+> PY; __tts_rc=$?; printf '\n__TTS_da1c508193eb47bda30f7d4581127a5f__RC:%s\n' "$__tts_rc"; printf '__TTS_da1c508193eb47bda30f7d4581127a5f__PWD:'; pwd; printf '_
+_TTS_da1c508193eb47bda30f7d4581127a5f__END\n'; tmux wait -S done
+>

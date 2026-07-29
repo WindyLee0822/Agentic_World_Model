@@ -1,0 +1,120 @@
+{
+    "id": "af5b835e-a2fd-42b4-b4f3-518b99830a99",
+    "task_name": "filter-js-from-html",
+    "trial_name": "filter-js-from-html__3oFVK4P",
+    "trial_uri": "file:///home/t-wendili/dw/experiments/terminal-ours-5.4/terminalbench-native/v2/ours-n1/job/filter-js-from-html__3oFVK4P",
+    "task_id": {
+        "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+        "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+        "path": "filter-js-from-html"
+    },
+    "source": "terminal-bench",
+    "task_checksum": "885bb73e2797a54d5de860c25f481b5a60e2b91c0de30acaca9560603e9e1ff8",
+    "config": {
+        "task": {
+            "path": "filter-js-from-html",
+            "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+            "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "terminal-bench"
+        },
+        "trial_name": "filter-js-from-html__3oFVK4P",
+        "trials_dir": "/home/t-wendili/dw/experiments/terminal-ours-5.4/terminalbench-native/v2/ours-n1/job",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "tts.env.terminalbench_harbor:HarborTerminalBenchAgent",
+            "import_path": null,
+            "model_name": "gpt-5.4",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "1f806bbf-541f-45bc-b44f-88199d4cccbb"
+    },
+    "agent_info": {
+        "name": "tts-terminalbench",
+        "version": "1.0.0",
+        "model_info": {
+            "name": "gpt-5.4",
+            "provider": null
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": {
+            "tts_terminalbench": {
+                "method": "ours",
+                "selected_index": 0,
+                "n_rollouts": 1,
+                "total_tokens": 23895
+            }
+        }
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-07-17T02:24:49.254606Z",
+    "finished_at": "2026-07-17T02:53:52.305737Z",
+    "environment_setup": {
+        "started_at": "2026-07-17T02:32:37.449203Z",
+        "finished_at": "2026-07-17T02:35:45.265434Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-07-17T02:35:45.265465Z",
+        "finished_at": "2026-07-17T02:35:45.265605Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-07-17T02:35:45.265666Z",
+        "finished_at": "2026-07-17T02:36:33.908394Z"
+    },
+    "verifier": {
+        "started_at": "2026-07-17T02:46:03.146407Z",
+        "finished_at": "2026-07-17T02:53:34.346664Z"
+    },
+    "step_results": null
+}

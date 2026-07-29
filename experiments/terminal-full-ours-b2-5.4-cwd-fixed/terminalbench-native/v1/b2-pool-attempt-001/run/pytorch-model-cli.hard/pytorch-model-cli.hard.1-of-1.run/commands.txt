@@ -1,0 +1,5 @@
+['asciinema rec --stdin /logs/agent.cast', 'Enter']
+['clear', 'Enter']
+['pwd; __tts_rc=$?; printf \'\\n__TTS_3aed0d3ab88341ce89a43c9c5240b00a__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_3aed0d3ab88341ce89a43c9c5240b00a__PWD:\'; pwd; printf \'__TTS_3aed0d3ab88341ce89a43c9c5240b00a__END\\n\'', 'Enter']
+['cd -- /app && ls -la; __tts_rc=$?; printf \'\\n__TTS_079975156a2a4e5daef0276cd007c445__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_079975156a2a4e5daef0276cd007c445__PWD:\'; pwd; printf \'__TTS_079975156a2a4e5daef0276cd007c445__END\\n\'', 'Enter']
+['cd -- /app && python3 - <<\'PY\'\nimport os,torch\nck=torch.load(\'model.pth\',map_location=\'cpu\')\nprint(type(ck))\nprint(list(ck.keys()) if hasattr(ck,\'keys\') else ck)\nPY; __tts_rc=$?; printf \'\\n__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__PWD:\'; pwd; printf \'__TTS_3fa6ca7fcdde41078ca1b0a28f7449cd__END\\n\'', 'Enter']

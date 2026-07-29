@@ -1,0 +1,40 @@
+root@d184efa7b2b6:/app# pwd; __tts_rc=$?; printf '\n__TTS_5c0b25872a864542b94dd3fa412098d5__RC:%s\n' "$__tts_rc"; printf '__TTS_5c0b25872a864542b94dd3fa412098d5
+__PWD:'; pwd; printf '__TTS_5c0b25872a864542b94dd3fa412098d5__END\n'; tmux wait -S done
+/app
+
+__TTS_5c0b25872a864542b94dd3fa412098d5__RC:0
+__TTS_5c0b25872a864542b94dd3fa412098d5__PWD:/app
+__TTS_5c0b25872a864542b94dd3fa412098d5__END
+root@d184efa7b2b6:/app# cd -- /app && python - <<'PY'
+> import requests;print(requests.get('http://server:8000').status_code);print(requests.get('http://server:8000').text[:500])
+> PY; __tts_rc=$?; printf '\n__TTS_d5324044f46b4385a1b5cbad7916d727__RC:%s\n' "$__tts_rc"; printf '__TTS_d5324044f46b4385a1b5cbad7916d727__PWD:'; pwd; printf '_
+_TTS_d5324044f46b4385a1b5cbad7916d727__END\n'; tmux wait -S done
+> cd -- /app && python -c "import requests;from bs4 import BeautifulSoup as BS;r=requests.get('http://server:8000',timeout=10);print(r.status_code);print(r.text
+[:1000])"; __tts_rc=$?; printf '\n__TTS_c0e09cb577f54ccfbf8376aecfbe6834__RC:%s\n' "$__tts_rc"; printf '__TTS_c0e09cb577f54ccfbf8376aecfbe6834__PWD:'; pwd; prin
+tf '__TTS_c0e09cb577f54ccfbf8376aecfbe6834__END\n'; tmux wait -S done
+> cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_fa54982d46a34764a587a3d7dea4c3c2__RC:%s\n' "$__tts_rc"; printf '__TTS_fa54982d46a34764a587a3d7dea4c3c2
+__PWD:'; pwd; printf '__TTS_fa54982d46a34764a587a3d7dea4c3c2__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

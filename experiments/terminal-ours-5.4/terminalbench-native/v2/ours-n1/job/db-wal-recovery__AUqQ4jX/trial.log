@@ -1,0 +1,5 @@
+Trial db-wal-recovery__AUqQ4jX failed: Docker compose command failed for environment db-wal-recovery. Command: docker compose --project-name db-wal-recovery__auqq4jx__env --project-directory /home/t-wendili/.cache/harbor/tasks/X4QTPPGhjzjJSVbTTETRUK/db-wal-recovery/environment -f /tmp/tmpkjp0p8fe/db-wal-recovery__AUqQ4jX__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp3k84xpvw/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network db-wal-recovery__auqq4jx__env_default Creating 
+ Network db-wal-recovery__auqq4jx__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network db-wal-recovery__auqq4jx__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

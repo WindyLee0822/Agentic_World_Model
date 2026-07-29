@@ -1,0 +1,548 @@
+root@82fa6a19c760:/app# pwd; __tts_rc=$?; printf '\n__TTS_bc9171c41c2a4bef832640a2010b9623__RC:%s\n' "$__tts_rc"; printf '__TTS_bc9171c41c2a4bef832640a2010b9623
+__PWD:'; pwd; printf '__TTS_bc9171c41c2a4bef832640a2010b9623__END\n'; tmux wait -S done
+/app
+
+__TTS_bc9171c41c2a4bef832640a2010b9623__RC:0
+__TTS_bc9171c41c2a4bef832640a2010b9623__PWD:/app
+__TTS_bc9171c41c2a4bef832640a2010b9623__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'pwd; ls -la; find . -maxdepth 2 -type f | sed -n "1,120p"'; __tts_rc=$?; printf '\n__TTS_ebbaaaf5538d4fcebe0ee50
+fc126183e__RC:%s\n' "$__tts_rc"; printf '__TTS_ebbaaaf5538d4fcebe0ee50fc126183e__PWD:'; pwd; printf '__TTS_ebbaaaf5538d4fcebe0ee50fc126183e__END\n'; tmux wait -
+S done
+/app
+total 140684
+drwxr-xr-x 1 root root      4096 Jul 18 08:14 .
+drwxr-xr-x 1 root root      4096 Jul 18 13:28 ..
+drwxrwxr-x 1 root root      4096 Jul 16 21:20 linux-6.9
+-rw-r--r-- 1 root root 144034416 May 13  2024 linux-6.9.tar.xz
+drwxr-xr-x 2 root root      4096 Jul 18 08:14 ramfs
+-rw-r--r-- 1 root root      1155 Jul 16 19:53 setup.sh
+./ramfs/initramfs.list
+./ramfs/initramfs.cpio.gz
+./ramfs/busybox-x86_64
+./ramfs/basic-init
+./setup.sh
+./linux-6.9/.get_maintainer.ignore
+./linux-6.9/MAINTAINERS
+./linux-6.9/.clang-format
+./linux-6.9/.rustfmt.toml
+./linux-6.9/Makefile
+./linux-6.9/Kconfig
+./linux-6.9/CREDITS
+./linux-6.9/.editorconfig
+./linux-6.9/.gitattributes
+./linux-6.9/.cocciconfig
+./linux-6.9/.mailmap
+./linux-6.9/Kbuild
+./linux-6.9/README
+./linux-6.9/.gitignore
+./linux-6.9/COPYING
+./linux-6.9/.tmp_vmlinux.kallsyms1.S
+./linux-6.9/.tmp_vmlinux.kallsyms1.o
+./linux-6.9/.vmlinux.o.cmd
+./linux-6.9/..checked-atomic-arch-fallback.h.cmd
+./linux-6.9/.vmlinux.export.o
+./linux-6.9/modules.builtin.modinfo
+./linux-6.9/.tmp_vmlinux.kallsyms2.o
+./linux-6.9/.modules.builtin.modinfo.cmd
+./linux-6.9/.modules.order.cmd
+./linux-6.9/.checked-atomic-instrumented.h
+./linux-6.9/.missing-syscalls.d
+./linux-6.9/.tmp_vmlinux.kallsyms2
+./linux-6.9/.vmlinux.cmd
+./linux-6.9/.built-in.a.cmd
+./linux-6.9/.vmlinux.a.cmd
+./linux-6.9/modules.builtin
+./linux-6.9/built-in.a
+./linux-6.9/.tmp_vmlinux.kallsyms2.syms
+./linux-6.9/..checked-atomic-instrumented.h.cmd
+./linux-6.9/.vmlinux.export.c
+./linux-6.9/..checked-atomic-long.h.cmd
+./linux-6.9/.version
+./linux-6.9/.checked-atomic-long.h
+./linux-6.9/..vmlinux.export.o.cmd
+./linux-6.9/.tmp_vmlinux.kallsyms2.S
+./linux-6.9/modules.order
+./linux-6.9/vmlinux.a
+./linux-6.9/Module.symvers
+./linux-6.9/vmlinux.o
+./linux-6.9/vmlinux
+./linux-6.9/.Module.symvers.cmd
+./linux-6.9/.tmp_vmlinux.kallsyms1
+./linux-6.9/.checked-atomic-arch-fallback.h
+./linux-6.9/.modules.builtin.cmd
+./linux-6.9/.tmp_vmlinux.kallsyms1.syms
+./linux-6.9/System.map
+./linux-6.9/.config
+./linux-6.9.tar.xz
+
+__TTS_ebbaaaf5538d4fcebe0ee50fc126183e__RC:0
+__TTS_ebbaaaf5538d4fcebe0ee50fc126183e__PWD:/app
+__TTS_ebbaaaf5538d4fcebe0ee50fc126183e__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'find /app -maxdepth 3 \( -iname "*tcc*" -o -iname "tinycc*" \) | sed -n "1,120p"; command -v xorriso mkisofs gen
+isoimage gcc make wget curl git file || true'; __tts_rc=$?; printf '\n__TTS_7b11c3ee27694e2c9ead3700c22d401e__RC:%s\n' "$__tts_rc"; printf '__TTS_7b11c3ee27694e
+2c9ead3700c22d401e__PWD:'; pwd; printf '__TTS_7b11c3ee27694e2c9ead3700c22d401e__END\n'; tmux wait -S done
+/app/linux-6.9/lib/zlib_dfltcc
+/usr/bin/gcc
+/usr/bin/make
+/usr/bin/wget
+
+__TTS_7b11c3ee27694e2c9ead3700c22d401e__RC:0
+__TTS_7b11c3ee27694e2c9ead3700c22d401e__PWD:/app
+__TTS_7b11c3ee27694e2c9ead3700c22d401e__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'wget -O /tmp/tcc.tar.bz2 https://download.savannah.gnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 && tar -C /tmp -xf
+ /tmp/tcc.tar.bz2 && cd /tmp/tcc-0.9.27 && ./configure --prefix=/usr && make -j"$(nproc)" && make DESTDIR=/tmp/tcc-root install && mkdir -p /tmp/tcc-iso && cp -
+a /tmp/tcc-root/. /tmp/tcc-iso/ && { command -v genisoimage >/dev/null && genisoimage -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso || command -v mkisofs >/dev/null
+ && mkisofs -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso || command -v xorriso >/dev/null && xorriso -as mkisofs -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso; } && ls
+ -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc'; __tts_rc=$?; printf '\n__TTS_014b8fb0e2224353a90b8f5930f39ddb__RC:%s\n' "$__tts_rc"; printf '__TTS_014b8fb0e2224353
+a90b8f5930f39ddb__PWD:'; pwd; printf '__TTS_014b8fb0e2224353a90b8f5930f39ddb__END\n'; tmux wait -S done
+--2026-07-18 13:28:24--  https://download.savannah.gnu.org/releases/tinycc/tcc-0.9.27.tar.bz2
+Resolving download.savannah.gnu.org (download.savannah.gnu.org)... 209.51.188.200, 2001:470:142:5::200
+Connecting to download.savannah.gnu.org (download.savannah.gnu.org)|209.51.188.200|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://mirror.marwan.ma/savannah/tinycc/tcc-0.9.27.tar.bz2 [following]
+--2026-07-18 13:28:26--  https://mirror.marwan.ma/savannah/tinycc/tcc-0.9.27.tar.bz2
+Resolving mirror.marwan.ma (mirror.marwan.ma)... 196.200.160.70, 2001:4310:f1::70
+Connecting to mirror.marwan.ma (mirror.marwan.ma)|196.200.160.70|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 634999 (620K) [application/octet-stream]
+Saving to: ‘/tmp/tcc.tar.bz2’
+
+/tmp/tcc.tar.bz2                        100%[===============================================================================>] 620.12K   630KB/s    in 1.0s
+
+2026-07-18 13:28:28 (630 KB/s) - ‘/tmp/tcc.tar.bz2’ saved [634999/634999]
+
+Binary directory    /usr/bin
+TinyCC directory    /usr/lib/tcc
+Library directory   /usr/lib
+Include directory   /usr/include
+Manual directory    /usr/share/man
+Info directory      /usr/share/info
+Doc directory       /usr/share/doc
+Source path         /tmp/tcc-0.9.27
+C compiler          gcc (13.3)
+Target OS           Linux
+CPU                 x86_64
+Triplet             x86_64-linux-gnu
+Creating config.mak and config.h
+gcc -o tcc.o -c tcc.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-strict-al
+iasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o libtcc.o -c libtcc.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-str
+ict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o tccpp.o -c tccpp.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-stric
+t-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o tccgen.o -c tccgen.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-str
+ict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o tccelf.o -c tccelf.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-str
+ict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o tccasm.o -c tccasm.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-str
+ict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o tccrun.o -c tccrun.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno-str
+ict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o x86_64-gen.o -c x86_64-gen.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement
+-fno-strict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o x86_64-link.o -c x86_64-link.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statemen
+t -fno-strict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+gcc -o i386-asm.o -c i386-asm.c -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64       -DONE_SOURCE=0 -Wall -g -O2 -Wdeclaration-after-statement -fno
+-strict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -I.
+./texi2pod.pl tcc-doc.texi tcc.pod \
+&& pod2man --section=1 --center="Tiny C Compiler" --release="0.9.27" tcc.pod >tmp.1 \
+&& mv tmp.1 tcc.1 || rm -f tmp.1
+makeinfo tcc-doc.texi || true
+/bin/sh: 1: makeinfo: not found
+ar rcs libtcc.a libtcc.o tccpp.o tccgen.o tccelf.o tccasm.o tccrun.o x86_64-gen.o x86_64-link.o i386-asm.o
+gcc -o tcc tcc.o libtcc.a -lm -ldl
+make[1]: Entering directory '/tmp/tcc-0.9.27/lib'
+../tcc -c libtcc1.c -o libtcc1.o -B..
+../tcc -c alloca86_64.S -o alloca86_64.o -B..
+../tcc -c alloca86_64-bt.S -o alloca86_64-bt.o -B..
+../tcc -c va_list.c -o va_list.o -B..
+../tcc -c bcheck.c -o bcheck.o -B..
+bcheck.c:738: error: '__malloc_hook' undeclared
+make[1]: *** [Makefile:64: bcheck.o] Error 1
+make[1]: Leaving directory '/tmp/tcc-0.9.27/lib'
+make: *** [Makefile:230: libtcc1.a] Error 2
+
+__TTS_014b8fb0e2224353a90b8f5930f39ddb__RC:2
+__TTS_014b8fb0e2224353a90b8f5930f39ddb__PWD:/app
+__TTS_014b8fb0e2224353a90b8f5930f39ddb__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'cd /tmp/tcc-0.9.27 && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr --disable-bcheck && make -
+j"$(nproc)" && rm -rf /tmp/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-i
+so/ && python3 - <<"PY"
+> import os,struct,time
+> root="/tmp/tcc-iso"; out="/tmp/tcc.iso"; bs=2048
+> files=[]
+> for dp,dn,fns in os.walk(root):
+>     dn.sort(); fns.sort()
+>     rel=os.path.relpath(dp,root)
+>     files.append((rel if rel!='.' else '',True,dp))
+>     for f in fns: files.append((os.path.join(rel,f) if rel!='.' else f,False,os.path.join(dp,f)))
+> files.sort(key=lambda x:(x[0].count('/'),x[0]))
+> nums={p:i+1 for i,(p,_,_) in enumerate(files)}
+> children={p:[] for p,_,_ in files if _}
+> for p,isdir,src in files:
+>     if p=='': continue
+>     parent=os.path.dirname(p)
+>     children[parent].append((os.path.basename(p),isdir,p,src))
+> enc=lambda s:s.upper().replace('.','_')
+> name833=lambda n:(enc(n.split('.')[0])[:8]+(('.'+enc(n.rsplit('.',1)[1])[:3]) if '.' in n else ''))
+> def rec(name,extent,size,flags):
+>     nb=name.encode(); l=33+len(nb)+(len(nb)%2==0); r=bytearray(l); r[0]=l; r[2:6]=struct.pack('<I',extent); r[6:10]=struct.pack('>I',extent); r[10:14]=struct.
+pack('<I',size); r[14:18]=struct.pack('>I',size); t=time.gmtime(); r[18:25]=bytes([t.tm_year-1900,t.tm_mon,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec,0]); r[25]=flag
+s; r[28:30]=struct.pack('<H',1); r[30:32]=struct.pack('>H',1); r[32]=len(nb); r[33:33+len(nb)]=nb; return bytes(r)
+> dirs={}
+> for p,isdir,src in files:
+>     if not isdir: continue
+>     ents=[rec(chr(0),0,0,2),rec(chr(1),0,0,2)]
+>     for name,cisdir,cp,csrc in children[p]: ents.append(rec(name833(name)+';1',0,0,2 if cisdir else 0))
+>     data=b''.join(ents); dirs[p]=data+b'\0'*((-len(data))%bs)
+> cur=18+len(files)
+> extents={}
+> for p,isdir,src in files:
+>     ext=(len(dirs[p]) if isdir else os.path.getsize(src)+bs-1)//bs; extents[p]=cur; cur+=ext
+> for p in [p for p,_,_ in files if p in dirs]:
+>     parent=os.path.dirname(p) if p else ''
+>     ents=[rec(chr(0),extents[p],len(dirs[p]),2),rec(chr(1),extents[parent],len(dirs[parent]),2)]
+>     for name,cisdir,cp,csrc in children[p]:
+>         size=len(dirs[cp]) if cisdir else os.path.getsize(csrc)
+>         ents.append(rec(name833(name)+';1',extents[cp],size,2 if cisdir else 0))
+>     data=b''.join(ents); dirs[p]=data+b'\0'*((-len(data))%bs)
+> vd=bytearray(bs); vd[0]=1; vd[1:6]=b'CD001'; vd[6]=1; vd[8:40]=b'TCCISO'.ljust(32); vd[40:72]=b'TCC'.ljust(32); vd[80:84]=struct.pack('<I',cur); vd[84:88]=str
+uct.pack('>I',cur); vd[120:122]=struct.pack('<H',1); vd[122:124]=struct.pack('>H',1); vd[124:126]=struct.pack('<H',1); vd[126:128]=struct.pack('>H',1); vd[128:1
+30]=struct.pack('<H',bs); vd[130:132]=struct.pack('>H',bs); vd[156:190]=rec(chr(0),extents[''],len(dirs['']),2)[:34]
+> term=bytearray(bs); term[0]=255; term[1:6]=b'CD001'; term[6]=1
+> with open(out,'wb') as f:
+>     f.write(b'\0'*(16*bs)); f.write(vd); f.write(term)
+>     for p,isdir,src in files:
+>         if isdir: f.write(dirs[p])
+>         else:
+>             with open(src,'rb') as rf: d=rf.read(); f.write(d); f.write(b'\0'*((-len(d))%bs))
+> PY
+> ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; printf '\n__TTS_38e9ac34ca034c2fbc84396e1fe8009e__RC:%s\n' "$__
+tts_rc"; printf '__TTS_38e9ac34ca034c2fbc84396e1fe8009e__PWD:'; pwd; printf '__TTS_38e9ac34ca034c2fbc84396e1fe8009e__END\n'; tmux wait -S done
+bash: I,extent); r[6:10]=struct.pack(: No such file or directory
+bash: 1,0,0,2 if cisdir else 0))
+    data=b.join(ents); dirs[p]=data+b0*((-len(data))%bs)
+cur=18+len(files)
+extents={}
+for p,isdir,src in files:
+    ext=(len(dirs[p]) if isdir else os.path.getsize(src)+bs-1)//bs; extents[p]=cur; cur+=ext
+for p in [p for p,_,_ in files if p in dirs]:
+    parent=os.path.dirname(p) if p else
+    ents=[rec(chr(0),extents[p],len(dirs[p]),2),rec(chr(1),extents[parent],len(dirs[parent]),2)]
+    for name,cisdir,cp,csrc in children[p]:
+        size=len(dirs[cp]) if cisdir else os.path.getsize(csrc)
+        ents.append(rec(name833(name)+: No such file or directory
+bash: I,cur); vd[84:88]=struct.pack(: No such file or directory
+
+__TTS_38e9ac34ca034c2fbc84396e1fe8009e__RC:1
+__TTS_38e9ac34ca034c2fbc84396e1fe8009e__PWD:/app
+__TTS_38e9ac34ca034c2fbc84396e1fe8009e__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'command -v apt-get >/dev/null && apt-get update && apt-get install -y genisoimage >/dev/null && cd /tmp/tcc-0.9.
+27 && make clean >/dev/null 2>&1 || true; cd /tmp/tcc-0.9.27 && ./configure --prefix=/usr --disable-bcheck >/dev/null && make -j"$(nproc)" >/dev/null && rm -rf
+/tmp/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-iso/ && geni
+soimage -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; printf '\n__
+TTS_8d74590931a849ff961c09f6549b532f__RC:%s\n' "$__tts_rc"; printf '__TTS_8d74590931a849ff961c09f6549b532f__PWD:'; pwd; printf '__TTS_8d74590931a849ff961c09f654
+9b532f__END\n'; tmux wait -S done
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+debconf: delaying package configuration, since apt-utils is not installed
+/bin/sh: 1: makeinfo: not found
+bcheck.c:738: error: '__malloc_hook' undeclared
+make[1]: *** [Makefile:64: bcheck.o] Error 1
+make: *** [Makefile:230: libtcc1.a] Error 2
+
+__TTS_8d74590931a849ff961c09f6549b532f__RC:2
+__TTS_8d74590931a849ff961c09f6549b532f__PWD:/app
+__TTS_8d74590931a849ff961c09f6549b532f__END
+root@82fa6a19c760:/app# cd -- __TTS_8d74590931a849ff961c09f6549b532f__PWD:/app && bash -lc 'grep -n "bcheck" -n /tmp/tcc-0.9.27/config.mak /tmp/tcc-0.9.27/Makef
+ile /tmp/tcc-0.9.27/configure | sed -n "1,120p"'; __tts_rc=$?; printf '\n__TTS_2866d2850a0f4be787abe89df2ec66e1__RC:%s\n' "$__tts_rc"; printf '__TTS_2866d2850a0
+f4be787abe89df2ec66e1__PWD:'; pwd; printf '__TTS_2866d2850a0f4be787abe89df2ec66e1__END\n'; tmux wait -S done
+bash: cd: __TTS_8d74590931a849ff961c09f6549b532f__PWD:/app: No such file or directory
+
+__TTS_2866d2850a0f4be787abe89df2ec66e1__RC:1
+__TTS_2866d2850a0f4be787abe89df2ec66e1__PWD:/app
+__TTS_2866d2850a0f4be787abe89df2ec66e1__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'cd /tmp/tcc-0.9.27 && grep -Rni "bcheck\|malloc_hook\|CONFIG_USE_BCHECK\|BCHECK" . | sed -n "1,200p"'; __tts_rc=
+$?; printf '\n__TTS_4393393595f44aa7a4710cefe5f61907__RC:%s\n' "$__tts_rc"; printf '__TTS_4393393595f44aa7a4710cefe5f61907__PWD:'; pwd; printf '__TTS_4393393595
+f44aa7a4710cefe5f61907__END\n'; tmux wait -S done
+grep: ./tccgen.o: binary file matches
+./lib/Makefile:30:$(X)BCHECK_O = bcheck.o
+./lib/Makefile:33: BCHECK_O =
+./lib/Makefile:46:OBJ-i386 = $(I386_O) $(BCHECK_O)
+./lib/Makefile:47:OBJ-x86_64 = $(X86_64_O) va_list.o $(BCHECK_O)
+./lib/Makefile:49:OBJ-i386-win32 = $(I386_O) chkstk.o bcheck.o $(WIN_O)
+./lib/Makefile:50:OBJ-x86_64-win32 = $(X86_64_O) chkstk.o bcheck.o $(WIN_O)
+./lib/bcheck.c:50:#define CONFIG_TCC_MALLOC_HOOKS
+./lib/bcheck.c:61:#undef CONFIG_TCC_MALLOC_HOOKS
+./lib/bcheck.c:109:static void install_malloc_hooks(void);
+./lib/bcheck.c:110:static void restore_malloc_hooks(void);
+./lib/bcheck.c:112:#ifdef CONFIG_TCC_MALLOC_HOOKS
+./lib/bcheck.c:113:static void *saved_malloc_hook;
+./lib/bcheck.c:411:    install_malloc_hooks();
+./lib/bcheck.c:438:#if defined(CONFIG_TCC_MALLOC_HOOKS)
+./lib/bcheck.c:494:    restore_malloc_hooks();
+./lib/bcheck.c:735:static void install_malloc_hooks(void)
+./lib/bcheck.c:737:#ifdef CONFIG_TCC_MALLOC_HOOKS
+./lib/bcheck.c:738:    saved_malloc_hook = __malloc_hook;
+./lib/bcheck.c:742:    __malloc_hook = __bound_malloc;
+./lib/bcheck.c:751:static void restore_malloc_hooks(void)
+./lib/bcheck.c:753:#ifdef CONFIG_TCC_MALLOC_HOOKS
+./lib/bcheck.c:754:    __malloc_hook = saved_malloc_hook;
+./lib/bcheck.c:766:    restore_malloc_hooks();
+./lib/bcheck.c:768:    install_malloc_hooks();
+./lib/bcheck.c:774:    restore_malloc_hooks();
+./lib/bcheck.c:776:    install_malloc_hooks();
+./lib/bcheck.c:805:    restore_malloc_hooks();
+./lib/bcheck.c:822:    install_malloc_hooks();
+./lib/bcheck.c:865:#ifndef CONFIG_TCC_MALLOC_HOOKS
+./tcctok.h:284:#ifdef CONFIG_TCC_BCHECK
+grep: ./libtcc.a: binary file matches./TODO:49:- disable-asm and disable-bcheck options
+
+./TODO:76:- win32: __intxx. use resolve for bchecked malloc et al.
+./tccgen.c:346:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:352:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:1128:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:1307:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:2239:/* #ifdef CONFIG_TCC_BCHECK
+./tccgen.c:3175:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:4503:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:5144:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6828:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6829:    int bcheck = tcc_state->do_bounds_check && !NODATA_WANTED;
+./tccgen.c:6904:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6905:        if (bcheck && (type->t & VT_ARRAY)) {
+./tccgen.c:6911:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6915:        if (bcheck && (type->t & VT_ARRAY)) {
+./tccgen.c:6963:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6965:            if (bcheck)
+./tccgen.c:6990:#ifdef CONFIG_TCC_BCHECK
+./tccgen.c:6993:        if (bcheck) {
+grep: ./tccelf.o: binary file matches./tests/Makefile:123:      @if diff -u test.ref test4.out ; then echo "BCheck Auto Test OK"; fi
+
+./tccpe.c:1951:    tcc_add_bcheck(s1);
+grep: ./tcc: binary file matches./tccrun.c:136:#ifdef CONFIG_TCC_BCHECK
+
+./tccelf.c:35:#ifdef CONFIG_TCC_BCHECK
+./tccelf.c:80:#ifdef CONFIG_TCC_BCHECK
+./tccelf.c:1156:ST_FUNC void tcc_add_bcheck(TCCState *s1)
+./tccelf.c:1158:#ifdef CONFIG_TCC_BCHECK
+./tccelf.c:1170:    /* pull bcheck.o from libtcc1.a */
+./tccelf.c:1190:    tcc_add_bcheck(s1);
+./Changelog:125:  462: Use LGPL with bcheck.c and il-gen.c
+./Changelog:392: - added CONFIG_TCC_BCHECK to get smaller code if needed.
+./libtcc.c:951:#ifdef CONFIG_TCC_BCHECK
+./libtcc.c:1508:#ifdef CONFIG_TCC_BCHECK
+./libtcc.c:1760:#ifdef CONFIG_TCC_BCHECK
+./win32/build-tcc.bat:141:@set O1=libtcc1.o crt1.o crt1w.o wincrt1.o wincrt1w.o dllcrt1.o dllmain.o chkstk.o bcheck.o
+./win32/build-tcc.bat:150:.\tcc -m32 -w -c ../lib/bcheck.c
+./win32/build-tcc.bat:163:.\tcc -m64 -w -c ../lib/bcheck.c
+./i386-gen.c:92:#ifdef CONFIG_TCC_BCHECK
+./i386-gen.c:333:#if defined CONFIG_TCC_BCHECK || defined TCC_TARGET_PE
+./i386-gen.c:591:#ifdef CONFIG_TCC_BCHECK
+./i386-gen.c:607:#ifdef CONFIG_TCC_BCHECK
+./i386-gen.c:1067:#ifdef CONFIG_TCC_BCHECK
+./tcc.c:58:#ifdef CONFIG_TCC_BCHECK
+./tcc.h:169:# define CONFIG_TCC_BCHECK /* enable bound checking code */
+./tcc.h:678:#ifdef CONFIG_TCC_BCHECK
+./tcc.h:1283:ST_DATA SValue __vstack[1+/*to make bcheck happy*/ VSTACK_SIZE], *vtop, *pvtop;
+./tcc.h:1347:#if defined CONFIG_TCC_BCHECK || defined TCC_TARGET_C67
+./tcc.h:1376:#ifdef CONFIG_TCC_BCHECK
+./tcc.h:1427:ST_FUNC void tcc_add_bcheck(TCCState *s1);
+./tcc.h:1535:#ifdef CONFIG_TCC_BCHECK
+./x86_64-gen.c:651:#if defined(CONFIG_TCC_BCHECK)
+./x86_64-gen.c:1574:#ifdef CONFIG_TCC_BCHECK
+./x86_64-gen.c:1591:#ifdef CONFIG_TCC_BCHECK
+
+__TTS_4393393595f44aa7a4710cefe5f61907__RC:0
+__TTS_4393393595f44aa7a4710cefe5f61907__PWD:/app
+__TTS_4393393595f44aa7a4710cefe5f61907__END
+root@82fa6a19c760:/app# cd -- __TTS_4393393595f44aa7a4710cefe5f61907__PWD:/app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -n "1,80p" lib/Makefile tcc.h | sed -n "1,
+140p"'; __tts_rc=$?; printf '\n__TTS_56dc6b2cb22f443da93126bc3ecc4413__RC:%s\n' "$__tts_rc"; printf '__TTS_56dc6b2cb22f443da93126bc3ecc4413__PWD:'; pwd; printf
+'__TTS_56dc6b2cb22f443da93126bc3ecc4413__END\n'; tmux wait -S done
+bash: cd: __TTS_4393393595f44aa7a4710cefe5f61907__PWD:/app: No such file or directory
+
+__TTS_56dc6b2cb22f443da93126bc3ecc4413__RC:1
+__TTS_56dc6b2cb22f443da93126bc3ecc4413__PWD:/app
+__TTS_56dc6b2cb22f443da93126bc3ecc4413__END
+root@82fa6a19c760:/app# cd -- /app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -n "1,80p" lib/Makefile && printf "\n--- tcc.h ---\n" && sed -n "150,190p" tcc.h'; __t
+ts_rc=$?; printf '\n__TTS_8b582ce4371443deac98e4bfa0507924__RC:%s\n' "$__tts_rc"; printf '__TTS_8b582ce4371443deac98e4bfa0507924__PWD:'; pwd; printf '__TTS_8b58
+2ce4371443deac98e4bfa0507924__END\n'; tmux wait -S done
+#
+# Tiny C Compiler Makefile for libtcc1.a
+#
+
+TOP = ..
+include $(TOP)/Makefile
+VPATH = $(TOPSRC)/lib $(TOPSRC)/win32/lib
+T = $(or $(CROSS_TARGET),$(NATIVE_TARGET),unknown)
+X = $(if $(CROSS_TARGET),$(CROSS_TARGET)-)
+BIN = $(TOP)/$(X)libtcc1.a
+
+XTCC ?= $(TOP)/$(X)tcc$(EXESUF)
+XCC = $(XTCC)
+XAR = $(XTCC) -ar
+XFLAGS-unx = -B$(TOPSRC)
+XFLAGS-win = -B$(TOPSRC)/win32 -I$(TOPSRC)/include
+XFLAGS = $(XFLAGS$(XCFG))
+XCFG = $(or $(findstring -win,$T),-unx)
+
+# in order to use gcc, tyoe: make <target>-libtcc1-usegcc=yes
+arm-libtcc1-usegcc ?= no
+
+ifeq "$($(T)-libtcc1-usegcc)" "yes"
+ XCC = $(CC)
+ XAR = $(AR)
+ XFLAGS = $(CFLAGS) -fPIC
+endif
+
+# only for native compiler
+$(X)BCHECK_O = bcheck.o
+
+ifeq ($(CONFIG_musl)$(CONFIG_uClibc),yes)
+ BCHECK_O =
+endif
+
+ifdef CONFIG_OSX
+ XFLAGS += -D_ANSI_SOURCE
+endif
+
+I386_O = libtcc1.o alloca86.o alloca86-bt.o
+X86_64_O = libtcc1.o alloca86_64.o alloca86_64-bt.o
+ARM_O = libtcc1.o armeabi.o alloca-arm.o armflush.o
+ARM64_O = lib-arm64.o
+WIN_O = crt1.o crt1w.o wincrt1.o wincrt1w.o dllcrt1.o dllmain.o
+
+OBJ-i386 = $(I386_O) $(BCHECK_O)
+OBJ-x86_64 = $(X86_64_O) va_list.o $(BCHECK_O)
+OBJ-x86_64-osx = $(X86_64_O) va_list.o
+OBJ-i386-win32 = $(I386_O) chkstk.o bcheck.o $(WIN_O)
+OBJ-x86_64-win32 = $(X86_64_O) chkstk.o bcheck.o $(WIN_O)
+OBJ-arm64 = $(ARM64_O)
+OBJ-arm = $(ARM_O)
+OBJ-arm-fpa = $(ARM_O)
+OBJ-arm-fpa-ld = $(ARM_O)
+OBJ-arm-vfp = $(ARM_O)
+OBJ-arm-eabi = $(ARM_O)
+OBJ-arm-eabihf = $(ARM_O)
+OBJ-arm-wince = $(ARM_O) $(WIN_O)
+
+$(BIN) : $(patsubst %.o,$(X)%.o,$(OBJ-$T))
+        $(XAR) rcs $@ $^
+
+$(X)%.o : %.c
+        $(XCC) -c $< -o $@ $(XFLAGS)
+
+$(X)%.o : %.S
+        $(XCC) -c $< -o $@ $(XFLAGS)
+
+$(X)crt1w.o : crt1.c
+$(X)wincrt1w.o : wincrt1.c
+
+clean :
+        rm -f *.a *.o $(BIN)
+
+--- tcc.h ---
+#endif
+
+/* only native compiler supports -run */
+#if defined _WIN32 == defined TCC_TARGET_PE
+# if (defined __i386__ || defined _X86_) && defined TCC_TARGET_I386
+#  define TCC_IS_NATIVE
+# elif (defined __x86_64__ || defined _AMD64_) && defined TCC_TARGET_X86_64
+#  define TCC_IS_NATIVE
+# elif defined __arm__ && defined TCC_TARGET_ARM
+#  define TCC_IS_NATIVE
+# elif defined __aarch64__ && defined TCC_TARGET_ARM64
+#  define TCC_IS_NATIVE
+# endif
+#endif
+
+#if defined TCC_IS_NATIVE && !defined CONFIG_TCCBOOT
+# define CONFIG_TCC_BACKTRACE
+# if (defined TCC_TARGET_I386 || defined TCC_TARGET_X86_64) \
+  && !defined TCC_UCLIBC && !defined TCC_MUSL
+# define CONFIG_TCC_BCHECK /* enable bound checking code */
+# endif
+#endif
+
+/* ------------ path configuration ------------ */
+
+#ifndef CONFIG_SYSROOT
+# define CONFIG_SYSROOT ""
+#endif
+#ifndef CONFIG_TCCDIR
+# define CONFIG_TCCDIR "/usr/local/lib/tcc"
+#endif
+#ifndef CONFIG_LDDIR
+# define CONFIG_LDDIR "lib"
+#endif
+#ifdef CONFIG_TRIPLET
+# define USE_TRIPLET(s) s "/" CONFIG_TRIPLET
+# define ALSO_TRIPLET(s) USE_TRIPLET(s) ":" s
+#else
+# define USE_TRIPLET(s) s
+# define ALSO_TRIPLET(s) s
+#endif
+
+__TTS_8b582ce4371443deac98e4bfa0507924__RC:0
+__TTS_8b582ce4371443deac98e4bfa0507924__PWD:/app
+__TTS_8b582ce4371443deac98e4bfa0507924__END
+root@82fa6a19c760:/app# cd -- __TTS_8b582ce4371443deac98e4bfa0507924__PWD:/app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -i "/# define CONFIG_TCC_BCHECK \/\* enabl
+e bound checking code \*\//d" tcc.h && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr >/dev/null && make -j"$(nproc)" >/dev/null && rm -rf /tmp
+/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-iso/ && genisoim
+age -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; printf '\n__TTS_
+27f4dd2af9264006a26a78b87324a554__RC:%s\n' "$__tts_rc"; printf '__TTS_27f4dd2af9264006a26a78b87324a554__PWD:'; pwd; printf '__TTS_27f4dd2af9264006a26a78b87324a5
+54__END\n'; tmux wait -S done
+bash: cd: __TTS_8b582ce4371443deac98e4bfa0507924__PWD:/app: No such file or directory
+
+__TTS_27f4dd2af9264006a26a78b87324a554__RC:1
+__TTS_27f4dd2af9264006a26a78b87324a554__PWD:/app
+__TTS_27f4dd2af9264006a26a78b87324a554__END
+root@82fa6a19c760:/app# cd -- __TTS_27f4dd2af9264006a26a78b87324a554__PWD:/app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -i "/# define CONFIG_TCC_BCHECK \/\* enabl
+e bound checking code \*\//d" tcc.h && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr >/dev/null && make -j"$(nproc)" >/dev/null && rm -rf /tmp
+/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-iso/ && genisoim
+age -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; printf '\n__TTS_
+3f92a6bdedd14556ad031dc6c3c4966d__RC:%s\n' "$__tts_rc"; printf '__TTS_3f92a6bdedd14556ad031dc6c3c4966d__PWD:'; pwd; printf '__TTS_3f92a6bdedd14556ad031dc6c3c496
+6d__END\n'; tmux wait -S done
+bash: cd: __TTS_27f4dd2af9264006a26a78b87324a554__PWD:/app: No such file or directory
+
+__TTS_3f92a6bdedd14556ad031dc6c3c4966d__RC:1
+__TTS_3f92a6bdedd14556ad031dc6c3c4966d__PWD:/app
+__TTS_3f92a6bdedd14556ad031dc6c3c4966d__END
+root@82fa6a19c760:/app# cd -- __TTS_3f92a6bdedd14556ad031dc6c3c4966d__PWD:/app && cd /app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -i "/# define CONFIG_TCC_BCHECK
+ \/\* enable bound checking code \*\//d" tcc.h && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr >/dev/null && make -j"$(nproc)" >/dev/null &&
+rm -rf /tmp/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-iso/
+&& genisoimage -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; print
+f '\n__TTS_d69afebef7e54b999018b71328d94f07__RC:%s\n' "$__tts_rc"; printf '__TTS_d69afebef7e54b999018b71328d94f07__PWD:'; pwd; printf '__TTS_d69afebef7e54b99901
+8b71328d94f07__END\n'; tmux wait -S done
+bash: cd: __TTS_3f92a6bdedd14556ad031dc6c3c4966d__PWD:/app: No such file or directory
+
+__TTS_d69afebef7e54b999018b71328d94f07__RC:1
+__TTS_d69afebef7e54b999018b71328d94f07__PWD:/app
+__TTS_d69afebef7e54b999018b71328d94f07__END
+root@82fa6a19c760:/app# cd -- __TTS_d69afebef7e54b999018b71328d94f07__PWD:/app && bash -lc 'cd /tmp/tcc-0.9.27 && sed -i "/# define CONFIG_TCC_BCHECK \/\* enabl
+e bound checking code \*\//d" tcc.h && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr >/dev/null && make -j"$(nproc)" >/dev/null && rm -rf /tmp
+/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/tcc-root/. /tmp/tcc-iso/ && genisoim
+age -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc1.a'; __tts_rc=$?; printf '\n__TTS_
+8c68aada74a14ba9b13b67696d27a5c7__RC:%s\n' "$__tts_rc"; printf '__TTS_8c68aada74a14ba9b13b67696d27a5c7__PWD:'; pwd; printf '__TTS_8c68aada74a14ba9b13b67696d27a5
+c7__END\n'; tmux wait -S done
+bash: cd: __TTS_d69afebef7e54b999018b71328d94f07__PWD:/app: No such file or directory
+
+__TTS_8c68aada74a14ba9b13b67696d27a5c7__RC:1
+__TTS_8c68aada74a14ba9b13b67696d27a5c7__PWD:/app
+__TTS_8c68aada74a14ba9b13b67696d27a5c7__END
+root@82fa6a19c760:/app# cd -- __TTS_8c68aada74a14ba9b13b67696d27a5c7__PWD:/app && python3 -c 'import os,subprocess; cmd="cd /tmp/tcc-0.9.27 && sed -i \"/# defin
+e CONFIG_TCC_BCHECK \\\/\\* enable bound checking code \\\*\\//d\" tcc.h && make clean >/dev/null 2>&1 || true && ./configure --prefix=/usr >/dev/null && make -
+j$(nproc) >/dev/null && rm -rf /tmp/tcc-root /tmp/tcc-iso /tmp/tcc.iso && make DESTDIR=/tmp/tcc-root install >/dev/null && mkdir -p /tmp/tcc-iso && cp -a /tmp/t
+cc-root/. /tmp/tcc-iso/ && genisoimage -quiet -R -J -o /tmp/tcc.iso /tmp/tcc-iso && ls -lh /tmp/tcc.iso /tmp/tcc-iso/usr/bin/tcc /tmp/tcc-iso/usr/lib/tcc/libtcc
+1.a"; subprocess.run(["bash","-lc",cmd],cwd="/app")'; __tts_rc=$?; printf '\n__TTS_1170c4aa98ae4ecfb83083d1b29b09c0__RC:%s\n' "$__tts_rc"; printf '__TTS_1170c4a
+a98ae4ecfb83083d1b29b09c0__PWD:'; pwd; printf '__TTS_1170c4aa98ae4ecfb83083d1b29b09c0__END\n'; tmux wait -S done
+bash: cd: __TTS_8c68aada74a14ba9b13b67696d27a5c7__PWD:/app: No such file or directory
+
+__TTS_1170c4aa98ae4ecfb83083d1b29b09c0__RC:1
+__TTS_1170c4aa98ae4ecfb83083d1b29b09c0__PWD:/app
+__TTS_1170c4aa98ae4ecfb83083d1b29b09c0__END
+root@82fa6a19c760:/app#

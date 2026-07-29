@@ -1,0 +1,24 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.08,
+      "n_reads": 0,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python - <<'PY'\\nfrom pathlib import Path\\nfrom itertools import product\\nimport subprocess,re,sys\\n\\n# Parse sequences.fasta\\ntext=Path('/app/sequences.fasta').read_text().strip().splitlines()\\nseqs=[]; name=None; buf=[]\\nfor line in text:\\n    if line.startswith('>'):\\n        if name is not None: seqs.append((name,''.join(buf).upper().replace(' ','').replace('\\\\r','')))\\n        name=line[1:].strip(); buf=[]\\n    else:\\n        buf.append(line.strip())\\nif name is not None: seqs.a",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 2287
+      }
+    }
+  ],
+  "commit_results": []
+}

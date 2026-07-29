@@ -1,0 +1,191 @@
+[?2004hroot@62fe1100bd42:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@62fe1100bd42:/app# clear
+[?2004l[H[J[3J[?2004hroot@62fe1100bd42:/app# pwd; __tts_rc=$?; printf '\n__TTS_4e3c33e955fa4d67b5bb2bb71950d934__RC:%s\n' "$__tts_rc"; printf '__TTS_4e3c33e955fa4d67b5bb2bb71950d934__PWD:'; pwd; printf '__TTS_4e3c33e955fa4d67b5bb2bb71950d934__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_4e3c33e955fa4d67b5bb2bb71950d934__RC:0
+__TTS_4e3c33e955fa4d67b5bb2bb71950d934__PWD:/app
+__TTS_4e3c33e955fa4d67b5bb2bb71950d934__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^/app/##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_56ada8b9995d432da49f4a17158a19f5__RC:%s\n' "$__tts_rc"; printf '__TTS_56ada8b9995d432da49f4a17158a19f5__PWD:'; pwd; printf '__TTS_56ada8b9995d432da49f4a17158a19f5__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Jul 18 09:56 .
+drwxr-xr-x 1 root root 4096 Jul 18 14:55 ..
+
+__TTS_56ada8b9995d432da49f4a17158a19f5__RC:0
+__TTS_56ada8b9995d432da49f4a17158a19f5__PWD:/app
+__TTS_56ada8b9995d432da49f4a17158a19f5__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import sys, pkgutil
+[?2004l[?2004h> mods=["mteb","sentence_transformers","transformers","torch"]
+[?2004l[?2004h> print({m:bool(pkgutil.find_loader(m)) for m in mods})
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__RC:%s\n' "$__tts_rc"; printf '__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__PWD:'; pwd; printf '__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__END\n'; tmux wait -S done
+[?2004l{'mteb': True, 'sentence_transformers': True, 'transformers': True, 'torch': True}
+
+__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__RC:0
+__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__PWD:/app
+__TTS_c23d7a84c70f4677bd8b7a7dc64383d3__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import mteb, inspect
+[?2004l[?2004h> print(mteb.__version__)
+[?2004l[?2004h> print(inspect.signature(mteb.MTEB))
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_ac374e4f83bb4be7bc9aa8505f400e07__RC:%s\n' "$__tts_rc"; printf '__TTS_ac374e4f83bb4be7bc9aa8505f400e07__PWD:'; pwd; printf '__TTS_ac374e4f83bb4be7bc9aa8505f400e07__END\n'; tmux wait -S done
+[?2004lTraceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.10/site-packages/mteb/__init__.py", line 5, in <module>
+    from mteb.benchmarks.benchmarks import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/__init__.py", line 3, in <module>
+    from mteb.benchmarks.benchmark import Benchmark
+  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/benchmark.py", line 9, in <module>
+    from mteb.load_results.load_results import load_results
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/__init__.py", line 3, in <module>
+    from .benchmark_results import BenchmarkResults, ModelResult
+  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/benchmark_results.py", line 15, in <module>
+    from mteb.abstasks.AbsTask import AbsTask, ScoresDict
+  File "/usr/local/lib/python3.10/site-packages/mteb/abstasks/__init__.py", line 3, in <module>
+    from ..evaluation.LangMapping import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/__init__.py", line 3, in <module>
+    from .MTEB import *
+  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py", line 23, in <module>
+    from mteb.models import model_meta_from_sentence_transformers
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/__init__.py", line 5, in <module>
+    from mteb.models.overview import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/overview.py", line 14, in <module>
+    from mteb.models import (
+  File "/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py", line 13, in <module>
+    from transformers import AutoModelForVision2Seq, AutoProcessor
+ImportError: cannot import name 'AutoModelForVision2Seq' from 'transformers' (/usr/local/lib/python3.10/site-packages/transformers/__init__.py)
+
+__TTS_ac374e4f83bb4be7bc9aa8505f400e07__RC:1
+__TTS_ac374e4f83bb4be7bc9aa8505f400e07__PWD:/app
+__TTS_ac374e4f83bb4be7bc9aa8505f400e07__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import os,site,glob
+[?2004l[?2004h> for p in site.getsitepackages():
+[?2004l[?2004h>  f=glob.glob(os.path.join(p,"mteb/models/gme_v_models.py"))
+[?2004l[?2004h>  if f:
+[?2004l[?2004h>   print(f[0])
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_2c4d58beca3f4bf7b21ac26e3562f214__RC:%s\n' "$__tts_rc"; printf '__TTS_2c4d58beca3f4bf7b21ac26e3562f214__PWD:'; pwd; printf '__TTS_2c4d58beca3f4bf7b21ac26e3562f214__END\n'; tmux wait -S done
+[?2004l/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py
+
+__TTS_2c4d58beca3f4bf7b21ac26e3562f214__RC:0
+__TTS_2c4d58beca3f4bf7b21ac26e3562f214__PWD:/app
+__TTS_2c4d58beca3f4bf7b21ac26e3562f214__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path("/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py")
+[?2004l[?2004h> s=p.read_text(); s=s.replace("from transformers import AutoModelForVision2Seq, AutoProcessor","try:\n    from transformers import AutoModelForVision2Seq, AutoProcessor\nexcept ImportError:\n    AutoModelForVision2Seq = None\n    from transformers import AutoProcessor")
+[?2004l[?2004h> p.write_text(s); print("patched", p)
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_ca6b5dd204924e26a64d9a79893f84e9__RC:%s\n' "$__tts_rc"; printf '__TTS_ca6b5dd204924e26a64d9a79893f84e9__PWD:'; pwd; printf '__TTS_ca6b5dd204924e26a64d9a79893f84e9__END\n'; tmux wait -S done
+[?2004lpatched /usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py
+
+__TTS_ca6b5dd204924e26a64d9a79893f84e9__RC:0
+__TTS_ca6b5dd204924e26a64d9a79893f84e9__PWD:/app
+__TTS_ca6b5dd204924e26a64d9a79893f84e9__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import mteb,inspect
+[?2004l[?2004h> print(mteb.__version__)
+[?2004l[?2004h> print(inspect.signature(mteb.MTEB))
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_0b8a041b38ec4dc9829ec87a5a00741e__RC:%s\n' "$__tts_rc"; printf '__TTS_0b8a041b38ec4dc9829ec87a5a00741e__PWD:'; pwd; printf '__TTS_0b8a041b38ec4dc9829ec87a5a00741e__END\n'; tmux wait -S done
+[?2004l1.36.8
+(tasks: 'Sequence[str | AbsTask] | None' = None, *, task_types: 'list[str] | None' = None, task_categories: 'list[str] | None' = None, task_langs: 'list[str] | None' = None, version=None, err_logs_path: 'str' = 'error_logs.txt', **kwargs)
+
+__TTS_0b8a041b38ec4dc9829ec87a5a00741e__RC:0
+__TTS_0b8a041b38ec4dc9829ec87a5a00741e__PWD:/app
+__TTS_0b8a041b38ec4dc9829ec87a5a00741e__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import inspect,mteb
+[?2004l[?2004h> from mteb.evaluation.MTEB import MTEB
+[?2004l[?2004h> print(inspect.signature(MTEB.run))
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_c4414d0db7d641b88b81d1399dc91b6e__RC:%s\n' "$__tts_rc"; printf '__TTS_c4414d0db7d641b88b81d1399dc91b6e__PWD:'; pwd; printf '__TTS_c4414d0db7d641b88b81d1399dc91b6e__END\n'; tmux wait -S done
+[?2004l(self, model: 'SentenceTransformer | Encoder', verbosity: 'int' = 1, output_folder: 'str | None' = 'results', eval_splits: 'list[str] | None' = None, eval_subsets: 'list[str] | None' = None, overwrite_results: 'bool' = False, raise_error: 'bool' = True, co2_tracker: 'bool' = False, encode_kwargs: 'dict[str, Any]' = {}, **kwargs) -> 'list[TaskResult]'
+
+__TTS_c4414d0db7d641b88b81d1399dc91b6e__RC:0
+__TTS_c4414d0db7d641b88b81d1399dc91b6e__PWD:/app
+__TTS_c4414d0db7d641b88b81d1399dc91b6e__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> from sentence_transformers import SentenceTransformer
+[?2004l[?2004h> from mteb import MTEB
+[?2004l[?2004h> model=SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+[?2004l[?2004h> res=MTEB(tasks=["STS12"]).run(model,output_folder="results",verbosity=1,eval_splits=["test"],overwrite_results=True)
+[?2004l[?2004h> print(res[0].scores["test"][0])
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_565e264580164ecd8d6ed54d8fe63f0d__RC:%s\n' "$__tts_rc"; printf '__TTS_565e264580164ecd8d6ed54d8fe63f0d__PWD:'; pwd; printf '__TTS_565e264580164ecd8d6ed54d8fe63f0d__END\n'; tmux wait -S done
+[?2004lWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+modules.json:   0%|                                                                                                                  | 0.00/349 [00:00<?, ?B/s]modules.json: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████| 349/349 [00:00<00:00, 1.73MB/s]
+config_sentence_transformers.json:   0%|                                                                                             | 0.00/116 [00:00<?, ?B/s]config_sentence_transformers.json: 100%|███████████████████████████████████████████████████████████████████████████████████████| 116/116 [00:00<00:00, 648kB/s]
+README.md:   0%|                                                                                                                   | 0.00/11.6k [00:00<?, ?B/s]README.md: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████| 11.6k/11.6k [00:00<00:00, 27.0MB/s]
+sentence_bert_config.json:   0%|                                                                                                    | 0.00/53.0 [00:00<?, ?B/s]sentence_bert_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 53.0/53.0 [00:00<00:00, 366kB/s]
+config.json:   0%|                                                                                                                   | 0.00/571 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 571/571 [00:00<00:00, 3.15MB/s]
+
+model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B /  438MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes:                                                                                                      | 66.4kB            model.safetensors: downloading bytes: ▏                                                                                                    |  699kB, 6.56kB/s  model.safetensors: downloading bytes: ▌                                                                                                    | 2.56MB, 68.8kB/s  model.safetensors: downloading bytes: █▋                                                                                                   | 7.34MB,  251kB/s  model.safetensors: downloading bytes: ████▌                                                                                                | 19.9MB,  716kB/s  model.safetensors: downloading bytes: ███████████▍                                                                                         | 49.8MB, 1.93MB/s  model.safetensors: downloading bytes: ██████████████████████▎                                                                              | 96.5MB, 4.83MB/s  model.safetensors: downloading bytes: ████████████████████████████████▉                                                                    |  143MB, 9.31MB/s  model.safetensors: downloading bytes: ████████████████████████████████████████████                                                         |  191MB, 13.7MB/s  model.safetensors: downloading bytes: ██████████████████████████████████████████████████████▏                                              |  235MB, 18.2MB/s  model.safetensors: downloading bytes: ███████████████████████████████████████████████████████████████▎                                     |  274MB, 22.3MB/s  
+model.safetensors: reconstructing file:  31%|██████████████████████████                                                           |  134MB /  438MB            [Amodel.safetensors: downloading bytes: ███████████████████████████████████████████████████████████████████████████████▋                     |  345MB, 29.0MB/s  model.safetensors: downloading bytes: ███████████████████████████████████████████████████████████████████████████████████████████▍         |  397MB, 34.5MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████|  438MB /  438MB, 12.8MB/s  [Amodel.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████|  414MB, 37.3MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████|  414MB, 37.3MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████|  438MB /  438MB, 40.8MB/s  
+Loading weights:   0%|                                                                                                                 | 0/199 [00:00<?, ?it/s]Loading weights: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 199/199 [00:00<00:00, 4447.71it/s]
+tokenizer_config.json:   0%|                                                                                                         | 0.00/363 [00:00<?, ?B/s]tokenizer_config.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 363/363 [00:00<00:00, 2.14MB/s]
+vocab.txt:   0%|                                                                                                                    | 0.00/232k [00:00<?, ?B/s]vocab.txt: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 232k/232k [00:00<00:00, 74.2MB/s]
+tokenizer.json:   0%|                                                                                                               | 0.00/466k [00:00<?, ?B/s]tokenizer.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████| 466k/466k [00:00<00:00, 140MB/s]
+special_tokens_map.json:   0%|                                                                                                       | 0.00/239 [00:00<?, ?B/s]special_tokens_map.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 239/239 [00:00<00:00, 1.30MB/s]
+config.json:   0%|                                                                                                                   | 0.00/190 [00:00<?, ?B/s]config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 190/190 [00:00<00:00, 840kB/s]
+/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py:121: UserWarning: Passing task names as strings is deprecated and will be removed in 2.0 release. Please use `tasks = mteb.get_tasks(tasks=[...])` method to get tasks instead.
+  warnings.warn(
+WARNING:mteb.models.sentence_transformer_wrapper:Model prompts are not in the expected format. Ignoring them.
+[38;5;235m─────────────────────────────────────────────────────────────────────── [0m[1mSelected tasks [0m[38;5;235m ────────────────────────────────────────────────────────────────────────[0m
+[1mSTS[0m
+    - STS12, [3;38;5;241ms2s[0m
+
+
+{'pearson': np.float64(0.8328013142548684), 'spearman': np.float64(0.726328256821403), 'cosine_pearson': np.float64(0.8328013220663653), 'cosine_spearman': np.float64(0.7263428313075962), 'manhattan_pearson': np.float64(0.7865899550048161), 'manhattan_spearman': np.float64(0.7226762232532433), 'euclidean_pearson': np.float64(0.7901342824830463), 'euclidean_spearman': np.float64(0.7263290286572794), 'main_score': np.float64(0.7263428313075962), 'hf_subset': 'default', 'languages': ['eng-Latn']}
+
+__TTS_565e264580164ecd8d6ed54d8fe63f0d__RC:0
+__TTS_565e264580164ecd8d6ed54d8fe63f0d__PWD:/app
+__TTS_565e264580164ecd8d6ed54d8fe63f0d__END
+[?2004hroot@62fe1100bd42:/app# cd -- /app && find /app/results -maxdepth 4 -type f | sort && python - <<'PY'
+[?2004l[?2004h> import json,glob
+[?2004l[?2004h> for f in glob.glob('/app/results/*/*/STS12.json'):
+[?2004l[?2004h>  d=json.load(open(f))
+[?2004l[?2004h>  print(f, d.get('scores',{}).get('test',[{}])[0].get('cosine_spearman'))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_efd7e0d377cf4f6bab58b70fea4f62e2__RC:%s\n' "$__tts_rc"; printf '__TTS_efd7e0d377cf4f6bab58b70fea4f62e2__PWD:'; pwd; printf '__TTS_efd7e0d377cf4f6bab58b70fea4f62e2__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'find /app/results -maxdepth 4 -type f | sort | sed -n "1,20p" && python - <<"PY"
+[?2004l[?2004h> import json,glob
+[?2004l[?2004h> for f in glob.glob("/app/results/*/*/STS12.json"):
+[?2004l[?2004h>  d=json.load(open(f))
+[?2004l[?2004h>  print(f, d.get("scores",{}).get("test",[{}])[0].get("cosine_spearman"))
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_759fe7c756de4010a2a0c01ce3f3927b__RC:%s\n' "$__tts_rc"; printf '__TTS_759fe7c756de4010a2a0c01ce3f3927b__PWD:'; pwd; printf '__TTS_759fe7c756de4010a2a0c01ce3f3927b__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> for p in sorted(Path("/app/results").glob("*/*/STS12.json")):
+[?2004l[?2004h>     print(p)
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_8c3bd46c73ac4d4b80ad83efa3bc747f__RC:%s\n' "$__tts_rc"; printf '__TTS_8c3bd46c73ac4d4b80ad83efa3bc747f__PWD:'; pwd; printf '__TTS_8c3bd46c73ac4d4b80ad83efa3bc747f__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path("/app/results")
+[?2004l[?2004h> print("exists",p.exists())
+[?2004l[?2004h> for a in p.iterdir():
+[?2004l[?2004h>     print(a)
+[?2004l[?2004h>     break
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_6d2972902e834f9cb2dab2a7fea442b2__RC:%s\n' "$__tts_rc"; printf '__TTS_6d2972902e834f9cb2dab2a7fea442b2__PWD:'; pwd; printf '__TTS_6d2972902e834f9cb2dab2a7fea442b2__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'python - <<"PY"
+[?2004l[?2004h> import os
+[?2004l[?2004h> for root,dirs,files in os.walk("/app/results", topdown=True):
+[?2004l[?2004h>     dirs[:] = []
+[?2004l[?2004h>     print(root, files[:5])
+[?2004l[?2004h>     break
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_b793bad3d1dd4cb7aaa48eada516e916__RC:%s\n' "$__tts_rc"; printf '__TTS_b793bad3d1dd4cb7aaa48eada516e916__PWD:'; pwd; printf '__TTS_b793bad3d1dd4cb7aaa48eada516e916__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import json
+[?2004l[?2004h> p='/app/results/sentence-transformers__all-mpnet-base-v2/4d69a0e6f51f6d00a7d76d69bc0108f8d4d5d1c6/STS12.json'
+[?2004l[?2004h> with open(p) as f: d=json.load(f)
+[?2004l[?2004h> print(d['scores']['test'][0]['cosine_spearman'])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d17209c3139d4ffe8acb31cedf660de4__RC:%s\n' "$__tts_rc"; printf '__TTS_d17209c3139d4ffe8acb31cedf660de4__PWD:'; pwd; printf '__TTS_d17209c3139d4ffe8acb31cedf660de4__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 44 delimited by end-of-file (wanted `PY')
+/app/results/sentence-transformers__all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/STS12.json
+/app/results/sentence-transformers__all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/model_meta.json
+  File "<stdin>", line 6
+    cd -- /app && bash -lc 'find /app/results -maxdepth 4 -type f | sort | sed -n "1,20p" && python - <<"PY"
+                           ^
+SyntaxError: unterminated string literal (detected at line 6)
+[?2004hroot@62fe1100bd42:/app# 

@@ -1,0 +1,254 @@
+Trial configure-git-webserver__vWAoEMF failed: Environment start timed out after 600.0 seconds
+Trial custom-memory-heap-crash__DMPdnRQ failed: Environment start timed out after 600.0 seconds
+Trial chess-best-move__fQek2i4 failed: Environment start timed out after 600.0 seconds
+Trial pypi-server__ydQNpM5 failed: Environment start timed out after 600.0 seconds
+Trial multi-source-data-merger__digr83d failed: Environment start timed out after 600.0 seconds
+Trial crack-7z-hash__VU24d6C failed: Environment start timed out after 600.0 seconds
+Trial mteb-retrieve__yAiDsB9 failed: Environment start timed out after 600.0 seconds
+Trial adaptive-rejection-sampler__DzRanPF failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial break-filter-js-from-html__zyRaXo7 failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Trial compile-compcert__saLxrYa failed: Docker compose command failed for environment compile-compcert. Command: docker compose --project-name compile-compcert__salxrya__env --project-directory /home/t-wendili/.cache/harbor/tasks/QDMuuRtnbx7cWNzKkXsGhM/compile-compcert/environment -f /tmp/tmpqwv1njym/compile-compcert__saLxrYa__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpdb7xpal0/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network compile-compcert__salxrya__env_default Creating 
+ Network compile-compcert__salxrya__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network compile-compcert__salxrya__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial db-wal-recovery__AUqQ4jX failed: Docker compose command failed for environment db-wal-recovery. Command: docker compose --project-name db-wal-recovery__auqq4jx__env --project-directory /home/t-wendili/.cache/harbor/tasks/X4QTPPGhjzjJSVbTTETRUK/db-wal-recovery/environment -f /tmp/tmpkjp0p8fe/db-wal-recovery__AUqQ4jX__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp3k84xpvw/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network db-wal-recovery__auqq4jx__env_default Creating 
+ Network db-wal-recovery__auqq4jx__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network db-wal-recovery__auqq4jx__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Trial headless-terminal__n2AR5zt failed: Docker compose command failed for environment headless-terminal. Command: docker compose --project-name headless-terminal__n2ar5zt__env --project-directory /home/t-wendili/.cache/harbor/tasks/KSwQXLapvDLmcHTvZcJVQG/headless-terminal/environment -f /tmp/tmps3cgt1i3/headless-terminal__n2AR5zt__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpoh22u0og/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network headless-terminal__n2ar5zt__env_default Creating 
+ Network headless-terminal__n2ar5zt__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network headless-terminal__n2ar5zt__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial path-tracing__39m7xAy failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Trial feal-linear-cryptanalysis__Mi3Hygz failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial fix-git__zNbmkuH failed: Docker compose command failed for environment fix-git. Command: docker compose --project-name fix-git__znbmkuh__env --project-directory /home/t-wendili/.cache/harbor/tasks/kzqjKVWxvHZxV5xyLNLqJi/fix-git/environment -f /tmp/tmpkps2p4yy/fix-git__zNbmkuH__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpbi_z6hp6/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network fix-git__znbmkuh__env_default Creating 
+ Network fix-git__znbmkuh__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network fix-git__znbmkuh__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial schemelike-metacircular-eval__3FRXEsF failed: Docker compose command failed for environment schemelike-metacircular-eval. Command: docker compose --project-name schemelike-metacircular-eval__3frxesf__env --project-directory /home/t-wendili/.cache/harbor/tasks/YkDjArg6hKdFYEmdiPrztY/schemelike-metacircular-eval/environment -f /tmp/tmpgjskoig3/schemelike-metacircular-eval__3FRXEsF__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpg2iizjo7/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network schemelike-metacircular-eval__3frxesf__env_default Creating 
+ Network schemelike-metacircular-eval__3frxesf__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network schemelike-metacircular-eval__3frxesf__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Trial qemu-startup__9ARyGSJ failed: Docker compose command failed for environment qemu-startup. Command: docker compose --project-name qemu-startup__9arygsj__env --project-directory /home/t-wendili/.cache/harbor/tasks/gHS2mTGhPaYTuJWpCkw4J9/qemu-startup/environment -f /tmp/tmpc6bu9nsw/qemu-startup__9ARyGSJ__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp4p7a4ry7/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network qemu-startup__9arygsj__env_default Creating 
+ Network qemu-startup__9arygsj__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network qemu-startup__9arygsj__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial build-pov-ray__ZE85a8z failed: Docker compose command failed for environment build-pov-ray. Command: docker compose --project-name build-pov-ray__ze85a8z__env --project-directory /home/t-wendili/.cache/harbor/tasks/H9EGgCK3p6caXKKnhsqu6a/build-pov-ray/environment -f /tmp/tmpmhukzd5b/build-pov-ray__ZE85a8z__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpkj6d9f67/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network build-pov-ray__ze85a8z__env_default Creating 
+ Network build-pov-ray__ze85a8z__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network build-pov-ray__ze85a8z__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial git-multibranch__Ai5E7Sj failed: Docker compose command failed for environment git-multibranch. Command: docker compose --project-name git-multibranch__ai5e7sj__env --project-directory /home/t-wendili/.cache/harbor/tasks/kLfrAkLDVW7LCezLUHt4oB/git-multibranch/environment -f /tmp/tmptxa48kx8/git-multibranch__Ai5E7Sj__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp8o6pe6lf/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network git-multibranch__ai5e7sj__env_default Creating 
+ Network git-multibranch__ai5e7sj__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network git-multibranch__ai5e7sj__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial train-fasttext__JvnU73N failed: Docker compose command failed for environment train-fasttext. Command: docker compose --project-name train-fasttext__jvnu73n__env --project-directory /home/t-wendili/.cache/harbor/tasks/QUdXqzZFwRrgRZ7SPHyxto/train-fasttext/environment -f /tmp/tmpvcad7gxe/train-fasttext__JvnU73N__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpbj1f5kwt/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network train-fasttext__jvnu73n__env_default Creating 
+ Network train-fasttext__jvnu73n__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network train-fasttext__jvnu73n__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Trial video-processing__LGgFm2X failed: Docker compose command failed for environment video-processing. Command: docker compose --project-name video-processing__lggfm2x__env --project-directory /home/t-wendili/.cache/harbor/tasks/QU8iD2bMsFXumTCQhnBiGz/video-processing/environment -f /tmp/tmpc3hifty4/video-processing__LGgFm2X__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpcbm0ifae/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network video-processing__lggfm2x__env_default Creating 
+ Network video-processing__lggfm2x__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network video-processing__lggfm2x__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial qemu-alpine-ssh__GFquD2r failed: Docker compose command failed for environment qemu-alpine-ssh. Command: docker compose --project-name qemu-alpine-ssh__gfqud2r__env --project-directory /home/t-wendili/.cache/harbor/tasks/YiQMoSRPZzKeHRDhZkwmyd/qemu-alpine-ssh/environment -f /tmp/tmpsr7k58sk/qemu-alpine-ssh__GFquD2r__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpv5xkjjkn/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network qemu-alpine-ssh__gfqud2r__env_default Creating 
+ Network qemu-alpine-ssh__gfqud2r__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network qemu-alpine-ssh__gfqud2r__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial kv-store-grpc__cKGUBo9 failed: Docker compose command failed for environment kv-store-grpc. Command: docker compose --project-name kv-store-grpc__ckgubo9__env --project-directory /home/t-wendili/.cache/harbor/tasks/JGX6wXigbfSgX6m298mcKW/kv-store-grpc/environment -f /tmp/tmp8p4mp5r5/kv-store-grpc__cKGUBo9__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp09vyl8cu/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network kv-store-grpc__ckgubo9__env_default Creating 
+ Network kv-store-grpc__ckgubo9__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network kv-store-grpc__ckgubo9__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Trial install-windows-3.11__ZDYL579 failed: Docker compose command failed for environment install-windows-3.11. Command: docker compose --project-name install-windows-3-11__zdyl579__env --project-directory /home/t-wendili/.cache/harbor/tasks/7s8y623XYuDhmBG6ERABwC/install-windows-3.11/environment -f /tmp/tmpvz7illz0/install-windows-3.11__ZDYL579__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp6k1cc69p/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network install-windows-3-11__zdyl579__env_default Creating 
+ Network install-windows-3-11__zdyl579__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network install-windows-3-11__zdyl579__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Trial make-doom-for-mips__BYEdwQo failed: Docker compose command failed for environment make-doom-for-mips. Command: docker compose --project-name make-doom-for-mips__byedwqo__env --project-directory /home/t-wendili/.cache/harbor/tasks/2gm9aAxh3ufEHTNAcZ8qB3/make-doom-for-mips/environment -f /tmp/tmp1dwljh33/make-doom-for-mips__BYEdwQo__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpjes209a7/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network make-doom-for-mips__byedwqo__env_default Creating 
+ Network make-doom-for-mips__byedwqo__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network make-doom-for-mips__byedwqo__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Trial tune-mjcf__Riyeuz4 failed: Docker compose command failed for environment tune-mjcf. Command: docker compose --project-name tune-mjcf__riyeuz4__env --project-directory /home/t-wendili/.cache/harbor/tasks/jWu5FXBKfqdBD9LqMa9a2N/tune-mjcf/environment -f /tmp/tmp1dcbfnch/tune-mjcf__Riyeuz4__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp0sif0arf/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network tune-mjcf__riyeuz4__env_default Creating 
+ Network tune-mjcf__riyeuz4__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network tune-mjcf__riyeuz4__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Trial extract-moves-from-video__t2x4yck failed: Docker compose command failed for environment extract-moves-from-video. Command: docker compose --project-name extract-moves-from-video__t2x4yck__env --project-directory /home/t-wendili/.cache/harbor/tasks/bDZ3NNHZSFq2MH6CzCTykb/extract-moves-from-video/environment -f /tmp/tmptl1fw8z0/extract-moves-from-video__t2x4yck__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpna2nx7wk/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network extract-moves-from-video__t2x4yck__env_default Creating 
+ Network extract-moves-from-video__t2x4yck__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network extract-moves-from-video__t2x4yck__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Skipping image OS validation for alexgshaw/code-from-image:20251031: docker inspect returned 1
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Skipping image OS validation for alexgshaw/fix-code-vulnerability:20251031: docker inspect returned 1
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Skipping image OS validation for alexgshaw/financial-document-processor:20251031: docker inspect returned 1
+Not retrying trial because the maximum number of retries has been reached
+Trial query-optimize__cv5z3Ee failed: Docker compose command failed for environment query-optimize. Command: docker compose --project-name query-optimize__cv5z3ee__env --project-directory /home/t-wendili/.cache/harbor/tasks/55spjFHXbhXqhkHUB3xfBL/query-optimize/environment -f /tmp/tmpsonxcbum/query-optimize__cv5z3Ee__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpp12c5o8p/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network query-optimize__cv5z3ee__env_default Creating 
+ Network query-optimize__cv5z3ee__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network query-optimize__cv5z3ee__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Trial extract-elf__yaf6aEt failed: Docker compose command failed for environment extract-elf. Command: docker compose --project-name extract-elf__yaf6aet__env --project-directory /home/t-wendili/.cache/harbor/tasks/3HV9wmSrWRW9TuYurepoFx/extract-elf/environment -f /tmp/tmp0ox43mhp/extract-elf__yaf6aEt__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpmvxmojfv/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network extract-elf__yaf6aet__env_default Creating 
+ Network extract-elf__yaf6aet__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network extract-elf__yaf6aet__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Trial protein-assembly__Q7FTwye failed: Docker compose command failed for environment protein-assembly. Command: docker compose --project-name protein-assembly__q7ftwye__env --project-directory /home/t-wendili/.cache/harbor/tasks/mJUNThPAPTj7sAa9DCoPrh/protein-assembly/environment -f /tmp/tmph73pmwh5/protein-assembly__Q7FTwye__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp8quifw6d/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network protein-assembly__q7ftwye__env_default Creating 
+ Network protein-assembly__q7ftwye__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network protein-assembly__q7ftwye__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Trial code-from-image__qhh2WMr failed: Docker compose command failed for environment code-from-image. Command: docker compose --project-name code-from-image__qhh2wmr__env --project-directory /home/t-wendili/.cache/harbor/tasks/KRPXswDf2LBuozQgKhCqnG/code-from-image/environment -f /tmp/tmpng9ubfn3/code-from-image__qhh2WMr__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpdbr98wxz/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Image alexgshaw/code-from-image:20251031 Pulling 
+ b1badc6e5066 Already exists 0B
+ 7e88bf276da0 Already exists 0B
+ d55dfff74d98 Already exists 0B
+ e97853488aa5 Already exists 0B
+ 63ff33ad641b Already exists 0B
+ 9ad031cfdc54 Pulling fs layer 0B
+ 9ad031cfdc54 Downloading 16.38kB
+ 9ad031cfdc54 Downloading 80.25kB
+ 9ad031cfdc54 Verifying Checksum 0B
+ 9ad031cfdc54 Download complete 0B
+ 9ad031cfdc54 Extracting 32.77kB
+ 9ad031cfdc54 Extracting 80.25kB
+ 9ad031cfdc54 Extracting 80.25kB
+ 9ad031cfdc54 Pull complete 0B
+ Image alexgshaw/code-from-image:20251031 Pulled 
+ Network code-from-image__qhh2wmr__env_default Creating 
+ Network code-from-image__qhh2wmr__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network code-from-image__qhh2wmr__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Trial fix-ocaml-gc__qqGjusS failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Trial sanitize-git-repo__nD4woAx failed: Docker compose command failed for environment sanitize-git-repo. Command: docker compose --project-name sanitize-git-repo__nd4woax__env --project-directory /home/t-wendili/.cache/harbor/tasks/WNjEws4zKtRNWJABpoU892/sanitize-git-repo/environment -f /tmp/tmpfvfb3ud_/sanitize-git-repo__nD4woAx__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpnow9_3n2/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network sanitize-git-repo__nd4woax__env_default Creating 
+ Network sanitize-git-repo__nd4woax__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network sanitize-git-repo__nd4woax__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts
+Collecting main service artifacts
+Trial build-pmars__RmCPmBZ failed: Docker compose command failed for environment build-pmars. Command: docker compose --project-name build-pmars__rmcpmbz__env --project-directory /home/t-wendili/.cache/harbor/tasks/TXGXVihdFyGLhhWJdjKoXE/build-pmars/environment -f /tmp/tmpgse7l4l2/build-pmars__RmCPmBZ__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp9y__f9l6/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network build-pmars__rmcpmbz__env_default Creating 
+ Network build-pmars__rmcpmbz__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network build-pmars__rmcpmbz__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached

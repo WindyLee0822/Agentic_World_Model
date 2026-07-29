@@ -1,0 +1,40 @@
+root@9faf4ab669e4:/app# pwd; __tts_rc=$?; printf '\n__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__RC:%s\n' "$__tts_rc"; printf '__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb
+__PWD:'; pwd; printf '__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__END\n'; tmux wait -S done
+/app
+
+__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__RC:0
+__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__PWD:/app
+__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__END
+root@9faf4ab669e4:/app# cd -- /app && python - <<'PY'
+> import csv
+> with open('daily_temp_sf_high.csv') as f: hi=[float(r[0]) for r in csv.reader(f) if r]
+> with open('daily_temp_sf_low.csv') as f: lo=[float(r[0]) for r in csv.reader(f) if r]
+> avg=sum(h-l for h,l in zip(hi,lo))/min(len(hi),len(lo))
+> open('avg_temp.txt','w').write(str(avg))
+> PY; __tts_rc=$?; printf '\n__TTS_d594c8f203a743ae8c57300e60008abc__RC:%s\n' "$__tts_rc"; printf '__TTS_d594c8f203a743ae8c57300e60008abc__PWD:'; pwd; printf '_
+_TTS_d594c8f203a743ae8c57300e60008abc__END\n'; tmux wait -S done
+> cd -- /app && ls -l /app && wc -l /app/daily_temp_sf_high.csv /app/daily_temp_sf_low.csv && head -5 /app/daily_temp_sf_high.csv && head -5 /app/daily_temp_sf_
+low.csv; __tts_rc=$?; printf '\n__TTS_78456446d08248b893cf81180fb467d9__RC:%s\n' "$__tts_rc"; printf '__TTS_78456446d08248b893cf81180fb467d9__PWD:'; pwd; printf
+ '__TTS_78456446d08248b893cf81180fb467d9__END\n'; tmux wait -S done
+> cd -- /app && python -c "import csv;f=open('daily_temp_sf_high.csv',newline='');r=csv.reader(f);hi=[float(next(r)[0]) for _ in range(10)];print(hi)"; __tts_rc
+=$?; printf '\n__TTS_d4f91fe577c7484386a3750517b633e4__RC:%s\n' "$__tts_rc"; printf '__TTS_d4f91fe577c7484386a3750517b633e4__PWD:'; pwd; printf '__TTS_d4f91fe57
+7c7484386a3750517b633e4__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+[
+  {
+    "env": "officebench",
+    "subset": "1app",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 93,
+    "success_rate": 0.6129032258064516,
+    "reward": 0.6129032258064516,
+    "mean_spawns": 0.0,
+    "mean_max_depth": 0.0,
+    "mean_reads": 0.0,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 0.7849462365591398,
+    "mean_tokens": 0.0,
+    "mean_cost": 0.0,
+    "mean_cache_hits": 0.0,
+    "mean_wall_clock_s": 139.17185911575774,
+    "mean_rollout_errors": 0.0
+  },
+  {
+    "env": "officebench",
+    "subset": "3app",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 112,
+    "success_rate": 0.33035714285714285,
+    "reward": 0.33035714285714285,
+    "mean_spawns": 0.0,
+    "mean_max_depth": 0.0,
+    "mean_reads": 0.0,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 0.8214285714285714,
+    "mean_tokens": 0.0,
+    "mean_cost": 0.0,
+    "mean_cache_hits": 0.0,
+    "mean_wall_clock_s": 341.9381515661932,
+    "mean_rollout_errors": 0.0
+  }
+]

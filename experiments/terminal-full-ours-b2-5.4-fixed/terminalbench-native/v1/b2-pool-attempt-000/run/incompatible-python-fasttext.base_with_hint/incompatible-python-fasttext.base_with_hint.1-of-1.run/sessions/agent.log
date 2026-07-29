@@ -1,0 +1,37 @@
+[?2004hroot@135de1efc68e:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@135de1efc68e:/app# clear
+[?2004l[H[J[3J[?2004hroot@135de1efc68e:/app# pwd; __tts_rc=$?; printf '\n__TTS_d8849cecea7c4584bbd88676b36c9a91__RC:%s\n' "$__tts_rc"; printf '__TTS_d8849cecea7c4584bbd88676b36c9a91__PWD:'; pwd; printf '__TTS_d8849cecea7c4584bbd88676b36c9a91__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_d8849cecea7c4584bbd88676b36c9a91__RC:0
+__TTS_d8849cecea7c4584bbd88676b36c9a91__PWD:/app
+__TTS_d8849cecea7c4584bbd88676b36c9a91__END
+[?2004hroot@135de1efc68e:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import sys, importlib.util
+[?2004l[?2004h> print(sys.executable)
+[?2004l[?2004h> print(sys.version)
+[?2004l[?2004h> spec=importlib.util.find_spec('fasttext')
+[?2004l[?2004h> print('fasttext spec',spec)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d664db6a0d2147308e27b1674e527985__RC:%s\n' "$__tts_rc"; printf '__TTS_d664db6a0d2147308e27b1674e527985__PWD:'; pwd; printf '__TTS_d664db6a0d2147308e27b1674e527985__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import sys,importlib.util;print(sys.executable);print(sys.version);print(importlib.util.find_spec('fasttext'))"; __tts_rc=$?; printf '\n__TTS_8f57dc006937476bba8cb6dd17a812ff__RC:%s\n' "$__tts_rc"; printf '__TTS_8f57dc006937476bba8cb6dd17a812ff__PWD:'; pwd; printf '__TTS_8f57dc006937476bba8cb6dd17a812ff__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && pwd; ls -la; command -v python; timeout 20s python -S -c 'import sys; print(sys.executable); print(sys.version)'; __tts_rc=$?; printf '\n__TTS_01a3461e949646488248e22f655f726e__RC:%s\n' "$__tts_rc"; printf '__TTS_01a3461e949646488248e22f655f726e__PWD:'; pwd; printf '__TTS_01a3461e949646488248e22f655f726e__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m8[0m
+    cd -- /app && pwd; ls -la; command -v python; timeout 2[1;31m0[0ms python -S -c 'import sys; print(sys.executable); print(sys.version)'; __tts_rc=$?; printf '\n__TTS_01a3461e949646488248e22f655f726e__RC:%s\n' "$__tts_rc"; printf '__TTS_01a3461e949646488248e22f655f726e__PWD:'; pwd; printf '__TTS_01a3461e949646488248e22f655f726e__END\n'; tmux wait -S done
+                                                           [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid decimal literal[0m
+[?2004hroot@135de1efc68e:/app# cd -- /app && timeout 20s python -S -c "import sys,os;print('exe',sys.executable);print('ver',sys.version);print('path',sys.path);print('cwd',os.getcwd())"; printf 'RC:%s
+[?2004l[?2004h> ' $?; __tts_rc=$?; printf '\n__TTS_925053ef82ff47e0bc95fdca9e9ee90c__RC:%s\n' "$__tts_rc"; printf '__TTS_925053ef82ff47e0bc95fdca9e9ee90c__PWD:'; pwd; printf '__TTS_925053ef82ff47e0bc95fdca9e9ee90c__END\n'; tmux wait -S done
+[?2004lexe /usr/local/bin/python
+ver 3.13.1 (main, Jan 14 2025, 02:51:49) [GCC 12.2.0]
+path ['', '/usr/local/lib/python313.zip', '/usr/local/lib/python3.13', '/usr/local/lib/python3.13/lib-dynload']
+cwd /app
+RC:0
+
+__TTS_925053ef82ff47e0bc95fdca9e9ee90c__RC:0
+__TTS_925053ef82ff47e0bc95fdca9e9ee90c__PWD:/app
+__TTS_925053ef82ff47e0bc95fdca9e9ee90c__END
+[?2004hroot@135de1efc68e:/app# 

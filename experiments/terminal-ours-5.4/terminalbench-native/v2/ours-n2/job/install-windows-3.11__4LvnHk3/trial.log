@@ -1,0 +1,5 @@
+Trial install-windows-3.11__4LvnHk3 failed: Docker compose command failed for environment install-windows-3.11. Command: docker compose --project-name install-windows-3-11__4lvnhk3__env --project-directory /home/t-wendili/.cache/harbor/tasks/7s8y623XYuDhmBG6ERABwC/install-windows-3.11/environment -f /tmp/tmp4merd41o/install-windows-3.11__4LvnHk3__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpxyep1oo7/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network install-windows-3-11__4lvnhk3__env_default Creating 
+ Network install-windows-3-11__4lvnhk3__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network install-windows-3-11__4lvnhk3__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

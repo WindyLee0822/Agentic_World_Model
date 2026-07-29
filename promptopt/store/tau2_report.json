@@ -1,0 +1,32 @@
+{
+  "env": "tau2",
+  "objective": "balanced_accuracy",
+  "baseline_score": 0.85,
+  "best_score": 0.9,
+  "improved": true,
+  "baseline_metrics": "n=27 acc=0.778 bal_acc=0.850 f1=0.700 (tp=7 tn=14 fp=6 fn=0) | slices: tau2/airline=0.88, tau2/telecom=0.64",
+  "best_metrics": "n=27 acc=0.852 bal_acc=0.900 f1=0.778 (tp=7 tn=16 fp=4 fn=0) | slices: tau2/airline=1.00, tau2/telecom=0.64",
+  "history": [
+    {
+      "round": 0,
+      "score": 0.85,
+      "accepted": true,
+      "lessons": "baseline",
+      "metrics_summary": "n=27 acc=0.778 bal_acc=0.850 f1=0.700 (tp=7 tn=14 fp=6 fn=0) | slices: tau2/airline=0.88, tau2/telecom=0.64"
+    },
+    {
+      "round": 1,
+      "score": 0.9,
+      "accepted": true,
+      "lessons": "The verifier is over-collapsing to coarse semantic equivalence and missing state-changing side effects. The false positives suggest it is not strictly checking exact final DB state record-by-record, especially for: (1) toggle operations where parity/order matters and different combinations do not cancel to the same state, (2) tools with hidden side effects such as billing/charges, reservation/payment updates, cancellations, and full-record replacement semantics, (3) failed/invalid calls that cause no state change, and (4) cases where user-visible outcome also matters even if DB edits look similar. It also needs to treat generated ids/timestamps structurally rather than by literal value.",
+      "metrics_summary": "n=27 acc=0.852 bal_acc=0.900 f1=0.778 (tp=7 tn=16 fp=4 fn=0) | slices: tau2/airline=1.00, tau2/telecom=0.64"
+    },
+    {
+      "round": 2,
+      "score": 0.9,
+      "accepted": false,
+      "lessons": "The verifier is over-crediting candidates when a side-effectful action seems irrelevant or is mentally treated like a harmless setting change. In these failures, telecom toggle tools and refuel/billing tools likely changed persistent device/line state or bill totals differently from GOLD, but the prompt did not force explicit accounting of every side effect and net parity of toggles. It also needs a stronger rule that extra successful side-effectful calls are FAIL even if the user goal sounds similar, and that billing/usage changes from refuel-like tools must be matched exactly.",
+      "metrics_summary": "n=27 acc=0.852 bal_acc=0.900 f1=0.778 (tp=7 tn=16 fp=4 fn=0) | slices: tau2/airline=1.00, tau2/telecom=0.64"
+    }
+  ]
+}

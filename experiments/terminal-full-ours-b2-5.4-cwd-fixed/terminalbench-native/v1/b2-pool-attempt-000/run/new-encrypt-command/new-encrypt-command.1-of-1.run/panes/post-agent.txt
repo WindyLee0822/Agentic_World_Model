@@ -1,0 +1,61 @@
+root@b74709962079:/app# pwd; __tts_rc=$?; printf '\n__TTS_163fedeaf0a0421bb10f8713cdb15f46__RC:%s\n' "$__tts_rc"; printf '__TTS_163fedeaf0a0421bb10f8713cdb15f46
+__PWD:'; pwd; printf '__TTS_163fedeaf0a0421bb10f8713cdb15f46__END\n'; tmux wait -S done
+/app
+
+__TTS_163fedeaf0a0421bb10f8713cdb15f46__RC:0
+__TTS_163fedeaf0a0421bb10f8713cdb15f46__PWD:/app
+__TTS_163fedeaf0a0421bb10f8713cdb15f46__END
+root@b74709962079:/app# cd -- /app && find data -maxdepth 2 -type f | sed -n '1,20p' && rencrypt --help | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_ff8adcdd
+999241a1b7cefee89152218c__RC:%s\n' "$__tts_rc"; printf '__TTS_ff8adcdd999241a1b7cefee89152218c__PWD:'; pwd; printf '__TTS_ff8adcdd999241a1b7cefee89152218c__END\
+n'; tmux wait -S done
+data/sample2.txt
+data/sample1.txt
+usage: rencrypt [-o OUTPUT] [-p PROTOCOL] [-v] input_files [input_files ...]
+rencrypt: error: the following arguments are required: input_files
+
+__TTS_ff8adcdd999241a1b7cefee89152218c__RC:0
+__TTS_ff8adcdd999241a1b7cefee89152218c__PWD:/app
+__TTS_ff8adcdd999241a1b7cefee89152218c__END
+root@b74709962079:/app# cd -- /app && rencrypt -h | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_d38a46006dbe4f4992a1a959774b806e__RC:%s\n' "$__tts_rc"; printf
+ '__TTS_d38a46006dbe4f4992a1a959774b806e__PWD:'; pwd; printf '__TTS_d38a46006dbe4f4992a1a959774b806e__END\n'; tmux wait -S done
+usage: rencrypt [-o OUTPUT] [-p PROTOCOL] [-v] input_files [input_files ...]
+rencrypt: error: the following arguments are required: input_files
+
+__TTS_d38a46006dbe4f4992a1a959774b806e__RC:0
+__TTS_d38a46006dbe4f4992a1a959774b806e__PWD:/app
+__TTS_d38a46006dbe4f4992a1a959774b806e__END
+root@b74709962079:/app# cd -- /app && python - <<'PY'
+> import os, subprocess
+> os.makedirs('encrypted_data', exist_ok=True)
+> files=[os.path.join('data',f) for f in os.listdir('data') if os.path.isfile(os.path.join('data',f))]
+> for f in files:
+>     out=os.path.join('encrypted_data', os.path.basename(f))
+>     subprocess.run(['rencrypt','-p','3','-o',out,f], check=True)
+> PY; __tts_rc=$?; printf '\n__TTS_dfb66b6bf85841acaf95b2dc0be1541a__RC:%s\n' "$__tts_rc"; printf '__TTS_dfb66b6bf85841acaf95b2dc0be1541a__PWD:'; pwd; printf '_
+_TTS_dfb66b6bf85841acaf95b2dc0be1541a__END\n'; tmux wait -S done
+> cd -- /app && find encrypted_data -maxdepth 1 -type f -printf '%f\n' 2>/dev/null | sed -n '1,20p' && timeout 10s rencrypt -p 999 -o /tmp/x data/sample1.txt 2>
+&1 | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__RC:%s\n' "$__tts_rc"; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__PWD:';
+ pwd; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import os, pexpect
+> os.makedirs('encrypted_data', exist_ok=True)
+> for name in os.listdir('data'):
+>     src=os.path.join('data',name)
+>     if not os.path.isfile(src):
+>         continue
+>     dst=os.path.join('encrypted_data', os.path.basename(src))
+>     child=pexpect.spawn('rencrypt',[src,'-o',dst,'-p','3'],encoding='utf-8',timeout=10)
+>     try:
+>         i=child.expect([r'(?i)pass', r'(?i)password', pexpect.EOF, pexpect.TIMEOUT])
+>         if i in (0,1):
+>             child.sendline('benchmarkpass123!')
+>             child.expect([r'(?i)confirm', r'(?i)again', pexpect.EOF, pexpect.TIMEOUT])
+>             if child.after and any(k in str(child.after).lower() for k in ['confirm','again']):
+>                 child.sendline('benchmarkpass123!')
+>                 child.expect(pexpect.EOF)
+>     finally:
+>         child.close()
+>     print(name, child.exitstatus, child.before)
+> PY; __tts_rc=$?; printf '\n__TTS_4d95afa38c0c4ddab5d9f5371cf5522d__RC:%s\n' "$__tts_rc"; printf '__TTS_4d95afa38c0c4ddab5d9f5371cf5522d__PWD:'; pwd; printf '_
+_TTS_4d95afa38c0c4ddab5d9f5371cf5522d__END\n'; tmux wait -S done
+>

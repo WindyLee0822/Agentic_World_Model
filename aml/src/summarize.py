@@ -12,7 +12,7 @@ checkpointed ``records.jsonl`` and writes:
 Pure stdlib so it runs under any of the project's conda envs. Mirrors the logic of
 experiments/run.py ``aggregate``/``tts_table`` without importing the package.
 
-Usage: python summarize.py <records.jsonl> <out_dir>
+Usage: python summarize.py <records.jsonl> <out_dir> [--strict-coverage]
 """
 from __future__ import annotations
 
@@ -53,8 +53,11 @@ def aggregate(records, by):
     for key, rs in groups.items():
         row = dict(zip(by, key))
         preds = [r["prediction_correct"] for r in rs if r.get("prediction_correct") is not None]
+        imputed_failures = sum(bool(r.get("coverage_imputed_failure")) for r in rs)
         row.update({
             "decisions": len(rs),
+            "recorded_decisions": len(rs) - imputed_failures,
+            "imputed_failures": imputed_failures,
             "success_rate": _round(_mean([bool(r.get("success")) for r in rs])),
             "reward": _round(_mean([r.get("reward") for r in rs])),
             "prediction_accuracy": _round(statistics.fmean(preds)) if preds else None,
@@ -64,6 +67,7 @@ def aggregate(records, by):
             "mean_tokens": _round(_mean([r.get("tokens") for r in rs])),
             "mean_cost": _round(_mean([r.get("cost") for r in rs])),
             "mean_wall_clock_s": _round(_mean([r.get("wall_clock_s") for r in rs])),
+            "mean_rollout_errors": _round(_mean([r.get("n_rollout_errors", 0) for r in rs])),
             "simulator_writes": sum(r.get("simulator_writes") or 0 for r in rs),
         })
         rows.append(row)
@@ -89,32 +93,188 @@ def tts_table(records, title):
     return "\n".join(out)
 
 
-def main() -> int:
-    if len(sys.argv) != 3:
-        print("usage: python summarize.py <records.jsonl> <out_dir>", file=sys.stderr)
-        return 2
-    records_path, out_dir = Path(sys.argv[1]), Path(sys.argv[2])
-    if not records_path.is_file():
-        print(f"[summarize] no records at {records_path}; nothing to summarize", file=sys.stderr)
-        return 0
-    records = _load(records_path)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    if not records:
-        (out_dir / "summary.txt").write_text("(no decisions)\n", encoding="utf-8")
-        (out_dir / "summary.json").write_text("{}\n", encoding="utf-8")
-        return 0
-
-    envs = sorted({r["env"] for r in records})
-    summary = {
-        "decisions": len(records),
-        "by_method_n": aggregate(records, ["env", "subset", "method", "n_rollouts"]),
-        "by_method_n_overall": aggregate(records, ["env", "method", "n_rollouts"]),
+def _expected_cells(manifest, records):
+    cells = {
+        (str(cell["method"]), int(cell["n_rollouts"]))
+        for cell in manifest.get("expected_cells", [])
+        if isinstance(cell, dict) and cell.get("method") is not None
+        and cell.get("n_rollouts") is not None
     }
+    if not cells:
+        cells = {
+            (str(record["method"]), int(record["n_rollouts"]))
+            for record in records
+            if record.get("method") is not None and record.get("n_rollouts") is not None
+        }
+    expected_count = int(manifest.get("expected_cells_per_task", len(cells)) or 0)
+    if not cells or len(cells) != expected_count:
+        raise ValueError(
+            f"cannot identify all expected cells: found {len(cells)}, expected {expected_count}"
+        )
+    return cells
+
+
+def _records_with_missing_failures(records, manifest):
+    expected_cells = _expected_cells(manifest, records)
+    by_subset = manifest.get("by_subset")
+    if not isinstance(by_subset, dict) or not by_subset:
+        raise ValueError("run manifest has no per-subset coverage")
+
+    actual_counts = defaultdict(int)
+    metric_env_by_subset = {}
+    for record in records:
+        subset = record.get("spec_subset", record.get("subset"))
+        if subset is None:
+            continue
+        actual_counts[(subset, str(record.get("method")), record.get("n_rollouts"))] += 1
+        if record.get("env"):
+            metric_env_by_subset.setdefault(subset, record["env"])
+
+    metric_records = list(records)
+    manifest_env = str(manifest.get("env", ""))
+    for subset, coverage in by_subset.items():
+        expected_tasks = int(coverage.get("expected_tasks", 0) or 0)
+        if expected_tasks <= 0:
+            raise ValueError(f"subset {subset!r} has no expected tasks")
+        metric_env = metric_env_by_subset.get(subset)
+        if metric_env is None:
+            metric_env = f"tau2_{subset}" if manifest_env == "tau2" else manifest_env
+        for method, n_rollouts in expected_cells:
+            actual = actual_counts[(subset, method, n_rollouts)]
+            if actual > expected_tasks:
+                raise ValueError(
+                    f"subset {subset!r} cell {method}/N={n_rollouts} has "
+                    f"{actual} records but only {expected_tasks} expected tasks"
+                )
+            for _ in range(expected_tasks - actual):
+                metric_records.append({
+                    "env": metric_env,
+                    "subset": subset,
+                    "spec_subset": subset,
+                    "method": method,
+                    "n_rollouts": n_rollouts,
+                    "success": False,
+                    "reward": 0.0,
+                    "n_commits": 0,
+                    "n_rollout_errors": None,
+                    "coverage_imputed_failure": True,
+                })
+    return metric_records
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    coverage_flags = {"--allow-partial", "--strict-coverage"}.intersection(args)
+    if len(coverage_flags) > 1:
+        print("--allow-partial and --strict-coverage are mutually exclusive", file=sys.stderr)
+        return 2
+    strict_coverage = "--strict-coverage" in coverage_flags
+    args = [arg for arg in args if arg not in coverage_flags]
+    if len(args) != 2:
+        print(
+            "usage: python summarize.py <records.jsonl> <out_dir> "
+            "[--allow-partial | --strict-coverage]",
+            file=sys.stderr,
+        )
+        return 2
+    records_path, out_dir = map(Path, args)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not records_path.is_file():
+        message = f"[summarize] records are missing at {records_path}; coverage is unknown"
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "missing_records", "records": str(records_path)}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+    records = _load(records_path)
+    manifest_path = out_dir / "run_manifest.json"
+    if not manifest_path.is_file():
+        message = f"[summarize] {manifest_path} is missing; refusing to summarize unknown coverage"
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "missing_run_manifest"}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as error:
+        message = f"[summarize] invalid run manifest at {manifest_path}: {error}"
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "invalid_run_manifest"}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+    expected_tasks = int(manifest.get("expected_tasks", 0) or 0)
+    incomplete = int(manifest.get("partial_tasks", 0)) + int(manifest.get("missing_tasks", 0))
+    if expected_tasks <= 0:
+        message = (
+            f"[summarize] invalid run manifest at {manifest_path}: "
+            "expected_tasks must be positive"
+        )
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "invalid_run_manifest", "coverage": manifest}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+    if incomplete and strict_coverage:
+        message = (
+            f"[summarize] refusing to publish an unequal-denominator curve: "
+            f"{incomplete}/{expected_tasks} task(s) have missing cells. "
+            f"See {manifest_path} and re-run with --resume, or omit --strict-coverage."
+        )
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "incomplete_coverage", "coverage": manifest}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+    try:
+        metric_records = _records_with_missing_failures(records, manifest)
+    except (TypeError, ValueError) as error:
+        message = f"[summarize] invalid coverage metadata: {error}"
+        (out_dir / "summary.txt").write_text(message + "\n", encoding="utf-8")
+        (out_dir / "summary.json").write_text(
+            json.dumps({"error": "invalid_run_manifest", "coverage": manifest}, indent=2),
+            encoding="utf-8",
+        )
+        print(message, file=sys.stderr)
+        return 2
+
+    imputed_failures = len(metric_records) - len(records)
+    envs = sorted({r["env"] for r in metric_records})
+    partial_warning = ""
+    if incomplete:
+        partial_warning = (
+            f"PARTIAL RESULTS: {incomplete}/{expected_tasks} task(s) have missing cells. "
+            f"All {imputed_failures} missing decision cell(s) count as failures. "
+            "See recorded_decisions/imputed_failures and the embedded coverage manifest."
+        )
+        print(f"[summarize] {partial_warning}", file=sys.stderr)
+    summary = {
+        "decisions": len(metric_records),
+        "recorded_decisions": len(records),
+        "imputed_failures": imputed_failures,
+        "partial": bool(incomplete),
+        "coverage": manifest,
+        "by_method_n": aggregate(metric_records, ["env", "subset", "method", "n_rollouts"]),
+        "by_method_n_overall": aggregate(metric_records, ["env", "method", "n_rollouts"]),
+    }
+    if partial_warning:
+        summary["warning"] = partial_warning
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
 
-    lines = []
+    lines = [partial_warning, ""] if partial_warning else []
     for env_name in envs:
-        env_recs = [r for r in records if r["env"] == env_name]
+        env_recs = [r for r in metric_records if r["env"] == env_name]
         lines.append(tts_table(env_recs, f"TTS curve — success vs N  [{env_name} | ALL subsets]"))
         for sub in sorted({r["subset"] for r in env_recs}):
             lines.append(tts_table([r for r in env_recs if r["subset"] == sub],

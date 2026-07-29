@@ -1,0 +1,38 @@
+{
+  "env": "appworld",
+  "expected_tasks": 456,
+  "complete_tasks": 456,
+  "partial_tasks": 0,
+  "missing_tasks": 0,
+  "expected_cells_per_task": 1,
+  "recorded_decisions": 456,
+  "cell_errors": [],
+  "abandoned_tasks": [],
+  "task_errors": [],
+  "by_subset": {
+    "test_normal/L2": {
+      "expected_tasks": 48,
+      "complete_tasks": 48,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    },
+    "test_normal/L3": {
+      "expected_tasks": 63,
+      "complete_tasks": 63,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    },
+    "test_challenge/L2": {
+      "expected_tasks": 150,
+      "complete_tasks": 150,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    },
+    "test_challenge/L3": {
+      "expected_tasks": 195,
+      "complete_tasks": 195,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    }
+  }
+}

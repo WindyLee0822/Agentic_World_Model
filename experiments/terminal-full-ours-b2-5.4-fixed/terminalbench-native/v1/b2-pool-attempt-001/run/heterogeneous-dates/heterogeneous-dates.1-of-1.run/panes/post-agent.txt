@@ -1,0 +1,42 @@
+root@cf2a7991db18:/app# pwd; __tts_rc=$?; printf '\n__TTS_659a8e44ea60417fa7a90cfbb13d7d10__RC:%s\n' "$__tts_rc"; printf '__TTS_659a8e44ea60417fa7a90cfbb13d7d10
+__PWD:'; pwd; printf '__TTS_659a8e44ea60417fa7a90cfbb13d7d10__END\n'; tmux wait -S done
+/app
+
+__TTS_659a8e44ea60417fa7a90cfbb13d7d10__RC:0
+__TTS_659a8e44ea60417fa7a90cfbb13d7d10__PWD:/app
+__TTS_659a8e44ea60417fa7a90cfbb13d7d10__END
+root@cf2a7991db18:/app# cd -- /app && python - <<'PY'
+> import csv
+> from pathlib import Path
+> hi=[]
+> with open('daily_temp_sf_high.csv', newline='') as f:
+>     r=list(csv.reader(f))
+> lo=[]
+> with open('daily_temp_sf_low.csv', newline='') as f:
+>     r2=list(csv.reader(f))
+> # detect if first row header by trying parse second column/first column
+> for rows, dest in ((r, hi),(r2, lo)):
+>     for row in rows:
+>         vals=[]
+>         for x in row:
+>             try:
+>                 vals.append(float(x))
+>             except:
+>                 pass
+>         if vals:
+>             dest.append(vals[-1])
+> avg=sum(h-l for h,l in zip(hi,lo))/min(len(hi),len(lo))
+> Path('avg_temp.txt').write_text(str(avg))
+> PY; __tts_rc=$?; printf '\n__TTS_bfb04807a7394a14a01e279fea929ee1__RC:%s\n' "$__tts_rc"; printf '__TTS_bfb04807a7394a14a01e279fea929ee1__PWD:'; pwd; printf '_
+_TTS_bfb04807a7394a14a01e279fea929ee1__END\n'; tmux wait -S done
+> cd -- /app && head -n 5 daily_temp_sf_high.csv && printf '---\n' && head -n 5 daily_temp_sf_low.csv; __tts_rc=$?; printf '\n__TTS_50938b15a7354575938aab5bccff
+703e__RC:%s\n' "$__tts_rc"; printf '__TTS_50938b15a7354575938aab5bccff703e__PWD:'; pwd; printf '__TTS_50938b15a7354575938aab5bccff703e__END\n'; tmux wait -S don
+e
+> cd -- /app && python -c "import csv;from pathlib import Path;f1=open('daily_temp_sf_high.csv',newline='');f2=open('daily_temp_sf_low.csv',newline='');r1=csv.r
+eader(f1);r2=csv.reader(f2);num=lambda row: next((float(x) for x in row[::-1] if x.replace('.','',1).replace('-','',1).isdigit()),None);vals=((num(a),num(b)) fo
+r a,b in zip(r1,r2));s=n=0
+> for h,l in vals:
+>     if h is not None and l is not None:s+=h-l;n+=1
+> Path('avg_temp.txt').write_text(str(s/n))"; __tts_rc=$?; printf '\n__TTS_b1faff4e41d7415ba9e3141df8d1d764__RC:%s\n' "$__tts_rc"; printf '__TTS_b1faff4e41d7415
+ba9e3141df8d1d764__PWD:'; pwd; printf '__TTS_b1faff4e41d7415ba9e3141df8d1d764__END\n'; tmux wait -S done
+>

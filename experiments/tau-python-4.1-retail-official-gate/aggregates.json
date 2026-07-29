@@ -1,0 +1,22 @@
+[
+  {
+    "env": "tau2_retail",
+    "subset": "retail",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 114,
+    "success_rate": 0.868421052631579,
+    "reward": 0.868421052631579,
+    "mean_spawns": 0.40350877192982454,
+    "mean_max_depth": 0.11403508771929824,
+    "mean_reads": 1.587719298245614,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 0.868421052631579,
+    "mean_tokens": 725.438596491228,
+    "mean_cost": 0.0007254385964912282,
+    "mean_cache_hits": 5.2631578947368425,
+    "mean_wall_clock_s": 228.8942192846954,
+    "mean_rollout_errors": 0.0
+  }
+]

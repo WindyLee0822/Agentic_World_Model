@@ -1,0 +1,40 @@
+root@da912b5efe4f:/app# pwd; __tts_rc=$?; printf '\n__TTS_a9a8cee92390412caca9d0b68ef55f4c__RC:%s\n' "$__tts_rc"; printf '__TTS_a9a8cee92390412caca9d0b68ef55f4c
+__PWD:'; pwd; printf '__TTS_a9a8cee92390412caca9d0b68ef55f4c__END\n'; tmux wait -S done
+/app
+
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__RC:0
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__PWD:/app
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__END
+root@da912b5efe4f:/app# cd -- /app && python - <<'PY'
+> import sys
+> print(sys.executable)
+> try:
+>  import fasttext
+>  print('fasttext ok', fasttext.__file__)
+> except Exception as e:
+>  print(type(e).__name__, e)
+> PY; __tts_rc=$?; printf '\n__TTS_f3f15a828b964bd7ba26a6d1ca905de3__RC:%s\n' "$__tts_rc"; printf '__TTS_f3f15a828b964bd7ba26a6d1ca905de3__PWD:'; pwd; printf '_
+_TTS_f3f15a828b964bd7ba26a6d1ca905de3__END\n'; tmux wait -S done
+> cd -- /app && python -c "import sys; print(sys.executable); import importlib.util as u; print(u.find_spec('fasttext'))"; __tts_rc=$?; printf '\n__TTS_5f8ba31e
+b2cc4a66aec7d7dae1791355__RC:%s\n' "$__tts_rc"; printf '__TTS_5f8ba31eb2cc4a66aec7d7dae1791355__PWD:'; pwd; printf '__TTS_5f8ba31eb2cc4a66aec7d7dae1791355__END\
+n'; tmux wait -S done
+> cd -- /app && python -c "import sys; print(sys.executable); print('ok')"; __tts_rc=$?; printf '\n__TTS_cc05c6af2b59453dab0f577b5f854186__RC:%s\n' "$__tts_rc";
+ printf '__TTS_cc05c6af2b59453dab0f577b5f854186__PWD:'; pwd; printf '__TTS_cc05c6af2b59453dab0f577b5f854186__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

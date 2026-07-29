@@ -1,0 +1,76 @@
+[?2004hroot@bc7257d50e93:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@bc7257d50e93:/app# clear
+[?2004l[H[J[3J[?2004hroot@bc7257d50e93:/app# pwd; __tts_rc=$?; printf '\n__TTS_cb297c0d5bbf4d09819bfb17db892f22__RC:%s\n' "$__tts_rc"; printf '__TTS_cb297c0d5bbf4d09819bfb17db892f22__PWD:'; pwd; printf '__TTS_cb297c0d5bbf4d09819bfb17db892f22__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_cb297c0d5bbf4d09819bfb17db892f22__RC:0
+__TTS_cb297c0d5bbf4d09819bfb17db892f22__PWD:/app
+__TTS_cb297c0d5bbf4d09819bfb17db892f22__END
+[?2004hroot@bc7257d50e93:/app# cd -- /app && ls -la; __tts_rc=$?; printf '\n__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__RC:%s\n' "$__tts_rc"; printf '__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__PWD:'; pwd; printf '__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__END\n'; tmux wait -S done
+[?2004ltotal 588
+drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root   4096 Jul 18 13:00 ..
+-rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
+-rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
+-rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
+-rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
+-rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
+-rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
+-rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
+
+__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__RC:0
+__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__PWD:/app
+__TTS_64b5b13e95b843f98f3bcb18b6f0fc97__END
+[?2004hroot@bc7257d50e93:/app# cd -- /app && cd /app && sed -n '1,220p' model.py; __tts_rc=$?; printf '\n__TTS_b972f2481dc5437da967e64f9e30e805__RC:%s\n' "$__tts_rc"; printf '__TTS_b972f2481dc5437da967e64f9e30e805__PWD:'; pwd; printf '__TTS_b972f2481dc5437da967e64f9e30e805__END\n'; tmux wait -S done
+[?2004limport torch
+import torch.nn as nn
+
+
+class MnistModel(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        num_classes: int,
+    ) -> torch.nn.Module:
+        super().__init__()
+
+        self.input_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+        self.activation = nn.ReLU()
+
+    def forward(self, x):
+        x = self.input_layer(x)
+        x = self.activation(x)
+
+        x = self.hidden_layer(x)
+        x = self.activation(x)
+
+        x = self.output_layer(x)
+        return x
+
+__TTS_b972f2481dc5437da967e64f9e30e805__RC:0
+__TTS_b972f2481dc5437da967e64f9e30e805__PWD:/app
+__TTS_b972f2481dc5437da967e64f9e30e805__END
+[?2004hroot@bc7257d50e93:/app# cd -- /app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import torch
+[?2004l[?2004h> sd=torch.load('model.pth',map_location='cpu')
+[?2004l[?2004h> print(type(sd))
+[?2004l[?2004h> print(list(sd.keys()))
+[?2004l[?2004h> print({k:tuple(v.shape) for k,v in sd.items()})
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_0d5562fb556742909c63b65313014015__RC:%s\n' "$__tts_rc"; printf '__TTS_0d5562fb556742909c63b65313014015__PWD:'; pwd; printf '__TTS_0d5562fb556742909c63b65313014015__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python3 -c "import zipfile; z=zipfile.ZipFile('model.pth'); print('\n'.join(z.namelist()))"; __tts_rc=$?; printf '\n__TTS_55418c47dc234e329fdf0642d18a8c47__RC:%s\n' "$__tts_rc"; printf '__TTS_55418c47dc234e329fdf0642d18a8c47__PWD:'; pwd; printf '__TTS_55418c47dc234e329fdf0642d18a8c47__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import os
+[?2004l[?2004h> print(open('model.pth','rb').read(16))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_bcc0b1d729604a0db4241ca5ec30df27__RC:%s\n' "$__tts_rc"; printf '__TTS_bcc0b1d729604a0db4241ca5ec30df27__PWD:'; pwd; printf '__TTS_bcc0b1d729604a0db4241ca5ec30df27__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m6[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_0d5562fb556742909c63b65313014015__RC:%s\n' "$__tts_rc"; printf '__TTS_0d5562fb556742909c63b65313014015__PWD:'; pwd; printf '__TTS_0d5562fb556742909c63b65313014015__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@bc7257d50e93:/app# 

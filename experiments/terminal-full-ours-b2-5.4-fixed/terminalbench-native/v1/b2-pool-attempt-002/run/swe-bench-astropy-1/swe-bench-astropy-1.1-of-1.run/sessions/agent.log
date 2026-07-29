@@ -1,0 +1,48 @@
+[?2004hroot@6c2799a46e7b:/app/astropy# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@6c2799a46e7b:/app/astropy# clear
+[?2004l[H[J[3J[?2004hroot@6c2799a46e7b:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_bb326e2bb7f84018ae32e723099477a2__RC:%s\n' "$__tts_rc"; printf '__TTS_bb326e2bb7f84018ae32e723099477a2__PWD:'; pwd; printf '__TTS_bb326e2bb7f84018ae32e723099477a2__END\n'; tmux wait -S done
+[?2004l/app/astropy
+
+__TTS_bb326e2bb7f84018ae32e723099477a2__RC:0
+__TTS_bb326e2bb7f84018ae32e723099477a2__PWD:/app/astropy
+__TTS_bb326e2bb7f84018ae32e723099477a2__END
+[?2004hroot@6c2799a46e7b:/app/astropy# cd -- /app/astropy && python - <<'PY'
+[?2004l[?2004h> from astropy.modeling import models as m
+[?2004l[?2004h> from astropy.modeling.separable import separability_matrix
+[?2004l[?2004h> cm = m.Linear1D(10) & m.Linear1D(5)
+[?2004l[?2004h> print(separability_matrix(cm))
+[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5)))
+[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & cm))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__RC:%s\n' "$__tts_rc"; printf '__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__PWD:'; pwd; printf '__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/astropy && grep -R "def separability_matrix\|_separable\|_coord_matrix\|CompoundModel" -n astropy/modeling | head -n 50; __tts_rc=$?; printf '\n__TTS_4597cfd8c82f43a9a33ee6ea06edf1e5__RC:%s\n' "$__tts_rc"; printf '__TTS_4597cfd8c82f43a9a33ee6ea06edf1e5__PWD:'; pwd; printf '__TTS_4597cfd8c82f43a9a33ee6ea06edf1e5__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/astropy && sed -n '1,260p' astropy/modeling/separable.py; __tts_rc=$?; printf '\n__TTS_0f05e9d3c28a4c4582279830b71f45d5__RC:%s\n' "$__tts_rc"; printf '__TTS_0f05e9d3c28a4c4582279830b71f45d5__PWD:'; pwd; printf '__TTS_0f05e9d3c28a4c4582279830b71f45d5__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/astropy && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('astropy/modeling/separable.py')
+[?2004l[?2004h> print(p.exists(), p.stat().st_size)
+[?2004l[?2004h> print(p.read_text()[:12000])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_450d65f6698244ff94216dbf2cda1ae3__RC:%s\n' "$__tts_rc"; printf '__TTS_450d65f6698244ff94216dbf2cda1ae3__PWD:'; pwd; printf '__TTS_450d65f6698244ff94216dbf2cda1ae3__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/astropy && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('astropy/modeling/separable.py')
+[?2004l[?2004h> print(p.exists(), p.stat().st_size)
+[?2004l[?2004h> with p.open() as f:
+[?2004l[?2004h>     import itertools
+[?2004l[?2004h>     print(''.join(itertools.islice(f,260)))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_312ab97562cb44339249322199124ae2__RC:%s\n' "$__tts_rc"; printf '__TTS_312ab97562cb44339249322199124ae2__PWD:'; pwd; printf '__TTS_312ab97562cb44339249322199124ae2__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 7
+    PY; __tts_rc=$?; printf '\n__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__RC:%s\n' "$__tts_rc"; printf '__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__PWD:'; pwd; printf '__TTS_28da2a52f8b8496285bf2fd9c9f6b6d8__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@6c2799a46e7b:/app/astropy# cd -- /app/astropy && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('astropy/modeling/separable.py')
+[?2004l[?2004h> with p.open() as f:
+[?2004l[?2004h>     import itertools
+[?2004l[?2004h>     print(''.join(itertools.islice(f,261,520)))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_c1c6ce4b5dc243e3adb195382e6d3161__RC:%s\n' "$__tts_rc"; printf '__TTS_c1c6ce4b5dc243e3adb195382e6d3161__PWD:'; pwd; printf '__TTS_c1c6ce4b5dc243e3adb195382e6d3161__END\n'; tmux wait -S done
+[?2004l[?2004h> 

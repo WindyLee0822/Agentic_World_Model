@@ -1,0 +1,40 @@
+root@d246eb880bde:/app# pwd; __tts_rc=$?; printf '\n__TTS_eb2696e870b244b0b429de683510b9ee__RC:%s\n' "$__tts_rc"; printf '__TTS_eb2696e870b244b0b429de683510b9ee
+__PWD:'; pwd; printf '__TTS_eb2696e870b244b0b429de683510b9ee__END\n'; tmux wait -S done
+/app
+
+__TTS_eb2696e870b244b0b429de683510b9ee__RC:0
+__TTS_eb2696e870b244b0b429de683510b9ee__PWD:/app
+__TTS_eb2696e870b244b0b429de683510b9ee__END
+root@d246eb880bde:/app# cd -- /app && printf 'Hello, world!\n' > hello.txt; __tts_rc=$?; printf '\n__TTS_318d66b913f14c3a909a923c5ff95456__RC:%s\n' "$__tts_rc";
+ printf '__TTS_318d66b913f14c3a909a923c5ff95456__PWD:'; pwd; printf '__TTS_318d66b913f14c3a909a923c5ff95456__END\n'; tmux wait -S done
+
+__TTS_318d66b913f14c3a909a923c5ff95456__RC:0
+__TTS_318d66b913f14c3a909a923c5ff95456__PWD:/app
+__TTS_318d66b913f14c3a909a923c5ff95456__END
+root@d246eb880bde:/app#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

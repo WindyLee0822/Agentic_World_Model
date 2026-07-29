@@ -1,0 +1,84 @@
+[?2004hroot@4c91db630135:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@4c91db630135:/app# clear
+[?2004l[H[J[3J[?2004hroot@4c91db630135:/app# pwd; __tts_rc=$?; printf '\n__TTS_a8b2644da57e4532a8b8814e25ff5911__RC:%s\n' "$__tts_rc"; printf '__TTS_a8b2644da57e4532a8b8814e25ff5911__PWD:'; pwd; printf '__TTS_a8b2644da57e4532a8b8814e25ff5911__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_a8b2644da57e4532a8b8814e25ff5911__RC:0
+__TTS_a8b2644da57e4532a8b8814e25ff5911__PWD:/app
+__TTS_a8b2644da57e4532a8b8814e25ff5911__END
+[?2004hroot@4c91db630135:/app# cd -- /app && find /app -maxdepth 3 \( -name bzImage -o -name busybox -o -type d -name ramfs -o -type f -path '*/_install/bin/sh' \) | sort; __tts_rc=$?; printf '\n__TTS_b297e81614d24415917fae78553074a8__RC:%s\n' "$__tts_rc"; printf '__TTS_b297e81614d24415917fae78553074a8__PWD:'; pwd; printf '__TTS_b297e81614d24415917fae78553074a8__END\n'; tmux wait -S done
+[?2004l/app/linux-6.9/fs/ramfs
+
+__TTS_b297e81614d24415917fae78553074a8__RC:0
+__TTS_b297e81614d24415917fae78553074a8__PWD:/app
+__TTS_b297e81614d24415917fae78553074a8__END
+[?2004hroot@4c91db630135:/app# cd -- __TTS_b297e81614d24415917fae78553074a8__PWD:/app && find /app -maxdepth 4 \( -path '/app/linux-6.9/arch/x86/boot/bzImage' -o -name busybox -o -path '*/_install/bin/sh' -o -name initramfs.cpio.gz \) | sort; __tts_rc=$?; printf '\n__TTS_c80cb0983d0c41aba292cad06e3184f0__RC:%s\n' "$__tts_rc"; printf '__TTS_c80cb0983d0c41aba292cad06e3184f0__PWD:'; pwd; printf '__TTS_c80cb0983d0c41aba292cad06e3184f0__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_b297e81614d24415917fae78553074a8__PWD:/app: No such file or directory
+
+__TTS_c80cb0983d0c41aba292cad06e3184f0__RC:1
+__TTS_c80cb0983d0c41aba292cad06e3184f0__PWD:/app
+__TTS_c80cb0983d0c41aba292cad06e3184f0__END
+[?2004hroot@4c91db630135:/app# cd -- /app && find /app -maxdepth 6 \( -path '/app/linux-6.9/arch/x86/boot/bzImage' -o -name busybox -o -path '*/_install/bin/sh' -o -name initramfs.cpio.gz' -o -type f -name 'busybox' \) 2>/dev/null | sort; __tts_rc=$?; printf '\n__TTS_4f522078742542969b36d13fc4eee0a5__RC:%s\n' "$__tts_rc"; printf '__TTS_4f522078742542969b36d13fc4eee0a5__PWD:'; pwd; printf '__TTS_4f522078742542969b36d13fc4eee0a5__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && find . -maxdepth 6 \( -path './linux-6.9/arch/x86/boot/bzImage' -o -name busybox -o -path '*/_install/bin/sh' -o -name initramfs.cpio.gz \) | sort; __tts_rc=$?; printf '\n__TTS_16b8bf57709c4542bab62bfd486d8d50__RC:%s\n' "$__tts_rc"; printf '__TTS_16b8bf57709c4542bab62bfd486d8d50__PWD:'; pwd; printf '__TTS_16b8bf57709c4542bab62bfd486d8d50__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && ls -1; __tts_rc=$?; printf '\n__TTS_b7ccd1d19c8a4f86b6e83a63bad48369__RC:%s\n' "$__tts_rc"; printf '__TTS_b7ccd1d19c8a4f86b6e83a63bad48369__PWD:'; pwd; printf '__TTS_b7ccd1d19c8a4f86b6e83a63bad48369__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: unexpected EOF while looking for matching `''
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@4c91db630135:/app# cd -- /app && cd /app && pwd && ls -la && find . -maxdepth 2 -type d | sort | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_d3ff363f3bd34494fbe723774353afa09__RC:%s\n' "$__tts_rc"; printf '__TTS_d3ff363f3bd3494fbe723774353afa09__PWD:'; pwd; printf '__TTS_d3ff363f3bd3494fbe723774353afa09__END\n'; ttmux wait -S done
+[?2004l/app
+total 140704
+drwxr-xr-x 1 root root      4096 Jul 18 08:14 [0m[01;34m.[0m
+drwxr-xr-x 1 root root      4096 Jul 18 08:14 [01;34m..[0m
+-rw-r--r-- 1 root root         5 Jul 18 08:14 .python-version
+drwxr-xr-x 4 root root      4096 Jul 18 08:14 [01;34m.venv[0m
+-rw-r--r-- 1 root root         0 Jul 18 08:14 README.md
+-rw-r--r-- 1 root root       491 Jul 18 08:14 a.exp
+drwxrwxr-x 1 root root      4096 Jul 16 21:20 [01;34mlinux-6.9[0m
+-rw-r--r-- 1 root root 144034416 May 13  2024 [01;31mlinux-6.9.tar.xz[0m
+-rw-r--r-- 1 root root        81 Jul 18 08:14 main.py
+-rw-r--r-- 1 root root       171 Jul 18 08:14 pyproject.toml
+-rw-r--r-- 1 root root      4602 Jul 18 08:14 uv.lock
+.
+./.venv
+./.venv/bin
+./.venv/lib
+./linux-6.9
+./linux-6.9/Documentation
+./linux-6.9/LICENSES
+./linux-6.9/arch
+./linux-6.9/block
+./linux-6.9/certs
+./linux-6.9/crypto
+./linux-6.9/drivers
+./linux-6.9/fs
+./linux-6.9/include
+./linux-6.9/init
+./linux-6.9/io_uring
+./linux-6.9/ipc
+./linux-6.9/kernel
+./linux-6.9/lib
+./linux-6.9/mm
+./linux-6.9/net
+./linux-6.9/rust
+./linux-6.9/samples
+./linux-6.9/scripts
+./linux-6.9/security
+./linux-6.9/sound
+./linux-6.9/tools
+./linux-6.9/usr
+./linux-6.9/virt
+
+__TTS_d3ff363f3bd3494fbe723774353afa09__RC:0
+__TTS_d3ff363f3bd3494fbe723774353afa09__PWD:/app
+__TTS_d3ff363f3bd3494fbe723774353afa09__END
+[?2004hroot@4c91db630135:/app# cd -- /app && cd /app && ls -l linux-6.9/arch/x86/boot/bzImage 2>/dev/null; find / -maxdepth 4 \( -name busybox -o -path '*/_install/bin//sh' \) 2>/dev/null | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_c88f6896758e41a390e4e2d95c611639__RC:%s\n' "$__tts_rc"; printf '__TTS_c88f6896758e41a390e4e2d995c611639__PWD:'; pwd; printf '__TTS_c88f6896758e41a390e4e2d95c611639__END\n'; tmux wait -S done
+[?2004l-rw-r--r-- 1 root root 13132800 Jul 16 21:20 linux-6.9/arch/x86/boot/bzImage
+
+__TTS_c88f6896758e41a390e4e2d95c611639__RC:0
+__TTS_c88f6896758e41a390e4e2d95c611639__PWD:/app
+__TTS_c88f6896758e41a390e4e2d95c611639__END
+[?2004hroot@4c91db630135:/app# 

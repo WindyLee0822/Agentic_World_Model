@@ -1,0 +1,301 @@
+root@6389eca7b19d:/app# pwd; __tts_rc=$?; printf '\n__TTS_2bc1cf5b059942f18ffcd9549d36b41e__RC:%s\n' "$__tts_rc"; printf '__TTS_2bc1cf5b059942f18ffcd9549d36b41e
+__PWD:'; pwd; printf '__TTS_2bc1cf5b059942f18ffcd9549d36b41e__END\n'; tmux wait -S done
+/app
+
+__TTS_2bc1cf5b059942f18ffcd9549d36b41e__RC:0
+__TTS_2bc1cf5b059942f18ffcd9549d36b41e__PWD:/app
+__TTS_2bc1cf5b059942f18ffcd9549d36b41e__END
+root@6389eca7b19d:/app# cd -- /app && aws s3api create-bucket --bucket sample-bucket && aws s3api put-public-access-block --bucket sample-bucket --public-access
+-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false && aws s3api put-bucket-policy --bucket sa
+mple-bucket --policy '{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn
+:aws:s3:::sample-bucket/*"}]}'; __tts_rc=$?; printf '\n__TTS_192b41a8c3944f68804987d3eeb34993__RC:%s\n' "$__tts_rc"; printf '__TTS_192b41a8c3944f68804987d3eeb34
+993__PWD:'; pwd; printf '__TTS_192b41a8c3944f68804987d3eeb34993__END\n'; tmux wait -S done
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_192b41a8c3944f68804987d3eeb34993__RC:0
+__TTS_192b41a8c3944f68804987d3eeb34993__PWD:/app
+__TTS_192b41a8c3944f68804987d3eeb34993__END
+root@6389eca7b19d:/app# cd -- /app && aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-bucket && aws --endpoint-url=http://localhost
+:4566 s3api put-public-access-block --bucket sample-bucket --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=fa
+lse,RestrictPublicBuckets=false && aws --endpoint-url=http://localhost:4566 s3api put-bucket-policy --bucket sample-bucket --policy '{"Version":"2012-10-17","St
+atement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::sample-bucket/*"}]}'; __tts_rc=$?; prin
+tf '\n__TTS_fbe612a105784bc3be246f010a697aaf__RC:%s\n' "$__tts_rc"; printf '__TTS_fbe612a105784bc3be246f010a697aaf__PWD:'; pwd; printf '__TTS_fbe612a105784bc3be
+246f010a697aaf__END\n'; tmux wait -S done
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_fbe612a105784bc3be246f010a697aaf__RC:0
+__TTS_fbe612a105784bc3be246f010a697aaf__PWD:/app
+__TTS_fbe612a105784bc3be246f010a697aaf__END
+root@6389eca7b19d:/app# cd -- __TTS_fbe612a105784bc3be246f010a697aaf__PWD:/app && aws --endpoint-url=http://localhost:4566 s3api list-buckets; __tts_rc=$?; prin
+tf '\n__TTS_8fa97ef9b36747ccb45922ec78cb7aaf__RC:%s\n' "$__tts_rc"; printf '__TTS_8fa97ef9b36747ccb45922ec78cb7aaf__PWD:'; pwd; printf '__TTS_8fa97ef9b36747ccb4
+5922ec78cb7aaf__END\n'; tmux wait -S done
+bash: cd: __TTS_fbe612a105784bc3be246f010a697aaf__PWD:/app: No such file or directory
+
+__TTS_8fa97ef9b36747ccb45922ec78cb7aaf__RC:1
+__TTS_8fa97ef9b36747ccb45922ec78cb7aaf__PWD:/app
+__TTS_8fa97ef9b36747ccb45922ec78cb7aaf__END
+root@6389eca7b19d:/app# cd -- __TTS_8fa97ef9b36747ccb45922ec78cb7aaf__PWD:/app && aws --endpoint-url=http://localhost:4566 s3 mb s3://sample-bucket && aws --end
+point-url=http://localhost:4566 s3api put-public-access-block --bucket sample-bucket --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=
+false,BlockPublicPolicy=false,RestrictPublicBuckets=false && aws --endpoint-url=http://localhost:4566 s3api put-bucket-policy --bucket sample-bucket --policy '{
+"Version":"2012-10-17","Statement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::sample-bucket
+/*"}]}'; __tts_rc=$?; printf '\n__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__RC:%s\n' "$__tts_rc"; printf '__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__PWD:'; pwd; printf
+ '__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__END\n'; tmux wait -S done
+bash: cd: __TTS_8fa97ef9b36747ccb45922ec78cb7aaf__PWD:/app: No such file or directory
+
+__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__RC:1
+__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__PWD:/app
+__TTS_dd2d8fd0ff6740dbbc651b09a09b268e__END
+root@6389eca7b19d:/app# cd -- /app && aws --endpoint-url=http://localhost:4566 configure list; __tts_rc=$?; printf '\n__TTS_f702bf2ebb02492a9f53d667143dac2e__RC
+:%s\n' "$__tts_rc"; printf '__TTS_f702bf2ebb02492a9f53d667143dac2e__PWD:'; pwd; printf '__TTS_f702bf2ebb02492a9f53d667143dac2e__END\n'; tmux wait -S done
+      Name                    Value             Type    Location
+      ----                    -----             ----    --------
+   profile                <not set>             None    None
+access_key     ****************test              env
+secret_key     ****************test              env
+    region                us-east-1              env    AWS_DEFAULT_REGION
+
+__TTS_f702bf2ebb02492a9f53d667143dac2e__RC:0
+__TTS_f702bf2ebb02492a9f53d667143dac2e__PWD:/app
+__TTS_f702bf2ebb02492a9f53d667143dac2e__END
+root@6389eca7b19d:/app# cd -- /app && aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-bucket --debug 2>&1 | tail -n 80; __tts_rc=$?
+; printf '\n__TTS_3886f79b94c0416e8d80f34f4fe3e161__RC:%s\n' "$__tts_rc"; printf '__TTS_3886f79b94c0416e8d80f34f4fe3e161__PWD:'; pwd; printf '__TTS_3886f79b94c0
+416e8d80f34f4fe3e161__END\n'; tmux wait -S done
+2026-07-17 17:30:26,078 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.s3.create-bucket.object-ownership: calling handler <awscli.paramfile.URIArgum
+entHandler object at 0x76ec24846090>
+2026-07-17 17:30:26,078 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.s3.create-bucket.cli-input-json: calling handler <awscli.paramfile.URIArgumen
+tHandler object at 0x76ec24846090>
+2026-07-17 17:30:26,079 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.s3.create-bucket.generate-cli-skeleton: calling handler <awscli.paramfile.URI
+ArgumentHandler object at 0x76ec24846090>
+2026-07-17 17:30:26,079 - MainThread - botocore.hooks - DEBUG - Event calling-command.s3api.create-bucket: calling handler <bound method CliInputJSONArgument.ad
+d_to_call_parameters of <awscli.customizations.cliinputjson.CliInputJSONArgument object at 0x76ec232f7690>>
+2026-07-17 17:30:26,079 - MainThread - botocore.hooks - DEBUG - Event calling-command.s3api.create-bucket: calling handler <bound method GenerateCliSkeletonArgu
+ment.generate_json_skeleton of <awscli.customizations.generatecliskeleton.GenerateCliSkeletonArgument object at 0x76ec232fbfd0>>
+2026-07-17 17:30:26,079 - MainThread - botocore.credentials - DEBUG - Looking for credentials via: env
+2026-07-17 17:30:26,079 - MainThread - botocore.credentials - INFO - Found credentials in environment variables.
+2026-07-17 17:30:26,080 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/lib/python3.11/site-packages/botocore/data/endpoints.json
+2026-07-17 17:30:26,097 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/lib/python3.11/site-packages/botocore/data/sdk-default-configura
+tion.json
+2026-07-17 17:30:26,097 - MainThread - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x76ec24186660
+>
+2026-07-17 17:30:26,113 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoin
+t-rule-set-1.json.gz
+2026-07-17 17:30:26,116 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/lib/python3.11/site-packages/botocore/data/partitions.json
+2026-07-17 17:30:26,117 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x76ec2
+42dfc40>
+2026-07-17 17:30:26,117 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x76ec24
+2df9c0>
+2026-07-17 17:30:26,119 - MainThread - botocore.endpoint - DEBUG - Setting s3 timeout as (60, 60)
+2026-07-17 17:30:26,122 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/lib/python3.11/site-packages/botocore/data/_retry.json
+2026-07-17 17:30:26,122 - MainThread - botocore.client - DEBUG - Registering retry handlers for service: s3
+2026-07-17 17:30:26,122 - MainThread - botocore.utils - DEBUG - Registering S3 region redirector handler
+2026-07-17 17:30:26,122 - MainThread - botocore.utils - DEBUG - Registering S3Express Identity Resolver
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <function validate_bucket_name at
+0x76ec241ac0e0>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <function remove_bucket_from_url_p
+aths_from_model at 0x76ec241ae2a0>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <bound method S3RegionRedirectorv2
+.annotate_request_context of <botocore.utils.S3RegionRedirectorv2 object at 0x76ec22ca3250>>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <bound method ClientCreator._injec
+t_s3_input_parameters of <botocore.client.ClientCreator object at 0x76ec232e4f90>>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <function generate_idempotent_uuid
+ at 0x76ec24187ec0>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.CreateBucket: calling handler <function _handle_request_validati
+on_mode_member at 0x76ec241aea20>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <function customize_endpoint_resolver_built
+ins at 0x76ec241ae480>
+2026-07-17 17:30:26,123 - MainThread - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <bound method S3RegionRedirectorv2.redirect
+_from_cache of <botocore.utils.S3RegionRedirectorv2 object at 0x76ec22ca3250>>
+2026-07-17 17:30:26,123 - MainThread - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Bucket': 'sample-bucket', 'Region': 'us-east-1',
+'UseFIPS': False, 'UseDualStack': False, 'Endpoint': 'http://localhost:4566', 'ForcePathStyle': True, 'Accelerate': False, 'UseGlobalEndpoint': True, 'DisableAc
+cessPoints': True, 'DisableMultiRegionAccessPoints': False, 'UseArnRegion': True, 'UseS3ExpressControlEndpoint': True}
+2026-07-17 17:30:26,124 - MainThread - botocore.regions - DEBUG - Endpoint provider result: http://localhost:4566/sample-bucket
+2026-07-17 17:30:26,124 - MainThread - botocore.regions - DEBUG - Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is
+: "None"
+2026-07-17 17:30:26,124 - MainThread - botocore.regions - DEBUG - Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_
+name': 's3', 'disableDoubleEncoding': True}
+2026-07-17 17:30:26,124 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.CreateBucket: calling handler <function add_expect_header at 0x76ec241ac4a0
+>
+2026-07-17 17:30:26,124 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.CreateBucket: calling handler <bound method S3ExpressIdentityResolver.apply
+_signing_cache_key of <botocore.utils.S3ExpressIdentityResolver object at 0x76ec22b10c90>>
+2026-07-17 17:30:26,124 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.CreateBucket: calling handler <function add_recursion_detection_header at 0
+x76ec24186700>
+2026-07-17 17:30:26,124 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.CreateBucket: calling handler <function add_query_compatibility_header at 0
+x76ec241ae980>
+2026-07-17 17:30:26,124 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.CreateBucket: calling handler <function inject_api_version_header_if_needed
+ at 0x76ec241ad9e0>
+2026-07-17 17:30:26,124 - MainThread - botocore.endpoint - DEBUG - Making request for OperationModel(name=CreateBucket) with params: {'url_path': '', 'query_str
+ing': {}, 'method': 'PUT', 'headers': {'User-Agent': 'aws-cli/1.38.21 md/Botocore#1.37.21 ua/2.1 os/linux#6.17.0-1013-azure md/arch#x86_64 lang/python#3.11.11 m
+d/pyimpl#CPython m/N cfg/retry-mode#legacy botocore/1.37.21'}, 'body': b'', 'auth_path': '/sample-bucket/', 'url': 'http://localhost:4566/sample-bucket', 'conte
+xt': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x76ec22c90990>, 'has_streaming_input': False, 'auth_type': 'v4', 'unsign
+ed_payload': None, 's3_redirect': {'redirected': False, 'bucket': 'sample-bucket', 'params': {'Bucket': 'sample-bucket'}}, 'input_params': {'Bucket': 'sample-bu
+cket'}, 'signing': {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}, 'endpoint_properties': {'authSchemes': [{'disableDoubleEncoding
+': True, 'name': 'sigv4', 'signingName': 's3', 'signingRegion': 'us-east-1'}]}}}
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event request-created.s3.CreateBucket: calling handler <bound method RequestSigner.handler of <b
+otocore.signers.RequestSigner object at 0x76ec22af4a10>>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event choose-signer.s3.CreateBucket: calling handler <bound method ClientCreator._default_s3_pre
+sign_to_sigv2 of <botocore.client.ClientCreator object at 0x76ec232e4f90>>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event choose-signer.s3.CreateBucket: calling handler <function set_operation_specific_signer at
+0x76ec24187ce0>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.CreateBucket: calling handler <function remove_arn_from_signing_path at 0x7
+6ec241ae3e0>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.CreateBucket: calling handler <function _set_extra_headers_for_unsigned_req
+uest at 0x76ec241aeac0>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.CreateBucket: calling handler <bound method S3ExpressIdentityResolver.resol
+ve_s3express_identity of <botocore.utils.S3ExpressIdentityResolver object at 0x76ec22b10c90>>
+2026-07-17 17:30:26,125 - MainThread - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-07-17 17:30:26,125 - MainThread - botocore.auth - DEBUG - CanonicalRequest:
+PUT
+/sample-bucket
+
+host:localhost:4566
+x-amz-content-sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+x-amz-date:20260717T173026Z
+
+host;x-amz-content-sha256;x-amz-date
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+2026-07-17 17:30:26,125 - MainThread - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260717T173026Z
+20260717/us-east-1/s3/aws4_request
+b1bb218dbdab47a68ba6141987a69a6c4058d1897a6c0d2baad21d27200f5ed3
+2026-07-17 17:30:26,125 - MainThread - botocore.auth - DEBUG - Signature:
+9c15dda3488e79b00659b3452c054555f1d6dc472192a1d47390e8884e7f090d
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event request-created.s3.CreateBucket: calling handler <bound method UserAgentString.rebuild_and
+_replace_user_agent_handler of <botocore.useragent.UserAgentString object at 0x76ec232e5c50>>
+2026-07-17 17:30:26,125 - MainThread - botocore.hooks - DEBUG - Event request-created.s3.CreateBucket: calling handler <function add_retry_headers at 0x76ec241a
+e200>
+2026-07-17 17:30:26,125 - MainThread - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=PUT, url=http://localho
+st:4566/sample-bucket, headers={'User-Agent': b'aws-cli/1.38.21 md/Botocore#1.37.21 ua/2.1 os/linux#6.17.0-1013-azure md/arch#x86_64 lang/python#3.11.11 md/pyim
+pl#CPython m/N cfg/retry-mode#legacy botocore/1.37.21', 'X-Amz-Date': b'20260717T173026Z', 'X-Amz-Content-SHA256': b'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649
+b934ca495991b7852b855', 'Authorization': b'AWS4-HMAC-SHA256 Credential=test/20260717/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-da
+te, Signature=9c15dda3488e79b00659b3452c054555f1d6dc472192a1d47390e8884e7f090d', 'amz-sdk-invocation-id': b'5f292871-20fe-4755-9dab-8d05572a0476', 'amz-sdk-requ
+est': b'attempt=1', 'Content-Length': '0'}>
+2026-07-17 17:30:26,126 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:4566
+2026-07-17 17:30:26,129 - MainThread - urllib3.connectionpool - DEBUG - http://localhost:4566 "PUT /sample-bucket HTTP/1.1" 200 0
+2026-07-17 17:30:26,129 - MainThread - botocore.hooks - DEBUG - Event before-parse.s3.CreateBucket: calling handler <function _handle_200_error at 0x76ec241ae7a
+0>
+2026-07-17 17:30:26,130 - MainThread - botocore.hooks - DEBUG - Event before-parse.s3.CreateBucket: calling handler <function handle_expires_header at 0x76ec241
+ae5c0>
+2026-07-17 17:30:26,130 - MainThread - botocore.parsers - DEBUG - Response headers: {'Server': 'TwistedWeb/24.3.0', 'Date': 'Fri, 17 Jul 2026 17:30:26 GMT', 'Ac
+cess-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'HEAD,GET,PUT,POST,DELETE,OPTIONS,PATCH', 'Access-Control-Allow-Headers': 'authorization,cache-
+control,content-length,content-md5,content-type,etag,location,x-amz-acl,x-amz-content-sha256,x-amz-date,x-amz-request-id,x-amz-security-token,x-amz-tagging,x-am
+z-target,x-amz-user-agent,x-amz-version-id,x-amzn-requestid,x-localstack-target,amz-sdk-invocation-id,amz-sdk-request,x-amz-log-type', 'Access-Control-Expose-He
+aders': 'etag,x-amz-version-id,x-amz-log-result,x-amz-executed-version,x-amz-function-error', 'Vary': 'Origin', 'Location': '/sample-bucket', 'x-amz-request-id'
+: '30fd76ae-e6a2-4131-9826-e53608050f00', 'x-amz-id-2': 's9lzHYrFp76ZVxRcpX9+5cjAnEH2ROuNkd2BHfIa6UkFVdtjf5mKR3/eTPFvsiP/XV/VLi31234=', 'Content-Length': '0'}
+2026-07-17 17:30:26,130 - MainThread - botocore.parsers - DEBUG - Response body:
+b''
+2026-07-17 17:30:26,130 - MainThread - botocore.hooks - DEBUG - Event needs-retry.s3.CreateBucket: calling handler <function _update_status_code at 0x76ec241ae8
+e0>
+2026-07-17 17:30:26,130 - MainThread - botocore.hooks - DEBUG - Event needs-retry.s3.CreateBucket: calling handler <botocore.retryhandler.RetryHandler object at
+ 0x76ec22c92090>
+2026-07-17 17:30:26,130 - MainThread - botocore.retryhandler - DEBUG - No retry needed.
+2026-07-17 17:30:26,130 - MainThread - botocore.hooks - DEBUG - Event needs-retry.s3.CreateBucket: calling handler <bound method S3RegionRedirectorv2.redirect_f
+rom_error of <botocore.utils.S3RegionRedirectorv2 object at 0x76ec22ca3250>>
+2026-07-17 17:30:26,130 - MainThread - botocore.hooks - DEBUG - Event after-call.s3.CreateBucket: calling handler <function enhance_error_msg at 0x76ec2362c040>
+2026-07-17 17:30:26,130 - MainThread - awscli.formatter - DEBUG - RequestId: 30fd76ae-e6a2-4131-9826-e53608050f00
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_3886f79b94c0416e8d80f34f4fe3e161__RC:0
+__TTS_3886f79b94c0416e8d80f34f4fe3e161__PWD:/app
+__TTS_3886f79b94c0416e8d80f34f4fe3e161__END
+root@6389eca7b19d:/app# cd -- __TTS_3886f79b94c0416e8d80f34f4fe3e161__PWD:/app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 s3api cr
+eate-bucket --bucket sample-bucket --create-bucket-configuration LocationConstraint=us-east-1; __tts_rc=$?; printf '\n__TTS_4405b32fae974b6fb1489f8269192bc3__RC
+:%s\n' "$__tts_rc"; printf '__TTS_4405b32fae974b6fb1489f8269192bc3__PWD:'; pwd; printf '__TTS_4405b32fae974b6fb1489f8269192bc3__END\n'; tmux wait -S done
+bash: cd: __TTS_3886f79b94c0416e8d80f34f4fe3e161__PWD:/app: No such file or directory
+
+__TTS_4405b32fae974b6fb1489f8269192bc3__RC:1
+__TTS_4405b32fae974b6fb1489f8269192bc3__PWD:/app
+__TTS_4405b32fae974b6fb1489f8269192bc3__END
+root@6389eca7b19d:/app# cd -- /app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 --no-verify-ssl s3api create-bucket --bucket sample-
+bucket; __tts_rc=$?; printf '\n__TTS_d364ba82dc7f45da87446dbe8c6032be__RC:%s\n' "$__tts_rc"; printf '__TTS_d364ba82dc7f45da87446dbe8c6032be__PWD:'; pwd; printf
+'__TTS_d364ba82dc7f45da87446dbe8c6032be__END\n'; tmux wait -S done
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_d364ba82dc7f45da87446dbe8c6032be__RC:0
+__TTS_d364ba82dc7f45da87446dbe8c6032be__PWD:/app
+__TTS_d364ba82dc7f45da87446dbe8c6032be__END
+root@6389eca7b19d:/app# cd -- /app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-bucket --address
+ing-style path; __tts_rc=$?; printf '\n__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__RC:%s\n' "$__tts_rc"; printf '__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__PWD:'; pwd;
+ printf '__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__END\n'; tmux wait -S done
+Note: AWS CLI version 2, the latest major version of the AWS CLI, is now stable and recommended for general use. For more information, see the AWS CLI version 2
+ installation instructions at: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+Unknown options: --addressing-style, path
+
+__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__RC:255
+__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__PWD:/app
+__TTS_7f641dc165bd4c9ca29b26e6e0f3e5ad__END
+root@6389eca7b19d:/app# cd -- /app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-bucket --no-sign
+-request; __tts_rc=$?; printf '\n__TTS_7c64c4ec72c74a69996600c9226ee699__RC:%s\n' "$__tts_rc"; printf '__TTS_7c64c4ec72c74a69996600c9226ee699__PWD:'; pwd; print
+f '__TTS_7c64c4ec72c74a69996600c9226ee699__END\n'; tmux wait -S done
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_7c64c4ec72c74a69996600c9226ee699__RC:0
+__TTS_7c64c4ec72c74a69996600c9226ee699__PWD:/app
+__TTS_7c64c4ec72c74a69996600c9226ee699__END
+root@6389eca7b19d:/app# cd -- /app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-bucket --no-forc
+e-path-style; __tts_rc=$?; printf '\n__TTS_7f1b449fcbda4215913d67ee5f9db524__RC:%s\n' "$__tts_rc"; printf '__TTS_7f1b449fcbda4215913d67ee5f9db524__PWD:'; pwd; p
+rintf '__TTS_7f1b449fcbda4215913d67ee5f9db524__END\n'; tmux wait -S done
+Note: AWS CLI version 2, the latest major version of the AWS CLI, is now stable and recommended for general use. For more information, see the AWS CLI version 2
+ installation instructions at: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+Unknown options: --no-force-path-style
+
+__TTS_7f1b449fcbda4215913d67ee5f9db524__RC:255
+__TTS_7f1b449fcbda4215913d67ee5f9db524__PWD:/app
+__TTS_7f1b449fcbda4215913d67ee5f9db524__END
+root@6389eca7b19d:/app# cd -- /app && AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket 'sample-bucket/'; __tts
+_rc=$?; printf '\n__TTS_e3e310b28a3c4265b506b06afa6d9beb__RC:%s\n' "$__tts_rc"; printf '__TTS_e3e310b28a3c4265b506b06afa6d9beb__PWD:'; pwd; printf '__TTS_e3e310
+b28a3c4265b506b06afa6d9beb__END\n'; tmux wait -S done
+
+Parameter validation failed:
+Invalid bucket name "sample-bucket/": Bucket name must match the regex "^[a-zA-Z0-9.\-_]{1,255}$" or be an ARN matching the regex "^arn:(aws).*:(s3|s3-object-la
+mbda):[a-z\-0-9]*:[0-9]{12}:accesspoint[/:][a-zA-Z0-9\-.]{1,63}$|^arn:(aws).*:s3-outposts:[a-z\-0-9]+:[0-9]{12}:outpost[/:][a-zA-Z0-9\-]{1,63}[/:]accesspoint[/:
+][a-zA-Z0-9\-]{1,63}$"
+
+__TTS_e3e310b28a3c4265b506b06afa6d9beb__RC:255
+__TTS_e3e310b28a3c4265b506b06afa6d9beb__PWD:/app
+__TTS_e3e310b28a3c4265b506b06afa6d9beb__END
+root@6389eca7b19d:/app# cd -- __TTS_e3e310b28a3c4265b506b06afa6d9beb__PWD:/app && aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket sample-b
+ucket --debug 2>&1 | grep -i 'ForcePathStyle\|addressing_style\|PUT /'; __tts_rc=$?; printf '\n__TTS_9620e2f1a45940648a6f757b8242ce68__RC:%s\n' "$__tts_rc"; pri
+ntf '__TTS_9620e2f1a45940648a6f757b8242ce68__PWD:'; pwd; printf '__TTS_9620e2f1a45940648a6f757b8242ce68__END\n'; tmux wait -S done
+bash: cd: __TTS_e3e310b28a3c4265b506b06afa6d9beb__PWD:/app: No such file or directory
+
+__TTS_9620e2f1a45940648a6f757b8242ce68__RC:1
+__TTS_9620e2f1a45940648a6f757b8242ce68__PWD:/app
+__TTS_9620e2f1a45940648a6f757b8242ce68__END
+root@6389eca7b19d:/app# cd -- /app && python - <<'PY'
+> import boto3
+> s3=boto3.client('s3',endpoint_url='http://localhost:4566',aws_access_key_id='test',aws_secret_access_key='test',region_name='us-east-1')
+> print(s3.list_buckets())
+> print(s3.create_bucket(Bucket='sample-bucket'))
+> PY; __tts_rc=$?; printf '\n__TTS_ca23e51a97e1422a9bbd33a29b74cf6b__RC:%s\n' "$__tts_rc"; printf '__TTS_ca23e51a97e1422a9bbd33a29b74cf6b__PWD:'; pwd; printf '_
+_TTS_ca23e51a97e1422a9bbd33a29b74cf6b__END\n'; tmux wait -S done
+> cd -- /app && aws --endpoint-url=http://localhost:4566 s3api list-buckets --debug 2>&1 | grep -i 'x-amz-bucket-region\|server\|localstack\|moto\|minio'; __tts
+_rc=$?; printf '\n__TTS_9899e18acd8c4dd8bdbafd40e4ce3404__RC:%s\n' "$__tts_rc"; printf '__TTS_9899e18acd8c4dd8bdbafd40e4ce3404__PWD:'; pwd; printf '__TTS_9899e1
+8acd8c4dd8bdbafd40e4ce3404__END\n'; tmux wait -S done
+>

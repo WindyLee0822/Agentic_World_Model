@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 350, in run
+    await self._prepare()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 379, in _prepare
+    await self._setup_agent_environment()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 1097, in _setup_agent_environment
+    await self._start_agent_environment()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 1103, in _start_agent_environment
+    await asyncio.wait_for(
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker.py", line 882, in start
+    await self._run_docker_compose_command(["up", "--detach", "--wait"])
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker.py", line 631, in _run_docker_compose_command
+    raise RuntimeError(
+RuntimeError: Docker compose command failed for environment git-multibranch. Command: docker compose --project-name git-multibranch__itbssdy__env --project-directory /home/t-wendili/.cache/harbor/tasks/kLfrAkLDVW7LCezLUHt4oB/git-multibranch/environment -f /tmp/tmpy1ubd57z/git-multibranch__itbsSdy__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpur424krj/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network git-multibranch__itbssdy__env_default Creating 
+ Network git-multibranch__itbssdy__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network git-multibranch__itbssdy__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 

@@ -1,0 +1,1912 @@
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/d6/bf/f740e5961f573ad0b27a90d622b52edbc8ba3d8a9ad207b2a480
+8eba820a/hypothesis-6.153.1-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/c5/12/79d2df37e29068bac7f87984635145b856c54492ac0d022402c2
+c8dc20c5/hypothesis-6.153.1.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/a7/4c/173899cce4c79d17f6b9eceec262fa0900d32506ee5ce7f4034b
+b519de6a/hypothesis-6.153.2-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/be/48/b6fcb59469f237a75592165d986fbfc57361279df5fe20b951fc
+c766ba2c/hypothesis-6.153.2.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/00/ad/0a550b63e017d4032d343be6465d216a8d36f6ccad4f6577b08d
+e335cb00/hypothesis-6.153.3-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/f1/dd/757c87497c66868d83328be245b4bc9e952617073de02c48aca0
+fb1d6096/hypothesis-6.153.3.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/07/c8/fac2876d3f5670e1b703ee84f78f59ddaec9c61d6458f2e602ae
+c400010c/hypothesis-6.153.4-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/ea/79/919a41b829ac86b5171ff6ec84f696224885f6273dc38fb32fde
+99b23593/hypothesis-6.153.4.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/4e/5f/d8ffcbcbbeb4bd02a10f8f659880139d26bfcaa782f7377dbdcb
+ca4281ee/hypothesis-6.153.5-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/2d/46/de10db275ae187e4af681888e814d1f1e75476a2953364c5892f
+54d1b989/hypothesis-6.153.5.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/bf/33/f3ec54e6fb89c2279f0dd911ba512321e70038e447d1984c35fa
+d61840f8/hypothesis-6.153.6-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/e8/c3/8c661bb893725eedeb003e85f3050274da2d77abf0847c4d61b4
+af53969c/hypothesis-6.153.6.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/50/2a/85d4134d0e98334d08c6ef3d6daab1ed11837e3fb6aa83936ef1
+0932aa92/hypothesis-6.154.0-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/db/e6/7ab1174094f5529e035bcc4d2f5ab311224564a3bc9fefe7dd14
+034d5922/hypothesis-6.154.0.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/03/0e/2793685fcb9e9021d5614845088276ccf06ccc0517e34348fe95
+00936757/hypothesis-6.154.1-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/b1/a3/10b04ba828ccde01b8a6806d8f18a16755825701fa7d1bcda294
+cccedeff/hypothesis-6.154.1.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/f7/19/4948fb34e9930bf37ad1ec70edb4fd9d75a6539083abe82201a2
+819163a5/hypothesis-6.154.2-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/40/a2/66341f8aef5c544f7015af39daf0211e4fd0114ed3428717c543
+c43b5236/hypothesis-6.154.2.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/53/f8/31a6a6646c5b76b9746454318989340cea0290ba34e0f3ccd066
+8ce67868/hypothesis-6.155.0-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/86/7d/9569717766867495510712eba388f7ca0633549f9ff4d3c34398
+b919e5b4/hypothesis-6.155.0.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/26/6e/8c9cf32201238617454303b1605dfa667d90cd1ef51226f92d9c
+2b3b8f7c/hypothesis-6.155.1-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/49/ef/4a94c12429986a90076057513e084bf32106a9bdc62c8e29f586
+73dd85a2/hypothesis-6.155.1.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/ec/6e/e735f27ac1a530a4cd0a31cd970ec495a3a11830fdc5d281cc29
+2593b330/hypothesis-6.155.2-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/f5/04/64032a1dccd2233615c8a3f701bbb563558575ed017496a24b6d
+81762c91/hypothesis-6.155.2.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/a2/23/ce3a543935a01e478349e82f6c1440776f92d4cb346662c4d815
+74878fed/hypothesis-6.155.3-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/36/77/13ec9b6390bce44f5badab39837dd6789bbfe6342a2ac611a715
+37a7756f/hypothesis-6.155.3.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9b/3b/faeee3abef6e9e353a5b4676a0b18621a93a9ab00af234b0b91a
+02a55215/hypothesis-6.155.4-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9d/00/2bba328b17fc3c215edd038a1378d82c31a93a4c980eba16261f
+5dea2dd5/hypothesis-6.155.4.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/2e/db/04b7cfc3cc6d49eecc6a390e61c5b941a0a32a98884fdf070122
+8a9b9c4f/hypothesis-6.155.5-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/b6/da/7e6cca4f0ad6b2f3a2380d72993ad3482c8ecb126f0908af26d2
+427455a1/hypothesis-6.155.5.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9e/a9/4c17e962c2e9cbc314bb579ed2e2b2da45d7b6b942aab6948d14
+d85abfea/hypothesis-6.155.6-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/10/aa/9a91a4addf285702a98713da44b3581799539426436617bfb891
+4478c166/hypothesis-6.155.6.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/01/f8/c151e196d4f397ed9436a071e52666c70a2f021138dea828b0a4
+61e245db/hypothesis-6.155.7-py3-none-any.whl (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/f2/55/983b6bc1b6b343a5ff6020388f9d0680ab477be59a731517e6c4
+a0387100/hypothesis-6.155.7.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/57/4b/d376c0382fc716878790177deb88cc8b73d3a0218ae74de6e144
+93f7dc74/hypothesis-6.156.3.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/00/52/22ec531bcc61d55b6858b15c176c9d3284d6447c8618f17e90ca
+174e8bcf/hypothesis-6.156.4.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/51/9e/de15052a56c80aa7f4dd677a69cdb22b82df2b53a7f5d0c3fc45
+b6d5d80b/hypothesis-6.156.5.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/20/83/8dbe89bdb8c6f25a7a52e7898af6d82fe35dfef08e5c702f6e33
+231ce6c6/hypothesis-6.156.6.tar.gz (from https://pypi.org/simple/hypothesis/) (requires-python:>=3.10)
+Collecting hypothesis>=5.1
+  Downloading hypothesis-6.141.1-py3-none-any.whl (535 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 535.0/535.0 kB 91.5 MB/s eta 0:00:00
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/96/77/5202512f57e42c0713af2929b51d077e964f4758c41b2cc2ecef
+dc501b30/pytest_doctestplus-1.7.0-py3-none-any.whl (from https://pypi.org/simple/pytest-doctestplus/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/a3/1b/0948938381387d810ebcedbbab6c930431996390b09538158d7f
+cbeef379/pytest_doctestplus-1.7.0.tar.gz (from https://pypi.org/simple/pytest-doctestplus/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/f4/72/8e70c7c3238cba0afa8dbef94a1ce7d88ecd0fab3d8d0da394a1
+c3964a41/pytest_doctestplus-1.7.1-py3-none-any.whl (from https://pypi.org/simple/pytest-doctestplus/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/59/43/6db18218cdfa15bd03cba3292345223925011ba7428e6183da97
+c6b1dcb1/pytest_doctestplus-1.7.1.tar.gz (from https://pypi.org/simple/pytest-doctestplus/) (requires-python:>=3.10)
+Collecting pytest-doctestplus>=1.0.0
+  Downloading pytest_doctestplus-1.6.0-py3-none-any.whl (25 kB)
+Collecting execnet>=2.1
+  Downloading execnet-2.1.2-py3-none-any.whl (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.7/40.7 kB 18.0 MB/s eta 0:00:00
+Collecting exceptiongroup>=1.0.0
+  Downloading exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+Collecting sortedcontainers<3.0.0,>=2.1.0
+  Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+Collecting tomli>=1
+  Using cached tomli-2.4.1-py3-none-any.whl (14 kB)
+Collecting pluggy<2,>=1.5
+  Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Collecting pygments>=2.7.2
+  Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 90.5 MB/s eta 0:00:00
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/13/71/3970abe530a7a15e406874a30ed6cf1ead266444b4503ebb2f68
+b4d98f30/iniconfig-2.2.0-py3-none-any.whl (from https://pypi.org/simple/iniconfig/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/8e/11/2f7713979d561602e14b8fdd99a0e2e8ff2d901de1041c42a23a
+4c33f2c3/iniconfig-2.2.0.tar.gz (from https://pypi.org/simple/iniconfig/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed
+11865bb8/iniconfig-2.3.0-py3-none-any.whl (from https://pypi.org/simple/iniconfig/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/72/34/14ca021ce8e5dfedc35312d08ba8bf51fdd999c576889fc2c24c
+b97f4f10/iniconfig-2.3.0.tar.gz (from https://pypi.org/simple/iniconfig/) (requires-python:>=3.10)
+Collecting iniconfig>=1
+  Downloading iniconfig-2.1.0-py3-none-any.whl (6.0 kB)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/5f/04/642c1d8a448ae5ea1369eac8495740a79eb4e581a9fb0cbdce56
+bbf56da1/coverage-7.11.0-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/1c/38/ee22495420457259d2f3390309505ea98f98a5eed40901cf6219
+6abad006/coverage-7.11.0.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/76/32/bd9f48c28e23b2f08946f8e83983617b00619f5538dbd7e1045f
+a7e88c00/coverage-7.11.1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/89/12/3e2d2ec71796e0913178478e693a06af6a3bc9f7f9cb899bf85a
+426d8370/coverage-7.11.1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/05/7a/99766a75c88e576f47c2d9a06416ff5d95be9b42faca5c37e1ab
+77c4cd1a/coverage-7.11.2-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/32/e6/7c4006cf689ed7a4aa75dcf1f14acbc04e585714c220b5cc6d23
+1096685a/coverage-7.11.2.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/19/8f/92bdd27b067204b99f396a1414d6342122f3e2663459baf78710
+8a6b8b84/coverage-7.11.3-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/d2/59/9698d57a3b11704c7b89b21d69e9d23ecf80d538cabb536c8b63
+f4a12322/coverage-7.11.3.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/1e/40/3559920734fa9a5b8efafee0d84a64c0ea4ed41d1b8fbb5627c0
+f0c67dac/coverage-7.11.4a0.dev1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/a8/49/426dfb3d39702b8f59f6e3d9fa7e45b21f6343f871edb8565804
+78121af1/coverage-7.11.4a0.dev1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/ce/a3/43b749004e3c09452e39bb56347a008f0a0668aad37324a99b5c
+8ca91d9e/coverage-7.12.0-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/89/26/4a96807b193b011588099c3b5c89fbb05294e5b90e71018e0654
+65f34eb6/coverage-7.12.0.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/1b/1b/cd5c3391a04a101767961e3e3ccf5a0c987b08d8434d97073dbb
+d132a049/coverage-7.12.1b1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/57/0b/c212490af3d8526225ee4f277ab249810ca108232d840d0a093e
+4f35931c/coverage-7.12.1b1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/8d/4c/1968f32fb9a2604645827e11ff84a31e59d532e01995f904723b
+4f5328b3/coverage-7.13.0-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/b6/45/2c665ca77ec32ad67e25c77daf1cee28ee4558f3bc571cdbaf88
+a00b9f23/coverage-7.13.0.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/cc/48/d9f421cb8da5afaa1a64570d9989e00fb7955e6acddc5a12979f
+7666ef60/coverage-7.13.1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/23/f9/e92df5e07f3fc8d4c7f9a0f146ef75446bf870351cd37b788cf5
+897f8079/coverage-7.13.1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/d2/db/d291e30fdf7ea617a335531e72294e0c723356d7fdde8fba0061
+0a76bda9/coverage-7.13.2-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/ad/49/349848445b0e53660e258acbcc9b0d014895b673923792088667
+2240f84b/coverage-7.13.2.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/7d/fb/70af542d2d938c778c9373ce253aa4116dbe7c0a5672f78b2b2a
+e0e1b94b/coverage-7.13.3-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/11/43/3e4ac666cc35f231fa70c94e9f38459299de1a152813f9d2f60f
+c5f3ecaf/coverage-7.13.3.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/0d/4a/331fe2caf6799d591109bb9c08083080f6de90a823695d412a93
+5622abb2/coverage-7.13.4-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/24/56/95b7e30fa389756cb56630faa728da46a27b8c6eb46f9d557c68
+fff12b65/coverage-7.13.4.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9e/ee/a4cf96b8ce1e566ed238f0659ac2d3f007ed1d14b181bcb684e1
+9561a69a/coverage-7.13.5-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9d/e0/70553e3000e345daff267cec284ce4cbf3fc141b6da229ac5277
+5b5428f1/coverage-7.13.5.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/61/e8/cb8e80d6f9f55b99588625062822bf946cf03ed06315df4bd839
+7f5632a1/coverage-7.14.0-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/23/7f/d0720730a397a999ffc0fd3f5bebef347338e3a47b727da66fbb
+228e2ff2/coverage-7.14.0.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/8a/3c/1a983b9a745d7f83d53f057bcc5bf79ba6a2bbc08266b3f0c7d6
+fe630c9b/coverage-7.14.1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/54/fd/0ab2772530e946e1be1abd0bc09e647ec9b02e88f0867857601f
+efca8953/coverage-7.14.1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/a3/5e/a8ba14ceb014f39bd5e3f7077150718c7de61c01ce326bfe7e8e
+ae9b19b2/coverage-7.14.2-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/9c/a3/3834a5564fe8f32154cd7032400d3c2f9c565b2a373fa671f2bb
+dad6f634/coverage-7.14.2.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/eb/e3/a0aa32bfa3a081951f60a23bc0e7b512891ef0eecda1153cf1d8
+ba36c6b1/coverage-7.14.3-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/b4/91/0a7c28934e50d8ac9a7b117712d176f2953c3170bccced5eaacf
+a3e96175/coverage-7.14.3.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/52/30/21b2ad45959cd50e909e02ebac1e30b4ceb7162e91c11d4c5702
+23a458b7/coverage-7.15.0-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/cc/8b/adeb62ea8951f13c4c7fef2e7a85e1a06b499c8d8237ea589d49
+6029e53f/coverage-7.15.0.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/34/98/07a67cf1a26e795d617ed5c540c042b0ac87b72f810c30c07f07
+6cf334f3/coverage-7.15.1-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/4a/83/6051c2a2feab48ae5bd27c84ef047191d2d4a3172f689e38eaa4
+8ed17db1/coverage-7.15.1.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/ec/82/32e3bd191d498e64f6f911ad55d14006a0861e54869d2d324523
+26399e65/coverage-7.15.2-py3-none-any.whl (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.25 not in: '>=3.10'): https://files.pythonhosted.org/packages/76/d0/55fe630f4cf94e3fcba868240fad8c8cdd1f764e2a932f892634
+7e6ec4cd/coverage-7.15.2.tar.gz (from https://pypi.org/simple/coverage/) (requires-python:>=3.10)
+Collecting coverage[toml]>=7.10.6
+  Downloading coverage-7.10.7-cp39-cp39-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (246 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.6/246.6 kB 71.8 MB/s eta 0:00:00
+Collecting typing-extensions>=4.6.0
+  Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Building wheels for collected packages: astropy
+  Running command Building editable for astropy (pyproject.toml)
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/setuptools/config/setupcfg.py:293: _DeprecatedConfig: Deprecated config in `setup.cfg`
+  !!
+
+          ********************************************************************************
+          The license_file parameter is deprecated, use license_files instead.
+
+          This deprecation is overdue, please update your project and remove deprecated
+          calls to avoid build errors in the future.
+
+          See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+          ********************************************************************************
+
+  !!
+    parsed = self.parsers.get(option_name, lambda x: x)(value)
+  running editable_wheel
+  creating /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info
+  writing /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/PKG-INFO
+  writing dependency_links to /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/dependency_links.txt
+  writing entry points to /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/entry_points.txt
+  writing requirements to /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/requires.txt
+  writing top-level names to /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/top_level.txt
+  writing manifest file '/tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/SOURCES.txt'
+  reading manifest template 'MANIFEST.in'
+  warning: no files found matching '*.templ' under directory 'astropy'
+  warning: no files found matching 'astropy/astropy.cfg'
+  warning: no files found matching '*' under directory 'scripts'
+  warning: no files found matching '*' under directory 'static'
+  no previously-included directories found matching 'docs/_build'
+  no previously-included directories found matching 'build'
+  warning: no previously-included files matching '*.pyc' found anywhere in distribution
+  warning: no previously-included files matching '*.o' found anywhere in distribution
+  adding license file 'LICENSE.rst'
+  writing manifest file '/tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy.egg-info/SOURCES.txt'
+  creating '/tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info'
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/wheel/bdist_wheel.py:4: FutureWarning: The 'wheel' package is no longer the canonical location
+ of the 'bdist_wheel' command, and will be removed in a future release. Please update to setuptools v70.1 or later which contains an integrated version of this
+command.
+    warn(
+  creating /tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/WHEEL
+  running build_py
+  running build_ext
+  cythoning astropy/table/_np_utils.pyx to astropy/table/_np_utils.c
+  cythoning astropy/table/_column_mixins.pyx to astropy/table/_column_mixins.c
+  cythoning astropy/timeseries/periodograms/bls/_impl.pyx to astropy/timeseries/periodograms/bls/_impl.c
+  cythoning astropy/io/ascii/cparser.pyx to astropy/io/ascii/cparser.c
+  cythoning ./astropy/stats/_stats.pyx to ./astropy/stats/_stats.c
+  cythoning ./astropy/cosmology/scalar_inv_efuncs.pyx to ./astropy/cosmology/scalar_inv_efuncs.c
+  cythoning ./astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.pyx to ./astropy/timeseries/periodograms/lombscargle/implementations/cytho
+n_impl.c
+  cythoning ./astropy/io/fits/_utils.pyx to ./astropy/io/fits/_utils.c
+  building 'astropy.convolution._convolve' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy
+  creating /tmp/tmpwlble1wc.build-temp/astropy/convolution
+  creating /tmp/tmpwlble1wc.build-temp/astropy/convolution/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/convolution/src/convolve.c -o /tmp/tmpwlble1wc.build-temp/astropy/convolution/src/c
+onvolve.o -UNDEBUG -fPIC
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/convolution
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/convolution/src/convolve.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/convolution/_convolve.cpytho
+n-39-x86_64-linux-gnu.so
+  building 'astropy.time._parse_times' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/time
+  creating /tmp/tmpwlble1wc.build-temp/astropy/time/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/time/src/parse_times.c -o /tmp/tmpwlble1wc.build-temp/astropy/time/src/parse_times.
+o
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/time
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/time/src/parse_times.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/time/_parse_times.cpython-39-x86
+_64-linux-gnu.so
+  building 'astropy.stats._fast_sigma_clip' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/stats
+  creating /tmp/tmpwlble1wc.build-temp/astropy/stats/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/stats/src/compute_bounds.c -o /tmp/tmpwlble1wc.build-temp/astropy/stats/src/compute
+_bounds.o
+  astropy/stats/src/compute_bounds.c: In function ‘compute_sigma_clipped_bounds’:
+  astropy/stats/src/compute_bounds.c:53:24: warning: ‘cen’ may be used uninitialized [-Wmaybe-uninitialized]
+     53 |     *upper_bound = cen + sigma_upper * std;
+        |                    ~~~~^~~~~~~~~~~~~~~~~~~
+  astropy/stats/src/compute_bounds.c:10:29: note: ‘cen’ was declared here
+     10 |   double mean, std, median, cen;
+        |                             ^~~
+  astropy/stats/src/compute_bounds.c:38:45: warning: ‘median’ may be used uninitialized [-Wmaybe-uninitialized]
+     38 |         mad_buffer[i] = fabs(data_buffer[i] - median);
+        |                              ~~~~~~~~~~~~~~~^~~~~~~~
+  astropy/stats/src/compute_bounds.c:10:21: note: ‘median’ was declared here
+     10 |   double mean, std, median, cen;
+        |                     ^~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/stats/src/fast_sigma_clip.c -o /tmp/tmpwlble1wc.build-temp/astropy/stats/src/fast_s
+igma_clip.o
+  astropy/stats/src/fast_sigma_clip.c: In function ‘PyInit__fast_sigma_clip’:
+  astropy/stats/src/fast_sigma_clip.c:44:48: warning: initialization of ‘void (*)(char **, const npy_intp *, const npy_intp *, void *)’ {aka ‘void (*)(char **,
+const long int *, const long int *, void *)’} from incompatible pointer type ‘void (*)(char **, npy_intp *, npy_intp *, void *)’ {aka ‘void (*)(char **, long in
+t *, long int *, void *)’} [-Wincompatible-pointer-types]
+     44 |     static PyUFuncGenericFunction funcs[1] = { &_sigma_clip_fast };
+        |                                                ^
+  astropy/stats/src/fast_sigma_clip.c:44:48: note: (near initialization for ‘funcs[0]’)
+  In file included from /usr/local/include/python3.9/pytime.h:6,
+                   from /usr/local/include/python3.9/Python.h:81,
+                   from astropy/stats/src/fast_sigma_clip.c:3:
+  In function ‘_Py_XDECREF’,
+      inlined from ‘PyInit__fast_sigma_clip’ at astropy/stats/src/fast_sigma_clip.c:69:5:
+  /usr/local/include/python3.9/object.h:496:8: warning: ‘d’ may be used uninitialized [-Wmaybe-uninitialized]
+    496 |     if (op != NULL) {
+        |        ^
+  astropy/stats/src/fast_sigma_clip.c: In function ‘PyInit__fast_sigma_clip’:
+  astropy/stats/src/fast_sigma_clip.c:30:19: note: ‘d’ was declared here
+     30 |     PyObject *m, *d;
+        |                   ^
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/stats/src/wirth_select.c -o /tmp/tmpwlble1wc.build-temp/astropy/stats/src/wirth_sel
+ect.o
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/stats
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/stats/src/compute_bounds.o /tmp/tmpwlble1wc.build-temp/astropy/stats/src/fast_sigma_clip.o /tmp/tmpwlble1wc.bu
+ild-temp/astropy/stats/src/wirth_select.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/stats/_fast_sigma_clip.cpython-39-x86_64-linux-gnu.so
+  building 'astropy.table._np_utils' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/table
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/table/_np_utils.c -o /tmp/tmpwlble1wc.build-temp/astropy/table/_np_utils.o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/table/_np_utils.c:610:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/table
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/table/_np_utils.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/table/_np_utils.cpython-39-x86_64-lin
+ux-gnu.so
+  building 'astropy.table._column_mixins' extension
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/table/_column_mixins.c -o /tmp/tmpwlble1wc.build-temp/astropy/table/_column_mixins.
+o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/table/_column_mixins.c:608:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:21:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/__multiarray_api.h:1463:1: warning: ‘_import_array’ defined but not u
+sed [-Wunused-function]
+   1463 | _import_array(void)
+        | ^~~~~~~~~~~~~
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/table/_column_mixins.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/table/_column_mixins.cpython-39-
+x86_64-linux-gnu.so
+  building 'astropy.utils._compiler' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/utils
+  creating /tmp/tmpwlble1wc.build-temp/astropy/utils/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/utils/sr
+c/compiler.c -o /tmp/tmpwlble1wc.build-temp/astropy/utils/src/compiler.o
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/utils
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/utils/src/compiler.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/utils/_compiler.cpython-39-x86_64-
+linux-gnu.so
+  building 'astropy.wcs._wcs' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/wcs
+  creating /tmp/tmpwlble1wc.build-temp/astropy/wcs/src
+  creating /tmp/tmpwlble1wc.build-temp/cextern
+  creating /tmp/tmpwlble1wc.build-temp/cextern/wcslib
+  creating /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C
+  creating /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/astropy_wcs.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/astropy_wcs.o -std=gnu99 -Wno-strict-prototyp
+es -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/astropy_wcs_api.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/astropy_wcs_api.o -std=gnu99 -Wno-strict-
+prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/distortion.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/distortion.o -std=gnu99 -Wno-strict-prototypes
+ -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/distortion_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/distortion_wrap.o -std=gnu99 -Wno-strict-
+prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/docstrings.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/docstrings.o -std=gnu99 -Wno-strict-prototypes
+ -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/pipeline.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/pipeline.o -std=gnu99 -Wno-strict-prototypes -Wn
+o-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/pyutil.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/pyutil.o -std=gnu99 -Wno-strict-prototypes -Wno-un
+used-function -Wno-unused-value -Wno-uninitialized
+  astropy/wcs/src/pyutil.c: In function ‘set_pscards’:
+  astropy/wcs/src/pyutil.c:807:5: warning: ‘strncpy’ specified bound 72 equals destination size [-Wstringop-truncation]
+    807 |     strncpy((*ps)[i].value, strvalue, 72);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/sip.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/sip.o -std=gnu99 -Wno-strict-prototypes -Wno-unused-f
+unction -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/sip_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/sip_wrap.o -std=gnu99 -Wno-strict-prototypes -Wn
+o-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/str_list_proxy.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/str_list_proxy.o -std=gnu99 -Wno-strict-pr
+ototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/unit_list_proxy.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/unit_list_proxy.o -std=gnu99 -Wno-strict-
+prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/util.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/util.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_auxprm_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_auxprm_wrap.o -std=gnu99 -Wno-s
+trict-prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_celprm_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_celprm_wrap.o -std=gnu99 -Wno-s
+trict-prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  astropy/wcs/src/wcslib_celprm_wrap.c: In function ‘PyCelprm_deepcopy’:
+  astropy/wcs/src/wcslib_celprm_wrap.c:167:22: warning: initialization of ‘PyCelprm *’ from incompatible pointer type ‘PyObject *’ {aka ‘struct _object *’} [-Wi
+ncompatible-pointer-types]
+    167 |     PyCelprm* copy = PyCelprm_new(&PyCelprmType, NULL, NULL);
+        |                      ^~~~~~~~~~~~
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/wcs/include/astropy_wcs/pyutil.h:16,
+                   from astropy/wcs/include/astropy_wcs/wcslib_celprm_wrap.h:4,
+                   from astropy/wcs/src/wcslib_celprm_wrap.c:3:
+  astropy/wcs/src/wcslib_celprm_wrap.c: In function ‘PyCelprm_set_ref’:
+  astropy/wcs/src/wcslib_celprm_wrap.c:327:25: warning: passing argument 1 of ‘PyArray_DIMS’ from incompatible pointer type [-Wincompatible-pointer-types]
+    327 |     size = PyArray_SIZE(value_array);
+        |                         ^~~~~~~~~~~
+        |                         |
+        |                         PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:59: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                           ^
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1487:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1487 | PyArray_DIMS(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_celprm_wrap.c:327:25: warning: passing argument 1 of ‘PyArray_NDIM’ from incompatible pointer type [-Wincompatible-pointer-types]
+    327 |     size = PyArray_SIZE(value_array);
+        |                         ^~~~~~~~~~~
+        |                         |
+        |                         PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:76: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                                            ^
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1469:35: note: expected ‘const PyArrayObject *’ {aka ‘
+const struct tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1469 | PyArray_NDIM(const PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_celprm_wrap.c:348:35: warning: passing argument 1 of ‘PyArray_DATA’ from incompatible pointer type [-Wincompatible-pointer-types]
+    348 |     data = (double*) PyArray_DATA(value_array);
+        |                                   ^~~~~~~~~~~
+        |                                   |
+        |                                   PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1475:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1475 | PyArray_DATA(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_prjprm_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_prjprm_wrap.o -std=gnu99 -Wno-s
+trict-prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_deepcopy’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:149:22: warning: initialization of ‘PyPrjprm *’ from incompatible pointer type ‘PyObject *’ {aka ‘struct _object *’} [-Wi
+ncompatible-pointer-types]
+    149 |     PyPrjprm* copy = PyPrjprm_new(&PyPrjprmType, NULL, NULL);
+        |                      ^~~~~~~~~~~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_get_pv’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:517:14: warning: assignment to ‘PyObject *’ {aka ‘struct _object *’} from incompatible pointer type ‘PyArrayObject *’ {ak
+a ‘struct tagPyArrayObject *’} [-Wincompatible-pointer-types]
+    517 |     pv_array = (PyArrayObject*) PyArray_SimpleNew(1, &size, NPY_DOUBLE);
+        |              ^
+  astropy/wcs/src/wcslib_prjprm_wrap.c:519:33: warning: passing argument 1 of ‘PyArray_DATA’ from incompatible pointer type [-Wincompatible-pointer-types]
+    519 |     pv = (double*) PyArray_DATA(pv_array);
+        |                                 ^~~~~~~~
+        |                                 |
+        |                                 PyObject * {aka struct _object *}
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/wcs/include/astropy_wcs/pyutil.h:16,
+                   from astropy/wcs/include/astropy_wcs/wcslib_celprm_wrap.h:4,
+                   from astropy/wcs/src/wcslib_prjprm_wrap.c:5:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1475:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1475 | PyArray_DATA(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_set_pv’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:556:25: warning: passing argument 1 of ‘PyArray_DIMS’ from incompatible pointer type [-Wincompatible-pointer-types]
+    556 |     size = PyArray_SIZE(value_array);
+        |                         ^~~~~~~~~~~
+        |                         |
+        |                         PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:59: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                           ^
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1487:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1487 | PyArray_DIMS(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c:556:25: warning: passing argument 1 of ‘PyArray_NDIM’ from incompatible pointer type [-Wincompatible-pointer-types]
+    556 |     size = PyArray_SIZE(value_array);
+        |                         ^~~~~~~~~~~
+        |                         |
+        |                         PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:76: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                                            ^
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1469:35: note: expected ‘const PyArrayObject *’ {aka ‘
+const struct tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1469 | PyArray_NDIM(const PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c:583:35: warning: passing argument 1 of ‘PyArray_DATA’ from incompatible pointer type [-Wincompatible-pointer-types]
+    583 |     data = (double*) PyArray_DATA(value_array);
+        |                                   ^~~~~~~~~~~
+        |                                   |
+        |                                   PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1475:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1475 | PyArray_DATA(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_get_pvi’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:615:15: warning: unused variable ‘value’ [-Wunused-variable]
+    615 |     PyObject* value = NULL;
+        |               ^~~~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_set_pvi’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:712:29: warning: passing argument 1 of ‘PyArray_DIMS’ from incompatible pointer type [-Wincompatible-pointer-types]
+    712 |         size = PyArray_SIZE(value_array);
+        |                             ^~~~~~~~~~~
+        |                             |
+        |                             PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:59: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                           ^
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1487:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1487 | PyArray_DIMS(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c:712:29: warning: passing argument 1 of ‘PyArray_NDIM’ from incompatible pointer type [-Wincompatible-pointer-types]
+    712 |         size = PyArray_SIZE(value_array);
+        |                             ^~~~~~~~~~~
+        |                             |
+        |                             PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:73:76: note: in definition of macro ‘PyArray_SIZE’
+     73 | #define PyArray_SIZE(m) PyArray_MultiplyList(PyArray_DIMS(m), PyArray_NDIM(m))
+        |                                                                            ^
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1469:35: note: expected ‘const PyArrayObject *’ {aka ‘
+const struct tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1469 | PyArray_NDIM(const PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c:720:48: warning: passing argument 1 of ‘PyArray_DATA’ from incompatible pointer type [-Wincompatible-pointer-types]
+    720 |         scalar = PyArray_ToScalar(PyArray_DATA(value_array), value_array);
+        |                                                ^~~~~~~~~~~
+        |                                                |
+        |                                                PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:129:24: note: in definition of macro ‘PyArray_ToScala
+r’
+    129 |         PyArray_Scalar(data, PyArray_DESCR(arr), (PyObject *)arr)
+        |                        ^~~~
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1475:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1475 | PyArray_DATA(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c:720:62: warning: passing argument 1 of ‘PyArray_DESCR’ from incompatible pointer type [-Wincompatible-pointer-types]
+    720 |         scalar = PyArray_ToScalar(PyArray_DATA(value_array), value_array);
+        |                                                              ^~~~~~~~~~~
+        |                                                              |
+        |                                                              PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:129:44: note: in definition of macro ‘PyArray_ToScala
+r’
+    129 |         PyArray_Scalar(data, PyArray_DESCR(arr), (PyObject *)arr)
+        |                                            ^~~
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1517:30: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1517 | PyArray_DESCR(PyArrayObject *arr)
+        |               ~~~~~~~~~~~~~~~^~~
+  astropy/wcs/src/wcslib_prjprm_wrap.c: In function ‘PyPrjprm_get_w’:
+  astropy/wcs/src/wcslib_prjprm_wrap.c:780:32: warning: passing argument 1 of ‘PyArray_DATA’ from incompatible pointer type [-Wincompatible-pointer-types]
+    780 |     w = (double*) PyArray_DATA(w_array);
+        |                                ^~~~~~~
+        |                                |
+        |                                PyObject * {aka struct _object *}
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1475:29: note: expected ‘PyArrayObject *’ {aka ‘struct
+ tagPyArrayObject *’} but argument is of type ‘PyObject *’ {aka ‘struct _object *’}
+   1475 | PyArray_DATA(PyArrayObject *arr)
+        |              ~~~~~~~~~~~~~~~^~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_tabprm_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_tabprm_wrap.o -std=gnu99 -Wno-s
+trict-prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_wrap.o -std=gnu99 -Wno-strict-prototyp
+es -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  astropy/wcs/src/wcslib_wrap.c: In function ‘PyWcsprm_sptr’:
+  astropy/wcs/src/wcslib_wrap.c:1789:3: warning: ‘strncpy’ specified bound 9 equals destination size [-Wstringop-truncation]
+   1789 |   strncpy(ctype, py_ctype, 9);
+        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  astropy/wcs/src/wcslib_wrap.c: In function ‘PyWcsprm_copy’:
+  astropy/wcs/src/wcslib_wrap.c:672:32: warning: argument 1 range [18446744071562067968, 18446744073709551615] exceeds maximum object size 9223372036854775807 [
+-Walloc-size-larger-than=]
+    672 |         if (!((*wtb->arrayp) = calloc((size_t)nelem, sizeof(double)))) {
+        |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  In file included from /usr/local/include/python3.9/Python.h:34,
+                   from astropy/wcs/include/astropy_wcs/pyutil.h:13,
+                   from astropy/wcs/include/astropy_wcs/wcslib_wrap.h:8,
+                   from astropy/wcs/src/wcslib_wrap.c:8:
+  /usr/include/stdlib.h:556:14: note: in a call to allocation function ‘calloc’ declared here
+    556 | extern void *calloc (size_t __nmemb, size_t __size)
+        |              ^~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c astropy/wcs/src/wcslib_wtbarr_wrap.c -o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_wtbarr_wrap.o -std=gnu99 -Wno-s
+trict-prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  astropy/wcs/src/wcslib_wtbarr_wrap.c:208:3: warning: initialization of ‘int (*)(PyObject *, int (*)(PyObject *, void *), void *)’ {aka ‘int (*)(struct _object
+ *, int (*)(struct _object *, void *), void *)’} from incompatible pointer type ‘int (*)(PyWtbarr *, int (*)(PyObject *, void *), void *)’ {aka ‘int (*)(PyWtbar
+r *, int (*)(struct _object *, void *), void *)’} [-Wincompatible-pointer-types]
+    208 |   PyWtbarr_traverse,            /* tp_traverse */
+        |   ^~~~~~~~~~~~~~~~~
+  astropy/wcs/src/wcslib_wtbarr_wrap.c:208:3: note: (near initialization for ‘PyWtbarrType.tp_traverse’)
+  astropy/wcs/src/wcslib_wtbarr_wrap.c:209:3: warning: initialization of ‘int (*)(PyObject *)’ {aka ‘int (*)(struct _object *)’} from incompatible pointer type
+‘int (*)(PyWtbarr *)’ [-Wincompatible-pointer-types]
+    209 |   PyWtbarr_clear,               /* tp_clear */
+        |   ^~~~~~~~~~~~~~
+  astropy/wcs/src/wcslib_wtbarr_wrap.c:209:3: note: (near initialization for ‘PyWtbarrType.tp_clear’)
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/cel.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/cel.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/dis.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/dis.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/flexed/wcsbth.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsbth.o -std=gnu99 -Wno-strict-pr
+ototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/flexed/wcspih.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcspih.o -std=gnu99 -Wno-strict-pr
+ototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/flexed/wcsulex.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsulex.o -std=gnu99 -Wno-strict-
+prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/flexed/wcsutrn.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsutrn.o -std=gnu99 -Wno-strict-
+prototypes -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/lin.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/lin.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/log.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/log.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/prj.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/prj.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/spc.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/spc.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/sph.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/sph.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/spx.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/spx.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/tab.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/tab.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcs.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcs.o -std=gnu99 -Wno-strict-prototypes -Wno-unused
+-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcserr.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcserr.o -std=gnu99 -Wno-strict-prototypes -Wno-
+unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcsfix.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsfix.o -std=gnu99 -Wno-strict-prototypes -Wno-
+unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcshdr.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcshdr.o -std=gnu99 -Wno-strict-prototypes -Wno-
+unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcsprintf.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsprintf.o -std=gnu99 -Wno-strict-prototypes
+ -Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcsunits.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsunits.o -std=gnu99 -Wno-strict-prototypes -
+Wno-unused-function -Wno-unused-value -Wno-uninitialized
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DECHO -DWCSTRIG_MACRO -DASTROPY_WCS_BUILD -D_GNU_SOURCE -DNDEBUG -DHAVE_SINCOS -UDE
+BUG -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include -Icextern/wcslib/C -Iastropy/wcs/include -I/app/astropy/tests-venv/incl
+ude -I/usr/local/include/python3.9 -c cextern/wcslib/C/wcsutil.c -o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsutil.o -std=gnu99 -Wno-strict-prototypes -Wn
+o-unused-function -Wno-unused-value -Wno-uninitialized
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/wcs
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/astropy_wcs.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/astropy_wcs_api.o /tmp/tmpwlble1wc.build-tem
+p/astropy/wcs/src/distortion.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/distortion_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/docstrings.o /tmp/tmpwl
+ble1wc.build-temp/astropy/wcs/src/pipeline.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/pyutil.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/sip.o /tmp/tmpwlbl
+e1wc.build-temp/astropy/wcs/src/sip_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/str_list_proxy.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/unit_list_pr
+oxy.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/util.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_auxprm_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wc
+s/src/wcslib_celprm_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_prjprm_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_tabprm_wrap.o /tm
+p/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_wrap.o /tmp/tmpwlble1wc.build-temp/astropy/wcs/src/wcslib_wtbarr_wrap.o /tmp/tmpwlble1wc.build-temp/cextern/wcsl
+ib/C/cel.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/dis.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsbth.o /tmp/tmpwlble1wc.build-temp/cextern/w
+cslib/C/flexed/wcspih.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsulex.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/flexed/wcsutrn.o /tmp/tmpwlbl
+e1wc.build-temp/cextern/wcslib/C/lin.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/log.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/prj.o /tmp/tmpwlble1wc.bu
+ild-temp/cextern/wcslib/C/spc.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/sph.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/spx.o /tmp/tmpwlble1wc.build-tem
+p/cextern/wcslib/C/tab.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcs.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcserr.o /tmp/tmpwlble1wc.build-temp/ce
+xtern/wcslib/C/wcsfix.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcshdr.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsprintf.o /tmp/tmpwlble1wc.build-te
+mp/cextern/wcslib/C/wcsunits.o /tmp/tmpwlble1wc.build-temp/cextern/wcslib/C/wcsutil.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/wcs/_wcs.cpython-39
+-x86_64-linux-gnu.so
+  building 'astropy.timeseries.periodograms.bls._impl' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/timeseries
+  creating /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms
+  creating /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms/bls
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/timeseries/periodograms/bls/_impl.c -o /tmp/tmpwlble1wc.build-temp/astropy/timeseri
+es/periodograms/bls/_impl.o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/timeseries/periodograms/bls/_impl.c:610:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/timeseries/periodograms/bls/bls.c -o /tmp/tmpwlble1wc.build-temp/astropy/timeseries
+/periodograms/bls/bls.o
+  astropy/timeseries/periodograms/bls/bls.c: In function ‘run_bls’:
+  astropy/timeseries/periodograms/bls/bls.c:92: warning: ignoring ‘#pragma omp parallel’ [-Wunknown-pragmas]
+     92 | #pragma omp parallel
+        |
+  astropy/timeseries/periodograms/bls/bls.c:116: warning: ignoring ‘#pragma omp parallel’ [-Wunknown-pragmas]
+    116 |     #pragma omp parallel for reduction(+:sum_y), reduction(+:sum_ivar)
+        |
+  astropy/timeseries/periodograms/bls/bls.c:125: warning: ignoring ‘#pragma omp parallel’ [-Wunknown-pragmas]
+    125 |     #pragma omp parallel for
+        |
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/bls
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms/bls/_impl.o /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms/bls/bls.o -L/u
+sr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/bls/_impl.cpython-39-x86_64-linux-gnu.so
+  building 'astropy.utils.xml._iterparser' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/utils/xml
+  creating /tmp/tmpwlble1wc.build-temp/astropy/utils/xml/src
+  creating /tmp/tmpwlble1wc.build-temp/cextern/expat
+  creating /tmp/tmpwlble1wc.build-temp/cextern/expat/lib
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_EXPAT_CONFIG_H=1 -DBYTEORDER=1234 -DHAVE_UNISTD_H -Iastropy/utils/xml/src -Ic
+extern/expat/lib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/utils/xml/src/iterparse.c -o /tmp/tmpwlble1wc.build-temp/astropy/ut
+ils/xml/src/iterparse.o
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_EXPAT_CONFIG_H=1 -DBYTEORDER=1234 -DHAVE_UNISTD_H -Iastropy/utils/xml/src -Ic
+extern/expat/lib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/expat/lib/xmlparse.c -o /tmp/tmpwlble1wc.build-temp/cextern/expat/l
+ib/xmlparse.o
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_EXPAT_CONFIG_H=1 -DBYTEORDER=1234 -DHAVE_UNISTD_H -Iastropy/utils/xml/src -Ic
+extern/expat/lib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/expat/lib/xmlrole.c -o /tmp/tmpwlble1wc.build-temp/cextern/expat/li
+b/xmlrole.o
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_EXPAT_CONFIG_H=1 -DBYTEORDER=1234 -DHAVE_UNISTD_H -Iastropy/utils/xml/src -Ic
+extern/expat/lib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/expat/lib/xmltok.c -o /tmp/tmpwlble1wc.build-temp/cextern/expat/lib
+/xmltok.o
+  In file included from cextern/expat/lib/xmltok.c:55:
+  cextern/expat/lib/xmltok.h: In function ‘findEncoding’:
+  cextern/expat/lib/xmltok.h:272:10: warning: ‘buf’ may be used uninitialized [-Wmaybe-uninitialized]
+    272 |   (((enc)->utf8Convert)(enc, fromP, fromLim, toP, toLim))
+        |          ^~
+  cextern/expat/lib/xmltok.h:272:10: note: by argument 5 of type ‘const char *’ to ‘enum XML_Convert_Result(const ENCODING *, const char **, const char *, char
+**, const char *)’ {aka ‘enum XML_Convert_Result(const struct encoding *, const char **, const char *, char **, const char *)’}
+    272 |   (((enc)->utf8Convert)(enc, fromP, fromLim, toP, toLim))
+        |   ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/expat/lib/xmltok_ns.c:95:3: note: in expansion of macro ‘XmlUtf8Convert’
+     95 |   XmlUtf8Convert(enc, &ptr, end, &p, p + ENCODING_MAX - 1);
+        |   ^~~~~~~~~~~~~~
+  In file included from cextern/expat/lib/xmltok.c:1646:
+  cextern/expat/lib/xmltok_ns.c:92:8: note: ‘buf’ declared here
+     92 |   char buf[ENCODING_MAX];
+        |        ^~~
+  cextern/expat/lib/xmltok.h: In function ‘findEncodingNS’:
+  cextern/expat/lib/xmltok.h:272:10: warning: ‘buf’ may be used uninitialized [-Wmaybe-uninitialized]
+    272 |   (((enc)->utf8Convert)(enc, fromP, fromLim, toP, toLim))
+        |          ^~
+  cextern/expat/lib/xmltok.h:272:10: note: by argument 5 of type ‘const char *’ to ‘enum XML_Convert_Result(const ENCODING *, const char **, const char *, char
+**, const char *)’ {aka ‘enum XML_Convert_Result(const struct encoding *, const char **, const char *, char **, const char *)’}
+    272 |   (((enc)->utf8Convert)(enc, fromP, fromLim, toP, toLim))
+        |   ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/expat/lib/xmltok_ns.c:95:3: note: in expansion of macro ‘XmlUtf8Convert’
+     95 |   XmlUtf8Convert(enc, &ptr, end, &p, p + ENCODING_MAX - 1);
+        |   ^~~~~~~~~~~~~~
+  In file included from cextern/expat/lib/xmltok.c:1657:
+  cextern/expat/lib/xmltok_ns.c:92:8: note: ‘buf’ declared here
+     92 |   char buf[ENCODING_MAX];
+        |        ^~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_EXPAT_CONFIG_H=1 -DBYTEORDER=1234 -DHAVE_UNISTD_H -Iastropy/utils/xml/src -Ic
+extern/expat/lib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/expat/lib/xmltok_impl.c -o /tmp/tmpwlble1wc.build-temp/cextern/expa
+t/lib/xmltok_impl.o
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/utils/xml
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/utils/xml/src/iterparse.o /tmp/tmpwlble1wc.build-temp/cextern/expat/lib/xmlparse.o /tmp/tmpwlble1wc.build-temp
+/cextern/expat/lib/xmlrole.o /tmp/tmpwlble1wc.build-temp/cextern/expat/lib/xmltok.o /tmp/tmpwlble1wc.build-temp/cextern/expat/lib/xmltok_impl.o -L/usr/local/lib
+ -o /tmp/tmp5v3pk1ez.build-lib/astropy/utils/xml/_iterparser.cpython-39-x86_64-linux-gnu.so -Wl,--version-script=astropy/utils/xml/src/iterparse.map
+  building 'astropy.io.ascii.cparser' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/ascii
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/ascii/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/io/ascii/cparser.c -o /tmp/tmpwlble1wc.build-temp/astropy/io/ascii/cparser.o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from astropy/io/ascii/cparser.c:610:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/io/ascii/src/tokenizer.c -o /tmp/tmpwlble1wc.build-temp/astropy/io/ascii/src/tokeni
+zer.o
+  astropy/io/ascii/src/tokenizer.c: In function ‘push’:
+  astropy/io/ascii/src/tokenizer.c:124:54: warning: comparison of integer expressions of different signedness: ‘long int’ and ‘size_t’ {aka ‘long unsigned int’}
+ [-Wsign-compare]
+    124 |     if (self->col_ptrs[col] - self->output_cols[col] >=
+        |                                                      ^~
+  astropy/io/ascii/src/tokenizer.c: In function ‘tokenize’:
+  astropy/io/ascii/src/tokenizer.c:424:42: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-Ws
+ign-compare]
+    424 |                     if (self->source_pos == -1
+        |                                          ^~
+  astropy/io/ascii/src/tokenizer.c:360:9: warning: enumeration value ‘QUOTED_FIELD_NEWLINE’ not handled in switch [-Wswitch]
+    360 |         switch (self->state)
+        |         ^~~~~~
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/io
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/io/ascii
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/io/ascii/cparser.o /tmp/tmpwlble1wc.build-temp/astropy/io/ascii/src/tokenizer.o -L/usr/local/lib -o /tmp/tmp5v
+3pk1ez.build-lib/astropy/io/ascii/cparser.cpython-39-x86_64-linux-gnu.so
+  building 'astropy.io.votable.tablewriter' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/votable
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/votable/src
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -Iastropy/io/votable/src -I/app/astropy/tests-venv/include -I/usr/local/include/pyth
+on3.9 -c astropy/io/votable/src/tablewriter.c -o /tmp/tmpwlble1wc.build-temp/astropy/io/votable/src/tablewriter.o
+  astropy/io/votable/src/tablewriter.c: In function ‘write_tabledata’:
+  astropy/io/votable/src/tablewriter.c:270:30: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+    270 |                 if ((str_tmp = PyUnicode_AsUTF8AndSize(str_val, &str_len)) == NULL) {
+        |                              ^
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/io/votable
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/io/votable/src/tablewriter.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/io/votable/tablewriter.cpy
+thon-39-x86_64-linux-gnu.so
+  building 'astropy.io.fits.compression' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/fits
+  creating /tmp/tmpwlble1wc.build-temp/astropy/io/fits/src
+  creating /tmp/tmpwlble1wc.build-temp/cextern/cfitsio
+  creating /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib
+  creating /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/io/fits/src/compressio
+nmodule.c -o /tmp/tmpwlble1wc.build-temp/astropy/io/fits/src/compressionmodule.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninit
+ialized -Wno-unused-result -Wno-misleading-indentation -Wno-format-overflow
+  astropy/io/fits/src/compressionmodule.c: In function ‘compression_compress_hdu’:
+  astropy/io/fits/src/compressionmodule.c:1042:16: warning: comparison of integer expressions of different signedness: ‘npy_intp’ {aka ‘long int’} and ‘size_t’
+{aka ‘long unsigned int’} [-Wsign-compare]
+   1042 |     if (znaxis < outbufsize) {
+        |                ^
+  astropy/io/fits/src/compressionmodule.c: In function ‘tcolumns_from_header’:
+  astropy/io/fits/src/compressionmodule.c:450:9: warning: ‘strncpy’ output may be truncated copying 69 bytes from a string of length 71 [-Wstringop-truncation]
+    450 |         strncpy(column->ttype, ttype, 69);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  astropy/io/fits/src/compressionmodule.c:457:9: warning: ‘strncpy’ output may be truncated copying 9 bytes from a string of length 71 [-Wstringop-truncation]
+    457 |         strncpy(column->tform, tform, 9);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  astropy/io/fits/src/compressionmodule.c: In function ‘configure_compression’:
+  astropy/io/fits/src/compressionmodule.c:600:5: warning: ‘strncpy’ output may be truncated copying 11 bytes from a string of length 71 [-Wstringop-truncation]
+    600 |     strncpy(Fptr->zcmptype, tmp, 11);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/buffers.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/buffers.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/cfileio.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/cfileio.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/cfileio.c: In function ‘fits_is_this_a_copy’:
+  cextern/cfitsio/lib/cfileio.c:1711:13: warning: ‘strncpy’ output truncated before terminating nul copying 5 bytes from a string of the same length [-Wstringop
+-truncation]
+   1711 |   else if (!strncpy(urltype, "stdin", 5) )
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/cfileio.c: In function ‘ffoptplt’:
+  cextern/cfitsio/lib/cfileio.c:7788:21: warning: ‘strncpy’ output truncated before terminating nul copying 30 bytes from a string of the same length [-Wstringo
+p-truncation]
+   7788 |                     strncpy(card, "PCOUNT  =                    0", 30);
+        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/cfileio.c: In function ‘ffomem’:
+  cextern/cfitsio/lib/cfileio.c:339:38: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 55 [-Wformat-truncation=]
+    339 |           " extension with EXTNAME = %s,", extname);
+        |                                      ^~    ~~~~~~~
+  cextern/cfitsio/lib/cfileio.c:338:11: note: ‘snprintf’ output between 28 and 98 bytes into a destination of size 81
+    338 |           snprintf(errmsg, FLEN_ERRMSG,
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    339 |           " extension with EXTNAME = %s,", extname);
+        |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/cfileio.c: In function ‘ffopen’:
+  cextern/cfitsio/lib/cfileio.c:971:38: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 55 [-Wformat-truncation=]
+    971 |           " extension with EXTNAME = %s,", extname);
+        |                                      ^~    ~~~~~~~
+  cextern/cfitsio/lib/cfileio.c:970:11: note: ‘snprintf’ output between 28 and 98 bytes into a destination of size 81
+    970 |           snprintf(errmsg, FLEN_ERRMSG,
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    971 |           " extension with EXTNAME = %s,", extname);
+        |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/checksum.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/checksum.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/drvrfile.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrfile.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/drvrmem.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrmem.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/drvrmem.c: In function ‘mem_truncate’:
+  cextern/cfitsio/lib/drvrmem.c:273:23: warning: comparison of integer expressions of different signedness: ‘LONGLONG’ {aka ‘long long int’} and ‘size_t’ {aka ‘
+long unsigned int’} [-Wsign-compare]
+    273 |         if ( filesize > *(memTable[handle].memsizeptr) )
+        |                       ^
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/drvrnet.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrnet.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/drvrsmem.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrsmem.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/editcol.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/editcol.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/editcol.c: In function ‘ffkshf’:
+  cextern/cfitsio/lib/editcol.c:2807:19: warning: ‘strncpy’ output truncated before terminating nul copying 8 bytes from a string of the same length [-Wstringop
+-truncation]
+   2807 |                   strncpy(rec, "        ", 8);    /* erase old keyword name */
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/editcol.c:2767:13: warning: ‘strncpy’ output may be truncated copying 4 bytes from a string of length 80 [-Wstringop-truncation]
+   2767 |             strncpy(q, &rec[1], 4);
+        |             ^~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/editcol.c:2802:19: warning: ‘strncat’ output may be truncated copying between 4 and 5 bytes from a string of length 80 [-Wstringop-truncat
+ion]
+   2802 |                   strncat(q, rec, i1);
+        |                   ^~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/editcol.c:2809:19: warning: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length [-Wstringo
+p-truncation]
+   2809 |                   strncpy(rec, newkey, i1);   /* overwrite new keyword name */
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/editcol.c:2808:24: note: length computed here
+   2808 |                   i1 = strlen(newkey);
+        |                        ^~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/edithdu.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/edithdu.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/eval_f.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/eval_f.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/eval_l.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/eval_l.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/eval_y.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/eval_y.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/fits_hcomp
+ress.c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/fits_hcompress.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialize
+d -Wno-unused-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/fits_hdeco
+mpress.c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/fits_hdecompress.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitia
+lized -Wno-unused-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/fitscore.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/fitscore.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffmkky’:
+  cextern/cfitsio/lib/fitscore.c:1114:30: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-Wsi
+gn-compare]
+   1114 |             if (strlen(cptr) > maxlen) maxlen = strlen(cptr); /* find longest token */
+        |                              ^
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffmkey’:
+  cextern/cfitsio/lib/fitscore.c:1291:19: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-Wsi
+gn-compare]
+   1291 |     for (ii=0; ii < keylength; ii++)       /* make sure keyword name is uppercase */
+        |                   ^
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffmkky’:
+  cextern/cfitsio/lib/fitscore.c:1111:9: warning: ‘strncat’ output may be truncated copying 74 bytes from a string of length 74 [-Wstringop-truncation]
+   1111 |         strncat(tmpname2, tmpname, FLEN_KEYWORD - 1);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:1155:13: warning: ‘strncat’ output may be truncated copying 74 bytes from a string of length 74 [-Wstringop-truncation]
+   1155 |             strncat(card, tmpname, FLEN_KEYWORD - 1);
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffbinit.part.0’:
+  cextern/cfitsio/lib/fitscore.c:5094:52: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 72 [-Wformat-truncation=]
+   5094 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffbinit).", name);
+        |                                                    ^~                                ~~~~
+  cextern/cfitsio/lib/fitscore.c:5094:13: note: ‘snprintf’ output between 39 and 113 bytes into a destination of size 81
+   5094 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffbinit).", name);
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffainit.part.0’:
+  cextern/cfitsio/lib/fitscore.c:4897:52: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 72 [-Wformat-truncation=]
+   4897 |             snprintf(message,FLEN_ERRMSG,"Value of %s keyword out of range: %ld (ffainit).",
+        |                                                    ^~
+   4898 |             name, (long) tbcoln);
+        |             ~~~~
+  cextern/cfitsio/lib/fitscore.c:4897:42: note: using the range [-9223372036854775808, 9223372036854775807] for directive argument
+   4897 |             snprintf(message,FLEN_ERRMSG,"Value of %s keyword out of range: %ld (ffainit).",
+        |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:4897:13: note: ‘snprintf’ output between 45 and 138 bytes into a destination of size 81
+   4897 |             snprintf(message,FLEN_ERRMSG,"Value of %s keyword out of range: %ld (ffainit).",
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   4898 |             name, (long) tbcoln);
+        |             ~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:4888:52: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 72 [-Wformat-truncation=]
+   4888 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffainit).", name);
+        |                                                    ^~                                ~~~~
+  cextern/cfitsio/lib/fitscore.c:4888:13: note: ‘snprintf’ output between 39 and 113 bytes into a destination of size 81
+   4888 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffainit).", name);
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:4880:52: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 72 [-Wformat-truncation=]
+   4880 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffainit).", name);
+        |                                                    ^~                                ~~~~
+  cextern/cfitsio/lib/fitscore.c:4880:13: note: ‘snprintf’ output between 39 and 113 bytes into a destination of size 81
+   4880 |             snprintf(message,FLEN_ERRMSG,"Required %s keyword not found (ffainit).", name);
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffcmph’:
+  cextern/cfitsio/lib/fitscore.c:6217:69: warning: ‘ blocks.’ directive output may be truncated writing 8 bytes into a region of size between 7 and 23 [-Wformat
+-truncation=]
+   6217 |        "Failed to extend the size of the variable length heap by %ld blocks.",
+        |                                                                     ^~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:6216:19: note: ‘snprintf’ output between 67 and 83 bytes into a destination of size 81
+   6216 |                   snprintf(message,FLEN_ERRMSG,
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   6217 |        "Failed to extend the size of the variable length heap by %ld blocks.",
+        |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   6218 |                    nblock);
+        |                    ~~~~~~~
+  cextern/cfitsio/lib/fitscore.c: In function ‘ffgcprll’:
+  cextern/cfitsio/lib/fitscore.c:5955:69: warning: ‘ blocks.’ directive output may be truncated writing 8 bytes into a region of size between 7 and 23 [-Wformat
+-truncation=]
+   5955 |        "Failed to extend the size of the variable length heap by %ld blocks.",
+        |                                                                     ^~~~~~~~
+  cextern/cfitsio/lib/fitscore.c:5954:19: note: ‘snprintf’ output between 67 and 83 bytes into a destination of size 81
+   5954 |                   snprintf(message,FLEN_ERRMSG,
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   5955 |        "Failed to extend the size of the variable length heap by %ld blocks.",
+        |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   5956 |                    nblock);
+        |                    ~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcol.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcol.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcolb.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolb.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcold.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcold.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcole.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcole.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcoli.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoli.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcolj.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolj.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcolk.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolk.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcoll.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoll.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcols.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcols.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/getcols.c: In function ‘ffgcls’:
+  cextern/cfitsio/lib/getcols.c:442:15: warning: ‘strncat’ output may be truncated copying 20 bytes from a string of length 399 [-Wstringop-truncation]
+    442 |               strncat(array[ii], tmpstr, 20);
+        |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:423:19: warning: ‘strncat’ output may be truncated copying between 0 and 78 bytes from a string of length 79 [-Wstringop-truncat
+ion]
+    423 |                   strncat(array[ii], tmpnull, dwidth);
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:442:15: warning: ‘strncat’ output may be truncated copying 20 bytes from a string of length 399 [-Wstringop-truncation]
+    442 |               strncat(array[ii], tmpstr, 20);
+        |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:423:19: warning: ‘strncat’ output may be truncated copying between 0 and 78 bytes from a string of length 79 [-Wstringop-truncat
+ion]
+    423 |                   strncat(array[ii], tmpnull, dwidth);
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:384:15: warning: ‘strncat’ output may be truncated copying 20 bytes from a string of length 399 [-Wstringop-truncation]
+    384 |               strncat(array[ii], tmpstr, 20);
+        |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:365:19: warning: ‘strncat’ output may be truncated copying between 0 and 78 bytes from a string of length 79 [-Wstringop-truncat
+ion]
+    365 |                   strncat(array[ii], tmpnull, dwidth);
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:384:15: warning: ‘strncat’ output may be truncated copying 20 bytes from a string of length 399 [-Wstringop-truncation]
+    384 |               strncat(array[ii], tmpstr, 20);
+        |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:365:19: warning: ‘strncat’ output may be truncated copying between 0 and 78 bytes from a string of length 79 [-Wstringop-truncat
+ion]
+    365 |                   strncat(array[ii], tmpnull, dwidth);
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getcols.c:587:19: warning: ‘strncat’ output may be truncated copying between 0 and 78 bytes from a string of length 79 [-Wstringop-truncat
+ion]
+    587 |                   strncat(array[ii], tmpnull, dwidth);
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcolsb.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolsb.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcolui.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolui.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcoluj.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoluj.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/getcoluj.c: In function ‘fffi8u4’:
+  cextern/cfitsio/lib/getcoluj.c:1331:36: warning: comparison of integer expressions of different signedness: ‘LONGLONG’ {aka ‘long long int’} and ‘long unsigne
+d int’ [-Wsign-compare]
+   1331 |                 else if (input[ii] > ULONG_MAX)
+        |                                    ^
+  cextern/cfitsio/lib/getcoluj.c:1414:40: warning: comparison of integer expressions of different signedness: ‘LONGLONG’ {aka ‘long long int’} and ‘long unsigne
+d int’ [-Wsign-compare]
+   1414 |                     else if (input[ii] > ULONG_MAX)
+        |                                        ^
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getcoluk.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoluk.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/getkey.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getkey.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/getkey.c: In function ‘ffgsky’:
+  cextern/cfitsio/lib/getkey.c:1080:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign
+-compare]
+   1080 |         if (firstchar <= len)
+        |                       ^~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffgcnt’:
+  cextern/cfitsio/lib/getkey.c:1134:9: warning: ‘strncpy’ output truncated copying 10 bytes from a string of length 11 [-Wstringop-truncation]
+   1134 |         strncpy(card, "D2345678=  ", 10); /* overwrite a dummy keyword name */
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffgphd.part.0’:
+  cextern/cfitsio/lib/getkey.c:2855:62: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 33 [-Wformat-truncation=]
+   2855 |             "First keyword of the extension is not XTENSION: %s", name);
+        |                                                              ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2854:13: note: ‘snprintf’ output between 49 and 123 bytes into a destination of size 81
+   2854 |             snprintf(message, FLEN_ERRMSG,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2855 |             "First keyword of the extension is not XTENSION: %s", name);
+        |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2847:53: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 49 [-Wformat-truncation=]
+   2847 |                    "This is not an IMAGE extension: %s", value);
+        |                                                     ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2846:17: note: ‘snprintf’ output between 33 and 103 bytes into a destination of size 81
+   2846 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2847 |                    "This is not an IMAGE extension: %s", value);
+        |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2821:62: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 40 [-Wformat-truncation=]
+   2821 |                    "First keyword of the file is not SIMPLE: %s", name);
+        |                                                              ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2820:13: note: ‘snprintf’ output between 42 and 116 bytes into a destination of size 81
+   2820 |             snprintf(message, FLEN_ERRMSG,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2821 |                    "First keyword of the file is not SIMPLE: %s", name);
+        |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2930:48: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 47 [-Wformat-truncation=]
+   2930 |             "Illegal value for BITPIX keyword: %s", value);
+        |                                                ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2929:13: note: ‘snprintf’ output between 35 and 105 bytes into a destination of size 81
+   2929 |             snprintf(message, FLEN_ERRMSG,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2930 |             "Illegal value for BITPIX keyword: %s", value);
+        |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2921:57: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 38 [-Wformat-truncation=]
+   2921 |             "Value of BITPIX keyword is not an integer: %s", value);
+        |                                                         ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2920:13: note: ‘snprintf’ output between 44 and 114 bytes into a destination of size 81
+   2920 |             snprintf(message, FLEN_ERRMSG,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2921 |             "Value of BITPIX keyword is not an integer: %s", value);
+        |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2913:61: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 34 [-Wformat-truncation=]
+   2913 |             "Second keyword of the extension is not BITPIX: %s", name);
+        |                                                             ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2912:13: note: ‘snprintf’ output between 48 and 122 bytes into a destination of size 81
+   2912 |             snprintf(message, FLEN_ERRMSG,
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2913 |             "Second keyword of the extension is not BITPIX: %s", name);
+        |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3021:70: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size between 18 and 28 [-Wformat
+-truncation=]
+   3021 |               "Name of keyword no. %d contains illegal character(s): %s",
+        |                                                                      ^~
+   3022 |               nextkey, name);
+        |                        ~~~~
+  cextern/cfitsio/lib/getkey.c:3020:11: note: ‘snprintf’ output between 54 and 138 bytes into a destination of size 81
+   3020 |           snprintf(message, FLEN_ERRMSG,
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3021 |               "Name of keyword no. %d contains illegal character(s): %s",
+        |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3022 |               nextkey, name);
+        |               ~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3118:67: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 32 [-Wformat-truncation=]
+   3118 |                 "Error reading EXTEND keyword value as a logical: %s", value);
+        |                                                                   ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3117:17: note: ‘snprintf’ output between 50 and 120 bytes into a destination of size 81
+   3117 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3118 |                 "Error reading EXTEND keyword value as a logical: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3101:68: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 31 [-Wformat-truncation=]
+   3101 |                 "Error reading GCOUNT keyword value as an integer: %s", value);
+        |                                                                    ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3100:17: note: ‘snprintf’ output between 51 and 121 bytes into a destination of size 81
+   3100 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3101 |                 "Error reading GCOUNT keyword value as an integer: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3088:68: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 31 [-Wformat-truncation=]
+   3088 |                 "Error reading PCOUNT keyword value as an integer: %s", value);
+        |                                                                    ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3087:17: note: ‘snprintf’ output between 51 and 121 bytes into a destination of size 81
+   3087 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3088 |                 "Error reading PCOUNT keyword value as an integer: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3075:67: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 32 [-Wformat-truncation=]
+   3075 |                 "Error reading BLANK keyword value as an integer: %s", value);
+        |                                                                   ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3074:17: note: ‘snprintf’ output between 50 and 120 bytes into a destination of size 81
+   3074 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3075 |                 "Error reading BLANK keyword value as an integer: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3058:65: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 34 [-Wformat-truncation=]
+   3058 |                 "Error reading BZERO keyword value as a double: %s", value);
+        |                                                                 ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3057:17: note: ‘snprintf’ output between 48 and 118 bytes into a destination of size 81
+   3057 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3058 |                 "Error reading BZERO keyword value as a double: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:3041:66: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 33 [-Wformat-truncation=]
+   3041 |                 "Error reading BSCALE keyword value as a double: %s", value);
+        |                                                                  ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:3040:17: note: ‘snprintf’ output between 49 and 119 bytes into a destination of size 81
+   3040 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   3041 |                 "Error reading BSCALE keyword value as a double: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffghtb’:
+  cextern/cfitsio/lib/getkey.c:2282:58: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 33 [-Wformat-truncation=]
+   2282 |         "First keyword of the extension is not XTENSION: %s", name);
+        |                                                          ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2281:9: note: ‘snprintf’ output between 49 and 123 bytes into a destination of size 81
+   2281 |         snprintf(message, FLEN_ERRMSG,
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2282 |         "First keyword of the extension is not XTENSION: %s", name);
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2273:49: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 50 [-Wformat-truncation=]
+   2273 |                 "This is not a TABLE extension: %s", value);
+        |                                                 ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2272:17: note: ‘snprintf’ output between 32 and 102 bytes into a destination of size 81
+   2272 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2273 |                 "This is not a TABLE extension: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffghtbll’:
+  cextern/cfitsio/lib/getkey.c:2425:58: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 33 [-Wformat-truncation=]
+   2425 |         "First keyword of the extension is not XTENSION: %s", name);
+        |                                                          ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2424:9: note: ‘snprintf’ output between 49 and 123 bytes into a destination of size 81
+   2424 |         snprintf(message, FLEN_ERRMSG,
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2425 |         "First keyword of the extension is not XTENSION: %s", name);
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2416:49: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 50 [-Wformat-truncation=]
+   2416 |                 "This is not a TABLE extension: %s", value);
+        |                                                 ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2415:17: note: ‘snprintf’ output between 32 and 102 bytes into a destination of size 81
+   2415 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2416 |                 "This is not a TABLE extension: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffghbn’:
+  cextern/cfitsio/lib/getkey.c:2570:58: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 33 [-Wformat-truncation=]
+   2570 |         "First keyword of the extension is not XTENSION: %s", name);
+        |                                                          ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2569:9: note: ‘snprintf’ output between 49 and 123 bytes into a destination of size 81
+   2569 |         snprintf(message, FLEN_ERRMSG,
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2570 |         "First keyword of the extension is not XTENSION: %s", name);
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2561:52: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 47 [-Wformat-truncation=]
+   2561 |                 "This is not a BINTABLE extension: %s", value);
+        |                                                    ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2560:17: note: ‘snprintf’ output between 35 and 105 bytes into a destination of size 81
+   2560 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2561 |                 "This is not a BINTABLE extension: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c: In function ‘ffghbnll’:
+  cextern/cfitsio/lib/getkey.c:2693:58: warning: ‘%s’ directive output may be truncated writing up to 74 bytes into a region of size 33 [-Wformat-truncation=]
+   2693 |         "First keyword of the extension is not XTENSION: %s", name);
+        |                                                          ^~   ~~~~
+  cextern/cfitsio/lib/getkey.c:2692:9: note: ‘snprintf’ output between 49 and 123 bytes into a destination of size 81
+   2692 |         snprintf(message, FLEN_ERRMSG,
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2693 |         "First keyword of the extension is not XTENSION: %s", name);
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/getkey.c:2684:52: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 47 [-Wformat-truncation=]
+   2684 |                 "This is not a BINTABLE extension: %s", value);
+        |                                                    ^~   ~~~~~
+  cextern/cfitsio/lib/getkey.c:2683:17: note: ‘snprintf’ output between 35 and 105 bytes into a destination of size 81
+   2683 |                 snprintf(message, FLEN_ERRMSG,
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2684 |                 "This is not a BINTABLE extension: %s", value);
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/group.c -o
+ /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/group.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-resu
+lt -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/group.c: In function ‘ffgmop’:
+  cextern/cfitsio/lib/group.c:2290:62: warning: ‘%s’ directive output may be truncated writing up to 70 bytes into a region of size 39 [-Wformat-truncation=]
+   2290 |                   "Cannot open member HDU file with URI type %s (ffgmop)",
+        |                                                              ^~
+   2291 |                           uri);
+        |                           ~~~
+  cextern/cfitsio/lib/group.c:2289:19: note: ‘snprintf’ output between 52 and 122 bytes into a destination of size 81
+   2289 |                   snprintf(card,FLEN_CARD,
+        |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+   2290 |                   "Cannot open member HDU file with URI type %s (ffgmop)",
+        |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2291 |                           uri);
+        |                           ~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/grparser.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/grparser.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/grparser.c: In function ‘ngp_keyword_all_write’:
+  cextern/cfitsio/lib/grparser.c:825:15: warning: the comparison will always evaluate as ‘true’ for the address of ‘comment’ will never be NULL [-Waddress]
+    825 |           if (ngph->tok[i].comment && *ngph->tok[i].comment)    /* do not update with a blank comment */
+        |               ^~~~
+  In file included from cextern/cfitsio/lib/grparser.c:80:
+  cextern/cfitsio/lib/grparser.h:124:25: note: ‘comment’ declared here
+    124 |         char            comment[NGP_MAX_COMMENT];
+        |                         ^~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/histo.c -o
+ /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/histo.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-resu
+lt -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/imcompress
+.c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/imcompress.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-u
+nused-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/imcompress.c: In function ‘imcomp_decompress_tile’:
+  cextern/cfitsio/lib/imcompress.c:6064:30: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-W
+sign-compare]
+   6064 |             if (tilebytesize == 4 * tilelen) {  /* float pixels */
+        |                              ^~
+  cextern/cfitsio/lib/imcompress.c:6095:37: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-W
+sign-compare]
+   6095 |             } else if (tilebytesize == 8 * tilelen) { /* double pixels */
+        |                                     ^~
+  cextern/cfitsio/lib/imcompress.c: In function ‘fits_compress_table’:
+  cextern/cfitsio/lib/imcompress.c:8509:30: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘LONGLONG
+’ {aka ‘long long int’} [-Wsign-compare]
+   8509 |                     if (dlen < vlamemlen) {
+        |                              ^
+  cextern/cfitsio/lib/imcompress.c: In function ‘fits_uncompress_table’:
+  cextern/cfitsio/lib/imcompress.c:9250:39: warning: comparison of integer expressions of different signedness: ‘LONGLONG’ {aka ‘long long int’} and ‘size_t’ {a
+ka ‘long unsigned int’} [-Wsign-compare]
+   9250 |                         if (cvlalen   == vlamemlen ) {
+        |                                       ^~
+  cextern/cfitsio/lib/imcompress.c: In function ‘fits_compress_table’:
+  cextern/cfitsio/lib/imcompress.c:8162:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8162 |     strncpy(card, "ZNAXIS1", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c:8166:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8166 |     strncpy(card, "ZNAXIS2", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c:8170:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8170 |     strncpy(card, "ZPCOUNT", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c: In function ‘fits_uncompress_table’:
+  cextern/cfitsio/lib/imcompress.c:8795:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8795 |     strncpy(card, "NAXIS1 ", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c:8799:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8799 |     strncpy(card, "NAXIS2 ", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c:8803:5: warning: ‘strncpy’ output truncated before terminating nul copying 7 bytes from a string of the same length [-Wstring
+op-truncation]
+   8803 |     strncpy(card, "PCOUNT ", 7);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c: In function ‘imcomp_get_compressed_image_par’:
+  cextern/cfitsio/lib/imcompress.c:5263:5: warning: ‘strncat’ output may be truncated copying 11 bytes from a string of length 70 [-Wstringop-truncation]
+   5263 |     strncat((infptr->Fptr)->zcmptype, value, 11);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c: In function ‘fits_compress_table’:
+  cextern/cfitsio/lib/imcompress.c:8663:13: warning: ‘strncat’ output may be truncated copying between 0 and 29 bytes from a string of length 70 [-Wstringop-tru
+ncation]
+   8663 |             strncat(results[ii],tempstring,29-strlen(results[ii]));
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/imcompress.c:8536:17: warning: ‘strncat’ output may be truncated copying between 0 and 29 bytes from a string of length 70 [-Wstringop-tru
+ncation]
+   8536 |                 strncat(results[ii],tempstring, 29-strlen(results[ii]));
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/iraffits.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/iraffits.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/iraffits.c: In function ‘iraftofits’:
+  cextern/cfitsio/lib/iraffits.c:576:11: warning: ‘strncpy’ output truncated before terminating nul copying 3 bytes from a string of the same length [-Wstringop
+-truncation]
+    576 |     (void)strncpy (endline,"END", 3);
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:889:5: warning: ‘strncpy’ output truncated before terminating nul copying 3 bytes from a string of the same length [-Wstringop-
+truncation]
+    889 |     strncpy (endline,"   ",3);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c: In function ‘hputcom’:
+  cextern/cfitsio/lib/iraffits.c:2088:13: warning: ‘strncpy’ output truncated before terminating nul copying 2 bytes from a string of the same length [-Wstringo
+p-truncation]
+   2088 |             strncpy (c0, "/ ",2);
+        |             ^~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c: In function ‘hputc’:
+  cextern/cfitsio/lib/iraffits.c:1930:9: warning: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length [-Wstringo
+p-truncation]
+   1930 |         strncpy (v1+9,value,lval);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1909:12: note: length computed here
+   1909 |     lval = strlen (value);
+        |            ^~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1992:5: warning: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length [-Wstringo
+p-truncation]
+   1992 |     strncpy (v1, keyword, lkeyword);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1908:16: note: length computed here
+   1908 |     lkeyword = strlen (keyword);
+        |                ^~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:2009:9: warning: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length [-Wstringo
+p-truncation]
+   2009 |         strncpy (vp, value, lval);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1909:12: note: length computed here
+   1909 |     lval = strlen (value);
+        |            ^~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:2001:9: warning: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length [-Wstringo
+p-truncation]
+   2001 |         strncpy (vp, value, lval);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1909:12: note: length computed here
+   1909 |     lval = strlen (value);
+        |            ^~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:2020:13: warning: ‘strncpy’ output may be truncated copying between 0 and 49 bytes from a string of length 49 [-Wstringop-trunc
+ation]
+   2020 |             strncpy (vp, newcom, lcom);
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c: In function ‘iraftofits.isra’:
+  cextern/cfitsio/lib/iraffits.c:624:11: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    624 |     (void)strncpy (fitsheader, endline, 80);
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  In function ‘hputs’,
+      inlined from ‘iraftofits.isra’ at cextern/cfitsio/lib/iraffits.c:746:5:
+  cextern/cfitsio/lib/iraffits.c:1875:5: warning: ‘strncpy’ specified bound depends on the length of the source argument [-Wstringop-truncation]
+   1875 |     strncpy (&value[1],cval,lcval);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1869:13: note: length computed here
+   1869 |     lcval = strlen (cval);
+        |             ^~~~~~~~~~~~~
+  In function ‘hputs’,
+      inlined from ‘iraftofits.isra’ at cextern/cfitsio/lib/iraffits.c:771:2:
+  cextern/cfitsio/lib/iraffits.c:1875:5: warning: ‘strncpy’ specified bound depends on the length of the source argument [-Wstringop-truncation]
+   1875 |     strncpy (&value[1],cval,lcval);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:1869:13: note: length computed here
+   1869 |     lcval = strlen (cval);
+        |             ^~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c: In function ‘iraftofits.isra’:
+  cextern/cfitsio/lib/iraffits.c:864:31: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    864 |                         (void)strncpy (fhead, fitsline, 80);
+        |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:853:27: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    853 |                     (void)strncpy (fhead, fitsline, 80);
+        |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:823:31: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    823 |                         (void)strncpy (fhead, fitsline, 80);
+        |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:811:23: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    811 |                 (void)strncpy (fhead, fitsline, 80);
+        |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/iraffits.c:880:11: warning: ‘strncpy’ output may be truncated copying 80 bytes from a string of length 80 [-Wstringop-truncation]
+    880 |     (void)strncpy (fhead, endline, 80);
+        |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/modkey.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/modkey.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/modkey.c: In function ‘ffmkls’:
+  cextern/cfitsio/lib/modkey.c:783:12: warning: ‘strncpy’ output truncated copying 2 bytes from a string of length 3 [-Wstringop-truncation]
+    783 |            strncpy(&card[8], "   ",  2);  /* overwrite the '=' */
+        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/modkey.c: In function ‘ffikls’:
+  cextern/cfitsio/lib/modkey.c:1282:12: warning: ‘strncpy’ output truncated copying 2 bytes from a string of length 3 [-Wstringop-truncation]
+   1282 |            strncpy(&card[8], "   ",  2);  /* overwrite the '=' */
+        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/modkey.c: In function ‘ffpunt’:
+  cextern/cfitsio/lib/modkey.c:567:9: warning: ‘strncat’ output may be truncated copying between 0 and 72 bytes from a string of length 72 [-Wstringop-truncatio
+n]
+    567 |         strncat(newcomm, oldcomm, len);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/modkey.c:562:13: warning: ‘strncat’ output may be truncated copying between 0 and 72 bytes from a string of length 72 [-Wstringop-truncati
+on]
+    562 |             strncat(newcomm, oldcomm, len);  /* append old comment onto new */
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/pliocomp.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/pliocomp.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcol.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcol.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolb.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolb.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcold.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcold.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcole.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcole.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcoli.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoli.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolj.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolj.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolk.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolk.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcoll.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoll.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcols.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcols.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolsb.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolsb.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolu.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolu.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcolui.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolui.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcoluj.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoluj.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putcoluk.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoluk.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/putkey.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putkey.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/putkey.c: In function ‘ffprec’:
+  cextern/cfitsio/lib/putkey.c:326:19: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-
+compare]
+    326 |     for (ii=0; ii < keylength; ii++)       /* make sure keyword name is uppercase */
+        |                   ^
+  cextern/cfitsio/lib/putkey.c: In function ‘ffpkls’:
+  cextern/cfitsio/lib/putkey.c:483:12: warning: ‘strncpy’ output truncated copying 2 bytes from a string of length 3 [-Wstringop-truncation]
+    483 |            strncpy(&card[8], "   ",  2);  /* overwrite the '=' */
+        |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/quantize.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/quantize.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/region.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/region.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/region.c:988:1: warning: "/*" within comment [-Wcomment]
+    988 | /*---------------------------------------------------------------------------*/
+        |
+  cextern/cfitsio/lib/region.c: In function ‘fits_free_region’:
+  cextern/cfitsio/lib/region.c:1025:42: warning: pointer used after ‘free’ [-Wuse-after-free]
+   1025 |                freedPolyPtrs[nFreedPoly] = ptsToFree;
+        |                ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+  cextern/cfitsio/lib/region.c:1017:16: note: call to ‘free’ here
+   1017 |                free(ptsToFree);
+        |                ^~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/ricecomp.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/ricecomp.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/scalnull.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/scalnull.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/simplerng.
+c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/simplerng.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unu
+sed-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/swapproc.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/swapproc.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/swapproc.c: In function ‘ffswap2’:
+  cextern/cfitsio/lib/swapproc.c:87:24: warning: comparison of integer expressions of different signedness: ‘long int’ and ‘long unsigned int’ [-Wsign-compare]
+     87 |     for (ii = peel; ii < (nvals - peel - (nvals - peel) % 8); ii+=8) {
+        |                        ^
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/wcssub.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/wcssub.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/wcssub.c: In function ‘ffgtwcs’:
+  cextern/cfitsio/lib/wcssub.c:847:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    847 |     strncat(cptr, blanks, 50);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:852:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    852 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:858:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    858 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:889:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    889 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:898:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    898 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:907:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    907 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:916:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    916 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:925:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    925 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:934:5: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    934 |     strncat(cptr, blanks, 50);  /* pad with blanks */
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:945:9: warning: ‘strncat’ output truncated copying 50 bytes from a string of length 80 [-Wstringop-truncation]
+    945 |         strncat(cptr, blanks, 50);  /* pad with blanks */
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  cextern/cfitsio/lib/wcssub.c:1040:5: warning: ‘strncat’ output truncated copying 77 bytes from a string of length 80 [-Wstringop-truncation]
+   1040 |     strncat(cptr, blanks, 77);
+        |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/wcsutil.c
+-o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/wcsutil.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-
+result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/zcompress.
+c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/zcompress.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unu
+sed-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/zcompress.c: In function ‘uncompress2file’:
+  cextern/cfitsio/lib/zcompress.c:345:13: warning: comparison of integer expressions of different signedness: ‘int’ and ‘long unsigned int’ [-Wsign-compare]
+    345 |             != (d_stream.total_out - bytes_out)) {
+        |             ^~
+  cextern/cfitsio/lib/zcompress.c: In function ‘compress2file_from_mem’:
+  cextern/cfitsio/lib/zcompress.c:513:13: warning: comparison of integer expressions of different signedness: ‘int’ and ‘long unsigned int’ [-Wsign-compare]
+    513 |             != (c_stream.total_out - bytes_out)) {
+        |             ^~
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/lib/zuncompres
+s.c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/zuncompress.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno
+-unused-result -Wno-misleading-indentation -Wno-format-overflow
+  cextern/cfitsio/lib/zuncompress.c: In function ‘write_buf’:
+  cextern/cfitsio/lib/zuncompress.c:581:27: warning: comparison of integer expressions of different signedness: ‘long int’ and ‘size_t’ {aka ‘long unsigned int’
+} [-Wsign-compare]
+    581 |       if (bytes_out + cnt > *memsize)
+        |                           ^
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/adler32.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/adler32.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/crc32.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/crc32.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/deflate.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/deflate.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/infback.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/infback.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/inffast.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inffast.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/inflate.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inflate.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/inftrees.
+c -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inftrees.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unu
+sed-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/trees.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/trees.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/uncompr.c
+ -o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/uncompr.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unuse
+d-result -Wno-misleading-indentation -Wno-format-overflow
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_UNISTD_H -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/nu
+mpy/core/include -Icextern/cfitsio/lib -Icextern/cfitsio/zlib -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c cextern/cfitsio/zlib/zutil.c -
+o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/zutil.o -Wno-declaration-after-statement -Wno-strict-prototypes -Wno-unused -Wno-uninitialized -Wno-unused-re
+sult -Wno-misleading-indentation -Wno-format-overflow
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/io/fits
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/io/fits/src/compressionmodule.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/buffers.o /tmp/tmpwlble1wc.bui
+ld-temp/cextern/cfitsio/lib/cfileio.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/checksum.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrfile.o /tmp
+/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrmem.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/drvrnet.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/
+drvrsmem.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/editcol.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/edithdu.o /tmp/tmpwlble1wc.build-temp/cexte
+rn/cfitsio/lib/eval_f.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/eval_l.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/eval_y.o /tmp/tmpwlble1wc.build
+-temp/cextern/cfitsio/lib/fits_hcompress.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/fits_hdecompress.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/fi
+tscore.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcol.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolb.o /tmp/tmpwlble1wc.build-temp/cextern/
+cfitsio/lib/getcold.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcole.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoli.o /tmp/tmpwlble1wc.build
+-temp/cextern/cfitsio/lib/getcolj.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolk.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoll.o /tmp/tmp
+wlble1wc.build-temp/cextern/cfitsio/lib/getcols.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcolsb.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/get
+colui.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoluj.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/getcoluk.o /tmp/tmpwlble1wc.build-temp/cexter
+n/cfitsio/lib/getkey.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/group.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/grparser.o /tmp/tmpwlble1wc.build
+-temp/cextern/cfitsio/lib/histo.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/imcompress.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/iraffits.o /tmp/t
+mpwlble1wc.build-temp/cextern/cfitsio/lib/modkey.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/pliocomp.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/pu
+tcol.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolb.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcold.o /tmp/tmpwlble1wc.build-temp/cextern/c
+fitsio/lib/putcole.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoli.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolj.o /tmp/tmpwlble1wc.build-
+temp/cextern/cfitsio/lib/putcolk.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoll.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcols.o /tmp/tmpw
+lble1wc.build-temp/cextern/cfitsio/lib/putcolsb.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcolu.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putc
+olui.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoluj.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/putcoluk.o /tmp/tmpwlble1wc.build-temp/cextern
+/cfitsio/lib/putkey.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/quantize.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/region.o /tmp/tmpwlble1wc.build
+-temp/cextern/cfitsio/lib/ricecomp.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/scalnull.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/simplerng.o /tmp
+/tmpwlble1wc.build-temp/cextern/cfitsio/lib/swapproc.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/wcssub.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/
+wcsutil.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/zcompress.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/lib/zuncompress.o /tmp/tmpwlble1wc.build-temp/
+cextern/cfitsio/zlib/adler32.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/crc32.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/deflate.o /tmp/tmpwlble
+1wc.build-temp/cextern/cfitsio/zlib/infback.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inffast.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inflat
+e.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/inftrees.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/trees.o /tmp/tmpwlble1wc.build-temp/cextern/cfi
+tsio/zlib/uncompr.o /tmp/tmpwlble1wc.build-temp/cextern/cfitsio/zlib/zutil.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/io/fits/compression.cpython-
+39-x86_64-linux-gnu.so
+  building 'astropy.stats._stats' extension
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c ./astropy/stats/_stats.c -o /tmp/tmpwlble1wc.build-temp/./astropy/stats/_stats.o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from ./astropy/stats/_stats.c:611:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  gcc -shared /tmp/tmpwlble1wc.build-temp/./astropy/stats/_stats.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/stats/_stats.cpython-39-x86_64-linux-g
+nu.so
+  building 'astropy.cosmology.scalar_inv_efuncs' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/cosmology
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c ./astropy/cosmology/scalar_inv_efuncs.c -o /tmp/tmpwlble1wc.build-temp/./astropy/cosmology/
+scalar_inv_efuncs.o
+  ./astropy/cosmology/scalar_inv_efuncs.c: In function ‘__pyx_f_7astropy_9cosmology_17scalar_inv_efuncs_nufunc’:
+  ./astropy/cosmology/scalar_inv_efuncs.c:6281:33: warning: comparison of integer expressions of different signedness: ‘unsigned int’ and ‘int’ [-Wsign-compare]
+   6281 |   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+        |                                 ^
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/cosmology
+  gcc -shared /tmp/tmpwlble1wc.build-temp/./astropy/cosmology/scalar_inv_efuncs.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/cosmology/scalar_inv_ef
+uncs.cpython-39-x86_64-linux-gnu.so
+  building 'astropy.timeseries.periodograms.lombscargle.implementations.cython_impl' extension
+  creating /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms/lombscargle
+  creating /tmp/tmpwlble1wc.build-temp/astropy/timeseries/periodograms/lombscargle/implementations
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c ./astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.c -o /tmp/tmpwlbl
+e1wc.build-temp/./astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.o
+  In file included from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarraytypes.h:1822,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                   from /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                   from ./astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.c:610:
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated Nu
+mPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+     17 | #warning "Using deprecated NumPy API, disable it with " \
+        |  ^~~~~~~
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/lombscargle
+  creating /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/lombscargle/implementations
+  gcc -shared /tmp/tmpwlble1wc.build-temp/./astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build
+-lib/astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.cpython-39-x86_64-linux-gnu.so
+  building 'astropy.io.fits._utils' extension
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/numpy/core/include
+ -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c ./astropy/io/fits/_utils.c -o /tmp/tmpwlble1wc.build-temp/./astropy/io/fits/_utils.o
+  gcc -shared /tmp/tmpwlble1wc.build-temp/./astropy/io/fits/_utils.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/io/fits/_utils.cpython-39-x86_64-lin
+ux-gnu.so
+  building 'astropy.compiler_version' extension
+  gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/app/astropy/tests-venv/include -I/usr/local/include/python3.9 -c astropy/_compile
+r.c -o /tmp/tmpwlble1wc.build-temp/astropy/_compiler.o
+  gcc -shared /tmp/tmpwlble1wc.build-temp/astropy/_compiler.o -L/usr/local/lib -o /tmp/tmp5v3pk1ez.build-lib/astropy/compiler_version.cpython-39-x86_64-linux-gn
+u.so
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/convolution/_convolve.cpython-39-x86_64-linux-gnu.so -> astropy/convolution
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/time/_parse_times.cpython-39-x86_64-linux-gnu.so -> astropy/time
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/stats/_fast_sigma_clip.cpython-39-x86_64-linux-gnu.so -> astropy/stats
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/table/_np_utils.cpython-39-x86_64-linux-gnu.so -> astropy/table
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/table/_column_mixins.cpython-39-x86_64-linux-gnu.so -> astropy/table
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/utils/_compiler.cpython-39-x86_64-linux-gnu.so -> astropy/utils
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/wcs/_wcs.cpython-39-x86_64-linux-gnu.so -> astropy/wcs
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/bls/_impl.cpython-39-x86_64-linux-gnu.so -> astropy/timeseries/periodograms/bls
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/utils/xml/_iterparser.cpython-39-x86_64-linux-gnu.so -> astropy/utils/xml
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/io/ascii/cparser.cpython-39-x86_64-linux-gnu.so -> astropy/io/ascii
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/io/votable/tablewriter.cpython-39-x86_64-linux-gnu.so -> astropy/io/votable
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/io/fits/compression.cpython-39-x86_64-linux-gnu.so -> astropy/io/fits
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/stats/_stats.cpython-39-x86_64-linux-gnu.so -> astropy/stats
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/cosmology/scalar_inv_efuncs.cpython-39-x86_64-linux-gnu.so -> astropy/cosmology
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.cpython-39-x86_64-linux-gnu.so -> astropy/timeserie
+s/periodograms/lombscargle/implementations
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/io/fits/_utils.cpython-39-x86_64-linux-gnu.so -> astropy/io/fits
+  copying /tmp/tmp5v3pk1ez.build-lib/astropy/compiler_version.cpython-39-x86_64-linux-gnu.so -> astropy
+  Editable install will be performed using a meta path finder.
+
+  Options like `package-data`, `include/exclude-package-data` or
+  `packages.find.exclude/include` may have no effect.
+
+  adding '__editable___astropy_5_1_dev623_gd16bfe05a_d20260717_finder.py'
+  adding '__editable__.astropy-5.1.dev623+gd16bfe05a.d20260717.pth'
+  creating '/tmp/pip-wheel-cthqo7xp/.tmp-ytd_jtzb/astropy-5.1.dev623+gd16bfe05a.d20260717-0.editable-cp39-cp39-linux_x86_64.whl' and adding '/tmp/tmp1o3jc_t7ast
+ropy-5.1.dev623+gd16bfe05a.d20260717-0.editable-cp39-cp39-linux_x86_64.whl' to it
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/LICENSE.rst'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/METADATA'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/WHEEL'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/entry_points.txt'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/scm_file_list.json'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/scm_version.json'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/top_level.txt'
+  adding 'astropy-5.1.dev623+gd16bfe05a.d20260717.dist-info/RECORD'
+  /tmp/pip-build-env-pjxpvg7y/overlay/lib/python3.9/site-packages/setuptools/command/editable_wheel.py:348: InformationOnly: Editable installation.
+  !!
+
+          ********************************************************************************
+          Please be careful with folders in your working directory with the same
+          name as your package as they may take precedence during imports.
+          ********************************************************************************
+
+  !!
+    wheel_obj.write_files(unpacked)
+  Building editable for astropy (pyproject.toml) ... done
+  Created wheel for astropy: filename=astropy-5.1.dev623+gd16bfe05a.d20260717-0.editable-cp39-cp39-linux_x86_64.whl size=19335 sha256=37076c706bc34a4577b92759a8
+73ab6127967c255cf88c68d7bd04a557fae428
+  Stored in directory: /tmp/pip-ephem-wheel-cache-x6ccnxzx/wheels/ec/6c/1d/8d68cf03fa70ba44a2512079c46214d7894f30763fd2518e70
+Successfully built astropy
+

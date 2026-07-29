@@ -1,0 +1,40 @@
+root@b307a9dde310:/app# pwd; __tts_rc=$?; printf '\n__TTS_ab2730e64c544e5eb477410e86866728__RC:%s\n' "$__tts_rc"; printf '__TTS_ab2730e64c544e5eb477410e86866728
+__PWD:'; pwd; printf '__TTS_ab2730e64c544e5eb477410e86866728__END\n'; tmux wait -S done
+/app
+
+__TTS_ab2730e64c544e5eb477410e86866728__RC:0
+__TTS_ab2730e64c544e5eb477410e86866728__PWD:/app
+__TTS_ab2730e64c544e5eb477410e86866728__END
+root@b307a9dde310:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/##' | head -200; __tts_rc=$?; printf '\n__TTS_1d679d70bbb6450b818
+e35ce652613e3__RC:%s\n' "$__tts_rc"; printf '__TTS_1d679d70bbb6450b818e35ce652613e3__PWD:'; pwd; printf '__TTS_1d679d70bbb6450b818e35ce652613e3__END\n'; tmux wa
+it -S done
+total 96
+drwxr-xr-x 1 root root  4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root  4096 Jul 17 22:24 ..
+-rw-r--r-- 1 root root 88805 Jul 16 19:53 graphene.dat
+//app/graphene.dat
+
+__TTS_1d679d70bbb6450b818e35ce652613e3__RC:0
+__TTS_1d679d70bbb6450b818e35ce652613e3__PWD:/app
+__TTS_1d679d70bbb6450b818e35ce652613e3__END
+root@b307a9dde310:/app# cd -- /app && python - <<'PY'
+> import numpy as np, json
+> x,y=np.loadtxt('/app/graphene.dat',unpack=True)
+> print(x[:5],y[:5],len(x),x.min(),x.max(),y.min(),y.max())
+> PY; __tts_rc=$?; printf '\n__TTS_05ecd703dd6c45c48828eaefd743f146__RC:%s\n' "$__tts_rc"; printf '__TTS_05ecd703dd6c45c48828eaefd743f146__PWD:'; pwd; printf '_
+_TTS_05ecd703dd6c45c48828eaefd743f146__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import numpy as np; x,y=np.loadtxt('/app/graphene.dat',unpack=True); print(len(x),x.min(),x.max(),y.min(),y.max(),x[:3],y[:3])"; __t
+ts_rc=$?; printf '\n__TTS_ebb0608ceb1245aa9b15b0a44db3032f__RC:%s\n' "$__tts_rc"; printf '__TTS_ebb0608ceb1245aa9b15b0a44db3032f__PWD:'; pwd; printf '__TTS_ebb0
+608ceb1245aa9b15b0a44db3032f__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+

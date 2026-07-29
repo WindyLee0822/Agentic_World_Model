@@ -1,0 +1,24 @@
+[?2004hroot@1d9c112808c1:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@1d9c112808c1:/app# clear
+[?2004l[H[J[3J[?2004hroot@1d9c112808c1:/app# pwd; __tts_rc=$?; printf '\n__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__RC:%s\n' "$__tts_rc"; printf '__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__PWD:'; pwd; printf '__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__RC:0
+__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__PWD:/app
+__TTS_4dabbfcbbbde48589bf4c63c6bd52f57__END
+[?2004hroot@1d9c112808c1:/app# cd -- /app && tmux new-session -d -s workflow -c /app/project ';' split-window -v -p 50 -c /app/project ';' select-pane -t workflow:0.1 ';' split-window -h -p 50 -c /app/project ';' send-keys -t workflow:0.0 'python /app/project/src/monitor.py' C-m ';' send-keys -t workflow:0.1 'python /app/project/src/process_data.py /app/project/data/input.csv /app/project/data/output.csv' C-m ';' send-keys -t workflow:0.2 "python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('/app/project/src/process_data.py')
+[?2004l[?2004h> s=p.read_text()
+[?2004l[?2004h> new=s.replace('line.split(', 'line.strip().split(')
+[?2004l[?2004h> if new!=s:
+[?2004l[?2004h>     p.write_text(new)
+[?2004l[?2004h> PY" C-m ';' send-keys -t workflow:0.2 'vim /app/project/src/process_data.py' C-m ';' send-keys -t workflow:0.1 'python /app/project/src/process_data.py /app/project/data/input.csv /app/project/data/output.csv' C-m ';' send-keys -t workflow:0.1 'less /app/project/data/output.csv' C-m; __tts_rc=$?; printf '\n__TTS_4bd32420a79842bbb7900710b5fa9787__RC:%s\n' "$__tts_rc"; printf '__TTS_4bd32420a79842bbb7900710b5fa9787__PWD:'; pwd; printf '__TTS_4bd32420a79842bbb7900710b5fa9787__END\n'; tmux wait -S done
+[?2004lcan't find pane: 1
+
+__TTS_4bd32420a79842bbb7900710b5fa9787__RC:1
+__TTS_4bd32420a79842bbb7900710b5fa9787__PWD:/app
+__TTS_4bd32420a79842bbb7900710b5fa9787__END
+[?2004hroot@1d9c112808c1:/app# [Kroot@1d9c112808c1:/app# 

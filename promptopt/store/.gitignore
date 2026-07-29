@@ -1,0 +1,7 @@
+# generated datasets (large; re-collectable)
+*_data.jsonl
+data.jsonl
+# generated optimization artifacts are kept (small) so best prompts persist:
+!*_baseline.json
+!*_best.json
+!*_report.json

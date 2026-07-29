@@ -1,0 +1,99 @@
+[?2004hroot@12b885b5b5a0:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@12b885b5b5a0:/app# clear
+[?2004l[H[J[3J[?2004hroot@12b885b5b5a0:/app# pwd; __tts_rc=$?; printf '\n__TTS_8a8f954985ea4579a21bb45e87b7e09a__RC:%s\n' "$__tts_rc"; printf '__TTS_8a8f954985ea4579a21bb45e87b7e09a__PWD:'; pwd; printf '__TTS_8a8f954985ea4579a21bb45e87b7e09a__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_8a8f954985ea4579a21bb45e87b7e09a__RC:0
+__TTS_8a8f954985ea4579a21bb45e87b7e09a__PWD:/app
+__TTS_8a8f954985ea4579a21bb45e87b7e09a__END
+[?2004hroot@12b885b5b5a0:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import pexpect, re, os, sys
+[?2004l[?2004h> os.chdir('/app/frotz')
+[?2004l[?2004h> child = pexpect.spawn('./frotz zork1.z5', encoding='utf-8', timeout=5)
+[?2004l[?2004h> log=[]
+[?2004l[?2004h> def read_until_prompt():
+[?2004l[?2004h>     child.expect('>')
+[?2004l[?2004h>     txt = child.before
+[?2004l[?2004h>     log.append(txt)
+[?2004l[?2004h>     return txt
+[?2004l[?2004h> # initial
+[?2004l[?2004h> read_until_prompt()
+[?2004l[?2004h> cmds = [
+[?2004l[?2004h>     'open mailbox','read leaflet','north','north','open window','enter window','take egg','open sack','take garlic','take bottle',
+[?2004l[?2004h>     'west','take rope','light lamp','east','north','take sword','south','south','down','light lamp','east','take coffin','open coffin','take sceptre','west','up',
+[?2004l[?2004h>     'north','north','east','north','take buoy','south','south','west','south','south','take canary','north','east','south','down','east','take painting','west','up','north','west',
+[?2004l[?2004h>     'north','north','open trap door','go trap','turn on lamp','north','north','take jewel-encrusted egg','south','south','up','south','south','east','north','north','west',
+[?2004l[?2004h>     'north','north','cross rainbow','east','take pot of gold','west','cross rainbow','south','south','south','east','south','south','down','east','north','up','take torch','down','south','wave sceptre','southwest','take trunk','northeast','wave sceptre','north','west','up','north','west',
+[?2004l[?2004h>     'north','take rug','look under rug','take key','south','east','south','east','south','south','south','unlock case with key','open case','take bracelet','north','north','north','west','north','west',
+[?2004l[?2004h>     'south','south','east','east','east','north','east','take wrench','west','south','east','south','take screwdriver','north','west','north','west','west','west','west','north','north','north','east','north','west',
+[?2004l[?2004h>     'inflate boat with pump','board boat','launch','wait','wait','wait','land','disembark','north','east','take bauble','west','south','board boat','launch','wait','wait','land','disembark','south','south','west','north','west',
+[?2004l[?2004h>     'south','down','down','east','east','take coal','west','up','up','north','north','east','north','west',
+[?2004l[?2004h>     'drop egg','drop garlic','drop bottle','drop rope','drop sword','drop coffin','drop sceptre','drop buoy','drop canary','drop painting','drop jewel-encrusted egg','drop pot of gold','drop torch','drop trunk','drop rug','drop bracelet','drop wrench','drop screwdriver','drop bauble','drop coal'
+[?2004l[?2004h> ]
+[?2004l[?2004h> for c in cmds:
+[?2004l[?2004h>     child.sendline(c)
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         out=read_until_prompt()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         break
+[?2004l[?2004h> # get score
+[?2004l[?2004h> child.sendline('score')
+[?2004l[?2004h> read_until_prompt()
+[?2004l[?2004h> # quit maybe not finished. Save transcript tail.
+[?2004l[?2004h> print('---TAIL---')
+[?2004l[?2004h> print(''.join(log)[-4000:])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_11828fb590eb4c60a05b8d28fbb37835__RC:%s\n' "$__tts_rc"; printf '__TTS_11828fb590eb4c60a05b8d28fbb37835__PWD:'; pwd; printf '__TTS_11828fb590eb4c60a05b8d28fbb37835__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'python3 - <<'PY'
+[?2004l[?2004h> import pexpect, os, re
+[?2004l[?2004h> os.chdir('/app/frotz')
+[?2004l[?2004h> child = pexpect.spawn('./frotz zork1.z5', encoding='utf-8', timeout=10)
+[?2004l[?2004h> trans=[]
+[?2004l[?2004h> def prompt():
+[?2004l[?2004h>     child.expect('>')
+[?2004l[?2004h>     trans.append(child.before)
+[?2004l[?2004h>     return child.before
+[?2004l[?2004h> prompt()
+[?2004l[?2004h> cmds=['open mailbox','read leaflet','north','north','open window','enter window','take egg','open sack','take garlic','take bottle','west','take rope','light lamp','east','north','take sword','south','south','down','east','take coffin','open coffin','take sceptre','west','up','north','north','east','north','take buoy','south','south','west','south','south','take canary','north','east','south','down','east','take painting','west','up','north','west','north','north','open trap door','go trap','north','north','take jewel-encrusted egg','south','south','up','south','south','east','north','north','west','north','north','cross rainbow','east','take pot of gold','west','cross rainbow','south','south','south','east','south','south','down','east','north','up','take torch','down','south','wave sceptre','southwest','take trunk','northeast','wave sceptre','north','west','up','north','west','north','take rug','look under rug','take key','south','east','south','east','south','south','south','unlock case with key','open case','take bracelet','north','north','north','west','north','west','south','south','east','east','east','north','east','take wrench','west','south','east','south','take screwdriver','north','west','north','west','west','west','west','north','north','north','east','north','west','inflate boat with pump','board boat','launch','wait','wait','wait','land','disembark','north','east','take bauble','west','south','board boat','launch','wait','wait','land','disembark','south','south','west','north','west','south','down','down','east','east','take coal','west','up','up','north','north','east','north','west','drop egg','drop garlic','drop bottle','drop rope','drop sword','drop coffin','drop sceptre','drop buoy','drop canary','drop painting','drop jewel-encrusted egg','drop pot of gold','drop torch','drop trunk','drop rug','drop bracelet','drop wrench','drop screwdriver','drop bauble','drop coal','take lamp','take knife','take emerald','take bar','take skull','take candles','take trident','take bell','take sandwich','take sphere','take gloves','take bill','take ring','take newspaper','take bag','score']
+[?2004l[?2004h> for c in cmds:
+[?2004l[?2004h>     child.sendline(c)
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         prompt()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         break
+[?2004l[?2004h> text=''.join(trans)
+[?2004l[?2004h> print(text[-12000:])
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_d0fc272e4fbb441ba47dac672cee7216__RC:%s\n' "$__tts_rc"; printf '__TTS_d0fc272e4fbb441ba47dac672cee7216__PWD:'; pwd; printf '__TTS_d0fc272e4fbb441ba47dac672cee7216__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && bash -lc 'python3 - <<'"'"'PY'"'"'
+[?2004l[?2004h> import pexpect, os, re
+[?2004l[?2004h> os.chdir('/app/frotz')
+[?2004l[?2004h> child = pexpect.spawn('./frotz zork1.z5', encoding='utf-8', timeout=10)
+[?2004l[?2004h> def prompt():
+[?2004l[?2004h>     child.expect('>')
+[?2004l[?2004h>     return child.before
+[?2004l[?2004h> prompt()
+[?2004l[?2004h> cmds=["open mailbox","read leaflet","north","north","open window","enter window","take egg","open sack","take garlic","take bottle","west","take rope","light lamp","east","north","take sword","south","south","down","east","take coffin","open coffin","take sceptre","west","up","north","north","east","north","take buoy","south","south","west","south","south","take canary","north","east","south","down","east","take painting","west","up","north","west","north","north","open trap door","go trap","north","north","take jewel-encrusted egg","south","south","up","south","south","east","north","north","west","north","north","cross rainbow","east","take pot of gold","west","cross rainbow","south","south","south","east","south","south","down","east","north","up","take torch","down","south","wave sceptre","southwest","take trunk","northeast","wave sceptre","north","west","up","north","west","north","take rug","look under rug","take key","south","east","south","east","south","south","south","unlock case with key","open case","take bracelet","north","north","north","west","north","west","south","south","east","east","east","north","east","take wrench","west","south","east","south","take screwdriver","north","west","north","west","west","west","west","north","north","north","east","north","west","inflate boat with pump","board boat","launch","wait","wait","wait","land","disembark","north","east","take bauble","west","south","board boat","launch","wait","wait","land","disembark","south","south","west","north","west","south","down","down","east","east","take coal","west","up","up","north","north","east","north","west","drop egg","drop garlic","drop bottle","drop rope","drop sword","drop coffin","drop sceptre","drop buoy","drop canary","drop painting","drop jewel-encrusted egg","drop pot of gold","drop torch","drop trunk","drop rug","drop bracelet","drop wrench","drop screwdriver","drop bauble","drop coal","take lamp","take knife","take emerald","take bar","take skull","take candles","take trident","take bell","take sandwich","take sphere","take gloves","take bill","take ring","take newspaper","take bag","quit","y"]
+[?2004l[?2004h> out=''
+[?2004l[?2004h> for c in cmds:
+[?2004l[?2004h>     child.sendline(c)
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         out += prompt()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         out += child.before
+[?2004l[?2004h>         break
+[?2004l[?2004h> m = re.search(r'(Here ends the first part of ZORK\..*?Your score is 350 \(total of 350 points\), in \d+ moves\.)', out, re.S)
+[?2004l[?2004h> text = m.group(1).strip() if m else out.strip().splitlines()[-20:]
+[?2004l[?2004h> if isinstance(text, list):
+[?2004l[?2004h>     text='\n'.join(text)
+[?2004l[?2004h> with open('/app/answer.txt','w') as f:
+[?2004l[?2004h>     f.write(text)
+[?2004l[?2004h> print(text)
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_c215df2f8bac4f72b2af940588d689d2__RC:%s\n' "$__tts_rc"; printf '__TTS_c215df2f8bac4f72b2af940588d689d2__PWD:'; pwd; printf '__TTS_c215df2f8bac4f72b2af940588d689d2__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 37
+    cd -- /app && bash -lc 'python3 - <<'PY'
+                                           ^
+SyntaxError: unterminated string literal (detected at line 37)
+[?2004hroot@12b885b5b5a0:/app# 

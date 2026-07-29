@@ -1,0 +1,5 @@
+Trial headless-terminal__n2AR5zt failed: Docker compose command failed for environment headless-terminal. Command: docker compose --project-name headless-terminal__n2ar5zt__env --project-directory /home/t-wendili/.cache/harbor/tasks/KSwQXLapvDLmcHTvZcJVQG/headless-terminal/environment -f /tmp/tmps3cgt1i3/headless-terminal__n2AR5zt__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpoh22u0og/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network headless-terminal__n2ar5zt__env_default Creating 
+ Network headless-terminal__n2ar5zt__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network headless-terminal__n2ar5zt__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

@@ -1,0 +1,5 @@
+Trial headless-terminal__BcDN4vG failed: Docker compose command failed for environment headless-terminal. Command: docker compose --project-name headless-terminal__bcdn4vg__env --project-directory /home/t-wendili/.cache/harbor/tasks/KSwQXLapvDLmcHTvZcJVQG/headless-terminal/environment -f /tmp/tmpl9d25tgp/headless-terminal__BcDN4vG__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmphym6hvd5/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network headless-terminal__bcdn4vg__env_default Creating 
+ Network headless-terminal__bcdn4vg__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network headless-terminal__bcdn4vg__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

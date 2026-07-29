@@ -1,0 +1,52 @@
+[?2004hroot@e3435220e111:/app/langcodes# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@e3435220e111:/app/langcodes# clear
+[?2004l[H[J[3J[?2004hroot@e3435220e111:/app/langcodes# pwd; __tts_rc=$?; printf '\n__TTS_8d8d48500d974b79a7125055b81e500d__RC:%s\n' "$__tts_rc"; printf '__TTS_8d8d48500d974b79a7125055b81e500d__PWD:'; pwd; printf '__TTS_8d8d48500d974b79a7125055b81e500d__END\n'; tmux wait -S done
+[?2004l/app/langcodes
+
+__TTS_8d8d48500d974b79a7125055b81e500d__RC:0
+__TTS_8d8d48500d974b79a7125055b81e500d__PWD:/app/langcodes
+__TTS_8d8d48500d974b79a7125055b81e500d__END
+[?2004hroot@e3435220e111:/app/langcodes# cd -- /app/langcodes && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('langcodes/__init__.py')
+[?2004l[?2004h> text=p.read_text()
+[?2004l[?2004h> old='    def __hash__(self) -> int:\n        return object.__hash__(self)\n'
+[?2004l[?2004h> new='    def __hash__(self) -> int:\n        return hash(self._str_tag)\n'
+[?2004l[?2004h> if old not in text: raise SystemExit('target not found')
+[?2004l[?2004h> p.write_text(text.replace(old,new,1))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_093f720f82274675aa38d1c98a0058a2__RC:%s\n' "$__tts_rc"; printf '__TTS_093f720f82274675aa38d1c98a0058a2__PWD:'; pwd; printf '__TTS_093f720f82274675aa38d1c98a0058a2__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/langcodes && grep -n "def __hash__\|object.__hash__\|_str_tag" -n langcodes/__init__.py | head -20; __tts_rc=$?; printf '\n__TTS_86c1c8b3ebe24c7ba5992840120b8d7a__RC:%s\n' "$__tts_rc"; printf '__TTS_86c1c8b3ebe24c7ba5992840120b8d7a__PWD:'; pwd; printf '__TTS_86c1c8b3ebe24c7ba5992840120b8d7a__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/langcodes && python -c "from pathlib import Path; p=Path('langcodes/__init__.py'); s=p.read_text(); i=s.find('def __hash__'); print(s[i:i+120])"; __tts_rc=$?; printf '\n__TTS_52b550d48c9c4f9ea654e2aa1863c5a4__RC:%s\n' "$__tts_rc"; printf '__TTS_52b550d48c9c4f9ea654e2aa1863c5a4__PWD:'; pwd; printf '__TTS_52b550d48c9c4f9ea654e2aa1863c5a4__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 8
+    PY; __tts_rc=$?; printf '\n__TTS_093f720f82274675aa38d1c98a0058a2__RC:%s\n' "$__tts_rc"; printf '__TTS_093f720f82274675aa38d1c98a0058a2__PWD:'; pwd; printf '__TTS_093f720f82274675aa38d1c98a0058a2__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@e3435220e111:/app/langcodes# cd -- /app/langcodes && python -c "from pathlib import Path;p=Path('langcodes/__init__.py');s=p.read_text();old='    def __hash__(self) -> int:\n        return object.__hash__(self)\n';new='    def __hash__(self) -> int:\n        return hash(self._str_tag)\n';assert old in s,'target not found';p.write_text(s.replace(old,new,1))"; __tts_rc=$?; printf '\n__TTS_ca2e2b5f25dd41beb259a56849cc5403__RC:%s\n' "$__tts_rc"; printf '__TTS_ca2e2b5f25dd41beb259a56849cc5403__PWD:'; pwd; printf '__TTS_ca2e2b5f25dd41beb259a56849cc5403__END\n'; tmux wait -S done
+[?2004lTraceback (most recent call last):
+  File "<string>", line 1, in <module>
+AssertionError: target not found
+
+__TTS_ca2e2b5f25dd41beb259a56849cc5403__RC:1
+__TTS_ca2e2b5f25dd41beb259a56849cc5403__PWD:/app/langcodes
+__TTS_ca2e2b5f25dd41beb259a56849cc5403__END
+[?2004hroot@e3435220e111:/app/langcodes# cd -- /app/langcodes && python -c "from pathlib import Path;s=Path('langcodes/__init__.py').read_text();i=s.find('def __hash__');print(s[i:i+200])"; __tts_rc=$?; printf '\n__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__RC:%s\n' "$__tts_rc"; printf '__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__PWD:'; pwd; printf '__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__END\n'; tmux wait -S done
+[?2004ldef __hash__(self) -> int:
+        return hash(id(self))
+
+    def __getitem__(self, key: str) -> Optional[Union[str, List[str]]]:
+        if key in self.ATTRIBUTES:
+            return getattr(self, ke
+
+__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__RC:0
+__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__PWD:/app/langcodes
+__TTS_2afa8f334b4f4b99a1a734d5d91a99e9__END
+[?2004hroot@e3435220e111:/app/langcodes# cd -- /app/langcodes && python -c "from pathlib import Path;p=Path('langcodes/__init__.py');s=p.read_text();old='def __hash__(self) -> int:\n        return hash(id(self))';new='def __hash__(self) -> int:\n        return hash(self._str_tag)';assert old in s,'target not found';p.write_text(s.replace(old,new,1))"; __tts_rc=$?; printf '\n__TTS_66d18c88760b4c21a17f636f800832cf__RC:%s\n' "$__tts_rc"; printf '__TTS_66d18c88760b4c21a17f636f800832cf__PWD:'; pwd; printf '__TTS_66d18c88760b4c21a17f636f800832cf__END\n'; tmux wait -S done
+[?2004l
+__TTS_66d18c88760b4c21a17f636f800832cf__RC:0
+__TTS_66d18c88760b4c21a17f636f800832cf__PWD:/app/langcodes
+__TTS_66d18c88760b4c21a17f636f800832cf__END
+[?2004hroot@e3435220e111:/app/langcodes# 

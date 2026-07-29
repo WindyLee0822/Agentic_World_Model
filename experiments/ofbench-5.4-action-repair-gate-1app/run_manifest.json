@@ -1,0 +1,44 @@
+{
+  "env": "officebench",
+  "expected_tasks": 4,
+  "complete_tasks": 3,
+  "partial_tasks": 1,
+  "missing_tasks": 0,
+  "expected_cells_per_task": 3,
+  "expected_cells": [
+    {
+      "method": "ours",
+      "n_rollouts": 1
+    },
+    {
+      "method": "ours",
+      "n_rollouts": 2
+    },
+    {
+      "method": "ours",
+      "n_rollouts": 4
+    }
+  ],
+  "expected_decisions": 12,
+  "recorded_decisions": 11,
+  "missing_decisions": 1,
+  "cell_errors": [],
+  "abandoned_tasks": [
+    {
+      "subset": "1app",
+      "index": 67
+    }
+  ],
+  "task_errors": [],
+  "by_subset": {
+    "1app": {
+      "expected_tasks": 4,
+      "complete_tasks": 3,
+      "partial_tasks": 1,
+      "missing_tasks": 0,
+      "expected_decisions": 12,
+      "recorded_decisions": 11,
+      "missing_decisions": 1
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "env": "tau2",
+  "name": "baseline",
+  "system": "",
+  "sections": [
+    {
+      "kind": "text",
+      "value": "You are a world model of the τ²-bench {domain} database. Decide whether the CANDIDATE tool-call sequence leaves the database in the SAME final state as the GOLD (known-correct) sequence, starting from the initial records below. Reason about each sequence's net effect on the records."
+    },
+    {
+      "kind": "data",
+      "key": "ref",
+      "requires": "ref"
+    },
+    {
+      "kind": "text",
+      "value": "Initial records (read-grounded):"
+    },
+    {
+      "kind": "data",
+      "key": "facts",
+      "requires": "facts"
+    },
+    {
+      "kind": "text",
+      "value": "GOLD actions:"
+    },
+    {
+      "kind": "data",
+      "key": "gold",
+      "requires": "gold"
+    },
+    {
+      "kind": "text",
+      "value": "CANDIDATE actions:"
+    },
+    {
+      "kind": "data",
+      "key": "cand",
+      "requires": "cand"
+    },
+    {
+      "kind": "text",
+      "value": "On the LAST line answer exactly 'VERDICT: SUCCESS' or 'VERDICT: FAIL'."
+    }
+  ],
+  "version": 0,
+  "notes": ""
+}

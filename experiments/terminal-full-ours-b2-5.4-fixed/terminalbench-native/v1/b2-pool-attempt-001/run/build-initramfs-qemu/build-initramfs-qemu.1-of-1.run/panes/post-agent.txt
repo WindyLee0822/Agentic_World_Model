@@ -1,0 +1,40 @@
+root@4c91db630135:/app# pwd; __tts_rc=$?; printf '\n__TTS_a8b2644da57e4532a8b8814e25ff5911__RC:%s\n' "$__tts_rc"; printf '__TTS_a8b2644da57e4532a8b8814e25ff5911
+__PWD:'; pwd; printf '__TTS_a8b2644da57e4532a8b8814e25ff5911__END\n'; tmux wait -S done
+/app
+
+__TTS_a8b2644da57e4532a8b8814e25ff5911__RC:0
+__TTS_a8b2644da57e4532a8b8814e25ff5911__PWD:/app
+__TTS_a8b2644da57e4532a8b8814e25ff5911__END
+root@4c91db630135:/app# cd -- /app && find /app -maxdepth 3 \( -name bzImage -o -name busybox -o -type d -name ramfs -o -type f -path '*/_install/bin/sh' \) | s
+ort; __tts_rc=$?; printf '\n__TTS_b297e81614d24415917fae78553074a8__RC:%s\n' "$__tts_rc"; printf '__TTS_b297e81614d24415917fae78553074a8__PWD:'; pwd; printf '__
+TTS_b297e81614d24415917fae78553074a8__END\n'; tmux wait -S done
+/app/linux-6.9/fs/ramfs
+
+__TTS_b297e81614d24415917fae78553074a8__RC:0
+__TTS_b297e81614d24415917fae78553074a8__PWD:/app
+__TTS_b297e81614d24415917fae78553074a8__END
+root@4c91db630135:/app# cd -- __TTS_b297e81614d24415917fae78553074a8__PWD:/app && find /app -maxdepth 4 \( -path '/app/linux-6.9/arch/x86/boot/bzImage' -o -name
+ busybox -o -path '*/_install/bin/sh' -o -name initramfs.cpio.gz \) | sort; __tts_rc=$?; printf '\n__TTS_c80cb0983d0c41aba292cad06e3184f0__RC:%s\n' "$__tts_rc";
+ printf '__TTS_c80cb0983d0c41aba292cad06e3184f0__PWD:'; pwd; printf '__TTS_c80cb0983d0c41aba292cad06e3184f0__END\n'; tmux wait -S done
+bash: cd: __TTS_b297e81614d24415917fae78553074a8__PWD:/app: No such file or directory
+
+__TTS_c80cb0983d0c41aba292cad06e3184f0__RC:1
+__TTS_c80cb0983d0c41aba292cad06e3184f0__PWD:/app
+__TTS_c80cb0983d0c41aba292cad06e3184f0__END
+root@4c91db630135:/app# cd -- /app && find /app -maxdepth 6 \( -path '/app/linux-6.9/arch/x86/boot/bzImage' -o -name busybox -o -path '*/_install/bin/sh' -o -na
+me initramfs.cpio.gz' -o -type f -name 'busybox' \) 2>/dev/null | sort; __tts_rc=$?; printf '\n__TTS_4f522078742542969b36d13fc4eee0a5__RC:%s\n' "$__tts_rc"; pri
+ntf '__TTS_4f522078742542969b36d13fc4eee0a5__PWD:'; pwd; printf '__TTS_4f522078742542969b36d13fc4eee0a5__END\n'; tmux wait -S done
+> cd -- /app && cd /app && find . -maxdepth 6 \( -path './linux-6.9/arch/x86/boot/bzImage' -o -name busybox -o -path '*/_install/bin/sh' -o -name initramfs.cpio
+.gz \) | sort; __tts_rc=$?; printf '\n__TTS_16b8bf57709c4542bab62bfd486d8d50__RC:%s\n' "$__tts_rc"; printf '__TTS_16b8bf57709c4542bab62bfd486d8d50__PWD:'; pwd;
+printf '__TTS_16b8bf57709c4542bab62bfd486d8d50__END\n'; tmux wait -S done
+> cd -- /app && cd /app && ls -1; __tts_rc=$?; printf '\n__TTS_b7ccd1d19c8a4f86b6e83a63bad48369__RC:%s\n' "$__tts_rc"; printf '__TTS_b7ccd1d19c8a4f86b6e83a63bad
+48369__PWD:'; pwd; printf '__TTS_b7ccd1d19c8a4f86b6e83a63bad48369__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+

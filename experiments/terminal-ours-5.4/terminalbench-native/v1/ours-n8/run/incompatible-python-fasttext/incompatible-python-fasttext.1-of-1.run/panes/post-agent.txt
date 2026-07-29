@@ -1,0 +1,40 @@
+root@30ca18309877:/app# pwd; __tts_rc=$?; printf '\n__TTS_b7f091b2bb7242ab8f34484ae307c40a__RC:%s\n' "$__tts_rc"; printf '__TTS_b7f091b2bb7242ab8f34484ae307c40a
+__PWD:'; pwd; printf '__TTS_b7f091b2bb7242ab8f34484ae307c40a__END\n'; tmux wait -S done
+/app
+
+__TTS_b7f091b2bb7242ab8f34484ae307c40a__RC:0
+__TTS_b7f091b2bb7242ab8f34484ae307c40a__PWD:/app
+__TTS_b7f091b2bb7242ab8f34484ae307c40a__END
+root@30ca18309877:/app# cd -- /app && python - <<'PY'
+> import sys, importlib.util
+> print('python', sys.version)
+> print('exe', sys.executable)
+> spec = importlib.util.find_spec('fasttext')
+> print('spec', spec)
+> try:
+>     import fasttext
+>     print('fasttext imported', fasttext)
+> except Exception as e:
+>     import traceback; traceback.print_exc()
+> PY; __tts_rc=$?; printf '\n__TTS_ddbecd4ef59f47f0b145431185ce94af__RC:%s\n' "$__tts_rc"; printf '__TTS_ddbecd4ef59f47f0b145431185ce94af__PWD:'; pwd; printf '_
+_TTS_ddbecd4ef59f47f0b145431185ce94af__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+root@198e31b2ebe0:/app/filesystem_spec# pwd; __tts_rc=$?; printf '\n__TTS_6f9fd84fe28f4e8094edcda948b44318__RC:%s\n' "$__tts_rc"; printf '__TTS_6f9fd84fe28f4e80
+94edcda948b44318__PWD:'; pwd; printf '__TTS_6f9fd84fe28f4e8094edcda948b44318__END\n'; tmux wait -S done
+/app/filesystem_spec
+
+__TTS_6f9fd84fe28f4e8094edcda948b44318__RC:0
+__TTS_6f9fd84fe28f4e8094edcda948b44318__PWD:/app/filesystem_spec
+__TTS_6f9fd84fe28f4e8094edcda948b44318__END
+root@198e31b2ebe0:/app/filesystem_spec# cd -- /app/filesystem_spec && grep -R "class DirFileSystem\|open_async" -n fsspec | head -50; __tts_rc=$?; printf '\n__T
+TS_207e136a313a4fec8c44546ef06a6fdc__RC:%s\n' "$__tts_rc"; printf '__TTS_207e136a313a4fec8c44546ef06a6fdc__PWD:'; pwd; printf '__TTS_207e136a313a4fec8c44546ef06
+a6fdc__END\n'; tmux wait -S done
+fsspec/tests/test_async.py:168:    async def open_async(
+fsspec/tests/test_async.py:210:    streamed_file = await test_fs.open_async("misc/foo.txt", mode="wb")
+fsspec/tests/test_async.py:222:    streamed_file = await test_fs.open_async("misc/foo.txt", mode="rb")
+fsspec/implementations/tests/test_http.py:517:    of = await fs.open_async(fn)
+fsspec/implementations/http.py:387:    async def open_async(self, path, mode="rb", size=None, **kwargs):
+fsspec/implementations/dirfs.py:5:class DirFileSystem(AsyncFileSystem):
+fsspec/asyn.py:907:    async def open_async(self, path, mode="rb", **kwargs):
+fsspec/generic.py:304:                await fs.open_async(url, "rb")
+fsspec/generic.py:305:                if hasattr(fs, "open_async")
+fsspec/generic.py:310:                await fs2.open_async(url2, "wb")
+fsspec/generic.py:311:                if hasattr(fs2, "open_async")
+
+__TTS_207e136a313a4fec8c44546ef06a6fdc__RC:0
+__TTS_207e136a313a4fec8c44546ef06a6fdc__PWD:/app/filesystem_spec
+__TTS_207e136a313a4fec8c44546ef06a6fdc__END
+root@198e31b2ebe0:/app/filesystem_spec# cd -- __TTS_207e136a313a4fec8c44546ef06a6fdc__PWD:/app/filesystem_spec && sed -n '1,220p' fsspec/implementations/dirfs.p
+y; __tts_rc=$?; printf '\n__TTS_c5c45054624549c8819599e6d87041f2__RC:%s\n' "$__tts_rc"; printf '__TTS_c5c45054624549c8819599e6d87041f2__PWD:'; pwd; printf '__TT
+S_c5c45054624549c8819599e6d87041f2__END\n'; tmux wait -S done
+bash: cd: __TTS_207e136a313a4fec8c44546ef06a6fdc__PWD:/app/filesystem_spec: No such file or directory
+
+__TTS_c5c45054624549c8819599e6d87041f2__RC:1
+__TTS_c5c45054624549c8819599e6d87041f2__PWD:/app/filesystem_spec
+__TTS_c5c45054624549c8819599e6d87041f2__END
+root@198e31b2ebe0:/app/filesystem_spec# cd -- __TTS_c5c45054624549c8819599e6d87041f2__PWD:/app/filesystem_spec && cd /app/filesystem_spec && sed -n '1,220p' fss
+pec/implementations/dirfs.py; __tts_rc=$?; printf '\n__TTS_120e34e5496d4800b1a361917790106b__RC:%s\n' "$__tts_rc"; printf '__TTS_120e34e5496d4800b1a361917790106
+b__PWD:'; pwd; printf '__TTS_120e34e5496d4800b1a361917790106b__END\n'; tmux wait -S done
+bash: cd: __TTS_c5c45054624549c8819599e6d87041f2__PWD:/app/filesystem_spec: No such file or directory
+
+__TTS_120e34e5496d4800b1a361917790106b__RC:1
+__TTS_120e34e5496d4800b1a361917790106b__PWD:/app/filesystem_spec
+__TTS_120e34e5496d4800b1a361917790106b__END
+root@198e31b2ebe0:/app/filesystem_spec# cd -- /app/filesystem_spec && cd /app/filesystem_spec && python - <<'PY'
+> from pathlib import Path
+> p=Path('fsspec/implementations/dirfs.py')
+> s=p.read_text()
+> if 'async def open_async(' not in s:
+>     s=s.replace('    async def _isfilestore(self):\n        return await self.fs._isfilestore()\n', '    async def _isfilestore(self):\n        return await s
+elf.fs._isfilestore()\n\n    async def open_async(self, path, mode="rb", **kwargs):\n        return await self.fs.open_async(self._join(path), mode=mode, **kwar
+gs)\n')
+>     p.write_text(s)
+> PY; __tts_rc=$?; printf '\n__TTS_d20565bd43444760be9b584a27e2f9f2__RC:%s\n' "$__tts_rc"; printf '__TTS_d20565bd43444760be9b584a27e2f9f2__PWD:'; pwd; printf '_
+_TTS_d20565bd43444760be9b584a27e2f9f2__END\n'; tmux wait -S done
+> cd -- /app/filesystem_spec && cd /app/filesystem_spec && sed -n '1,220p' fsspec/implementations/dirfs.py; __tts_rc=$?; printf '\n__TTS_be0f1f78ef5d4e66918ded0
+7ab7efa79__RC:%s\n' "$__tts_rc"; printf '__TTS_be0f1f78ef5d4e66918ded07ab7efa79__PWD:'; pwd; printf '__TTS_be0f1f78ef5d4e66918ded07ab7efa79__END\n'; tmux wait -
+S done
+> cd -- /app/filesystem_spec && cd /app/filesystem_spec && python -c "from pathlib import Path; p=Path('fsspec/implementations/dirfs.py'); print(p.read_text()[:
+4000])"; __tts_rc=$?; printf '\n__TTS_9b8dd0387e454384963c99c2bb32b0ce__RC:%s\n' "$__tts_rc"; printf '__TTS_9b8dd0387e454384963c99c2bb32b0ce__PWD:'; pwd; printf
+ '__TTS_9b8dd0387e454384963c99c2bb32b0ce__END\n'; tmux wait -S done
+> cd -- /app/filesystem_spec && cd /app/filesystem_spec && perl -0ne 'print substr($_,0,2200)' fsspec/implementations/dirfs.py; __tts_rc=$?; printf '\n__TTS_de1
+513c8c842485a969c2d669d0e2919__RC:%s\n' "$__tts_rc"; printf '__TTS_de1513c8c842485a969c2d669d0e2919__PWD:'; pwd; printf '__TTS_de1513c8c842485a969c2d669d0e2919_
+_END\n'; tmux wait -S done
+> cd -- /app/filesystem_spec && pkill -f "python - <<'PY'|sed -n '1,220p' fsspec/implementations/dirfs.py|python -c \"from pathlib import Path; p=Path\('fsspec/
+implementations/dirfs.py'\); print\(p.read_text\(\)\[:4000\]\)\"|perl -0ne 'print substr\(\$_,0,2200\)' fsspec/implementations/dirfs.py" || true; __tts_rc=$?; p
+rintf '\n__TTS_db77e734eead429c9b5d75ce1786e167__RC:%s\n' "$__tts_rc"; printf '__TTS_db77e734eead429c9b5d75ce1786e167__PWD:'; pwd; printf '__TTS_db77e734eead429
+c9b5d75ce1786e167__END\n'; tmux wait -S done
+>

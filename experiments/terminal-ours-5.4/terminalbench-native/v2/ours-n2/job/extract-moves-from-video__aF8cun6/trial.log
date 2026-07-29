@@ -1,0 +1,5 @@
+Trial extract-moves-from-video__aF8cun6 failed: Docker compose command failed for environment extract-moves-from-video. Command: docker compose --project-name extract-moves-from-video__af8cun6__env --project-directory /home/t-wendili/.cache/harbor/tasks/bDZ3NNHZSFq2MH6CzCTykb/extract-moves-from-video/environment -f /tmp/tmpdxqc4qfn/extract-moves-from-video__aF8cun6__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpp1ls9_hi/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network extract-moves-from-video__af8cun6__env_default Creating 
+ Network extract-moves-from-video__af8cun6__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network extract-moves-from-video__af8cun6__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

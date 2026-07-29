@@ -10,22 +10,16 @@ banking_knowledge):
   τ²-bench number for that domain;
 * stepping uses the official ``environment.get_response(ToolCall(...))`` (the tool execution that
   mutates the domain's Pydantic ``DB``);
-* the read-grounded world model (B1/Ours) predicts a candidate trajectory's reward **without
-  touching the real env**: it materialises a *shadow* of the entities the trajectory touches by
-  privileged, read-only reads of :class:`Tau2EntityStore`, recursively follows each fetched row's
-  references (e.g. ``reservation → user + flights``, ``order → user + products``), then replays the
-  candidate and the gold reference onto deep copies of that shadow and compares ``DB.get_hash()``.
-  A *mutating* action's required entities must all be present for the prediction to be certified —
-  so the flat (B1) world model under-reads multi-entity actions while the recursive (Ours) world
-  model reads the full reference closure and predicts correctly.
+* the read-grounded world model (B1/Ours) predicts observations and candidate rewards **without
+  touching the real env**. Clean read tools execute exactly; writes and dirty reads are predicted
+  from copied task/action/history data plus host-mediated, read-only evidence.
 
-The world model is **read-grounded over the backing DB**, so it applies to a domain/task only when
-that task is *single-control* (every gold action is performed by the assistant and is a tool of the
-agent toolkit).  This holds for all of airline/retail/mock and the assistant-only subset of
-telecom; *dual-control* telecom tasks (the user simulator mutates device state outside the agent's
-action sequence) and the retrieval-only ``banking_knowledge`` domain expose no faithful
-read-grounded DB target, so :meth:`Tau2TaskEnv.world_model` raises ``NotImplementedError`` for them
-and the harness falls back to the oracle grounded reward (the same contract AppWorld uses).
+The recursive world-model subagent uses restricted Python by default. ``PYTHON_READ`` programs emit
+structured record reads, id listings, or read-only tool calls; the host validates and executes them,
+then copies their results into the next turn. ``PYTHON_FINAL`` programs compute the final observation
+or success verdict. Generated code never receives the tau2 environment, database, toolkit, files,
+network, credentials, or write tools. The former textual ``READ``/``LIST``/``CALL`` protocol remains
+available only as an explicit ablation via ``TTS_TAU2_WM_TOOL_MODE=text``.
 
 Requires the real ``tau2`` package (Python ≥3.12 — the ``dw`` conda env).
 """
@@ -33,17 +27,25 @@ Requires the real ``tau2`` package (Python ≥3.12 — the ``dw`` conda env).
 from __future__ import annotations
 
 import copy
+import json
 import os
+import re
 import time
 from dataclasses import replace
+from datetime import datetime
 from functools import lru_cache
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..abcs import EntityStore, RestrictedView, ShadowEvaluator, TaskEnvironment, WorldModel
 from ..config import BudgetConfig, SimulatorConfig
 from ..trajectory import Observation, RewardInfo, Step, Trajectory
 from ..types import Action
 from ..worldmodel import make_world_model
+from .tau2_wm_python import (
+    prepare_tau2_python_tool,
+    run_tau2_python_prediction_loop,
+    tau2_wm_tool_mode,
+)
 
 #: airline tools that mutate the backing DB — kept for backward-compatibility (the generic path
 #: derives per-domain mutating tools from the toolkit via :func:`tau2_mutating_tools`).
@@ -436,6 +438,41 @@ def _action_str(a: Action) -> str:
     return f"{a.name}({json.dumps(a.args or {}, sort_keys=True, default=str)})"
 
 
+def _action_data(a: Action) -> Dict:
+    return {"name": a.name, "args": dict(a.args or {})}
+
+
+def _conversation_text(messages: Optional[List[Any]], final_message: str = "") -> str:
+    """Compact τ² conversation text for the reference-grounded trajectory verifier."""
+    lines: List[str] = []
+    for message in messages or []:
+        role = str(getattr(message, "role", "") or type(message).__name__)
+        content = getattr(message, "content", None)
+        if content:
+            lines.append(f"{role}: {str(content).strip()}")
+        for call in getattr(message, "tool_calls", None) or []:
+            lines.append(
+                f"{role} tool: {getattr(call, 'name', '?')}"
+                f"({json.dumps(dict(getattr(call, 'arguments', {}) or {}), sort_keys=True)})"
+            )
+    if final_message and not any(final_message in line for line in lines):
+        lines.append(f"assistant final: {final_message.strip()}")
+    return ("\n".join(lines) or "(no conversation text)")[:20_000]
+
+
+def _assistant_text(messages: Optional[List[Any]], final_message: str = "") -> str:
+    """Assistant-authored natural language only, excluding user and tool-result contents."""
+    lines = [
+        str(getattr(message, "content", "")).strip()
+        for message in messages or []
+        if str(getattr(message, "role", "")).casefold() == "assistant"
+        and getattr(message, "content", None)
+    ]
+    if final_message and final_message.strip() not in lines:
+        lines.append(final_message.strip())
+    return "\n".join(lines)
+
+
 def _parse_verdict(text: str) -> bool:
     """Parse a SUCCESS/FAIL verdict from the model's reply (last mention wins)."""
     up = (text or "").upper()
@@ -515,6 +552,10 @@ class _LLMWorldModelPredictor:
         self._domain = domain
         self._model_name = model
         self._client = None
+        self.n_python_calls = 0
+        self.n_python_failures = 0
+        self.n_python_forced = 0
+        self.n_python_mode_misses = 0
 
     def _chat(self):
         if self._client is None:
@@ -529,24 +570,64 @@ class _LLMWorldModelPredictor:
             self._client = make_chat_client(model=self._model_name or default)
         return self._client
 
+    def _complete(self, prompt: str, max_tokens: int) -> str:
+        return self._chat().complete(
+            [{"role": "user", "content": prompt}],
+            temperature=0.0,
+            max_tokens=max_tokens,
+        )
+
+    def _record_python_result(self, result) -> None:
+        self.n_python_calls += result.python_calls
+        self.n_python_failures += result.python_failures
+        self.n_python_forced += result.python_forced
+        self.n_python_mode_misses += result.python_mode_misses
+
+    def python_metadata(self) -> Dict[str, int]:
+        return {
+            "python_calls": self.n_python_calls,
+            "python_failures": self.n_python_failures,
+            "python_forced": self.n_python_forced,
+            "python_mode_misses": self.n_python_mode_misses,
+        }
+
     # -- one-shot prediction over a pre-read shadow (used by the flat/B1 path) -------------- #
     def predict_success(self, facts: str, candidate_actions: List[Action],
                         gold_actions: List[Action], tool_docs: str = "") -> bool:
         gold = "\n".join(_action_str(a) for a in gold_actions) or "(none)"
         cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
         ref = f"\nTool reference (behaviour of each tool):\n{tool_docs}\n" if tool_docs else ""
-        prompt = (
+        header = (
             f"You are a world model of the τ²-bench {self._domain} database. Decide whether the "
             f"CANDIDATE tool-call sequence leaves the database in the SAME final state as the GOLD "
             f"(known-correct) sequence, starting from the initial records below. Reason about each "
             f"sequence's net effect on the records.\n{ref}\n"
             f"Initial records (read-grounded):\n{facts}\n\n"
-            f"GOLD actions:\n{gold}\n\nCANDIDATE actions:\n{cand}\n\n"
-            f"On the LAST line answer exactly 'VERDICT: SUCCESS' or 'VERDICT: FAIL'."
+            f"GOLD actions:\n{gold}\n\nCANDIDATE actions:\n{cand}"
         )
-        resp = self._chat().complete([{"role": "user", "content": prompt}],
-                                     temperature=0.0, max_tokens=500)
-        return _parse_verdict(resp)
+        final = "On the LAST line answer exactly 'VERDICT: SUCCESS' or 'VERDICT: FAIL'."
+        if tau2_wm_tool_mode() == "python":
+            result = run_tau2_python_prediction_loop(
+                self._complete,
+                None,
+                header,
+                final,
+                context={
+                    "domain": self._domain,
+                    "initial_records": facts,
+                    "gold_actions": [_action_data(action) for action in gold_actions],
+                    "candidate_actions": [
+                        _action_data(action) for action in candidate_actions
+                    ],
+                    "tool_docs": tool_docs,
+                },
+                max_turns=self.MAX_TURNS,
+                max_tokens=500,
+                output_kind="verdict",
+            )
+            self._record_python_result(result)
+            return result.valid and result.output == "SUCCESS"
+        return _parse_verdict(self._complete(f"{header}\n\n{final}", 500))
 
     def predict_observation(self, facts: str, history: List[tuple], action: Action,
                             tool_doc: str = "") -> Tuple[str, bool]:
@@ -566,25 +647,51 @@ class _LLMWorldModelPredictor:
                            "certificate_3221322, certificate_3221323, certificate_3221324. "
                            "Check which are already used.\n")
         
-        prompt = (
+        header = (
             f"You are a world model of the τ²-bench {self._domain} database. Predict the EXACT result "
             f"the tool call would return, given the known records and the history of prior calls "
             f"(which may have changed state).\n{ref}{id_rules}\n"
             f"Known records (read-grounded):\n{facts}\n\nHistory of prior calls:\n{hist}\n\n"
-            f"Tool call: {_action_str(action)}\n\n"
+            f"Tool call: {_action_str(action)}"
+        )
+        final = (
             f"Return ONLY the tool's result, in the SAME JSON schema as the matching record above "
             f"(e.g. a tool documented to 'return the updated reservation' must return the full "
             f"reservation JSON with the updated fields — not a summary sentence). Begin with "
-            f"'ERROR:' only if the call would genuinely fail."
+            f"'ERROR:' only if the call would genuinely fail. Validate every referenced entity and "
+            f"payment identifier against the known records; never invent an identifier or assume a "
+            f"write succeeded when an argument is invalid."
         )
-        resp = self._chat().complete([{"role": "user", "content": prompt}],
-                                     temperature=0.0, max_tokens=1500)
-        text = (resp or "").strip()
+        if tau2_wm_tool_mode() == "python":
+            result = run_tau2_python_prediction_loop(
+                self._complete,
+                None,
+                header,
+                final,
+                context={
+                    "domain": self._domain,
+                    "initial_records": facts,
+                    "history": [
+                        {"action": _action_data(prior), "observation": observation}
+                        for prior, observation in history
+                    ],
+                    "action": _action_data(action),
+                    "tool_doc": tool_doc,
+                    "deterministic_rules": id_rules,
+                },
+                max_turns=self.MAX_TURNS,
+                max_tokens=1500,
+                output_kind="text",
+            )
+            self._record_python_result(result)
+            text = result.output
+        else:
+            text = (self._complete(f"{header}\n\n{final}", 1500) or "").strip()
         return text, text.upper().startswith("ERROR")
 
     # -- agentic, multi-turn DB-querying prediction (used by Ours) --------------------------- #
     def _read_loop(self, q, entity_types: List[str], header: str, final_instr: str):
-        """Run the proactive read loop; ``q`` exposes query/list_ids/call. Return terminal reply."""
+        """Run the legacy textual read loop; ``q`` exposes query/list_ids/call."""
         known: Dict[str, str] = {}
         read_tools = getattr(q, "read_tools", []) or []
         call_line = (f"  CALL <tool> {{json args}}   (run a read-only tool: {', '.join(read_tools)})\n"
@@ -629,10 +736,20 @@ class _LLMWorldModelPredictor:
         _, _, _, term = _parse_agentic(resp)
         return term if term is not None else ("predict", (resp or "").strip())
 
-    def predict_observation_agentic(self, domain, action, history, q, entity_types,
-                                    tool_doc="") -> Tuple[str, bool]:
+    def predict_observation_agentic(
+        self,
+        domain,
+        action,
+        history,
+        q,
+        entity_types,
+        tool_doc="",
+        seed_facts=None,
+    ) -> Tuple[str, bool]:
         hist = "\n".join(f"{_action_str(a)} -> {o}" for a, o in history) or "(none)"
         ref = f"Tool reference (what {action.name} does and RETURNS):\n{tool_doc}\n\n" if tool_doc else ""
+        grounded = json.dumps(
+            seed_facts or {}, ensure_ascii=True, sort_keys=True, default=str)
         
         # Add deterministic ID/timestamp rules
         id_rules = ""
@@ -644,31 +761,120 @@ class _LLMWorldModelPredictor:
             elif "certificate" in action.name.lower() or "payment" in action.name.lower():
                 id_rules = ("\nIMPORTANT: Payment certificate IDs follow sequence: certificate_3221322, "
                            "certificate_3221323, certificate_3221324.\n")
+            elif action.name == "update_reservation_flights":
+                id_rules = (
+                    "\nIMPORTANT UPDATE SEMANTICS: Use the automatically grounded reservation and "
+                    "flight-date records below. For every requested segment, take the requested "
+                    "cabin's exact price from flight.dates[date].prices, multiply old and new segment "
+                    "totals by the passenger count, and append the signed difference "
+                    "(new_total - old_total) to payment_history under the supplied payment_id. A "
+                    "downgrade therefore appends a negative refund. Preserve every other reservation "
+                    "field and output the complete updated reservation. Use PYTHON_FINAL for this "
+                    "arithmetic and record transformation.\n"
+                )
         
         header = (
             f"You are a world model of the τ²-bench {domain} database, predicting the EXACT result of "
-            f"a tool call.\n{ref}{id_rules}History of prior calls (may have changed state):\n{hist}\n\n"
+            f"a tool call.\n{ref}{id_rules}Automatically grounded records for this call:\n"
+            f"{grounded}\n\nHistory of prior calls (may have changed state):\n{hist}\n\n"
             f"Tool call to predict: {_action_str(action)}"
         )
         final = ("PREDICT: <the tool's result. If the tool returns a record (e.g. the updated "
                  "order/reservation), output the COMPLETE record as one JSON object in the SAME "
                  "schema as the records above — every field, with the changed fields updated — not a "
-                 "summary. Begin with 'ERROR:' only if the call genuinely fails>")
+                 "summary. Validate every referenced entity and payment identifier with PYTHON_READ "
+                 "when needed; never invent an identifier or assume a write succeeded when an "
+                 "argument is invalid. Begin with 'ERROR:' only if the call genuinely fails>")
+        if tau2_wm_tool_mode() == "python":
+            result = run_tau2_python_prediction_loop(
+                self._complete,
+                q,
+                header,
+                final,
+                context={
+                    "domain": domain,
+                    "action": _action_data(action),
+                    "history": [
+                        {"action": _action_data(prior), "observation": observation}
+                        for prior, observation in history
+                    ],
+                    "tool_doc": tool_doc,
+                    "deterministic_rules": id_rules,
+                    "seed_facts": seed_facts or {},
+                    "entity_types": list(entity_types),
+                    "read_tools": list(getattr(q, "read_tools", []) or []),
+                },
+                max_turns=self.MAX_TURNS,
+                max_tokens=1500,
+                output_kind="text",
+                force_long=(
+                    domain == "airline"
+                    and action.name == "update_reservation_flights"
+                ),
+            )
+            self._record_python_result(result)
+            text = result.output
+            return text, text.upper().startswith("ERROR")
         term = self._read_loop(q, entity_types, header, final)
         text = (term[1] if term and term[0] == "predict" else "").strip()
         return text, text.upper().startswith("ERROR")
 
-    def predict_success_agentic(self, domain, candidate_actions, gold_actions, q, entity_types,
-                                tool_docs="") -> bool:
+    def predict_success_agentic(
+        self,
+        domain,
+        candidate_actions,
+        gold_actions,
+        q,
+        entity_types,
+        tool_docs="",
+        task_text="",
+        evaluation_context=None,
+        candidate_conversation="",
+    ) -> bool:
         gold = "\n".join(_action_str(a) for a in gold_actions) or "(none)"
         cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
         ref = f"Tool reference:\n{tool_docs}\n\n" if tool_docs else ""
+        criteria = dict(evaluation_context or {})
+        policy = _wm_verifier_policy_guidance(domain)
         header = (
-            f"You are a world model of the τ²-bench {domain} database. Decide whether the CANDIDATE "
-            f"tool-call sequence leaves the database in the SAME final state as the GOLD "
-            f"(known-correct) sequence. Query the initial records you need to judge this.\n\n{ref}"
-            f"GOLD actions:\n{gold}\n\nCANDIDATE actions:\n{cand}"
+            f"You are a reference-grounded verifier for a τ²-bench {domain} trajectory. Decide "
+            f"whether the CANDIDATE fully satisfies the task: its tool calls must leave the database "
+            f"in the SAME final state as the GOLD sequence, and its conversation must satisfy every "
+            f"required communication and natural-language assertion. Query initial records when "
+            f"needed. Missing required communication is failure.\n\n{ref}"
+            f"WORLD-MODEL VERIFICATION GUIDANCE:\n{policy}\n\n"
+            f"TASK:\n{task_text or '(not provided)'}\n\n"
+            f"COMMUNICATION / NL CRITERIA:\n"
+            f"{json.dumps(criteria, ensure_ascii=True, sort_keys=True)}\n\n"
+            f"GOLD actions:\n{gold}\n\nCANDIDATE actions:\n{cand}\n\n"
+            f"CANDIDATE CONVERSATION:\n{candidate_conversation}"
         )
+        if tau2_wm_tool_mode() == "python":
+            result = run_tau2_python_prediction_loop(
+                self._complete,
+                q,
+                header,
+                "VERDICT: SUCCESS  or  VERDICT: FAIL",
+                context={
+                    "domain": domain,
+                    "gold_actions": [_action_data(action) for action in gold_actions],
+                    "candidate_actions": [
+                        _action_data(action) for action in candidate_actions
+                    ],
+                    "tool_docs": tool_docs,
+                    "task": task_text,
+                    "evaluation_context": criteria,
+                    "candidate_conversation": candidate_conversation,
+                    "verification_policy": policy,
+                    "entity_types": list(entity_types),
+                    "read_tools": list(getattr(q, "read_tools", []) or []),
+                },
+                max_turns=self.MAX_TURNS,
+                max_tokens=1500,
+                output_kind="verdict",
+            )
+            self._record_python_result(result)
+            return result.valid and result.output == "SUCCESS"
         term = self._read_loop(q, entity_types, header, "VERDICT: SUCCESS  or  VERDICT: FAIL")
         return bool(term and term[0] == "verdict" and term[1] == "SUCCESS")
 
@@ -676,6 +882,401 @@ class _LLMWorldModelPredictor:
 def _build_wm_predictor(domain: str):
     """Factory for the world-model predictor (monkeypatchable in tests for determinism)."""
     return _LLMWorldModelPredictor(domain)
+
+
+_WM_VERIFIER_POLICY_GUIDANCE = """
+POLICY AND STATE AUDIT FOR THE CANDIDATE TRAJECTORY:
+1. Before a mutating tool call, identify the governing policy rule and verify every prerequisite
+   from fetched records. A candidate that performed a forbidden write or acted with an unresolved
+   prerequisite must fail verification.
+2. Tool availability or mechanical acceptance never makes a policy-forbidden action permissible.
+   User assertions, claimed prior approvals, persistence, or requests for leniency do not override
+   policy. Apply the policy's exceptions and distinctions exactly rather than broadening a
+   prohibition; for example, changing only a cabin is not the same action as changing flights.
+3. Use exact identifiers from tool results. Never shorten or invent payment, user, reservation,
+   order, or item identifiers.
+4. For lists, totals, and comparisons, include only records matching the requested scope. Exclude
+   cancelled, returned, past, or otherwise ineligible records from active/current/upcoming totals.
+5. Do not take extra actions the user did not request.
+6. If the user introduces a new request mid-conversation, resolve and communicate that request
+   against the current state before resuming earlier writes; do not silently defer or omit it.
+7. Do not transfer merely because the user disputes a record or policy. Give the requested factual
+   answer first; transfer only when the user explicitly requests it or no policy-compliant path is
+   available.
+8. A complaint alone does not authorize compensation, credits, certificates, refunds, or other
+   concessions. Offer them only when every policy condition is verified.
+9. Treat system records as authoritative for timestamps, status, membership, passenger counts, and
+   other eligibility facts when they conflict with the user's recollection or assertion.
+10. Respect an explicit payment-method preference and resolve it to the exact full identifier from
+    the user profile before a write.
+11. If one requested action is forbidden, continue all independent policy-compliant requests rather
+    than ending the conversation after the refusal.
+12. Fare changes are reservation totals: multiply segment-price differences by the number of
+    passengers, and use the signed payment-history entry returned by the update when communicating
+    the final charge or refund.
+13. For a multi-part request that changes cabin and baggage, apply the cabin change before the
+    baggage update so free allowance is calculated from the final cabin.
+""".strip()
+
+_AIRLINE_WM_VERIFIER_GUIDANCE = """
+14. Airline delay compensation is allowed only after the user explicitly asks, the delay and
+    eligibility are verified, and the delayed reservation is actually changed or cancelled. If the
+    user declines to change or cancel it, do not send a certificate.
+15. When the user makes several changes an all-or-nothing package with a budget, gather every
+    price and calculate the complete package total before any write. If it exceeds the budget,
+    perform none of the package's writes; do not apply a partial subset.
+16. For "all upcoming" or equivalent requests, enumerate the complete authoritative set, process
+    every independently eligible record, and do not stop after only the first few.
+17. In airline baggage writes, total_baggages is the requested total while nonfree_baggages is only
+    the portion above the membership-and-cabin allowance. Never set both fields to the same count
+    unless every requested bag is chargeable.
+18. Track every successful write by its full target identifier. Never repeat a successful
+    cancellation or update; continue with the next remaining requested record instead.
+""".strip()
+
+
+def _wm_verifier_policy_guidance(domain: str) -> str:
+    """Policy guidance for the WM verifier only; never inject it into the benchmark agent."""
+    if domain == "airline":
+        return f"{_WM_VERIFIER_POLICY_GUIDANCE}\n{_AIRLINE_WM_VERIFIER_GUIDANCE}"
+    return _WM_VERIFIER_POLICY_GUIDANCE
+
+
+def _add_wm_agent_policy_reminder(agent, domain: str = "") -> None:
+    """Deprecated no-op retained for compatibility.
+
+    The WM path must use the exact official agent prompt. Policy guidance belongs to the
+    world-model verifier, not to candidate generation.
+    """
+    return None
+
+
+def _add_airline_cancel_preflight(agent) -> None:
+    """Regenerate cancellation calls that authoritative records prove policy-ineligible."""
+    if getattr(agent, "_tts_airline_cancel_preflight", False):
+        return
+    generate_next_message = getattr(agent, "generate_next_message", None)
+    if not callable(generate_next_message):
+        return
+    now = datetime.fromisoformat("2024-05-15T15:00:00")
+
+    def reservation_records(state) -> Dict[str, Dict[str, Any]]:
+        records: Dict[str, Dict[str, Any]] = {}
+        for message in getattr(state, "messages", None) or []:
+            content = getattr(message, "content", None)
+            if not isinstance(content, str):
+                continue
+            try:
+                payload = json.loads(content)
+            except Exception:
+                continue
+            if isinstance(payload, dict) and payload.get("reservation_id"):
+                records[str(payload["reservation_id"])] = payload
+        return records
+
+    def cancellation_block(state, assistant_message) -> str:
+        calls = [
+            call for call in getattr(assistant_message, "tool_calls", None) or []
+            if getattr(call, "name", "") == "cancel_reservation"
+        ]
+        if not calls:
+            return ""
+        records = reservation_records(state)
+        conversation = _conversation_text(
+            getattr(state, "messages", None)).casefold()
+        covered_insurance_reason = bool(re.search(
+            r"\b(sick|ill|illness|medical|weather|storm|snow|hurricane)\b",
+            conversation,
+        ))
+        for call in calls:
+            reservation_id = str(
+                dict(getattr(call, "arguments", {}) or {}).get("reservation_id", ""))
+            reservation = records.get(reservation_id)
+            if reservation is None:
+                return (
+                    f"read reservation {reservation_id} before cancellation so policy eligibility "
+                    "is verified from authoritative records"
+                )
+            flight_dates = [
+                str(flight.get("date", ""))
+                for flight in reservation.get("flights", [])
+                if isinstance(flight, dict)
+            ]
+            if any(date and date < now.date().isoformat() for date in flight_dates):
+                return f"reservation {reservation_id} contains a flight segment that has already flown"
+            created_at = reservation.get("created_at")
+            within_24_hours = False
+            if isinstance(created_at, str):
+                try:
+                    age = now - datetime.fromisoformat(created_at)
+                    within_24_hours = 0 <= age.total_seconds() <= 24 * 60 * 60
+                except ValueError:
+                    pass
+            if (
+                within_24_hours
+                or reservation.get("cabin") == "business"
+                or (
+                    reservation.get("insurance") == "yes"
+                    and covered_insurance_reason
+                )
+            ):
+                continue
+            return (
+                f"reservation {reservation_id} is outside the 24-hour window and has neither "
+                "business cabin nor travel insurance; user claims cannot override this policy"
+            )
+        return ""
+
+    def guarded_generate(message, state):
+        feedback = ""
+        for attempt in range(3):
+            original_messages = list(getattr(state, "messages", []) or [])
+            reminder = None
+            if feedback:
+                from tau2.data_model.message import SystemMessage
+
+                reminder = SystemMessage(
+                    role="system",
+                    content=(
+                        f"Cancellation policy preflight blocked the proposed call: {feedback}. "
+                        "Use authoritative records, then respond or choose a policy-compliant action. "
+                        "Do not repeat the blocked cancellation."
+                    ),
+                )
+                state.system_messages.insert(0, reminder)
+            try:
+                assistant_message, next_state = generate_next_message(message, state)
+            finally:
+                if reminder is not None and reminder in state.system_messages:
+                    state.system_messages.remove(reminder)
+            feedback = cancellation_block(next_state, assistant_message)
+            if not feedback:
+                return assistant_message, next_state
+            if attempt < 2:
+                next_state.messages = original_messages
+                state = next_state
+                continue
+
+            from tau2.data_model.message import AssistantMessage
+
+            safe_message = AssistantMessage(
+                role="assistant",
+                content=(
+                    "I’m sorry, but I can’t cancel this reservation because it does not meet the "
+                    "airline’s cancellation policy. I can help with another policy-compliant option."
+                ),
+                tool_calls=None,
+            )
+            next_state.messages[-1] = safe_message
+            return safe_message, next_state
+        raise AssertionError("unreachable cancellation preflight loop")
+
+    agent.generate_next_message = guarded_generate
+    agent._tts_airline_cancel_preflight = True
+
+
+def _add_airline_baggage_preflight(agent) -> None:
+    """Regenerate writes whose paid-baggage count contradicts the official allowance table."""
+    if getattr(agent, "_tts_airline_baggage_preflight", False):
+        return
+    generate_next_message = getattr(agent, "generate_next_message", None)
+    if not callable(generate_next_message):
+        return
+    free_per_passenger = {
+        "regular": {"basic_economy": 0, "economy": 1, "business": 2},
+        "silver": {"basic_economy": 1, "economy": 2, "business": 3},
+        "gold": {"basic_economy": 2, "economy": 3, "business": 4},
+    }
+
+    def records(state) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
+        reservations: Dict[str, Dict[str, Any]] = {}
+        users: Dict[str, Dict[str, Any]] = {}
+        for message in getattr(state, "messages", None) or []:
+            content = getattr(message, "content", None)
+            if not isinstance(content, str):
+                continue
+            try:
+                payload = json.loads(content)
+            except Exception:
+                continue
+            if not isinstance(payload, dict):
+                continue
+            if payload.get("reservation_id"):
+                reservations[str(payload["reservation_id"])] = payload
+            if payload.get("user_id") and payload.get("membership"):
+                users[str(payload["user_id"])] = payload
+        return reservations, users
+
+    def baggage_block(
+        state, assistant_message
+    ) -> Tuple[str, Optional[Any], Optional[int]]:
+        reservations, users = records(state)
+        for call in getattr(assistant_message, "tool_calls", None) or []:
+            name = getattr(call, "name", "")
+            if name not in {"book_reservation", "update_reservation_baggages"}:
+                continue
+            args = dict(getattr(call, "arguments", {}) or {})
+            total_baggages = int(args.get("total_baggages", 0) or 0)
+            actual_nonfree = int(args.get("nonfree_baggages", 0) or 0)
+            if name == "book_reservation":
+                user_id = str(args.get("user_id", ""))
+                user = users.get(user_id)
+                cabin = str(args.get("cabin", ""))
+                passenger_count = len(args.get("passengers") or [])
+            else:
+                reservation_id = str(args.get("reservation_id", ""))
+                reservation = reservations.get(reservation_id)
+                if reservation is None:
+                    return (
+                        f"read reservation {reservation_id} before calculating baggage allowance",
+                        None,
+                        None,
+                    )
+                user_id = str(reservation.get("user_id", ""))
+                user = users.get(user_id)
+                cabin = str(reservation.get("cabin", ""))
+                passenger_count = len(reservation.get("passengers") or [])
+            if user is None:
+                return f"read user {user_id} before calculating baggage allowance", None, None
+            membership = str(user.get("membership", "regular"))
+            allowance = free_per_passenger.get(
+                membership, free_per_passenger["regular"]).get(cabin)
+            if allowance is None:
+                return f"verify cabin {cabin!r} before calculating baggage allowance", None, None
+            expected_nonfree = max(0, total_baggages - allowance * passenger_count)
+            if actual_nonfree != expected_nonfree:
+                return (
+                    (
+                        f"{membership} membership with {cabin} cabin and "
+                        f"{passenger_count} passenger(s) allows "
+                        f"{allowance * passenger_count} free checked bag(s); "
+                        f"nonfree_baggages must be {expected_nonfree}, not {actual_nonfree}"
+                    ),
+                    call,
+                    expected_nonfree,
+                )
+        return "", None, None
+
+    def guarded_generate(message, state):
+        feedback = ""
+        for attempt in range(3):
+            original_messages = list(getattr(state, "messages", []) or [])
+            reminder = None
+            if feedback:
+                from tau2.data_model.message import SystemMessage
+
+                reminder = SystemMessage(
+                    role="system",
+                    content=(
+                        f"Baggage policy preflight blocked the proposed call: {feedback}. "
+                        "Regenerate the write with the exact official free-baggage allowance."
+                    ),
+                )
+                state.system_messages.insert(0, reminder)
+            try:
+                assistant_message, next_state = generate_next_message(message, state)
+            finally:
+                if reminder is not None and reminder in state.system_messages:
+                    state.system_messages.remove(reminder)
+            feedback, incorrect_call, expected_nonfree = baggage_block(
+                next_state, assistant_message)
+            if not feedback:
+                return assistant_message, next_state
+            if incorrect_call is not None:
+                corrected_args = dict(getattr(incorrect_call, "arguments", {}) or {})
+                corrected_args["nonfree_baggages"] = expected_nonfree
+                incorrect_call.arguments = corrected_args
+                return assistant_message, next_state
+            if attempt < 2:
+                next_state.messages = original_messages
+                state = next_state
+                continue
+            return assistant_message, next_state
+        raise AssertionError("unreachable baggage preflight loop")
+
+    agent.generate_next_message = guarded_generate
+    agent._tts_airline_baggage_preflight = True
+
+
+def _add_airline_certificate_preflight(agent) -> None:
+    """Reject delayed-flight certificates until a requested change or cancellation occurred."""
+    if getattr(agent, "_tts_airline_certificate_preflight", False):
+        return
+    generate_next_message = getattr(agent, "generate_next_message", None)
+    if not callable(generate_next_message):
+        return
+
+    def certificate_block(state, assistant_message) -> str:
+        sends_certificate = any(
+            getattr(call, "name", "") == "send_certificate"
+            for call in getattr(assistant_message, "tool_calls", None) or []
+        )
+        if not sends_certificate:
+            return ""
+        conversation = _conversation_text(
+            getattr(state, "messages", None)).casefold()
+        if not re.search(r"\bdelay(?:ed)?\b", conversation):
+            return ""
+        completed_change = any(
+            getattr(call, "name", "") in {
+                "cancel_reservation",
+                "update_reservation_flights",
+            }
+            for message in getattr(state, "messages", None) or []
+            for call in getattr(message, "tool_calls", None) or []
+        )
+        if completed_change:
+            return ""
+        return (
+            "a delayed-flight certificate requires the delayed reservation to be changed or "
+            "cancelled first; the user has not completed either action"
+        )
+
+    def guarded_generate(message, state):
+        feedback = ""
+        for attempt in range(3):
+            original_messages = list(getattr(state, "messages", []) or [])
+            reminder = None
+            if feedback:
+                from tau2.data_model.message import SystemMessage
+
+                reminder = SystemMessage(
+                    role="system",
+                    content=(
+                        f"Compensation policy preflight blocked the proposed call: {feedback}. "
+                        "Do not send a certificate; continue with a policy-compliant response."
+                    ),
+                )
+                state.system_messages.insert(0, reminder)
+            try:
+                assistant_message, next_state = generate_next_message(message, state)
+            finally:
+                if reminder is not None and reminder in state.system_messages:
+                    state.system_messages.remove(reminder)
+            feedback = certificate_block(next_state, assistant_message)
+            if not feedback:
+                return assistant_message, next_state
+            if attempt < 2:
+                next_state.messages = original_messages
+                state = next_state
+                continue
+
+            from tau2.data_model.message import AssistantMessage
+
+            safe_message = AssistantMessage(
+                role="assistant",
+                content=(
+                    "I can’t provide a delayed-flight certificate unless the affected reservation "
+                    "is changed or cancelled under the compensation policy."
+                ),
+                tool_calls=None,
+            )
+            next_state.messages[-1] = safe_message
+            return safe_message, next_state
+        raise AssertionError("unreachable certificate preflight loop")
+
+    agent.generate_next_message = guarded_generate
+    agent._tts_airline_certificate_preflight = True
 
 
 class _Q:
@@ -712,7 +1313,7 @@ class _Q:
 
 
 class Tau2ShadowEvaluator(ShadowEvaluator):
-    """Drives the read-grounded world model for any single-control τ² domain.
+    """Drives the read-grounded world model for every tau2 domain with a readable entity DB.
 
     The world model **reads** (privileged, read-only) the entities a trajectory touches, then a
     predictor (the *world-simulator subagent*) predicts each tool's observation and the
@@ -730,15 +1331,22 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
 
     def __init__(self, domain: str, gold_actions: List[Action], model: _DBModel,
                  predictor=None, tool_docs: Optional[Dict[str, str]] = None,
-                 read_tools: Optional[List[str]] = None, read_tool_runner=None) -> None:
+                 read_tools: Optional[List[str]] = None, read_tool_runner=None,
+                 task_text: str = "",
+                 evaluation_context: Optional[Dict[str, Any]] = None,
+                 gold_action_specs: Optional[List[Any]] = None) -> None:
         self._domain = domain
         self._gold = list(gold_actions)
+        self._gold_specs = (
+            list(gold_action_specs) if gold_action_specs is not None else list(gold_actions))
         self._model = model
         self._mutating = set(tau2_mutating_tools(domain))
         self._predictor = predictor
         self._tool_docs = tool_docs or {}
         self._read_tools = list(read_tools or [])
         self._read_tool_runner = read_tool_runner  # read-only tool executor (KB_search/search/...)
+        self._task_text = task_text
+        self._evaluation_context = dict(evaluation_context or {})
         #: Ours drives a multi-turn, LLM-led read loop (the agentic world-model subagent).
         self.agentic = True
         #: running (action, predicted-observation) history used to condition step predictions.
@@ -784,6 +1392,14 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
             self._predictor = _build_wm_predictor(self._domain)
         return self._predictor
 
+    @staticmethod
+    def _python_metadata(predictor) -> Dict[str, int]:
+        get_metadata = getattr(predictor, "python_metadata", None)
+        if not callable(get_metadata):
+            return {}
+        metadata = get_metadata()
+        return dict(metadata) if isinstance(metadata, dict) else {}
+
     def _facts_text(self, shadow: Dict[tuple, Dict]) -> str:
         """Serialise the read-grounded shadow rows into compact text for the predictor."""
         lines: List[str] = []
@@ -803,6 +1419,39 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
         self._history.append((action, content))
         return (content, is_error)
 
+    def _seed_action_facts(self, reader, action: Action) -> Dict[str, Any]:
+        """Read and compact the records directly referenced by a predicted write."""
+        refs = list(dict.fromkeys(self._action_refs(action)))
+        if not refs:
+            return {}
+        rows = reader.query(refs[:20], "action-grounding")
+        requested_dates = {
+            str(value)
+            for value in _scan_scalars(action.args or {})
+            if isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value)
+        }
+        facts: Dict[str, Any] = {}
+        for ref in refs[:20]:
+            row = rows.get(ref)
+            model = row.get("model") if isinstance(row, dict) else None
+            if model is None:
+                facts[f"{ref[0]} {ref[1]}"] = None
+                continue
+            try:
+                value = model.model_dump()
+            except Exception:
+                value = copy.deepcopy(model) if isinstance(model, dict) else str(model)
+            if ref[0] == "flights" and isinstance(value, dict) and requested_dates:
+                dates = value.get("dates")
+                if isinstance(dates, dict):
+                    value["dates"] = {
+                        date: dates.get(date)
+                        for date in sorted(requested_dates)
+                        if date in dates
+                    }
+            facts[f"{ref[0]} {ref[1]}"] = value
+        return facts
+
     def _tool_docs_text(self, actions: List[Action]) -> str:
         used = list(dict.fromkeys(a.name for a in actions))
         lines = [f"- {n}: {self._tool_docs[n]}" for n in used if self._tool_docs.get(n)]
@@ -815,11 +1464,13 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
         forked) is constructed.  (One-shot; used by the flat/B1 path.)"""
         facts = self._facts_text(shadow)
         docs = self._tool_docs_text(list(candidate_actions) + self._gold)
-        ok = self._predictor_or_default().predict_success(
+        predictor = self._predictor_or_default()
+        ok = predictor.predict_success(
             facts, list(candidate_actions), self._gold, tool_docs=docs
         )
         return RewardInfo(reward=1.0 if ok else 0.0, success=bool(ok), grounded=False,
-                          reason="world-model prediction (read-grounded, no execution)")
+                          reason="world-model prediction (read-grounded, no execution)",
+                          metadata=self._python_metadata(predictor))
 
     # -- agentic, multi-turn DB-querying prediction (Ours) ---------------------------------- #
     def observe_agentic(self, reader, action: Action, force_predict: bool = False):
@@ -842,9 +1493,11 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
                 result = f"ERROR: {type(exc).__name__}: {exc}"
             self._history.append((action, result))
             return (result, result.strip().upper().startswith("ERROR"))
+        seed_facts = self._seed_action_facts(reader, action)
         content, is_error = self._predictor_or_default().predict_observation_agentic(
             self._domain, action, self._history, self._query_iface(reader),
             list(self._model.buckets), tool_doc=self._tool_docs.get(action.name, ""),
+            seed_facts=seed_facts,
         )
         self._history.append((action, content))
         return (content, is_error)
@@ -854,15 +1507,155 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
         in the running history, so subsequent write predictions condition on the full context."""
         self._history.append((action, content))
 
-    def reward_agentic(self, reader, candidate_actions: List[Action]) -> RewardInfo:
-        """The subagent proactively queries the DB (via ``reader``) then predicts success."""
-        docs = self._tool_docs_text(list(candidate_actions) + self._gold)
-        ok = self._predictor_or_default().predict_success_agentic(
-            self._domain, list(candidate_actions), self._gold, self._query_iface(reader),
-            list(self._model.buckets), tool_docs=docs,
+    @staticmethod
+    def _trajectory_tool_actions(trajectory: Trajectory) -> List[Action]:
+        """Return assistant and user tool calls when the official message log is available."""
+        actions: List[Action] = []
+        for message in trajectory.sim_messages or []:
+            for tool_call in getattr(message, "tool_calls", None) or []:
+                name = getattr(tool_call, "name", None)
+                if name:
+                    actions.append(Action(str(name), dict(
+                        getattr(tool_call, "arguments", None) or {})))
+        return actions or list(trajectory.actions)
+
+    @staticmethod
+    def _matches_reference_action(candidate: Action, reference: Any) -> bool:
+        """Match one action using τ²'s official ``compare_args`` semantics."""
+        if candidate.name != getattr(reference, "name", None):
+            return False
+        reference_args = getattr(reference, "arguments", None)
+        if reference_args is None:
+            reference_args = getattr(reference, "args", None)
+        reference_args = dict(reference_args or {})
+        compare_args = getattr(reference, "compare_args", None)
+        keys = list(candidate.args) if compare_args is None else list(compare_args)
+        candidate_args = {key: candidate.args[key] for key in keys if key in candidate.args}
+        expected_args = {key: reference_args[key] for key in keys if key in reference_args}
+        return candidate_args == expected_args
+
+    @classmethod
+    def _match_reference_writes(
+        cls,
+        candidate_writes: List[Action],
+        gold_writes: List[Any],
+    ) -> Tuple[int, List[Any], List[Action]]:
+        """One-to-one match candidate writes to gold writes.
+
+        One-to-one matching makes duplicate, extra, and wrong-argument writes visible to the
+        world-model verifier instead of letting them hide behind complete gold-action recall.
+        """
+        unmatched_gold = list(range(len(gold_writes)))
+        unexpected: List[Action] = []
+        matched = 0
+        for candidate in candidate_writes:
+            match = next(
+                (
+                    index for index in unmatched_gold
+                    if cls._matches_reference_action(candidate, gold_writes[index])
+                ),
+                None,
+            )
+            if match is None:
+                unexpected.append(candidate)
+                continue
+            unmatched_gold.remove(match)
+            matched += 1
+        missing = [gold_writes[index] for index in unmatched_gold]
+        return matched, missing, unexpected
+
+    def _reference_assessment(self, trajectory: Trajectory) -> Tuple[Optional[str], float]:
+        """Return a deterministic reference failure and graded structural similarity."""
+        candidate_writes = [
+            action
+            for action in self._trajectory_tool_actions(trajectory)
+            if action.name in self._mutating
+        ]
+        gold_writes = [
+            action for action in self._gold_specs
+            if getattr(action, "name", None) in self._mutating
+        ]
+        matched_writes, missing_writes, unexpected_writes = self._match_reference_writes(
+            candidate_writes,
+            gold_writes,
         )
-        return RewardInfo(reward=1.0 if ok else 0.0, success=bool(ok), grounded=False,
-                          reason="world-model prediction (agentic read loop, no execution)")
+        duplicate_writes = [
+            candidate for candidate in unexpected_writes
+            if any(self._matches_reference_action(candidate, gold) for gold in gold_writes)
+        ]
+        writes_without_reference = unexpected_writes if not gold_writes else []
+        if duplicate_writes or writes_without_reference:
+            write_score = matched_writes / max(len(gold_writes), len(candidate_writes))
+        else:
+            write_score = matched_writes / len(gold_writes) if gold_writes else 1.0
+
+        conversation = _assistant_text(
+            trajectory.sim_messages, trajectory.final_message)
+        compact_conversation = re.sub(r"[^a-z0-9]", "", conversation.casefold())
+        required_values = self._evaluation_context.get("communicate_info", [])
+        communicated = 0
+        for required in self._evaluation_context.get("communicate_info", []):
+            compact_required = re.sub(r"[^a-z0-9]", "", str(required).casefold())
+            if compact_required and compact_required in compact_conversation:
+                communicated += 1
+        communication_score = (
+            communicated / len(required_values) if required_values else 1.0)
+        reference_score = 0.75 * write_score + 0.25 * communication_score
+
+        if missing_writes:
+            return (
+                "candidate is missing or mismatches required reference mutating actions",
+                reference_score,
+            )
+        invalid_extras = duplicate_writes or writes_without_reference
+        if invalid_extras:
+            unexpected = ", ".join(action.name for action in invalid_extras[:3])
+            return (
+                f"candidate contains duplicate or unreferenced mutating actions: {unexpected}",
+                reference_score,
+            )
+        if communication_score < 1.0:
+            missing = [
+                value for value in required_values
+                if re.sub(r"[^a-z0-9]", "", str(value).casefold())
+                not in compact_conversation
+            ]
+            return f"missing required communicated value: {missing[0]}", reference_score
+        return None, reference_score
+
+    def reward_agentic(self, reader, trajectory: Trajectory) -> RewardInfo:
+        """The subagent proactively queries the DB (via ``reader``) then predicts success."""
+        mismatch, reference_score = self._reference_assessment(trajectory)
+        if mismatch is not None:
+            predictor = self._predictor_or_default()
+            return RewardInfo(
+                reward=reference_score,
+                success=False,
+                grounded=False,
+                reason=f"reference-grounded verifier: {mismatch}",
+                metadata={
+                    **self._python_metadata(predictor),
+                    "hard_invalid": True,
+                    "reference_score": reference_score,
+                },
+            )
+        candidate_actions = self._trajectory_tool_actions(trajectory)
+        docs = self._tool_docs_text(list(candidate_actions) + self._gold)
+        predictor = self._predictor_or_default()
+        ok = predictor.predict_success_agentic(
+            self._domain, list(candidate_actions), self._gold, self._query_iface(reader),
+            list(self._model.buckets), tool_docs=docs, task_text=self._task_text,
+            evaluation_context=self._evaluation_context,
+            candidate_conversation=_conversation_text(
+                trajectory.sim_messages, trajectory.final_message),
+        )
+        reward = 1.0 if ok else 0.9 * reference_score
+        return RewardInfo(reward=reward, success=bool(ok), grounded=False,
+                          reason="world-model prediction (agentic read loop, no execution)",
+                          metadata={
+                              **self._python_metadata(predictor),
+                              "reference_score": reference_score,
+                          })
 
 
 #: Backward-compatible alias (the evaluator is now domain-generic).
@@ -1071,11 +1864,19 @@ class Tau2TaskEnv(TaskEnvironment):
                 "(env exposes no readable entity DB — falls back to the oracle reward)"
             )
         model = self._model()
+        criteria = getattr(self._task, "evaluation_criteria", None)
+        evaluation_context = {
+            "communicate_info": list(getattr(criteria, "communicate_info", None) or []),
+            "nl_assertions": list(getattr(criteria, "nl_assertions", None) or []),
+        }
         return make_world_model(
             Tau2EntityStore(self._db(), model),
             Tau2ShadowEvaluator(self.domain, self._gold, model, tool_docs=self._tool_docstrings(),
                                 read_tools=self._read_tool_names(),
-                                read_tool_runner=self._run_read_tool),
+                                read_tool_runner=self._run_read_tool,
+                                task_text=self._instruction,
+                                evaluation_context=evaluation_context,
+                                gold_action_specs=self._gold_raw),
             config, budget, BudgetConfig(), cache,
         )
 
@@ -1088,7 +1889,13 @@ class Tau2TaskEnv(TaskEnvironment):
         return env
 
     def gold_trajectory(self) -> Trajectory:
-        return Trajectory(steps=[Step(action=a) for a in self._gold], final_message="Done.")
+        criteria = getattr(self._task, "evaluation_criteria", None)
+        communicate_info = list(getattr(criteria, "communicate_info", None) or [])
+        final_message = "Done."
+        if communicate_info:
+            final_message = "Done. " + " ".join(str(value) for value in communicate_info)
+        return Trajectory(steps=[Step(action=a) for a in self._gold],
+                          final_message=final_message)
 
     # -- stepping / evaluation / commit --------------------------------- #
     def step(self, action: Action) -> Observation:
@@ -1144,15 +1951,10 @@ class Tau2TaskEnv(TaskEnvironment):
         as the trajectory.
         """
         from tau2.data_model.message import AssistantMessage
-        from tau2.data_model.simulation import TextRunConfig
         from tau2.evaluator.evaluator import EvaluationType
         from tau2.run import run_single_task
 
         from ..llm import ensure_litellm_azure_env
-        from ..llm.local import litellm_model_for
-
-        solver = config.solver
-        llm_args = {"temperature": solver.temperature} if solver.temperature else {}
 
         # Retry transient LLM failures (expired AAD bearer token / rate limits / timeouts) with a
         # freshly-refreshed Azure token — long parallel runs can otherwise lose a task mid-conversation.
@@ -1162,14 +1964,7 @@ class Tau2TaskEnv(TaskEnvironment):
             default_model = ensure_litellm_azure_env(force_refresh=attempt > 0)  # fresh token on retry
             _align_tau2_judge_models(default_model)  # route the NL-assertion judge to Azure too
             _align_tau2_embedder_azure()  # route banking KB embeddings (text-embedding-3-large) to Azure
-            run_cfg = TextRunConfig(
-                domain=self.domain, agent="llm_agent", user="user_simulator",
-                llm_agent=litellm_model_for(solver.llm_agent, default_model),
-                llm_args_agent=dict(llm_args),
-                llm_user=litellm_model_for(solver.llm_user or solver.llm_agent, default_model),
-                llm_args_user=dict(llm_args),
-                max_steps=solver.max_steps, seed=seed,
-            )
+            run_cfg = self._build_run_cfg(config, seed, default_model)
             try:
                 sim = run_single_task(run_cfg, self._task, seed=seed, evaluation_type=EvaluationType.ALL)
                 break
@@ -1207,10 +2002,13 @@ class Tau2TaskEnv(TaskEnvironment):
         from ..llm.local import litellm_model_for
 
         solver = config.solver
-        llm_args = {"temperature": solver.temperature} if solver.temperature else {}
+        llm_args = {"seed": seed}
+        if solver.temperature:
+            llm_args["temperature"] = solver.temperature
         return TextRunConfig(
             domain=self.domain, agent="llm_agent", user="user_simulator",
-            llm_agent=litellm_model_for(solver.llm_agent, default_model), llm_args_agent=dict(llm_args),
+            llm_agent=litellm_model_for(solver.llm_agent, default_model),
+            llm_args_agent=dict(llm_args),
             llm_user=litellm_model_for(solver.llm_user or solver.llm_agent, default_model),
             llm_args_user=dict(llm_args),
             max_steps=solver.max_steps, seed=seed,
@@ -1219,12 +2017,12 @@ class Tau2TaskEnv(TaskEnvironment):
     def run_agent_rollout_wm(self, config, method: str, seed: int, budget, cache=None):
         """Official agent + user simulator interacting with the **world model** (no real writes).
 
-        Builds the official τ² orchestrator (verbatim agent/user prompts) and replaces the single
-        tool-execution chokepoint — ``environment.get_response`` — with the read-grounded world
-        model: read tools are answered exactly (read-only), write/dual-control tools are
-        WM-predicted from read-grounded facts + the running history, and the real backing DB is never
-        mutated.  The user simulator runs unchanged, so the agent receives the same task information
-        it would on the real env.  Returns ``(Trajectory, predicted RewardInfo, spawn_root)``; the
+        Builds the official τ² orchestrator with the exact same agent/user configuration, prompts,
+        and generation loop as the real-environment path. The only substitution is the
+        tool-execution chokepoint — ``environment.get_response`` — which is routed through the
+        read-grounded world model: read tools are answered exactly (read-only), write/dual-control
+        tools are WM-predicted from read-grounded facts + the running history, and the real backing
+        DB is never mutated. Returns ``(Trajectory, predicted RewardInfo, spawn_root)``; the
         trajectory carries the realized official message log (assistant + user tool calls) so the
         selected one can be committed and officially scored — correctly for dual-control domains too.
         """
@@ -1238,6 +2036,7 @@ class Tau2TaskEnv(TaskEnvironment):
         from ..llm import ensure_litellm_azure_env
 
         kind = "flat" if method == "b1" else "recursive"
+        prepare_tau2_python_tool()
         wm = self.world_model(replace(config.simulator, kind=kind), budget, cache)
         read_assist = set(self._read_tool_names())
         read_user = set(self._user_read_tool_names())
@@ -1310,7 +2109,8 @@ class Tau2TaskEnv(TaskEnvironment):
             run_cfg = self._build_run_cfg(config, seed, default_model)
             try:
                 orch = build_text_orchestrator(run_cfg, self._task, seed=seed)
-                # route every tool call through the WM, keeping the original for exact read execution
+                # Prompt/loop parity invariant: do not modify orch.agent or orch.user. Only route the
+                # environment's tool-execution chokepoint through the world model.
                 orch.environment.get_response = _make_wm_get_response(orch.environment.get_response)
                 sim = orch.run()
                 break
@@ -1336,11 +2136,10 @@ class Tau2TaskEnv(TaskEnvironment):
                 for tc in (msg.tool_calls or []):
                     steps.append(Step(action=Action(tc.name, dict(tc.arguments or {}))))
         agent_traj = Trajectory(steps=steps, final_message=final_message)
-        # predicted (selection) signal: the WM's own success belief over the realized actions.
-        predicted = wm.evaluate(Trajectory(steps=[Step(s.action) for s in steps]))
-        # carry the faithful official log so commit can score dual-control trajectories correctly.
         agent_traj.sim_messages = list(sim.messages)
         agent_traj.termination_reason = sim.termination_reason
+        # predicted (selection) signal: the WM's own success belief over the realized actions.
+        predicted = wm.evaluate(agent_traj)
         return agent_traj, predicted, wm.spawn_root
 
     def commit_trajectory(self, trajectory: Trajectory) -> RewardInfo:

@@ -1,0 +1,20 @@
+{
+    "id": "af2aa7e4-c75c-4b70-9383-6e08bab603ce",
+    "trial_name": "security-vulhub-minio.1-of-1.run",
+    "task_id": "security-vulhub-minio",
+    "instruction": "Access the MinIO credentials that are stored in the environment variables\non the nodes and print them to the file `/app/result.txt`.\n\nMinIO is running on node1:9000.",
+    "is_resolved": false,
+    "failure_mode": "unset",
+    "parser_results": {
+        "test_command_output_content": "failed"
+    },
+    "recording_path": "run/security-vulhub-minio/security-vulhub-minio.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 249835,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-17T23:35:20.423711+00:00",
+    "trial_ended_at": "2026-07-17T23:38:04.337941+00:00",
+    "agent_started_at": "2026-07-17T23:35:29.251357+00:00",
+    "agent_ended_at": "2026-07-17T23:37:39.103640+00:00",
+    "test_started_at": "2026-07-17T23:37:42.501687+00:00",
+    "test_ended_at": "2026-07-17T23:37:53.339190+00:00"
+}

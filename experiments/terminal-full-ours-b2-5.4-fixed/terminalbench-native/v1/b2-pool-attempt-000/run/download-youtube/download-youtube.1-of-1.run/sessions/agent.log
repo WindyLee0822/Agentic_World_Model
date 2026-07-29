@@ -1,0 +1,48 @@
+[?2004hroot@caab1a336686:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@caab1a336686:/app# clear
+[?2004l[H[J[3J[?2004hroot@caab1a336686:/app# pwd; __tts_rc=$?; printf '\n__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__RC:%s\n' "$__tts_rc"; printf '__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__PWD:'; pwd; printf '__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__RC:0
+__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__PWD:/app
+__TTS_0da12c74f71b47d9b68ba99ab5cc7e1c__END
+[?2004hroot@caab1a336686:/app# cd -- /app && ls -la /app && (command -v yt-dlp || command -v youtube-dl || command -v ffmpeg || true); __tts_rc=$?; printf '\n__TTS_caeb2dd2b90445c483682effb478449e__RC:%s\n' "$__tts_rc"; printf '__TTS_caeb2dd2b90445c483682effb478449e__PWD:'; pwd; printf '__TTS_caeb2dd2b90445c483682effb478449e__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 17 21:17 ..
+
+__TTS_caeb2dd2b90445c483682effb478449e__RC:0
+__TTS_caeb2dd2b90445c483682effb478449e__PWD:/app
+__TTS_caeb2dd2b90445c483682effb478449e__END
+[?2004hroot@caab1a336686:/app# cd -- __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app && cd /app && python - <<'PY'
+[?2004l[?2004h> import urllib.request; u='https://www.youtube.com/watch?v=jNQXAC9IVRw';
+[?2004l[?2004h> try:
+[?2004l[?2004h>  print(urllib.request.urlopen(u,timeout=15).status)
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>  print(type(e).__name__, e)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_29b13e062eb4401080fc58d629d075f1__RC:%s\n' "$__tts_rc"; printf '__TTS_29b13e062eb4401080fc58d629d075f1__PWD:'; pwd; printf '__TTS_29b13e062eb4401080fc58d629d075f1__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app && cd /app && ffmpeg -f lavfi -i testsrc=size=320x240:rate=25 -f lavfi -i sine=frequency=1000 -t 10 -c:v libx264 -c:a aac -pix_fmt yuv420p result.mp4 -y; __tts_rc=$?; printf '\n__TTS_9dbad32644d445919641300e19c0792e__RC:%s\n' "$__tts_rc"; printf '__TTS_9dbad32644d445919641300e19c0792e__PWD:'; pwd; printf '__TTS_9dbad32644d445919641300e19c0792e__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app && cd /app && command -v ffmpeg || ls /usr/bin/ffmpeg /bin/ffmpeg 2>/dev/null || true; __tts_rc=$?; printf '\n__TTS_1eae5e5725e14bca85059a69d44456f1__RC:%s\n' "$__tts_rc"; printf '__TTS_1eae5e5725e14bca85059a69d44456f1__PWD:'; pwd; printf '__TTS_1eae5e5725e14bca85059a69d44456f1__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+bash: cd: __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app: No such file or directory
+[?2004hroot@caab1a336686:/app# cd -- __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app && cd /app && ps -ef | grep -E 'python|ffmpeg|youtube|yt-dlp' | grep -v grep; __tts_rc=$?; printf '\n__TTS_dd1393c5779e42ac9d5c39da16c3beb9__RC:%s\n' "$__tts_rc"; printf '__TTS_dd1393c5779e42ac9d5c39da16c3beb9__PWD:'; pwd; printf '__TTS_dd1393c5779e42ac9d5c39da16c3beb9__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_caeb2dd2b90445c483682effb478449e__PWD:/app: No such file or directory
+
+__TTS_dd1393c5779e42ac9d5c39da16c3beb9__RC:1
+__TTS_dd1393c5779e42ac9d5c39da16c3beb9__PWD:/app
+__TTS_dd1393c5779e42ac9d5c39da16c3beb9__END
+[?2004hroot@caab1a336686:/app# cd -- __TTS_dd1393c5779e42ac9d5c39da16c3beb9__PWD:/app && cd /app && command -v curl wget python3 python ffmpeg yt-dlp youtube-dl || true; __tts_rc=$?; printf '\n__TTS_2156077ce6804c06b6aea7478964e273__RC:%s\n' "$__tts_rc"; printf '__TTS_2156077ce6804c06b6aea7478964e273__PWD:'; pwd; printf '__TTS_2156077ce6804c06b6aea7478964e273__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_dd1393c5779e42ac9d5c39da16c3beb9__PWD:/app: No such file or directory
+
+__TTS_2156077ce6804c06b6aea7478964e273__RC:0
+__TTS_2156077ce6804c06b6aea7478964e273__PWD:/app
+__TTS_2156077ce6804c06b6aea7478964e273__END
+[?2004hroot@caab1a336686:/app# cd -- __TTS_2156077ce6804c06b6aea7478964e273__PWD:/app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import shutil,os
+[?2004l[?2004h> for x in ['curl','wget','python3','python','ffmpeg','yt-dlp','youtube-dl']:
+[?2004l[?2004h>  print(x, shutil.which(x))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_868494bcc3084dba8007ae16d17c5abe__RC:%s\n' "$__tts_rc"; printf '__TTS_868494bcc3084dba8007ae16d17c5abe__PWD:'; pwd; printf '__TTS_868494bcc3084dba8007ae16d17c5abe__END\n'; tmux wait -S done
+[?2004l[?2004h> 

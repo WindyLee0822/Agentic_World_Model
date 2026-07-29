@@ -1,0 +1,272 @@
+Trial adaptive-rejection-sampler__KWfqKXK failed: Environment start timed out after 600.0 seconds
+Trial multi-source-data-merger__PPd6a37 failed: Environment start timed out after 600.0 seconds
+Trial custom-memory-heap-crash__xGxdpaQ failed: Environment start timed out after 600.0 seconds
+Trial pypi-server__YWGrLdL failed: Environment start timed out after 600.0 seconds
+Trial write-compressor__ADKQ7rc failed: Environment start timed out after 600.0 seconds
+Trial merge-diff-arc-agi-task__Ho8jtE8 failed: Environment start timed out after 600.0 seconds
+Trial winning-avg-corewars__WGp73EH failed: Environment start timed out after 600.0 seconds
+Trial log-summary-date-ranges__QwdMprK failed: Environment start timed out after 600.0 seconds
+Trial pytorch-model-cli__DnNQKH4 failed: Environment start timed out after 600.0 seconds
+Trial largest-eigenval__Dhpxt68 failed: Environment start timed out after 600.0 seconds
+Trial portfolio-optimization__usNsbcm failed: Environment start timed out after 600.0 seconds
+Trial path-tracing-reverse__reHFYF7 failed: Environment start timed out after 600.0 seconds
+Trial torch-tensor-parallelism__EFGwMvy failed: Environment start timed out after 600.0 seconds
+Trial path-tracing__ZD2kHzD failed: Environment start timed out after 600.0 seconds
+Trial prove-plus-comm__xcssfvu failed: Environment start timed out after 600.0 seconds
+Trial feal-linear-cryptanalysis__Hdmtmdr failed: Environment start timed out after 600.0 seconds
+Trial mteb-retrieve__Fm2cWcs failed: Environment start timed out after 600.0 seconds
+Trial caffe-cifar-10__mST28hh failed: Environment start timed out after 600.0 seconds
+Trial distribution-search__NZufACu failed: Environment start timed out after 600.0 seconds
+Trial chess-best-move__FgEmLAP failed: Environment start timed out after 600.0 seconds
+Trial configure-git-webserver__qBqgbMh failed: Environment start timed out after 600.0 seconds
+Trial crack-7z-hash__PAJwTL5 failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial polyglot-rust-c__LM8aiQy failed: Environment start timed out after 600.0 seconds
+Trial hf-model-inference__vtwSBMq failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Trial db-wal-recovery__Cgz42Ft failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial cobol-modernization__ufV2ZsR failed: Environment start timed out after 600.0 seconds
+Trial overfull-hbox__ECmyTPm failed: Environment start timed out after 600.0 seconds
+Trial compile-compcert__dYkJtcK failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial regex-chess__fwnxSVY failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Trial train-fasttext__F7U6mje failed: Docker compose command failed for environment train-fasttext. Command: docker compose --project-name train-fasttext__f7u6mje__env --project-directory /home/t-wendili/.cache/harbor/tasks/QUdXqzZFwRrgRZ7SPHyxto/train-fasttext/environment -f /tmp/tmpttb_o3z2/train-fasttext__F7U6mje__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpgmf3dn_1/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network train-fasttext__f7u6mje__env_default Creating 
+ Network train-fasttext__f7u6mje__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network train-fasttext__f7u6mje__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial schemelike-metacircular-eval__eaK883Z failed: Environment start timed out after 600.0 seconds
+Trial qemu-startup__LWeAdbP failed: Environment start timed out after 600.0 seconds
+Trial fix-git__2KpE9f4 failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Trial video-processing__tUeZR9F failed: Docker compose command failed for environment video-processing. Command: docker compose --project-name video-processing__tuezr9f__env --project-directory /home/t-wendili/.cache/harbor/tasks/QU8iD2bMsFXumTCQhnBiGz/video-processing/environment -f /tmp/tmpblwogb2_/video-processing__tUeZR9F__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpulw4i1b1/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network video-processing__tuezr9f__env_default Creating 
+ Network video-processing__tuezr9f__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network video-processing__tuezr9f__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial qemu-alpine-ssh__n6jSbPP failed: Docker compose command failed for environment qemu-alpine-ssh. Command: docker compose --project-name qemu-alpine-ssh__n6jsbpp__env --project-directory /home/t-wendili/.cache/harbor/tasks/YiQMoSRPZzKeHRDhZkwmyd/qemu-alpine-ssh/environment -f /tmp/tmp4ncgmzst/qemu-alpine-ssh__n6jSbPP__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp12lbs8jn/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network qemu-alpine-ssh__n6jsbpp__env_default Creating 
+ Network qemu-alpine-ssh__n6jsbpp__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network qemu-alpine-ssh__n6jsbpp__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Trial git-multibranch__b5NaE9b failed: Environment start timed out after 600.0 seconds
+Trial install-windows-3.11__okAC4P7 failed: Environment start timed out after 600.0 seconds
+Trial kv-store-grpc__GKHpFLe failed: Environment start timed out after 600.0 seconds
+Trial make-doom-for-mips__e5YnggD failed: Environment start timed out after 600.0 seconds
+Trial extract-moves-from-video__RZ8CSVF failed: Environment start timed out after 600.0 seconds
+Trial torch-pipeline-parallelism__LrEku9a failed: Environment start timed out after 600.0 seconds
+Trial tune-mjcf__iW2GJBA failed: Environment start timed out after 600.0 seconds
+Trial raman-fitting__p3eGapx failed: Environment start timed out after 600.0 seconds
+Trial query-optimize__7YtumVP failed: Environment start timed out after 600.0 seconds
+Trial gcode-to-text__nE9utDv failed: Environment start timed out after 600.0 seconds
+Trial mailman__MerCRye failed: Environment start timed out after 600.0 seconds
+Trial count-dataset-tokens__Zm2zWrs failed: Environment start timed out after 600.0 seconds
+Trial circuit-fibsqrt__UveogJs failed: Environment start timed out after 600.0 seconds
+Trial make-mips-interpreter__DgsoKki failed: Environment start timed out after 600.0 seconds
+Trial mteb-leaderboard__8gMR75m failed: Environment start timed out after 600.0 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Trial headless-terminal__kGBs8p7 failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Trial reshard-c4-data__TU8CqJF failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Trial fix-ocaml-gc__sVueqYc failed: Environment start timed out after 600.0 seconds
+Trial build-cython-ext__MTvcVBz failed: Environment start timed out after 600.0 seconds
+Trial git-leak-recovery__xKVKrMv failed: Environment start timed out after 600.0 seconds
+Trial bn-fit-modify__2hhS9nj failed: Environment start timed out after 600.0 seconds
+Trial pytorch-model-recovery__NxREZdG failed: Environment start timed out after 600.0 seconds
+Trial sam-cell-seg__2JVzc5b failed: Environment start timed out after 600.0 seconds
+Trial sparql-university__nb7QtvR failed: Environment start timed out after 600.0 seconds
+Trial sqlite-db-truncate__FJf7yQn failed: Environment start timed out after 600.0 seconds
+Trial sanitize-git-repo__3C9HmqJ failed: Environment start timed out after 600.0 seconds
+Trial nginx-request-logging__Pz5usKX failed: Environment start timed out after 600.0 seconds
+Trial large-scale-text-editing__9MsoSwQ failed: Environment start timed out after 600.0 seconds
+Trial model-extraction-relu-logits__nc3dtp8 failed: Environment start timed out after 600.0 seconds
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Trial extract-elf__3r7rAZa failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Trial fix-code-vulnerability__tfnqVzC failed: Command timed out after 300 seconds
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Trial rstan-to-pystan__mkysMfS failed: Environment start timed out after 600.0 seconds
+Trial sqlite-with-gcov__xBEp5Uo failed: Environment start timed out after 600.0 seconds
+Trial openssl-selfsigned-cert__oJnHCFm failed: Environment start timed out after 600.0 seconds
+Trial constraints-scheduling__FWS6YQq failed: Environment start timed out after 600.0 seconds
+Trial dna-insert__Bufiy6m failed: Environment start timed out after 600.0 seconds
+Trial vulnerable-secret__dMxoQ2i failed: Environment start timed out after 600.0 seconds
+Trial dna-assembly__9QtDXS4 failed: Environment start timed out after 600.0 seconds
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Collecting main service artifacts
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Not retrying trial because the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached

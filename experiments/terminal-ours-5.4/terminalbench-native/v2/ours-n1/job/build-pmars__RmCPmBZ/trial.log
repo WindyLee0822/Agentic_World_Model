@@ -1,0 +1,5 @@
+Trial build-pmars__RmCPmBZ failed: Docker compose command failed for environment build-pmars. Command: docker compose --project-name build-pmars__rmcpmbz__env --project-directory /home/t-wendili/.cache/harbor/tasks/TXGXVihdFyGLhhWJdjKoXE/build-pmars/environment -f /tmp/tmpgse7l4l2/build-pmars__RmCPmBZ__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp9y__f9l6/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network build-pmars__rmcpmbz__env_default Creating 
+ Network build-pmars__rmcpmbz__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network build-pmars__rmcpmbz__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

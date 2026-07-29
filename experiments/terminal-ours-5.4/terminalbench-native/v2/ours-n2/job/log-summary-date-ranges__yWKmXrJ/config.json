@@ -1,0 +1,15 @@
+{
+    "task": {
+        "path": "log-summary-date-ranges",
+        "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+        "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c",
+        "source": "terminal-bench"
+    },
+    "trial_name": "log-summary-date-ranges__yWKmXrJ",
+    "trials_dir": "/home/t-wendili/dw/experiments/terminal-ours-5.4/terminalbench-native/v2/ours-n2/job",
+    "agent": {
+        "name": "tts.env.terminalbench_harbor:HarborTerminalBenchAgent",
+        "model_name": "gpt-5.4"
+    },
+    "job_id": "5bc38b1e-6661-4373-b6ee-eb7f9a4f5242"
+}

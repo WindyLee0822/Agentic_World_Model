@@ -1,0 +1,353 @@
+root@bb998809ce64:/app# pwd; __tts_rc=$?; printf '\n__TTS_4c5ca688b5764a3a8c809a74f653d1f4__RC:%s\n' "$__tts_rc"; printf '__TTS_4c5ca688b5764a3a8c809a74f653d1f4
+__PWD:'; pwd; printf '__TTS_4c5ca688b5764a3a8c809a74f653d1f4__END\n'; tmux wait -S done
+/app
+
+__TTS_4c5ca688b5764a3a8c809a74f653d1f4__RC:0
+__TTS_4c5ca688b5764a3a8c809a74f653d1f4__PWD:/app
+__TTS_4c5ca688b5764a3a8c809a74f653d1f4__END
+root@bb998809ce64:/app# cd -- /app && find /app -maxdepth 3 -type f | sed 's#^/app/##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_65027ccd44524ccab226452a
+ce0f8962__RC:%s\n' "$__tts_rc"; printf '__TTS_65027ccd44524ccab226452ace0f8962__PWD:'; pwd; printf '__TTS_65027ccd44524ccab226452ace0f8962__END\n'; tmux wait -S
+ done
+linux-6.9.tar.xz
+linux-6.9/..checked-atomic-arch-fallback.h.cmd
+linux-6.9/..checked-atomic-instrumented.h.cmd
+linux-6.9/..checked-atomic-long.h.cmd
+linux-6.9/..vmlinux.export.o.cmd
+linux-6.9/.Module.symvers.cmd
+linux-6.9/.built-in.a.cmd
+linux-6.9/.checked-atomic-arch-fallback.h
+linux-6.9/.checked-atomic-instrumented.h
+linux-6.9/.checked-atomic-long.h
+linux-6.9/.clang-format
+linux-6.9/.cocciconfig
+linux-6.9/.config
+linux-6.9/.editorconfig
+linux-6.9/.get_maintainer.ignore
+linux-6.9/.gitattributes
+linux-6.9/.gitignore
+linux-6.9/.mailmap
+linux-6.9/.missing-syscalls.d
+linux-6.9/.modules.builtin.cmd
+linux-6.9/.modules.builtin.modinfo.cmd
+linux-6.9/.modules.order.cmd
+linux-6.9/.rustfmt.toml
+linux-6.9/.tmp_vmlinux.kallsyms1
+linux-6.9/.tmp_vmlinux.kallsyms1.S
+linux-6.9/.tmp_vmlinux.kallsyms1.o
+linux-6.9/.tmp_vmlinux.kallsyms1.syms
+linux-6.9/.tmp_vmlinux.kallsyms2
+linux-6.9/.tmp_vmlinux.kallsyms2.S
+linux-6.9/.tmp_vmlinux.kallsyms2.o
+linux-6.9/.tmp_vmlinux.kallsyms2.syms
+linux-6.9/.version
+linux-6.9/.vmlinux.a.cmd
+linux-6.9/.vmlinux.cmd
+linux-6.9/.vmlinux.export.c
+linux-6.9/.vmlinux.export.o
+linux-6.9/.vmlinux.o.cmd
+linux-6.9/COPYING
+linux-6.9/CREDITS
+linux-6.9/Documentation/.gitignore
+linux-6.9/Documentation/CodingStyle
+linux-6.9/Documentation/Kconfig
+linux-6.9/Documentation/Makefile
+linux-6.9/Documentation/SubmittingPatches
+linux-6.9/Documentation/atomic_bitops.txt
+linux-6.9/Documentation/atomic_t.txt
+linux-6.9/Documentation/conf.py
+linux-6.9/Documentation/docutils.conf
+linux-6.9/Documentation/dontdiff
+linux-6.9/Documentation/index.rst
+linux-6.9/Documentation/memory-barriers.txt
+linux-6.9/Documentation/subsystem-apis.rst
+linux-6.9/Kbuild
+linux-6.9/Kconfig
+linux-6.9/MAINTAINERS
+linux-6.9/Makefile
+linux-6.9/Module.symvers
+linux-6.9/README
+linux-6.9/System.map
+linux-6.9/arch/.gitignore
+linux-6.9/arch/Kconfig
+linux-6.9/block/.badblocks.o.cmd
+linux-6.9/block/.bdev.o.cmd
+linux-6.9/block/.bio.o.cmd
+linux-6.9/block/.blk-cgroup.o.cmd
+linux-6.9/block/.blk-core.o.cmd
+linux-6.9/block/.blk-flush.o.cmd
+linux-6.9/block/.blk-ia-ranges.o.cmd
+linux-6.9/block/.blk-ioc.o.cmd
+linux-6.9/block/.blk-iocost.o.cmd
+linux-6.9/block/.blk-iolatency.o.cmd
+linux-6.9/block/.blk-ioprio.o.cmd
+linux-6.9/block/.blk-lib.o.cmd
+linux-6.9/block/.blk-map.o.cmd
+linux-6.9/block/.blk-merge.o.cmd
+linux-6.9/block/.blk-mq-cpumap.o.cmd
+linux-6.9/block/.blk-mq-debugfs.o.cmd
+linux-6.9/block/.blk-mq-pci.o.cmd
+linux-6.9/block/.blk-mq-sched.o.cmd
+linux-6.9/block/.blk-mq-sysfs.o.cmd
+linux-6.9/block/.blk-mq-tag.o.cmd
+linux-6.9/block/.blk-mq-virtio.o.cmd
+linux-6.9/block/.blk-mq.o.cmd
+linux-6.9/block/.blk-pm.o.cmd
+linux-6.9/block/.blk-rq-qos.o.cmd
+linux-6.9/block/.blk-settings.o.cmd
+linux-6.9/block/.blk-stat.o.cmd
+linux-6.9/block/.blk-sysfs.o.cmd
+linux-6.9/block/.blk-timeout.o.cmd
+linux-6.9/block/.bsg.o.cmd
+linux-6.9/block/.built-in.a.cmd
+linux-6.9/block/.disk-events.o.cmd
+linux-6.9/block/.early-lookup.o.cmd
+linux-6.9/block/.elevator.o.cmd
+linux-6.9/block/.fops.o.cmd
+linux-6.9/block/.genhd.o.cmd
+linux-6.9/block/.holder.o.cmd
+linux-6.9/block/.ioctl.o.cmd
+linux-6.9/block/.ioprio.o.cmd
+linux-6.9/block/.kyber-iosched.o.cmd
+linux-6.9/block/.modules.order.cmd
+linux-6.9/block/.mq-deadline.o.cmd
+linux-6.9/block/Kconfig
+linux-6.9/block/Kconfig.iosched
+linux-6.9/block/Makefile
+linux-6.9/block/badblocks.c
+linux-6.9/block/badblocks.o
+linux-6.9/block/bdev.c
+linux-6.9/block/bdev.o
+linux-6.9/block/bfq-cgroup.c
+linux-6.9/block/bfq-iosched.c
+linux-6.9/block/bfq-iosched.h
+linux-6.9/block/bfq-wf2q.c
+linux-6.9/block/bio-integrity.c
+linux-6.9/block/bio.c
+linux-6.9/block/bio.o
+linux-6.9/block/blk-cgroup-fc-appid.c
+linux-6.9/block/blk-cgroup-rwstat.c
+linux-6.9/block/blk-cgroup-rwstat.h
+linux-6.9/block/blk-cgroup.c
+linux-6.9/block/blk-cgroup.h
+linux-6.9/block/blk-cgroup.o
+linux-6.9/block/blk-core.c
+linux-6.9/block/blk-core.o
+linux-6.9/block/blk-crypto-fallback.c
+linux-6.9/block/blk-crypto-internal.h
+linux-6.9/block/blk-crypto-profile.c
+linux-6.9/block/blk-crypto-sysfs.c
+linux-6.9/block/blk-crypto.c
+linux-6.9/block/blk-flush.c
+linux-6.9/block/blk-flush.o
+linux-6.9/block/blk-ia-ranges.c
+linux-6.9/block/blk-ia-ranges.o
+linux-6.9/block/blk-integrity.c
+linux-6.9/block/blk-ioc.c
+linux-6.9/block/blk-ioc.o
+linux-6.9/block/blk-iocost.c
+linux-6.9/block/blk-iocost.o
+linux-6.9/block/blk-iolatency.c
+linux-6.9/block/blk-iolatency.o
+linux-6.9/block/blk-ioprio.c
+linux-6.9/block/blk-ioprio.h
+linux-6.9/block/blk-ioprio.o
+linux-6.9/block/blk-lib.c
+linux-6.9/block/blk-lib.o
+linux-6.9/block/blk-map.c
+linux-6.9/block/blk-map.o
+linux-6.9/block/blk-merge.c
+linux-6.9/block/blk-merge.o
+linux-6.9/block/blk-mq-cpumap.c
+linux-6.9/block/blk-mq-cpumap.o
+linux-6.9/block/blk-mq-debugfs-zoned.c
+linux-6.9/block/blk-mq-debugfs.c
+linux-6.9/block/blk-mq-debugfs.h
+linux-6.9/block/blk-mq-debugfs.o
+linux-6.9/block/blk-mq-pci.c
+linux-6.9/block/blk-mq-pci.o
+linux-6.9/block/blk-mq-sched.c
+linux-6.9/block/blk-mq-sched.h
+linux-6.9/block/blk-mq-sched.o
+linux-6.9/block/blk-mq-sysfs.c
+linux-6.9/block/blk-mq-sysfs.o
+linux-6.9/block/blk-mq-tag.c
+linux-6.9/block/blk-mq-tag.o
+linux-6.9/block/blk-mq-virtio.c
+linux-6.9/block/blk-mq-virtio.o
+linux-6.9/block/blk-mq.c
+linux-6.9/block/blk-mq.h
+linux-6.9/block/blk-mq.o
+linux-6.9/block/blk-pm.c
+linux-6.9/block/blk-pm.h
+linux-6.9/block/blk-pm.o
+linux-6.9/block/blk-rq-qos.c
+linux-6.9/block/blk-rq-qos.h
+linux-6.9/block/blk-rq-qos.o
+linux-6.9/block/blk-settings.c
+linux-6.9/block/blk-settings.o
+linux-6.9/block/blk-stat.c
+linux-6.9/block/blk-stat.h
+linux-6.9/block/blk-stat.o
+linux-6.9/block/blk-sysfs.c
+linux-6.9/block/blk-sysfs.o
+linux-6.9/block/blk-throttle.c
+linux-6.9/block/blk-throttle.h
+linux-6.9/block/blk-timeout.c
+linux-6.9/block/blk-timeout.o
+linux-6.9/block/blk-wbt.c
+linux-6.9/block/blk-wbt.h
+linux-6.9/block/blk-zoned.c
+linux-6.9/block/blk.h
+linux-6.9/block/bounce.c
+linux-6.9/block/bsg-lib.c
+linux-6.9/block/bsg.c
+linux-6.9/block/bsg.o
+linux-6.9/block/built-in.a
+linux-6.9/block/disk-events.c
+linux-6.9/block/disk-events.o
+linux-6.9/block/early-lookup.c
+linux-6.9/block/early-lookup.o
+linux-6.9/block/elevator.c
+
+__TTS_65027ccd44524ccab226452ace0f8962__RC:0
+__TTS_65027ccd44524ccab226452ace0f8962__PWD:/app
+__TTS_65027ccd44524ccab226452ace0f8962__END
+root@bb998809ce64:/app# cd -- /app && find /app -maxdepth 3 \( -iname 'tcc*' -o -iname 'tinycc*' -o -iname '*.iso' -o -path '/app/ramfs*' \) | sort | head -200;
+ __tts_rc=$?; printf '\n__TTS_f59bf122163d49be9b99234aebd9b8b3__RC:%s\n' "$__tts_rc"; printf '__TTS_f59bf122163d49be9b99234aebd9b8b3__PWD:'; pwd; printf '__TTS_
+f59bf122163d49be9b99234aebd9b8b3__END\n'; tmux wait -S done
+/app/ramfs
+/app/ramfs/basic-init
+/app/ramfs/busybox-x86_64
+/app/ramfs/initramfs.cpio.gz
+/app/ramfs/initramfs.list
+
+__TTS_f59bf122163d49be9b99234aebd9b8b3__RC:0
+__TTS_f59bf122163d49be9b99234aebd9b8b3__PWD:/app
+__TTS_f59bf122163d49be9b99234aebd9b8b3__END
+root@bb998809ce64:/app# cd -- __TTS_f59bf122163d49be9b99234aebd9b8b3__PWD:/app && cd /app && find /app -maxdepth 3 \( -name 'mkisofs' -o -name 'genisoimage' -o
+-name 'xorriso' -o -name 'gcc' -o -name 'clang' -o -name 'musl-gcc' -o -name 'wget' -o -name 'curl' -o -name 'git' \) -o -path /usr/bin/mkisofs -o -path /usr/bi
+n/genisoimage -o -path /usr/bin/xorriso -o -path /usr/bin/gcc -o -path /usr/bin/clang -o -path /usr/bin/musl-gcc -o -path /usr/bin/wget -o -path /usr/bin/curl -
+o -path /usr/bin/git 2>/dev/null | sort -u; __tts_rc=$?; printf '\n__TTS_1bbc9962634d4e89bcc77c62fb511bda__RC:%s\n' "$__tts_rc"; printf '__TTS_1bbc9962634d4e89b
+cc77c62fb511bda__PWD:'; pwd; printf '__TTS_1bbc9962634d4e89bcc77c62fb511bda__END\n'; tmux wait -S done
+bash: cd: __TTS_f59bf122163d49be9b99234aebd9b8b3__PWD:/app: No such file or directory
+
+__TTS_1bbc9962634d4e89bcc77c62fb511bda__RC:1
+__TTS_1bbc9962634d4e89bcc77c62fb511bda__PWD:/app
+__TTS_1bbc9962634d4e89bcc77c62fb511bda__END
+root@bb998809ce64:/app# cd -- /app && cd /app && command -v gcc clang musl-gcc wget curl git xorriso genisoimage mkisofs 2>/dev/null | sort -u; __tts_rc=$?; pri
+ntf '\n__TTS_0b54a11767db4c0a89f37d7d0dc19c69__RC:%s\n' "$__tts_rc"; printf '__TTS_0b54a11767db4c0a89f37d7d0dc19c69__PWD:'; pwd; printf '__TTS_0b54a11767db4c0a8
+9f37d7d0dc19c69__END\n'; tmux wait -S done
+/usr/bin/gcc
+/usr/bin/wget
+
+__TTS_0b54a11767db4c0a89f37d7d0dc19c69__RC:0
+__TTS_0b54a11767db4c0a89f37d7d0dc19c69__PWD:/app
+__TTS_0b54a11767db4c0a89f37d7d0dc19c69__END
+root@bb998809ce64:/app# cd -- __TTS_0b54a11767db4c0a89f37d7d0dc19c69__PWD:/app && cd /app && wget -qO- https://bellard.org/tcc/ | grep -o 'tcc-[0-9.]*\.tar\.bz2
+' | head -1; __tts_rc=$?; printf '\n__TTS_01e9f532cc3d45268fffd598d2965de1__RC:%s\n' "$__tts_rc"; printf '__TTS_01e9f532cc3d45268fffd598d2965de1__PWD:'; pwd; pr
+intf '__TTS_01e9f532cc3d45268fffd598d2965de1__END\n'; tmux wait -S done
+bash: cd: __TTS_0b54a11767db4c0a89f37d7d0dc19c69__PWD:/app: No such file or directory
+
+__TTS_01e9f532cc3d45268fffd598d2965de1__RC:1
+__TTS_01e9f532cc3d45268fffd598d2965de1__PWD:/app
+__TTS_01e9f532cc3d45268fffd598d2965de1__END
+root@bb998809ce64:/app# cd -- /app && cd /app && wget -qO- https://bellard.org/tcc/ | grep -o 'tcc-[0-9.]*\.tar\.bz2' | head -1; __tts_rc=$?; printf '\n__TTS_79
+fddf7c9ff64d759f3be0833601b1ae__RC:%s\n' "$__tts_rc"; printf '__TTS_79fddf7c9ff64d759f3be0833601b1ae__PWD:'; pwd; printf '__TTS_79fddf7c9ff64d759f3be0833601b1ae
+__END\n'; tmux wait -S done
+
+__TTS_79fddf7c9ff64d759f3be0833601b1ae__RC:0
+__TTS_79fddf7c9ff64d759f3be0833601b1ae__PWD:/app
+__TTS_79fddf7c9ff64d759f3be0833601b1ae__END
+root@bb998809ce64:/app# cd -- __TTS_79fddf7c9ff64d759f3be0833601b1ae__PWD:/app && cd /app && wget -qO- https://bellard.org/tcc/ | sed -n '1,120p'; __tts_rc=$?;
+printf '\n__TTS_18c879d3840140548c9acf46b75ab9eb__RC:%s\n' "$__tts_rc"; printf '__TTS_18c879d3840140548c9acf46b75ab9eb__PWD:'; pwd; printf '__TTS_18c879d3840140
+548c9acf46b75ab9eb__END\n'; tmux wait -S done
+bash: cd: __TTS_79fddf7c9ff64d759f3be0833601b1ae__PWD:/app: No such file or directory
+
+__TTS_18c879d3840140548c9acf46b75ab9eb__RC:1
+__TTS_18c879d3840140548c9acf46b75ab9eb__PWD:/app
+__TTS_18c879d3840140548c9acf46b75ab9eb__END
+root@bb998809ce64:/app# cd -- __TTS_18c879d3840140548c9acf46b75ab9eb__PWD:/app && cd /app && command -v bsdtar tar cpio gzip bzip2 xz iso9660 || true; __tts_rc=
+$?; printf '\n__TTS_75a6924a1ad2420bbe9fc998896ba2df__RC:%s\n' "$__tts_rc"; printf '__TTS_75a6924a1ad2420bbe9fc998896ba2df__PWD:'; pwd; printf '__TTS_75a6924a1a
+d2420bbe9fc998896ba2df__END\n'; tmux wait -S done
+bash: cd: __TTS_18c879d3840140548c9acf46b75ab9eb__PWD:/app: No such file or directory
+
+__TTS_75a6924a1ad2420bbe9fc998896ba2df__RC:0
+__TTS_75a6924a1ad2420bbe9fc998896ba2df__PWD:/app
+__TTS_75a6924a1ad2420bbe9fc998896ba2df__END
+root@bb998809ce64:/app# cd -- __TTS_75a6924a1ad2420bbe9fc998896ba2df__PWD:/app && cd /app && command -v tar cpio gzip bzip2 xz bsdtar mkisofs genisoimage xorris
+o dd losetup mount umount python3 perl sed awk; __tts_rc=$?; printf '\n__TTS_428b6d4a212a43e3857105213484c079__RC:%s\n' "$__tts_rc"; printf '__TTS_428b6d4a212a4
+3e3857105213484c079__PWD:'; pwd; printf '__TTS_428b6d4a212a43e3857105213484c079__END\n'; tmux wait -S done
+bash: cd: __TTS_75a6924a1ad2420bbe9fc998896ba2df__PWD:/app: No such file or directory
+
+__TTS_428b6d4a212a43e3857105213484c079__RC:1
+__TTS_428b6d4a212a43e3857105213484c079__PWD:/app
+__TTS_428b6d4a212a43e3857105213484c079__END
+root@bb998809ce64:/app# cd -- /app && cd /app && command -v tar cpio gzip bzip2 xz bsdtar mkisofs genisoimage xorriso dd losetup mount umount python3 perl sed a
+wk 2>/dev/null | sort -u; __tts_rc=$?; printf '\n__TTS_c7e748e0083b494181537db01bd57104__RC:%s\n' "$__tts_rc"; printf '__TTS_c7e748e0083b494181537db01bd57104__P
+WD:'; pwd; printf '__TTS_c7e748e0083b494181537db01bd57104__END\n'; tmux wait -S done
+/usr/bin/awk
+/usr/bin/bzip2
+/usr/bin/cpio
+/usr/bin/dd
+/usr/bin/gzip
+/usr/bin/mount
+/usr/bin/perl
+/usr/bin/python3
+/usr/bin/sed
+/usr/bin/tar
+/usr/bin/umount
+/usr/bin/xz
+/usr/sbin/losetup
+
+__TTS_c7e748e0083b494181537db01bd57104__RC:0
+__TTS_c7e748e0083b494181537db01bd57104__PWD:/app
+__TTS_c7e748e0083b494181537db01bd57104__END
+root@bb998809ce64:/app# cd -- /app && cd /app && sed -n '1,220p' ramfs/basic-init; __tts_rc=$?; printf '\n__TTS_c3b2be6e77884cf7a9b06893d1c8636f__RC:%s\n' "$__t
+ts_rc"; printf '__TTS_c3b2be6e77884cf7a9b06893d1c8636f__PWD:'; pwd; printf '__TTS_c3b2be6e77884cf7a9b06893d1c8636f__END\n'; tmux wait -S done
+#!/bin/busybox sh
+
+busybox mkdir -p /dev /etc /proc /root /sbin /sys /usr/bin /usr/sbin
+busybox mount -t proc proc /proc
+busybox mount -t sysfs sys /sys
+busybox mount -t devtmpfs dev /dev
+echo Starting up...
+echo ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100 >> /etc/inittab
+echo Login with root and no password. > /etc/issue
+echo >> /etc/issue
+echo root::0:0:root:/root:/bin/sh > /etc/passwd
+busybox mdev -s
+busybox --install
+hostname localhost
+ip link set lo up
+echo 5 > /proc/sys/kernel/printk
+exec /linuxrc
+
+__TTS_c3b2be6e77884cf7a9b06893d1c8636f__RC:0
+__TTS_c3b2be6e77884cf7a9b06893d1c8636f__PWD:/app
+__TTS_c3b2be6e77884cf7a9b06893d1c8636f__END
+root@bb998809ce64:/app# cd -- /app && cd /app && sed -n '1,220p' ramfs/initramfs.list; __tts_rc=$?; printf '\n__TTS_b83c2b44865c49eca66000e6fd2c12fb__RC:%s\n' "
+$__tts_rc"; printf '__TTS_b83c2b44865c49eca66000e6fd2c12fb__PWD:'; pwd; printf '__TTS_b83c2b44865c49eca66000e6fd2c12fb__END\n'; tmux wait -S done
+# Simple busybox based initramfs
+
+dir /dev 0755 0 0
+nod /dev/console 0600 0 0 c 5 1
+dir /root 0700 0 0
+dir /bin 0755 0 0
+dir /sbin 0755 0 0
+file /init basic-init 0755 0 0
+file /bin/busybox busybox-x86_64 0755 0 0
+
+__TTS_b83c2b44865c49eca66000e6fd2c12fb__RC:0
+__TTS_b83c2b44865c49eca66000e6fd2c12fb__PWD:/app
+__TTS_b83c2b44865c49eca66000e6fd2c12fb__END
+root@bb998809ce64:/app# cd -- /app && cd /app && command -v curl 2>/dev/null || python3 - <<'PY'
+> import urllib.request;print(urllib.request.urlopen('https://repo.or.cz/tinycc.git/plain/README').status)
+> PY; __tts_rc=$?; printf '\n__TTS_3a1802f946bf4bb3b35d4ba66b1ac454__RC:%s\n' "$__tts_rc"; printf '__TTS_3a1802f946bf4bb3b35d4ba66b1ac454__PWD:'; pwd; printf '_
+_TTS_3a1802f946bf4bb3b35d4ba66b1ac454__END\n'; tmux wait -S done
+> cd -- /app && cd /app && wget -O /tmp/tcc.tar.bz2 https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2; __tts_rc=$?; printf '\n__TTS_9a9c30
+cfc0df4b779c5ac3246c857d60__RC:%s\n' "$__tts_rc"; printf '__TTS_9a9c30cfc0df4b779c5ac3246c857d60__PWD:'; pwd; printf '__TTS_9a9c30cfc0df4b779c5ac3246c857d60__EN
+D\n'; tmux wait -S done
+> cd -- /app && cd /app && find / -maxdepth 3 \( -iname 'tcc-*' -o -iname 'tinycc*' -o -name 'libc.so*' -o -name 'ld-linux*.so*' \) 2>/dev/null | sort | head -2
+00; __tts_rc=$?; printf '\n__TTS_b3ea0fccc75b42b1a3e5f8199313c437__RC:%s\n' "$__tts_rc"; printf '__TTS_b3ea0fccc75b42b1a3e5f8199313c437__PWD:'; pwd; printf '__T
+TS_b3ea0fccc75b42b1a3e5f8199313c437__END\n'; tmux wait -S done
+>

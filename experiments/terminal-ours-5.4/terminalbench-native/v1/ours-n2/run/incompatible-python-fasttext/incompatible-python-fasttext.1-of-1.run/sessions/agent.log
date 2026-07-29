@@ -1,0 +1,82 @@
+[?2004hroot@d09f112b5a2e:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@d09f112b5a2e:/app# clear
+[?2004l[H[J[3J[?2004hroot@d09f112b5a2e:/app# pwd; __tts_rc=$?; printf '\n__TTS_4cc2616eeda3417da2fcf6017ccf99df__RC:%s\n' "$__tts_rc"; printf '__TTS_4cc2616eeda3417da2fcf6017ccf99df__PWD:'; pwd; printf '__TTS_4cc2616eeda3417da2fcf6017ccf99df__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_4cc2616eeda3417da2fcf6017ccf99df__RC:0
+__TTS_4cc2616eeda3417da2fcf6017ccf99df__PWD:/app
+__TTS_4cc2616eeda3417da2fcf6017ccf99df__END
+[?2004hroot@d09f112b5a2e:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import sys, importlib.util
+[?2004l[?2004h> print('python', sys.version)
+[?2004l[?2004h> spec = importlib.util.find_spec('fasttext')
+[?2004l[?2004h> print('spec', spec)
+[?2004l[?2004h> try:
+[?2004l[?2004h>     import fasttext
+[?2004l[?2004h>     print('imported', fasttext, getattr(fasttext,'__file__',None))
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     import traceback; traceback.print_exc()
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_af7ff679ccd244cdbd6af768838be582__RC:%s\n' "$__tts_rc"; printf '__TTS_af7ff679ccd244cdbd6af768838be582__PWD:'; pwd; printf '__TTS_af7ff679ccd244cdbd6af768838be582__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import fasttext, inspect, pkgutil, sys, os
+[?2004l[?2004h> print('fasttext file', fasttext.__file__)
+[?2004l[?2004h> print('attrs', [a for a in ['train_supervised','train_unsupervised','load_model','tokenize'] if hasattr(fasttext,a)])
+[?2004l[?2004h> try:
+[?2004l[?2004h>     import fasttext.FastText as FT
+[?2004l[?2004h>     print('FastText module', FT.__file__)
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print('FastText import failed', repr(e))
+[?2004l[?2004h> for m in pkgutil.iter_modules(fasttext.__path__):
+[?2004l[?2004h>     print('submodule', m.name)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f82f0608d82241f5b7fd7702c9e9b016__RC:%s\n' "$__tts_rc"; printf '__TTS_f82f0608d82241f5b7fd7702c9e9b016__PWD:'; pwd; printf '__TTS_f82f0608d82241f5b7fd7702c9e9b016__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import fasttext, traceback, tempfile, os
+[?2004l[?2004h> print('fasttext', fasttext.__file__)
+[?2004l[?2004h> fd, path = tempfile.mkstemp(suffix='.txt', text=True)
+[?2004l[?2004h> os.close(fd)
+[?2004l[?2004h> with open(path,'w') as f:
+[?2004l[?2004h>     f.write('__label__pos good movie\n__label__neg bad movie\n')
+[?2004l[?2004h> for name, fn, args in [
+[?2004l[?2004h>     ('train_supervised', fasttext.train_supervised, (path,)),
+[?2004l[?2004h>     ('train_unsupervised', fasttext.train_unsupervised, (path,)),
+[?2004l[?2004h>     ('tokenize', fasttext.tokenize, ('hello world',)),
+[?2004l[?2004h> ]:
+[?2004l[?2004h>     print('\nTEST', name)
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         res = fn(*args)
+[?2004l[?2004h>         print('OK', type(res), res if name=='tokenize' else '')
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         traceback.print_exc()
+[?2004l[?2004h> os.remove(path)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_72ddf903e5164f119d4725b6275aba86__RC:%s\n' "$__tts_rc"; printf '__TTS_72ddf903e5164f119d4725b6275aba86__PWD:'; pwd; printf '__TTS_72ddf903e5164f119d4725b6275aba86__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, sys, traceback, tempfile
+[?2004l[?2004h> print('cwd', os.getcwd())
+[?2004l[?2004h> print('python', sys.version)
+[?2004l[?2004h> for p in ['.', '/app']:
+[?2004l[?2004h>     print('listing', p, os.listdir(p)[:20])
+[?2004l[?2004h> try:
+[?2004l[?2004h>     import fasttext
+[?2004l[?2004h>     print('fasttext ok', fasttext.__file__)
+[?2004l[?2004h>     fd, path = tempfile.mkstemp(suffix='.txt', text=True)
+[?2004l[?2004h>     os.close(fd)
+[?2004l[?2004h>     with open(path,'w') as f:
+[?2004l[?2004h>         f.write('__label__pos good movie\n__label__neg bad movie\n')
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         m = fasttext.train_supervised(path, minCount=1, epoch=1, lr=0.1, wordNgrams=1, dim=10)
+[?2004l[?2004h>         print('train_supervised works', type(m))
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         traceback.print_exc()
+[?2004l[?2004h>     os.remove(path)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     traceback.print_exc()
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d039949bd4fa42488ce450c5f1a1802e__RC:%s\n' "$__tts_rc"; printf '__TTS_d039949bd4fa42488ce450c5f1a1802e__PWD:'; pwd; printf '__TTS_d039949bd4fa42488ce450c5f1a1802e__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m10[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_af7ff679ccd244cdbd6af768838be582__RC:%s\n' "$__tts_rc"; printf '__TTS_af7ff679ccd244cdbd6af768838be582__PWD:'; pwd; printf '__TTS_af7ff679ccd244cdbd6af768838be582__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@d09f112b5a2e:/app# 

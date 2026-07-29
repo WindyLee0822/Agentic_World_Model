@@ -1,0 +1,40 @@
+root@90af0a991a81:/app# pwd; __tts_rc=$?; printf '\n__TTS_cdf61f34af0541b1abe1a0c492474dfb__RC:%s\n' "$__tts_rc"; printf '__TTS_cdf61f34af0541b1abe1a0c492474dfb
+__PWD:'; pwd; printf '__TTS_cdf61f34af0541b1abe1a0c492474dfb__END\n'; tmux wait -S done
+/app
+
+__TTS_cdf61f34af0541b1abe1a0c492474dfb__RC:0
+__TTS_cdf61f34af0541b1abe1a0c492474dfb__PWD:/app
+__TTS_cdf61f34af0541b1abe1a0c492474dfb__END
+root@90af0a991a81:/app# cd -- /app && cd /app/frotz && printf 'look
+> quit
+> y
+> ' | ./frotz zork1.z5 | head -n 80; __tts_rc=$?; printf '\n__TTS_6314cccc16814bec8342ef21199e42e7__RC:%s\n' "$__tts_rc"; printf '__TTS_6314cccc16814bec8342ef21
+199e42e7__PWD:'; pwd; printf '__TTS_6314cccc16814bec8342ef21199e42e7__END\n'; tmux wait -S done
+I won't run as root!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

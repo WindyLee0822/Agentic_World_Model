@@ -1,0 +1,40 @@
+root@593078de9973:/app# pwd; __tts_rc=$?; printf '\n__TTS_521d7a0cd3b146c09dc42ed70c152697__RC:%s\n' "$__tts_rc"; printf '__TTS_521d7a0cd3b146c09dc42ed70c152697
+__PWD:'; pwd; printf '__TTS_521d7a0cd3b146c09dc42ed70c152697__END\n'; tmux wait -S done
+/app
+
+__TTS_521d7a0cd3b146c09dc42ed70c152697__RC:0
+__TTS_521d7a0cd3b146c09dc42ed70c152697__PWD:/app
+__TTS_521d7a0cd3b146c09dc42ed70c152697__END
+root@593078de9973:/app# cd -- /app && find data -maxdepth 2 -type f | sort | sed -n '1,50p'; __tts_rc=$?; printf '\n__TTS_bc413930e2fb4a72accff7525f2b3e57__RC:%
+s\n' "$__tts_rc"; printf '__TTS_bc413930e2fb4a72accff7525f2b3e57__PWD:'; pwd; printf '__TTS_bc413930e2fb4a72accff7525f2b3e57__END\n'; tmux wait -S done
+data/test-00000-of-00001.parquet
+data/train-00000-of-00001.parquet
+
+__TTS_bc413930e2fb4a72accff7525f2b3e57__RC:0
+__TTS_bc413930e2fb4a72accff7525f2b3e57__PWD:/app
+__TTS_bc413930e2fb4a72accff7525f2b3e57__END
+root@593078de9973:/app# cd -- /app && python - <<'PY'
+> import pandas as pd
+> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+>  df=pd.read_parquet(f)
+>  print(f, df.shape, df.columns.tolist(), df.head(2).to_dict('records'))
+> PY; __tts_rc=$?; printf '\n__TTS_d1be8667f5394e9294cd849e78389533__RC:%s\n' "$__tts_rc"; printf '__TTS_d1be8667f5394e9294cd849e78389533__PWD:'; pwd; printf '_
+_TTS_d1be8667f5394e9294cd849e78389533__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import pyarrow.parquet as pq
+> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+>  t=pq.read_table(f,columns=None)
+>  print(f,t.num_rows,t.num_columns,t.schema)
+>  print(t.slice(0,2).to_pydict())
+> PY; __tts_rc=$?; printf '\n__TTS_3a3cef9fa0ad4377adb9963d7e3b899c__RC:%s\n' "$__tts_rc"; printf '__TTS_3a3cef9fa0ad4377adb9963d7e3b899c__PWD:'; pwd; printf '_
+_TTS_3a3cef9fa0ad4377adb9963d7e3b899c__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import os
+> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
+>  st=os.stat(f)
+>  print(f,st.st_size)
+> PY; __tts_rc=$?; printf '\n__TTS_9ac884cf4f794bf7a154f671646bcef4__RC:%s\n' "$__tts_rc"; printf '__TTS_9ac884cf4f794bf7a154f671646bcef4__PWD:'; pwd; printf '_
+_TTS_9ac884cf4f794bf7a154f671646bcef4__END\n'; tmux wait -S done
+>
+
+

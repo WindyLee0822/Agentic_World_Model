@@ -1,0 +1,40 @@
+root@58bbfdd1d784:/app# pwd; __tts_rc=$?; printf '\n__TTS_c873bf1ac0de486cbe5e16b4c7054973__RC:%s\n' "$__tts_rc"; printf '__TTS_c873bf1ac0de486cbe5e16b4c7054973
+__PWD:'; pwd; printf '__TTS_c873bf1ac0de486cbe5e16b4c7054973__END\n'; tmux wait -S done
+/app
+
+__TTS_c873bf1ac0de486cbe5e16b4c7054973__RC:0
+__TTS_c873bf1ac0de486cbe5e16b4c7054973__PWD:/app
+__TTS_c873bf1ac0de486cbe5e16b4c7054973__END
+root@58bbfdd1d784:/app# cd -- /app && python3 - <<'PY'
+> from PIL import Image
+> img=Image.open('chess_bard.png'); print(img.size)
+> PY; __tts_rc=$?; printf '\n__TTS_8b6427b551de4b359c6913e99ddf80e8__RC:%s\n' "$__tts_rc"; printf '__TTS_8b6427b551de4b359c6913e99ddf80e8__PWD:'; pwd; printf '_
+_TTS_8b6427b551de4b359c6913e99ddf80e8__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "from PIL import Image; img=Image.open('chess_bard.png'); print(img.size)"; __tts_rc=$?; printf '\n__TTS_635a1e728e1e4f3fb9cdc55ca0d8
+8452__RC:%s\n' "$__tts_rc"; printf '__TTS_635a1e728e1e4f3fb9cdc55ca0d88452__PWD:'; pwd; printf '__TTS_635a1e728e1e4f3fb9cdc55ca0d88452__END\n'; tmux wait -S don
+e
+> cd -- /app && python3 -c "import os; print(os.path.getsize('chess_bard.png'))"; __tts_rc=$?; printf '\n__TTS_742ded80186240caa4b1f051e2ad72a2__RC:%s\n' "$__tt
+s_rc"; printf '__TTS_742ded80186240caa4b1f051e2ad72a2__PWD:'; pwd; printf '__TTS_742ded80186240caa4b1f051e2ad72a2__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

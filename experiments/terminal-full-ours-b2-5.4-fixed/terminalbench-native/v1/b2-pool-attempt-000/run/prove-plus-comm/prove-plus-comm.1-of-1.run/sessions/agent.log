@@ -1,0 +1,55 @@
+[?2004hroot@5ad66c20ca79:/workspace# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@5ad66c20ca79:/workspace# clear
+[?2004l[H[J[3J[?2004hroot@5ad66c20ca79:/workspace# pwd; __tts_rc=$?; printf '\n__TTS_e216db9ddea443b2ba88b484a500d3c4__RC:%s\n' "$__tts_rc"; printf '__TTS_e216db9ddea443b2ba88b484a500d3c4__PWD:'; pwd; printf '__TTS_e216db9ddea443b2ba88b484a500d3c4__END\n'; tmux wait -S done
+[?2004l/workspace
+
+__TTS_e216db9ddea443b2ba88b484a500d3c4__RC:0
+__TTS_e216db9ddea443b2ba88b484a500d3c4__PWD:/workspace
+__TTS_e216db9ddea443b2ba88b484a500d3c4__END
+[?2004hroot@5ad66c20ca79:/workspace# cd -- /workspace && sed -n '1,220p' /workspace/plus_comm.v; __tts_rc=$?; printf '\n__TTS_8bb71d088d024f699aee1b2fae50dc74__RC:%s\n' "$__tts_rc"; printf '__TTS_8bb71d088d024f699aee1b2fae50dc74__PWD:'; pwd; printf '__TTS_8bb71d088d024f699aee1b2fae50dc74__END\n'; tmux wait -S done
+[?2004lRequire Import Arith.
+
+Theorem plus_comm : forall n m : nat,
+  n + m = m + n.
+Proof.
+  intros n m.
+  induction n as [|n' IHn'].
+  - simpl.
+    (* Need to handle the base case *)
+    admit.
+  - simpl.
+    (* Need to use the inductive hypothesis and plus_n_Sm *)
+    admit.
+Qed. 
+__TTS_8bb71d088d024f699aee1b2fae50dc74__RC:0
+__TTS_8bb71d088d024f699aee1b2fae50dc74__PWD:/workspace
+__TTS_8bb71d088d024f699aee1b2fae50dc74__END
+[?2004hroot@5ad66c20ca79:/workspace# cd -- /workspace && cd /workspace && cat > plus_comm.v <<'EOF'
+[?2004l[?2004h> Require Import Arith.
+[?2004l[?2004h> 
+[?2004l[?2004h> Theorem plus_comm : forall n m : nat,
+[?2004l[?2004h>   n + m = m + n.
+[?2004l[?2004h> Proof.
+[?2004l[?2004h>   intros n m.
+[?2004l[?2004h>   induction n as [|n' IHn'].
+[?2004l[?2004h>   - simpl.
+[?2004l[?2004h>     rewrite <- plus_n_O.
+[?2004l[?2004h>     reflexivity.
+[?2004l[?2004h>   - simpl.
+[?2004l[?2004h>     rewrite IHn'.
+[?2004l[?2004h>     rewrite plus_n_Sm.
+[?2004l[?2004h>     reflexivity.
+[?2004l[?2004h> Qed.
+[?2004l[?2004h> EOF
+[?2004l[?2004hroot@5ad66c20ca79:/workspace# coqc plus_comm.v; __tts_rc=$?; printf '\n__TTS_66bc6bedb6154aacbfac802a2e17b6e0__RC:%s\n' "$__tts_rc"; printf '__TTS_66bc6bedb6154aacbfac802a2e17b6e0__PWD:'; pwd; printf '__TTS_66bc6bedb6154aacbfac802a2e17b6e0__END\n'; tmux wait -S done
+[?2004l
+__TTS_66bc6bedb6154aacbfac802a2e17b6e0__RC:0
+__TTS_66bc6bedb6154aacbfac802a2e17b6e0__PWD:/workspace
+__TTS_66bc6bedb6154aacbfac802a2e17b6e0__END
+[?2004hroot@5ad66c20ca79:/workspace# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@5ad66c20ca79:/workspace# 

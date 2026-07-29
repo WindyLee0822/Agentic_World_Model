@@ -1,0 +1,42 @@
+[
+  {
+    "env": "tau2_airline",
+    "subset": "airline",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 50,
+    "success_rate": 0.78,
+    "reward": 0.78,
+    "mean_spawns": 0.44,
+    "mean_max_depth": 0.08,
+    "mean_reads": 0.0,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 0.84,
+    "mean_tokens": 156.0,
+    "mean_cost": 0.000156,
+    "mean_cache_hits": 0.0,
+    "mean_wall_clock_s": 218.74578962618486,
+    "mean_rollout_errors": 0.0
+  },
+  {
+    "env": "tau2_retail",
+    "subset": "retail",
+    "method": "ours",
+    "n_rollouts": 4,
+    "decisions": 114,
+    "success_rate": 0.8157894736842105,
+    "reward": 0.8157894736842105,
+    "mean_spawns": 0.30701754385964913,
+    "mean_max_depth": 0.07017543859649122,
+    "mean_reads": 0.0,
+    "single_commit_rate": 1.0,
+    "simulator_writes": 0,
+    "prediction_accuracy": 0.8245614035087719,
+    "mean_tokens": 35.96491228070175,
+    "mean_cost": 3.5964912280701756e-05,
+    "mean_cache_hits": 0.0,
+    "mean_wall_clock_s": 222.89678231373495,
+    "mean_rollout_errors": 0.0
+  }
+]

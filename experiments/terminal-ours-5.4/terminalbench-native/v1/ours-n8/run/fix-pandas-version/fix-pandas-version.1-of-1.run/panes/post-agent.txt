@@ -1,0 +1,40 @@
+root@54ae4234a61f:/app# pwd; __tts_rc=$?; printf '\n__TTS_6e7cba346d3b40f5b29ed7d99b8602d9__RC:%s\n' "$__tts_rc"; printf '__TTS_6e7cba346d3b40f5b29ed7d99b8602d9
+__PWD:'; pwd; printf '__TTS_6e7cba346d3b40f5b29ed7d99b8602d9__END\n'; tmux wait -S done
+/app
+
+__TTS_6e7cba346d3b40f5b29ed7d99b8602d9__RC:0
+__TTS_6e7cba346d3b40f5b29ed7d99b8602d9__PWD:/app
+__TTS_6e7cba346d3b40f5b29ed7d99b8602d9__END
+root@54ae4234a61f:/app# cd -- /app && python - <<'PY'
+> import pandas as pd
+> print(pd.__version__)
+> PY; __tts_rc=$?; printf '\n__TTS_0be80d3dffa54d8b99056b224a50a7da__RC:%s\n' "$__tts_rc"; printf '__TTS_0be80d3dffa54d8b99056b224a50a7da__PWD:'; pwd; printf '_
+_TTS_0be80d3dffa54d8b99056b224a50a7da__END\n'; tmux wait -S done
+> cd -- /app && python -m pip install 'pandas>=2.0,<3'; __tts_rc=$?; printf '\n__TTS_f244893c94a447b9a4b1c0ac2df4722f__RC:%s\n' "$__tts_rc"; printf '__TTS_f2448
+93c94a447b9a4b1c0ac2df4722f__PWD:'; pwd; printf '__TTS_f244893c94a447b9a4b1c0ac2df4722f__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

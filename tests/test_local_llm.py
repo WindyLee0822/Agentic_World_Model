@@ -101,10 +101,11 @@ def test_default_model_is_local_model():
     assert _cc.default_model() == "Qwen-AgentWorld-35B-A3B"
 
 
-def test_litellm_model_for_prefixes_only_in_local_mode():
-    # Outside local mode: unchanged.
+def test_litellm_model_for_preserves_configured_provider():
+    # Outside local mode: bare models inherit a qualified default's provider.
     os.environ.pop("TTS_LOCAL_LLM", None)
     assert litellm_model_for("gpt-4.1", "gpt-4.1") == "gpt-4.1"
+    assert litellm_model_for("gpt-4.1", "azure/gpt-4.1") == "azure/gpt-4.1"
     assert litellm_model_for(None, "azure/gpt-4.1") == "azure/gpt-4.1"
 
     # In local mode: bare id -> openai/<id>, already-qualified strings untouched.

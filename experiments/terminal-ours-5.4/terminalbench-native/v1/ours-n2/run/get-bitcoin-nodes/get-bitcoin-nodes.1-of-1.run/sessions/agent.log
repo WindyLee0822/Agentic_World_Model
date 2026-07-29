@@ -1,0 +1,112 @@
+[?2004hroot@88f987c1e338:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@88f987c1e338:/app# clear
+[?2004l[H[J[3J[?2004hroot@88f987c1e338:/app# pwd; __tts_rc=$?; printf '\n__TTS_13ae5723537641a3ad4fd24a62a222ea__RC:%s\n' "$__tts_rc"; printf '__TTS_13ae5723537641a3ad4fd24a62a222ea__PWD:'; pwd; printf '__TTS_13ae5723537641a3ad4fd24a62a222ea__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_13ae5723537641a3ad4fd24a62a222ea__RC:0
+__TTS_13ae5723537641a3ad4fd24a62a222ea__PWD:/app
+__TTS_13ae5723537641a3ad4fd24a62a222ea__END
+[?2004hroot@88f987c1e338:/app# cd -- /app && python3 - <<'PY'
+[?2004l[?2004h> import os, textwrap, subprocess, sys
+[?2004l[?2004h> service = r'''from flask import Flask, jsonify
+[?2004l[?2004h> import requests
+[?2004l[?2004h> 
+[?2004l[?2004h> app = Flask(__name__)
+[?2004l[?2004h> 
+[?2004l[?2004h> RPC_URL = 'http://127.0.0.1:8332'
+[?2004l[?2004h> RPC_USER = os.environ.get('BITCOIN_RPC_USER', 'bitcoin')
+[?2004l[?2004h> RPC_PASSWORD = os.environ.get('BITCOIN_RPC_PASSWORD', 'bitcoin')
+[?2004l[?2004h> 
+[?2004l[?2004h> class BitcoinRPC:
+[?2004l[?2004h>     def __init__(self, url, user, password):
+[?2004l[?2004h>         self.url = url
+[?2004l[?2004h>         self.auth = (user, password)
+[?2004l[?2004h> 
+[?2004l[?2004h>     def call(self, method, params=None):
+[?2004l[?2004h>         payload = {"jsonrpc": "2.0", "id": method, "method": method, "params": params or []}
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             r = requests.post(self.url, json=payload, auth=self.auth, timeout=5)
+[?2004l[?2004h>         except requests.RequestException as e:
+[?2004l[?2004h>             raise ConnectionError(str(e))
+[?2004l[?2004h>         if r.status_code != 200:
+[?2004l[?2004h>             raise ConnectionError(f'RPC HTTP {r.status_code}')
+[?2004l[?2004h>         data = r.json()
+[?2004l[?2004h>         if data.get('error'):
+[?2004l[?2004h>             msg = data['error'].get('message', 'RPC error') if isinstance(data['error'], dict) else str(data['error'])
+[?2004l[?2004h>             raise ValueError(msg)
+[?2004l[?2004h>         return data.get('result')
+[?2004l[?2004h> 
+[?2004l[?2004h> rpc = BitcoinRPC(RPC_URL, RPC_USER, RPC_PASSWORD)
+[?2004l[?2004h> 
+[?2004l[?2004h> @app.route('/block/<block_hash>')
+[?2004l[?2004h> def get_block(block_hash):
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         block = rpc.call('getblock', [block_hash, 1])
+[?2004l[?2004h>         return jsonify({
+[?2004l[?2004h>             'hash': block.get('hash'),
+[?2004l[?2004h>             'height': block.get('height'),
+[?2004l[?2004h>             'merkleroot': block.get('merkleroot'),
+[?2004l[?2004h>             'time': block.get('time'),
+[?2004l[?2004h>             'nonce': block.get('nonce'),
+[?2004l[?2004h>             'tx': block.get('tx', [])
+[?2004l[?2004h>         })
+[?2004l[?2004h>     except ConnectionError:
+[?2004l[?2004h>         return jsonify({'error': 'not connected to the Bitcoin network'}), 503
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         return jsonify({'error': f'invalid block hash: {e}'}), 404
+[?2004l[?2004h> 
+[?2004l[?2004h> @app.route('/transaction/<txid>')
+[?2004l[?2004h> def get_transaction(txid):
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         tx = rpc.call('getrawtransaction', [txid, True])
+[?2004l[?2004h>         return jsonify({
+[?2004l[?2004h>             'txid': tx.get('txid'),
+[?2004l[?2004h>             'blockhash': tx.get('blockhash'),
+[?2004l[?2004h>             'vin': [
+[?2004l[?2004h>                 {
+[?2004l[?2004h>                     'coinbase': vin.get('coinbase', ''),
+[?2004l[?2004h>                     'sequence': vin.get('sequence')
+[?2004l[?2004h>                 } for vin in tx.get('vin', [])
+[?2004l[?2004h>             ],
+[?2004l[?2004h>             'vout': [
+[?2004l[?2004h>                 {
+[?2004l[?2004h>                     'value': vout.get('value'),
+[?2004l[?2004h>                     'n': vout.get('n'),
+[?2004l[?2004h>                     'scriptPubKey': {
+[?2004l[?2004h>                         'asm': vout.get('scriptPubKey', {}).get('asm', ''),
+[?2004l[?2004h>                         'hex': vout.get('scriptPubKey', {}).get('hex', ''),
+[?2004l[?2004h>                         'type': vout.get('scriptPubKey', {}).get('type', '')
+[?2004l[?2004h>                     }
+[?2004l[?2004h>                 } for vout in tx.get('vout', [])
+[?2004l[?2004h>             ]
+[?2004l[?2004h>         })
+[?2004l[?2004h>     except ConnectionError:
+[?2004l[?2004h>         return jsonify({'error': 'not connected to the Bitcoin network'}), 503
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         return jsonify({'error': f'invalid transaction ID: {e}'}), 404
+[?2004l[?2004h> 
+[?2004l[?2004h> @app.route('/status')
+[?2004l[?2004h> def status():
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         rpc.call('getblockchaininfo')
+[?2004l[?2004h>         return jsonify({'status': 'online'})
+[?2004l[?2004h>     except Exception as e:
+[?2004l[?2004h>         return jsonify({'status': str(e) if str(e) else 'not connected to the Bitcoin network'}), 503
+[?2004l[?2004h> 
+[?2004l[?2004h> if __name__ == '__main__':
+[?2004l[?2004h>     app.run(host='127.0.0.1', port=5000)
+[?2004l[?2004h> '''
+[?2004l[?2004h> readme = 'bitcoin_service.py created. Dependencies installed if available. To run: python3 bitcoin_service.py\n'
+[?2004l[?2004h> open('/app/bitcoin_service.py','w').write('import os\n' + service)
+[?2004l[?2004h> subprocess.run([sys.executable, '-m', 'pip', 'install', 'bitcoinlib', 'Flask', 'requests'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+[?2004l[?2004h> print('done')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ff36364a01b04d568ac259aad66789cc__RC:%s\n' "$__tts_rc"; printf '__TTS_ff36364a01b04d568ac259aad66789cc__PWD:'; pwd; printf '__TTS_ff36364a01b04d568ac259aad66789cc__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m94[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_ff36364a01b04d568ac259aad66789cc__RC:%s\n' "$__tts_rc"; printf '__TTS_ff36364a01b04d568ac259aad66789cc__PWD:'; pwd; printf '__TTS_ff36364a01b04d568ac259aad66789cc__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@88f987c1e338:/app# 

@@ -1,0 +1,5 @@
+Trial schemelike-metacircular-eval__3FRXEsF failed: Docker compose command failed for environment schemelike-metacircular-eval. Command: docker compose --project-name schemelike-metacircular-eval__3frxesf__env --project-directory /home/t-wendili/.cache/harbor/tasks/YkDjArg6hKdFYEmdiPrztY/schemelike-metacircular-eval/environment -f /tmp/tmpgjskoig3/schemelike-metacircular-eval__3FRXEsF__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpg2iizjo7/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network schemelike-metacircular-eval__3frxesf__env_default Creating 
+ Network schemelike-metacircular-eval__3frxesf__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
+failed to create network schemelike-metacircular-eval__3frxesf__env_default: Error response from daemon: all predefined address pools have been fully subnetted
+. Stderr: None. 
+Collecting main service artifacts

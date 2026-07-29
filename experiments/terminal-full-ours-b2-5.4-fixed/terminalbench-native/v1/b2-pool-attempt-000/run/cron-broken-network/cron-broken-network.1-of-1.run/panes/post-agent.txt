@@ -1,0 +1,176 @@
+root@b9fcf8daf711:/app# pwd; __tts_rc=$?; printf '\n__TTS_a99c257a7b79497387a204dd5c869772__RC:%s\n' "$__tts_rc"; printf '__TTS_a99c257a7b79497387a204dd5c869772
+__PWD:'; pwd; printf '__TTS_a99c257a7b79497387a204dd5c869772__END\n'; tmux wait -S done
+/app
+
+__TTS_a99c257a7b79497387a204dd5c869772__RC:0
+__TTS_a99c257a7b79497387a204dd5c869772__PWD:/app
+__TTS_a99c257a7b79497387a204dd5c869772__END
+root@b9fcf8daf711:/app# cd -- /app && curl -I -v --max-time 10 https://example.com; __tts_rc=$?; printf '\n__TTS_6ed2a460e254422795d1026e6ea508c2__RC:%s\n' "$__
+tts_rc"; printf '__TTS_6ed2a460e254422795d1026e6ea508c2__PWD:'; pwd; printf '__TTS_6ed2a460e254422795d1026e6ea508c2__END\n'; tmux wait -S done
+DNS resolution error
+
+__TTS_6ed2a460e254422795d1026e6ea508c2__RC:11
+__TTS_6ed2a460e254422795d1026e6ea508c2__PWD:/app
+__TTS_6ed2a460e254422795d1026e6ea508c2__END
+root@b9fcf8daf711:/app# cd -- /app && getent hosts example.com || cat /etc/resolv.conf; __tts_rc=$?; printf '\n__TTS_1c56223c01e34c95bed4df038a563e14__RC:%s\n'
+"$__tts_rc"; printf '__TTS_1c56223c01e34c95bed4df038a563e14__PWD:'; pwd; printf '__TTS_1c56223c01e34c95bed4df038a563e14__END\n'; tmux wait -S done
+2606:4700:10::6814:179a example.com
+2606:4700:10::ac42:93f3 example.com
+
+__TTS_1c56223c01e34c95bed4df038a563e14__RC:0
+__TTS_1c56223c01e34c95bed4df038a563e14__PWD:/app
+__TTS_1c56223c01e34c95bed4df038a563e14__END
+root@b9fcf8daf711:/app# cd -- /app && ip -6 route; ip -6 addr; cat /etc/gai.conf 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_7814aeab9c324928ab2
+fc6b3fdb11244__RC:%s\n' "$__tts_rc"; printf '__TTS_7814aeab9c324928ab2fc6b3fdb11244__PWD:'; pwd; printf '__TTS_7814aeab9c324928ab2fc6b3fdb11244__END\n'; tmux wa
+it -S done
+bash: ip: command not found
+bash: ip: command not found
+# Configuration for getaddrinfo(3).
+#
+# So far only configuration for the destination address sorting is needed.
+# RFC 3484 governs the sorting.  But the RFC also says that system
+# administrators should be able to overwrite the defaults.  This can be
+# achieved here.
+#
+# All lines have an initial identifier specifying the option followed by
+# up to two values.  Information specified in this file replaces the
+# default information.  Complete absence of data of one kind causes the
+# appropriate default information to be used.  The supported commands include:
+#
+# reload  <yes|no>
+#    If set to yes, each getaddrinfo(3) call will check whether this file
+#    changed and if necessary reload.  This option should not really be
+#    used.  There are possible runtime problems.  The default is no.
+#
+# label   <mask>   <value>
+#    Add another rule to the RFC 3484 label table.  See section 2.1 in
+#    RFC 3484.  The default is:
+#
+#label ::1/128       0
+#label ::/0          1
+#label 2002::/16     2
+#label ::/96         3
+#label ::ffff:0:0/96 4
+#label fec0::/10     5
+#label fc00::/7      6
+#label 2001:0::/32   7
+#
+#    This default differs from the tables given in RFC 3484 by handling
+#    (now obsolete) site-local IPv6 addresses and Unique Local Addresses.
+#    The reason for this difference is that these addresses are never
+#    NATed while IPv4 site-local addresses most probably are.  Given
+#    the precedence of IPv6 over IPv4 (see below) on machines having only
+#    site-local IPv4 and IPv6 addresses a lookup for a global address would
+#    see the IPv6 be preferred.  The result is a long delay because the
+#    site-local IPv6 addresses cannot be used while the IPv4 address is
+#    (at least for the foreseeable future) NATed.  We also treat Teredo
+#    tunnels special.
+#
+# precedence  <mask>   <value>
+#    Add another rule to the RFC 3484 precedence table.  See section 2.1
+#    and 10.3 in RFC 3484.  The default is:
+#
+#precedence  ::1/128       50
+#precedence  ::/0          40
+#precedence  2002::/16     30
+#precedence ::/96          20
+#precedence ::ffff:0:0/96  10
+#
+#    For sites which prefer IPv4 connections change the last line to
+#
+#precedence ::ffff:0:0/96  100
+
+#
+# scopev4  <mask>  <value>
+#    Add another rule to the RFC 6724 scope table for IPv4 addresses.
+#    By default the scope IDs described in section 3.2 in RFC 6724 are
+#    used.  Changing these defaults should hardly ever be necessary.
+#    The defaults are equivalent to:
+#
+#scopev4 ::ffff:169.254.0.0/112  2
+#scopev4 ::ffff:127.0.0.0/104    2
+#scopev4 ::ffff:0.0.0.0/96       14
+
+__TTS_7814aeab9c324928ab2fc6b3fdb11244__RC:0
+__TTS_7814aeab9c324928ab2fc6b3fdb11244__PWD:/app
+__TTS_7814aeab9c324928ab2fc6b3fdb11244__END
+root@b9fcf8daf711:/app# cd -- /app && curl -4 -I -v --max-time 10 https://example.com; __tts_rc=$?; printf '\n__TTS_7b65410c19874701b63ccc93aad0d7ce__RC:%s\n' "
+$__tts_rc"; printf '__TTS_7b65410c19874701b63ccc93aad0d7ce__PWD:'; pwd; printf '__TTS_7b65410c19874701b63ccc93aad0d7ce__END\n'; tmux wait -S done
+DNS resolution error
+
+__TTS_7b65410c19874701b63ccc93aad0d7ce__RC:11
+__TTS_7b65410c19874701b63ccc93aad0d7ce__PWD:/app
+__TTS_7b65410c19874701b63ccc93aad0d7ce__END
+root@b9fcf8daf711:/app# cd -- /app && getent ahostsv4 example.com; getent ahostsv6 example.com; cat /etc/resolv.conf; __tts_rc=$?; printf '\n__TTS_4e09b475801b4
+3cea2e1e010b8064131__RC:%s\n' "$__tts_rc"; printf '__TTS_4e09b475801b43cea2e1e010b8064131__PWD:'; pwd; printf '__TTS_4e09b475801b43cea2e1e010b8064131__END\n'; t
+mux wait -S done
+104.20.23.154   STREAM example.com
+104.20.23.154   DGRAM
+104.20.23.154   RAW
+172.66.147.243  STREAM
+172.66.147.243  DGRAM
+172.66.147.243  RAW
+# Generated by Docker Engine.
+# This file can be edited; Docker Engine will not make further changes once it
+# has been modified.
+
+nameserver 127.0.0.11
+search dkbwsrmb514urd3x4x0g22trng.phxx.internal.cloudapp.net
+options edns0 trust-ad ndots:0
+
+# Based on host file: '/etc/resolv.conf' (internal resolver)
+# ExtServers: [host(127.0.0.53)]
+# Overrides: []
+# Option ndots from: internal
+
+__TTS_4e09b475801b43cea2e1e010b8064131__RC:0
+__TTS_4e09b475801b43cea2e1e010b8064131__PWD:/app
+__TTS_4e09b475801b43cea2e1e010b8064131__END
+root@b9fcf8daf711:/app# cd -- /app && env | grep -iE '^(http|https|all|no)_proxy=|^CURL' ; curl --version; __tts_rc=$?; printf '\n__TTS_eaa9cd0e2de54e86a216e806
+332e84ba__RC:%s\n' "$__tts_rc"; printf '__TTS_eaa9cd0e2de54e86a216e806332e84ba__PWD:'; pwd; printf '__TTS_eaa9cd0e2de54e86a216e806332e84ba__END\n'; tmux wait -S
+ done
+DNS resolution error
+
+__TTS_eaa9cd0e2de54e86a216e806332e84ba__RC:11
+__TTS_eaa9cd0e2de54e86a216e806332e84ba__PWD:/app
+__TTS_eaa9cd0e2de54e86a216e806332e84ba__END
+root@b9fcf8daf711:/app# cd -- /app && which curl; ldd "$(which curl)" 2>/dev/null | grep -i resolv; strings "$(which curl)" | grep -iE 'DNS resolution error|Cou
+ld not resolve host' | head; __tts_rc=$?; printf '\n__TTS_d1070b8977c04bdab8fe69a3b1b73073__RC:%s\n' "$__tts_rc"; printf '__TTS_d1070b8977c04bdab8fe69a3b1b73073
+__PWD:'; pwd; printf '__TTS_d1070b8977c04bdab8fe69a3b1b73073__END\n'; tmux wait -S done
+/usr/bin/curl
+bash: strings: command not found
+
+__TTS_d1070b8977c04bdab8fe69a3b1b73073__RC:0
+__TTS_d1070b8977c04bdab8fe69a3b1b73073__PWD:/app
+__TTS_d1070b8977c04bdab8fe69a3b1b73073__END
+root@b9fcf8daf711:/app# cd -- /app && curl --version 2>&1; echo '---'; ls -l /usr/bin/curl; file /usr/bin/curl 2>&1; ldd /usr/bin/curl 2>&1 | sed -n '1,80p'; __
+tts_rc=$?; printf '\n__TTS_feee02d74a08410dbfd20889ba9c99e8__RC:%s\n' "$__tts_rc"; printf '__TTS_feee02d74a08410dbfd20889ba9c99e8__PWD:'; pwd; printf '__TTS_fee
+e02d74a08410dbfd20889ba9c99e8__END\n'; tmux wait -S done
+DNS resolution error
+---
+-rwxr-xr-x 1 root root 46 Jul 17 21:30 /usr/bin/curl
+bash: file: command not found
+        not a dynamic executable
+
+__TTS_feee02d74a08410dbfd20889ba9c99e8__RC:0
+__TTS_feee02d74a08410dbfd20889ba9c99e8__PWD:/app
+__TTS_feee02d74a08410dbfd20889ba9c99e8__END
+root@b9fcf8daf711:/app# cd -- __TTS_feee02d74a08410dbfd20889ba9c99e8__PWD:/app && sed -n '1,120p' /usr/bin/curl; __tts_rc=$?; printf '\n__TTS_4037c07ff74e453f99
+4b26ca27e9975c__RC:%s\n' "$__tts_rc"; printf '__TTS_4037c07ff74e453f994b26ca27e9975c__PWD:'; pwd; printf '__TTS_4037c07ff74e453f994b26ca27e9975c__END\n'; tmux w
+ait -S done
+bash: cd: __TTS_feee02d74a08410dbfd20889ba9c99e8__PWD:/app: No such file or directory
+
+__TTS_4037c07ff74e453f994b26ca27e9975c__RC:1
+__TTS_4037c07ff74e453f994b26ca27e9975c__PWD:/app
+__TTS_4037c07ff74e453f994b26ca27e9975c__END
+root@b9fcf8daf711:/app# cd -- /app && cd /app && xxd -g 1 -l 128 /usr/bin/curl 2>/dev/null || od -An -tx1 -N128 /usr/bin/curl; __tts_rc=$?; printf '\n__TTS_a9f6
+c5e6d4714c7ea11e6cdff8289fa9__RC:%s\n' "$__tts_rc"; printf '__TTS_a9f6c5e6d4714c7ea11e6cdff8289fa9__PWD:'; pwd; printf '__TTS_a9f6c5e6d4714c7ea11e6cdff8289fa9__
+END\n'; tmux wait -S done
+ 23 21 2f 62 69 6e 2f 73 68 0a 65 63 68 6f 20 22
+ 44 4e 53 20 72 65 73 6f 6c 75 74 69 6f 6e 20 65
+ 72 72 6f 72 22 0a 65 78 69 74 20 31 31 0a
+
+__TTS_a9f6c5e6d4714c7ea11e6cdff8289fa9__RC:0
+__TTS_a9f6c5e6d4714c7ea11e6cdff8289fa9__PWD:/app
+__TTS_a9f6c5e6d4714c7ea11e6cdff8289fa9__END
+root@b9fcf8daf711:/app#

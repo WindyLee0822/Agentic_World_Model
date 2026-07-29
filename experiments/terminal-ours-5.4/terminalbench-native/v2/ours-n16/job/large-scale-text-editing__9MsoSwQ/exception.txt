@@ -1,0 +1,48 @@
+Traceback (most recent call last):
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker.py", line 874, in start
+    await self._validate_image_os(image_to_check)
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker.py", line 787, in _validate_image_os
+    stdout, _ = await result.communicate()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/subprocess.py", line 201, in communicate
+    stdin, stdout, stderr = await tasks.gather(stdin, stdout, stderr)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/subprocess.py", line 181, in _read_stream
+    output = await stream.read()
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/streams.py", line 706, in read
+    block = await self.read(self._limit)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/streams.py", line 713, in read
+    await self._wait_for_data('read')
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/streams.py", line 545, in _wait_for_data
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 1103, in _start_agent_environment
+    await asyncio.wait_for(
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/tasks.py", line 519, in wait_for
+    async with timeouts.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/asyncio/timeouts.py", line 115, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 350, in run
+    await self._prepare()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 379, in _prepare
+    await self._setup_agent_environment()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 1097, in _setup_agent_environment
+    await self._start_agent_environment()
+  File "/home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/trial/trial.py", line 1110, in _start_agent_environment
+    raise EnvironmentStartTimeoutError(
+harbor.trial.errors.EnvironmentStartTimeoutError: Environment start timed out after 600.0 seconds

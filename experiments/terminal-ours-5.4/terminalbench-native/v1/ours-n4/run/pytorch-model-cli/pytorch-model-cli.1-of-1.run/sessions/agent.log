@@ -1,0 +1,101 @@
+[?2004hroot@7c692997dc79:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@7c692997dc79:/app# clear
+[?2004l[H[J[3J[?2004hroot@7c692997dc79:/app# pwd; __tts_rc=$?; printf '\n__TTS_f114cd1dd5004a50a25b04b15c202ba4__RC:%s\n' "$__tts_rc"; printf '__TTS_f114cd1dd5004a50a25b04b15c202ba4__PWD:'; pwd; printf '__TTS_f114cd1dd5004a50a25b04b15c202ba4__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__RC:0
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__PWD:/app
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__END
+[?2004hroot@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_84abccb98fb147b0a88995813c6fbe4d__RC:%s\n' "$__tts_rc"; printf '__TTS_84abccb98fb147b0a88995813c6fbe4d__PWD:'; pwd; printf '__TTS_84abccb98fb147b0a88995813c6fbe4d__END\n'; tmux wait -S done
+[?2004lf /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_84abccb98fb147b0a88995813c6fbe4d__RC:0
+__TTS_84abccb98fb147b0a88995813c6fbe4d__PWD:/app
+__TTS_84abccb98fb147b0a88995813c6fbe4d__END
+[?2004hroot@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_b3c9ae683b9941e9ba7db35caf916e11__RC:%s\n' "$__tts_rc"; printf '__TTS_b3c9ae683b9941e9ba7db35caf916e11__PWD:'; pwd; printf '__TTS_b3c9ae683b9941e9ba7db35caf916e11__END\n'; tmux wait -S done
+[?2004lf /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__RC:0
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__PWD:/app
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__END
+[?2004hroot@7c692997dc79:/app# cd -- /app && sed -n '1,240p' -- /app/model.py; __tts_rc=$?; printf '\n__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__RC:%s\n' "$__tts_rc"; printf '__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__PWD:'; pwd; printf '__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__END\n'; tmux wait -S done
+[?2004limport torch
+import torch.nn as nn
+
+
+class MnistModel(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        num_classes: int,
+    ) -> torch.nn.Module:
+        super().__init__()
+
+        self.input_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+        self.activation = nn.ReLU()
+
+    def forward(self, x):
+        x = self.input_layer(x)
+        x = self.activation(x)
+
+        x = self.hidden_layer(x)
+        x = self.activation(x)
+
+        x = self.output_layer(x)
+        return x
+
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__RC:0
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__PWD:/app
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__END
+[?2004hroot@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_741fe8383ca24ab2bf7f7f71d17988ec__RC:%s\n' "$__tts_rc"; printf '__TTS_741fe8383ca24ab2bf7f7f71d17988ec__PWD:'; pwd; printf '__TTS_741fe8383ca24ab2bf7f7f71d17988ec__END\n'; tmux wait -S done
+[?2004l/app/cJSON.c
+/app/cJSON.h
+/app/image.png
+/app/lodepng.cpp
+/app/lodepng.h
+/app/model.pth
+/app/model.py
+
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__RC:0
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__PWD:/app
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__END
+[?2004hroot@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_5c2371601c28443892906b108253c5e4__RC:%s\n' "$__tts_rc"; printf '__TTS_5c2371601c28443892906b108253c5e4__PWD:'; pwd; printf '__TTS_5c2371601c28443892906b108253c5e4__END\n'; tmux wait -S done
+[?2004l/app/cJSON.c
+/app/cJSON.h
+/app/image.png
+/app/lodepng.cpp
+/app/lodepng.h
+/app/model.pth
+/app/model.py
+
+__TTS_5c2371601c28443892906b108253c5e4__RC:0
+__TTS_5c2371601c28443892906b108253c5e4__PWD:/app
+__TTS_5c2371601c28443892906b108253c5e4__END
+[?2004hroot@7c692997dc79:/app# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && sed -n '1,220p' model.py && python3 - <<'PY'
+[?2004l[?2004h> import torch, json
+[?2004l[?2004h> sd=torch.load('model.pth', map_location='cpu')
+[?2004l[?2004h> print('\nSTATE_KEYS', list(sd.keys()))
+[?2004l[?2004h> for k,v in sd.items():
+[?2004l[?2004h>     print(k, tuple(v.shape), v.dtype)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_a03ad6379eda4689b9c092b5514f3e49__RC:%s\n' "$__tts_rc"; printf '__TTS_a03ad6379eda4689b9c092b5514f3e49__PWD:'; pwd; printf '__TTS_a03ad6379eda4689b9c092b5514f3e49__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 8 delimited by end-of-file (wanted `PY')
+bash: cd: '; pwd; printf ': No such file or directory
+[?2004hroot@7c692997dc79:/app# 

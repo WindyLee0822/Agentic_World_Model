@@ -1,0 +1,40 @@
+root@c5066b69940c:/app# pwd; __tts_rc=$?; printf '\n__TTS_e030d28798aa4e5a85d1daf98648a830__RC:%s\n' "$__tts_rc"; printf '__TTS_e030d28798aa4e5a85d1daf98648a830
+__PWD:'; pwd; printf '__TTS_e030d28798aa4e5a85d1daf98648a830__END\n'; tmux wait -S done
+/app
+
+__TTS_e030d28798aa4e5a85d1daf98648a830__RC:0
+__TTS_e030d28798aa4e5a85d1daf98648a830__PWD:/app
+__TTS_e030d28798aa4e5a85d1daf98648a830__END
+root@c5066b69940c:/app# cd -- /app && vim -Nu NONE -n +'call setline(1,["import sys, re","from collections import Counter","text = open(sys.argv[1]).read().lowe
+r()","words = re.findall(r\"\\b\\w+\\b\", text)","for w, c in Counter(words).most_common(3):","    print(f\"{w}: {c}\")",""])' +wq text_processor.py && printf '
+%s' 'The quick brown fox jumps over the lazy dog. The dog barks at the fox.' > sample.txt && python3 text_processor.py sample.txt; __tts_rc=$?; printf '\n__TTS_
+99c5732eeb4a423388da92beefd3809c__RC:%s\n' "$__tts_rc"; printf '__TTS_99c5732eeb4a423388da92beefd3809c__PWD:'; pwd; printf '__TTS_99c5732eeb4a423388da92beefd380
+9c__END\n'; tmux wait -S done
+the: 4
+fox: 2
+dog: 2
+
+__TTS_99c5732eeb4a423388da92beefd3809c__RC:0
+__TTS_99c5732eeb4a423388da92beefd3809c__PWD:/app
+__TTS_99c5732eeb4a423388da92beefd3809c__END
+root@c5066b69940c:/app#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

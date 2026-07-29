@@ -1,0 +1,90 @@
+{
+  "method": "ours",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.98,
+      "n_reads": 4,
+      "n_spawns": 5,
+      "max_depth": 1,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python3 - <<'PY'\\nfrom datetime import datetime, timedelta\\nfrom pathlib import Path\\nimport re, uuid\\n\\nfiles = {\\n    'alice':'/app/alice_calendar.ics',\\n    'bob':'/app/bob_calendar.ics',\\n    'carol':'/app/carol_calendar.ics',\\n}\\n\\ndef parse_ics(path):\\n    text = Path(path).read_text()\\n    lines = text.splitlines()\\n    events=[]\\n    i=0\\n    while i < len(lines):\\n        if lines[i].strip()=='BEGIN:VEVENT':\\n            block=[]\\n            i+=1\\n            while i < len(",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 9764
+      }
+    },
+    {
+      "index": 1,
+      "confidence": 0.86,
+      "n_reads": 0,
+      "n_spawns": 8,
+      "max_depth": 1,
+      "run": {
+        "commands": [
+          "python3 - <<'PY'\nfrom datetime import datetime, timedelta\nfrom pathlib import Path\nimport re, uuid\n\nfiles = {\n    'Alice': Path('/app/alice_calendar.ics'),\n    'Bob': Path('/app/bob_calendar.ics'),\n    'Carol': Path('/app/carol_calendar.ics'),\n}\n\n# unfold ICS lines\n\ndef unfold(text):\n    lines = text.splitlines()\n    out = []\n    for line in lines:\n        if line.startswith((' ', '\\t')) and out:\n            out[-1] += line[1:]\n        else:\n            out.append(line)\n    return out\n\n\ndef parse_dt(val):\n    val = val.strip()\n    if ';' in val and ':' in val:\n        val = val.split(':',1)[1]\n    if val.endswith('Z'):\n        fmt = '%Y%m%dT%H%M%SZ'\n    elif 'T' in val:\n        fmt = '%Y%m%dT%H%M%S'\n    else:\n        fmt = '%Y%m%d'\n    return datetime.strptime(val, fmt)\n\nbusy = {k: [] for k in files}\nfor who, path in files.items():\n    lines = unfold(path.read_text())\n    in_event = False\n    ev = {}\n    for line in lines:\n        if line == 'BEGIN:VEVENT':\n            in_event = True\n            ev = {}\n        elif line == 'END:VEVENT' and in_event:\n            if 'DTSTART' in ev and 'DTEND' in ev:\n                busy[who].append((ev['DTSTART'], ev['DTEND']))\n            in_event = False\n        elif in_event and ':' in line:\n            key = line.split(':',1)[0]\n            base = key.split(';',1)[0]\n            if base in ('DTSTART','DTEND'):\n                ev[base] = parse_dt(line)\n\n# Add Carol buffer after meetings ending at 4:45 PM or later\nfor s,e in list(busy['Carol']):\n    if e.time() >= datetime.strptime('16:45','%H:%M').time():\n        busy['Carol'].append((e, e + timedelta(minutes=15)))\n\nstart_day = datetime(2024,1,15,0,0)\nend_day = datetime(2024,1,20,0,0)\nslot = None\n\nfor day_offset in range((end_day-start_day).days):\n    day = start_day + timedelta(days=day_offset)\n    weekday = day.weekday()  # Mon=0\n    # Prefer avoiding Monday by searching Tue-Fri first, then Monday\n    if weekday > 4:\n        continue\n\nsearch_days = [datetime(2024,1,d) for d in [16,17,18,19,15]]\nfor day in search_days:\n    date = day.date()\n    # common hard window: Alice 9-14, Bob 10-17 (Tue/Thu leave 16:30), Carol 9-17 excluding lunch\n    day_start = datetime.combine(date, datetime.min.time())\n    earliest = day_start + timedelta(hours=10)  # Bob no meetings before 10\n    latest_end = day_start + timedelta(hours=14)  # Alice absolutely no meetings after 2 PM\n    # minute granularity\n    t = earliest\n    while t + timedelta(hours=1) <= latest_end:\n        # Preferences as tie-breakers are naturally handled by earliest search and avoiding Monday first.\n        # Alice prefers mornings (<=12 start) over early afternoon if needed, so search from earliest minute.\n        # Carol lunch break\n        if not (t < day_start + timedelta(hours=12, minutes=30) and t + timedelta(hours=1) > day_start + timedelta(hours=12)):\n            ok = True\n            for who in busy:\n                for s,e in busy[who]:\n                    if t < e and t + timedelta(hours=1) > s:\n                        ok = False\n                        break\n                if not ok:\n                    break\n            if ok:\n                slot = (t, t + timedelta(hours=1))\n                break\n        t += timedelta(minutes=1)\n    if slot:\n        break\n\nif not slot:\n    raise SystemExit('No valid slot found')\n\nstart, end = slot\nstamp = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')\nuid = str(uuid.uuid4()) + '@example.com'\nics = f\"\"\"BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//OpenAI//Meeting Scheduler//EN\nBEGIN:VEVENT\nUID:{uid}\nDTSTAMP:{stamp}\nDTSTART:{start.strftime('%Y%m%dT%H%M%SZ')}\nDTEND:{end.strftime('%Y%m%dT%H%M%SZ')}\nSUMMARY:Team Planning Meeting\nATTENDEE:mailto:alice@example.com\nATTENDEE:mailto:bob@example.com\nATTENDEE:mailto:carol@example.com\nEND:VEVENT\nEND:VCALENDAR\n\"\"\"\nPath('/app/meeting_scheduled.ics').write_text(ics)\nprint(f'Scheduled {start} to {end}')\nPY",
+          "python3 - <<'PY'\nfrom pathlib import Path\nfor p in ['/app/meeting_scheduled.ics','/app/alice_calendar.ics','/app/bob_calendar.ics','/app/carol_calendar.ics']:\n    print(f'--- {p} ---')\n    print(Path(p).read_text())\nPY"
+        ],
+        "observations": [
+          "return_code=0\ncwd=/app\nstdout:\nREAD /app/alice_calendar.ics\nREAD /app/bob_calendar.ics\nREAD /app/carol_calendar.ics\nOBSERVATION:\nreturn_code: 0\nstdout: Scheduled 2024-01-16 10:00:00 to 2024-01-16 11:00:00\nstderr:\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nreturn_code: 0\n\nstdout:\n--- /app/meeting_scheduled.ics ---\nBEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//OpenAI//Meeting Scheduler//EN\nBEGIN:VEVENT\nUID:<uuid>@example.com\nDTSTAMP:<current-utc-timestamp>\nDTSTART:20240116T100000Z\nDTEND:20240116T110000Z\nSUMMARY:Team Planning Meeting\nATTENDEE:mailto:alice@example.com\nATTENDEE:mailto:bob@example.com\nATTENDEE:mailto:carol@example.com\nEND:VEVENT\nEND:VCALENDAR\n\n--- /app/alice_calendar.ics ---\n<contents of existing Alice calendar, unchanged>\n\n--- /app/bob_calendar.ics ---\n<contents of existing Bob calendar, unchanged>\n\n--- /app/carol_calendar.ics ---\n<contents of existing Carol calendar, unchanged>\n\nstderr:\n\n\nEffect on logical container state:\n- `/app/meeting_scheduled.ics` exists with a valid ICS event for 2024-01-16 10:00:00Z to 11:00:00Z.\n- `/app/alice_calendar.ics`, `/app/bob_calendar.ics`, and `/app/carol_calendar.ics` remain unchanged.\n(world-model prediction; command was not executed)"
+        ],
+        "return_codes": [
+          0,
+          0
+        ],
+        "final_answer": "Created /app/meeting_scheduled.ics with a valid VCALENDAR containing a 1-hour Team Planning Meeting for Alice, Bob, and Carol scheduled at 2024-01-16 10:00:00Z to 2024-01-16 11:00:00Z, without modifying the input calendars.",
+        "done": true,
+        "n_steps": 2,
+        "total_tokens": 23751
+      }
+    },
+    {
+      "index": 2,
+      "confidence": 0.98,
+      "n_reads": 4,
+      "n_spawns": 6,
+      "max_depth": 1,
+      "run": {
+        "commands": [],
+        "observations": [],
+        "return_codes": [],
+        "final_answer": "Unparseable agent response: {\"command\":\"python3 - <<'PY'\\nfrom datetime import datetime, timedelta\\nfrom pathlib import Path\\nimport uuid\\n\\nfiles = {\\n    'Alice': '/app/alice_calendar.ics',\\n    'Bob': '/app/bob_calendar.ics',\\n    'Carol': '/app/carol_calendar.ics',\\n}\\n\\ndef parse_ics(path):\\n    text = Path(path).read_text()\\n    lines = [line.rstrip('\\\\n') for line in text.splitlines()]\\n    events = []\\n    cur = None\\n    for line in lines:\\n        if line == 'BEGIN:VEVENT':\\n            cur = {}\\n        elif lin",
+        "done": false,
+        "n_steps": 0,
+        "total_tokens": 8627
+      }
+    },
+    {
+      "index": 3,
+      "confidence": 0.02,
+      "n_reads": 3,
+      "n_spawns": 3,
+      "max_depth": 1,
+      "run": {
+        "commands": [
+          "python3 - <<'PY'\nfrom datetime import datetime, timedelta\nfrom pathlib import Path\nimport re, uuid\n\nfiles = {\n    'Alice': Path('/app/alice_calendar.ics'),\n    'Bob': Path('/app/bob_calendar.ics'),\n    'Carol': Path('/app/carol_calendar.ics'),\n}\n\n# Parse DTSTART/DTEND UTC timestamps from VEVENTs\ncal = {}\nfor name, path in files.items():\n    text = path.read_text()\n    events = []\n    for block in re.findall(r'BEGIN:VEVENT(.*?)END:VEVENT', text, re.S):\n        m1 = re.search(r'DTSTART:?([0-9TZ]+)', block)\n        m2 = re.search(r'DTEND:?([0-9TZ]+)', block)\n        if m1 and m2:\n            def parse(s):\n                s=s.strip()\n                if s.endswith('Z'):\n                    return datetime.strptime(s, '%Y%m%dT%H%M%SZ')\n                return datetime.strptime(s, '%Y%m%dT%H%M%S')\n            events.append((parse(m1.group(1)), parse(m2.group(1))))\n    cal[name] = events\n\nstart_day = datetime(2024,1,15)\nend_day = datetime(2024,1,19)\nslot = None\nbest = None\nfor d in range((end_day-start_day).days+1):\n    day = start_day + timedelta(days=d)\n    if day.weekday() >= 5:\n        continue\n    # hard availability intersection by day\n    if day.weekday() == 0:  # Monday allowed but Carol prefers not; handled in tie-break only\n        pass\n    day_start = datetime(day.year, day.month, day.day, 0, 0)\n    # minute granularity search\n    t = datetime(day.year, day.month, day.day, 9, 0)\n    end_limit = datetime(day.year, day.month, day.day, 18, 0)\n    while t + timedelta(hours=1) <= end_limit:\n        e = t + timedelta(hours=1)\n        # Alice hard constraints\n        if not (datetime(day.year, day.month, day.day, 9, 0) <= t and e <= datetime(day.year, day.month, day.day, 14, 0)):\n            t += timedelta(minutes=1); continue\n        # Bob hard constraints\n        if t < datetime(day.year, day.month, day.day, 10, 0):\n            t += timedelta(minutes=1); continue\n        if day.weekday() in (1,3) and e > datetime(day.year, day.month, day.day, 16, 30):\n            t += timedelta(minutes=1); continue\n        if e > datetime(day.year, day.month, day.day, 18, 0):\n            t += timedelta(minutes=1); continue\n        # Carol hard constraints\n        if t < datetime(day.year, day.month, day.day, 9, 0) or e > datetime(day.year, day.month, day.day, 17, 0):\n            t += timedelta(minutes=1); continue\n        lunch_start = datetime(day.year, day.month, day.day, 12, 0)\n        lunch_end = datetime(day.year, day.month, day.day, 12, 30)\n        if t < lunch_end and e > lunch_start:\n            t += timedelta(minutes=1); continue\n        # conflicts with calendars\n        ok = True\n        for person, events in cal.items():\n            for s2,e2 in events:\n                if t < e2 and e > s2:\n                    ok = False; break\n            if not ok: break\n        if ok:\n            # earliest valid; preferences only as tie-breakers, so first non-Monday preference doesn't beat earlier time\n            slot = (t,e)\n            break\n        t += timedelta(minutes=1)\n    if slot:\n        break\n\nif not slot:\n    raise SystemExit('No valid slot found')\n\ns,e = slot\nuid = str(uuid.uuid4()) + '@example.com'\nstamp = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')\nics = '\\r\\n'.join([\n    'BEGIN:VCALENDAR',\n    'VERSION:2.0',\n    'PRODID:-//OpenAI//Meeting Scheduler//EN',\n    'BEGIN:VEVENT',\n    f'UID:{uid}',\n    f'DTSTAMP:{stamp}',\n    f'DTSTART:{s.strftime(\"%Y%m%dT%H%M%SZ\")}',\n    f'DTEND:{e.strftime(\"%Y%m%dT%H%M%SZ\")}',\n    'SUMMARY:Team Planning Meeting',\n    'ATTENDEE:mailto:alice@example.com',\n    'ATTENDEE:mailto:bob@example.com',\n    'ATTENDEE:mailto:carol@example.com',\n    'END:VEVENT',\n    'END:VCALENDAR',\n    ''\n])\nPath('/app/meeting_scheduled.ics').write_text(ics)\nprint(f'Scheduled {s.isoformat()} to {e.isoformat()} UTC')\nPY",
+          "python3 - <<'PY'\nfrom datetime import datetime, timedelta\nfrom pathlib import Path\nimport re\n\nfiles = {\n    'Alice': Path('/app/alice_calendar.ics'),\n    'Bob': Path('/app/bob_calendar.ics'),\n    'Carol': Path('/app/carol_calendar.ics'),\n}\n\ndef parse_dt(s):\n    s = s.strip()\n    if s.endswith('Z'):\n        return datetime.strptime(s, '%Y%m%dT%H%M%SZ')\n    return datetime.strptime(s, '%Y%m%dT%H%M%S')\n\ncal = {}\nfor name, path in files.items():\n    text = path.read_text()\n    text = text.replace('\\r\\n', '\\n')\n    events = []\n    for block in re.findall(r'BEGIN:VEVENT(.*?)END:VEVENT', text, re.S):\n        m1 = re.search(r'DTSTART(?:;[^:\\n]+)?:([0-9TZ]+)', block)\n        m2 = re.search(r'DTEND(?:;[^:\\n]+)?:([0-9TZ]+)', block)\n        if m1 and m2:\n            events.append((parse_dt(m1.group(1)), parse_dt(m2.group(1))))\n    cal[name] = events\n\nstart_day = datetime(2024, 1, 15)\nend_day = datetime(2024, 1, 19)\nslot = None\nfor d in range((end_day - start_day).days + 1):\n    day = start_day + timedelta(days=d)\n    if day.weekday() >= 5:\n        continue\n    t = datetime(day.year, day.month, day.day, 9, 0)\n    end_limit = datetime(day.year, day.month, day.day, 18, 0)\n    while t + timedelta(hours=1) <= end_limit:\n        e = t + timedelta(hours=1)\n        # Alice hard constraints: 9-14 only\n        if t < datetime(day.year, day.month, day.day, 9, 0) or e > datetime(day.year, day.month, day.day, 14, 0):\n            t += timedelta(minutes=1); continue\n        # Bob hard constraints: no earlier than 10, Tue/Thu end by 16:30\n        if t < datetime(day.year, day.month, day.day, 10, 0):\n            t += timedelta(minutes=1); continue\n        if day.weekday() in (1, 3) and e > datetime(day.year, day.month, day.day, 16, 30):\n            t += timedelta(minutes=1); continue\n        # Carol hard constraints: 9-17, no overlap lunch 12:00-12:30\n        if t < datetime(day.year, day.month, day.day, 9, 0) or e > datetime(day.year, day.month, day.day, 17, 0):\n            t += timedelta(minutes=1); continue\n        lunch_start = datetime(day.year, day.month, day.day, 12, 0)\n        lunch_end = datetime(day.year, day.month, day.day, 12, 30)\n        if t < lunch_end and e > lunch_start:\n            t += timedelta(minutes=1); continue\n        ok = True\n        for events in cal.values():\n            for s2, e2 in events:\n                if t < e2 and e > s2:\n                    ok = False\n                    break\n            if not ok:\n                break\n        if ok:\n            slot = (t, e)\n            break\n        t += timedelta(minutes=1)\n    if slot:\n        break\n\nif not slot:\n    raise SystemExit('No valid slot found')\n\ns, e = slot\nstamp = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')\nuid = f'{s.strftime(\"%Y%m%dT%H%M%SZ\")}-team-planning@example.com'\nics = '\\r\\n'.join([\n    'BEGIN:VCALENDAR',\n    'VERSION:2.0',\n    'PRODID:-//OpenAI//Meeting Scheduler//EN',\n    'BEGIN:VEVENT',\n    f'UID:{uid}',\n    f'DTSTAMP:{stamp}',\n    f'DTSTART:{s.strftime(\"%Y%m%dT%H%M%SZ\")}',\n    f'DTEND:{e.strftime(\"%Y%m%dT%H%M%SZ\")}',\n    'SUMMARY:Team Planning Meeting',\n    'ATTENDEE:mailto:alice@example.com',\n    'ATTENDEE:mailto:bob@example.com',\n    'ATTENDEE:mailto:carol@example.com',\n    'END:VEVENT',\n    'END:VCALENDAR',\n    ''\n])\nPath('/app/meeting_scheduled.ics').write_text(ics)\nprint(f'{s.strftime(\"%Y-%m-%d %H:%M\")} to {e.strftime(\"%H:%M\")} UTC')\nPY"
+        ],
+        "observations": [
+          "return_code=0\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: Scheduled 2024-01-15T12:00:00 to 2024-01-15T13:00:00 UTC\nstderr:\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nCALL python3 - <<'PY'\nfrom pathlib import Path\nfor p in ['/app/alice_calendar.ics','/app/bob_calendar.ics','/app/carol_calendar.ics']:\n    print(f'--- {p} ---')\n    print(Path(p).read_text())\nPY\nOBSERVATION:\nreturn_code: 0\nstdout: 2024-01-16 10:30 to 11:30 UTC\nstderr:\n(world-model prediction; command was not executed)"
+        ],
+        "return_codes": [
+          0,
+          0
+        ],
+        "final_answer": "Created /app/meeting_scheduled.ics scheduling the Team Planning Meeting for 2024-01-16 10:30-11:30 UTC with all three attendees.",
+        "done": true,
+        "n_steps": 2,
+        "total_tokens": 23554
+      }
+    }
+  ],
+  "commit_results": []
+}

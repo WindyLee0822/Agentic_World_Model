@@ -1,0 +1,40 @@
+root@43f200ed6acf:/app# pwd; __tts_rc=$?; printf '\n__TTS_f44462d67eb548efa027ea9a2ddd16d8__RC:%s\n' "$__tts_rc"; printf '__TTS_f44462d67eb548efa027ea9a2ddd16d8
+__PWD:'; pwd; printf '__TTS_f44462d67eb548efa027ea9a2ddd16d8__END\n'; tmux wait -S done
+/app
+
+__TTS_f44462d67eb548efa027ea9a2ddd16d8__RC:0
+__TTS_f44462d67eb548efa027ea9a2ddd16d8__PWD:/app
+__TTS_f44462d67eb548efa027ea9a2ddd16d8__END
+root@43f200ed6acf:/app# cd -- /app && python - <<'PY'
+> import urllib.request; print(urllib.request.urlopen('https://www.youtube.com/watch?v=jNQXAC9IVRw', timeout=20).status)
+> PY; __tts_rc=$?; printf '\n__TTS_0be6f20b9cde4680b7e07932df355a0f__RC:%s\n' "$__tts_rc"; printf '__TTS_0be6f20b9cde4680b7e07932df355a0f__PWD:'; pwd; printf '_
+_TTS_0be6f20b9cde4680b7e07932df355a0f__END\n'; tmux wait -S done
+> cd -- /app && ls -la; __tts_rc=$?; printf '\n__TTS_d98d52b1c6314351b8aad065218df39b__RC:%s\n' "$__tts_rc"; printf '__TTS_d98d52b1c6314351b8aad065218df39b__PWD
+:'; pwd; printf '__TTS_d98d52b1c6314351b8aad065218df39b__END\n'; tmux wait -S done
+> cd -- /app && pwd && ls -la /app && command -v yt-dlp || command -v youtube-dl || command -v ffmpeg; __tts_rc=$?; printf '\n__TTS_28bc009d3bbb4f13b98343b871ca
+612d__RC:%s\n' "$__tts_rc"; printf '__TTS_28bc009d3bbb4f13b98343b871ca612d__PWD:'; pwd; printf '__TTS_28bc009d3bbb4f13b98343b871ca612d__END\n'; tmux wait -S don
+e
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

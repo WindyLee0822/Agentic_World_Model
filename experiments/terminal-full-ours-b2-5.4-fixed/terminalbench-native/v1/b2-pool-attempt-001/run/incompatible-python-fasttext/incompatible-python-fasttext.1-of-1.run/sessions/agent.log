@@ -1,0 +1,43 @@
+[?2004hroot@da912b5efe4f:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@da912b5efe4f:/app# clear
+[?2004l[H[J[3J[?2004hroot@da912b5efe4f:/app# pwd; __tts_rc=$?; printf '\n__TTS_a9a8cee92390412caca9d0b68ef55f4c__RC:%s\n' "$__tts_rc"; printf '__TTS_a9a8cee92390412caca9d0b68ef55f4c__PWD:'; pwd; printf '__TTS_a9a8cee92390412caca9d0b68ef55f4c__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__RC:0
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__PWD:/app
+__TTS_a9a8cee92390412caca9d0b68ef55f4c__END
+[?2004hroot@da912b5efe4f:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import sys
+[?2004l[?2004h> print(sys.executable)
+[?2004l[?2004h> try:
+[?2004l[?2004h>  import fasttext
+[?2004l[?2004h>  print('fasttext ok', fasttext.__file__)
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>  print(type(e).__name__, e)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f3f15a828b964bd7ba26a6d1ca905de3__RC:%s\n' "$__tts_rc"; printf '__TTS_f3f15a828b964bd7ba26a6d1ca905de3__PWD:'; pwd; printf '__TTS_f3f15a828b964bd7ba26a6d1ca905de3__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import sys; print(sys.executable); import importlib.util as u; print(u.find_spec('fasttext'))"; __tts_rc=$?; printf '\n__TTS_5f8ba31eb2cc4a66aec7d7dae1791355__RC:%s\n' "$__tts_rc"; printf '__TTS_5f8ba31eb2cc4a66aec7d7dae1791355__PWD:'; pwd; printf '__TTS_5f8ba31eb2cc4a66aec7d7dae1791355__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import sys; print(sys.executable); print('ok')"; __tts_rc=$?; printf '\n__TTS_cc05c6af2b59453dab0f577b5f854186__RC:%s\n' "$__tts_rc"; printf '__TTS_cc05c6af2b59453dab0f577b5f854186__PWD:'; pwd; printf '__TTS_cc05c6af2b59453dab0f577b5f854186__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m8[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_f3f15a828b964bd7ba26a6d1ca905de3__RC:%s\n' "$__tts_rc"; printf '__TTS_f3f15a828b964bd7ba26a6d1ca905de3__PWD:'; pwd; printf '__TTS_f3f15a828b964bd7ba26a6d1ca905de3__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@da912b5efe4f:/app# cd -- ''"'"'; pwd; printf '"'"'' && python -c "import sys,site; print(sys.executable); print(site.getsitepackages()); print(site.getusersitepackages())"; __tts_rc=$?; printf '\n__TTS_1b4568642d58458b9c319fa86d06f84a__RC:%s\n' "$__tts_rc"; printf '__TTS_1b4568642d58458b9c319fa86d06f84a__PWD:'; pwd; printf '__TTS_1b4568642d58458b9c319fa86d06f84a__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_1b4568642d58458b9c319fa86d06f84a__RC:1
+__TTS_1b4568642d58458b9c319fa86d06f84a__PWD:/app
+__TTS_1b4568642d58458b9c319fa86d06f84a__END
+[?2004hroot@da912b5efe4f:/app# cd -- /app && pwd; python -c "import sys,site; print(sys.executable); print(site.getsitepackages()); print(site.getusersitepackages())"; __tts_rc=$?; printf '\n__TTS_cfd2124572ea4f4ba094613e53fdf92c__RC:%s\n' "$__tts_rc"; printf '__TTS_cfd2124572ea4f4ba094613e53fdf92c__PWD:'; pwd; printf '__TTS_cfd2124572ea4f4ba094613e53fdf92c__END\n'; tmux wait -S done
+[?2004l/app
+/usr/local/bin/python
+['/usr/local/lib/python3.13/site-packages']
+/root/.local/lib/python3.13/site-packages
+
+__TTS_cfd2124572ea4f4ba094613e53fdf92c__RC:0
+__TTS_cfd2124572ea4f4ba094613e53fdf92c__PWD:/app
+__TTS_cfd2124572ea4f4ba094613e53fdf92c__END
+[?2004hroot@da912b5efe4f:/app# 

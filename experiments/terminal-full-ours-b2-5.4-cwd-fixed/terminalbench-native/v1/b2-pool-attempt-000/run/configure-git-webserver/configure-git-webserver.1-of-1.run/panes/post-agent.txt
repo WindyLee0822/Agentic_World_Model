@@ -1,0 +1,461 @@
+root@d0b95dbbe956:/app# pwd; __tts_rc=$?; printf '\n__TTS_5abf40f5ad64489d8bc85409e97da409__RC:%s\n' "$__tts_rc"; printf '__TTS_5abf40f5ad64489d8bc85409e97da409
+__PWD:'; pwd; printf '__TTS_5abf40f5ad64489d8bc85409e97da409__END\n'; tmux wait -S done
+/app
+
+__TTS_5abf40f5ad64489d8bc85409e97da409__RC:0
+__TTS_5abf40f5ad64489d8bc85409e97da409__PWD:/app
+__TTS_5abf40f5ad64489d8bc85409e97da409__END
+root@d0b95dbbe956:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/root#' >/dev/null; find /app -maxdepth 3 \( -type f -o -type d \)
+ | sort | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_a6e539ecd5974c7bbbda889c789ae0dd__RC:%s\n' "$__tts_rc"; printf '__TTS_a6e539ecd5974c7bbbda889c789ae0dd__
+PWD:'; pwd; printf '__TTS_a6e539ecd5974c7bbbda889c789ae0dd__END\n'; tmux wait -S done
+total 8
+drwxr-xr-x 2 root root 4096 May 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 18:40 ..
+/app
+
+__TTS_a6e539ecd5974c7bbbda889c789ae0dd__RC:0
+__TTS_a6e539ecd5974c7bbbda889c789ae0dd__PWD:/app
+__TTS_a6e539ecd5974c7bbbda889c789ae0dd__END
+root@d0b95dbbe956:/app# cd -- /app && find / -maxdepth 3 \( -type f -o -type d \) 2>/dev/null | sort | sed -n '1,240p'; __tts_rc=$?; printf '\n__TTS_d5cf7b01611
+64f859227622870e0a9be__RC:%s\n' "$__tts_rc"; printf '__TTS_d5cf7b0161164f859227622870e0a9be__PWD:'; pwd; printf '__TTS_d5cf7b0161164f859227622870e0a9be__END\n';
+ tmux wait -S done
+/
+/.dockerenv
+/app
+/boot
+/dev
+/dev/mqueue
+/dev/pts
+/dev/shm
+/etc
+/etc/.pwd.lock
+/etc/alternatives
+/etc/alternatives/README
+/etc/apt
+/etc/apt/apt.conf.d
+/etc/apt/auth.conf.d
+/etc/apt/keyrings
+/etc/apt/preferences.d
+/etc/apt/sources.list
+/etc/apt/sources.list.d
+/etc/apt/trusted.gpg.d
+/etc/bash.bashrc
+/etc/bindresvport.blacklist
+/etc/ca-certificates
+/etc/ca-certificates.conf
+/etc/ca-certificates/update.d
+/etc/cloud
+/etc/cloud/build.info
+/etc/cron.d
+/etc/cron.d/e2scrub_all
+/etc/cron.daily
+/etc/cron.daily/apt-compat
+/etc/cron.daily/dpkg
+/etc/debconf.conf
+/etc/debian_version
+/etc/default
+/etc/default/locale
+/etc/default/useradd
+/etc/dpkg
+/etc/dpkg/dpkg.cfg
+/etc/dpkg/dpkg.cfg.d
+/etc/dpkg/origins
+/etc/e2scrub.conf
+/etc/environment
+/etc/ethertypes
+/etc/fstab
+/etc/gai.conf
+/etc/gnutls
+/etc/gnutls/config
+/etc/group
+/etc/group-
+/etc/gshadow
+/etc/gshadow-
+/etc/host.conf
+/etc/hostname
+/etc/hosts
+/etc/init.d
+/etc/init.d/procps
+/etc/inputrc
+/etc/issue
+/etc/issue.net
+/etc/kernel
+/etc/kernel/postinst.d
+/etc/ld.so.cache
+/etc/ld.so.conf
+/etc/ld.so.conf.d
+/etc/ld.so.conf.d/libc.conf
+/etc/ld.so.conf.d/x86_64-linux-gnu.conf
+/etc/legal
+/etc/libaudit.conf
+/etc/login.defs
+/etc/logrotate.d
+/etc/logrotate.d/alternatives
+/etc/logrotate.d/apt
+/etc/logrotate.d/dpkg
+/etc/lsb-release
+/etc/machine-id
+/etc/mime.types
+/etc/mke2fs.conf
+/etc/networks
+/etc/nsswitch.conf
+/etc/opt
+/etc/pam.conf
+/etc/pam.d
+/etc/pam.d/chfn
+/etc/pam.d/chpasswd
+/etc/pam.d/chsh
+/etc/pam.d/common-account
+/etc/pam.d/common-auth
+/etc/pam.d/common-password
+/etc/pam.d/common-session
+/etc/pam.d/common-session-noninteractive
+/etc/pam.d/login
+/etc/pam.d/newusers
+/etc/pam.d/other
+/etc/pam.d/passwd
+/etc/pam.d/runuser
+/etc/pam.d/runuser-l
+/etc/pam.d/su
+/etc/pam.d/su-l
+/etc/passwd
+/etc/passwd-
+/etc/profile
+/etc/profile.d
+/etc/profile.d/01-locale-fix.sh
+/etc/protocols
+/etc/python3
+/etc/python3.12
+/etc/python3.12/sitecustomize.py
+/etc/python3/debian_config
+/etc/rc0.d
+/etc/rc1.d
+/etc/rc2.d
+/etc/rc3.d
+/etc/rc4.d
+/etc/rc5.d
+/etc/rc6.d
+/etc/rcS.d
+/etc/resolv.conf
+/etc/rpc
+/etc/security
+/etc/security/access.conf
+/etc/security/faillock.conf
+/etc/security/group.conf
+/etc/security/limits.conf
+/etc/security/limits.d
+/etc/security/namespace.conf
+/etc/security/namespace.d
+/etc/security/namespace.init
+/etc/security/opasswd
+/etc/security/pam_env.conf
+/etc/security/pwhistory.conf
+/etc/security/sepermit.conf
+/etc/security/time.conf
+/etc/selinux
+/etc/selinux/semanage.conf
+/etc/services
+/etc/shadow
+/etc/shadow-
+/etc/shells
+/etc/skel
+/etc/skel/.bash_logout
+/etc/skel/.bashrc
+/etc/skel/.profile
+/etc/ssl
+/etc/ssl/certs
+/etc/ssl/openssl.cnf
+/etc/ssl/private
+/etc/subgid
+/etc/subgid-
+/etc/subuid
+/etc/subuid-
+/etc/sysctl.conf
+/etc/sysctl.d
+/etc/sysctl.d/10-bufferbloat.conf
+/etc/sysctl.d/10-console-messages.conf
+/etc/sysctl.d/10-ipv6-privacy.conf
+/etc/sysctl.d/10-kernel-hardening.conf
+/etc/sysctl.d/10-magic-sysrq.conf
+/etc/sysctl.d/10-map-count.conf
+/etc/sysctl.d/10-network-security.conf
+/etc/sysctl.d/10-ptrace.conf
+/etc/sysctl.d/10-zeropage.conf
+/etc/sysctl.d/README.sysctl
+/etc/systemd
+/etc/systemd/system
+/etc/systemd/user
+/etc/terminfo
+/etc/terminfo/README
+/etc/timezone
+/etc/update-motd.d
+/etc/update-motd.d/00-header
+/etc/update-motd.d/10-help-text
+/etc/update-motd.d/50-motd-news
+/etc/update-motd.d/60-unminimize
+/etc/xattr.conf
+/home
+/home/ubuntu
+/home/ubuntu/.bash_logout
+/home/ubuntu/.bashrc
+/home/ubuntu/.profile
+/logs
+/logs/agent.cast
+/logs/agent.log
+/media
+/mnt
+/opt
+/proc
+/proc/1
+/proc/1/arch_status
+/proc/1/attr
+/proc/1/autogroup
+/proc/1/auxv
+/proc/1/cgroup
+/proc/1/clear_refs
+/proc/1/cmdline
+/proc/1/comm
+/proc/1/coredump_filter
+/proc/1/cpu_resctrl_groups
+/proc/1/environ
+/proc/1/fd
+/proc/1/fdinfo
+/proc/1/gid_map
+/proc/1/io
+/proc/1/ksm_merging_pages
+/proc/1/ksm_stat
+/proc/1/latency
+/proc/1/limits
+/proc/1/loginuid
+/proc/1/map_files
+/proc/1/maps
+/proc/1/mem
+/proc/1/mountinfo
+/proc/1/mounts
+/proc/1/mountstats
+/proc/1/net
+/proc/1/ns
+/proc/1/numa_maps
+/proc/1/oom_adj
+/proc/1/oom_score
+/proc/1/oom_score_adj
+/proc/1/pagemap
+/proc/1/patch_state
+/proc/1/personality
+/proc/1/projid_map
+/proc/1/sched
+/proc/1/schedstat
+/proc/1/sessionid
+/proc/1/setgroups
+/proc/1/smaps
+/proc/1/smaps_rollup
+/proc/1/stack
+/proc/1/stat
+/proc/1/statm
+/proc/1/status
+/proc/1/syscall
+/proc/1/task
+/proc/1/timens_offsets
+/proc/1/timers
+/proc/1/timerslack_ns
+/proc/1/uid_map
+
+__TTS_d5cf7b0161164f859227622870e0a9be__RC:0
+__TTS_d5cf7b0161164f859227622870e0a9be__PWD:/app
+__TTS_d5cf7b0161164f859227622870e0a9be__END
+root@d0b95dbbe956:/app# cd -- /app && find /etc/systemd/system /lib/systemd/system /usr/lib/systemd/system -maxdepth 2 -type f 2>/dev/null | sort | sed -n '1,22
+0p'; __tts_rc=$?; printf '\n__TTS_8199ceaf9e534f9ebb0aa952d1c665e9__RC:%s\n' "$__tts_rc"; printf '__TTS_8199ceaf9e534f9ebb0aa952d1c665e9__PWD:'; pwd; printf '__
+TTS_8199ceaf9e534f9ebb0aa952d1c665e9__END\n'; tmux wait -S done
+/lib/systemd/system/apt-daily-upgrade.service
+/lib/systemd/system/apt-daily-upgrade.timer
+/lib/systemd/system/apt-daily.service
+/lib/systemd/system/apt-daily.timer
+/lib/systemd/system/dpkg-db-backup.service
+/lib/systemd/system/dpkg-db-backup.timer
+/lib/systemd/system/e2scrub@.service
+/lib/systemd/system/e2scrub_all.service
+/lib/systemd/system/e2scrub_all.timer
+/lib/systemd/system/e2scrub_fail@.service
+/lib/systemd/system/e2scrub_reap.service
+/lib/systemd/system/fstrim.service
+/lib/systemd/system/fstrim.timer
+/lib/systemd/system/motd-news.service
+/lib/systemd/system/motd-news.timer
+/lib/systemd/system/pam_namespace.service
+/usr/lib/systemd/system/apt-daily-upgrade.service
+/usr/lib/systemd/system/apt-daily-upgrade.timer
+/usr/lib/systemd/system/apt-daily.service
+/usr/lib/systemd/system/apt-daily.timer
+/usr/lib/systemd/system/dpkg-db-backup.service
+/usr/lib/systemd/system/dpkg-db-backup.timer
+/usr/lib/systemd/system/e2scrub@.service
+/usr/lib/systemd/system/e2scrub_all.service
+/usr/lib/systemd/system/e2scrub_all.timer
+/usr/lib/systemd/system/e2scrub_fail@.service
+/usr/lib/systemd/system/e2scrub_reap.service
+/usr/lib/systemd/system/fstrim.service
+/usr/lib/systemd/system/fstrim.timer
+/usr/lib/systemd/system/motd-news.service
+/usr/lib/systemd/system/motd-news.timer
+/usr/lib/systemd/system/pam_namespace.service
+
+__TTS_8199ceaf9e534f9ebb0aa952d1c665e9__RC:0
+__TTS_8199ceaf9e534f9ebb0aa952d1c665e9__PWD:/app
+__TTS_8199ceaf9e534f9ebb0aa952d1c665e9__END
+root@d0b95dbbe956:/app# cd -- /app && bash -lc 'which git sshd python3 openssl curl && ps -ef | sed -n "1,120p" && ls -ld /git /var/www /home/ubuntu 2>/dev/null
+ || true'; __tts_rc=$?; printf '\n__TTS_c342a2c4202540d1bb9ef0b32b6cc042__RC:%s\n' "$__tts_rc"; printf '__TTS_c342a2c4202540d1bb9ef0b32b6cc042__PWD:'; pwd; prin
+tf '__TTS_c342a2c4202540d1bb9ef0b32b6cc042__END\n'; tmux wait -S done
+/usr/bin/python3
+/usr/bin/openssl
+
+__TTS_c342a2c4202540d1bb9ef0b32b6cc042__RC:0
+__TTS_c342a2c4202540d1bb9ef0b32b6cc042__PWD:/app
+__TTS_c342a2c4202540d1bb9ef0b32b6cc042__END
+root@d0b95dbbe956:/app# cd -- /app && bash -lc 'apt-get update >/tmp/apt.log 2>&1 && apt-get install -y git openssh-server curl >/tmp/apt2.log 2>&1 && tail -n 2
+0 /tmp/apt2.log'; __tts_rc=$?; printf '\n__TTS_8bb1908a1b0a4504b12aba0b265525e6__RC:%s\n' "$__tts_rc"; printf '__TTS_8bb1908a1b0a4504b12aba0b265525e6__PWD:'; pw
+d; printf '__TTS_8bb1908a1b0a4504b12aba0b265525e6__END\n'; tmux wait -S done
+Setting up openssh-server (1:9.6p1-3ubuntu13.18) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 79.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/ssh/sshd_config with new version
+Creating SSH2 RSA key; this may take some time ...
+3072 SHA256:HdPPMNgnybIyfEJdWMDvScV6xm4Z8u4uoSPP/WsWbDM root@d0b95dbbe956 (RSA)
+Creating SSH2 ECDSA key; this may take some time ...
+256 SHA256:OhT4/qqTMAc1jQXS3of0BzS8N1+TgWoPHa07oufZ1eE root@d0b95dbbe956 (ECDSA)
+Creating SSH2 ED25519 key; this may take some time ...
+256 SHA256:hweyjxIbtyaNIcRQeuQQrNzbgAVUWFtUb7fDNpibbYQ root@d0b95dbbe956 (ED25519)
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Created symlink /etc/systemd/system/sockets.target.wants/ssh.socket → /usr/lib/systemd/system/ssh.socket.
+Created symlink /etc/systemd/system/ssh.service.requires/ssh.socket → /usr/lib/systemd/system/ssh.socket.
+Setting up python3-launchpadlib (1.11.0-6) ...
+Created symlink /etc/systemd/user/timers.target.wants/launchpadlib-cache-clean.timer → /usr/lib/systemd/user/launchpadlib-cache-clean.timer.
+Setting up ssh-import-id (5.11-0ubuntu2.24.04.1) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.4) ...
+
+__TTS_8bb1908a1b0a4504b12aba0b265525e6__RC:0
+__TTS_8bb1908a1b0a4504b12aba0b265525e6__PWD:/app
+__TTS_8bb1908a1b0a4504b12aba0b265525e6__END
+root@d0b95dbbe956:/app# cd -- /app && bash -lc 'grep -vE "^(#|$)" /etc/ssh/sshd_config 2>/dev/null; ls -la /etc/ssh; id ubuntu 2>/dev/null || true; ls -ld /git
+/var/www 2>/dev/null || true; ps -ef | grep -E "sshd|python3 .*8080" | grep -v grep || true'; __tts_rc=$?; printf '\n__TTS_188d7009e24e491ab4ac8158925565f3__RC:
+%s\n' "$__tts_rc"; printf '__TTS_188d7009e24e491ab4ac8158925565f3__PWD:'; pwd; printf '__TTS_188d7009e24e491ab4ac8158925565f3__END\n'; tmux wait -S done
+Include /etc/ssh/sshd_config.d/*.conf
+KbdInteractiveAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd no
+AcceptEnv LANG LC_*
+Subsystem       sftp    /usr/lib/openssh/sftp-server
+total 664
+drwxr-xr-x 4 root root   4096 Jul 18 18:41 .
+drwxr-xr-x 1 root root   4096 Jul 18 18:41 ..
+-rw-r--r-- 1 root root 620042 Jul  9 18:16 moduli
+-rw-r--r-- 1 root root   1649 Jul  9 18:16 ssh_config
+drwxr-xr-x 2 root root   4096 Jul  9 18:16 ssh_config.d
+-rw------- 1 root root    513 Jul 18 18:41 ssh_host_ecdsa_key
+-rw-r--r-- 1 root root    179 Jul 18 18:41 ssh_host_ecdsa_key.pub
+-rw------- 1 root root    411 Jul 18 18:41 ssh_host_ed25519_key
+-rw-r--r-- 1 root root     99 Jul 18 18:41 ssh_host_ed25519_key.pub
+-rw------- 1 root root   2602 Jul 18 18:41 ssh_host_rsa_key
+-rw-r--r-- 1 root root    571 Jul 18 18:41 ssh_host_rsa_key.pub
+-rw-r--r-- 1 root root    342 Dec  7  2020 ssh_import_id
+-rw-r--r-- 1 root root   3517 Jul  9 18:16 sshd_config
+drwxr-xr-x 2 root root   4096 Jul  9 18:16 sshd_config.d
+uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev)
+
+__TTS_188d7009e24e491ab4ac8158925565f3__RC:0
+__TTS_188d7009e24e491ab4ac8158925565f3__PWD:/app
+__TTS_188d7009e24e491ab4ac8158925565f3__END
+root@d0b95dbbe956:/app# cd -- /app && bash -lc 'mkdir -p /git/server.git /srv/web /home/ubuntu/.ssh /run/sshd && git init --bare /git/server.git && printf "#!/b
+in/sh\nset -e\nbranch=\"$1\"\nold=\"$2\"\nnew=\"$3\"\n[ \"$branch\" = refs/heads/webserver ] || exit 0\nGIT_WORK_TREE=/srv/web git --git-dir=/git/server.git che
+ckout -f webserver -- .\nfind /srv/web -maxdepth 1 -type f -name hello.html -exec cp {} /srv/web/index.html \;\n" >/git/server.git/hooks/post-receive && chmod +
+x /git/server.git/hooks/post-receive && chown -R ubuntu:ubuntu /git /srv/web /home/ubuntu/.ssh && ssh-keygen -q -t ed25519 -N "" -f /home/ubuntu/.ssh/id_ed25519
+ && cat /home/ubuntu/.ssh/id_ed25519.pub >> /home/ubuntu/.ssh/authorized_keys && chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys && chmod 700 /home/ubuntu
+/.ssh && chmod 600 /home/ubuntu/.ssh/authorized_keys && printf "Port 22\nPermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes\nAuthorizedKeys
+File .ssh/authorized_keys\n" >/etc/ssh/sshd_config.d/git.conf && nohup /usr/sbin/sshd -D >/tmp/sshd.log 2>&1 & nohup python3 -m http.server 8080 -d /srv/web >/t
+mp/web.log 2>&1 & echo READY && sed -n "1,2p" /home/ubuntu/.ssh/id_ed25519'; __tts_rc=$?; printf '\n__TTS_7f78595776dc446da96800e90164d33b__RC:%s\n' "$__tts_rc"
+; printf '__TTS_7f78595776dc446da96800e90164d33b__PWD:'; pwd; printf '__TTS_7f78595776dc446da96800e90164d33b__END\n'; tmux wait -S done
+READY
+sed: can't read /home/ubuntu/.ssh/id_ed25519: No such file or directory
+
+__TTS_7f78595776dc446da96800e90164d33b__RC:2
+__TTS_7f78595776dc446da96800e90164d33b__PWD:/app
+__TTS_7f78595776dc446da96800e90164d33b__END
+root@d0b95dbbe956:/app# hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+Initialized empty Git repository in /git/server.git/
+cd -- /app && bash -lc 'ps -ef | grep -E "sshd -D|http.server 8080" | grep -v grep; ls -la /home/ubuntu/.ssh /git/server.git/hooks /srv/web 2>/dev/null; find /h
+ome/ubuntu/.ssh -maxdepth 1 -type f -ls 2>/dev/null'; __tts_rc=$?; printf '\n__TTS_0cbf044782954d1888fcfc87d9051ddb__RC:%s\n' "$__tts_rc"; printf '__TTS_0cbf044
+782954d1888fcfc87d9051ddb__PWD:'; pwd; printf '__TTS_0cbf044782954d1888fcfc87d9051ddb__END\n'; tmux wait -S done
+root        1921       1  0 18:41 pts/1    00:00:00 bash -lc mkdir -p /git/server.git /srv/web /home/ubuntu/.ssh /run/sshd && git init --bare /git/server.git &&
+ printf "#!/bin/sh\nset -e\nbranch=\"$1\"\nold=\"$2\"\nnew=\"$3\"\n[ \"$branch\" = refs/heads/webserver ] || exit 0\nGIT_WORK_TREE=/srv/web git --git-dir=/git/s
+erver.git checkout -f webserver -- .\nfind /srv/web -maxdepth 1 -type f -name hello.html -exec cp {} /srv/web/index.html \;\n" >/git/server.git/hooks/post-recei
+ve && chmod +x /git/server.git/hooks/post-receive && chown -R ubuntu:ubuntu /git /srv/web /home/ubuntu/.ssh && ssh-keygen -q -t ed25519 -N "" -f /home/ubuntu/.s
+sh/id_ed25519 && cat /home/ubuntu/.ssh/id_ed25519.pub >> /home/ubuntu/.ssh/authorized_keys && chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys && chmod 700
+ /home/ubuntu/.ssh && chmod 600 /home/ubuntu/.ssh/authorized_keys && printf "Port 22\nPermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes\nA
+uthorizedKeysFile .ssh/authorized_keys\n" >/etc/ssh/sshd_config.d/git.conf && nohup /usr/sbin/sshd -D >/tmp/sshd.log 2>&1 & nohup python3 -m http.server 8080 -d
+ /srv/web >/tmp/web.log 2>&1 & echo READY && sed -n "1,2p" /home/ubuntu/.ssh/id_ed25519
+root        1922       1  0 18:41 pts/1    00:00:00 python3 -m http.server 8080 -d /srv/web
+root        1940    1921  0 18:41 pts/1    00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+/git/server.git/hooks:
+total 76
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul 18 18:41 .
+drwxr-xr-x 7 ubuntu ubuntu 4096 Jul 18 18:41 ..
+-rwxr-xr-x 1 ubuntu ubuntu  478 Jul 18 18:41 applypatch-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu  896 Jul 18 18:41 commit-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu 4726 Jul 18 18:41 fsmonitor-watchman.sample
+-rwxr-xr-x 1 ubuntu ubuntu  247 Jul 18 18:41 post-receive
+-rwxr-xr-x 1 ubuntu ubuntu  189 Jul 18 18:41 post-update.sample
+-rwxr-xr-x 1 ubuntu ubuntu  424 Jul 18 18:41 pre-applypatch.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1643 Jul 18 18:41 pre-commit.sample
+-rwxr-xr-x 1 ubuntu ubuntu  416 Jul 18 18:41 pre-merge-commit.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1374 Jul 18 18:41 pre-push.sample
+-rwxr-xr-x 1 ubuntu ubuntu 4898 Jul 18 18:41 pre-rebase.sample
+-rwxr-xr-x 1 ubuntu ubuntu  544 Jul 18 18:41 pre-receive.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1492 Jul 18 18:41 prepare-commit-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu 2783 Jul 18 18:41 push-to-checkout.sample
+-rwxr-xr-x 1 ubuntu ubuntu 2308 Jul 18 18:41 sendemail-validate.sample
+-rwxr-xr-x 1 ubuntu ubuntu 3650 Jul 18 18:41 update.sample
+
+/home/ubuntu/.ssh:
+total 20
+drwx------ 2 ubuntu ubuntu 4096 Jul 18 18:41 .
+drwxr-x--- 1 ubuntu ubuntu 4096 Jul 18 18:41 ..
+-rw------- 1 ubuntu ubuntu   99 Jul 18 18:41 authorized_keys
+-rw------- 1 root   root    411 Jul 18 18:41 id_ed25519
+-rw-r--r-- 1 root   root     99 Jul 18 18:41 id_ed25519.pub
+
+/srv/web:
+total 8
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul 18 18:41 .
+drwxr-xr-x 1 root   root   4096 Jul 18 18:41 ..
+ 32718441      4 -rw-r--r--   1 root     root           99 Jul 18 18:41 /home/ubuntu/.ssh/id_ed25519.pub
+ 32718440      4 -rw-------   1 root     root          411 Jul 18 18:41 /home/ubuntu/.ssh/id_ed25519
+ 32718442      4 -rw-------   1 ubuntu   ubuntu         99 Jul 18 18:41 /home/ubuntu/.ssh/authorized_keys
+
+__TTS_0cbf044782954d1888fcfc87d9051ddb__RC:0
+__TTS_0cbf044782954d1888fcfc87d9051ddb__PWD:/app
+__TTS_0cbf044782954d1888fcfc87d9051ddb__END
+root@d0b95dbbe956:/app# cd -- /app && bash -lc 'chown ubuntu:ubuntu /home/ubuntu/.ssh/id_ed25519* && printf "Host localhost\n  StrictHostKeyChecking no\n  UserK
+nownHostsFile=/dev/null\n  IdentityFile ~/.ssh/id_ed25519\n" >/home/ubuntu/.ssh/config && chmod 600 /home/ubuntu/.ssh/config && rm -rf /tmp/client && sudo -u ub
+untu git clone localhost:/git/server.git /tmp/client && cd /tmp/client && git config user.name ubuntu && git config user.email ubuntu@localhost && git checkout
+-b webserver && printf "hello world\n" >hello.html && git add hello.html && git commit -m add >/tmp/commit.log && git push origin webserver >/tmp/push.log && sl
+eep 1 && curl -s http://localhost:8080/hello.html && echo --- && curl -s http://localhost:8080/index.html'; __tts_rc=$?; printf '\n__TTS_e6ca9783e5e941198dff5eb
+e0f4e2424__RC:%s\n' "$__tts_rc"; printf '__TTS_e6ca9783e5e941198dff5ebe0f4e2424__PWD:'; pwd; printf '__TTS_e6ca9783e5e941198dff5ebe0f4e2424__END\n'; tmux wait -
+S done
+bash: line 1: sudo: command not found
+
+__TTS_e6ca9783e5e941198dff5ebe0f4e2424__RC:127
+__TTS_e6ca9783e5e941198dff5ebe0f4e2424__PWD:/app
+__TTS_e6ca9783e5e941198dff5ebe0f4e2424__END
+root@d0b95dbbe956:/app#

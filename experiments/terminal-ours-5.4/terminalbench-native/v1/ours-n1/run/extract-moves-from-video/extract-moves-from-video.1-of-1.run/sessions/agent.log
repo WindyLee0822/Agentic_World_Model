@@ -1,0 +1,144 @@
+[?2004hroot@ca33a41677df:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@ca33a41677df:/app# clear
+[?2004l[H[J[3J[?2004hroot@ca33a41677df:/app# pwd; __tts_rc=$?; printf '\n__TTS_c78694e6cc674d95bea71ee1298b186c__RC:%s\n' "$__tts_rc"; printf '__TTS_c78694e6cc674d95bea71ee1298b186c__PWD:'; pwd; printf '__TTS_c78694e6cc674d95bea71ee1298b186c__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_c78694e6cc674d95bea71ee1298b186c__RC:0
+__TTS_c78694e6cc674d95bea71ee1298b186c__PWD:/app
+__TTS_c78694e6cc674d95bea71ee1298b186c__END
+[?2004hroot@ca33a41677df:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, subprocess, sys
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+[?2004l[?2004h> out=Path('/app/zork.mp4')
+[?2004l[?2004h> cmd=['yt-dlp','-f','mp4/bestvideo+bestaudio/best','-o',str(out),url]
+[?2004l[?2004h> try:
+[?2004l[?2004h>     subprocess.run(cmd,check=True)
+[?2004l[?2004h> except Exception:
+[?2004l[?2004h>     sys.exit(1)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_75c35d7cad5c479e99bb7e74672c880c__RC:%s\n' "$__tts_rc"; printf '__TTS_75c35d7cad5c479e99bb7e74672c880c__PWD:'; pwd; printf '__TTS_75c35d7cad5c479e99bb7e74672c880c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python - <<'PY'
+[?2004l[?2004h> import subprocess, os
+[?2004l[?2004h> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+[?2004l[?2004h> subprocess.run(['bash','-lc','which yt-dlp || which youtube-dl || python -m pip show yt-dlp || ls /app'])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_5aa1f9ac7d704dcb900efd7df009c607__RC:%s\n' "$__tts_rc"; printf '__TTS_5aa1f9ac7d704dcb900efd7df009c607__PWD:'; pwd; printf '__TTS_5aa1f9ac7d704dcb900efd7df009c607__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+cd -- /app && python - <<'PY'
+import os, re, subprocess, sys, json, urllib.request, urllib.parse, ssl
+from pathlib import Path
+url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+html=urllib.request.urlopen(url, context=ssl._create_unverified_contebash: python: command not found
+xt()).read().decode('utf-8','ignore')
+# Save page for inspection/debug
+Path('/app/page.html').write_text(html)
+# Try extract captions/subtitles url and player response
+m=re.search(r'ytInitialPlayerResponse\s*=\s*(\{.*?\});', html)
+player=None
+if m:
+    try:
+        player=json.loads(m.group(1))
+    except Exception:
+        pass
+# Prefer auto/manual captions if present
+caption_text=''
+if player:
+    tracks=((player.get('captions') or {}).get('playerCaptionsTracklistRenderer') or {}).get('captionTracks') or []
+    for tr in tracks:
+        base=tr.get('baseUrl')
+        if not base: continue
+        try:
+            data=urllib.request.urlopen(base+'&fmt=vtt', context=ssl._create_unverified_context()).read().decode('utf-8','ignore')
+            caption_text=data
+            Path('/app/captions.vtt').write_text(data)
+            break
+        except Exception:
+            pass
+# Heuristic extraction of user commands from captions/page text
+src=caption_text if caption_text else html
+src=src.replace('\\n','\n')
+patterns=[
+    r'(?im)\b(?:>\s*|]\s*)([a-z]{1,12}(?:\s+[a-z]{1,12}){0,3})\b',
+    r'(?im)\b(?:go|enter|take|get|open|read|look|inventory|attack|kill|move|climb|light|drop|put|unlock|close|turn|examine)\s+[a-z]{1,20}(?:\s+[a-z]{1,20}){0,3}\b',
+    r'(?im)^(?:n|s|e|w|u|d|ne|nw|se|sw|in|out|i|l|g|x)$'
+]
+cmds=[]
+for pat in patterns:
+    for mm in re.finditer(pat, src):
+        c=mm.group(1) if mm.groups() else mm.group(0)
+        c=c.strip().lower()
+        c=re.sub(r'[^a-z\s]','',c)
+        c=re.sub(r'\s+',' ',c).strip()
+        if c and len(c)<=40:
+            cmds.append(c)
+# Keep plausible commands only
+verbs={'n','s','e','w','u','d','ne','nw','se','sw','in','out','i','l','g','x','north','south','east','west','up','down','look','inventory','get','take','open','read','enter','go','attack','kill','move','climb','light','drop','put','unlock','close','turn','examine'}
+filtered=[]
+for c in cmds:
+    first=c.split()[0]
+    if first in verbs or c in verbs:
+        if not filtered or filtered[-1]!=c:
+            filtered.append(c)
+Path('/app/solution.txt').write_text('\n'.join(filtered)+'\n' if filtered else '')
+print('wrote', len(filtered), 'commands')
+PY; __tts_rc=$?; printf '\n__TTS_17251a77ac0b4c599b23ed435787cf57__RC:%s\n' "$__tts_rc"; printf '__TTS_17251a77ac0b4c599b23ed435787cf57__PWD:'; pwd; printf '__TTS_17251a77ac0b4c599b23ed435787cf57__END\n'; tmux wait -S done
+[?2004hroot@ca33a41677df:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import os, re, subprocess, sys, json, urllib.request, urllib.parse, ssl
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+[?2004l[?2004h> html=urllib.request.urlopen(url, context=ssl._create_unverified_context()).read().decode('utf-8','ignore')
+[?2004l[?2004h> # Save page for inspection/debug
+[?2004l[?2004h> Path('/app/page.html').write_text(html)
+[?2004l[?2004h> # Try extract captions/subtitles url and player response
+[?2004l[?2004h> m=re.search(r'ytInitialPlayerResponse\s*=\s*(\{.*?\});', html)
+[?2004l[?2004h> player=None
+[?2004l[?2004h> if m:
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         player=json.loads(m.group(1))
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         pass
+[?2004l[?2004h> # Prefer auto/manual captions if present
+[?2004l[?2004h> caption_text=''
+[?2004l[?2004h> if player:
+[?2004l[?2004h>     tracks=((player.get('captions') or {}).get('playerCaptionsTracklistRenderer') or {}).get('captionTracks') or []
+[?2004l[?2004h>     for tr in tracks:
+[?2004l[?2004h>         base=tr.get('baseUrl')
+[?2004l[?2004h>         if not base: continue
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             data=urllib.request.urlopen(base+'&fmt=vtt', context=ssl._create_unverified_context()).read().decode('utf-8','ignore')
+[?2004l[?2004h>             caption_text=data
+[?2004l[?2004h>             Path('/app/captions.vtt').write_text(data)
+[?2004l[?2004h>             break
+[?2004l[?2004h>         except Exception:
+[?2004l[?2004h>             pass
+[?2004l[?2004h> # Heuristic extraction of user commands from captions/page text
+[?2004l[?2004h> src=caption_text if caption_text else html
+[?2004l[?2004h> src=src.replace('\\n','\n')
+[?2004l[?2004h> patterns=[
+[?2004l[?2004h>     r'(?im)\b(?:>\s*|]\s*)([a-z]{1,12}(?:\s+[a-z]{1,12}){0,3})\b',
+[?2004l[?2004h>     r'(?im)\b(?:go|enter|take|get|open|read|look|inventory|attack|kill|move|climb|light|drop|put|unlock|close|turn|examine)\s+[a-z]{1,20}(?:\s+[a-z]{1,20}){0,3}\b',
+[?2004l[?2004h>     r'(?im)^(?:n|s|e|w|u|d|ne|nw|se|sw|in|out|i|l|g|x)$'
+[?2004l[?2004h> ]
+[?2004l[?2004h> cmds=[]
+[?2004l[?2004h> for pat in patterns:
+[?2004l[?2004h>     for mm in re.finditer(pat, src):
+[?2004l[?2004h>         c=mm.group(1) if mm.groups() else mm.group(0)
+[?2004l[?2004h>         c=c.strip().lower()
+[?2004l[?2004h>         c=re.sub(r'[^a-z\s]','',c)
+[?2004l[?2004h>         c=re.sub(r'\s+',' ',c).strip()
+[?2004l[?2004h>         if c and len(c)<=40:
+[?2004l[?2004h>             cmds.append(c)
+[?2004l[?2004h> # Keep plausible commands only
+[?2004l[?2004h> verbs={'n','s','e','w','u','d','ne','nw','se','sw','in','out','i','l','g','x','north','south','east','west','up','down','look','inventory','get','take','open','read','enter','go','attack','kill','move','climb','light','drop','put','unlock','close','turn','examine'}
+[?2004l[?2004h> filtered=[]
+[?2004l[?2004h> for c in cmds:
+[?2004l[?2004h>     first=c.split()[0]
+[?2004l[?2004h>     if first in verbs or c in verbs:
+[?2004l[?2004h>         if not filtered or filtered[-1]!=c:
+[?2004l[?2004h>             filtered.append(c)
+[?2004l[?2004h> Path('/app/solution.txt').write_text('\n'.join(filtered)+'\n' if filtered else '')
+[?2004l[?2004h> print('wrote', len(filtered), 'commands')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_17251a77ac0b4c599b23ed435787cf57__RC:%s\n' "$__tts_rc"; printf '__TTS_17251a77ac0b4c599b23ed435787cf57__PWD:'; pwd; printf '__TTS_17251a77ac0b4c599b23ed435787cf57__END\n'; tmux wait -S done
+[?2004l[?2004h> 

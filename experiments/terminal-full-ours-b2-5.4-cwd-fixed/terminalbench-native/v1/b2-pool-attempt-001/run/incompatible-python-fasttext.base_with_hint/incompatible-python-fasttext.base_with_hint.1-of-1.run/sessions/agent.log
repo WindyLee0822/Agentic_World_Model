@@ -1,0 +1,45 @@
+[?2004hroot@3a9ddcfe286f:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@3a9ddcfe286f:/app# clear
+[?2004l[H[J[3J[?2004hroot@3a9ddcfe286f:/app# pwd; __tts_rc=$?; printf '\n__TTS_190ab194a5c54d01b3d1fef19574aa14__RC:%s\n' "$__tts_rc"; printf '__TTS_190ab194a5c54d01b3d1fef19574aa14__PWD:'; pwd; printf '__TTS_190ab194a5c54d01b3d1fef19574aa14__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_190ab194a5c54d01b3d1fef19574aa14__RC:0
+__TTS_190ab194a5c54d01b3d1fef19574aa14__PWD:/app
+__TTS_190ab194a5c54d01b3d1fef19574aa14__END
+[?2004hroot@3a9ddcfe286f:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import sys, importlib.util
+[?2004l[?2004h> print(sys.executable)
+[?2004l[?2004h> print(importlib.util.find_spec('fasttext'))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_76e69400debc43f9b9d884eb1262dc24__RC:%s\n' "$__tts_rc"; printf '__TTS_76e69400debc43f9b9d884eb1262dc24__PWD:'; pwd; printf '__TTS_76e69400debc43f9b9d884eb1262dc24__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && pwd && ls -la && python -V && python -c "import sys; print(sys.executable)"; __tts_rc=$?; printf '\n__TTS_0bb85e73905142b2a138e4306ea4149c__RC:%s\n' "$__tts_rc"; printf '__TTS_0bb85e73905142b2a138e4306ea4149c__PWD:'; pwd; printf '__TTS_0bb85e73905142b2a138e4306ea4149c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && timeout 20s sh -lc 'pwd; ls -la /app; command -v python; python -V; python -c "import sys; print(sys.executable)"'; __tts_rc=$?; printf '\n__TTS_a9b69fabef9e4e91b656beb58aa14eba__RC:%s\n' "$__tts_rc"; printf '__TTS_a9b69fabef9e4e91b656beb58aa14eba__PWD:'; pwd; printf '__TTS_a9b69fabef9e4e91b656beb58aa14eba__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m6[0m
+    cd -- /app && timeout 2[1;31m0[0ms sh -lc 'pwd; ls -la /app; command -v python; python -V; python -c "import sys; print(sys.executable)"'; __tts_rc=$?; printf '\n__TTS_a9b69fabef9e4e91b656beb58aa14eba__RC:%s\n' "$__tts_rc"; printf '__TTS_a9b69fabef9e4e91b656beb58aa14eba__PWD:'; pwd; printf '__TTS_a9b69fabef9e4e91b656beb58aa14eba__END\n'; tmux wait -S done
+                           [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid decimal literal[0m
+[?2004hroot@3a9ddcfe286f:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_a9b69fabef9e4e91b656beb58aa14' && timeout 20s sh -lc 'cd /app && pwd && find . -maxdepth 3 \( -name "fasttext*" -o -name "model.bin" \) -print && python - <<"PY"
+[?2004l[?2004h> import sys,importlib.util
+[?2004l[?2004h> print(sys.version)
+[?2004l[?2004h> print(sys.executable)
+[?2004l[?2004h> print(importlib.util.find_spec("fasttext"))
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_c3cf280ec15a4f99a37dfa4aabc22def__RC:%s\n' "$__tts_rc"; printf '__TTS_c3cf280ec15a4f99a37dfa4aabc22def__PWD:'; pwd; printf '__TTS_c3cf280ec15a4f99a37dfa4aabc22def__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf '__TTS_a9b69fabef9e4e91b656beb58aa14: No such file or directory
+
+__TTS_c3cf280ec15a4f99a37dfa4aabc22def__RC:1
+__TTS_c3cf280ec15a4f99a37dfa4aabc22def__PWD:/app
+__TTS_c3cf280ec15a4f99a37dfa4aabc22def__END
+[?2004hroot@3a9ddcfe286f:/app# cd -- /app && timeout 20s sh -lc 'cd /app && pwd && find . -maxdepth 4 \( -name "fasttext*" -o -name "model.bin" \) -print && python -c "import sys,importlib.util; print(sys.version); print(sys.executable); print(importlib.util.find_spec(\"fasttext\"))"'; __tts_rc=$?; printf '\n__TTS_a80c634335394a8f83946a99a547de66__RC:%s\n' "$__tts_rc"; printf '__TTS_a80c634335394a8f83946a99a547de66__PWD:'; pwd; printf '__TTS_a80c634335394a8f83946a99a547de66__END\n'; tmux wait -S done
+[?2004l/app
+./model.bin
+3.13.1 (main, Jan 14 2025, 02:51:49) [GCC 12.2.0]
+/usr/local/bin/python
+ModuleSpec(name='fasttext', loader=<_frozen_importlib_external.SourceFileLoader object at 0x751c1f287250>, origin='/usr/local/lib/python3.13/site-packages/fasttext/__init__.py', submodule_search_locations=['/usr/local/lib/python3.13/site-packages/fasttext'])
+
+__TTS_a80c634335394a8f83946a99a547de66__RC:0
+__TTS_a80c634335394a8f83946a99a547de66__PWD:/app
+__TTS_a80c634335394a8f83946a99a547de66__END
+[?2004hroot@3a9ddcfe286f:/app# 

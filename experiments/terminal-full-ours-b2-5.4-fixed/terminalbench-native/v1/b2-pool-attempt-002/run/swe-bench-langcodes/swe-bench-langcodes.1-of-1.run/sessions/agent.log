@@ -1,0 +1,20 @@
+[?2004hroot@0d44aeedc64f:/app/langcodes# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@0d44aeedc64f:/app/langcodes# clear
+[?2004l[H[J[3J[?2004hroot@0d44aeedc64f:/app/langcodes# pwd; __tts_rc=$?; printf '\n__TTS_5644461af20741348c6abcfe6a03da6f__RC:%s\n' "$__tts_rc"; printf '__TTS_5644461af20741348c6abcfe6a03da6f__PWD:'; pwd; printf '__TTS_5644461af20741348c6abcfe6a03da6f__END\n'; tmux wait -S done
+[?2004l/app/langcodes
+
+__TTS_5644461af20741348c6abcfe6a03da6f__RC:0
+__TTS_5644461af20741348c6abcfe6a03da6f__PWD:/app/langcodes
+__TTS_5644461af20741348c6abcfe6a03da6f__END
+[?2004hroot@0d44aeedc64f:/app/langcodes# cd -- /app/langcodes && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('langcodes/__init__.py')
+[?2004l[?2004h> s=p.read_text()
+[?2004l[?2004h> old='    def __hash__(self):\n        return id(self)\n'
+[?2004l[?2004h> new='    def __hash__(self):\n        return hash(self._str_tag)\n'
+[?2004l[?2004h> if old not in s: raise SystemExit('target not found')
+[?2004l[?2004h> p.write_text(s.replace(old,new,1))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9fcb6cf1859f489ca3b67e161258f8ff__RC:%s\n' "$__tts_rc"; printf '__TTS_9fcb6cf1859f489ca3b67e161258f8ff__PWD:'; pwd; printf '__TTS_9fcb6cf1859f489ca3b67e161258f8ff__END\n'; tmux wait -S done
+[?2004l[?2004h> 

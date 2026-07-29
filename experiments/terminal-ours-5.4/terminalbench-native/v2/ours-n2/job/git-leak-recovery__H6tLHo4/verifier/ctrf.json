@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1784262667.2926955,
+            "stop": 1784262667.4031513
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_flag_file_exists_and_correct",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006693149916827679,
+                "start": 1784262667.3590539,
+                "stop": 1784262667.37728,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_flag_file_exists_and_correct():\n        \"\"\"Verify secret recovery from unreachable git objects.\"\"\"\n        flag_path = Path(\"/app/secret.txt\")\n>       assert flag_path.exists(), \"secret.txt was not created\"\nE       AssertionError: secret.txt was not created\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/secret.txt').exists\n\n/tests/test_outputs.py:14: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_no_secrets_in_commits",
+                "status": "passed",
+                "duration": 0.005242614075541496,
+                "start": 1784262667.3775258,
+                "stop": 1784262667.3829389,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_good_commits_preserved",
+                "status": "passed",
+                "duration": 0.002460670890286565,
+                "start": 1784262667.3831263,
+                "stop": 1784262667.3857462,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_no_secrets_in_unreachable_objects",
+                "status": "passed",
+                "duration": 0.010409146081656218,
+                "start": 1784262667.385927,
+                "stop": 1784262667.3966126,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_repository_contents_checksum",
+                "status": "passed",
+                "duration": 0.00559594517108053,
+                "start": 1784262667.3969686,
+                "stop": 1784262667.4028802,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

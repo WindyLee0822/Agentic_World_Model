@@ -1,0 +1,40 @@
+root@ca33a41677df:/app# pwd; __tts_rc=$?; printf '\n__TTS_c78694e6cc674d95bea71ee1298b186c__RC:%s\n' "$__tts_rc"; printf '__TTS_c78694e6cc674d95bea71ee1298b186c
+__PWD:'; pwd; printf '__TTS_c78694e6cc674d95bea71ee1298b186c__END\n'; tmux wait -S done
+/app
+
+__TTS_c78694e6cc674d95bea71ee1298b186c__RC:0
+__TTS_c78694e6cc674d95bea71ee1298b186c__PWD:/app
+__TTS_c78694e6cc674d95bea71ee1298b186c__END
+root@ca33a41677df:/app# cd -- /app && python - <<'PY'
+> import os, subprocess, sys
+> from pathlib import Path
+> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+> out=Path('/app/zork.mp4')
+> cmd=['yt-dlp','-f','mp4/bestvideo+bestaudio/best','-o',str(out),url]
+> try:
+>     subprocess.run(cmd,check=True)
+> except Exception:
+>     sys.exit(1)
+> PY; __tts_rc=$?; printf '\n__TTS_75c35d7cad5c479e99bb7e74672c880c__RC:%s\n' "$__tts_rc"; printf '__TTS_75c35d7cad5c479e99bb7e74672c880c__PWD:'; pwd; printf '_
+_TTS_75c35d7cad5c479e99bb7e74672c880c__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import subprocess, os
+> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
+> subprocess.run(['bash','-lc','which yt-dlp || which youtube-dl || python -m pip show yt-dlp || ls /app'])
+> PY; __tts_rc=$?; printf '\n__TTS_5aa1f9ac7d704dcb900efd7df009c607__RC:%s\n' "$__tts_rc"; printf '__TTS_5aa1f9ac7d704dcb900efd7df009c607__PWD:'; pwd; printf '_
+_TTS_5aa1f9ac7d704dcb900efd7df009c607__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

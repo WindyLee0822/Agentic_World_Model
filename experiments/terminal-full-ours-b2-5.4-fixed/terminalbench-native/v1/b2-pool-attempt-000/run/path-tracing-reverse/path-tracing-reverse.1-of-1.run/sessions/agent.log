@@ -1,0 +1,772 @@
+[?2004hroot@73c5f67f5294:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@73c5f67f5294:/app# clear
+[?2004l[H[J[3J[?2004hroot@73c5f67f5294:/app# pwd; __tts_rc=$?; printf '\n__TTS_fb32db8a0bac4ce19050cee3b3e6c111__RC:%s\n' "$__tts_rc"; printf '__TTS_fb32db8a0bac4ce19050cee3b3e6c111__PWD:'; pwd; printf '__TTS_fb32db8a0bac4ce19050cee3b3e6c111__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_fb32db8a0bac4ce19050cee3b3e6c111__RC:0
+__TTS_fb32db8a0bac4ce19050cee3b3e6c111__PWD:/app
+__TTS_fb32db8a0bac4ce19050cee3b3e6c111__END
+[?2004hroot@73c5f67f5294:/app# cd -- /app && file ./mystery && ls -l ./mystery && sha256sum ./mystery; __tts_rc=$?; printf '\n__TTS_5f1d2afefdae47288afbb0205d3c29fc__RC:%s\n' "$__tts_rc"; printf '__TTS_5f1d2afefdae47288afbb0205d3c29fc__PWD:'; pwd; printf '__TTS_5f1d2afefdae47288afbb0205d3c29fc__END\n'; tmux wait -S done
+[?2004lbash: file: command not found
+
+__TTS_5f1d2afefdae47288afbb0205d3c29fc__RC:127
+__TTS_5f1d2afefdae47288afbb0205d3c29fc__PWD:/app
+__TTS_5f1d2afefdae47288afbb0205d3c29fc__END
+[?2004hroot@73c5f67f5294:/app# cd -- /app && cd /app && ls -l && sha256sum ./mystery && od -An -tx1 -N64 ./mystery; __tts_rc=$?; printf '\n__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__RC:%s\n' "$__tts_rc"; printf '__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__PWD:'; pwd; printf '__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__END\n'; tmux wait -S done
+[?2004ltotal 44
+-rw-r--r-- 1 root root     0 Jul 17 23:01 README.md
+-rw-r--r-- 1 root root   395 Jul 16 19:53 install.sh
+-rw-r--r-- 1 root root    81 Jul 17 23:01 main.py
+-rwxr-xr-x 1 root root 21120 Jul 17 23:00 [0m[01;32mmystery[0m
+-rw-r--r-- 1 root root   171 Jul 17 23:01 pyproject.toml
+-rw-r--r-- 1 root root  4602 Jul 17 23:01 uv.lock
+df5616566ef165df071b3c312300f755e81cc745ea26117b605ba6fd44c254df  ./mystery
+ 7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+ 03 00 3e 00 01 00 00 00 e0 18 00 00 00 00 00 00
+ 40 00 00 00 00 00 00 00 c0 4a 00 00 00 00 00 00
+ 00 00 00 00 40 00 38 00 0d 00 40 00 1f 00 1e 00
+
+__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__RC:0
+__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__PWD:/app
+__TTS_6ef2dcc315ef4b61b2e9be10d36ad152__END
+[?2004hroot@73c5f67f5294:/app# cd -- /app && cd /app && strings -n 3 ./mystery | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_8261912154a548a38eabc3e8382295d5__RC:%s\n' "$__tts_rc"; printf '__TTS_8261912154a548a38eabc3e8382295d5__PWD:'; pwd; printf '__TTS_8261912154a548a38eabc3e8382295d5__END\n'; tmux wait -S done
+[?2004lELF
+/lib64/ld-linux-x86-64.so.2
+GNU
+GNU
+#cx
+GNU
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+sqrt
+fmax
+fmin
+__stack_chk_fail
+free
+fopen
+__fprintf_chk
+malloc
+__libc_start_main
+stderr
+__cxa_finalize
+fclose
+fwrite
+libm.so.6
+libc.so.6
+GLIBC_2.2.5
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.34
+5R?
+%T?
+%~>
+%v>
+%n>
+%f>
+%^>
+%V>
+AWA
+AVH
+AUATUSH
+=c>
+D$PH
+?fH
+L$X
+D$@
+L$H
+D$DL
+l$8
+\$@fH
+D$ 
+D$8
+D$4
+t$0
+YL$
+YD$
+XD$
+t$P
+XT$T
+l$ 
+T$$
+d$(H
+4$H
+?fH
+T$$
+(5(
+t$0
+|$,
+(T$@
+?fH
+~%3
+l$8
+dH+
+[]A\A]A^A_
+PTE1
+u+UH
+=b6
+=f6
+YD$
+YT$
+ff.
+ff.
+ff.
+~T$
+~T$
+~D$
+XL$
+D$`
+d$`f
+L$hD
+l$d
+t$h
+l$l
+|$T
+T$0
+T$,
+t$(
+l$$
+d$ 
+|$X
+L$H
+d$ 
+l$$
+l$@
+t$(
+T$,
+t$P
+|$T
+T$0
+d$8
+D$X
+L$HH
+D$0
+|$,f
+T$(
+T$$
+t$ 
+D$0
+|$,
+l$@
+d$8f
+t$P
+T$(
+T$$
+t$ 
+ff.
+X\$
+XT$
+ff.
+ff.
+|$PH
+\$8
+~T$4
+\$0f
+D$@dH
+t$D
+\$@
+T$`H
+D$`
+T$xdH+
+T$0H
+D$`f
+L$h
+\$XdH
+T$ H
+T$ 
+l$0
+~L$4
+od$@H
+XT$$
+~L$`
+l$(
+)d$p
+L$0
+|$,A
+~L$x
+dH+
+AWAVAULc
+ATLc
+USH
+$dH
+H9\$
+=r(
+[]A\A]A^A_
+AUATA
+UHc
+~+Ic
+$@I
+[]A\A]
+ff.
+ATI
+~"Hc
+]A\
+L>fff?
+%d %d
+255
+%d %d %d
+Wrote image to %s
+Progress: %.1f%%
+Rendering complete
+image.ppm
+Done.
+Error: Could not open file %s for writing
+Creating high-resolution image: %dx%d
+This will be downsampled with ffmpeg after rendering
+Rendering high-resolution image...
+?333?
+9*3$"
+GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Scrt1.o
+__abi_tag
+orig.c
+crtstuff.c
+deregister_tm_clones
+__do_global_dtors_aux
+completed.0
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+_DYNAMIC
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+free@GLIBC_2.2.5
+vector_normalize
+__libc_start_main@GLIBC_2.34
+_ITM_deregisterTMCloneTable
+fmax@GLIBC_2.2.5
+is_in_shadow
+ray_create
+free_image
+vector_create
+_edata
+vector_dot
+fclose@GLIBC_2.2.5
+_fini
+__stack_chk_fail@GLIBC_2.4
+vector_length
+__data_start
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+
+__TTS_8261912154a548a38eabc3e8382295d5__RC:0
+__TTS_8261912154a548a38eabc3e8382295d5__PWD:/app
+__TTS_8261912154a548a38eabc3e8382295d5__END
+[?2004hroot@73c5f67f5294:/app# cd -- /app && cd /app && nm -C ./mystery | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_434f847a578c411a9dfcd01ff96f7fc0__RC:%s\n' "$__tts_rc"; printf '__TTS_434f847a578c411a9dfcd01ff96f7fc0__PWD:'; pwd; printf '__TTS_434f847a578c411a9dfcd01ff96f7fc0__END\n'; tmux wait -S done
+[?2004l0000000000004d70 d _DYNAMIC
+0000000000004f70 d _GLOBAL_OFFSET_TABLE_
+0000000000003000 R _IO_stdin_used
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+0000000000003564 r __FRAME_END__
+00000000000031b0 r __GNU_EH_FRAME_HDR
+0000000000005010 D __TMC_END__
+000000000000038c r __abi_tag
+0000000000005020 B __bss_start
+                 w __cxa_finalize@GLIBC_2.2.5
+0000000000005000 D __data_start
+0000000000001980 t __do_global_dtors_aux
+0000000000004d68 d __do_global_dtors_aux_fini_array_entry
+0000000000005008 D __dso_handle
+                 U __fprintf_chk@GLIBC_2.3.4
+0000000000004d60 d __frame_dummy_init_array_entry
+                 w __gmon_start__
+                 U __libc_start_main@GLIBC_2.34
+                 U __stack_chk_fail@GLIBC_2.4
+0000000000005010 D _edata
+0000000000005030 B _end
+0000000000002890 T _fini
+0000000000001000 T _init
+00000000000018e0 T _start
+00000000000027e0 T allocate_image
+0000000000005028 b completed.0
+0000000000005000 W data_start
+0000000000001910 t deregister_tm_clones
+                 U fclose@GLIBC_2.2.5
+                 U fmax@GLIBC_2.2.5
+                 U fmin@GLIBC_2.2.5
+                 U fopen@GLIBC_2.2.5
+00000000000019c0 t frame_dummy
+                 U free@GLIBC_2.2.5
+0000000000002850 T free_image
+                 U fwrite@GLIBC_2.2.5
+0000000000002070 T is_in_shadow
+0000000000001180 T main
+                 U malloc@GLIBC_2.2.5
+0000000000001f70 T plane_intersect
+0000000000001b70 T ray_at
+0000000000001af0 T ray_create
+0000000000001940 t register_tm_clones
+0000000000002020 T sky_color
+0000000000001ba0 T sphere_intersect
+                 U sqrt@GLIBC_2.2.5
+0000000000005020 B stderr@GLIBC_2.2.5
+0000000000002150 T trace
+00000000000019e0 T vector_add
+00000000000019d0 T vector_create
+0000000000001a20 T vector_dot
+0000000000001a60 T vector_length
+0000000000001a00 T vector_multiply
+0000000000001aa0 T vector_normalize
+00000000000019f0 T vector_subtract
+0000000000002630 T write_image
+
+__TTS_434f847a578c411a9dfcd01ff96f7fc0__RC:0
+__TTS_434f847a578c411a9dfcd01ff96f7fc0__PWD:/app
+__TTS_434f847a578c411a9dfcd01ff96f7fc0__END
+[?2004hroot@73c5f67f5294:/app# cd -- /app && cd /app && objdump -d -Mintel ./mystery | sed -n '/<main>:/,/<.*>:/p;/<trace>:/,/<.*>:/p;/<sky_color>:/,/<.*>:/p;/<sphere_intersect>:/,/<.*>:/p;/<plane_intersect>:/,/<.*>:/p;/<is_in_shadow>:/,/<.*>:/p;/<write_image>:/,/<.*>:/p' | sed -n '1,420p'; __tts_rc=$?; printf '\n__TTS_9a3b478265fe46f48f6918c3a3db3ac1__RC:%s\n' "$__tts_rc"; printf '__TTS_9a3b478265fe46f48f6918c3a3db3ac1__PWD:'; pwd; printf '__TTS_9a3b478265fe46f48f6918c3a3db3ac1__END\n'; tmux wait -S done
+[?2004l0000000000001180 <main>:
+    1180:	f3 0f 1e fa          	endbr64
+    1184:	41 57                	push   r15
+    1186:	41 b8 58 02 00 00    	mov    r8d,0x258
+    118c:	45 31 ff             	xor    r15d,r15d
+    118f:	b9 20 03 00 00       	mov    ecx,0x320
+    1194:	41 56                	push   r14
+    1196:	48 8d 15 43 1f 00 00 	lea    rdx,[rip+0x1f43]        # 30e0 <_IO_stdin_used+0xe0>
+    119d:	be 02 00 00 00       	mov    esi,0x2
+    11a2:	4c 8d 35 cc 1e 00 00 	lea    r14,[rip+0x1ecc]        # 3075 <_IO_stdin_used+0x75>
+    11a9:	41 55                	push   r13
+    11ab:	41 54                	push   r12
+    11ad:	55                   	push   rbp
+    11ae:	53                   	push   rbx
+    11af:	48 81 ec 18 01 00 00 	sub    rsp,0x118
+    11b6:	48 8b 3d 63 3e 00 00 	mov    rdi,QWORD PTR [rip+0x3e63]        # 5020 <stderr@GLIBC_2.2.5>
+    11bd:	64 48 8b 04 25 28 00 	mov    rax,QWORD PTR fs:0x28
+    11c4:	00 00 
+    11c6:	48 89 84 24 08 01 00 	mov    QWORD PTR [rsp+0x108],rax
+    11cd:	00 
+    11ce:	31 c0                	xor    eax,eax
+    11d0:	4c 8d a4 24 c0 00 00 	lea    r12,[rsp+0xc0]
+    11d7:	00 
+    11d8:	e8 83 ff ff ff       	call   1160 <__fprintf_chk@plt>
+    11dd:	ba 35 00 00 00       	mov    edx,0x35
+    11e2:	48 8b 0d 37 3e 00 00 	mov    rcx,QWORD PTR [rip+0x3e37]        # 5020 <stderr@GLIBC_2.2.5>
+    11e9:	be 01 00 00 00       	mov    esi,0x1
+    11ee:	48 8d 3d 13 1f 00 00 	lea    rdi,[rip+0x1f13]        # 3108 <_IO_stdin_used+0x108>
+    11f5:	e8 56 ff ff ff       	call   1150 <fwrite@plt>
+    11fa:	be 58 02 00 00       	mov    esi,0x258
+    11ff:	bf 20 03 00 00       	mov    edi,0x320
+    1204:	48 8b 05 5d 1f 00 00 	mov    rax,QWORD PTR [rip+0x1f5d]        # 3168 <_IO_stdin_used+0x168>
+    120b:	f3 0f 10 0d 19 1e 00 	movss  xmm1,DWORD PTR [rip+0x1e19]        # 302c <_IO_stdin_used+0x2c>
+    1212:	00 
+    1213:	48 89 44 24 50       	mov    QWORD PTR [rsp+0x50],rax
+    1218:	48 b8 00 00 80 3f 00 	movabs rax,0x3f8000003f800000
+    121f:	00 80 3f 
+    1222:	66 48 0f 6e c0       	movq   xmm0,rax
+    1227:	f3 0f 11 4c 24 58    	movss  DWORD PTR [rsp+0x58],xmm1
+    122d:	e8 6e 08 00 00       	call   1aa0 <vector_normalize>
+    1232:	66 0f d6 44 24 40    	movq   QWORD PTR [rsp+0x40],xmm0
+    1238:	f3 0f 11 4c 24 48    	movss  DWORD PTR [rsp+0x48],xmm1
+    123e:	e8 9d 15 00 00       	call   27e0 <allocate_image>
+    1243:	ba 23 00 00 00       	mov    edx,0x23
+    1248:	48 8b 0d d1 3d 00 00 	mov    rcx,QWORD PTR [rip+0x3dd1]        # 5020 <stderr@GLIBC_2.2.5>
+    124f:	be 01 00 00 00       	mov    esi,0x1
+    1254:	48 8d 3d e5 1e 00 00 	lea    rdi,[rip+0x1ee5]        # 3140 <_IO_stdin_used+0x140>
+    125b:	49 89 c5             	mov    r13,rax
+    125e:	e8 ed fe ff ff       	call   1150 <fwrite@plt>
+    1263:	48 8b 44 24 44       	mov    rax,QWORD PTR [rsp+0x44]
+    1268:	4c 89 6c 24 38       	mov    QWORD PTR [rsp+0x38],r13
+    126d:	f3 0f 10 5c 24 40    	movss  xmm3,DWORD PTR [rsp+0x40]
+    1273:	66 48 0f 6e f0       	movq   xmm6,rax
+    1278:	48 89 44 24 20       	mov    QWORD PTR [rsp+0x20],rax
+    127d:	89 44 24 14          	mov    DWORD PTR [rsp+0x14],eax
+    1281:	0f 28 ee             	movaps xmm5,xmm6
+    1284:	0f c6 ed e5          	shufps xmm5,xmm5,0xe5
+    1288:	f3 0f 11 6c 24 10    	movss  DWORD PTR [rsp+0x10],xmm5
+    128e:	66 90                	xchg   ax,ax
+    1290:	66 0f ef c9          	pxor   xmm1,xmm1
+    1294:	48 8b 3d 85 3d 00 00 	mov    rdi,QWORD PTR [rip+0x3d85]        # 5020 <stderr@GLIBC_2.2.5>
+    129b:	4c 89 f2             	mov    rdx,r14
+    129e:	31 db                	xor    ebx,ebx
+    12a0:	f3 41 0f 2a cf       	cvtsi2ss xmm1,r15d
+    12a5:	be 02 00 00 00       	mov    esi,0x2
+    12aa:	b8 01 00 00 00       	mov    eax,0x1
+    12af:	f3 0f 10 05 79 1d 00 	movss  xmm0,DWORD PTR [rip+0x1d79]        # 3030 <_IO_stdin_used+0x30>
+    12b6:	00 
+    12b7:	f3 0f 11 5c 24 04    	movss  DWORD PTR [rsp+0x4],xmm3
+    12bd:	f3 0f 59 c1          	mulss  xmm0,xmm1
+    12c1:	f3 0f 11 0c 24       	movss  DWORD PTR [rsp],xmm1
+    12c6:	f3 0f 5e 05 66 1d 00 	divss  xmm0,DWORD PTR [rip+0x1d66]        # 3034 <_IO_stdin_used+0x34>
+    12cd:	00 
+    12ce:	f3 0f 5a c0          	cvtss2sd xmm0,xmm0
+    12d2:	e8 89 fe ff ff       	call   1160 <__fprintf_chk@plt>
+    12d7:	66 0f ef f6          	pxor   xmm6,xmm6
+    12db:	f3 0f 10 05 c9 1e 00 	movss  xmm0,DWORD PTR [rip+0x1ec9]        # 31ac <_IO_stdin_used+0x1ac>
+    12e2:	00 
+    12e3:	f3 0f 10 0c 24       	movss  xmm1,DWORD PTR [rsp]
+    12e8:	f3 0f 5e 0d 48 1d 00 	divss  xmm1,DWORD PTR [rip+0x1d48]        # 3038 <_IO_stdin_used+0x38>
+    12ef:	00 
+    12f0:	48 8b 44 24 38       	mov    rax,QWORD PTR [rsp+0x38]
+    12f5:	f3 0f 10 5c 24 04    	movss  xmm3,DWORD PTR [rsp+0x4]
+    12fb:	f3 0f 5c c1          	subss  xmm0,xmm1
+    12ff:	4a 8b 2c f8          	mov    rbp,QWORD PTR [rax+r15*8]
+    1303:	f3 0f 11 5c 24 0c    	movss  DWORD PTR [rsp+0xc],xmm3
+    1309:	f3 0f 59 f0          	mulss  xmm6,xmm0
+    130d:	f3 0f 58 c0          	addss  xmm0,xmm0
+    1311:	f3 0f 11 44 24 34    	movss  DWORD PTR [rsp+0x34],xmm0
+    1317:	f3 0f 11 74 24 30    	movss  DWORD PTR [rsp+0x30],xmm6
+    131d:	eb 7a                	jmp    1399 <main+0x219>
+    131f:	90                   	nop
+    1320:	f3 0f 10 4c 24 18    	movss  xmm1,DWORD PTR [rsp+0x18]
+    1326:	f3 0f 59 4c 24 10    	mulss  xmm1,DWORD PTR [rsp+0x10]
+    132c:	f3 0f 10 44 24 08    	movss  xmm0,DWORD PTR [rsp+0x8]
+    1332:	f3 0f 59 44 24 0c    	mulss  xmm0,DWORD PTR [rsp+0xc]
+    1338:	f3 0f 58 44 24 1c    	addss  xmm0,DWORD PTR [rsp+0x1c]
+    133e:	f3 0f 58 c1          	addss  xmm0,xmm1
+    1342:	66 0f ef c9          	pxor   xmm1,xmm1
+    1346:	f3 0f 5a c0          	cvtss2sd xmm0,xmm0
+    134a:	e8 a1 fd ff ff       	call   10f0 <fmax@plt>
+    134f:	f3 0f 10 15 b9 1c 00 	movss  xmm2,DWORD PTR [rip+0x1cb9]        # 3010 <_IO_stdin_used+0x10>
+    1356:	00 
+    1357:	f2 0f 5a c0          	cvtsd2ss xmm0,xmm0
+    135b:	f3 0f 59 05 bd 1c 00 	mulss  xmm0,DWORD PTR [rip+0x1cbd]        # 3020 <_IO_stdin_used+0x20>
+    1362:	00 
+    1363:	0f 28 d8             	movaps xmm3,xmm0
+    1366:	f3 0f 58 da          	addss  xmm3,xmm2
+    136a:	45 85 ed             	test   r13d,r13d
+    136d:	0f 84 d4 02 00 00    	je     1647 <main+0x4c7>
+    1373:	f3 0f 59 d3          	mulss  xmm2,xmm3
+    1377:	0f 28 c3             	movaps xmm0,xmm3
+    137a:	0f 14 c2             	unpcklps xmm0,xmm2
+    137d:	83 c3 01             	add    ebx,0x1
+    1380:	0f 13 45 00          	movlps QWORD PTR [rbp+0x0],xmm0
+    1384:	48 83 c5 0c          	add    rbp,0xc
+    1388:	f3 0f 11 55 fc       	movss  DWORD PTR [rbp-0x4],xmm2
+    138d:	81 fb 20 03 00 00    	cmp    ebx,0x320
+    1393:	0f 84 9f 04 00 00    	je     1838 <main+0x6b8>
+    1399:	66 0f ef c0          	pxor   xmm0,xmm0
+    139d:	66 0f ef d2          	pxor   xmm2,xmm2
+    13a1:	48 83 ec 20          	sub    rsp,0x20
+    13a5:	4c 89 e7             	mov    rdi,r12
+    13a8:	f3 0f 2a c3          	cvtsi2ss xmm0,ebx
+    13ac:	f3 0f 5e 05 88 1c 00 	divss  xmm0,DWORD PTR [rip+0x1c88]        # 303c <_IO_stdin_used+0x3c>
+    13b3:	00 
+    13b4:	f3 0f 59 d0          	mulss  xmm2,xmm0
+    13b8:	f3 0f 10 74 24 50    	movss  xmm6,DWORD PTR [rsp+0x50]
+    13be:	f3 0f 59 05 7a 1c 00 	mulss  xmm0,DWORD PTR [rip+0x1c7a]        # 3040 <_IO_stdin_used+0x40>
+    13c5:	00 
+    13c6:	0f 28 3d d3 1d 00 00 	movaps xmm7,XMMWORD PTR [rip+0x1dd3]        # 31a0 <_IO_stdin_used+0x1a0>
+    13cd:	48 c7 84 24 a0 00 00 	mov    QWORD PTR [rsp+0xa0],0x0
+    13d4:	00 00 00 00 00 
+    13d9:	c7 84 24 a8 00 00 00 	mov    DWORD PTR [rsp+0xa8],0x0
+    13e0:	00 00 00 00 
+    13e4:	0f 28 e6             	movaps xmm4,xmm6
+    13e7:	0f 29 bc 24 80 00 00 	movaps XMMWORD PTR [rsp+0x80],xmm7
+    13ee:	00 
+    13ef:	f3 0f 58 e2          	addss  xmm4,xmm2
+    13f3:	f3 0f 58 54 24 54    	addss  xmm2,DWORD PTR [rsp+0x54]
+    13f9:	f3 0f 58 c6          	addss  xmm0,xmm6
+    13fd:	f3 0f 5c 15 a7 1d 00 	subss  xmm2,DWORD PTR [rip+0x1da7]        # 31ac <_IO_stdin_used+0x1ac>
+    1404:	00 
+    1405:	f3 0f 5c 05 37 1c 00 	subss  xmm0,DWORD PTR [rip+0x1c37]        # 3044 <_IO_stdin_used+0x44>
+    140c:	00 
+    140d:	0f 28 ec             	movaps xmm5,xmm4
+    1410:	f3 0f 5c 2d 94 1d 00 	subss  xmm5,DWORD PTR [rip+0x1d94]        # 31ac <_IO_stdin_used+0x1ac>
+    1417:	00 
+    1418:	0f 28 da             	movaps xmm3,xmm2
+    141b:	f3 0f 59 da          	mulss  xmm3,xmm2
+    141f:	0f 28 c8             	movaps xmm1,xmm0
+    1422:	0f 28 e0             	movaps xmm4,xmm0
+    1425:	f3 0f 59 c8          	mulss  xmm1,xmm0
+    1429:	f3 0f 58 cb          	addss  xmm1,xmm3
+    142d:	0f 28 dd             	movaps xmm3,xmm5
+    1430:	f3 0f 59 dd          	mulss  xmm3,xmm5
+    1434:	f3 0f 58 cb          	addss  xmm1,xmm3
+    1438:	f3 0f 51 c9          	sqrtss xmm1,xmm1
+    143c:	f3 0f 5e e9          	divss  xmm5,xmm1
+    1440:	f3 0f 5e d1          	divss  xmm2,xmm1
+    1444:	f3 0f 11 ac 24 b4 00 	movss  DWORD PTR [rsp+0xb4],xmm5
+    144b:	00 00 
+    144d:	f3 0f 11 6c 24 20    	movss  DWORD PTR [rsp+0x20],xmm5
+    1453:	f3 0f 5e e1          	divss  xmm4,xmm1
+    1457:	f3 0f 11 94 24 b0 00 	movss  DWORD PTR [rsp+0xb0],xmm2
+    145e:	00 00 
+    1460:	f3 0f 11 54 24 24    	movss  DWORD PTR [rsp+0x24],xmm2
+    1466:	f3 0f 11 a4 24 ac 00 	movss  DWORD PTR [rsp+0xac],xmm4
+    146d:	00 00 
+    146f:	f3 0f 11 64 24 28    	movss  DWORD PTR [rsp+0x28],xmm4
+    1475:	48 8b 84 24 b0 00 00 	mov    rax,QWORD PTR [rsp+0xb0]
+    147c:	00 
+    147d:	66 0f 6f b4 24 a0 00 	movdqa xmm6,XMMWORD PTR [rsp+0xa0]
+    1484:	00 00 
+    1486:	48 89 44 24 10       	mov    QWORD PTR [rsp+0x10],rax
+    148b:	48 b8 00 00 00 00 00 	movabs rax,0xbf00000000000000
+    1492:	00 00 bf 
+    1495:	66 48 0f 6e c0       	movq   xmm0,rax
+    149a:	0f 11 34 24          	movups XMMWORD PTR [rsp],xmm6
+    149e:	48 b8 00 00 a0 c0 00 	movabs rax,0x3f800000c0a00000
+    14a5:	00 80 3f 
+    14a8:	66 48 0f 6e c8       	movq   xmm1,rax
+    14ad:	e8 ee 06 00 00       	call   1ba0 <sphere_intersect>
+    14b2:	f3 0f 10 54 24 24    	movss  xmm2,DWORD PTR [rsp+0x24]
+    14b8:	f3 0f 10 3d 4c 1b 00 	movss  xmm7,DWORD PTR [rip+0x1b4c]        # 300c <_IO_stdin_used+0xc>
+    14bf:	00 
+    14c0:	f3 0f 10 8c 24 e0 00 	movss  xmm1,DWORD PTR [rsp+0xe0]
+    14c7:	00 00 
+    14c9:	44 8b ac 24 fc 00 00 	mov    r13d,DWORD PTR [rsp+0xfc]
+    14d0:	00 
+    14d1:	48 83 c4 20          	add    rsp,0x20
+    14d5:	0f 28 c2             	movaps xmm0,xmm2
+    14d8:	0f 54 05 b1 1c 00 00 	andps  xmm0,XMMWORD PTR [rip+0x1cb1]        # 3190 <_IO_stdin_used+0x190>
+    14df:	f3 0f 10 2c 24       	movss  xmm5,DWORD PTR [rsp]
+    14e4:	f3 0f 10 64 24 08    	movss  xmm4,DWORD PTR [rsp+0x8]
+    14ea:	0f 2f f8             	comiss xmm7,xmm0
+    14ed:	0f 87 25 02 00 00    	ja     1718 <main+0x598>
+    14f3:	f3 0f 10 05 21 1b 00 	movss  xmm0,DWORD PTR [rip+0x1b21]        # 301c <_IO_stdin_used+0x1c>
+    14fa:	00 
+    14fb:	f3 0f 10 35 05 1b 00 	movss  xmm6,DWORD PTR [rip+0x1b05]        # 3008 <_IO_stdin_used+0x8>
+    1502:	00 
+    1503:	f3 0f 5e c2          	divss  xmm0,xmm2
+    1507:	0f 2f f0             	comiss xmm6,xmm0
+    150a:	0f 87 60 02 00 00    	ja     1770 <main+0x5f0>
+    1510:	f3 0f 59 e8          	mulss  xmm5,xmm0
+    1514:	66 0f ef ff          	pxor   xmm7,xmm7
+    1518:	f3 0f 59 e0          	mulss  xmm4,xmm0
+    151c:	f3 0f 59 d0          	mulss  xmm2,xmm0
+    1520:	f3 0f 58 ef          	addss  xmm5,xmm7
+    1524:	f3 0f 58 e7          	addss  xmm4,xmm7
+    1528:	f3 0f 58 d7          	addss  xmm2,xmm7
+    152c:	f3 0f 11 2c 24       	movss  DWORD PTR [rsp],xmm5
+    1531:	f3 0f 11 64 24 04    	movss  DWORD PTR [rsp+0x4],xmm4
+    1537:	45 85 ed             	test   r13d,r13d
+    153a:	0f 85 c0 02 00 00    	jne    1800 <main+0x680>
+    1540:	f3 0f 10 6c 24 14    	movss  xmm5,DWORD PTR [rsp+0x14]
+    1546:	c7 44 24 18 00 00 00 	mov    DWORD PTR [rsp+0x18],0x0
+    154d:	00 
+    154e:	0f 28 cc             	movaps xmm1,xmm4
+    1551:	0f 28 c6             	movaps xmm0,xmm6
+    1554:	c7 44 24 08 00 00 00 	mov    DWORD PTR [rsp+0x8],0x0
+    155b:	00 
+    155c:	f3 0f 10 24 24       	movss  xmm4,DWORD PTR [rsp]
+    1561:	f3 0f 11 6c 24 1c    	movss  DWORD PTR [rsp+0x1c],xmm5
+    1567:	f3 0f 10 7c 24 14    	movss  xmm7,DWORD PTR [rsp+0x14]
+    156d:	f3 0f 58 d0          	addss  xmm2,xmm0
+    1571:	0f 28 35 28 1c 00 00 	movaps xmm6,XMMWORD PTR [rip+0x1c28]        # 31a0 <_IO_stdin_used+0x1a0>
+    1578:	48 8d bc 24 e0 00 00 	lea    rdi,[rsp+0xe0]
+    157f:	00 
+    1580:	48 83 ec 20          	sub    rsp,0x20
+    1584:	0f 28 df             	movaps xmm3,xmm7
+    1587:	0f 29 b4 24 90 00 00 	movaps XMMWORD PTR [rsp+0x90],xmm6
+    158e:	00 
+    158f:	f3 0f 10 74 24 30    	movss  xmm6,DWORD PTR [rsp+0x30]
+    1595:	f3 0f 59 df          	mulss  xmm3,xmm7
+    1599:	f3 0f 10 7c 24 2c    	movss  xmm7,DWORD PTR [rsp+0x2c]
+    159f:	0f 14 ca             	unpcklps xmm1,xmm2
+    15a2:	0f 28 54 24 40       	movaps xmm2,XMMWORD PTR [rsp+0x40]
+    15a7:	0f 28 c7             	movaps xmm0,xmm7
+    15aa:	0f 28 ef             	movaps xmm5,xmm7
+    15ad:	f3 0f 59 c7          	mulss  xmm0,xmm7
+    15b1:	f3 0f 58 c3          	addss  xmm0,xmm3
+    15b5:	0f 28 de             	movaps xmm3,xmm6
+    15b8:	f3 0f 59 de          	mulss  xmm3,xmm6
+    15bc:	f3 0f 58 c3          	addss  xmm0,xmm3
+    15c0:	f3 0f 51 c0          	sqrtss xmm0,xmm0
+    15c4:	f3 0f 5e e8          	divss  xmm5,xmm0
+    15c8:	0f c6 c0 e0          	shufps xmm0,xmm0,0xe0
+    15cc:	0f 16 05 95 1b 00 00 	movhps xmm0,QWORD PTR [rip+0x1b95]        # 3168 <_IO_stdin_used+0x168>
+    15d3:	0f 5e d0             	divps  xmm2,xmm0
+    15d6:	0f 14 e5             	unpcklps xmm4,xmm5
+    15d9:	0f 16 cc             	movlhps xmm1,xmm4
+    15dc:	0f 29 8c 24 c0 00 00 	movaps XMMWORD PTR [rsp+0xc0],xmm1
+    15e3:	00 
+    15e4:	0f 13 94 24 d0 00 00 	movlps QWORD PTR [rsp+0xd0],xmm2
+    15eb:	00 
+    15ec:	48 8b 84 24 d0 00 00 	mov    rax,QWORD PTR [rsp+0xd0]
+    15f3:	00 
+    15f4:	0f 11 0c 24          	movups XMMWORD PTR [rsp],xmm1
+    15f8:	48 89 44 24 10       	mov    QWORD PTR [rsp+0x10],rax
+    15fd:	48 b8 00 00 00 00 00 	movabs rax,0xbf00000000000000
+    1604:	00 00 bf 
+    1607:	66 48 0f 6e c0       	movq   xmm0,rax
+    160c:	48 b8 00 00 a0 c0 00 	movabs rax,0x3f800000c0a00000
+    1613:	00 80 3f 
+    1616:	66 48 0f 6e c8       	movq   xmm1,rax
+    161b:	e8 80 05 00 00       	call   1ba0 <sphere_intersect>
+    1620:	8b 84 24 1c 01 00 00 	mov    eax,DWORD PTR [rsp+0x11c]
+    1627:	48 83 c4 20          	add    rsp,0x20
+    162b:	85 c0                	test   eax,eax
+    162d:	0f 84 ed fc ff ff    	je     1320 <main+0x1a0>
+    1633:	f3 0f 10 15 d5 19 00 	movss  xmm2,DWORD PTR [rip+0x19d5]        # 3010 <_IO_stdin_used+0x10>
+    163a:	00 
+    163b:	0f 28 da             	movaps xmm3,xmm2
+    163e:	45 85 ed             	test   r13d,r13d
+    1641:	0f 85 2c fd ff ff    	jne    1373 <main+0x1f3>
+    1647:	f3 0f 10 44 24 04    	movss  xmm0,DWORD PTR [rsp+0x4]
+    164d:	f3 0f 10 25 3b 1b 00 	movss  xmm4,DWORD PTR [rip+0x1b3b]        # 3190 <_IO_stdin_used+0x190>
+    1654:	00 
+    1655:	f3 0f 10 35 c7 19 00 	movss  xmm6,DWORD PTR [rip+0x19c7]        # 3024 <_IO_stdin_used+0x24>
+    165c:	00 
+    165d:	0f 28 d0             	movaps xmm2,xmm0
+    1660:	0f 54 d4             	andps  xmm2,xmm4
+    1663:	0f 2e f2             	ucomiss xmm6,xmm2
+    1666:	76 2c                	jbe    1694 <main+0x514>
+    1668:	f3 0f 2c c0          	cvttss2si eax,xmm0
+    166c:	66 0f ef d2          	pxor   xmm2,xmm2
+    1670:	f3 0f 10 35 34 1b 00 	movss  xmm6,DWORD PTR [rip+0x1b34]        # 31ac <_IO_stdin_used+0x1ac>
+    1677:	00 
+    1678:	0f 55 e0             	andnps xmm4,xmm0
+    167b:	f3 0f 2a d0          	cvtsi2ss xmm2,eax
+    167f:	0f 28 ca             	movaps xmm1,xmm2
+    1682:	f3 0f c2 c8 06       	cmpnless xmm1,xmm0
+    1687:	0f 54 ce             	andps  xmm1,xmm6
+    168a:	f3 0f 5c d1          	subss  xmm2,xmm1
+    168e:	0f 56 d4             	orps   xmm2,xmm4
+    1691:	0f 28 c2             	movaps xmm0,xmm2
+    1694:	f3 0f 10 0c 24       	movss  xmm1,DWORD PTR [rsp]
+    1699:	f3 0f 10 2d ef 1a 00 	movss  xmm5,DWORD PTR [rip+0x1aef]        # 3190 <_IO_stdin_used+0x190>
+    16a0:	00 
+    16a1:	f3 0f 10 35 7b 19 00 	movss  xmm6,DWORD PTR [rip+0x197b]        # 3024 <_IO_stdin_used+0x24>
+    16a8:	00 
+    16a9:	0f 28 e1             	movaps xmm4,xmm1
+    16ac:	0f 54 e5             	andps  xmm4,xmm5
+    16af:	0f 2e f4             	ucomiss xmm6,xmm4
+    16b2:	76 2c                	jbe    16e0 <main+0x560>
+    16b4:	f3 0f 2c c1          	cvttss2si eax,xmm1
+    16b8:	66 0f ef e4          	pxor   xmm4,xmm4
+    16bc:	f3 0f 10 35 e8 1a 00 	movss  xmm6,DWORD PTR [rip+0x1ae8]        # 31ac <_IO_stdin_used+0x1ac>
+    16c3:	00 
+    16c4:	0f 55 e9             	andnps xmm5,xmm1
+    16c7:	f3 0f 2a e0          	cvtsi2ss xmm4,eax
+    16cb:	0f 28 d4             	movaps xmm2,xmm4
+    16ce:	f3 0f c2 d1 06       	cmpnless xmm2,xmm1
+    16d3:	0f 54 d6             	andps  xmm2,xmm6
+    16d6:	f3 0f 5c e2          	subss  xmm4,xmm2
+    16da:	0f 56 e5             	orps   xmm4,xmm5
+    16dd:	0f 28 cc             	movaps xmm1,xmm4
+    16e0:	f3 0f 5a c0          	cvtss2sd xmm0,xmm0
+    16e4:	f3 0f 5a c9          	cvtss2sd xmm1,xmm1
+    16e8:	f2 0f 58 c1          	addsd  xmm0,xmm1
+    16ec:	f3 0f 10 15 24 19 00 	movss  xmm2,DWORD PTR [rip+0x1924]        # 3018 <_IO_stdin_used+0x18>
+    16f3:	00 
+    16f4:	f2 0f 2c c0          	cvttsd2si eax,xmm0
+    16f8:	a8 01                	test   al,0x1
+    16fa:	75 08                	jne    1704 <main+0x584>
+    16fc:	f3 0f 10 15 10 19 00 	movss  xmm2,DWORD PTR [rip+0x1910]        # 3014 <_IO_stdin_used+0x14>
+    1703:	00 
+    1704:	f3 0f 59 d3          	mulss  xmm2,xmm3
+    1708:	0f 28 c2             	movaps xmm0,xmm2
+    170b:	0f c6 c0 e0          	shufps xmm0,xmm0,0xe0
+    170f:	e9 69 fc ff ff       	jmp    137d <main+0x1fd>
+    1714:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+    1718:	f3 0f 10 35 e8 18 00 	movss  xmm6,DWORD PTR [rip+0x18e8]        # 3008 <_IO_stdin_used+0x8>
+    171f:	00 
+    1720:	45 85 ed             	test   r13d,r13d
+    1723:	75 50                	jne    1775 <main+0x5f5>
+    1725:	f3 0f 58 15 7f 1a 00 	addss  xmm2,DWORD PTR [rip+0x1a7f]        # 31ac <_IO_stdin_used+0x1ac>
+    172c:	00 
+    172d:	f3 0f 59 15 3b 1a 00 	mulss  xmm2,DWORD PTR [rip+0x1a3b]        # 3170 <_IO_stdin_used+0x170>
+    1734:	00 
+    1735:	f3 0f 7e 25 33 1a 00 	movq   xmm4,QWORD PTR [rip+0x1a33]        # 3170 <_IO_stdin_used+0x170>
+    173c:	00 
+    173d:	f3 0f 10 0d 67 1a 00 	movss  xmm1,DWORD PTR [rip+0x1a67]        # 31ac <_IO_stdin_used+0x1ac>
+    1744:	00 
+    1745:	0f 28 c2             	movaps xmm0,xmm2
+    1748:	f3 0f 5c ca          	subss  xmm1,xmm2
+    174c:	0f c6 c0 e0          	shufps xmm0,xmm0,0xe0
+    1750:	0f 59 c4             	mulps  xmm0,xmm4
+    1753:	0f 28 e1             	movaps xmm4,xmm1
+    1756:	f3 0f 58 d1          	addss  xmm2,xmm1
+    175a:	0f c6 e4 e0          	shufps xmm4,xmm4,0xe0
+    175e:	0f 58 c4             	addps  xmm0,xmm4
+    1761:	e9 17 fc ff ff       	jmp    137d <main+0x1fd>
+    1766:	66 2e 0f 1f 84 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+    176d:	00 00 00 
+    1770:	45 85 ed             	test   r13d,r13d
+    1773:	74 b0                	je     1725 <main+0x5a5>
+    1775:	f3 0f 10 8c 24 d0 00 	movss  xmm1,DWORD PTR [rsp+0xd0]
+    177c:	00 00 
+    177e:	f3 0f 10 64 24 14    	movss  xmm4,DWORD PTR [rsp+0x14]
+    1784:	41 bd 01 00 00 00    	mov    r13d,0x1
+    178a:	f3 0f 10 84 24 d4 00 	movss  xmm0,DWORD PTR [rsp+0xd4]
+    1791:	00 00 
+    1793:	f3 0f 10 bc 24 d8 00 	movss  xmm7,DWORD PTR [rsp+0xd8]
+    179a:	00 00 
+    179c:	f3 0f 10 ac 24 c4 00 	movss  xmm5,DWORD PTR [rsp+0xc4]
+    17a3:	00 00 
+    17a5:	f3 0f 11 4c 24 08    	movss  DWORD PTR [rsp+0x8],xmm1
+    17ab:	f3 0f 10 9c 24 cc 00 	movss  xmm3,DWORD PTR [rsp+0xcc]
+    17b2:	00 00 
+    17b4:	f3 0f 59 e0          	mulss  xmm4,xmm0
+    17b8:	f3 0f 11 7c 24 18    	movss  DWORD PTR [rsp+0x18],xmm7
+    17be:	f3 0f 10 94 24 c8 00 	movss  xmm2,DWORD PTR [rsp+0xc8]
+    17c5:	00 00 
+    17c7:	f3 0f 59 fe          	mulss  xmm7,xmm6
+    17cb:	f3 0f 11 6c 24 04    	movss  DWORD PTR [rsp+0x4],xmm5
+    17d1:	f3 0f 59 c6          	mulss  xmm0,xmm6
+    17d5:	f3 0f 11 1c 24       	movss  DWORD PTR [rsp],xmm3
+    17da:	f3 0f 59 f1          	mulss  xmm6,xmm1
+    17de:	f3 0f 11 64 24 1c    	movss  DWORD PTR [rsp+0x1c],xmm4
+    17e4:	0f 28 e7             	movaps xmm4,xmm7
+    17e7:	f3 0f 58 e3          	addss  xmm4,xmm3
+    17eb:	f3 0f 58 f5          	addss  xmm6,xmm5
+    17ef:	0f 28 ce             	movaps xmm1,xmm6
+    17f2:	e9 70 fd ff ff       	jmp    1567 <main+0x3e7>
+    17f7:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+    17fe:	00 00 
+    1800:	0f 2f c1             	comiss xmm0,xmm1
+    1803:	0f 87 6c ff ff ff    	ja     1775 <main+0x5f5>
+    1809:	f3 0f 10 7c 24 14    	movss  xmm7,DWORD PTR [rsp+0x14]
+    180f:	0f 28 cc             	movaps xmm1,xmm4
+    1812:	0f 28 c6             	movaps xmm0,xmm6
+    1815:	45 31 ed             	xor    r13d,r13d
+    1818:	c7 44 24 18 00 00 00 	mov    DWORD PTR [rsp+0x18],0x0
+    181f:	00 
+    1820:	f3 0f 10 24 24       	movss  xmm4,DWORD PTR [rsp]
+    1825:	c7 44 24 08 00 00 00 	mov    DWORD PTR [rsp+0x8],0x0
+    182c:	00 
+    182d:	f3 0f 11 7c 24 1c    	movss  DWORD PTR [rsp+0x1c],xmm7
+    1833:	e9 2f fd ff ff       	jmp    1567 <main+0x3e7>
+    1838:	49 83 c7 01          	add    r15,0x1
+    183c:	f3 0f 10 5c 24 0c    	movss  xmm3,DWORD PTR [rsp+0xc]
+    1842:	49 81 ff 58 02 00 00 	cmp    r15,0x258
+    1849:	0f 85 41 fa ff ff    	jne    1290 <main+0x110>
+    184f:	4c 8b 6c 24 38       	mov    r13,QWORD PTR [rsp+0x38]
+    1854:	ba 14 00 00 00       	mov    edx,0x14
+    1859:	48 8b 0d c0 37 00 00 	mov    rcx,QWORD PTR [rip+0x37c0]        # 5020 <stderr@GLIBC_2.2.5>
+    1860:	be 01 00 00 00       	mov    esi,0x1
+    1865:	48 8d 3d 1b 18 00 00 	lea    rdi,[rip+0x181b]        # 3087 <_IO_stdin_used+0x87>
+    186c:	e8 df f8 ff ff       	call   1150 <fwrite@plt>
+    1871:	b9 58 02 00 00       	mov    ecx,0x258
+    1876:	4c 89 ee             	mov    rsi,r13
+    1879:	ba 20 03 00 00       	mov    edx,0x320
+    187e:	48 8d 3d 17 18 00 00 	lea    rdi,[rip+0x1817]        # 309c <_IO_stdin_used+0x9c>
+    1885:	e8 a6 0d 00 00       	call   2630 <write_image>
+    188a:	be 58 02 00 00       	mov    esi,0x258
+    188f:	4c 89 ef             	mov    rdi,r13
+    1892:	e8 b9 0f 00 00       	call   2850 <free_image>
+    1897:	ba 06 00 00 00       	mov    edx,0x6
+
+__TTS_9a3b478265fe46f48f6918c3a3db3ac1__RC:0
+__TTS_9a3b478265fe46f48f6918c3a3db3ac1__PWD:/app
+__TTS_9a3b478265fe46f48f6918c3a3db3ac1__END
+[?2004hroot@73c5f67f5294:/app# cd -- __TTS_9a3b478265fe46f48f6918c3a3db3ac1__PWD:/app && cd /app && objdump -s -j .rodata ./mystery | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_1928d66e84dd4aa8a21717a51faa0379__RC:%s\n' "$__tts_rc"; printf '__TTS_1928d66e84dd4aa8a21717a51faa0379__PWD:'; pwd; printf '__TTS_1928d66e84dd4aa8a21717a51faa0379__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_9a3b478265fe46f48f6918c3a3db3ac1__PWD:/app: No such file or directory
+
+__TTS_1928d66e84dd4aa8a21717a51faa0379__RC:1
+__TTS_1928d66e84dd4aa8a21717a51faa0379__PWD:/app
+__TTS_1928d66e84dd4aa8a21717a51faa0379__END
+[?2004hroot@73c5f67f5294:/app# cd -- __TTS_1928d66e84dd4aa8a21717a51faa0379__PWD:/app && cd /app && objdump -s -j .rodata ./mystery | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__RC:%s\n' "$__tts_rc"; printf '__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__PWD:'; pwd; printf '__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_1928d66e84dd4aa8a21717a51faa0379__PWD:/app: No such file or directory
+
+__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__RC:1
+__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__PWD:/app
+__TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__END
+[?2004hroot@73c5f67f5294:/app# cd -- __TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__PWD:/app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import subprocess
+[?2004l[?2004h> print(subprocess.check_output(['objdump','-s','-j','.rodata','./mystery'],text=True))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_c2c21729d1764fee86c86b3c3f5c51ae__RC:%s\n' "$__tts_rc"; printf '__TTS_c2c21729d1764fee86c86b3c3f5c51ae__PWD:'; pwd; printf '__TTS_c2c21729d1764fee86c86b3c3f5c51ae__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- __TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__PWD:/app && cd /app && objdump -s -j .rodata ./mystery | head -n 120; __tts_rc=$?; printf '\n__TTS_cc84ff718c134a01b67afe025890695f__RC:%s\n' "$__tts_rc"; printf '__TTS_cc84ff718c134a01b67afe025890695f__PWD:'; pwd; printf '__TTS_cc84ff718c134a01b67afe025890695f__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 10 delimited by end-of-file (wanted `PY')
+bash: cd: __TTS_cd9c96bf96ad4af7b5da08e65cd60bc3__PWD:/app: No such file or directory
+[?2004hroot@73c5f67f5294:/app# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && ./mystery >/dev/null 2>m.err && sed -n '1,40p' m.err && od -An -tx1 -N64 image.ppm; __tts_rc=$?; printf '\n__TTS_438ee5a8eae04617989ea68ed7282522__RC:%s\n' "$__tts_rc"; printf '__TTS_438ee5a8eae04617989ea68ed7282522__PWD:'; pwd; printf '__TTS_438ee5a8eae04617989ea68ed7282522__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_438ee5a8eae04617989ea68ed7282522__RC:1
+__TTS_438ee5a8eae04617989ea68ed7282522__PWD:/app
+__TTS_438ee5a8eae04617989ea68ed7282522__END
+[?2004hroot@73c5f67f5294:/app# 

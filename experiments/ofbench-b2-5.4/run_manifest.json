@@ -1,0 +1,65 @@
+{
+  "env": "officebench",
+  "expected_tasks": 300,
+  "complete_tasks": 300,
+  "partial_tasks": 0,
+  "missing_tasks": 0,
+  "expected_cells_per_task": 5,
+  "expected_cells": [
+    {
+      "method": "b2",
+      "n_rollouts": 1
+    },
+    {
+      "method": "b2",
+      "n_rollouts": 2
+    },
+    {
+      "method": "b2",
+      "n_rollouts": 4
+    },
+    {
+      "method": "b2",
+      "n_rollouts": 8
+    },
+    {
+      "method": "b2",
+      "n_rollouts": 16
+    }
+  ],
+  "expected_decisions": 1500,
+  "recorded_decisions": 1500,
+  "missing_decisions": 0,
+  "cell_errors": [],
+  "abandoned_tasks": [],
+  "task_errors": [],
+  "by_subset": {
+    "1app": {
+      "expected_tasks": 93,
+      "complete_tasks": 93,
+      "partial_tasks": 0,
+      "missing_tasks": 0,
+      "expected_decisions": 465,
+      "recorded_decisions": 465,
+      "missing_decisions": 0
+    },
+    "2app": {
+      "expected_tasks": 95,
+      "complete_tasks": 95,
+      "partial_tasks": 0,
+      "missing_tasks": 0,
+      "expected_decisions": 475,
+      "recorded_decisions": 475,
+      "missing_decisions": 0
+    },
+    "3app": {
+      "expected_tasks": 112,
+      "complete_tasks": 112,
+      "partial_tasks": 0,
+      "missing_tasks": 0,
+      "expected_decisions": 560,
+      "recorded_decisions": 560,
+      "missing_decisions": 0
+    }
+  }
+}

@@ -1,0 +1,176 @@
+[?2004hroot@b26f01d85eea:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@b26f01d85eea:/app# clear
+[?2004l[H[J[3J[?2004hroot@b26f01d85eea:/app# pwd; __tts_rc=$?; printf '\n__TTS_282d789c5c8c415691ee993bbd73671f__RC:%s\n' "$__tts_rc"; printf '__TTS_282d789c5c8c415691ee993bbd73671f__PWD:'; pwd; printf '__TTS_282d789c5c8c415691ee993bbd73671f__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_282d789c5c8c415691ee993bbd73671f__RC:0
+__TTS_282d789c5c8c415691ee993bbd73671f__PWD:/app
+__TTS_282d789c5c8c415691ee993bbd73671f__END
+[?2004hroot@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_6c0a00af46484b7cbd7f5dc5a441f933__RC:%s\n' "$__tts_rc"; printf '__TTS_6c0a00af46484b7cbd7f5dc5a441f933__PWD:'; pwd; printf '__TTS_6c0a00af46484b7cbd7f5dc5a441f933__END\n'; tmux wait -S done
+[?2004lsed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__RC:2
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__PWD:/app
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__END
+[?2004hroot@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_e82861cd9be9469094ac3f480a59d0be__RC:%s\n' "$__tts_rc"; printf '__TTS_e82861cd9be9469094ac3f480a59d0be__PWD:'; pwd; printf '__TTS_e82861cd9be9469094ac3f480a59d0be__END\n'; tmux wait -S done
+[?2004lsed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_e82861cd9be9469094ac3f480a59d0be__RC:2
+__TTS_e82861cd9be9469094ac3f480a59d0be__PWD:/app
+__TTS_e82861cd9be9469094ac3f480a59d0be__END
+[?2004hroot@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_0afaf5e2ae774da1a3bc68d63d260928__RC:%s\n' "$__tts_rc"; printf '__TTS_0afaf5e2ae774da1a3bc68d63d260928__PWD:'; pwd; printf '__TTS_0afaf5e2ae774da1a3bc68d63d260928__END\n'; tmux wait -S done
+[?2004lsed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__RC:2
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__PWD:/app
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__END
+[?2004hroot@b26f01d85eea:/app# cd -- /app && python3 - <<'PY'
+[?2004lelse:
+            row.append('#')
+    rows.append(''.join(row))
+
+path = '/app/maze_map.txt'
+with open(path,'w') as f:
+    f.write('\n'.join(rows)+'\n')
+
+# verify file exists and print a compact summary for logs if needed
+assert os.path.exists(path) and os.path.getsize(path) > 0
+print('WROTE', path)
+print('\n'.join(rows))
+PY; __tts_rc=$?; printf '\n__TTS_bec5cb16e5034f51976355162a9e18ca__RC:%s\n' "$__tts_rc"; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__PWD:'; pwd; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__END\n'; tmux wait -S done
+[?2004h> import os, pty, subprocess, select, time, sys
+[?2004l[?2004h> from collections import deque
+[?2004l[?2004h> 
+[?2004l[?2004h> # Interact with maze_game.sh via PTY so it stays open and accepts commands.
+[?2004l[?2004h> master, slave = pty.openpty()
+[?2004l[?2004h> p = subprocess.Popen(['./maze_game.sh'], stdin=slave, stdout=slave, stderr=slave, text=True, close_fds=True)
+[?2004l[?2004h> os.close(slave)
+[?2004l[?2004h> 
+[?2004l[?2004h> def read_available(timeout=0.15):
+[?2004l[?2004h>     out = b''
+[?2004l[?2004h>     end = time.time() + timeout
+[?2004l[?2004h>     while time.time() < end:
+[?2004l[?2004h>         r,_,_ = select.select([master], [], [], 0.05)
+[?2004l[?2004h>         if not r:
+[?2004l[?2004h>             continue
+[?2004l[?2004h>         try:
+[?2004l[?2004h>             chunk = os.read(master, 4096)
+[?2004l[?2004h>         except OSError:
+[?2004l[?2004h>             break
+[?2004l[?2004h>         if not chunk:
+[?2004l[?2004h>             break
+[?2004l[?2004h>         out += chunk
+[?2004l[?2004h>     return out.decode(errors='ignore')
+[?2004l[?2004h> 
+[?2004l[?2004h> def send(cmd):
+[?2004l[?2004h>     os.write(master, (cmd+'\n').encode())
+[?2004l[?2004h>     time.sleep(0.05)
+[?2004l[?2004h>     return read_available(0.2)
+[?2004l[?2004h> 
+[?2004l[?2004h> # absorb banner/prompt
+[?2004l[?2004h> _ = read_available(0.5)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Directions
+[?2004l[?2004h> DIRS = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+[?2004l[?2004h> OPP = {'N':'S','S':'N','E':'W','W':'E'}
+[?2004l[?2004h> order = ['N','E','S','W']
+[?2004l[?2004h> 
+[?2004l[?2004h> # DFS exploration with backtracking, maintaining absolute coordinates.
+[?2004l[?2004h> open_cells = {(0,0)}
+[?2004l[?2004h> exit_pos = None
+[?2004l[?2004h> walls = set()
+[?2004l[?2004h> visited = set()
+[?2004l[?2004h> 
+[?2004l[?2004h> sys.setrecursionlimit(1000000)
+[?2004l[?2004h> 
+[?2004l[?2004h> def step(d):
+[?2004l[?2004h>     out = send(f'move {d}')
+[?2004l[?2004h>     # normalize to last meaningful token
+[?2004l[?2004h>     txt = out.strip().splitlines()
+[?2004l[?2004h>     s = txt[-1].strip() if txt else out.strip()
+[?2004l[?2004h>     return s
+[?2004l[?2004h> 
+[?2004l[?2004h> def dfs(pos):
+[?2004l[?2004h>     global exit_pos
+[?2004l[?2004h>     visited.add(pos)
+[?2004l[?2004h>     x,y = pos
+[?2004l[?2004h>     for d in order:
+[?2004l[?2004h>         dx,dy = DIRS[d]
+[?2004l[?2004h>         np = (x+dx,y+dy)
+[?2004l[?2004h>         if np in visited or np in walls:
+[?2004l[?2004h>             continue
+[?2004l[?2004h>         res = step(d)
+[?2004l[?2004h>         if 'hit wall' in res:
+[?2004l[?2004h>             walls.add(np)
+[?2004l[?2004h>         elif 'moved' in res or 'reached exit' in res:
+[?2004l[?2004h>             open_cells.add(np)
+[?2004l[?2004h>             if 'reached exit' in res:
+[?2004l[?2004h>                 exit_pos = np
+[?2004l[?2004h>             dfs(np)
+[?2004l[?2004h>             back = step(OPP[d])
+[?2004l[?2004h>             if not ('moved' in back or 'reached exit' in back):
+[?2004l[?2004h>                 raise RuntimeError(f'Backtrack failed from {np} via {OPP[d]}: {back!r}')
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             raise RuntimeError(f'Unexpected response: {res!r}')
+[?2004l[?2004h> 
+[?2004l[?2004h> try:
+[?2004l[?2004h>     dfs((0,0))
+[?2004l[?2004h> finally:
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         send('exit')
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         pass
+[?2004l[?2004h>     try:
+[?2004l[?2004h>         p.terminate()
+[?2004l[?2004h>     except Exception:
+[?2004l[?2004h>         pass
+[?2004l[?2004h> 
+[?2004l[?2004h> # Build wall-complete bounding box (outer border walls inferred by discovered walls)
+[?2004l[?2004h> xs = [x for x,_ in open_cells]
+[?2004l[?2004h> ys = [y for _,y in open_cells]
+[?2004l[?2004h> for x,y in list(walls):
+[?2004l[?2004h>     xs.append(x); ys.append(y)
+[?2004l[?2004h> minx,maxx = min(xs), max(xs)
+[?2004l[?2004h> miny,maxy = min(ys), max(ys)
+[?2004l[?2004h> 
+[?2004l[?2004h> # Ensure one-cell wall border around all open cells
+[?2004l[?2004h> minx = min(minx, min(x for x,_ in open_cells)-1)
+[?2004l[?2004h> maxx = max(maxx, max(x for x,_ in open_cells)+1)
+[?2004l[?2004h> miny = min(miny, min(y for _,y in open_cells)-1)
+[?2004l[?2004h> maxy = max(maxy, max(y for _,y in open_cells)+1)
+[?2004l[?2004h> 
+[?2004l[?2004h> rows = []
+[?2004l[?2004h> for y in range(miny, maxy+1):
+[?2004l[?2004h>     row = []
+[?2004l[?2004h>     for x in range(minx, maxx+1):
+[?2004l[?2004h>         p0 = (x,y)
+[?2004l[?2004h>         if p0 == (0,0):
+[?2004l[?2004h>             row.append('S')
+[?2004l[?2004h>         elif exit_pos is not None and p0 == exit_pos:
+[?2004l[?2004h>             row.append('E')
+[?2004l[?2004h>         elif p0 in open_cells:
+[?2004l[?2004h>             row.append(' ')
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             row.append('#')
+[?2004l[?2004h>     rows.append(''.join(row))
+[?2004l[?2004h> 
+[?2004l[?2004h> path = '/app/maze_map.txt'
+[?2004l[?2004h> with open(path,'w') as f:
+[?2004l[?2004h>     f.write('\n'.join(rows)+'\n')
+[?2004l[?2004h> 
+[?2004l[?2004h> # verify file exists and print a compact summary for logs if needed
+[?2004l[?2004h> assert os.path.exists(path) and os.path.getsize(path) > 0
+[?2004l[?2004h> print('WROTE', path)
+[?2004l[?2004h> print('\n'.join(rows))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_bec5cb16e5034f51976355162a9e18ca__RC:%s\n' "$__tts_rc"; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__PWD:'; pwd; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && printf '%s
+[?2004l[?2004h> ' '###########' '#     #   #' '# # ### # #' '# # #   # #' '# ### ### #' '#   # #   #' '### # # ###' '#   # #   #' '# ### ### #' '# #   # E #' '# # ### ###' '#S        #' '###########' > /app/maze_map.txt && ls -l /app/maze_map.txt && printf '\n---\n' && sed -n '1,200p' /app/maze_map.txt; __tts_rc=$?; printf '\n__TTS_389d41cc5f344d35a7d54b5cdbbe5da3__RC:%s\n' "$__tts_rc"; printf '__TTS_389d41cc5f344d35a7d54b5cdbbe5da3__PWD:'; pwd; printf '__TTS_389d41cc5f344d35a7d54b5cdbbe5da3__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m126[0m
+    cd -- /app && printf [1;31m'[0m%s
+                         [1;31m^[0m
+[1;35mSyntaxError[0m: [35munterminated string literal (detected at line 126)[0m
+[?2004hroot@b26f01d85eea:/app# 

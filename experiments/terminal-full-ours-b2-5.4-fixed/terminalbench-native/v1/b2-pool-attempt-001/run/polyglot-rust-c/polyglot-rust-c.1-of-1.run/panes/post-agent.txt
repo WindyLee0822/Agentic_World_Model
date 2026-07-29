@@ -1,0 +1,40 @@
+root@135c7fd29c0e:/app# pwd; __tts_rc=$?; printf '\n__TTS_221e9f7d74ac40b48825fbdf0fde1a19__RC:%s\n' "$__tts_rc"; printf '__TTS_221e9f7d74ac40b48825fbdf0fde1a19
+__PWD:'; pwd; printf '__TTS_221e9f7d74ac40b48825fbdf0fde1a19__END\n'; tmux wait -S done
+/app
+
+__TTS_221e9f7d74ac40b48825fbdf0fde1a19__RC:0
+__TTS_221e9f7d74ac40b48825fbdf0fde1a19__PWD:/app
+__TTS_221e9f7d74ac40b48825fbdf0fde1a19__END
+root@135c7fd29c0e:/app# cd -- /app && cat > /app/main.c.rs <<'EOF'
+> #if 0
+> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0u64,1u64);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
+> fn main(){let n: u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
+> /*
+> #endif
+> #include <stdio.h>
+> #include <stdlib.h>
+> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
+> int main(int argc,char**argv){unsigned long long n=strtoull(argv[1],0,10);printf("%llu\n",fib(n));return 0;}
+> #if 0
+> */
+> #endif
+> EOF; __tts_rc=$?; printf '\n__TTS_6dbf95a57d1f481bb5025d0e6263820e__RC:%s\n' "$__tts_rc"; printf '__TTS_6dbf95a57d1f481bb5025d0e6263820e__PWD:'; pwd; printf '
+__TTS_6dbf95a57d1f481bb5025d0e6263820e__END\n'; tmux wait -S done
+> cd -- /app && sed -n '1,120p' /app/main.c.rs 2>/dev/null || ls -l /app; __tts_rc=$?; printf '\n__TTS_4f7984c8facd48298fb158cc6e7ddfcc__RC:%s\n' "$__tts_rc"; p
+rintf '__TTS_4f7984c8facd48298fb158cc6e7ddfcc__PWD:'; pwd; printf '__TTS_4f7984c8facd48298fb158cc6e7ddfcc__END\n'; tmux wait -S done
+> cd -- /app && ps -ef | sed -n '1,40p'; __tts_rc=$?; printf '\n__TTS_660c4a1007514fc481c740a394163669__RC:%s\n' "$__tts_rc"; printf '__TTS_660c4a1007514fc481c7
+40a394163669__PWD:'; pwd; printf '__TTS_660c4a1007514fc481c740a394163669__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+

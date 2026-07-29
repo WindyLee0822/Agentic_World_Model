@@ -1,0 +1,156 @@
+[?2004hroot@5d03ead3e09d:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@5d03ead3e09d:/app# clear
+[?2004l[H[J[3J[?2004hroot@5d03ead3e09d:/app# pwd; __tts_rc=$?; printf '\n__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__RC:%s\n' "$__tts_rc"; printf '__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__PWD:'; pwd; printf '__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__RC:0
+__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__PWD:/app
+__TTS_29aa2d7c2c774e6a918aef3fca8c42ee__END
+[?2004hroot@5d03ead3e09d:/app# cd -- /app && python -c "from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m); AutoModel.from_pretrained(m); print('cached', m)"; __tts_rc=$?; printf '\n__TTS_d24e039adda946e6a85a685aef7c0151__RC:%s\n' "$__tts_rc"; printf '__TTS_d24e039adda946e6a85a685aef7c0151__PWD:'; pwd; printf '__TTS_d24e039adda946e6a85a685aef7c0151__END\n'; tmux wait -S done
+[?2004lWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+config.json:   0%|                                                                                                                   | 0.00/684 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 684/684 [00:00<00:00, 3.89MB/s]
+tokenizer_config.json:   0%|                                                                                                        | 0.00/25.0 [00:00<?, ?B/s]tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 193kB/s]
+spiece.model:   0%|                                                                                                                 | 0.00/760k [00:00<?, ?B/s]spiece.model: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 760k/760k [00:00<00:00, 78.7MB/s]
+tokenizer.json:   0%|                                                                                                              | 0.00/1.31M [00:00<?, ?B/s]tokenizer.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 1.31M/1.31M [00:00<00:00, 145MB/s]
+/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py:744: UserWarning: Not enough free disk space to download the file. The expected file size is: 47.37 MB. The target location /root/.cache/huggingface/hub/models--albert--albert-base-v2/blobs only has 24.11 MB free disk space.
+  warnings.warn(
+
+model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes: ▏                                                                                                    | 98.3kB            model.safetensors: downloading bytes: ▉                                                                                                    |  459kB, 9.65kB/s  model.safetensors: downloading bytes: ██▉                                                                                                  | 1.38MB, 44.9kB/s  model.safetensors: downloading bytes: ███████▋                                                                                             | 3.61MB,  134kB/s  model.safetensors: downloading bytes: ███████████████████▉                                                                                 | 9.33MB,  350kB/s  model.safetensors: downloading bytes: ███████████████████████████████████████████▋                                                         | 20.5MB,  902kB/s  model.safetensors: downloading bytes: ████████████████████████████████████████████████████████████████████▉                                | 32.3MB, 1.97MB/s  model.safetensors: downloading bytes: ██████████████████████████████████████████████████████████████████████████████████████████████▏      | 44.2MB, 3.10MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.2MB, 4.21MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.2MB, 4.21MB/s  
+model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            
+Traceback (most recent call last):
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m695[0m, in [35m_get_resolved_checkpoint_files[0m
+    resolved_archive_file = cached_file(pretrained_model_name_or_path, filename, **cached_file_kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m293[0m, in [35mcached_file[0m
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m527[0m, in [35mcached_files[0m
+    raise e
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m437[0m, in [35mcached_files[0m
+    [31mhf_hub_download[0m[1;31m([0m
+    [31m~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mpath_or_repo_id,[0m
+        [1;31m^^^^^^^^^^^^^^^^[0m
+    ...<10 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py"[0m, line [35m88[0m, in [35m_inner_fn[0m
+    return fn(*args, **kwargs)
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1013[0m, in [35mhf_hub_download[0m
+    return _hf_hub_download_to_cache_dir(
+        # Destination
+    ...<15 lines>...
+        dry_run=dry_run,
+    )
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1236[0m, in [35m_hf_hub_download_to_cache_dir[0m
+    [31m_download_to_tmp_and_move[0m[1;31m([0m
+    [31m~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mincomplete_path=Path(blob_path + ".incomplete"),[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<8 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1920[0m, in [35m_download_to_tmp_and_move[0m
+    [31mxet_get[0m[1;31m([0m
+    [31m~~~~~~~[0m[1;31m^[0m
+        [1;31mincomplete_path=tmp_path,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<4 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m563[0m, in [35mxet_get[0m
+    with [31msession.new_file_download_group[0m[1;31m([0m
+         [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mtoken_refresh_url=xet_file_data.refresh_route,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<2 lines>...
+        [1;31mprogress_callback=progress.update_progress,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m as group:
+    [1;31m^[0m
+[1;35mRuntimeError[0m: [35mTask error: File reconstruction error: IO Error: No space left on device (os error 28)[0m
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
+    from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m); [31mAutoModel.from_pretrained[0m[1;31m(m)[0m; print('cached', m)
+                                                                                                                    [31m~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/models/auto/auto_factory.py"[0m, line [35m402[0m, in [35mfrom_pretrained[0m
+    return [31mmodel_class.from_pretrained[0m[1;31m([0m
+           [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mpretrained_model_name_or_path, *model_args, config=config, **hub_kwargs, **kwargs[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m4355[0m, in [35mfrom_pretrained[0m
+    checkpoint_files, sharded_metadata = [31m_get_resolved_checkpoint_files[0m[1;31m([0m
+                                         [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mpretrained_model_name_or_path=pretrained_model_name_or_path,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<7 lines>...
+        [1;31mtqdm_class=tqdm_class,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m775[0m, in [35m_get_resolved_checkpoint_files[0m
+    raise OSError(
+    ...<4 lines>...
+    ) from e
+[1;35mOSError[0m: [35mCan't load the model for 'albert/albert-base-v2'. If you were trying to load it from 'https://huggingface.co/models', make sure you don't have a local directory with the same name. Otherwise, make sure 'albert/albert-base-v2' is the correct path to a directory containing a file named pytorch_model.bin.[0m
+
+__TTS_d24e039adda946e6a85a685aef7c0151__RC:1
+__TTS_d24e039adda946e6a85a685aef7c0151__PWD:/app
+__TTS_d24e039adda946e6a85a685aef7c0151__END
+[?2004hroot@5d03ead3e09d:/app# cd -- /app && df -h /app /root/.cache/huggingface && du -sh /root/.cache/huggingface 2>/dev/null && find /root/.cache/huggingface -maxdepth 3 -type f | sed -n '1,40p'; __tts_rc=$?; printf '\n__TTS_0675f19c8d8b4f17862b95daa45e3d18__RC:%s\n' "$__tts_rc"; printf '__TTS_0675f19c8d8b4f17862b95daa45e3d18__PWD:'; pwd; printf '__TTS_0675f19c8d8b4f17862b95daa45e3d18__END\n'; tmux wait -S done
+[?2004lFilesystem      Size  Used Avail Use% Mounted on
+overlay         880G  119G  717G  15% /
+tmpfs           100M   78M   23M  78% /root/.cache
+78M	/root/.cache/huggingface
+/root/.cache/huggingface/xet/logs/xet_20260718T053406753+0000_100.log
+/root/.cache/huggingface/.agent_harnesses.json
+/root/.cache/huggingface/hub/CACHEDIR.TAG
+/root/.cache/huggingface/hub/large_model_file
+
+__TTS_0675f19c8d8b4f17862b95daa45e3d18__RC:0
+__TTS_0675f19c8d8b4f17862b95daa45e3d18__PWD:/app
+__TTS_0675f19c8d8b4f17862b95daa45e3d18__END
+[?2004hroot@5d03ead3e09d:/app# cd -- /app && mkdir -p /app/hf-cache && HF_HOME=/app/hf-cache python -c "from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m); AutoModel.from_pretrained(m); print('cached', m)"; __tts_rc=$?; printf '\n__TTS_b6234e665eed45c9ac3f160e741de8db__RC:%s\n' "$__tts_rc"; printf '__TTS_b6234e665eed45c9ac3f160e741de8db__PWD:'; pwd; printf '__TTS_b6234e665eed45c9ac3f160e741de8db__END\n'; tmux wait -S done
+[?2004lWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+config.json:   0%|                                                                                                                   | 0.00/684 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 684/684 [00:00<00:00, 3.65MB/s]
+tokenizer_config.json:   0%|                                                                                                        | 0.00/25.0 [00:00<?, ?B/s]tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 127kB/s]
+spiece.model:   0%|                                                                                                                 | 0.00/760k [00:00<?, ?B/s]spiece.model: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 760k/760k [00:00<00:00, 68.9MB/s]
+tokenizer.json:   0%|                                                                                                              | 0.00/1.31M [00:00<?, ?B/s]tokenizer.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 1.31M/1.31M [00:00<00:00, 148MB/s]
+
+model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes:                                                                                                      | 16.4kB            model.safetensors: downloading bytes: ▍                                                                                                    |  200kB, 1.62kB/s  model.safetensors: downloading bytes: █▍                                                                                                   |  692kB, 19.7kB/s  model.safetensors: downloading bytes: ████▍                                                                                                | 2.05MB, 67.8kB/s  model.safetensors: downloading bytes: ████████████▋                                                                                        | 5.97MB,  200kB/s  model.safetensors: downloading bytes: ██████████████████████████████████▏                                                                  | 16.0MB,  581kB/s  model.safetensors: downloading bytes: ███████████████████████████████████████████████████████████▏                                         | 27.8MB, 1.56MB/s  model.safetensors: downloading bytes: ██████████████████████████████████████████████████████████████████████████████████▌                  | 38.7MB, 2.68MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████| 47.4MB / 47.4MB            [Amodel.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.8MB, 4.27MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.8MB, 4.27MB/s  
+model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████| 47.4MB / 47.4MB, 4.57MB/s  
+Loading weights:   0%|                                                                                                                  | 0/25 [00:00<?, ?it/s]Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 12390.12it/s]
+[transformers] [1mAlbertModel LOAD REPORT[0m from: albert/albert-base-v2
+Key                          | Status     |  | 
+-----------------------------+------------+--+-
+predictions.bias             | [38;5;208mUNEXPECTED[0m |  | 
+predictions.dense.bias       | [38;5;208mUNEXPECTED[0m |  | 
+predictions.LayerNorm.weight | [38;5;208mUNEXPECTED[0m |  | 
+predictions.dense.weight     | [38;5;208mUNEXPECTED[0m |  | 
+predictions.decoder.bias     | [38;5;208mUNEXPECTED[0m |  | 
+predictions.LayerNorm.bias   | [38;5;208mUNEXPECTED[0m |  | 
+
+Notes:
+- [38;5;208mUNEXPECTED:[0m	[3mcan be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
+cached albert/albert-base-v2
+
+__TTS_b6234e665eed45c9ac3f160e741de8db__RC:0
+__TTS_b6234e665eed45c9ac3f160e741de8db__PWD:/app
+__TTS_b6234e665eed45c9ac3f160e741de8db__END
+[?2004hroot@5d03ead3e09d:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@5d03ead3e09d:/app# 

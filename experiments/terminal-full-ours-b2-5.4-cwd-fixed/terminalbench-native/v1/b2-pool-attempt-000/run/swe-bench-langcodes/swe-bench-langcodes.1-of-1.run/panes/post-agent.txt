@@ -1,0 +1,40 @@
+root@2465ff64768b:/app/langcodes# pwd; __tts_rc=$?; printf '\n__TTS_c5bccc388f82479e902a7a822ffc1c7b__RC:%s\n' "$__tts_rc"; printf '__TTS_c5bccc388f82479e902a7a
+822ffc1c7b__PWD:'; pwd; printf '__TTS_c5bccc388f82479e902a7a822ffc1c7b__END\n'; tmux wait -S done
+/app/langcodes
+
+__TTS_c5bccc388f82479e902a7a822ffc1c7b__RC:0
+__TTS_c5bccc388f82479e902a7a822ffc1c7b__PWD:/app/langcodes
+__TTS_c5bccc388f82479e902a7a822ffc1c7b__END
+root@2465ff64768b:/app/langcodes# cd -- /app/langcodes && python - <<'PY'
+> from pathlib import Path
+> p=Path('langcodes/__init__.py')
+> s=p.read_text()
+> old='    def __hash__(self):\n        return object.__hash__(self)\n'
+> new='    def __hash__(self):\n        return hash(self._str_tag)\n'
+> if old not in s: raise SystemExit('target not found')
+> p.write_text(s.replace(old,new,1))
+> PY; __tts_rc=$?; printf '\n__TTS_dd05c0b33a394c30bca937a473acdcc4__RC:%s\n' "$__tts_rc"; printf '__TTS_dd05c0b33a394c30bca937a473acdcc4__PWD:'; pwd; printf '_
+_TTS_dd05c0b33a394c30bca937a473acdcc4__END\n'; tmux wait -S done
+> cd -- /app/langcodes && grep -n "def __hash__\|object.__hash__\|_str_tag" langcodes/__init__.py | head -20; __tts_rc=$?; printf '\n__TTS_4be46db974024d8586920
+a542167123e__RC:%s\n' "$__tts_rc"; printf '__TTS_4be46db974024d8586920a542167123e__PWD:'; pwd; printf '__TTS_4be46db974024d8586920a542167123e__END\n'; tmux wait
+ -S done
+> cd -- /app/langcodes && python -c "from pathlib import Path; p=Path('langcodes/__init__.py'); import itertools; print(''.join(itertools.islice(p.open(),1498,1
+507)))"; __tts_rc=$?; printf '\n__TTS_e73f3d2c71084470aefdec08878e6cef__RC:%s\n' "$__tts_rc"; printf '__TTS_e73f3d2c71084470aefdec08878e6cef__PWD:'; pwd; printf
+ '__TTS_e73f3d2c71084470aefdec08878e6cef__END\n'; tmux wait -S done
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

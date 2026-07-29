@@ -1,0 +1,80 @@
+[?2004hroot@17620a61ef2d:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@17620a61ef2d:/app# clear
+[?2004l[H[J[3J[?2004hroot@17620a61ef2d:/app# pwd; __tts_rc=$?; printf '\n__TTS_ddb091345dc44f209e25b517227ce529__RC:%s\n' "$__tts_rc"; printf '__TTS_ddb091345dc44f209e25b517227ce529__PWD:'; pwd; printf '__TTS_ddb091345dc44f209e25b517227ce529__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_ddb091345dc44f209e25b517227ce529__RC:0
+__TTS_ddb091345dc44f209e25b517227ce529__PWD:/app
+__TTS_ddb091345dc44f209e25b517227ce529__END
+[?2004hroot@17620a61ef2d:/app# cd -- /app && python -c "import fasttext,sys;print(sys.executable);print(fasttext.__file__)"; __tts_rc=$?; printf '\n__TTS_614ea63f41c64714a4950f3712fdb602__RC:%s\n' "$__tts_rc"; printf '__TTS_614ea63f41c64714a4950f3712fdb602__PWD:'; pwd; printf '__TTS_614ea63f41c64714a4950f3712fdb602__END\n'; tmux wait -S done
+[?2004l/usr/local/bin/python
+/usr/local/lib/python3.13/site-packages/fasttext/__init__.py
+
+__TTS_614ea63f41c64714a4950f3712fdb602__RC:0
+__TTS_614ea63f41c64714a4950f3712fdb602__PWD:/app
+__TTS_614ea63f41c64714a4950f3712fdb602__END
+[?2004hroot@17620a61ef2d:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import fasttext,sys
+[?2004l[?2004h> print('py',sys.version)
+[?2004l[?2004h> print('fasttext',getattr(fasttext,'__version__','no_version'))
+[?2004l[?2004h> print('module',fasttext.__file__)
+[?2004l[?2004h> try:
+[?2004l[?2004h>     print('attrs',hasattr(fasttext,'train_supervised'),hasattr(fasttext,'load_model'))
+[?2004l[?2004h>     m=fasttext.train_unsupervised('/dev/null')
+[?2004l[?2004h>     print('train_ok',m)
+[?2004l[?2004h> except Exception as e:
+[?2004l[?2004h>     print(type(e).__name__,e)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__RC:%s\n' "$__tts_rc"; printf '__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__PWD:'; pwd; printf '__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import fasttext,sys;print('py',sys.version);print('file',fasttext.__file__);print('attrs',hasattr(fasttext,'train_supervised'),hasattr(fasttext,'train_unsupervised'),hasattr(fasttext,'load_model'));import fasttext.FastText as F;print('ftmod',F.__file__)"; __tts_rc=$?; printf '\n__TTS_b5312bb77e094f5483f6bf61d6577aaf__RC:%s\n' "$__tts_rc"; printf '__TTS_b5312bb77e094f5483f6bf61d6577aaf__PWD:'; pwd; printf '__TTS_b5312bb77e094f5483f6bf61d6577aaf__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import fasttext,sys;print(sys.version);print(fasttext.__file__);import os;print(os.listdir(os.path.dirname(fasttext.__file__)))"; __tts_rc=$?; printf '\n__TTS_c9bb8a37a5374fefa4b424efa3482702__RC:%s\n' "$__tts_rc"; printf '__TTS_c9bb8a37a5374fefa4b424efa3482702__PWD:'; pwd; printf '__TTS_c9bb8a37a5374fefa4b424efa3482702__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m11[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__RC:%s\n' "$__tts_rc"; printf '__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__PWD:'; pwd; printf '__TTS_2b25af4ca2e9412b98baf6d7ebe86d9c__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@17620a61ef2d:/app# cd -- /app && python -c "import pathlib,fasttext; p=pathlib.Path(fasttext.__file__); print(p); print(p.read_text())"; __tts_rc=$?; printf '\n__TTS_9212459775604efe881bbc0f4d23d53d__RC:%s\n' "$__tts_rc"; printf '__TTS_9212459775604efe881bbc0f4d23d53d__PWD:'; pwd; printf '__TTS_9212459775604efe881bbc0f4d23d53d__END\n'; tmux wait -S done
+[?2004l/usr/local/lib/python3.13/site-packages/fasttext/__init__.py
+# Copyright (c) 2017-present, Facebook, Inc.
+# All rights reserved.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from .FastText import train_supervised
+from .FastText import train_unsupervised
+from .FastText import load_model
+from .FastText import tokenize
+from .FastText import EOS
+from .FastText import BOW
+from .FastText import EOW
+
+from .FastText import cbow
+from .FastText import skipgram
+from .FastText import supervised
+
+
+__TTS_9212459775604efe881bbc0f4d23d53d__RC:0
+__TTS_9212459775604efe881bbc0f4d23d53d__PWD:/app
+__TTS_9212459775604efe881bbc0f4d23d53d__END
+[?2004hroot@17620a61ef2d:/app# cd -- __TTS_9212459775604efe881bbc0f4d23d53d__PWD:/app && python -c "import importlib.util; s=importlib.util.find_spec('fasttext.FastText'); print(s.origin); print(s.loader)"; __tts_rc=$?; printf '\n__TTS_9ff2b85081de402d80ff755bbd03a487__RC:%s\n' "$__tts_rc"; printf '__TTS_9ff2b85081de402d80ff755bbd03a487__PWD:'; pwd; printf '__TTS_9ff2b85081de402d80ff755bbd03a487__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_9212459775604efe881bbc0f4d23d53d__PWD:/app: No such file or directory
+
+__TTS_9ff2b85081de402d80ff755bbd03a487__RC:1
+__TTS_9ff2b85081de402d80ff755bbd03a487__PWD:/app
+__TTS_9ff2b85081de402d80ff755bbd03a487__END
+[?2004hroot@17620a61ef2d:/app# cd -- /app && cd /app && python -c "import importlib.util; s=importlib.util.find_spec('fasttext.FastText'); print(s.origin); print(s.loader)"; __tts_rc=$?; printf '\n__TTS_aa76561171594b4abd7e70d422b3b5c6__RC:%s\n' "$__tts_rc"; printf '__TTS_aa76561171594b4abd7e70d422b3b5c6__PWD:'; pwd; printf '__TTS_aa76561171594b4abd7e70d422b3b5c6__END\n'; tmux wait -S done
+[?2004l/usr/local/lib/python3.13/site-packages/fasttext/FastText.py
+<_frozen_importlib_external.SourceFileLoader object at 0x7976864620f0>
+
+__TTS_aa76561171594b4abd7e70d422b3b5c6__RC:0
+__TTS_aa76561171594b4abd7e70d422b3b5c6__PWD:/app
+__TTS_aa76561171594b4abd7e70d422b3b5c6__END
+[?2004hroot@17620a61ef2d:/app# 

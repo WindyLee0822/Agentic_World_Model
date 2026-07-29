@@ -1,0 +1,40 @@
+root@f5ea0219d33d:/app# pwd; __tts_rc=$?; printf '\n__TTS_61a6d3279a974153b48aff94f7d52f5f__RC:%s\n' "$__tts_rc"; printf '__TTS_61a6d3279a974153b48aff94f7d52f5f
+__PWD:'; pwd; printf '__TTS_61a6d3279a974153b48aff94f7d52f5f__END\n'; tmux wait -S done
+/app
+
+__TTS_61a6d3279a974153b48aff94f7d52f5f__RC:0
+__TTS_61a6d3279a974153b48aff94f7d52f5f__PWD:/app
+__TTS_61a6d3279a974153b48aff94f7d52f5f__END
+root@f5ea0219d33d:/app# cd -- /app && python - <<'PY'
+> import os, shutil, subprocess, sys
+> url='https://www.youtube.com/watch?v=jNQXAC9IVRw'
+> out='full.%(ext)s'
+> ytdlp=shutil.which('yt-dlp') or shutil.which('youtube-dl')
+> if not ytdlp:
+>     sys.exit('yt-dlp not found')
+> subprocess.check_call([ytdlp,'-f','mp4/bestvideo+bestaudio/best','-o',out,url])
+> full=None
+> for fn in os.listdir('.'):
+>     if fn.startswith('full.') and fn.endswith('.mp4'):
+>         full=fn; break
+> if not full:
+>     cands=[fn for fn in os.listdir('.') if fn.startswith('full.')]
+>     if cands: full=cands[0]
+> if not full:
+>     sys.exit('download failed')
+> probe=shutil.which('ffprobe')
+> ffmpeg=shutil.which('ffmpeg')
+> if not (probe and ffmpeg):
+>     sys.exit('ffmpeg/ffprobe not found')
+> dur=float(subprocess.check_output([probe,'-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',full], text=True).strip())
+> start=max(0,dur-10)
+> subprocess.check_call([ffmpeg,'-y','-ss',str(start),'-i',full,'-t','10','-c','copy','result.mp4'])
+> PY; __tts_rc=$?; printf '\n__TTS_707d835b3a50425e9ebf1e735b74795a__RC:%s\n' "$__tts_rc"; printf '__TTS_707d835b3a50425e9ebf1e735b74795a__PWD:'; pwd; printf '_
+_TTS_707d835b3a50425e9ebf1e735b74795a__END\n'; tmux wait -S done
+>
+
+
+
+
+
+

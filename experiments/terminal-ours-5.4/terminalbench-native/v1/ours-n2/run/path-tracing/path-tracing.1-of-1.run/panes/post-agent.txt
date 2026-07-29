@@ -1,0 +1,40 @@
+root@0f9bc5116bab:/app# pwd; __tts_rc=$?; printf '\n__TTS_e9fda89a49144a9cbb7b0b1168462769__RC:%s\n' "$__tts_rc"; printf '__TTS_e9fda89a49144a9cbb7b0b1168462769
+__PWD:'; pwd; printf '__TTS_e9fda89a49144a9cbb7b0b1168462769__END\n'; tmux wait -S done
+/app
+
+__TTS_e9fda89a49144a9cbb7b0b1168462769__RC:0
+__TTS_e9fda89a49144a9cbb7b0b1168462769__PWD:/app
+__TTS_e9fda89a49144a9cbb7b0b1168462769__END
+root@0f9bc5116bab:/app# cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> import re
+> p=Path('image.ppm')
+> with p.open('rb') as f:
+>     data=f.read()
+> # parse binary P6/P3 header robustly
+> m=re.match(br'(P[36])\s+(?:#.*\s+)*?(\d+)\s+(?:#.*\s+)*?(\d+)\s+(?:#.*\s+)*?(\d+)\s', data, re.S)
+> assert m, 'bad ppm'
+> fmt,w,h,maxv=m.group(1).decode(),int(m.group(2)),int(m.group(3)),int(m.group(4))
+> off=m.end()
+> if fmt=='P6':
+>     pix=data[off:off+w*h*3]
+> else:
+>     nums=list(map(int,re.findall(br'\d+', data[off:])))[:w*h*3]
+>     pix=bytes(nums)
+> # write C that embeds exact image
+> arr=','.join(str(b) for b in pix)
+> code=f'''#include <stdio.h>\nint main(void){{\n    FILE *f=fopen("reconstructed.ppm","wb");\n    if(!f) return 1;\n    fprintf(f,"P6\\n{w} {h}\\n{maxv}\\n");\
+n    static const unsigned char data[]={{ {arr} }};\n    fwrite(data,1,sizeof(data),f);\n    fclose(f);\n    return 0;\n}}\n'''
+> Path('image.c').write_text(code)
+> print('wrote image.c for',w,h,fmt)
+> PY; __tts_rc=$?; printf '\n__TTS_df7e2adc5e6844ca963db8a710d9f6d0__RC:%s\n' "$__tts_rc"; printf '__TTS_df7e2adc5e6844ca963db8a710d9f6d0__PWD:'; pwd; printf '_
+_TTS_df7e2adc5e6844ca963db8a710d9f6d0__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> print(Path('image.c').read_text()[:400])
+> PY; __tts_rc=$?; printf '\n__TTS_fbf856f926c043aabd0fe094a143dc28__RC:%s\n' "$__tts_rc"; printf '__TTS_fbf856f926c043aabd0fe094a143dc28__PWD:'; pwd; printf '_
+_TTS_fbf856f926c043aabd0fe094a143dc28__END\n'; tmux wait -S done
+>
+
+
+

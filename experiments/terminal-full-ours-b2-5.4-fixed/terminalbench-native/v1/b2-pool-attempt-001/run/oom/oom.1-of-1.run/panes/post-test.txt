@@ -1,0 +1,273 @@
+root@5d03ead3e09d:/app# bash /tests/run-tests.sh; tmux wait -S done
+Collecting pytest
+  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting iniconfig>=1.0.1 (from pytest)
+  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: packaging>=22 in /usr/local/lib/python3.13/site-packages (from pytest) (26.2)
+Collecting pluggy<2,>=1.5 (from pytest)
+  Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Requirement already satisfied: pygments>=2.7.2 in /usr/local/lib/python3.13/site-packages (from pytest) (2.20.0)
+Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Installing collected packages: pluggy, iniconfig, pytest
+Successfully installed iniconfig-2.3.0 pluggy-1.6.0 pytest-9.1.1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your syst
+em unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you ar
+e doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 24.3.1 -> 26.1.2
+[notice] To update, run: pip install --upgrade pip
+===================================================================== test session starts ======================================================================
+platform linux -- Python 3.13.1, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tests
+plugins: anyio-4.14.2
+collected 1 item
+
+../tests/test_output.py F                                                                                                                                [100%]
+
+=========================================================================== FAILURES ===========================================================================
+___________________________________________________________________ test_offline_model_load ____________________________________________________________________
+
+    def test_offline_model_load():
+        """Test that the albert-base-v2 model can be loaded without internet access."""
+        # Attempt to load the model in offline mode
+>       model = transformers.AutoModel.from_pretrained(
+            "albert/albert-base-v2", local_files_only=True
+        )
+
+/tests/test_output.py:7:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/lib/python3.13/site-packages/transformers/models/auto/auto_factory.py:402: in from_pretrained
+    return model_class.from_pretrained(
+/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py:4355: in from_pretrained
+    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pretrained_model_name_or_path = 'albert/albert-base-v2', variant = None, gguf_file = None, use_safetensors = None
+user_agent = {'file_type': 'model', 'framework': 'pytorch', 'from_auto_class': False}, is_remote_code = False, transformers_explicit_filename = None
+download_kwargs = {'cache_dir': None, 'force_download': False, 'proxies': None, 'local_files_only': True, ...}, tqdm_class = None
+
+    def _get_resolved_checkpoint_files(
+        pretrained_model_name_or_path: str | os.PathLike | None,
+        variant: str | None,
+        gguf_file: str | None,
+        use_safetensors: bool | None,
+        user_agent: dict | None,
+        is_remote_code: bool,  # Because we can't determine this inside this function, we need it to be passed in
+        transformers_explicit_filename: str | None = None,
+        download_kwargs: DownloadKwargs | None = None,
+        tqdm_class: type | None = None,
+    ) -> tuple[list[str] | None, dict | None]:
+        """Get all the checkpoint filenames based on `pretrained_model_name_or_path`, and optional metadata if the
+        checkpoints are sharded.
+        This function will download the data if necessary.
+        """
+        download_kwargs = download_kwargs or DownloadKwargs()
+        cache_dir = download_kwargs.get("cache_dir")
+        force_download = download_kwargs.get("force_download", False)
+        proxies = download_kwargs.get("proxies")
+        local_files_only = download_kwargs.get("local_files_only", False)
+        token = download_kwargs.get("token")
+        revision = download_kwargs.get("revision") or "main"
+        subfolder = download_kwargs.get("subfolder", "")
+        commit_hash = download_kwargs.get("commit_hash")
+        if transformers_explicit_filename is not None:
+            if not transformers_explicit_filename.endswith(".safetensors") and not transformers_explicit_filename.endswith(
+                ".safetensors.index.json"
+            ):
+                if transformers_explicit_filename != "adapter_model.bin":
+                    raise ValueError(
+                        "The transformers file in the config seems to be incorrect: it is neither a safetensors file "
+                        "(*.safetensors) nor a safetensors index file (*.safetensors.index.json): "
+                        f"{transformers_explicit_filename}"
+                    )
+
+        is_sharded = False
+
+        if pretrained_model_name_or_path is not None and gguf_file is None:
+            pretrained_model_name_or_path = str(pretrained_model_name_or_path)
+            is_local = os.path.isdir(pretrained_model_name_or_path)
+            # If the file is a local folder (but not in the HF_HOME cache, even if it's technically local)
+            if is_local:
+                if transformers_explicit_filename is not None:
+                    # If the filename is explicitly defined, load this by default
+                    base_dir = os.path.join(pretrained_model_name_or_path, subfolder)
+                    archive_file = os.path.join(base_dir, transformers_explicit_filename)
+                    # Just a small check to make sure `transformers_explicit_filename` does not escape the base_dir, i.e. it does not
+                    # contain `..` for example
+                    try:
+                        absolute_base_dir = os.path.abspath(base_dir)
+                        absolute_archive_file = os.path.abspath(archive_file)
+                        contained = os.path.commonpath([absolute_base_dir, absolute_archive_file]) == absolute_base_dir
+                    except ValueError:
+                        contained = False
+                    if not contained:
+                        raise ValueError(
+                            f"`transformers_weights` must reference a file inside the model directory, got {transformers_explicit_filename}"
+                        )
+                    is_sharded = transformers_explicit_filename.endswith(".safetensors.index.json")
+                elif use_safetensors is not False and os.path.isfile(
+                    os.path.join(pretrained_model_name_or_path, subfolder, _add_variant(SAFE_WEIGHTS_NAME, variant))
+                ):
+                    # Load from a safetensors checkpoint
+                    archive_file = os.path.join(
+                        pretrained_model_name_or_path, subfolder, _add_variant(SAFE_WEIGHTS_NAME, variant)
+                    )
+                elif use_safetensors is not False and os.path.isfile(
+                    os.path.join(pretrained_model_name_or_path, subfolder, _add_variant(SAFE_WEIGHTS_INDEX_NAME, variant))
+                ):
+                    # Load from a sharded safetensors checkpoint
+                    archive_file = os.path.join(
+                        pretrained_model_name_or_path, subfolder, _add_variant(SAFE_WEIGHTS_INDEX_NAME, variant)
+                    )
+                    is_sharded = True
+                elif not use_safetensors and os.path.isfile(
+                    os.path.join(pretrained_model_name_or_path, subfolder, _add_variant(WEIGHTS_NAME, variant))
+                ):
+                    # Load from a PyTorch checkpoint
+                    archive_file = os.path.join(
+                        pretrained_model_name_or_path, subfolder, _add_variant(WEIGHTS_NAME, variant)
+                    )
+                elif not use_safetensors and os.path.isfile(
+                    os.path.join(pretrained_model_name_or_path, subfolder, _add_variant(WEIGHTS_INDEX_NAME, variant))
+                ):
+                    # Load from a sharded PyTorch checkpoint
+                    archive_file = os.path.join(
+                        pretrained_model_name_or_path, subfolder, _add_variant(WEIGHTS_INDEX_NAME, variant)
+                    )
+                    is_sharded = True
+                elif use_safetensors:
+                    raise OSError(
+                        f"Error no file named {_add_variant(SAFE_WEIGHTS_NAME, variant)} found in directory"
+                        f" {pretrained_model_name_or_path}."
+                    )
+                else:
+                    raise OSError(
+                        f"Error no file named {_add_variant(SAFE_WEIGHTS_NAME, variant)}, or {_add_variant(WEIGHTS_NAME, variant)},"
+                        f" found in directory {pretrained_model_name_or_path}."
+                    )
+            elif os.path.isfile(os.path.join(subfolder, pretrained_model_name_or_path)):
+                archive_file = pretrained_model_name_or_path
+                is_local = True
+            else:
+                # set correct filename
+                if transformers_explicit_filename is not None:
+                    filename = transformers_explicit_filename
+                    is_sharded = transformers_explicit_filename.endswith(".safetensors.index.json")
+                elif use_safetensors is not False:
+                    filename = _add_variant(SAFE_WEIGHTS_NAME, variant)
+                else:
+                    filename = _add_variant(WEIGHTS_NAME, variant)
+
+                # Prepare set of kwargs for hub functions
+                has_file_kwargs = {
+                    "revision": revision,
+                    "proxies": proxies,
+                    "token": token,
+                    "cache_dir": cache_dir,
+                    "local_files_only": local_files_only,
+                }
+                cached_file_kwargs = {
+                    "force_download": force_download,
+                    "user_agent": user_agent,
+                    "subfolder": subfolder,
+                    "_raise_exceptions_for_gated_repo": False,
+                    "_raise_exceptions_for_missing_entries": False,
+                    "_commit_hash": commit_hash,
+                    "tqdm_class": tqdm_class,
+                    **has_file_kwargs,
+                }
+                can_auto_convert = (
+                    not is_offline_mode()  # for obvious reasons
+                    # If we are in a CI environment or in a pytest run, we prevent the conversion
+                    and not is_env_variable_true("DISABLE_SAFETENSORS_CONVERSION")
+                    and not is_remote_code  # converter bot does not work on remote code
+                    and subfolder == ""  # converter bot does not work on subfolders
+                )
+
+                try:
+                    # Load from URL or cache if already cached
+                    # Since we set _raise_exceptions_for_missing_entries=False, we don't get an exception but a None
+                    # result when internet is up, the repo and revision exist, but the file does not.
+                    resolved_archive_file = cached_file(pretrained_model_name_or_path, filename, **cached_file_kwargs)
+
+                    # Try safetensors files first if not already found
+                    if resolved_archive_file is None and filename == _add_variant(SAFE_WEIGHTS_NAME, variant):
+                        # Maybe the checkpoint is sharded, we try to grab the index name in this case.
+                        resolved_archive_file = cached_file(
+                            pretrained_model_name_or_path,
+                            _add_variant(SAFE_WEIGHTS_INDEX_NAME, variant),
+                            **cached_file_kwargs,
+                        )
+                        if resolved_archive_file is not None:
+                            is_sharded = True
+                        elif use_safetensors:
+                            if revision == "main" and can_auto_convert:
+                                resolved_archive_file, revision, is_sharded = auto_conversion(
+                                    pretrained_model_name_or_path, **cached_file_kwargs
+                                )
+                            cached_file_kwargs["revision"] = revision
+                            if resolved_archive_file is None:
+                                raise OSError(
+                                    f"{pretrained_model_name_or_path} does not appear to have a file named"
+                                    f" {_add_variant(SAFE_WEIGHTS_NAME, variant)} or {_add_variant(SAFE_WEIGHTS_INDEX_NAME, variant)} "
+                                    "and thus cannot be loaded with `safetensors`. Please do not set `use_safetensors=True`."
+                                )
+                        else:
+                            # This repo has no safetensors file of any kind, we switch to PyTorch.
+                            filename = _add_variant(WEIGHTS_NAME, variant)
+                            resolved_archive_file = cached_file(
+                                pretrained_model_name_or_path, filename, **cached_file_kwargs
+                            )
+
+                    # Then try `.bin` files
+                    if resolved_archive_file is None and filename == _add_variant(WEIGHTS_NAME, variant):
+                        # Maybe the checkpoint is sharded, we try to grab the index name in this case.
+                        resolved_archive_file = cached_file(
+                            pretrained_model_name_or_path,
+                            _add_variant(WEIGHTS_INDEX_NAME, variant),
+                            **cached_file_kwargs,
+                        )
+                        if resolved_archive_file is not None:
+                            is_sharded = True
+
+                    # If we have a match, but it's `.bin` format, try to launch safetensors conversion for next time
+                    if resolved_archive_file is not None:
+                        safe_weights_name = SAFE_WEIGHTS_INDEX_NAME if is_sharded else SAFE_WEIGHTS_NAME
+                        if (
+                            filename in [WEIGHTS_NAME, WEIGHTS_INDEX_NAME]
+                            and not has_file(pretrained_model_name_or_path, safe_weights_name, **has_file_kwargs)
+                            and can_auto_convert
+                        ):
+                            Thread(
+                                target=auto_conversion,
+                                args=(pretrained_model_name_or_path,),
+                                kwargs={"ignore_errors_during_conversion": True, **cached_file_kwargs},
+                                name="Thread-auto_conversion",
+                            ).start()
+
+                    # If no match, raise appropriare errors
+                    else:
+                        # Otherwise, no PyTorch file was found
+                        if variant is not None and has_file(
+                            pretrained_model_name_or_path, WEIGHTS_NAME, **has_file_kwargs
+                        ):
+                            raise OSError(
+                                f"{pretrained_model_name_or_path} does not appear to have a file named"
+                                f" {_add_variant(WEIGHTS_NAME, variant)} but there is a file without the variant"
+                                f" {variant}. Use `variant=None` to load this model from those weights."
+                            )
+                        else:
+>                           raise OSError(
+                                f"{pretrained_model_name_or_path} does not appear to have a file named"
+                                f" {_add_variant(WEIGHTS_NAME, variant)} or {_add_variant(SAFE_WEIGHTS_NAME, variant)}."
+                            )
+E                           OSError: albert/albert-base-v2 does not appear to have a file named pytorch_model.bin or model.safetensors.
+
+/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py:764: OSError
+=================================================================== short test summary info ====================================================================
+FAILED ../tests/test_output.py::test_offline_model_load - OSError: albert/albert-base-v2 does not appear to have a file named pytorch_model.bin or model.safeten
+sors.
+====================================================================== 1 failed in 4.13s =======================================================================
+root@5d03ead3e09d:/app#

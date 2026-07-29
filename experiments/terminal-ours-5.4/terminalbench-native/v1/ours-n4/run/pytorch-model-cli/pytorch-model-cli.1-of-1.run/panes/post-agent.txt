@@ -1,0 +1,103 @@
+root@7c692997dc79:/app# pwd; __tts_rc=$?; printf '\n__TTS_f114cd1dd5004a50a25b04b15c202ba4__RC:%s\n' "$__tts_rc"; printf '__TTS_f114cd1dd5004a50a25b04b15c202ba4
+__PWD:'; pwd; printf '__TTS_f114cd1dd5004a50a25b04b15c202ba4__END\n'; tmux wait -S done
+/app
+
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__RC:0
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__PWD:/app
+__TTS_f114cd1dd5004a50a25b04b15c202ba4__END
+root@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_84abccb98fb147b0a8899
+5813c6fbe4d__RC:%s\n' "$__tts_rc"; printf '__TTS_84abccb98fb147b0a88995813c6fbe4d__PWD:'; pwd; printf '__TTS_84abccb98fb147b0a88995813c6fbe4d__END\n'; tmux wait
+ -S done
+f /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_84abccb98fb147b0a88995813c6fbe4d__RC:0
+__TTS_84abccb98fb147b0a88995813c6fbe4d__PWD:/app
+__TTS_84abccb98fb147b0a88995813c6fbe4d__END
+root@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_b3c9ae683b9941e9ba7db
+35caf916e11__RC:%s\n' "$__tts_rc"; printf '__TTS_b3c9ae683b9941e9ba7db35caf916e11__PWD:'; pwd; printf '__TTS_b3c9ae683b9941e9ba7db35caf916e11__END\n'; tmux wait
+ -S done
+f /app/cJSON.c
+f /app/cJSON.h
+f /app/image.png
+f /app/lodepng.cpp
+f /app/lodepng.h
+f /app/model.pth
+f /app/model.py
+
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__RC:0
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__PWD:/app
+__TTS_b3c9ae683b9941e9ba7db35caf916e11__END
+root@7c692997dc79:/app# cd -- /app && sed -n '1,240p' -- /app/model.py; __tts_rc=$?; printf '\n__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__RC:%s\n' "$__tts_rc"; pri
+ntf '__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__PWD:'; pwd; printf '__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__END\n'; tmux wait -S done
+import torch
+import torch.nn as nn
+
+
+class MnistModel(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        hidden_dim: int,
+        num_classes: int,
+    ) -> torch.nn.Module:
+        super().__init__()
+
+        self.input_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+        self.activation = nn.ReLU()
+
+    def forward(self, x):
+        x = self.input_layer(x)
+        x = self.activation(x)
+
+        x = self.hidden_layer(x)
+        x = self.activation(x)
+
+        x = self.output_layer(x)
+        return x
+
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__RC:0
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__PWD:/app
+__TTS_2ebb7e86c8f845d2bbb3a522a00829f7__END
+root@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_741fe8383ca24ab2bf7f7f71d17988ec__RC:%s\n' "$__tts_rc";
+ printf '__TTS_741fe8383ca24ab2bf7f7f71d17988ec__PWD:'; pwd; printf '__TTS_741fe8383ca24ab2bf7f7f71d17988ec__END\n'; tmux wait -S done
+/app/cJSON.c
+/app/cJSON.h
+/app/image.png
+/app/lodepng.cpp
+/app/lodepng.h
+/app/model.pth
+/app/model.py
+
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__RC:0
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__PWD:/app
+__TTS_741fe8383ca24ab2bf7f7f71d17988ec__END
+root@7c692997dc79:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_5c2371601c28443892906b108253c5e4__RC:%s\n' "$__tts_rc";
+ printf '__TTS_5c2371601c28443892906b108253c5e4__PWD:'; pwd; printf '__TTS_5c2371601c28443892906b108253c5e4__END\n'; tmux wait -S done
+/app/cJSON.c
+/app/cJSON.h
+/app/image.png
+/app/lodepng.cpp
+/app/lodepng.h
+/app/model.pth
+/app/model.py
+
+__TTS_5c2371601c28443892906b108253c5e4__RC:0
+__TTS_5c2371601c28443892906b108253c5e4__PWD:/app
+__TTS_5c2371601c28443892906b108253c5e4__END
+root@7c692997dc79:/app# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && sed -n '1,220p' model.py && python3 - <<'PY'
+> import torch, json
+> sd=torch.load('model.pth', map_location='cpu')
+> print('\nSTATE_KEYS', list(sd.keys()))
+> for k,v in sd.items():
+>     print(k, tuple(v.shape), v.dtype)
+> PY; __tts_rc=$?; printf '\n__TTS_a03ad6379eda4689b9c092b5514f3e49__RC:%s\n' "$__tts_rc"; printf '__TTS_a03ad6379eda4689b9c092b5514f3e49__PWD:'; pwd; printf '_
+_TTS_a03ad6379eda4689b9c092b5514f3e49__END\n'; tmux wait -S done
+>

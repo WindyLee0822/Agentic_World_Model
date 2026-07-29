@@ -1,0 +1,57 @@
+Processing tasks in duration order (longest first):
++-----+---------------+------------+------------+
+|   # | Task Name     | Duration   | Source     |
++=====+===============+============+============+
+|   1 | hello-world   | 3m 30s     | calculated |
++-----+---------------+------------+------------+
+|   2 | create-bucket | 3m 30s     | calculated |
++-----+---------------+------------+------------+
+Total tasks: 2
+Starting harness run
+Run ID: run
+Running task: hello-world
+Running task: create-bucket
+Running docker compose command: docker compose -p create-bucket-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/create-bucket/docker-compose.yaml build
+Running docker compose command: docker compose -p hello-world-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/hello-world/docker-compose.yaml build
+Running docker compose command: docker compose -p create-bucket-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/create-bucket/docker-compose.yaml up -d
+Running docker compose command: docker compose -p hello-world-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/hello-world/docker-compose.yaml up -d
+Starting recording.
+Sending keys: ['asciinema rec --stdin /logs/agent.cast', 'Enter'] min_timeout_sec: 3.0 max_timeout_sec: 180.0
+Starting recording.
+Sending keys: ['asciinema rec --stdin /logs/agent.cast', 'Enter'] min_timeout_sec: 3.0 max_timeout_sec: 180.0
+Sending keys: ['clear', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 180.0
+Sending keys: ['clear', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 180.0
+Sending keys: ['pwd; __tts_rc=$?; printf \'\\n__TTS_2f8f75a1e4b649e9b6b3f7e118834aa9__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_2f8f75a1e4b649e9b6b3f7e118834aa9__PWD:\'; pwd; printf \'__TTS_2f8f75a1e4b649e9b6b3f7e118834aa9__END\\n\'', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 300.0
+Sending keys: ['pwd; __tts_rc=$?; printf \'\\n__TTS_519568bd713149409e795d871f01337d__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_519568bd713149409e795d871f01337d__PWD:\'; pwd; printf \'__TTS_519568bd713149409e795d871f01337d__END\\n\'', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 300.0
+Blocking command completed in 0.10s.
+Blocking command completed in 0.11s.
+Sending keys: ['cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf \'%y %p\\n\' | sort | head -240; __tts_rc=$?; printf \'\\n__TTS_e5f2626d205e4729bced30c085226d91__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_e5f2626d205e4729bced30c085226d91__PWD:\'; pwd; printf \'__TTS_e5f2626d205e4729bced30c085226d91__END\\n\'', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 300.0
+Blocking command completed in 0.10s.
+Sending keys: ['cd -- /app && printf \'Hello, world!\n\' > hello.txt; __tts_rc=$?; printf \'\\n__TTS_f6fc5e7bcd824e5681f65e48e771a497__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_f6fc5e7bcd824e5681f65e48e771a497__PWD:\'; pwd; printf \'__TTS_f6fc5e7bcd824e5681f65e48e771a497__END\\n\'', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 300.0
+Blocking command completed in 0.11s.
+Starting recording.
+Sending keys: ['asciinema rec --stdin /logs/tests.cast', 'Enter'] min_timeout_sec: 3.0 max_timeout_sec: 180.0
+Sending keys: ['clear', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 180.0
+Sending keys: ['bash ', '/tests/run-tests.sh', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 120.0
+Sending keys: ['cd -- /app && aws s3api create-bucket --bucket sample-bucket && aws s3api put-public-access-block --bucket sample-bucket --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false && printf \'{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::sample-bucket/*"}]}\' >/tmp/sample-bucket-policy.json && aws s3api put-bucket-policy --bucket sample-bucket --policy file:///tmp/sample-bucket-policy.json; __tts_rc=$?; printf \'\\n__TTS_b2aba72fd40f45d48d0b97ce9f4b3cc7__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_b2aba72fd40f45d48d0b97ce9f4b3cc7__PWD:\'; pwd; printf \'__TTS_b2aba72fd40f45d48d0b97ce9f4b3cc7__END\\n\'', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 300.0
+Blocking command completed in 2.05s.
+Blocking command completed in 5.65s.
+Stopping recording.
+Starting recording.
+Sending keys: ['C-d'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Sending keys: ['asciinema rec --stdin /logs/tests.cast', 'Enter'] min_timeout_sec: 3.0 max_timeout_sec: 180.0
+Stopping recording.
+Sending keys: ['C-d'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Running docker compose command: docker compose -p hello-world-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/hello-world/docker-compose.yaml down
+Sending keys: ['clear', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 180.0
+Sending keys: ['bash ', '/tests/run-tests.sh', '; tmux wait -S done', 'Enter'] min_timeout_sec: 0.0 max_timeout_sec: 120.0
+Blocking command completed in 5.84s.
+Stopping recording.
+Sending keys: ['C-d'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Stopping recording.
+Sending keys: ['C-d'] min_timeout_sec: 0.1 max_timeout_sec: 180.0
+Running docker compose command: docker compose -p create-bucket-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/create-bucket/docker-compose.yaml down
+Running docker compose command: docker compose -p hello-world-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/hello-world/docker-compose.yaml down --rmi all --volumes
+Resolved task hello-world
+Running docker compose command: docker compose -p create-bucket-1-of-1-run -f /home/t-wendili/.cache/terminal-bench/terminal-bench-core/0.1.1/create-bucket/docker-compose.yaml down --rmi all --volumes
+Unresolved task create-bucket

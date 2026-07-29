@@ -1,0 +1,40 @@
+root@895513a4b160:/app# pwd; __tts_rc=$?; printf '\n__TTS_29bfa94bc98944bcb6cff1501c43c242__RC:%s\n' "$__tts_rc"; printf '__TTS_29bfa94bc98944bcb6cff1501c43c242
+__PWD:'; pwd; printf '__TTS_29bfa94bc98944bcb6cff1501c43c242__END\n'; tmux wait -S done
+/app
+
+__TTS_29bfa94bc98944bcb6cff1501c43c242__RC:0
+__TTS_29bfa94bc98944bcb6cff1501c43c242__PWD:/app
+__TTS_29bfa94bc98944bcb6cff1501c43c242__END
+root@895513a4b160:/app# cd -- /app && bash -lc 'which yt-dlp >/dev/null 2>&1 || which youtube-dl >/dev/null 2>&1; which ffmpeg >/dev/null 2>&1; python - <<"PY"
+> import shutil,sys
+> print("yt" if shutil.which("yt-dlp") or shutil.which("youtube-dl") else "")
+> print("ffmpeg" if shutil.which("ffmpeg") else "")
+> PY'; __tts_rc=$?; printf '\n__TTS_69947ee5e3194daa8c81eee83e280157__RC:%s\n' "$__tts_rc"; printf '__TTS_69947ee5e3194daa8c81eee83e280157__PWD:'; pwd; printf '
+__TTS_69947ee5e3194daa8c81eee83e280157__END\n'; tmux wait -S done
+
+
+
+__TTS_69947ee5e3194daa8c81eee83e280157__RC:0
+__TTS_69947ee5e3194daa8c81eee83e280157__PWD:/app
+__TTS_69947ee5e3194daa8c81eee83e280157__END
+root@895513a4b160:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -euo pipefail; url=https://www.youtube.com/watch?v=jNQXAC9IVRw; ytdl=$(command -v yt-d
+lp || command -v youtube-dl); "$ytdl" -f mp4 -o source.mp4 "$url" && ffmpeg -y -sseof -10 -i source.mp4 -c copy result.mp4'; __tts_rc=$?; printf '\n__TTS_4a7470
+891f024e8e8a7ced9ed963f7d5__RC:%s\n' "$__tts_rc"; printf '__TTS_4a7470891f024e8e8a7ced9ed963f7d5__PWD:'; pwd; printf '__TTS_4a7470891f024e8e8a7ced9ed963f7d5__EN
+D\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_4a7470891f024e8e8a7ced9ed963f7d5__RC:1
+__TTS_4a7470891f024e8e8a7ced9ed963f7d5__PWD:/app
+__TTS_4a7470891f024e8e8a7ced9ed963f7d5__END
+root@895513a4b160:/app# cd -- __TTS_4a7470891f024e8e8a7ced9ed963f7d5__PWD:/app && bash -lc 'set -euo pipefail; ls -l /app/result.mp4 /app/source.mp4 >/dev/null
+2>&1 && ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 /app/result.mp4'; __tts_rc=$?; printf '\n__TTS_5a1e359603084699a1ce8b92ee617ae3__RC
+:%s\n' "$__tts_rc"; printf '__TTS_5a1e359603084699a1ce8b92ee617ae3__PWD:'; pwd; printf '__TTS_5a1e359603084699a1ce8b92ee617ae3__END\n'; tmux wait -S done
+bash: cd: __TTS_4a7470891f024e8e8a7ced9ed963f7d5__PWD:/app: No such file or directory
+
+__TTS_5a1e359603084699a1ce8b92ee617ae3__RC:1
+__TTS_5a1e359603084699a1ce8b92ee617ae3__PWD:/app
+__TTS_5a1e359603084699a1ce8b92ee617ae3__END
+root@895513a4b160:/app#
+
+
+

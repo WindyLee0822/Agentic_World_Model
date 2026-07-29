@@ -110,6 +110,56 @@ class _FakeWMEnv(FakeTaskEnv):
         return traj, predicted, None
 
 
+class _RetryingWMEnv(_FakeWMEnv):
+    def __init__(self):
+        super().__init__()
+        self.attempts = {}
+
+    def run_agent_rollout_wm(self, config, method, seed, budget, cache=None):
+        self.attempts[seed] = self.attempts.get(seed, 0) + 1
+        if self.attempts[seed] == 1:
+            raise RuntimeError("transient rollout failure")
+        return super().run_agent_rollout_wm(config, method, seed, budget, cache)
+
+
+class _PartiallyFailingWMEnv(_FakeWMEnv):
+    def run_agent_rollout_wm(self, config, method, seed, budget, cache=None):
+        if seed == 3:
+            self.wm_rollouts += 1
+            raise RuntimeError("permanent rollout failure")
+        return super().run_agent_rollout_wm(config, method, seed, budget, cache)
+
+
+class _AlwaysFailingWMEnv(_FakeWMEnv):
+    def run_agent_rollout_wm(self, config, method, seed, budget, cache=None):
+        self.wm_rollouts += 1
+        raise RuntimeError("permanent rollout failure")
+
+
+class _TelemetryWMEnv(_FakeWMEnv):
+    def run_agent_rollout_wm(self, config, method, seed, budget, cache=None):
+        traj, predicted, root = super().run_agent_rollout_wm(
+            config, method, seed, budget, cache)
+        predicted.metadata = {
+            "python_calls": seed,
+            "python_failures": seed % 2,
+            "python_forced": seed + 1,
+            "python_mode_misses": seed % 2,
+        }
+        return traj, predicted, root
+
+
+class _RefiningWMEnv(_FakeWMEnv):
+    def __init__(self):
+        super().__init__()
+        self.refine_calls = 0
+
+    def refine_rollout_scores(self, config, rollouts):
+        self.refine_calls += 1
+        if len(rollouts) >= 4:
+            rollouts[2].predicted.reward = 2.0
+
+
 @pytest.mark.parametrize("method", ["b0", "b1", "ours"])
 def test_faithful_llm_wm_path_selects_and_commits(method):
     env = _FakeWMEnv()
@@ -126,6 +176,121 @@ def test_faithful_llm_wm_path_selects_and_commits(method):
         # a predicted-success rollout exists in the pool (even seeds) and must be selected
         assert out.rollouts[out.selected_index].predicted.success
         assert out.record.success
+
+
+def test_wm_rollouts_support_environment_score_refinement():
+    env = _RefiningWMEnv()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=4,
+        seed=2,
+        success_score="simulator_confidence_guarded",
+        solver=SolverConfig(agent="llm_wm"),
+    )
+
+    out = run_decision(env, cfg)
+
+    assert env.refine_calls == 1
+    assert out.selected_index == 2
+    assert out.record.success
+
+
+def test_wm_rollout_retries_transient_failure():
+    env = _RetryingWMEnv()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=1,
+        seed=2,
+        solver=SolverConfig(agent="llm_wm", rollout_retries=1),
+    )
+
+    out = run_decision(env, cfg)
+
+    assert env.attempts[2] == 2
+    assert out.record.n_rollout_errors == 0
+    assert out.record.success
+
+
+def test_failed_wm_rollout_is_not_cached_across_cell_retry():
+    env = _RetryingWMEnv()
+    cache = {}
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=1,
+        seed=2,
+        solver=SolverConfig(agent="llm_wm", rollout_retries=0),
+    )
+
+    first = run_decision(env, cfg, rollout_cache=cache)
+    second = run_decision(env, cfg, rollout_cache=cache)
+
+    assert first.record.n_rollout_errors == 1
+    assert second.record.n_rollout_errors == 0
+    assert env.attempts[2] == 2
+    assert second.record.success
+
+
+def test_permanent_wm_rollout_failure_keeps_n_cell_complete():
+    env = _PartiallyFailingWMEnv()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=4,
+        seed=0,
+        solver=SolverConfig(agent="llm_wm", rollout_retries=1),
+    )
+
+    out = run_decision(env, cfg)
+
+    assert len(out.rollouts) == 4
+    assert out.record.n_rollouts == 4
+    assert out.record.n_rollout_errors == 1
+    assert out.rollouts[3].trajectory.done is False
+    assert out.selected_index != 3
+    assert out.record.success
+
+
+def test_all_failed_wm_rollouts_cannot_become_official_success():
+    env = _AlwaysFailingWMEnv()
+    pre = env.state_hash()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=4,
+        seed=0,
+        solver=SolverConfig(agent="llm_wm", rollout_retries=1),
+    )
+
+    out = run_decision(env, cfg)
+
+    assert out.record.n_rollout_errors == 4
+    assert out.record.n_commits == 0
+    assert not out.record.success
+    assert env.state_hash() == pre
+
+
+def test_wm_python_telemetry_is_persisted_in_decision_record():
+    env = _TelemetryWMEnv()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=2,
+        seed=2,
+        solver=SolverConfig(agent="llm_wm"),
+    )
+
+    out = run_decision(env, cfg)
+    record = out.record.to_dict()
+
+    assert record["n_python_calls"] == 5
+    assert record["n_python_failures"] == 1
+    assert record["n_python_forced"] == 7
+    assert record["n_python_mode_misses"] == 1
+    assert record["selected_python_calls"] == 2
+    assert record["selected_python_failures"] == 0
 
 
 # --------------------------------------------------------------------------- #
@@ -169,7 +334,7 @@ class _RecordingAgenticEval(ShadowEvaluator):
         self.calls.append((action.name, force_predict))
         return (f"served:{action.name}", False)
 
-    def reward_agentic(self, reader, actions):
+    def reward_agentic(self, reader, trajectory):
         return _RI(reward=1.0, success=True)
 
 
@@ -200,3 +365,23 @@ def test_sandbox_preamble_opt_in(monkeypatch):
     # inserts a system message when none exists
     inserted = _maybe_add_sandbox_preamble([{"role": "user", "content": "x"}])
     assert inserted[0]["role"] == "system" and inserted[1]["content"] == "x"
+
+
+def test_precision_preamble_opt_in(monkeypatch):
+    from tts.env.appworld_react_agent import (
+        _PRECISION_PREAMBLE,
+        _maybe_add_precision_preamble,
+    )
+
+    base = [{"role": "system", "content": "OFFICIAL"}, {"role": "user", "content": "task"}]
+
+    monkeypatch.delenv("TTS_APPWORLD_PRECISION_PROMPT", raising=False)
+    off = _maybe_add_precision_preamble([dict(message) for message in base])
+    assert off[0]["content"] == "OFFICIAL"
+
+    monkeypatch.setenv("TTS_APPWORLD_PRECISION_PROMPT", "1")
+    on = _maybe_add_precision_preamble([dict(message) for message in base])
+    assert on[0]["content"].startswith(_PRECISION_PREAMBLE)
+    assert "ENTIRE cart" in on[0]["content"]
+    assert "half-open intervals" in on[0]["content"]
+    assert on[1]["content"] == "task"

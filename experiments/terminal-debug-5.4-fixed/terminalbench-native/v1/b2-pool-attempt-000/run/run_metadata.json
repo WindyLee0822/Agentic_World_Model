@@ -1,0 +1,31 @@
+{
+    "run_id": "run",
+    "uuid": "a783867c-f769-42af-a4b7-2fc51c2eb664",
+    "dataset_path": null,
+    "dataset_name": "terminal-bench-core",
+    "dataset_version": "0.1.1",
+    "output_path": "/home/t-wendili/dw/experiments/terminal-debug-5.4-fixed/terminalbench-native/v1/b2-pool-attempt-000",
+    "agent_name": "tts-terminalbench",
+    "no_rebuild": false,
+    "cleanup": true,
+    "log_level": 20,
+    "task_ids": [
+        "create-bucket",
+        "hello-world"
+    ],
+    "exclude_task_ids": null,
+    "n_tasks": null,
+    "n_concurrent_trials": 2,
+    "n_attempts": 1,
+    "dataset_size": 2,
+    "accuracy": 0.5,
+    "model_name": "gpt-5.4",
+    "start_time": "2026-07-17T17:25:48.000851+00:00",
+    "end_time": "2026-07-17T17:26:25.079038+00:00",
+    "commit_hash": "ab666eb8bfac1bbc16886e00a40e66863aacf046",
+    "username": "t-wendili_microsoft",
+    "s3_bucket": null,
+    "agent_kwargs": null,
+    "pass_at_k": {},
+    "resumed_at": null
+}

@@ -1,0 +1,643 @@
+[?2004hroot@d954d40bf152:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@d954d40bf152:/app# clear
+[?2004l[H[J[3J[?2004hroot@d954d40bf152:/app# pwd; __tts_rc=$?; printf '\n__TTS_425ea69bde664d1681cf27ad80b024d8__RC:%s\n' "$__tts_rc"; printf '__TTS_425ea69bde664d1681cf27ad80b024d8__PWD:'; pwd; printf '__TTS_425ea69bde664d1681cf27ad80b024d8__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_425ea69bde664d1681cf27ad80b024d8__RC:0
+__TTS_425ea69bde664d1681cf27ad80b024d8__PWD:/app
+__TTS_425ea69bde664d1681cf27ad80b024d8__END
+[?2004hroot@d954d40bf152:/app# cd -- /app && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && (sed -n '1,220p' README.md || true) && python - <<'PY'
+[?2004l[?2004h> import re, pathlib, subprocess, sys, os
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> readme = Path('README.md').read_text(errors='ignore')
+[?2004l[?2004h> for pat in [r'python\s+run\.py[\s\S]{0,1200}?RTE[\s\S]{0,1200}?(?=\n\n|$)', r'RTE[\s\S]{0,1200}?python\s+run\.py[\s\S]{0,1200}?(?=\n\n|$)']:
+[?2004l[?2004h>     m = re.search(pat, readme, re.I)
+[?2004l[?2004h>     if m:
+[?2004l[?2004h>         print(m.group(0))
+[?2004l[?2004h> PY
+[?2004lCloning into 'repo'...
+remote: Enumerating objects: 384, done.[K
+remote: Counting objects:   5% (1/19)[Kremote: Counting objects:  10% (2/19)[Kremote: Counting objects:  15% (3/19)[Kremote: Counting objects:  21% (4/19)[Kremote: Counting objects:  26% (5/19)[Kremote: Counting objects:  31% (6/19)[Kremote: Counting objects:  36% (7/19)[Kremote: Counting objects:  42% (8/19)[Kremote: Counting objects:  47% (9/19)[Kremote: Counting objects:  52% (10/19)[Kremote: Counting objects:  57% (11/19)[Kremote: Counting objects:  63% (12/19)[Kremote: Counting objects:  68% (13/19)[Kremote: Counting objects:  73% (14/19)[Kremote: Counting objects:  78% (15/19)[Kremote: Counting objects:  84% (16/19)[Kremote: Counting objects:  89% (17/19)[Kremote: Counting objects:  94% (18/19)[Kremote: Counting objects: 100% (19/19)[Kremote: Counting objects: 100% (19/19), done.[K
+remote: Compressing objects:   5% (1/17)[Kremote: Compressing objects:  11% (2/17)[Kremote: Compressing objects:  17% (3/17)[Kremote: Compressing objects:  23% (4/17)[Kremote: Compressing objects:  29% (5/17)[Kremote: Compressing objects:  35% (6/17)[Kremote: Compressing objects:  41% (7/17)[Kremote: Compressing objects:  47% (8/17)[Kremote: Compressing objects:  52% (9/17)[Kremote: Compressing objects:  58% (10/17)[Kremote: Compressing objects:  64% (11/17)[Kremote: Compressing objects:  70% (12/17)[Kremote: Compressing objects:  76% (13/17)[Kremote: Compressing objects:  82% (14/17)[Kremote: Compressing objects:  88% (15/17)[Kremote: Compressing objects:  94% (16/17)[Kremote: Compressing objects: 100% (17/17)[Kremote: Compressing objects: 100% (17/17), done.[K
+Receiving objects:   0% (1/384)Receiving objects:   1% (4/384)Receiving objects:   2% (8/384)Receiving objects:   3% (12/384)Receiving objects:   4% (16/384)Receiving objects:   5% (20/384)Receiving objects:   6% (24/384)Receiving objects:   7% (27/384)Receiving objects:   8% (31/384)Receiving objects:   9% (35/384)Receiving objects:  10% (39/384)Receiving objects:  11% (43/384)Receiving objects:  12% (47/384)Receiving objects:  13% (50/384)Receiving objects:  14% (54/384)Receiving objects:  15% (58/384)Receiving objects:  16% (62/384)Receiving objects:  17% (66/384)Receiving objects:  18% (70/384)Receiving objects:  19% (73/384)Receiving objects:  20% (77/384)Receiving objects:  21% (81/384)Receiving objects:  22% (85/384)Receiving objects:  23% (89/384)Receiving objects:  24% (93/384)Receiving objects:  25% (96/384)Receiving objects:  26% (100/384)Receiving objects:  27% (104/384)Receiving objects:  28% (108/384)Receiving objects:  29% (112/384)Receiving objects:  30% (116/384)Receiving objects:  31% (120/384)Receiving objects:  32% (123/384)Receiving objects:  33% (127/384)Receiving objects:  34% (131/384)Receiving objects:  35% (135/384)Receiving objects:  36% (139/384)Receiving objects:  37% (143/384)Receiving objects:  38% (146/384)Receiving objects:  39% (150/384)Receiving objects:  40% (154/384)Receiving objects:  41% (158/384)Receiving objects:  42% (162/384)Receiving objects:  43% (166/384)Receiving objects:  44% (169/384)Receiving objects:  45% (173/384)Receiving objects:  46% (177/384)Receiving objects:  47% (181/384)Receiving objects:  48% (185/384)Receiving objects:  49% (189/384)Receiving objects:  50% (192/384)Receiving objects:  51% (196/384)Receiving objects:  52% (200/384)Receiving objects:  53% (204/384)Receiving objects:  54% (208/384)Receiving objects:  55% (212/384)Receiving objects:  56% (216/384)Receiving objects:  57% (219/384)Receiving objects:  58% (223/384)Receiving objects:  59% (227/384)Receiving objects:  60% (231/384)Receiving objects:  61% (235/384)Receiving objects:  62% (239/384)Receiving objects:  63% (242/384)Receiving objects:  64% (246/384)Receiving objects:  65% (250/384)Receiving objects:  66% (254/384)Receiving objects:  67% (258/384)Receiving objects:  68% (262/384)Receiving objects:  69% (265/384)Receiving objects:  70% (269/384)Receiving objects:  71% (273/384)Receiving objects:  72% (277/384)Receiving objects:  73% (281/384)Receiving objects:  74% (285/384)Receiving objects:  75% (288/384)Receiving objects:  76% (292/384)Receiving objects:  77% (296/384)Receiving objects:  78% (300/384)Receiving objects:  79% (304/384)Receiving objects:  80% (308/384)Receiving objects:  81% (312/384)Receiving objects:  82% (315/384)Receiving objects:  83% (319/384)Receiving objects:  84% (323/384)Receiving objects:  85% (327/384)Receiving objects:  86% (331/384)Receiving objects:  87% (335/384)Receiving objects:  88% (338/384)Receiving objects:  89% (342/384)Receiving objects:  90% (346/384)Receiving objects:  91% (350/384)Receiving objects:  92% (354/384)remote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)[K
+Receiving objects:  93% (358/384)Receiving objects:  94% (361/384)Receiving objects:  95% (365/384)Receiving objects:  96% (369/384)Receiving objects:  97% (373/384)Receiving objects:  98% (377/384)Receiving objects:  99% (381/384)Receiving objects: 100% (384/384)Receiving objects: 100% (384/384), 576.99 KiB | 1.62 MiB/s, done.
+Resolving deltas:   0% (0/72)Resolving deltas:   1% (1/72)Resolving deltas:   2% (2/72)Resolving deltas:   4% (3/72)Resolving deltas:   5% (4/72)Resolving deltas:   6% (5/72)Resolving deltas:   8% (6/72)Resolving deltas:   9% (7/72)Resolving deltas:  12% (9/72)Resolving deltas:  13% (10/72)Resolving deltas:  15% (11/72)Resolving deltas:  16% (12/72)Resolving deltas:  18% (13/72)Resolving deltas:  19% (14/72)Resolving deltas:  20% (15/72)Resolving deltas:  22% (16/72)Resolving deltas:  23% (17/72)Resolving deltas:  25% (18/72)Resolving deltas:  26% (19/72)Resolving deltas:  27% (20/72)Resolving deltas:  29% (21/72)Resolving deltas:  30% (22/72)Resolving deltas:  31% (23/72)Resolving deltas:  33% (24/72)Resolving deltas:  34% (25/72)Resolving deltas:  37% (27/72)Resolving deltas:  40% (29/72)Resolving deltas:  41% (30/72)Resolving deltas:  43% (31/72)Resolving deltas:  44% (32/72)Resolving deltas:  45% (33/72)Resolving deltas:  47% (34/72)Resolving deltas:  51% (37/72)Resolving deltas:  52% (38/72)Resolving deltas:  55% (40/72)Resolving deltas:  56% (41/72)Resolving deltas:  58% (42/72)Resolving deltas:  59% (43/72)Resolving deltas:  61% (44/72)Resolving deltas:  63% (46/72)Resolving deltas:  65% (47/72)Resolving deltas:  66% (48/72)Resolving deltas:  68% (49/72)Resolving deltas:  69% (50/72)Resolving deltas:  72% (52/72)Resolving deltas:  73% (53/72)Resolving deltas:  75% (54/72)Resolving deltas:  76% (55/72)Resolving deltas:  77% (56/72)Resolving deltas:  81% (59/72)Resolving deltas:  90% (65/72)Resolving deltas:  91% (66/72)Resolving deltas:  93% (67/72)Resolving deltas:  94% (68/72)Resolving deltas:  95% (69/72)Resolving deltas:  97% (70/72)Resolving deltas:  98% (71/72)Resolving deltas: 100% (72/72)Resolving deltas: 100% (72/72), done.
+Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
+# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
+
+
+Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
+Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
+
+augment definition：
+e.g.,
+--prefix -> --head-prefix or --prompt-prefix
+--prompt -> --head-ptuning or --prompt-ptuning
+
+### Setup
+We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
+
+```shell
+conda create -n pt2 python=3.8.5
+conda activate pt2
+```
+
+After we setup basic conda environment, install pytorch related packages via:
+
+```shell
+conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+```
+
+Finally, install other python packages we need:
+
+```shell
+pip install -r requirements.txt
+```
+
+### Data
+For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
+
+For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
+After downloading, unzip the packup to the project root.
+Please use at your own risk.
+
+### Training
+Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
+
+You can change the augments and run:
+```shell
+bash run_script/run_rte_roberta.sh
+```
+or
+
+```shell
+export TASK_NAME=superglue
+export DATASET_NAME=rte
+export CUDA_VISIBLE_DEVICES=0
+bs=32
+lr=5e-3
+dropout=0.1
+psl=128
+epoch=100
+python3 run.py \
+  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
+  --task_name $TASK_NAME \
+  --dataset_name $DATASET_NAME \
+  --do_train \
+  --do_eval \
+  --max_seq_length 128 \
+  --per_device_train_batch_size $bs \
+  --learning_rate $lr \
+  --num_train_epochs $epoch \
+  --output_dir checkpoints/$DATASET_NAME-roberta/ \
+  --overwrite_output_dir \
+  --hidden_dropout_prob $dropout \
+  --seed 11 \
+  --save_strategy no \
+  --evaluation_strategy epoch \
+  --prefix
+```
+This script is run for Full-data Full-supervised Pre-fix Tuning.
+
+We provide the following kinds of settings:
+- Full-data v.s. Few-shot: The training data is full / few-shot
+- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
+- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
+- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
+- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
+
+The specific augments for different scenarios:
+
+
+#### Few-shot Head Tuning
+
+### Implemented Results
+Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
+
+Released results on BERT-large
+
+|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
+|--------------|-------|------|------|------|------|---------|---------------|---------|
+| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
+| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
+| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
+
+Released results on RoBERTa-large
+
+|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
+|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
+| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
+| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
+| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
+
+For other hyper-parameters, please refer to the training scripts. 
+If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
+
+## Citation
+
+If you find our work useful, please kindly cite our paper:
+
+
+
+
+
+
+---
+
+use_prompt
+sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
+
+
+
+superglue
+BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
+glue
+CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
+
+
+[?2004hroot@d954d40bf152:/app/repo# python -m pip install -q --upgrade pip && python -m pip install -q -r requirements.txt && mkdir -p data && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os
+[?2004l[?2004h> base='data/original/RTE'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> for split,name in [('train','train.tsv'),('validation','dev.tsv'),('test','test.tsv')]:
+[?2004l[?2004h>     path=os.path.join(base,name)
+[?2004l[?2004h>     with open(path,'w',encoding='utf-8') as f:
+[?2004l[?2004h>         if split!='test':
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>             for i,ex in enumerate(ds[split]):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\n')
+[?2004l[?2004h>             for i,ex in enumerate(ds[split]):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\n")
+[?2004l[?2004h> print('prepared', base)
+[?2004l[?2004h> PY
+[?2004l[33mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv[0m[33m
+[0m  [1;31merror[0m: [1msubprocess-exited-with-error[0m
+  
+  [31m×[0m [32mPreparing metadata [0m[1;32m([0m[32mpyproject.toml[0m[1;32m)[0m did not run successfully.
+  [31m│[0m exit code: [1;36m1[0m
+  [31m╰─>[0m [31m[53 lines of output][0m
+  [31m   [0m Running from numpy source directory.
+  [31m   [0m setup.py:470: UserWarning: Unrecognized setuptools command, proceeding with generating Cython sources and expanding templates
+  [31m   [0m   run_build = parse_setuppy_commands()
+  [31m   [0m 
+  [31m   [0m Error compiling Cython file:
+  [31m   [0m ------------------------------------------------------------
+  [31m   [0m ...
+  [31m   [0m     def __init__(self, seed=None):
+  [31m   [0m         BitGenerator.__init__(self, seed)
+  [31m   [0m         self.rng_state.pcg_state = &self.pcg64_random_state
+  [31m   [0m 
+  [31m   [0m         self._bitgen.state = <void *>&self.rng_state
+  [31m   [0m         self._bitgen.next_uint64 = &pcg64_uint64
+  [31m   [0m                                    ^
+  [31m   [0m ------------------------------------------------------------
+  [31m   [0m _pcg64.pyx:113:35: Cannot assign type 'uint64_t (*)(void *) except? -1LL nogil' to 'uint64_t (*)(void *) noexcept nogil'. Exception values are incompatible. Suggest adding 'noexcept' to the type of the value being assigned.
+  [31m   [0m Processing numpy/random/_bounded_integers.pxd.in
+  [31m   [0m Processing numpy/random/_pcg64.pyx
+  [31m   [0m Traceback (most recent call last):
+  [31m   [0m   File "/tmp/pip-install-ihfm77cc/numpy_cc9491b1611f4bc69a5ece9492500b32/tools/cythonize.py", line 235, in <module>
+  [31m   [0m     main()
+  [31m   [0m   File "/tmp/pip-install-ihfm77cc/numpy_cc9491b1611f4bc69a5ece9492500b32/tools/cythonize.py", line 231, in main
+  [31m   [0m     find_process_files(root_dir)
+  [31m   [0m   File "/tmp/pip-install-ihfm77cc/numpy_cc9491b1611f4bc69a5ece9492500b32/tools/cythonize.py", line 222, in find_process_files
+  [31m   [0m     process(root_dir, fromfile, tofile, function, hash_db)
+  [31m   [0m   File "/tmp/pip-install-ihfm77cc/numpy_cc9491b1611f4bc69a5ece9492500b32/tools/cythonize.py", line 188, in process
+  [31m   [0m     processor_function(fromfile, tofile)
+  [31m   [0m   File "/tmp/pip-install-ihfm77cc/numpy_cc9491b1611f4bc69a5ece9492500b32/tools/cythonize.py", line 77, in process_pyx
+  [31m   [0m     subprocess.check_call(
+  [31m   [0m   File "/usr/local/lib/python3.10/subprocess.py", line 369, in check_call
+  [31m   [0m     raise CalledProcessError(retcode, cmd)
+  [31m   [0m subprocess.CalledProcessError: Command '['/usr/local/bin/python', '-m', 'cython', '-3', '--fast-fail', '-o', '_pcg64.c', '_pcg64.pyx']' returned non-zero exit status 1.
+  [31m   [0m Cythonizing sources
+  [31m   [0m Traceback (most recent call last):
+  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 389, in <module>
+  [31m   [0m     main()
+  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 373, in main
+  [31m   [0m     json_out["return_val"] = hook(**hook_input["kwargs"])
+  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 175, in prepare_metadata_for_build_wheel
+  [31m   [0m     return hook(metadata_directory, config_settings)
+  [31m   [0m   File "/tmp/pip-build-env-nqmdug2g/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 157, in prepare_metadata_for_build_wheel
+  [31m   [0m     self.run_setup()
+  [31m   [0m   File "/tmp/pip-build-env-nqmdug2g/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 248, in run_setup
+  [31m   [0m     super(_BuildMetaLegacyBackend,
+  [31m   [0m   File "/tmp/pip-build-env-nqmdug2g/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 142, in run_setup
+  [31m   [0m     exec(compile(code, __file__, 'exec'), locals())
+  [31m   [0m   File "setup.py", line 499, in <module>
+  [31m   [0m     setup_package()
+  [31m   [0m   File "setup.py", line 479, in setup_package
+  [31m   [0m     generate_cython()
+  [31m   [0m   File "setup.py", line 274, in generate_cython
+  [31m   [0m     raise RuntimeError("Running cythonize failed!")
+  [31m   [0m RuntimeError: Running cythonize failed!
+  [31m   [0m [31m[end of output][0m
+  
+  [1;35mnote[0m: This error originates from a subprocess, and is likely not a problem with pip.
+[1;31merror[0m: [1mmetadata-generation-failed[0m
+
+[31m×[0m Encountered error while generating package metadata.
+[31m╰─>[0m numpy
+
+[1;35mnote[0m: This is an issue with the package mentioned above, not pip.
+[1;36mhint[0m: See above for details.
+[?2004hroot@d954d40bf152:/app/repo# cmd=$(python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> import re
+[?2004l[?2004h> readme=Path('README.md').read_text(errors='ignore')
+[?2004l[?2004h> lines=readme.splitlines()
+[?2004l[?2004h> block=[]
+[?2004l[?2004h> collect=False
+[?2004l[?2004h> for ln in lines:
+[?2004l[?2004h>     if 'run.py' in ln and ('RTE' in ''.join(lines[max(0,lines.index(ln)-5):lines.index(ln)+6]) or 'rte' in ln.lower()):
+[?2004l[?2004h>         collect=True
+[?2004l[?2004h>     if collect:
+[?2004l[?2004h>         block.append(ln)
+[?2004l[?2004h>         if len(block)>40: break
+[?2004l[?2004h> text='\n'.join(block) if block else readme
+[?2004l[?2004h> m=re.search(r'python\s+run\.py\s+([^\n`]+)', text)
+[?2004l[?2004h> print(m.group(1) if m else '')
+[?2004l[?2004h> PY
+[?2004l[?2004h> ); if [ -z "$cmd" ]; then cmd="--task_name rte --data_dir data/original/RTE --model_name_or_path roberta-base --output_dir outputs/rte_upet --do_train --do_eval --pet_per_gpu_train_batch_size 4 --pet_per_gpu_eval_batch_size 8 --pet_max_seq_length 256 --pet_num_train_epochs 3 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --pattern_ids 0 1 2 3 4 5 --pet_repetitions 1 --eval_set dev --method sequence_classifier --arch_method ipet --use_continuous_prompt --do_train"; fi; python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> import re
+[?2004l[?2004h> readme=Path('README.md').read_text(errors='ignore')
+[?2004l[?2004h> for kw in ['UPET','RTE','few-shot','roberta-base']:
+[?2004l[?2004h>     if kw.lower() in readme.lower():
+[?2004l[?2004h>         pass
+[?2004l[?2004h> PY
+[?2004l[?2004hroot@d954d40bf152:/app/repo# python run.py $cmd --num_train_epochs 1 --seed 42 --train_examples 10 --output_dir outputs/rte_upet_run 2>&1 | tee /tmp/upet_train.log; python - <<'PY'
+[?2004l[?2004h> import re, json, pathlib
+[?2004l[?2004h> text=pathlib.Path('/tmp/upet_train.log').read_text(errors='ignore')
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'eval_accuracy[^0-9]*([0-9]+\.[0-9]+)', r'"eval_accuracy"\s*:\s*([0-9]+\.[0-9]+)', r'accuracy[^0-9]*([0-9]+\.[0-9]+)']:
+[?2004l[?2004h>     ms=re.findall(pat,text,re.I)
+[?2004l[?2004h>     if ms:
+[?2004l[?2004h>         acc=float(ms[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': acc if acc is not None else 0.0}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_010508b0ef324ecfb3ca42ee3595f558__RC:%s\n' "$__tts_rc"; printf '__TTS_010508b0ef324ecfb3ca42ee3595f558__PWD:'; pwd; printf '__TTS_010508b0ef324ecfb3ca42ee3595f558__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && sed -n '1,220p' README.md && python - <<'PY'
+[?2004l[?2004h> import os, json, re, subprocess, sys, pathlib
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> # inspect args/help to choose correct flags
+[?2004l[?2004h> help_txt = subprocess.check_output([sys.executable, 'run.py', '--help'], text=True, stderr=subprocess.STDOUT)
+[?2004l[?2004h> print(help_txt[:20000])
+[?2004l[?2004h> PY && python -m pip install -q -r requirements.txt datasets && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os
+[?2004l[?2004h> base='data/k-shot/RTE/5-42'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> # 5 examples per label from train split using seed 42 style deterministic first shuffled selection
+[?2004l[?2004h> train=ds['train'].shuffle(seed=42)
+[?2004l[?2004h> counts={0:0,1:0}
+[?2004l[?2004h> selected=[]
+[?2004l[?2004h> for ex in train:
+[?2004l[?2004h>     y=int(ex['label'])
+[?2004l[?2004h>     if counts[y] < 5:
+[?2004l[?2004h>         selected.append(ex)
+[?2004l[?2004h>         counts[y]+=1
+[?2004l[?2004h>     if all(v>=5 for v in counts.values()):
+[?2004l[?2004h>         break
+[?2004l[?2004h> with open(os.path.join(base,'train.tsv'),'w',encoding='utf-8') as f:
+[?2004l[?2004h>     f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>     for i,ex in enumerate(selected):
+[?2004l[?2004h>         f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h> with open(os.path.join(base,'dev.tsv'),'w',encoding='utf-8') as f:
+[?2004l[?2004h>     f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>     for i,ex in enumerate(ds['validation']):
+[?2004l[?2004h>         f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h> with open(os.path.join(base,'test.tsv'),'w',encoding='utf-8') as f:
+[?2004l[?2004h>     f.write('index\tsentence1\tsentence2\n')
+[?2004l[?2004h>     for i,ex in enumerate(ds['test']):
+[?2004l[?2004h>         f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\n")
+[?2004l[?2004h> print('prepared', base, counts)
+[?2004l[?2004h> PY && python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 0 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt 2>&1 | tee /tmp/upet_rte.log && python - <<'PY'
+[?2004l[?2004h> import re, json, pathlib
+[?2004l[?2004h> text=pathlib.Path('/tmp/upet_rte.log').read_text(errors='ignore')
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r"'eval_accuracy'\s*:\s*([0-9]*\.?[0-9]+)", r'eval_accuracy[^0-9]*([0-9]*\.?[0-9]+)', r'accuracy[^0-9]*([0-9]*\.?[0-9]+)']:
+[?2004l[?2004h>     ms=re.findall(pat, text, re.I)
+[?2004l[?2004h>     if ms:
+[?2004l[?2004h>         acc=float(ms[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': acc if acc is not None else 0.0}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_86b663d3fe5f4aeea4a0c8a6d5f35dde__RC:%s\n' "$__tts_rc"; printf '__TTS_86b663d3fe5f4aeea4a0c8a6d5f35dde__PWD:'; pwd; printf '__TTS_86b663d3fe5f4aeea4a0c8a6d5f35dde__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python -m pip install -q -r requirements.txt datasets && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os
+[?2004l[?2004h> base='data/k-shot/RTE/5-42'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> train=ds['train'].shuffle(seed=42)
+[?2004l[?2004h> counts={0:0,1:0}
+[?2004l[?2004h> selected=[]
+[?2004l[?2004h> for ex in train:
+[?2004l[?2004h>     y=int(ex['label'])
+[?2004l[?2004h>     if counts[y] < 5:
+[?2004l[?2004h>         selected.append(ex)
+[?2004l[?2004h>         counts[y]+=1
+[?2004l[?2004h>     if all(v>=5 for v in counts.values()):
+[?2004l[?2004h>         break
+[?2004l[?2004h> for split,name,has_label in [('train','train.tsv',True),('validation','dev.tsv',True),('test','test.tsv',False)]:
+[?2004l[?2004h>     with open(os.path.join(base,name),'w',encoding='utf-8') as f:
+[?2004l[?2004h>         if has_label:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>             for i,ex in enumerate(selected if split=='train' else ds[split]):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\n')
+[?2004l[?2004h>             for i,ex in enumerate(ds[split]):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\n")
+[?2004l[?2004h> print('prepared', base, counts)
+[?2004l[?2004h> PY
+[?2004lTraceback (most recent call last):
+  File "/app/repo/run.py", line 7, in <module>
+    import datasets
+ModuleNotFoundError: No module named 'datasets'
+  File "<stdin>", line 9
+    PY; __tts_rc=$?; printf '\n__TTS_010508b0ef324ecfb3ca42ee3595f558__RC:%s\n' "$__tts_rc"; printf '__TTS_010508b0ef324ecfb3ca42ee3595f558__PWD:'; pwd; printf '__TTS_010508b0ef324ecfb3ca42ee3595f558__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@d954d40bf152:/app/repo# python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 0 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt 2>&1 | tee /tmp/upet_rte.log
+[?2004lTraceback (most recent call last):
+  File "/app/repo/run.py", line 7, in <module>
+    import datasets
+ModuleNotFoundError: No module named 'datasets'
+[?2004hroot@d954d40bf152:/app/repo# python - <<'PY'
+[?2004l[?2004h> import re, json, pathlib
+[?2004l[?2004h> text=pathlib.Path('/tmp/upet_rte.log').read_text(errors='ignore')
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r"'eval_accuracy'\s*:\s*([0-9]*\.?[0-9]+)", r'eval_accuracy[^0-9]*([0-9]*\.?[0-9]+)', r'accuracy[^0-9]*([0-9]*\.?[0-9]+)']:
+[?2004l[?2004h>     ms=re.findall(pat, text, re.I)
+[?2004l[?2004h>     if ms:
+[?2004l[?2004h>         acc=float(ms[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': acc if acc is not None else 0.0}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b7d4fb2b278d4457b888d7b534da3b7b__RC:%s\n' "$__tts_rc"; printf '__TTS_b7d4fb2b278d4457b888d7b534da3b7b__PWD:'; pwd; printf '__TTS_b7d4fb2b278d4457b888d7b534da3b7b__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python - <<'PY'
+[?2004l[?2004h> import inspect, pet.tasks as t
+[?2004l[?2004h> from pet.tasks import DATASETS,PROCESSORS,PATTERNS
+[?2004l[?2004h> print('datasets', list(DATASETS.keys())[:50])
+[?2004l[?2004h> print('has rte', 'rte' in DATASETS or 'RTE' in DATASETS or 'rte' in PROCESSORS or 'rte' in PATTERNS)
+[?2004l[?2004h> print('processors', [k for k in PROCESSORS.keys() if 'rte' in k.lower()])
+[?2004l[?2004h> print('patterns', [k for k in PATTERNS.keys() if 'rte' in k.lower()])
+[?2004l[?2004h> PY && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> for p in [Path('/tmp/upet_rte.log'), Path('output/rte/5-42/upet')]:
+[?2004l[?2004h>     print('EXISTS', p, p.exists())
+[?2004l[?2004h>     if p.is_file():
+[?2004l[?2004h>         txt=p.read_text(errors='ignore')
+[?2004l[?2004h>         print(txt[:8000])
+[?2004l[?2004h> PY && python - <<'PY'
+[?2004l[?2004h> import os
+[?2004l[?2004h> for root,dirs,files in os.walk('output'):
+[?2004l[?2004h>     print(root, files[:10])
+[?2004l[?2004h>     if 'results.json' in files or 'eval_results.txt' in files:
+[?2004l[?2004h>         for fn in files:
+[?2004l[?2004h>             if fn in ('results.json','eval_results.txt','all_results.json','metrics.json'):
+[?2004l[?2004h>                 p=os.path.join(root,fn)
+[?2004l[?2004h>                 print('FILE',p)
+[?2004l[?2004h>                 print(open(p,errors='ignore').read())
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_60fc27a7c8dc49038232f1517b2fbf78__RC:%s\n' "$__tts_rc"; printf '__TTS_60fc27a7c8dc49038232f1517b2fbf78__PWD:'; pwd; printf '__TTS_60fc27a7c8dc49038232f1517b2fbf78__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python -m pip install -q -r requirements.txt datasets && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os, random
+[?2004l[?2004h> base='data/k-shot/RTE/5-42'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> train=ds['train'].shuffle(seed=42)
+[?2004l[?2004h> counts={0:0,1:0}
+[?2004l[?2004h> selected=[]
+[?2004l[?2004h> for ex in train:
+[?2004l[?2004h>     y=int(ex['label'])
+[?2004l[?2004h>     if counts[y] < 5:
+[?2004l[?2004h>         selected.append(ex)
+[?2004l[?2004h>         counts[y]+=1
+[?2004l[?2004h>     if all(v>=5 for v in counts.values()):
+[?2004l[?2004h>         break
+[?2004l[?2004h> for split,name,has_label,data in [('train','train.tsv',True,selected),('validation','dev.tsv',True,ds['validation']),('test','test.tsv',False,ds['test'])]:
+[?2004l[?2004h>     with open(os.path.join(base,name),'w',encoding='utf-8') as f:
+[?2004l[?2004h>         if has_label:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>             for i,ex in enumerate(data):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\n')
+[?2004l[?2004h>             for i,ex in enumerate(data):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\n")
+[?2004l[?2004h> print('prepared', base, counts)
+[?2004l[?2004h> PY
+[?2004l  File "<stdin>", line 9
+    PY; __tts_rc=$?; printf '\n__TTS_b7d4fb2b278d4457b888d7b534da3b7b__RC:%s\n' "$__tts_rc"; printf '__TTS_b7d4fb2b278d4457b888d7b534da3b7b__PWD:'; pwd; printf '__TTS_b7d4fb2b278d4457b888d7b534da3b7b__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@d954d40bf152:/app/repo# python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 1 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt > /tmp/upet_rte.log 2>&1
+[?2004l[?2004hroot@d954d40bf152:/app/repo# python - <<'PY'
+[?2004l[?2004h> import os, re, json, pathlib
+[?2004l[?2004h> paths=['/tmp/upet_rte.log']
+[?2004l[?2004h> for root,dirs,files in os.walk('output'):
+[?2004l[?2004h>     for fn in files:
+[?2004l[?2004h>         if fn.endswith('.json') or fn.endswith('.txt') or 'result' in fn.lower() or 'eval' in fn.lower():
+[?2004l[?2004h>             paths.append(os.path.join(root,fn))
+[?2004l[?2004h> text='\n'.join(pathlib.Path(p).read_text(errors='ignore') for p in paths if os.path.exists(p))
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r'\beval_accuracy\b[^0-9]*([0-9]*\.?[0-9]+)', r'\bacc(?:uracy)?\b[^0-9]*([0-9]*\.?[0-9]+)']:
+[?2004l[?2004h>     ms=re.findall(pat, text, re.I)
+[?2004l[?2004h>     if ms:
+[?2004l[?2004h>         acc=float(ms[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': 0.0 if acc is None else acc}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f6deff95d1284d76814f6f17fd885a10__RC:%s\n' "$__tts_rc"; printf '__TTS_f6deff95d1284d76814f6f17fd885a10__PWD:'; pwd; printf '__TTS_f6deff95d1284d76814f6f17fd885a10__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python -m pip install -q -r requirements.txt datasets >/tmp/pip_upet.log 2>&1 && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os
+[?2004l[?2004h> base='data/k-shot/RTE/5-42'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> train=ds['train'].shuffle(seed=42)
+[?2004l[?2004h> counts={0:0,1:0}
+[?2004l[?2004h> selected=[]
+[?2004l[?2004h> for ex in train:
+[?2004l[?2004h>     y=int(ex['label'])
+[?2004l[?2004h>     if counts[y] < 5:
+[?2004l[?2004h>         selected.append(ex)
+[?2004l[?2004h>         counts[y]+=1
+[?2004l[?2004h>     if counts[0] == 5 and counts[1] == 5:
+[?2004l[?2004h>         break
+[?2004l[?2004h> for name,data,has_label in [('train.tsv',selected,True),('dev.tsv',ds['validation'],True),('test.tsv',ds['test'],False)]:
+[?2004l[?2004h>     with open(os.path.join(base,name),'w',encoding='utf-8') as f:
+[?2004l[?2004h>         if has_label:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\tlabel\n')
+[?2004l[?2004h>             for i,ex in enumerate(data):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\t{ex['label']}\n")
+[?2004l[?2004h>         else:
+[?2004l[?2004h>             f.write('index\tsentence1\tsentence2\n')
+[?2004l[?2004h>             for i,ex in enumerate(data):
+[?2004l[?2004h>                 f.write(f"{i}\t{ex['sentence1']}\t{ex['sentence2']}\n")
+[?2004l[?2004h> print('prepared', counts)
+[?2004l[?2004h> PY
+[?2004l  File "<stdin>", line 14
+    PY; __tts_rc=$?; printf '\n__TTS_f6deff95d1284d76814f6f17fd885a10__RC:%s\n' "$__tts_rc"; printf '__TTS_f6deff95d1284d76814f6f17fd885a10__PWD:'; pwd; printf '__TTS_f6deff95d1284d76814f6f17fd885a10__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@d954d40bf152:/app/repo# python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 1 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt >/tmp/upet_rte.log 2>&1; rc=$?; python - <<'PY'
+[?2004l[?2004h> import os, re, json, pathlib
+[?2004l[?2004h> parts=[]
+[?2004l[?2004h> for p in ['/tmp/pip_upet.log','/tmp/upet_rte.log']:
+[?2004l[?2004h>     if os.path.exists(p):
+[?2004l[?2004h>         parts.append(pathlib.Path(p).read_text(errors='ignore'))
+[?2004l[?2004h> for root,_,files in os.walk('output'):
+[?2004l[?2004h>     for fn in files:
+[?2004l[?2004h>         if fn.endswith(('.json','.txt','.log')) or 'result' in fn.lower() or 'eval' in fn.lower():
+[?2004l[?2004h>             p=os.path.join(root,fn)
+[?2004l[?2004h>             try:
+[?2004l[?2004h>                 parts.append('\nFILE:'+p+'\n'+pathlib.Path(p).read_text(errors='ignore'))
+[?2004l[?2004h>             except Exception:
+[?2004l[?2004h>                 pass
+[?2004l[?2004h> text='\n'.join(parts)
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r'\beval_accuracy\b[^0-9]*([0-9]*\.?[0-9]+)', r'\baccuracy\b[^0-9]*([0-9]*\.?[0-9]+)', r'\bacc\b[^0-9]*([0-9]*\.?[0-9]+)']:
+[?2004l[?2004h>     m=re.findall(pat,text,re.I)
+[?2004l[?2004h>     if m:
+[?2004l[?2004h>         acc=float(m[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': 0.0 if acc is None else acc}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_55eb6b87f57140cd9bd2be1430be5daf__RC:%s\n' "$__tts_rc"; printf '__TTS_55eb6b87f57140cd9bd2be1430be5daf__PWD:'; pwd; printf '__TTS_55eb6b87f57140cd9bd2be1430be5daf__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python - <<'PY'
+[?2004l[?2004h> import os, re, subprocess, sys
+[?2004l[?2004h> # inspect prior hidden errors and repo specifics in one shot
+[?2004l[?2004h> for p in ['/tmp/upet_rte.log','/tmp/pip_upet.log']:
+[?2004l[?2004h>     if os.path.exists(p):
+[?2004l[?2004h>         print(f'===== {p} =====')
+[?2004l[?2004h>         txt=open(p,errors='ignore').read()
+[?2004l[?2004h>         print(txt[:20000])
+[?2004l[?2004h> print('===== grep RTE/task mappings =====')
+[?2004l[?2004h> for cmd in ["grep -R \"class Rte\|rte\|RTE\" -n pet *.py | head -200", "grep -R \"pattern_ids\|PROCESSORS\|TASK_HELPERS\|METRICS\" -n pet *.py | head -200"]:
+[?2004l[?2004h>     out=subprocess.run(cmd,shell=True,text=True,capture_output=True)
+[?2004l[?2004h>     print(out.stdout)
+[?2004l[?2004h> print('===== run help tail =====')
+[?2004l[?2004h> out=subprocess.run([sys.executable,'run.py','--help'],text=True,capture_output=True)
+[?2004l[?2004h> print((out.stdout+out.stderr)[-12000:])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d74ca8e390084b7b8ecdb8edf04cb264__RC:%s\n' "$__tts_rc"; printf '__TTS_d74ca8e390084b7b8ecdb8edf04cb264__PWD:'; pwd; printf '__TTS_d74ca8e390084b7b8ecdb8edf04cb264__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app/repo && python - <<'PY'
+[?2004l[?2004h> import os, pathlib, subprocess, sys, json
+[?2004l[?2004h> for p in ['/tmp/upet_rte.log','/tmp/pip_upet.log']:
+[?2004l[?2004h>     print('===', p, os.path.exists(p))
+[?2004l[?2004h>     if os.path.exists(p):
+[?2004l[?2004h>         t=pathlib.Path(p).read_text(errors='ignore')
+[?2004l[?2004h>         print(t[:12000])
+[?2004l[?2004h> print('=== repo files ===')
+[?2004l[?2004h> for cmd in ["pwd", "ls -la", "find . -maxdepth 2 -type f | sed -n '1,200p'", "grep -R \"rte\|RTE\|superglue\|PROCESSORS\|PATTERNS\|prompt_encoder_type\|use_continuous_prompt\" -n . | sed -n '1,240p'", f\"{sys.executable} run.py --help | sed -n '1,240p'\"]:
+[?2004l[?2004h>     print('$', cmd)
+[?2004l[?2004h>     r=subprocess.run(cmd, shell=True, text=True, capture_output=True)
+[?2004l[?2004h>     print(r.stdout[:20000])
+[?2004l[?2004h>     if r.stderr:
+[?2004l[?2004h>         print('STDERR:', r.stderr[:8000])
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_175686a6525446b28ef40f4afe79e543__RC:%s\n' "$__tts_rc"; printf '__TTS_175686a6525446b28ef40f4afe79e543__PWD:'; pwd; printf '__TTS_175686a6525446b28ef40f4afe79e543__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 248 delimited by end-of-file (wanted `PY')
+cd -- /app && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo >/tmp/clone.log 2>&1 && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 >/tmp/checkout.log 2>&1 && python -m pip install -q -r requirements.txt datasets >/tmp/pip.log 2>&1 && python - <<'PY'
+from datasets import load_dataset
+import os, csv
+base='data/k-shot/RTE/5-42'
+os.makedirs(base, exist_ok=True)
+ds=load_dataset('glue','rte')
+train=ds['train'].shuffle(seed=42)
+sel=[]; c={0:0,1:0}
+for ex in train:
+    y=int(ex['label'])
+    if c[y] < 5:
+        sel.append(ex); c[y]+=1
+    if c[0]==5 and c[1]==5: break
+for fn,data,lab in [('train.tsv',sel,True),('dev.tsv',ds['validation'],True),('test.tsv',ds['test'],False)]:
+    with open(os.path.join(base,fn),'w',encoding='utf-8',newline='') as f:
+        w=csv.writer(f,delimiter='\t',quoting=csv.QUOTE_MINIMAL)
+        w.writerow(['index','sentence1','sentence2']+(['label'] if lab else []))
+        for i,ex in enumerate(data):
+            row=[i, ex['sentence1'], ex['sentence2']]
+            if lab: row.append('entailment' if int(ex['label'])==1 else 'not_entailment')
+            w.writerow(row)
+PY
+python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 1 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt >/tmp/upet.log 2>&1; python - <<'PY'
+import os,re,json,pathlib
+parts=[]
+for p in ['/tmp/upet.log','/tmp/clone.log','/tmp/checkout.log','/tmp/pip.log']:
+    if os.path.exists(p): parts.append(pathlib.Path(p).read_text(errors='ignore'))
+for root,_,files in os.walk('output'):
+    for fn in files:
+        if fn.endswith(('.json','.txt','.log')) or 'result' in fn.lower() or 'eval' in fn.lower():
+            p=os.path.join(root,fn)
+            try: parts.append(pathlib.Path(p).read_text(errors='ignore'))
+            except: pass
+text='\n'.join(parts)
+acc=None
+for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r'\beval_accuracy\b[^0-9]*([0-9]*\.?[0-9]+)', r'\bacc(?:uracy)?\b[^0-9]*([0-9]*\.?[0-9]+)']:
+    m=re.findall(pat,text,re.I)
+    if m:
+        acc=float(m[-1]); break
+print(json.dumps({'eval_accuracy': 0.0 if acc is None else acc}))
+PY; __tts_rc=$?; printf '\n__TTS_e809f37ecf7f4f6e85a38099dd8135fe__RC:%s\n' "$__tts_rc"; printf '__TTS_e809f37ecf7f4f6e85a38099dd8135fe__PWD:'; pwd; printf '__TTS_e809f37ecf7f4f6e85a38099dd8135fe__END\n'; tmux wait -S done
+  File "<stdin>", line 21
+    PY; __tts_rc=$?; printf '\n__TTS_55eb6b87f57140cd9bd2be1430be5daf__RC:%s\n' "$__tts_rc"; printf '__TTS_55eb6b87f57140cd9bd2be1430be5daf__PWD:'; pwd; printf '__TTS_55eb6b87f57140cd9bd2be1430be5daf__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@d954d40bf152:/app/repo# cd -- /app && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo >/tmp/clone.log 2>&1 && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 >/tmp/checkout.log 2>&1 && python -m pip install -q -r requirements.txt datasets >/tmp/pip.log 2>&1 && python - <<'PY'
+[?2004l[?2004h> from datasets import load_dataset
+[?2004l[?2004h> import os, csv
+[?2004l[?2004h> base='data/k-shot/RTE/5-42'
+[?2004l[?2004h> os.makedirs(base, exist_ok=True)
+[?2004l[?2004h> ds=load_dataset('glue','rte')
+[?2004l[?2004h> train=ds['train'].shuffle(seed=42)
+[?2004l[?2004h> sel=[]; c={0:0,1:0}
+[?2004l[?2004h> for ex in train:
+[?2004l[?2004h>     y=int(ex['label'])
+[?2004l[?2004h>     if c[y] < 5:
+[?2004l[?2004h>         sel.append(ex); c[y]+=1
+[?2004l[?2004h>     if c[0]==5 and c[1]==5: break
+[?2004l[?2004h> for fn,data,lab in [('train.tsv',sel,True),('dev.tsv',ds['validation'],True),('test.tsv',ds['test'],False)]:
+[?2004l[?2004h>     with open(os.path.join(base,fn),'w',encoding='utf-8',newline='') as f:
+[?2004l[?2004h>         w=csv.writer(f,delimiter='\t',quoting=csv.QUOTE_MINIMAL)
+[?2004l[?2004h>         w.writerow(['index','sentence1','sentence2']+(['label'] if lab else []))
+[?2004l[?2004h>         for i,ex in enumerate(data):
+[?2004l[?2004h>             row=[i, ex['sentence1'], ex['sentence2']]
+[?2004l[?2004h>             if lab: row.append('entailment' if int(ex['label'])==1 else 'not_entailment')
+[?2004l[?2004h>             w.writerow(row)
+[?2004l[?2004h> PY
+[?2004l[?2004hroot@d954d40bf152:/app/repo# python run.py --method pet --data_dir data/k-shot/RTE/5-42 --model_type roberta --model_name_or_path roberta-base --task_name rte --output_dir output/rte/5-42/upet --do_train --do_eval --eval_set dev --overwrite_output_dir --pattern_ids 1 --alpha 0.9999 --pet_repetitions 1 --pet_max_seq_length 128 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --pet_num_train_epochs 1 --learning_rate 1e-5 --weight_decay 0.01 --warmup_ratio 0.06 --seed 42 --prompt_encoder_type mlp --eval_every_step 20 --mix_coef 1.0 --div_coef 1.0 --prompt_amp 0.0001 --tune_LM --use_continuous_prompt >/tmp/upet.log 2>&1; python - <<'PY'
+[?2004l[?2004h> import os,re,json,pathlib
+[?2004l[?2004h> parts=[]
+[?2004l[?2004h> for p in ['/tmp/upet.log','/tmp/clone.log','/tmp/checkout.log','/tmp/pip.log']:
+[?2004l[?2004h>     if os.path.exists(p): parts.append(pathlib.Path(p).read_text(errors='ignore'))
+[?2004l[?2004h> for root,_,files in os.walk('output'):
+[?2004l[?2004h>     for fn in files:
+[?2004l[?2004h>         if fn.endswith(('.json','.txt','.log')) or 'result' in fn.lower() or 'eval' in fn.lower():
+[?2004l[?2004h>             p=os.path.join(root,fn)
+[?2004l[?2004h>             try: parts.append(pathlib.Path(p).read_text(errors='ignore'))
+[?2004l[?2004h>             except: pass
+[?2004l[?2004h> text='\n'.join(parts)
+[?2004l[?2004h> acc=None
+[?2004l[?2004h> for pat in [r'"eval_accuracy"\s*:\s*([0-9]*\.?[0-9]+)', r'\beval_accuracy\b[^0-9]*([0-9]*\.?[0-9]+)', r'\bacc(?:uracy)?\b[^0-9]*([0-9]*\.?[0-9]+)']:
+[?2004l[?2004h>     m=re.findall(pat,text,re.I)
+[?2004l[?2004h>     if m:
+[?2004l[?2004h>         acc=float(m[-1]); break
+[?2004l[?2004h> print(json.dumps({'eval_accuracy': 0.0 if acc is None else acc}))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e809f37ecf7f4f6e85a38099dd8135fe__RC:%s\n' "$__tts_rc"; printf '__TTS_e809f37ecf7f4f6e85a38099dd8135fe__PWD:'; pwd; printf '__TTS_e809f37ecf7f4f6e85a38099dd8135fe__END\n'; tmux wait -S done
+[?2004l[?2004h> 

@@ -1,0 +1,94 @@
+root@90a2f07fc0c5:/app# bash /tests/run-tests.sh; tmux wait -S done
+Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Hit:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:4 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1055 kB]
+Get:5 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1456 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1385 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2114 kB]
+Fetched 6389 kB in 3s (2134 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  libcurl4t64
+The following NEW packages will be installed:
+  curl libcurl4t64
+0 upgraded, 2 newly installed, 0 to remove and 42 not upgraded.
+Need to get 569 kB of archives.
+After this operation, 1483 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl4t64 amd64 8.5.0-2ubuntu10.11 [342 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 curl amd64 8.5.0-2ubuntu10.11 [226 kB]
+Fetched 569 kB in 2s (352 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libcurl4t64:amd64.
+(Reading database ... 17127 files and directories currently installed.)
+Preparing to unpack .../libcurl4t64_8.5.0-2ubuntu10.11_amd64.deb ...
+Unpacking libcurl4t64:amd64 (8.5.0-2ubuntu10.11) ...
+Selecting previously unselected package curl.
+Preparing to unpack .../curl_8.5.0-2ubuntu10.11_amd64.deb ...
+Unpacking curl (8.5.0-2ubuntu10.11) ...
+Setting up libcurl4t64:amd64 (8.5.0-2ubuntu10.11) ...
+Setting up curl (8.5.0-2ubuntu10.11) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+downloading uv 0.11.29 x86_64-unknown-linux-gnu
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Initialized project `app`
+Using CPython 3.12.3 interpreter at: /usr/bin/python3.12
+Creating virtual environment at: .venv
+Resolved 7 packages in 145ms
+Prepared 5 packages in 128ms
+Installed 5 packages in 17ms
+ + iniconfig==2.3.0
+ + packaging==26.2
+ + pluggy==1.6.0
+ + pygments==2.20.0
+ + pytest==9.1.1
+===================================================================== test session starts ======================================================================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tests
+collected 2 items
+
+../tests/test_outputs.py FF                                                                                                                              [100%]
+
+=========================================================================== FAILURES ===========================================================================
+______________________________________________________________________ test_solution_file ______________________________________________________________________
+
+    def test_solution_file():
+        solution_path = Path("/app/solution.txt")
+
+>       assert os.path.exists(solution_path), (
+            f"Solution file {solution_path} does not exist."
+        )
+E       AssertionError: Solution file /app/solution.txt does not exist.
+E       assert False
+E        +  where False = <function exists at 0x7f56b5fbf560>(PosixPath('/app/solution.txt'))
+E        +    where <function exists at 0x7f56b5fbf560> = <module 'posixpath' (frozen)>.exists
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:11: AssertionError
+____________________________________________________________________ test_solution_content _____________________________________________________________________
+
+    def test_solution_content():
+        solution_path = Path("/app/solution.txt")
+
+>       with open(solution_path, "r") as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/solution.txt'
+
+/tests/test_outputs.py:19: FileNotFoundError
+=================================================================== short test summary info ====================================================================
+FAILED ../tests/test_outputs.py::test_solution_file - AssertionError: Solution file /app/solution.txt does not exist.
+FAILED ../tests/test_outputs.py::test_solution_content - FileNotFoundError: [Errno 2] No such file or directory: '/app/solution.txt'
+====================================================================== 2 failed in 0.05s =======================================================================
+root@90a2f07fc0c5:/app#

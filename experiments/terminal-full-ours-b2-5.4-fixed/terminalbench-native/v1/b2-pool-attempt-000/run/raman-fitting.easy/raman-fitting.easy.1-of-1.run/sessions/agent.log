@@ -1,0 +1,44 @@
+[?2004hroot@439f555bed6d:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@439f555bed6d:/app# clear
+[?2004l[H[J[3J[?2004hroot@439f555bed6d:/app# pwd; __tts_rc=$?; printf '\n__TTS_1a6b64f17236419cae918998aecd27f0__RC:%s\n' "$__tts_rc"; printf '__TTS_1a6b64f17236419cae918998aecd27f0__PWD:'; pwd; printf '__TTS_1a6b64f17236419cae918998aecd27f0__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_1a6b64f17236419cae918998aecd27f0__RC:0
+__TTS_1a6b64f17236419cae918998aecd27f0__PWD:/app
+__TTS_1a6b64f17236419cae918998aecd27f0__END
+[?2004hroot@439f555bed6d:/app# cd -- /app && ls -la && find . -maxdepth 2 -type f | sed 's#^./##' | sort | xargs -r -n 20 sh -c 'printf "%s\n" "$@"' sh; __tts_rc=$?; printf '\n__TTS_caa8e8f9bd894e80bc3f0b97547480aa__RC:%s\n' "$__tts_rc"; printf '__TTS_caa8e8f9bd894e80bc3f0b97547480aa__PWD:'; pwd; printf '__TTS_caa8e8f9bd894e80bc3f0b97547480aa__END\n'; tmux wait -S done
+[?2004ltotal 96
+drwxr-xr-x 1 root root  4096 Jul 16 19:53 .
+drwxr-xr-x 1 root root  4096 Jul 17 22:22 ..
+-rw-r--r-- 1 root root 88805 Jul 16 19:53 graphene.dat
+graphene.dat
+
+__TTS_caa8e8f9bd894e80bc3f0b97547480aa__RC:0
+__TTS_caa8e8f9bd894e80bc3f0b97547480aa__PWD:/app
+__TTS_caa8e8f9bd894e80bc3f0b97547480aa__END
+[?2004hroot@439f555bed6d:/app# cd -- __TTS_caa8e8f9bd894e80bc3f0b97547480aa__PWD:/app && python3 -m pip install --quiet numpy scipy; __tts_rc=$?; printf '\n__TTS_f114700f7bb9475bba4fda1e4e43b75a__RC:%s\n' "$__tts_rc"; printf '__TTS_f114700f7bb9475bba4fda1e4e43b75a__PWD:'; pwd; printf '__TTS_f114700f7bb9475bba4fda1e4e43b75a__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_caa8e8f9bd894e80bc3f0b97547480aa__PWD:/app: No such file or directory
+
+__TTS_f114700f7bb9475bba4fda1e4e43b75a__RC:1
+__TTS_f114700f7bb9475bba4fda1e4e43b75a__PWD:/app
+__TTS_f114700f7bb9475bba4fda1e4e43b75a__END
+[?2004hroot@439f555bed6d:/app# cd -- __TTS_f114700f7bb9475bba4fda1e4e43b75a__PWD:/app && cd /app && python3 -m pip install --quiet numpy scipy; __tts_rc=$?; printf '\n__TTS_b7d881d467e54fbdbea8056c61f53c0f__RC:%s\n' "$__tts_rc"; printf '__TTS_b7d881d467e54fbdbea8056c61f53c0f__PWD:'; pwd; printf '__TTS_b7d881d467e54fbdbea8056c61f53c0f__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_f114700f7bb9475bba4fda1e4e43b75a__PWD:/app: No such file or directory
+
+__TTS_b7d881d467e54fbdbea8056c61f53c0f__RC:1
+__TTS_b7d881d467e54fbdbea8056c61f53c0f__PWD:/app
+__TTS_b7d881d467e54fbdbea8056c61f53c0f__END
+[?2004hroot@439f555bed6d:/app# cd -- __TTS_b7d881d467e54fbdbea8056c61f53c0f__PWD:/app && cd /app && python3 - <<'PY'
+[?2004l[?2004h> import importlib.util, subprocess, sys
+[?2004l[?2004h> mods=['numpy','scipy']
+[?2004l[?2004h> missing=[m for m in mods if importlib.util.find_spec(m) is None]
+[?2004l[?2004h> if missing: subprocess.check_call([sys.executable,'-m','pip','install','--quiet',*missing])
+[?2004l[?2004h> print('ok')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_263c750d40554d1a8d546a3668c06d4e__RC:%s\n' "$__tts_rc"; printf '__TTS_263c750d40554d1a8d546a3668c06d4e__PWD:'; pwd; printf '__TTS_263c750d40554d1a8d546a3668c06d4e__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- __TTS_b7d881d467e54fbdbea8056c61f53c0f__PWD:/app && cd /app && python3 -c "import numpy,scipy;print('ok')"; __tts_rc=$?; printf '\n__TTS_57f00370f7804a2fb4cf4cb8a24d7331__RC:%s\n' "$__tts_rc"; printf '__TTS_57f00370f7804a2fb4cf4cb8a24d7331__PWD:'; pwd; printf '__TTS_57f00370f7804a2fb4cf4cb8a24d7331__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
+bash: cd: __TTS_b7d881d467e54fbdbea8056c61f53c0f__PWD:/app: No such file or directory
+[?2004hroot@439f555bed6d:/app# 

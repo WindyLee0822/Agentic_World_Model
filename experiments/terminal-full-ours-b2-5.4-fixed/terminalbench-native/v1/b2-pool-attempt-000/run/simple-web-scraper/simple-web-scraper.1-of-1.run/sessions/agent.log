@@ -1,0 +1,30 @@
+[?2004hroot@ca6dcba6c1e4:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@ca6dcba6c1e4:/app# clear
+[?2004l[H[J[3J[?2004hroot@ca6dcba6c1e4:/app# pwd; __tts_rc=$?; printf '\n__TTS_2358c085c68d4fa7ab090d58343ccec2__RC:%s\n' "$__tts_rc"; printf '__TTS_2358c085c68d4fa7ab090d58343ccec2__PWD:'; pwd; printf '__TTS_2358c085c68d4fa7ab090d58343ccec2__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_2358c085c68d4fa7ab090d58343ccec2__RC:0
+__TTS_2358c085c68d4fa7ab090d58343ccec2__PWD:/app
+__TTS_2358c085c68d4fa7ab090d58343ccec2__END
+[?2004hroot@ca6dcba6c1e4:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_345da3086ce943bf89e6a74cf80e9543__RC:%s\n' "$__tts_rc"; printf '__TTS_345da3086ce943bf89e6a74cf80e9543__PWD:'; pwd; printf '__TTS_345da3086ce943bf89e6a74cf80e9543__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 18 00:00 ..
+
+__TTS_345da3086ce943bf89e6a74cf80e9543__RC:0
+__TTS_345da3086ce943bf89e6a74cf80e9543__PWD:/app
+__TTS_345da3086ce943bf89e6a74cf80e9543__END
+[?2004hroot@ca6dcba6c1e4:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> Path('/app/scrape_books.py').write_text('''import re\nimport requests\nimport pandas as pd\nfrom bs4 import BeautifulSoup\n\nURL = "http://server:8000"\nresp = requests.get(URL, timeout=10)\nresp.raise_for_status()\nsoup = BeautifulSoup(resp.text, "html.parser")\nrows = []\nfor book in soup.select("div.book"):\n    title = book.select_one(".book-title").get_text(strip=True)\n    author = book.select_one(".book-author").get_text(strip=True)\n    author = re.sub(r"^by\\s+", "", author, flags=re.I)\n    year_text = book.select_one(".book-year").get_text(" ", strip=True)\n    rating_text = book.select_one(".book-rating").get_text(" ", strip=True)\n    price_text = book.select_one(".book-price").get_text(" ", strip=True)\n    year = int(re.search(r"(\\d{4})", year_text).group(1))\n    rating = float(re.search(r"([0-9]+(?:\\.[0-9]+)?)", rating_text).group(1))\n    price = float(re.search(r"([0-9]+(?:\\.[0-9]+)?)", price_text).group(1))\n    rows.append({"title": title, "author": author, "year": year, "rating": rating, "price": price})\n\ndf = pd.DataFrame(rows, columns=["title", "author", "year", "rating", "price"])\ndf.to_csv("/app/books.csv", index=False)\ncount = len(df)\navg_price = df["price"].mean() if count else 0\nif count:\n    top = df.sort_values(["rating", "title"], ascending=[False, True]).iloc[0]\n    top_line = f"{top['title']} by {top['author']} ({top['rating']}/5)"\nelse:\n    top_line = "N/A"\nreport = f"Total number of books scraped: {count}\\nAverage book price: ${avg_price:.2f}\\nHighest rated book: {top_line}\\n"\nPath("/app/report.txt").write_text(report)\n''')
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_05a1bee5d44f4f268d58936aa205448c__RC:%s\n' "$__tts_rc"; printf '__TTS_05a1bee5d44f4f268d58936aa205448c__PWD:'; pwd; printf '__TTS_05a1bee5d44f4f268d58936aa205448c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "from pathlib import Path; print(Path('/app/scrape_books.py').read_text()[:4000])"; __tts_rc=$?; printf '\n__TTS_98d4abb41bb4419dab4b68f1664ac9ed__RC:%s\n' "$__tts_rc"; printf '__TTS_98d4abb41bb4419dab4b68f1664ac9ed__PWD:'; pwd; printf '__TTS_98d4abb41bb4419dab4b68f1664ac9ed__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m3[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_05a1bee5d44f4f268d58936aa205448c__RC:%s\n' "$__tts_rc"; printf '__TTS_05a1bee5d44f4f268d58936aa205448c__PWD:'; pwd; printf '__TTS_05a1bee5d44f4f268d58936aa205448c__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@ca6dcba6c1e4:/app# 

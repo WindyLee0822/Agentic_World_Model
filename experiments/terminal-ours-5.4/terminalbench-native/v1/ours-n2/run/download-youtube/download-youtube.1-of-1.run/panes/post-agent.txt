@@ -1,0 +1,57 @@
+root@cf79795dffd7:/app# pwd; __tts_rc=$?; printf '\n__TTS_0e66eacd0f1d40879a60ee01218427d2__RC:%s\n' "$__tts_rc"; printf '__TTS_0e66eacd0f1d40879a60ee01218427d2
+__PWD:'; pwd; printf '__TTS_0e66eacd0f1d40879a60ee01218427d2__END\n'; tmux wait -S done
+/app
+
+__TTS_0e66eacd0f1d40879a60ee01218427d2__RC:0
+__TTS_0e66eacd0f1d40879a60ee01218427d2__PWD:/app
+__TTS_0e66eacd0f1d40879a60ee01218427d2__END
+root@cf79795dffd7:/app# cd -- /app && bash -lc 'python - <<"PY"
+> import importlib.util,sys
+> mods=["yt_dlp","ffmpeg"]
+> print({m:importlib.util.find_spec(m) is not None for m in mods})
+> PY'; __tts_rc=$?; printf '\n__TTS_38981c95b549416c9542dd63b6facd88__RC:%s\n' "$__tts_rc"; printf '__TTS_38981c95b549416c9542dd63b6facd88__PWD:'; pwd; printf '
+__TTS_38981c95b549416c9542dd63b6facd88__END\n'; tmux wait -S done
+{'yt_dlp': False, 'ffmpeg': False}
+
+__TTS_38981c95b549416c9542dd63b6facd88__RC:0
+__TTS_38981c95b549416c9542dd63b6facd88__PWD:/app
+__TTS_38981c95b549416c9542dd63b6facd88__END
+root@cf79795dffd7:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
+> import yt_dlp, subprocess, json, os, math
+> url = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+> out = "source.mp4"
+> ydl_opts = {"format": "mp4/best[ext=mp4]/best", "outtmpl": out, "quiet": True, "noprogress": True}
+> with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+>     ydl.download([url])
+> probe = subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","json",out], capture_output=True, text=True, check=True)
+> duration = float(json.loads(probe.stdout)["format"]["duration"])
+> start = max(0.0, duration - 10.0)
+> subprocess.run(["ffmpeg","-y","-ss",f"{start:.3f}","-i",out,"-t","10","-c","copy","result.mp4"], check=True)
+> print("done")
+> PY'; __tts_rc=$?; printf '\n__TTS_55f4f94224ad497eb5a671f5d4e4e302__RC:%s\n' "$__tts_rc"; printf '__TTS_55f4f94224ad497eb5a671f5d4e4e302__PWD:'; pwd; printf '
+__TTS_55f4f94224ad497eb5a671f5d4e4e302__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_55f4f94224ad497eb5a671f5d4e4e302__RC:1
+__TTS_55f4f94224ad497eb5a671f5d4e4e302__PWD:/app
+__TTS_55f4f94224ad497eb5a671f5d4e4e302__END
+root@cf79795dffd7:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
+> import yt_dlp, subprocess, json
+> url="https://www.youtube.com/watch?v=jNQXAC9IVRw"
+> out="source.mp4"
+> ydl_opts={"format":"mp4/best[ext=mp4]/best","outtmpl":out,"quiet":True,"noprogress":True,"nocheckcertificate":True}
+> with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+>     ydl.download([url])
+> probe=subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","json",out],capture_output=True,text=True,check=True)
+> duration=float(json.loads(probe.stdout)["format"]["duration"])
+> start=max(0.0,duration-10.0)
+> subprocess.run(["ffmpeg","-y","-ss",f"{start:.3f}","-i",out,"-t","10","-c","copy","result.mp4"],check=True)
+> print("done")
+> PY'; __tts_rc=$?; printf '\n__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__RC:%s\n' "$__tts_rc"; printf '__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__PWD:'; pwd; printf '
+__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__END\n'; tmux wait -S done
+bash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__RC:1
+__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__PWD:/app
+__TTS_de574b6e3b9d4ef48fb0d3ed63264c1c__END
+root@cf79795dffd7:/app#

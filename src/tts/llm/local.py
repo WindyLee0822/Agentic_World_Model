@@ -95,12 +95,18 @@ def litellm_model_for(name: Optional[str], default: str) -> str:
 
     In local mode a bare served-model id (no ``provider/`` prefix) is routed through litellm's
     OpenAI-compatible provider, so it is prefixed with ``openai/``; an already-qualified string
-    (``openai/…``, ``hosted_vllm/…``, ``azure/…``) is returned unchanged.  Outside local mode the
-    model string is returned as-is (Azure/OpenAI behaviour is untouched).
+    (``openai/…``, ``hosted_vllm/…``, ``azure/…``) is returned unchanged. Outside local mode, a
+    bare explicit deployment inherits the provider of a qualified default, so
+    ``--llm-agent gpt-4.1`` remains ``azure/gpt-4.1`` when Azure is configured.
     """
     model = name or default
+    if not model or "/" in model:
+        return model
     if local_llm_configured() and model and "/" not in model:
         return f"openai/{model}"
+    if "/" in default:
+        provider = default.split("/", 1)[0]
+        return f"{provider}/{model}"
     return model
 
 

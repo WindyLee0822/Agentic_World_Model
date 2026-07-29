@@ -1,0 +1,28 @@
+[?2004hroot@ec06ebe0c839:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@ec06ebe0c839:/app# clear
+[?2004l[H[J[3J[?2004hroot@ec06ebe0c839:/app# pwd; __tts_rc=$?; printf '\n__TTS_92ea2e02f5844d019d72f6d24eb64115__RC:%s\n' "$__tts_rc"; printf '__TTS_92ea2e02f5844d019d72f6d24eb64115__PWD:'; pwd; printf '__TTS_92ea2e02f5844d019d72f6d24eb64115__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_92ea2e02f5844d019d72f6d24eb64115__RC:0
+__TTS_92ea2e02f5844d019d72f6d24eb64115__PWD:/app
+__TTS_92ea2e02f5844d019d72f6d24eb64115__END
+[?2004hroot@ec06ebe0c839:/app# cd -- /app && set -e; tar -czf /app/sensitive_files.tar.gz -C /opt sensitive_service_data && gpg --batch --yes --passphrase 't-bench-passphrase' --symmetric --cipher-algo AES256 -o /app/service_archive.gpg /app/sensitive_files.tar.gz && find /opt/sensitive_service_data -type f -exec shred -u -n 3 -- {} + && find /opt/sensitive_service_data -depth -type d -empty -delete && rm -f /etc/service_config.ini /tmp/service.pid /app/sensitive_files.tar.gz; __tts_rc=$?; printf '\n__TTS_90631298960f443c9a14594f45e38183__RC:%s\n' "$__tts_rc"; printf '__TTS_90631298960f443c9a14594f45e38183__PWD:'; pwd; printf '__TTS_90631298960f443c9a14594f45e38183__END\n'; tmux wait -S done
+[?2004lgpg: directory '/root/.gnupg' created
+gpg: keybox '/root/.gnupg/pubring.kbx' created
+
+__TTS_90631298960f443c9a14594f45e38183__RC:0
+__TTS_90631298960f443c9a14594f45e38183__PWD:/app
+__TTS_90631298960f443c9a14594f45e38183__END
+[?2004hroot@ec06ebe0c839:/app# cd -- __TTS_90631298960f443c9a14594f45e38183__PWD:/app && set -e; [ -f /app/service_archive.gpg ] && [ ! -e /app/sensitive_files.tar.gz ] && [ ! -e /etc/service_config.ini ] && [ ! -e /tmp/service.pid ] && [ ! -e /opt/sensitive_service_data ]; __tts_rc=$?; printf '\n__TTS_2ccda9dc637049ad8f3fc6940413c1ae__RC:%s\n' "$__tts_rc"; printf '__TTS_2ccda9dc637049ad8f3fc6940413c1ae__PWD:'; pwd; printf '__TTS_2ccda9dc637049ad8f3fc6940413c1ae__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_90631298960f443c9a14594f45e38183__PWD:/app: No such file or directory
+
+__TTS_2ccda9dc637049ad8f3fc6940413c1ae__RC:0
+__TTS_2ccda9dc637049ad8f3fc6940413c1ae__PWD:/app
+__TTS_2ccda9dc637049ad8f3fc6940413c1ae__END
+[?2004hroot@ec06ebe0c839:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@ec06ebe0c839:/app# 

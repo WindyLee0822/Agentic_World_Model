@@ -1,0 +1,56 @@
+root@66a35e69b67c:/app# pwd; __tts_rc=$?; printf '\n__TTS_ababb05645f040da93092a2ab62593bf__RC:%s\n' "$__tts_rc"; printf '__TTS_ababb05645f040da93092a2ab62593bf
+__PWD:'; pwd; printf '__TTS_ababb05645f040da93092a2ab62593bf__END\n'; tmux wait -S done
+/app
+
+__TTS_ababb05645f040da93092a2ab62593bf__RC:0
+__TTS_ababb05645f040da93092a2ab62593bf__PWD:/app
+__TTS_ababb05645f040da93092a2ab62593bf__END
+root@66a35e69b67c:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_028132b97ab049af95d0280b3bd10883__RC:%s\n' "$__tts_rc"; printf '__TTS_028132b97a
+b049af95d0280b3bd10883__PWD:'; pwd; printf '__TTS_028132b97ab049af95d0280b3bd10883__END\n'; tmux wait -S done
+total 8
+drwxr-xr-x 2 root root 4096 Mar 28  2025 .
+drwxr-xr-x 1 root root 4096 Jul 17 23:51 ..
+
+__TTS_028132b97ab049af95d0280b3bd10883__RC:0
+__TTS_028132b97ab049af95d0280b3bd10883__PWD:/app
+__TTS_028132b97ab049af95d0280b3bd10883__END
+root@66a35e69b67c:/app# cd -- /app && cd /app && python - <<'PY'
+> import os,subprocess,sys
+> pkgs=['bitcoinlib','flask','requests']
+> subprocess.check_call([sys.executable,'-m','pip','install','-q']+pkgs)
+> open('bitcoin_service.py','w').write('''from flask import Flask, jsonify\nfrom bitcoinlib.services.services import Service\nimport requests, os\n\napp = Flask
+(__name__)\n\nclass BitcoinRPCClient:\n    def __init__(self):\n        self.service = None\n        self.last_error = None\n        self.connect()\n\n    def c
+onnect(self):\n        try:\n            self.service = Service(network=\"bitcoin\")\n            self.last_error = None\n        except Exception as e:\n
+      self.service = None\n            self.last_error = str(e)\n\n    def connected(self):\n        try:\n            if self.service is None:\n
+ self.connect()\n            if self.service is None:\n                return False\n            self.service.blockcount()\n            return True\n        exc
+ept Exception as e:\n            self.last_error = str(e)\n            return False\n\nclient = BitcoinRPCClient()\n\n@app.route('/status')\ndef status():\n
+if client.connected():\n        return jsonify({\"status\": \"online\"})\n    return jsonify({\"status\": client.last_error or \"not connected to Bitcoin networ
+k\"}), 503\n\n@app.route('/block/<block_hash>')\ndef get_block(block_hash):\n    if not client.connected():\n        return jsonify({\"error\": client.last_erro
+r or \"not connected to Bitcoin network\"}), 503\n    try:\n        b = client.service.getblock(block_hash, parse_transactions=False, page=1, limit=999999)\n
+     txs = b.get('tx') or b.get('txs') or []\n        return jsonify({\n            \"hash\": b.get('hash', block_hash),\n            \"height\": b.get('height'
+, 0),\n            \"merkleroot\": b.get('merkleroot') or b.get('merkle_root',''),\n            \"time\": b.get('time', 0),\n            \"nonce\": b.get('nonce
+', 0),\n            \"tx\": txs\n        })\n    except Exception as e:\n        return jsonify({\"error\": f\"block not found: {e}\"}), 404\n\n@app.route('/tra
+nsaction/<txid>')\ndef get_transaction(txid):\n    if not client.connected():\n        return jsonify({\"error\": client.last_error or \"not connected to Bitcoi
+n network\"}), 503\n    try:\n        t = client.service.gettransaction(txid)\n        vins = []\n        for vin in (t.get('inputs') or t.get('vin') or []):\n
+           vins.append({\n                \"coinbase\": vin.get('coinbase',''),\n                \"sequence\": vin.get('sequence', 0)\n            })\n        v
+outs = []\n        for vout in (t.get('outputs') or t.get('vout') or []):\n            spk = vout.get('scriptPubKey') or {}\n            if not spk and 'lock_sc
+ript' in vout:\n                spk = {\"hex\": vout.get('lock_script',''), \"asm\": '', \"type\": vout.get('script_type','')}\n            vouts.append({\n
+            \"value\": vout.get('value', 0),\n                \"n\": vout.get('n', 0),\n                \"scriptPubKey\": {\n                    \"asm\": spk.ge
+t('asm',''),\n                    \"hex\": spk.get('hex',''),\n                    \"type\": spk.get('type','')\n                }\n            })\n        retu
+rn jsonify({\n            \"txid\": t.get('txid', txid),\n            \"blockhash\": t.get('blockhash',''),\n            \"vin\": vins,\n            \"vout\": v
+outs\n        })\n    except Exception as e:\n        return jsonify({\"error\": f\"transaction not found: {e}\"}), 404\n\nif __name__ == '__main__':\n    app.r
+un(host='127.0.0.1', port=5000)\n''')
+> os.makedirs('/tmp/bitcoin_service',exist_ok=True)
+> subprocess.check_call("nohup python /app/bitcoin_service.py >/tmp/bitcoin_service/out.log 2>/tmp/bitcoin_service/err.log </dev/null &",shell=True)
+> PY; __tts_rc=$?; printf '\n__TTS_8b08d9cc88804615bc98b161adf978fb__RC:%s\n' "$__tts_rc"; printf '__TTS_8b08d9cc88804615bc98b161adf978fb__PWD:'; pwd; printf '_
+_TTS_8b08d9cc88804615bc98b161adf978fb__END\n'; tmux wait -S done
+> cd -- /app && cd /app && ls -l && sed -n '1,240p' bitcoin_service.py && python -m pip show bitcoinlib Flask requests | sed -n '1,120p' && (curl -sS http://127
+.0.0.1:5000/status || true) && ps -ef | grep -v grep | grep bitcoin_service.py || true; __tts_rc=$?; printf '\n__TTS_ebacbcfc8540455e9028b5c7e57d1709__RC:%s\n'
+"$__tts_rc"; printf '__TTS_ebacbcfc8540455e9028b5c7e57d1709__PWD:'; pwd; printf '__TTS_ebacbcfc8540455e9028b5c7e57d1709__END\n'; tmux wait -S done
+> cd -- /app && cd /app && python - <<'PY'
+> import pathlib
+> p=pathlib.Path('bitcoin_service.py')
+> print(p.exists(), p.read_text()[:400] if p.exists() else '')
+> PY; __tts_rc=$?; printf '\n__TTS_6cd0ee1ed2644d96a099d38eca5b0bee__RC:%s\n' "$__tts_rc"; printf '__TTS_6cd0ee1ed2644d96a099d38eca5b0bee__PWD:'; pwd; printf '_
+_TTS_6cd0ee1ed2644d96a099d38eca5b0bee__END\n'; tmux wait -S done
+>

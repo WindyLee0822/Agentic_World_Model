@@ -1,0 +1,191 @@
+[?2004hroot@74d0d8542b23:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@74d0d8542b23:/app# clear
+[?2004l[H[J[3J[?2004hroot@74d0d8542b23:/app# pwd; __tts_rc=$?; printf '\n__TTS_07df25bf48024c5ca37fc32e08cc88a1__RC:%s\n' "$__tts_rc"; printf '__TTS_07df25bf48024c5ca37fc32e08cc88a1__PWD:'; pwd; printf '__TTS_07df25bf48024c5ca37fc32e08cc88a1__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_07df25bf48024c5ca37fc32e08cc88a1__RC:0
+__TTS_07df25bf48024c5ca37fc32e08cc88a1__PWD:/app
+__TTS_07df25bf48024c5ca37fc32e08cc88a1__END
+[?2004hroot@74d0d8542b23:/app# cd -- /app && sh -lc 'cat /etc/os-release && command -v nginx || true && command -v apt-get || command -v yum || command -v apk'; __tts_rc=$?; printf '\n__TTS_24a344e93e63484e9b302f43b00736e9__RC:%s\n' "$__tts_rc"; printf '__TTS_24a344e93e63484e9b302f43b00736e9__PWD:'; pwd; printf '__TTS_24a344e93e63484e9b302f43b00736e9__END\n'; tmux wait -S done
+[?2004lPRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+/usr/bin/apt-get
+
+__TTS_24a344e93e63484e9b302f43b00736e9__RC:0
+__TTS_24a344e93e63484e9b302f43b00736e9__PWD:/app
+__TTS_24a344e93e63484e9b302f43b00736e9__END
+[?2004hroot@74d0d8542b23:/app# cd -- __TTS_24a344e93e63484e9b302f43b00736e9__PWD:/app && sh -lc 'apt-get update && apt-get install -y nginx && mkdir -p /var/www/html /etc/nginx/conf.d && printf "%s\n" "Welcome to the benchmark webserver" >/var/www/html/index.html && printf "%s\n" "Page not found - Please check your URL" >/var/www/html/404.html && cat >/etc/nginx/conf.d/benchmark-site.conf <<'"'"'EOF'"'"'
+[?2004l[?2004h> limit_req_zone $binary_remote_addr zone=benchmark_limit:10m rate=10r/s;
+[?2004l[?2004h> log_format benchmark '$time_local $request_method $status "$http_user_agent"';
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8080;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     root /var/www/html;
+[?2004l[?2004h>     index index.html;
+[?2004l[?2004h>     access_log /var/log/nginx/benchmark-access.log benchmark;
+[?2004l[?2004h>     error_page 404 /404.html;
+[?2004l[?2004h>     location = /404.html { internal; }
+[?2004l[?2004h>     location / {
+[?2004l[?2004h>         limit_req zone=benchmark_limit burst=0 nodelay;
+[?2004l[?2004h>         try_files $uri $uri/ =404;
+[?2004l[?2004h>     }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> nginx -t && nginx'; __tts_rc=$?; printf '\n__TTS_fba2b93f0f994d51b4f70533cd4e616f__RC:%s\n' "$__tts_rc"; printf '__TTS_fba2b93f0f994d51b4f70533cd4e616f__PWD:'; pwd; printf '__TTS_fba2b93f0f994d51b4f70533cd4e616f__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_24a344e93e63484e9b302f43b00736e9__PWD:/app: No such file or directory
+
+__TTS_fba2b93f0f994d51b4f70533cd4e616f__RC:1
+__TTS_fba2b93f0f994d51b4f70533cd4e616f__PWD:/app
+__TTS_fba2b93f0f994d51b4f70533cd4e616f__END
+[?2004hroot@74d0d8542b23:/app# cd -- /app && sh -lc 'apt-get update && apt-get install -y nginx && mkdir -p /var/www/html /etc/nginx/conf.d && printf "%s\n" "Welcome to the benchmark webserver" >/var/www/html/index.html && printf "%s\n" "Page not found - Please check your URL" >/var/www/html/404.html && cat >/etc/nginx/conf.d/benchmark-site.conf <<'"'"'EOF'"'"'
+[?2004l[?2004h> limit_req_zone $binary_remote_addr zone=benchmark_limit:10m rate=10r/s;
+[?2004l[?2004h> log_format benchmark '$time_local $request_method $status "$http_user_agent"';
+[?2004l[?2004h> server {
+[?2004l[?2004h>     listen 8080;
+[?2004l[?2004h>     server_name localhost;
+[?2004l[?2004h>     root /var/www/html;
+[?2004l[?2004h>     index index.html;
+[?2004l[?2004h>     access_log /var/log/nginx/benchmark-access.log benchmark;
+[?2004l[?2004h>     error_page 404 /404.html;
+[?2004l[?2004h>     location = /404.html { internal; }
+[?2004l[?2004h>     location / {
+[?2004l[?2004h>         limit_req zone=benchmark_limit burst=1 nodelay;
+[?2004l[?2004h>         try_files $uri $uri/ =404;
+[?2004l[?2004h>     }
+[?2004l[?2004h> }
+[?2004l[?2004h> EOF
+[?2004l[?2004h> nginx -t && (nginx -s stop || true) && nginx && curl -fsS http://localhost:8080/ >/dev/null'; __tts_rc=$?; printf '\n__TTS_8e22b98abaff4e66b403fd160090410c__RC:%s\n' "$__tts_rc"; printf '__TTS_8e22b98abaff4e66b403fd160090410c__PWD:'; pwd; printf '__TTS_8e22b98abaff4e66b403fd160090410c__END\n'; tmux wait -S done
+[?2004l0% [Working]            Hit:1 http://deb.debian.org/debian bookworm InRelease
+0% [Working]            Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+0% [2 InRelease 17.1 kB/55.4 kB 31%]                                    0% [Working]            Hit:3 http://deb.debian.org/debian-security bookworm-security InRelease
+0% [Working]0% [Working]0% [Working]100% [Working]              Fetched 55.4 kB in 0s (282 kB/s)
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following additional packages will be installed:
+  iproute2 libatm1 libbpf1 libbsd0 libcap2 libcap2-bin libelf1 libmnl0 libpam-cap libxtables12 nginx-common
+Suggested packages:
+  iproute2-doc fcgiwrap nginx-doc ssl-cert
+The following NEW packages will be installed:
+  iproute2 libatm1 libbpf1 libbsd0 libcap2-bin libelf1 libmnl0 libpam-cap libxtables12 nginx nginx-common
+The following packages will be upgraded:
+  libcap2
+1 upgraded, 11 newly installed, 0 to remove and 46 not upgraded.
+Need to get 2316 kB of archives.
+After this operation, 7417 kB of additional disk space will be used.
+0% [Working]            Get:1 http://deb.debian.org/debian bookworm/main amd64 libcap2 amd64 1:2.66-4+deb12u3+b1 [27.7 kB]
+1% [1 libcap2 16.4 kB/27.7 kB 59%]                                  3% [Working]            Get:2 http://deb.debian.org/debian bookworm/main amd64 libelf1 amd64 0.188-2.1 [174 kB]
+3% [2 libelf1 13.6 kB/174 kB 8%]                                10% [Waiting for headers]                         Get:3 http://deb.debian.org/debian bookworm/main amd64 libbpf1 amd64 1:1.1.2-0+deb12u1 [145 kB]
+10% [3 libbpf1 4448 B/145 kB 3%]                                17% [Waiting for headers]                         Get:4 http://deb.debian.org/debian bookworm/main amd64 libbsd0 amd64 0.11.7-2 [117 kB]
+18% [4 libbsd0 30.9 kB/117 kB 26%]                                  23% [Waiting for headers]                         Get:5 http://deb.debian.org/debian bookworm/main amd64 libmnl0 amd64 1.0.4-3 [12.5 kB]
+23% [5 libmnl0 12.5 kB/12.5 kB 100%]                                    25% [Waiting for headers]                         Get:6 http://deb.debian.org/debian bookworm/main amd64 libxtables12 amd64 1.8.9-2 [30.8 kB]
+25% [6 libxtables12 1596 B/30.8 kB 5%]                                      28% [Waiting for headers]                         Get:7 http://deb.debian.org/debian bookworm/main amd64 libcap2-bin amd64 1:2.66-4+deb12u3+b1 [35.2 kB]
+29% [7 libcap2-bin 29.6 kB/35.2 kB 84%]                                       30% [Working]             Get:8 http://deb.debian.org/debian bookworm/main amd64 iproute2 amd64 6.1.0-3 [1046 kB]
+31% [8 iproute2 14.1 kB/1046 kB 1%]                                   68% [Waiting for headers]                         Get:9 http://deb.debian.org/debian bookworm/main amd64 libatm1 amd64 1:2.5.1-4+b2 [68.3 kB]
+69% [9 libatm1 20.2 kB/68.3 kB 30%]                                   72% [Waiting for headers]                         Get:10 http://deb.debian.org/debian bookworm/main amd64 libpam-cap amd64 1:2.66-4+deb12u3+b1 [15.1 kB]
+73% [10 libpam-cap 15.1 kB/15.1 kB 100%]                                        74% [Waiting for headers]                         Get:11 http://deb.debian.org/debian bookworm/main amd64 nginx-common all 1.22.1-9+deb12u9 [115 kB]
+75% [11 nginx-common 24.1 kB/115 kB 21%]                                        80% [Waiting for headers]                         Get:12 http://deb.debian.org/debian bookworm/main amd64 nginx amd64 1.22.1-9+deb12u9 [530 kB]
+80% [12 nginx 8192 B/530 kB 2%]                               100% [Working]              Fetched 2316 kB in 0s (20.5 MB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7714 files and directories currently installed.)
+Preparing to unpack .../libcap2_1%3a2.66-4+deb12u3+b1_amd64.deb ...
+Unpacking libcap2:amd64 (1:2.66-4+deb12u3+b1) over (1:2.66-4) ...
+Setting up libcap2:amd64 (1:2.66-4+deb12u3+b1) ...
+Selecting previously unselected package libelf1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7715 files and directories currently installed.)
+Preparing to unpack .../00-libelf1_0.188-2.1_amd64.deb ...
+Unpacking libelf1:amd64 (0.188-2.1) ...
+Selecting previously unselected package libbpf1:amd64.
+Preparing to unpack .../01-libbpf1_1%3a1.1.2-0+deb12u1_amd64.deb ...
+Unpacking libbpf1:amd64 (1:1.1.2-0+deb12u1) ...
+Selecting previously unselected package libbsd0:amd64.
+Preparing to unpack .../02-libbsd0_0.11.7-2_amd64.deb ...
+Unpacking libbsd0:amd64 (0.11.7-2) ...
+Selecting previously unselected package libmnl0:amd64.
+Preparing to unpack .../03-libmnl0_1.0.4-3_amd64.deb ...
+Unpacking libmnl0:amd64 (1.0.4-3) ...
+Selecting previously unselected package libxtables12:amd64.
+Preparing to unpack .../04-libxtables12_1.8.9-2_amd64.deb ...
+Unpacking libxtables12:amd64 (1.8.9-2) ...
+Selecting previously unselected package libcap2-bin.
+Preparing to unpack .../05-libcap2-bin_1%3a2.66-4+deb12u3+b1_amd64.deb ...
+Unpacking libcap2-bin (1:2.66-4+deb12u3+b1) ...
+Selecting previously unselected package iproute2.
+Preparing to unpack .../06-iproute2_6.1.0-3_amd64.deb ...
+Unpacking iproute2 (6.1.0-3) ...
+Selecting previously unselected package libatm1:amd64.
+Preparing to unpack .../07-libatm1_1%3a2.5.1-4+b2_amd64.deb ...
+Unpacking libatm1:amd64 (1:2.5.1-4+b2) ...
+Selecting previously unselected package libpam-cap:amd64.
+Preparing to unpack .../08-libpam-cap_1%3a2.66-4+deb12u3+b1_amd64.deb ...
+Unpacking libpam-cap:amd64 (1:2.66-4+deb12u3+b1) ...
+Selecting previously unselected package nginx-common.
+Preparing to unpack .../09-nginx-common_1.22.1-9+deb12u9_all.deb ...
+Unpacking nginx-common (1.22.1-9+deb12u9) ...
+Selecting previously unselected package nginx.
+Preparing to unpack .../10-nginx_1.22.1-9+deb12u9_amd64.deb ...
+Unpacking nginx (1.22.1-9+deb12u9) ...
+Setting up nginx-common (1.22.1-9+deb12u9) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libatm1:amd64 (1:2.5.1-4+b2) ...
+Setting up libcap2-bin (1:2.66-4+deb12u3+b1) ...
+Setting up libmnl0:amd64 (1.0.4-3) ...
+Setting up libxtables12:amd64 (1.8.9-2) ...
+Setting up libbsd0:amd64 (0.11.7-2) ...
+Setting up libelf1:amd64 (0.188-2.1) ...
+Setting up libpam-cap:amd64 (1:2.66-4+deb12u3+b1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libbpf1:amd64 (1:1.1.2-0+deb12u1) ...
+Setting up iproute2 (6.1.0-3) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.36.0 /usr/local/share/perl/5.36.0 /usr/lib/x86_64-linux-gnu/perl5/5.36 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.36 /usr/share/perl/5.36 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up nginx (1.22.1-9+deb12u9) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Processing triggers for libc-bin (2.36-9+deb12u9) ...
+
+__TTS_8e22b98abaff4e66b403fd160090410c__RC:0
+__TTS_8e22b98abaff4e66b403fd160090410c__PWD:/app
+__TTS_8e22b98abaff4e66b403fd160090410c__END
+[?2004hroot@74d0d8542b23:/app# cd -- /app && sh -lc 'nginx -t && (nginx -s stop || true) && nginx && curl -fsS http://localhost:8080/ >/dev/null && grep -q "listen 8080;" /etc/nginx/conf.d/benchmark-site.conf && grep -q "/var/log/nginx/benchmark-access.log benchmark;" /etc/nginx/conf.d/benchmark-site.conf && grep -q "rate=10r/s" /etc/nginx/conf.d/benchmark-site.conf && grep -q "\$time_local \$request_method \$status \"\$http_user_agent\"" /etc/nginx/conf.d/benchmark-site.conf'; __tts_rc=$?; printf '\n__TTS_37f7121b737c4762936f40e0220c314e__RC:%s\n' "$__tts_rc"; printf '__TTS_37f7121b737c4762936f40e0220c314e__PWD:'; pwd; printf '__TTS_37f7121b737c4762936f40e0220c314e__END\n'; tmux wait -S done
+[?2004l2026/07/18 05:31:54 [emerg] 489#489: unexpected end of file, expecting ";" or "}" in /etc/nginx/conf.d/benchmark-site.conf:2
+nginx: configuration file /etc/nginx/nginx.conf test failed
+
+__TTS_37f7121b737c4762936f40e0220c314e__RC:1
+__TTS_37f7121b737c4762936f40e0220c314e__PWD:/app
+__TTS_37f7121b737c4762936f40e0220c314e__END
+[?2004hroot@74d0d8542b23:/app# cd -- __TTS_37f7121b737c4762936f40e0220c314e__PWD:/app && sh -lc 'nl -ba /etc/nginx/conf.d/benchmark-site.conf && sed -n "1,20p" /etc/nginx/conf.d/benchmark-site.conf'; __tts_rc=$?; printf '\n__TTS_1e9ad2b66ad24a1ea99e765080205ef0__RC:%s\n' "$__tts_rc"; printf '__TTS_1e9ad2b66ad24a1ea99e765080205ef0__PWD:'; pwd; printf '__TTS_1e9ad2b66ad24a1ea99e765080205ef0__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_37f7121b737c4762936f40e0220c314e__PWD:/app: No such file or directory
+
+__TTS_1e9ad2b66ad24a1ea99e765080205ef0__RC:1
+__TTS_1e9ad2b66ad24a1ea99e765080205ef0__PWD:/app
+__TTS_1e9ad2b66ad24a1ea99e765080205ef0__END
+[?2004hroot@74d0d8542b23:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@74d0d8542b23:/app# 

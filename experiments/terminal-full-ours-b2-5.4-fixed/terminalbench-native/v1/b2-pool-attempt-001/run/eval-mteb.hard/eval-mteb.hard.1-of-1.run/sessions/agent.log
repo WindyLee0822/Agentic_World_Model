@@ -1,0 +1,76 @@
+[?2004hroot@79fecefd1e25:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@79fecefd1e25:/app# clear
+[?2004l[H[J[3J[?2004hroot@79fecefd1e25:/app# pwd; __tts_rc=$?; printf '\n__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__RC:%s\n' "$__tts_rc"; printf '__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__PWD:'; pwd; printf '__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__RC:0
+__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__PWD:/app
+__TTS_3ac1cf3267ed45d6a6e242c3e1f605c1__END
+[?2004hroot@79fecefd1e25:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^/app/##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_2eca22155adb47bba623b12ccdac1ec1__RC:%s\n' "$__tts_rc"; printf '__TTS_2eca22155adb47bba623b12ccdac1ec1__PWD:'; pwd; printf '__TTS_2eca22155adb47bba623b12ccdac1ec1__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Jul 18 02:09 .
+drwxr-xr-x 1 root root 4096 Jul 18 02:11 ..
+
+__TTS_2eca22155adb47bba623b12ccdac1ec1__RC:0
+__TTS_2eca22155adb47bba623b12ccdac1ec1__PWD:/app
+__TTS_2eca22155adb47bba623b12ccdac1ec1__END
+[?2004hroot@79fecefd1e25:/app# cd -- /app && cd /app && python - <<'PY'
+[?2004l[?2004h> import importlib.util as u
+[?2004l[?2004h> mods=['mteb','sentence_transformers','transformers','torch']
+[?2004l[?2004h> print({m:bool(u.find_spec(m)) for m in mods})
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b64d20ac0dc34824b0cbe76cd2a1749b__RC:%s\n' "$__tts_rc"; printf '__TTS_b64d20ac0dc34824b0cbe76cd2a1749b__PWD:'; pwd; printf '__TTS_b64d20ac0dc34824b0cbe76cd2a1749b__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python -c "import importlib.util as u;mods=['mteb','sentence_transformers','transformers','torch'];print({m:bool(u.find_spec(m)) for m in mods})"; __tts_rc=$?; printf '\n__TTS_1565b5d373214dc6ba9670ac2568341c__RC:%s\n' "$__tts_rc"; printf '__TTS_1565b5d373214dc6ba9670ac2568341c__PWD:'; pwd; printf '__TTS_1565b5d373214dc6ba9670ac2568341c__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && python -S -c "import importlib.util as u;mods=['mteb','sentence_transformers','transformers','torch'];print({m:bool(u.find_spec(m)) for m in mods})"; __tts_rc=$?; printf '\n__TTS_d0b878540a6d46759d6c51261de98645__RC:%s\n' "$__tts_rc"; printf '__TTS_d0b878540a6d46759d6c51261de98645__PWD:'; pwd; printf '__TTS_d0b878540a6d46759d6c51261de98645__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && command -v python && python --version && command -v pip && pip --version && env | sort | grep -E '^(PYTHON|PIP|HF|TRANSFORMERS|SENTENCE|CUDA|TORCH)'; __tts_rc=$?; printf '\n__TTS_3f8d8a3c4d7a4d31b4ec5b629bbc5eca__RC:%s\n' "$__tts_rc"; printf '__TTS_3f8d8a3c4d7a4d31b4ec5b629bbc5eca__PWD:'; pwd; printf '__TTS_3f8d8a3c4d7a4d31b4ec5b629bbc5eca__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && cd /app && ls /usr/bin/python* /usr/local/bin/python* 2>/dev/null && timeout 20s /usr/bin/python3 --version && timeout 20s /usr/bin/python3 -S -c 'print(123)'; __tts_rc=$?; printf '\n__TTS_ecc1ffc4239449c5b7800ccd392f4107__RC:%s\n' "$__tts_rc"; printf '__TTS_ecc1ffc4239449c5b7800ccd392f4107__PWD:'; pwd; printf '__TTS_ecc1ffc4239449c5b7800ccd392f4107__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && timeout 20s sh -lc 'ls -l /usr/bin/python* /usr/local/bin/python* 2>/dev/null; file /usr/bin/python3 /usr/local/bin/python3 2>/dev/null'; __tts_rc=$?; printf '\n__TTS_459cff7e54304feabd2defc4cd996bf0__RC:%s\n' "$__tts_rc"; printf '__TTS_459cff7e54304feabd2defc4cd996bf0__PWD:'; pwd; printf '__TTS_459cff7e54304feabd2defc4cd996bf0__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && ls -l /usr/bin/python3 /usr/local/bin/python3 2>/dev/null; readlink -f /usr/bin/python3 /usr/local/bin/python3 2>/dev/null; file /usr/bin/python3 /usr/local/bin/python3 2>/dev/null; __tts_rc=$?; printf '\n__TTS_4609f1751b7a40c3a8b3668097498b51__RC:%s\n' "$__tts_rc"; printf '__TTS_4609f1751b7a40c3a8b3668097498b51__PWD:'; pwd; printf '__TTS_4609f1751b7a40c3a8b3668097498b51__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 8
+    cd -- /app && cd /app && ls /usr/bin/python* /usr/local/bin/python* 2>/dev/null && timeout 20s /usr/bin/python3 --version && timeout 20s /usr/bin/python3 -S -c 'print(123)'; __tts_rc=$?; printf '\n__TTS_ecc1ffc4239449c5b7800ccd392f4107__RC:%s\n' "$__tts_rc"; printf '__TTS_ecc1ffc4239449c5b7800ccd392f4107__PWD:'; pwd; printf '__TTS_ecc1ffc4239449c5b7800ccd392f4107__END\n'; tmux wait -S done
+                                                                                                ^
+SyntaxError: invalid decimal literal
+[?2004hroot@79fecefd1e25:/app# cd -- /app && find / -maxdepth 3 \( -name 'mteb*' -o -name 'sentence_transformers*' -o -name 'transformers*' -o -name 'torch*' \) 2>/dev/null | head -200; __tts_rc=$?; printf '\n__TTS_792521ad03b6449cb2d2c03879a2dc3e__RC:%s\n' "$__tts_rc"; printf '__TTS_792521ad03b6449cb2d2c03879a2dc3e__PWD:'; pwd; printf '__TTS_792521ad03b6449cb2d2c03879a2dc3e__END\n'; tmux wait -S done
+[?2004l
+__TTS_792521ad03b6449cb2d2c03879a2dc3e__RC:0
+__TTS_792521ad03b6449cb2d2c03879a2dc3e__PWD:/app
+__TTS_792521ad03b6449cb2d2c03879a2dc3e__END
+[?2004hroot@79fecefd1e25:/app# cd -- /app && find / -maxdepth 3 -type f \( -name 'requirements*.txt' -o -name 'environment*.yml' -o -name 'pyproject.toml' -o -name 'setup.py' -o -path '*/site-packages/*' \) 2>/dev/null | head -200; __tts_rc=$?; printf '\n__TTS_704076032c76442a9e1ae133a983c9ff__RC:%s\n' "$__tts_rc"; printf '__TTS_704076032c76442a9e1ae133a983c9ff__PWD:'; pwd; printf '__TTS_704076032c76442a9e1ae133a983c9ff__END\n'; tmux wait -S done
+[?2004l/app/pyproject.toml
+
+__TTS_704076032c76442a9e1ae133a983c9ff__RC:0
+__TTS_704076032c76442a9e1ae133a983c9ff__PWD:/app
+__TTS_704076032c76442a9e1ae133a983c9ff__END
+[?2004hroot@79fecefd1e25:/app# cd -- /app && cd /app && sed -n '1,220p' pyproject.toml; __tts_rc=$?; printf '\n__TTS_e5572fefe2644b47b39b77cf1e44bddc__RC:%s\n' "$__tts_rc"; printf '__TTS_e5572fefe2644b47b39b77cf1e44bddc__PWD:'; pwd; printf '__TTS_e5572fefe2644b47b39b77cf1e44bddc__END\n'; tmux wait -S done
+[?2004l[project]
+name = "app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pytest>=9.1.1",
+]
+
+__TTS_e5572fefe2644b47b39b77cf1e44bddc__RC:0
+__TTS_e5572fefe2644b47b39b77cf1e44bddc__PWD:/app
+__TTS_e5572fefe2644b47b39b77cf1e44bddc__END
+[?2004hroot@79fecefd1e25:/app# cd -- /app && curl -I -L --max-time 20 https://huggingface.co 2>/dev/null | head; __tts_rc=$?; printf '\n__TTS_b11a248850ab4bc9bb102814d82ee8b0__RC:%s\n' "$__tts_rc"; printf '__TTS_b11a248850ab4bc9bb102814d82ee8b0__PWD:'; pwd; printf '__TTS_b11a248850ab4bc9bb102814d82ee8b0__END\n'; tmux wait -S done
+[?2004lHTTP/2 200 
+content-type: text/html; charset=utf-8
+content-length: 172940
+date: Sat, 18 Jul 2026 02:46:20 GMT
+etag: W/"2a38c-5BbZkZPq+LYamWlPFW8VUMSAdBM"
+x-powered-by: huggingface-moon
+x-request-id: Root=1-6a5ae8fc-09908c833e03000c1f49a388
+ratelimit: "pages";r=99;t=244
+ratelimit-policy: "fixed window";"pages";q=100;w=300
+cross-origin-opener-policy: same-origin
+
+__TTS_b11a248850ab4bc9bb102814d82ee8b0__RC:0
+__TTS_b11a248850ab4bc9bb102814d82ee8b0__PWD:/app
+__TTS_b11a248850ab4bc9bb102814d82ee8b0__END
+[?2004hroot@79fecefd1e25:/app# 

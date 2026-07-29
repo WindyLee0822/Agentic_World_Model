@@ -1,0 +1,8 @@
+['asciinema rec --stdin /logs/agent.cast', 'Enter']
+['clear', 'Enter']
+['pwd; __tts_rc=$?; printf \'\\n__TTS_44212e102e3e4a8ab258d78d0cb855b5__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_44212e102e3e4a8ab258d78d0cb855b5__PWD:\'; pwd; printf \'__TTS_44212e102e3e4a8ab258d78d0cb855b5__END\\n\'', 'Enter']
+['asciinema rec --stdin /logs/tests.cast', 'Enter']
+['clear', 'Enter']
+['bash ', '/tests/run-tests.sh', 'Enter']
+['C-d']
+['C-d']

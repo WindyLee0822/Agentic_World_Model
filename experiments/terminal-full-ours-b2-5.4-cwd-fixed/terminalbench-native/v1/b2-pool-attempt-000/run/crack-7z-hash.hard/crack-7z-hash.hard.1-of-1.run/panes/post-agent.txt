@@ -1,0 +1,60 @@
+root@e036d77cbc4d:/app# pwd; __tts_rc=$?; printf '\n__TTS_69374a345ad845c981be03ea37b1854f__RC:%s\n' "$__tts_rc"; printf '__TTS_69374a345ad845c981be03ea37b1854f
+__PWD:'; pwd; printf '__TTS_69374a345ad845c981be03ea37b1854f__END\n'; tmux wait -S done
+/app
+
+__TTS_69374a345ad845c981be03ea37b1854f__RC:0
+__TTS_69374a345ad845c981be03ea37b1854f__PWD:/app
+__TTS_69374a345ad845c981be03ea37b1854f__END
+root@e036d77cbc4d:/app# cd -- /app && ls -l /app && find /app -maxdepth 2 -type f | sed 's#^#/##'; __tts_rc=$?; printf '\n__TTS_086f04d273bc44dd8db44cbc689f91a9
+__RC:%s\n' "$__tts_rc"; printf '__TTS_086f04d273bc44dd8db44cbc689f91a9__PWD:'; pwd; printf '__TTS_086f04d273bc44dd8db44cbc689f91a9__END\n'; tmux wait -S done
+total 12
+drwxr-xr-x 1 root root 4096 Jul 16 21:18 john
+-rwxr-xr-x 1 root root  215 Jul 16 19:53 secrets.7z
+//app/secrets.7z
+//app/john/README.md
+//app/john/.travis.yml
+//app/john/shell.nix
+//app/john/CONTRIBUTING.md
+//app/john/.editorconfig
+//app/john/.pre-commit.sh
+//app/john/.gitattributes
+//app/john/.mailmap
+//app/john/LICENSE
+//app/john/.gitignore
+//app/john/requirements.txt
+
+__TTS_086f04d273bc44dd8db44cbc689f91a9__RC:0
+__TTS_086f04d273bc44dd8db44cbc689f91a9__PWD:/app
+__TTS_086f04d273bc44dd8db44cbc689f91a9__END
+root@e036d77cbc4d:/app# cd -- /app && 7z l /app/secrets.7z; __tts_rc=$?; printf '\n__TTS_079dcdfd85ae4c50a50be1466d9de024__RC:%s\n' "$__tts_rc"; printf '__TTS_0
+79dcdfd85ae4c50a50be1466d9de024__PWD:'; pwd; printf '__TTS_079dcdfd85ae4c50a50be1466d9de024__END\n'; tmux wait -S done
+bash: 7z: command not found
+
+__TTS_079dcdfd85ae4c50a50be1466d9de024__RC:127
+__TTS_079dcdfd85ae4c50a50be1466d9de024__PWD:/app
+__TTS_079dcdfd85ae4c50a50be1466d9de024__END
+root@e036d77cbc4d:/app# cd -- /app && bash -lc 'which 7zr 7za bsdtar unar 7zz p7zip archive7z file | tr " " "\n" | sed "/^$/d"'; __tts_rc=$?; printf '\n__TTS_3c
+31e7b76fc5481b81eb876f0049f8d2__RC:%s\n' "$__tts_rc"; printf '__TTS_3c31e7b76fc5481b81eb876f0049f8d2__PWD:'; pwd; printf '__TTS_3c31e7b76fc5481b81eb876f0049f8d2
+__END\n'; tmux wait -S done
+
+__TTS_3c31e7b76fc5481b81eb876f0049f8d2__RC:0
+__TTS_3c31e7b76fc5481b81eb876f0049f8d2__PWD:/app
+__TTS_3c31e7b76fc5481b81eb876f0049f8d2__END
+root@e036d77cbc4d:/app# cd -- /app && python3 - <<'PY'
+> import struct
+> p='/app/secrets.7z'
+> b=open(p,'rb').read()
+> assert b[:6]==b"7z\xbc\xaf\x27\x1c"
+> maj,minv=b[6],b[7]
+> crc=struct.unpack('<I',b[8:12])[0]
+> next_off,next_size,next_crc=struct.unpack('<QQI',b[12:32])
+> print('ver',maj,minv,'next',next_off,next_size,next_crc,'len',len(b))
+> print(b[32:32+next_size].hex())
+> print(b[32+next_off:32+next_off+next_size].hex())
+> PY; __tts_rc=$?; printf '\n__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__RC:%s\n' "$__tts_rc"; printf '__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__PWD:'; pwd; printf '_
+_TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import py7zr; print('ok')"; __tts_rc=$?; printf '\n__TTS_074f8d788aa34a5db0f261505822aa7e__RC:%s\n' "$__tts_rc"; printf '__TTS_074f8
+d788aa34a5db0f261505822aa7e__PWD:'; pwd; printf '__TTS_074f8d788aa34a5db0f261505822aa7e__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "print(open('/app/secrets.7z','rb').read(80).hex())"; __tts_rc=$?; printf '\n__TTS_db374b32e68c4ce3871079b6d0477944__RC:%s\n' "$__tts
+_rc"; printf '__TTS_db374b32e68c4ce3871079b6d0477944__PWD:'; pwd; printf '__TTS_db374b32e68c4ce3871079b6d0477944__END\n'; tmux wait -S done
+>

@@ -1,0 +1,23 @@
+[?2004hroot@5defd3debc8a:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@5defd3debc8a:/app# clear
+[?2004l[H[J[3J[?2004hroot@5defd3debc8a:/app# pwd; __tts_rc=$?; printf '\n__TTS_e7f57823733b49a0a42588e9e9d539e1__RC:%s\n' "$__tts_rc"; printf '__TTS_e7f57823733b49a0a42588e9e9d539e1__PWD:'; pwd; printf '__TTS_e7f57823733b49a0a42588e9e9d539e1__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_e7f57823733b49a0a42588e9e9d539e1__RC:0
+__TTS_e7f57823733b49a0a42588e9e9d539e1__PWD:/app
+__TTS_e7f57823733b49a0a42588e9e9d539e1__END
+[?2004hroot@5defd3debc8a:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import urllib.request, json; print(urllib.request.urlopen('http://api:8000/docs/json').read().decode())
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__RC:%s\n' "$__tts_rc"; printf '__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__PWD:'; pwd; printf '__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import urllib.request; print(urllib.request.urlopen('http://api:8000/docs/json',timeout=10).read().decode()[:4000])"; __tts_rc=$?; printf '\n__TTS_47d143c84fcd4774bfce689391575521__RC:%s\n' "$__tts_rc"; printf '__TTS_47d143c84fcd4774bfce689391575521__PWD:'; pwd; printf '__TTS_47d143c84fcd4774bfce689391575521__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import urllib.request; print(urllib.request.urlopen('http://api:8000/docs/json',timeout=2).status)"; __tts_rc=$?; printf '\n__TTS_b4914a1f906c4e5d88bbe9b19851b11f__RC:%s\n' "$__tts_rc"; printf '__TTS_b4914a1f906c4e5d88bbe9b19851b11f__PWD:'; pwd; printf '__TTS_b4914a1f906c4e5d88bbe9b19851b11f__END\n'; tmux wait -S done
+[?2004l[?2004h> bash /tests/run-tests.sh; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m2[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__RC:%s\n' "$__tts_rc"; printf '__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__PWD:'; pwd; printf '__TTS_7ea0e7e74bd14beba9b0e5e0658b7472__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@5defd3debc8a:/app# 

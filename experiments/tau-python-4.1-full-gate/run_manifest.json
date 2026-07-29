@@ -1,0 +1,26 @@
+{
+  "env": "tau2",
+  "expected_tasks": 164,
+  "complete_tasks": 164,
+  "partial_tasks": 0,
+  "missing_tasks": 0,
+  "expected_cells_per_task": 1,
+  "recorded_decisions": 164,
+  "cell_errors": [],
+  "abandoned_tasks": [],
+  "task_errors": [],
+  "by_subset": {
+    "airline": {
+      "expected_tasks": 50,
+      "complete_tasks": 50,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    },
+    "retail": {
+      "expected_tasks": 114,
+      "complete_tasks": 114,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    }
+  }
+}

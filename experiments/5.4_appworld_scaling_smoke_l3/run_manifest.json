@@ -1,0 +1,20 @@
+{
+  "env": "appworld",
+  "expected_tasks": 6,
+  "complete_tasks": 6,
+  "partial_tasks": 0,
+  "missing_tasks": 0,
+  "expected_cells_per_task": 3,
+  "recorded_decisions": 18,
+  "cell_errors": [],
+  "abandoned_tasks": [],
+  "task_errors": [],
+  "by_subset": {
+    "test_normal/L3": {
+      "expected_tasks": 6,
+      "complete_tasks": 6,
+      "partial_tasks": 0,
+      "missing_tasks": 0
+    }
+  }
+}

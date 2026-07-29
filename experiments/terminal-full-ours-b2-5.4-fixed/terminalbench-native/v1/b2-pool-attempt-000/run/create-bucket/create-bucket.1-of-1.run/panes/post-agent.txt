@@ -1,0 +1,40 @@
+root@6f1b8ae61e5d:/app# pwd; __tts_rc=$?; printf '\n__TTS_c2d3b080aa314d21ba91e3b4be4c0009__RC:%s\n' "$__tts_rc"; printf '__TTS_c2d3b080aa314d21ba91e3b4be4c0009
+__PWD:'; pwd; printf '__TTS_c2d3b080aa314d21ba91e3b4be4c0009__END\n'; tmux wait -S done
+/app
+
+__TTS_c2d3b080aa314d21ba91e3b4be4c0009__RC:0
+__TTS_c2d3b080aa314d21ba91e3b4be4c0009__PWD:/app
+__TTS_c2d3b080aa314d21ba91e3b4be4c0009__END
+root@6f1b8ae61e5d:/app# cd -- /app && aws s3api create-bucket --bucket sample-bucket && aws s3api put-public-access-block --bucket sample-bucket --public-access
+-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false && aws s3api put-bucket-policy --bucket sa
+mple-bucket --policy '{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn
+:aws:s3:::sample-bucket/*"}]}'; __tts_rc=$?; printf '\n__TTS_825b3103930541128f419dee6a458e84__RC:%s\n' "$__tts_rc"; printf '__TTS_825b3103930541128f419dee6a458
+e84__PWD:'; pwd; printf '__TTS_825b3103930541128f419dee6a458e84__END\n'; tmux wait -S done
+{
+    "Location": "/sample-bucket"
+}
+
+__TTS_825b3103930541128f419dee6a458e84__RC:0
+__TTS_825b3103930541128f419dee6a458e84__PWD:/app
+__TTS_825b3103930541128f419dee6a458e84__END
+root@6f1b8ae61e5d:/app#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+{
+    "id": "1232ef91-9459-47d2-a4de-907ae4d7e417",
+    "trial_name": "fix-permissions.1-of-1.run",
+    "task_id": "fix-permissions",
+    "instruction": "A script called 'process_data.sh' in the current directory won't run. Figure out what's wrong and fix it so the script can run successfully.",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "test_script_permissions": "failed"
+    },
+    "recording_path": "run/fix-permissions/fix-permissions.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-18T13:29:50.770624+00:00",
+    "trial_ended_at": "2026-07-18T13:41:18.951617+00:00",
+    "agent_started_at": "2026-07-18T13:29:55.686177+00:00",
+    "agent_ended_at": "2026-07-18T13:40:55.873393+00:00",
+    "test_started_at": "2026-07-18T13:40:59.263981+00:00",
+    "test_ended_at": "2026-07-18T13:41:08.052149+00:00"
+}

@@ -1,0 +1,124 @@
+[?2004hroot@666fa1d850f2:/app/personal-site# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@666fa1d850f2:/app/personal-site# clear
+[?2004l[H[J[3J[?2004hroot@666fa1d850f2:/app/personal-site# pwd; __tts_rc=$?; printf '\n__TTS_730974e6241f4d1fb8c9d508c7b56fdf__RC:%s\n' "$__tts_rc"; printf '__TTS_730974e6241f4d1fb8c9d508c7b56fdf__PWD:'; pwd; printf '__TTS_730974e6241f4d1fb8c9d508c7b56fdf__END\n'; tmux wait -S done
+[?2004l/app/personal-site
+
+__TTS_730974e6241f4d1fb8c9d508c7b56fdf__RC:0
+__TTS_730974e6241f4d1fb8c9d508c7b56fdf__PWD:/app/personal-site
+__TTS_730974e6241f4d1fb8c9d508c7b56fdf__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- /app/personal-site && git status --short --branch && git branch -vv && git log --oneline --decorate --graph --all -n 20; __tts_rc=$?; printf '\n__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__RC:%s\n' "$__tts_rc"; printf '__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__PWD:'; pwd; printf '__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__END\n'; tmux wait -S done
+[?2004l## [32mmaster[m
+[?1h=* [32mmaster[m d7d3e4b off the job market woo[m
+[K[?1l>[?1h=* [33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m off the job market woo[m
+* [33mc4e38a1[m Add code link for BLADE[m
+* [33m6f46fa0[m CV Update[m
+* [33mdd7e395[m Adds BLADE to bib[m
+* [33m2cd355a[m n+1 (for the last time???)[m
+* [33m8eaf505[m Add BLADE[m
+* [33mcc2ec78[m Underline[m
+* [33md71094e[m Underline Conferences[m
+* [33m232b279[m Remove posters[m
+* [33m3fdf5f5[m Add NeurIPS[m
+* [33m8c4731d[m Add EMNLP acceptance[m
+* [33mf54f66b[m Add GR link[m
+* [33m18d2430[m Add other links[m
+* [33m1dd055e[m Ignore Gemfile, etc[m
+* [33m5c77a6d[m Dont overwrite[m
+* [33mc7d2f95[m Delete unsused files[m
+* [33m20b05d9[m Remove more unused files[m
+* [33m2d144f7[m Add yamls for new papers[m
+* [33m7882f2d[m Don't track _site[m
+* [33mcd2b8de[m Add new papers[m
+[K[?1l>
+__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__RC:0
+__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__PWD:/app/personal-site
+__TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__PWD:/app/personal-site && cd /app/personal-site && git reflog --date=iso --all --decorate -n 30; __tts_rc=$?; printf '\n__TTS_dd0f431750714403ab53ca0877feaf39__RC:%s\n' "$__tts_rc"; printf '__TTS_dd0f431750714403ab53ca0877feaf39__PWD:'; pwd; printf '__TTS_dd0f431750714403ab53ca0877feaf39__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_57f2113fa2ca4bbe9928a3f6ea5dc4fa__PWD:/app/personal-site: No such file or directory
+
+__TTS_dd0f431750714403ab53ca0877feaf39__RC:1
+__TTS_dd0f431750714403ab53ca0877feaf39__PWD:/app/personal-site
+__TTS_dd0f431750714403ab53ca0877feaf39__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git reflog --date=iso --all --decorate -n 30; __tts_rc=$?; printf '\n__TTS_ef7024baca1140ff8b1f07755f10ce64__RC:%s\n' "$__tts_rc"; printf '__TTS_ef7024baca1140ff8b1f07755f10ce64__PWD:'; pwd; printf '__TTS_ef7024baca1140ff8b1f07755f10ce64__END\n'; tmux wait -S done
+[?2004l[?1h=[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m refs/heads/master@{2026-07-18 07:00:39 +0000}: reset: moving to d7d3e4b[m
+[33m19b5d10[m refs/heads/master@{2026-07-18 07:00:39 +0000}: clone: from https://github.com/TheMikeMerrill/personal-site.git[m
+[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 07:00:39 +0000}: checkout: moving from 943f06cd81ec8605801b6b239ce890f14a1b2548 to master[m
+[33m943f06c[m HEAD@{2026-07-18 07:00:39 +0000}: commit: Move to Stanford[m
+[33mc4e38a1[m HEAD@{2026-07-18 07:00:39 +0000}: checkout: moving from master to HEAD~1[m
+[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 07:00:39 +0000}: reset: moving to d7d3e4b[m
+[33m19b5d10[m HEAD@{2026-07-18 07:00:39 +0000}: clone: from https://github.com/TheMikeMerrill/personal-site.git[m
+[K[?1l>
+__TTS_ef7024baca1140ff8b1f07755f10ce64__RC:0
+__TTS_ef7024baca1140ff8b1f07755f10ce64__PWD:/app/personal-site
+__TTS_ef7024baca1140ff8b1f07755f10ce64__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_ef7024baca1140ff8b1f07755f10ce64__PWD:/app/personal-site && cd /app/personal-site && git merge --ff 943f06c; __tts_rc=$?; printf '\n__TTS_1daf9a7ae181401c8d06252a149d566a__RC:%s\n' "$__tts_rc"; printf '__TTS_1daf9a7ae181401c8d06252a149d566a__PWD:'; pwd; printf '__TTS_1daf9a7ae181401c8d06252a149d566a__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_ef7024baca1140ff8b1f07755f10ce64__PWD:/app/personal-site: No such file or directory
+
+__TTS_1daf9a7ae181401c8d06252a149d566a__RC:1
+__TTS_1daf9a7ae181401c8d06252a149d566a__PWD:/app/personal-site
+__TTS_1daf9a7ae181401c8d06252a149d566a__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_1daf9a7ae181401c8d06252a149d566a__PWD:/app/personal-site && cd /app/personal-site && git merge 943f06c; __tts_rc=$?; printf '\n__TTS_4d4ef16cb53a441cb80015c42cc4f93b__RC:%s\n' "$__tts_rc"; printf '__TTS_4d4ef16cb53a441cb80015c42cc4f93b__PWD:'; pwd; printf '__TTS_4d4ef16cb53a441cb80015c42cc4f93b__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_1daf9a7ae181401c8d06252a149d566a__PWD:/app/personal-site: No such file or directory
+
+__TTS_4d4ef16cb53a441cb80015c42cc4f93b__RC:1
+__TTS_4d4ef16cb53a441cb80015c42cc4f93b__PWD:/app/personal-site
+__TTS_4d4ef16cb53a441cb80015c42cc4f93b__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_4d4ef16cb53a441cb80015c42cc4f93b__PWD:/app/personal-site && cd /app/personal-site && git merge 943f06c; __tts_rc=$?; printf '\n__TTS_ee5897db90a84d78954dac769bfef589__RC:%s\n' "$__tts_rc"; printf '__TTS_ee5897db90a84d78954dac769bfef589__PWD:'; pwd; printf '__TTS_ee5897db90a84d78954dac769bfef589__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_4d4ef16cb53a441cb80015c42cc4f93b__PWD:/app/personal-site: No such file or directory
+
+__TTS_ee5897db90a84d78954dac769bfef589__RC:1
+__TTS_ee5897db90a84d78954dac769bfef589__PWD:/app/personal-site
+__TTS_ee5897db90a84d78954dac769bfef589__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_ee5897db90a84d78954dac769bfef589__PWD:/app/personal-site && cd /app/personal-site && git merge 943f06c --no-edit; __tts_rc=$?; printf '\n__TTS_c8574fbd973e4e01a61c7c33812591c5__RC:%s\n' "$__tts_rc"; printf '__TTS_c8574fbd973e4e01a61c7c33812591c5__PWD:'; pwd; printf '__TTS_c8574fbd973e4e01a61c7c33812591c5__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_ee5897db90a84d78954dac769bfef589__PWD:/app/personal-site: No such file or directory
+
+__TTS_c8574fbd973e4e01a61c7c33812591c5__RC:1
+__TTS_c8574fbd973e4e01a61c7c33812591c5__PWD:/app/personal-site
+__TTS_c8574fbd973e4e01a61c7c33812591c5__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_c8574fbd973e4e01a61c7c33812591c5__PWD:/app/personal-site && cd /app/personal-site && git merge 943f06c --no-edit; __tts_rc=$?; printf '\n__TTS_f29522b7e49d4e45b662a935c2293be9__RC:%s\n' "$__tts_rc"; printf '__TTS_f29522b7e49d4e45b662a935c2293be9__PWD:'; pwd; printf '__TTS_f29522b7e49d4e45b662a935c2293be9__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_c8574fbd973e4e01a61c7c33812591c5__PWD:/app/personal-site: No such file or directory
+
+__TTS_f29522b7e49d4e45b662a935c2293be9__RC:1
+__TTS_f29522b7e49d4e45b662a935c2293be9__PWD:/app/personal-site
+__TTS_f29522b7e49d4e45b662a935c2293be9__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- __TTS_f29522b7e49d4e45b662a935c2293be9__PWD:/app/personal-site && cd /app/personal-site && git merge 943f06c --no-edit && git status --short --branch; __tts_rc=$?; printf '\n__TTS_d6524b1296c4440db9869264255d2f18__RC:%s\n' "$__tts_rc"; printf '__TTS_d6524b1296c4440db9869264255d2f18__PWD:'; pwd; printf '__TTS_d6524b1296c4440db9869264255d2f18__END\n'; tmux wait -S done
+[?2004lbash: cd: __TTS_f29522b7e49d4e45b662a935c2293be9__PWD:/app/personal-site: No such file or directory
+
+__TTS_d6524b1296c4440db9869264255d2f18__RC:1
+__TTS_d6524b1296c4440db9869264255d2f18__PWD:/app/personal-site
+__TTS_d6524b1296c4440db9869264255d2f18__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git merge 943f06c --no-edit; __tts_rc=$?; printf '\n__TTS_78966a97b5aa41179c32685a872f8a72__RC:%s\n' "$__tts_rc"; printf '__TTS_78966a97b5aa41179c32685a872f8a72__PWD:'; pwd; printf '__TTS_78966a97b5aa41179c32685a872f8a72__END\n'; tmux wait -S done
+[?2004lAuto-merging _includes/about.md
+CONFLICT (content): Merge conflict in _includes/about.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+__TTS_78966a97b5aa41179c32685a872f8a72__RC:1
+__TTS_78966a97b5aa41179c32685a872f8a72__PWD:/app/personal-site
+__TTS_78966a97b5aa41179c32685a872f8a72__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git checkout --theirs _includes/about.md && git add _includes/about.md && git commit --no-edit; __tts_rc=$?; printf '\n__TTS_068498e574a342ab9e60e2c758dc65d3__RC:%s\n' "$__tts_rc"; printf '__TTS_068498e574a342ab9e60e2c758dc65d3__PWD:'; pwd; printf '__TTS_068498e574a342ab9e60e2c758dc65d3__END\n'; tmux wait -S done
+[?2004lUpdated 1 path from the index
+[master d7c6743] Merge commit '943f06c'
+
+__TTS_068498e574a342ab9e60e2c758dc65d3__RC:0
+__TTS_068498e574a342ab9e60e2c758dc65d3__PWD:/app/personal-site
+__TTS_068498e574a342ab9e60e2c758dc65d3__END
+[?2004hroot@666fa1d850f2:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git status --short --branch && git log --oneline --decorate --graph -n 5; __tts_rc=$?; printf '\n__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__RC:%s\n' "$__tts_rc"; printf '__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__PWD:'; pwd; printf '__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__END\n'; tmux wait -S done
+[?2004l## [32mmaster[m
+[?1h=*   [33md7c6743[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m Merge commit '943f06c'[m
+[31m|[m[32m\[m  [m
+[31m|[m * [33m943f06c[m Move to Stanford[m
+* [32m|[m [33md7d3e4b[m off the job market woo[m
+[32m|[m[32m/[m  [m
+* [33mc4e38a1[m Add code link for BLADE[m
+* [33m6f46fa0[m CV Update[m
+[K[?1l>
+__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__RC:0
+__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__PWD:/app/personal-site
+__TTS_9c4d91ba7bad4578b5ed7db2bf3bbcf9__END
+[?2004hroot@666fa1d850f2:/app/personal-site# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@666fa1d850f2:/app/personal-site# 

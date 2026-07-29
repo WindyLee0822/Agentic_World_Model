@@ -41,6 +41,11 @@ _NAME_COUNTER = 0
 _TASK_ID_RE = re.compile(r"^(\d+)-\d+$")
 
 
+def normalize_answer(answer: object) -> str:
+    """Match OfficeBench's committed ``answer.txt`` serialization."""
+    return str(answer).replace('"', "").replace("'", "")
+
+
 def _env_float(name: str, default: float) -> float:
     try:
         return float(os.environ.get(name, default))
@@ -298,7 +303,7 @@ class OfficeBenchSession:
         if self.read_only:
             from .officebench_wm_predict import is_write_action
 
-            if is_write_action(action):
+            if is_write_action(action, workdir):
                 raise PermissionError(
                     f"write action {action.get('app')}.{action.get('action')} attempted on a read-only "
                     "world-model session (writes must be predicted, never executed)")
@@ -310,7 +315,7 @@ class OfficeBenchSession:
         return res
 
     def write_answer(self, answer: str) -> Dict:
-        return self._driver("write_answer", {"answer": answer})
+        return self._driver("write_answer", {"answer": normalize_answer(answer)})
 
     def evaluate(self, evaluation: List[Dict]) -> Dict:
         """Run the task's ground-truth ``evaluation`` config against ``/testbed`` (the official score)."""
@@ -344,8 +349,9 @@ class OfficeBenchSession:
         unlike the trivially-constant :meth:`OfficeBenchTaskEnv.state_hash`.
         """
         script = (
-            "cd /testbed && find . -type f ! -name answer.txt -printf '%p\\n' | LC_ALL=C sort | "
-            "while read f; do md5sum \"$f\"; done | md5sum | cut -d' ' -f1"
+            "cd /testbed && { find . -type d -printf 'D %p\\n'; "
+            "find . -type f ! -name answer.txt -exec md5sum {} \\; ; } | "
+            "LC_ALL=C sort | md5sum | cut -d' ' -f1"
         )
         res = self._docker("exec", self.name, "bash", "-c", script)
         return (res.stdout or "").strip()

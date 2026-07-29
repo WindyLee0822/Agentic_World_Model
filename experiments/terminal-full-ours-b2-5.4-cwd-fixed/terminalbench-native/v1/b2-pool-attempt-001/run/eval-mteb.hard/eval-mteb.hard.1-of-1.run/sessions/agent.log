@@ -1,0 +1,53 @@
+[?2004hroot@3cb25fcdd92c:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@3cb25fcdd92c:/app# clear
+[?2004l[H[J[3J[?2004hroot@3cb25fcdd92c:/app# pwd; __tts_rc=$?; printf '\n__TTS_5c24406d2c0a437e9f70f85aed60c850__RC:%s\n' "$__tts_rc"; printf '__TTS_5c24406d2c0a437e9f70f85aed60c850__PWD:'; pwd; printf '__TTS_5c24406d2c0a437e9f70f85aed60c850__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_5c24406d2c0a437e9f70f85aed60c850__RC:0
+__TTS_5c24406d2c0a437e9f70f85aed60c850__PWD:/app
+__TTS_5c24406d2c0a437e9f70f85aed60c850__END
+[?2004hroot@3cb25fcdd92c:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^/app/##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_1ba51cc9a3b34c5a83be7808c9adf268__RC:%s\n' "$__tts_rc"; printf '__TTS_1ba51cc9a3b34c5a83be7808c9adf268__PWD:'; pwd; printf '__TTS_1ba51cc9a3b34c5a83be7808c9adf268__END\n'; tmux wait -S done
+[?2004ltotal 8
+drwxr-xr-x 2 root root 4096 Jul 18 23:01 .
+drwxr-xr-x 1 root root 4096 Jul 18 23:03 ..
+
+__TTS_1ba51cc9a3b34c5a83be7808c9adf268__RC:0
+__TTS_1ba51cc9a3b34c5a83be7808c9adf268__PWD:/app
+__TTS_1ba51cc9a3b34c5a83be7808c9adf268__END
+[?2004hroot@3cb25fcdd92c:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import importlib.util as u
+[?2004l[?2004h> mods=['mteb','sentence_transformers','transformers','torch','huggingface_hub']
+[?2004l[?2004h> for m in mods:
+[?2004l[?2004h>  print(m, bool(u.find_spec(m)))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_29e8439a652144b2af87bb3d0cfa5100__RC:%s\n' "$__tts_rc"; printf '__TTS_29e8439a652144b2af87bb3d0cfa5100__PWD:'; pwd; printf '__TTS_29e8439a652144b2af87bb3d0cfa5100__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import importlib.util as u;mods=['mteb','sentence_transformers','transformers','torch','huggingface_hub'];print({m:bool(u.find_spec(m)) for m in mods})"; __tts_rc=$?; printf '\n__TTS_594506cc00ee4c6ab6bd5a7b4c3e1c6f__RC:%s\n' "$__tts_rc"; printf '__TTS_594506cc00ee4c6ab6bd5a7b4c3e1c6f__PWD:'; pwd; printf '__TTS_594506cc00ee4c6ab6bd5a7b4c3e1c6f__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python3 -S -c "import sys;print(sys.version)"; __tts_rc=$?; printf '\n__TTS_79ab1dee7dc84c7fa3b58d95f726bda5__RC:%s\n' "$__tts_rc"; printf '__TTS_79ab1dee7dc84c7fa3b58d95f726bda5__PWD:'; pwd; printf '__TTS_79ab1dee7dc84c7fa3b58d95f726bda5__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && which python3 && ls -l $(which python3) && timeout 20s sh -lc 'python3 -S -c "print(123)"'; __tts_rc=$?; printf '\n__TTS_95ed745943214af49f7e030ef6ee79ef__RC:%s\n' "$__tts_rc"; printf '__TTS_95ed745943214af49f7e030ef6ee79ef__PWD:'; pwd; printf '__TTS_95ed745943214af49f7e030ef6ee79ef__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && which python python3 pypy3; ls -l /usr/bin/python* /usr/local/bin/python* 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_e52f04459e5d4071a4d7afab726895fb__RC:%s\n' "$__tts_rc"; printf '__TTS_e52f04459e5d4071a4d7afab726895fb__PWD:'; pwd; printf '__TTS_e52f04459e5d4071a4d7afab726895fb__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && command -v python python3 pypy3; ls -l /usr/bin/python* /usr/local/bin/python* 2>/dev/null | head -120; __tts_rc=$?; printf '\n__TTS_32bfddc4bc864a3c9394578188f19121__RC:%s\n' "$__tts_rc"; printf '__TTS_32bfddc4bc864a3c9394578188f19121__PWD:'; pwd; printf '__TTS_32bfddc4bc864a3c9394578188f19121__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && find / -maxdepth 3 \( -name python -o -name python3 -o -name pypy3 \) -type f 2>/dev/null | head -50; __tts_rc=$?; printf '\n__TTS_1d1597669350445898e42d3a37783702__RC:%s\n' "$__tts_rc"; printf '__TTS_1d1597669350445898e42d3a37783702__PWD:'; pwd; printf '__TTS_1d1597669350445898e42d3a37783702__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 8
+    cd -- /app && which python3 && ls -l $(which python3) && timeout 20s sh -lc 'python3 -S -c "print(123)"'; __tts_rc=$?; printf '\n__TTS_95ed745943214af49f7e030ef6ee79ef__RC:%s\n' "$__tts_rc"; printf '__TTS_95ed745943214af49f7e030ef6ee79ef__PWD:'; pwd; printf '__TTS_95ed745943214af49f7e030ef6ee79ef__END\n'; tmux wait -S done
+                                                                      ^
+SyntaxError: invalid decimal literal
+[?2004hroot@3cb25fcdd92c:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_1d1597669350445898e42d3a37783702__END\n'"'"'; t' && ps -ef | tail -n +1 | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_a393608e745448a186efd8e87f5c4418__RC:%s\n' "$__tts_rc"; printf '__TTS_a393608e745448a186efd8e87f5c4418__PWD:'; pwd; printf '__TTS_a393608e745448a186efd8e87f5c4418__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf '__TTS_1d1597669350445898e42d3a37783702__END\n'; t: No such file or directory
+
+__TTS_a393608e745448a186efd8e87f5c4418__RC:1
+__TTS_a393608e745448a186efd8e87f5c4418__PWD:/app
+__TTS_a393608e745448a186efd8e87f5c4418__END
+[?2004hroot@3cb25fcdd92c:/app# cd -- /app && pkill -f 'python - <<' || true; printf 'reset\n'; command -v python3 python || find /usr -maxdepth 3 -type f \( -name python3 -o -name python \) 2>/dev/null | head; __tts_rc=$?; printf '\n__TTS_abb29fd35921487ca2c56c87b1322497__RC:%s\n' "$__tts_rc"; printf '__TTS_abb29fd35921487ca2c56c87b1322497__PWD:'; pwd; printf '__TTS_abb29fd35921487ca2c56c87b1322497__END\n'; tmux wait -S done
+[?2004lbash: pkill: command not found
+reset
+/usr/local/bin/python3
+/usr/local/bin/python
+
+__TTS_abb29fd35921487ca2c56c87b1322497__RC:0
+__TTS_abb29fd35921487ca2c56c87b1322497__PWD:/app
+__TTS_abb29fd35921487ca2c56c87b1322497__END
+[?2004hroot@3cb25fcdd92c:/app# cd -- /app && /usr/local/bin/python3 -c "import mteb;print(mteb.__version__)"; __tts_rc=$?; printf '\n__TTS_1df8e6f9cbf6441290d27a13cbca5b1c__RC:%s\n' "$__tts_rc"; printf '__TTS_1df8e6f9cbf6441290d27a13cbca5b1c__PWD:'; pwd; printf '__TTS_1df8e6f9cbf6441290d27a13cbca5b1c__END\n'; tmux wait -S done
+[?2004l

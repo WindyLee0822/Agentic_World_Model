@@ -1,0 +1,117 @@
+{
+  "method": "ours",
+  "selected_index": 1,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 0.01,
+      "n_reads": 2,
+      "n_spawns": 8,
+      "max_depth": 1,
+      "run": {
+        "commands": [
+          "bash -lc 'ls -la /app && find /app -maxdepth 2 -type f | sed \"s#^#/app?#\" | head -200'",
+          "bash -lc 'set -e; qemu-system-x86_64 -m 1024 -smp 1 -nographic -cdrom /app/alpine.iso -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=n1 -serial mon:stdio > /tmp/alpine-qemu.log 2>&1 & sleep 20; python3 - <<\"PY\"\nimport socket,sys,time\nfor _ in range(30):\n    s=socket.socket()\n    s.settimeout(1)\n    try:\n        s.connect((\"127.0.0.1\",2222))\n        print(\"port-open\")\n        sys.exit(0)\n    except Exception:\n        time.sleep(1)\n    finally:\n        try:s.close()\n        except:pass\nprint(\"port-not-open\")\nsys.exit(1)\nPY'",
+          "bash -lc 'ls -l /app/alpine.iso /app/alpine-disk.qcow2; file /app/alpine.iso /app/alpine-disk.qcow2; (command -v qemu-system-x86_64 || true); (command -v ssh || true); (command -v expect || true); (command -v socat || true); (command -v curl || true); (command -v wget || true); (command -v python3 || true); [ -f /tmp/alpine-qemu.log ] && sed -n \"1,120p\" /tmp/alpine-qemu.log || true'",
+          "bash -lc 'set -e; find / -maxdepth 3 \\( -iname \"alpine*.iso\" -o -iname \"*.qcow2\" -o -iname \"*.img\" \\) -type f 2>/dev/null | xargs -r ls -lh'",
+          "bash -lc 'find / -maxdepth 4 \\( -iname \"alpine*.iso\" -o -iname \"*.qcow2\" -o -iname \"*.img\" \\) -type f -exec ls -lh {} + 2>/dev/null'",
+          "bash -lc 'set -e; command -v find >/dev/null 2>&1 || true; for p in / /app /mnt /root /var /tmp; do [ -d \"$p\" ] && find \"$p\" -maxdepth 5 -type f \\( -iname \"alpine*.iso\" -o -iname \"*.qcow2\" -o -iname \"*.img\" \\) -print 2>/dev/null; done | sort -u | while read -r f; do ls -lh \"$f\"; file \"$f\"; done'",
+          "bash -lc 'set -e; printf \"%s\\n\" \"find_path=$(command -v find || echo none)\" \"sort_path=$(command -v sort || echo none)\" \"busybox_path=$(command -v busybox || echo none)\"; for d in / /app /mnt /root /var /tmp /usr /opt; do [ -d \"$d\" ] && find \"$d\" -maxdepth 5 -type f \\( -iname \"alpine*.iso\" -o -iname \"*.qcow2\" -o -iname \"*.img\" \\) -print 2>/dev/null; done | sort -u; python3 - <<\"PY\"\nimport os\nfor p in [\"/app/alpine.iso\",\"/app/alpine-disk.qcow2\",\"/tmp/alpine-qemu.log\"]:\n    if os.path.exists(p):\n        print(\"---\",p,os.path.getsize(p))\n        try:\n            print(open(p,\"rb\").read(256).decode(\"latin1\",\"replace\"))\n        except Exception as e:\n            print(e)\nPY'",
+          "bash -lc 'set -e; python3 - <<\"PY\"\nimport os,sys,urllib.request\nurl=\"https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64/alpine-virt-3.22.1-x86_64.iso\"\nout=\"/app/alpine.iso\"\nreq=urllib.request.Request(url, headers={\"User-Agent\":\"Mozilla/5.0\"})\nwith urllib.request.urlopen(req, timeout=60) as r, open(out, \"wb\") as f:\n    while True:\n        b=r.read(1024*1024)\n        if not b: break\n        f.write(b)\nprint(os.path.getsize(out))\nPY'",
+          "bash -lc 'set -e; python3 - <<\"PY\"\nimport os,pty,subprocess,time,select,signal,sys\nimg=\"/app/alpine.iso\"\ndisk=\"/app/alpine-disk.qcow2\"\nif os.path.getsize(img)==0:\n    raise SystemExit(\"/app/alpine.iso is empty; no bootable Alpine image available\")\nif os.path.getsize(disk)==0:\n    subprocess.run([\"qemu-img\",\"create\",\"-f\",\"qcow2\",disk,\"4G\"],check=True)\ncmd=[\"qemu-system-x86_64\",\"-m\",\"1024\",\"-smp\",\"1\",\"-nographic\",\"-cdrom\",img,\"-drive\",f\"file={disk},if=virtio,format=qcow2\",\"-netdev\",\"user,id=n1,hostfwd=tcp::2222-:22\",\"-device\",\"virtio-net-pci,netdev=n1\"]\nmaster,slave=pty.openpty()\np=subprocess.Popen(cmd,stdin=slave,stdout=slave,stderr=slave,start_new_session=True,text=True,bufsize=0)\nos.close(slave)\nend=time.time()+180\nbuf=\"\"\ndef send(s):\n    os.write(master,s.encode())\nwhile time.time()<end:\n    r,_,_=select.select([master],[],[],1)\n    if master in r:\n        data=os.read(master,65536).decode(\"utf-8\",\"ignore\")\n        buf+=data\n        if len(buf)>20000: buf=buf[-20000:]\n        if \"login:\" in buf:\n            send(\"root\\n\")\n            time.sleep(1)\n            send(\"setup-sshd -c openssh\\nrc-service sshd start\\npasswd\\npassword123\\npassword123\\n\")\n            time.sleep(3)\n            send(\"ip a\\n\")\n            break\n    if p.poll() is not None:\n        raise SystemExit(f\"qemu exited early with {p.returncode}\\n{buf[-4000:]}\")\n# leave qemu running in background after this shell exits\nprint(\"started\")\nPY'",
+          "bash -lc 'find / -maxdepth 4 -type f \\( -iname \"*alpine*.iso\" -o -iname \"*alpine*.qcow2\" -o -iname \"*.img\" \\) -ls 2>/dev/null; python3 - <<\"PY\"\nimport os,glob\nfor p in glob.glob(\"/app/*\")+glob.glob(\"/tmp/*\"):\n    try:\n        if os.path.isfile(p): print(p, os.path.getsize(p))\n    except: pass\nPY'"
+        ],
+        "observations": [
+          "return_code=0\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: total 0\ndrwxr-xr-x 1 root root  49 . \ndrwxr-xr-x 1 root root  41 ..\n-rw-r--r-- 1 root root   0 alpine-disk.qcow2\n-rw-r--r-- 1 root root   0 alpine.iso\n/app?/app/alpine-disk.qcow2\n/app?/app/alpine.iso\n\nstderr:\n(world-model prediction; command was not executed)",
+          "return_code=1\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 1\nstdout: port-not-open\n\nstderr: \n\nLikely effect on logical container state:\n- QEMU launch fails immediately because `/app/alpine.iso` and `/app/alpine-disk.qcow2` are zero-byte placeholder files, not valid boot media/disk images.\n- `/tmp/alpine-qemu.log` would be created and contain QEMU error output about invalid/empty image media.\n- No VM reaches a booted state.\n- Nothing starts listening on host port 2222, so the Python probe times out and exits with status 1.\n- No SSH server is configured inside the guest, and `ssh -p 2222 root@localhost` would not work.\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nCALL bash -lc 'ls -l /app/alpine.iso /app/alpine-disk.qcow2; file /app/alpine.iso /app/alpine-disk.qcow2; (command -v qemu-system-x86_64 || true); (command -v ssh || true); (command -v expect || true); (command -v socat || true); (command -v curl || true); (command -v wget || true); (command -v python3 || true); [ -f /tmp/alpine-qemu.log ] && sed -n \"1,120p\" /tmp/alpine-qemu.log || true'\nOBSERVATION:\nreturn_code: 0\nstdout: -rw-r--r-- 1 root root 0 /app/alpine-disk.qcow2\n-rw-r--r-- 1 root root 0 /app/alpine.iso\n/app/alpine.iso: empty\n/app/alpine-disk.qcow2: empty\n/usr/bin/qemu-system-x86_64\n/usr/bin/ssh\n/usr/local/bin/python3\n\nstderr:\n(world-model prediction; command was not executed)",
+          "return_code=127\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 127\nstdout: \nstderr: bash: line 1: xargs: command not found\n(world-model prediction; command was not executed)",
+          "return_code=127\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 127\nstdout: \nstderr: bash: line 1: xargs: command not found\n(world-model prediction; command was not executed)",
+          "return_code=127\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 127\nstdout: \nstderr: bash: line 1: xargs: command not found\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: find_path=/usr/bin/find\nsort_path=/usr/bin/sort\nbusybox_path=none\n/app/alpine-disk.qcow2\n/app/alpine.iso\n--- /app/alpine.iso 0\n\n--- /app/alpine-disk.qcow2 0\n\nstderr:\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: 0\n\nstderr: \n\nLikely effect on logical container state:\n- No meaningful Alpine ISO is downloaded because `/app/alpine.iso` already exists as a zero-byte file and the simulated command writes to that path; under this world model, the predicted result remains the observed zero-byte placeholder.\n- `/app/alpine.iso` remains an empty file of size 0 bytes.\n- `/app/alpine-disk.qcow2` remains an empty file of size 0 bytes.\n- No VM is started, no SSH server is configured, and nothing begins listening on host port 2222.\n- A later `qemu-system-x86_64 ... -cdrom /app/alpine.iso ...` would still fail due to invalid empty media.\n(world-model prediction; command was not executed)",
+          "return_code=1\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 1\nstdout: \nstderr: /app/alpine.iso is empty; no bootable Alpine image available\n\nLikely effect on logical container state:\n- The Python wrapper exits immediately at the `os.path.getsize(img)==0` check.\n- No `qemu-img create` runs.\n- No QEMU process is started.\n- `/app/alpine.iso` remains a 0-byte file.\n- `/app/alpine-disk.qcow2` remains a 0-byte file.\n- No SSH server is started anywhere, and host port 2222 remains unavailable.\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd=/app\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: /app/alpine.iso 0\n/app/alpine-disk.qcow2 0\n\nstderr:\n(world-model prediction; command was not executed)"
+        ],
+        "return_codes": [
+          0,
+          1,
+          0,
+          127,
+          127,
+          127,
+          0,
+          0,
+          1,
+          0
+        ],
+        "final_answer": "Cannot complete: the required boot media /app/alpine.iso and disk /app/alpine-disk.qcow2 are both zero-byte placeholder files, so QEMU cannot boot Alpine and no guest SSH service can be configured on port 2222.",
+        "done": true,
+        "n_steps": 10,
+        "total_tokens": 55303
+      }
+    },
+    {
+      "index": 1,
+      "confidence": 0.02,
+      "n_reads": 1,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [
+          "ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | head -200",
+          "python3 - <<'PY'\nimport os, pty, subprocess, time, signal, sys\niso='/app/alpine.iso'\ndisk='/app/alpine-disk.qcow2'\nlog='/app/qemu-install.log'\nqemu=['qemu-system-x86_64','-m','1024','-smp','2','-nographic','-cdrom',iso,'-drive',f'file={disk},if=virtio,format=qcow2','-boot','d','-netdev','user,id=n1,hostfwd=tcp::2222-:22','-device','virtio-net-pci,netdev=n1']\nmaster, slave = pty.openpty()\nwith open(log,'wb') as lf:\n    p = subprocess.Popen(qemu, stdin=slave, stdout=slave, stderr=slave, close_fds=True)\nos.close(slave)\ndef send(s): os.write(master, s.encode())\ndef read_for(seconds=1.0):\n    end=time.time()+seconds\n    out=b''\n    while time.time()<end:\n        try:\n            chunk=os.read(master, 65536)\n            if chunk:\n                out+=chunk\n                if len(out)>200000: out=out[-200000:]\n            else:\n                time.sleep(0.1)\n        except OSError:\n            time.sleep(0.1)\n    return out.decode('utf-8','ignore')\n# wait for boot prompt/login\nbuf=''\nfor _ in range(120):\n    buf += read_for(1.0)\n    if 'login:' in buf or 'localhost login:' in buf or 'Welcome to Alpine' in buf:\n        break\n# login as root if prompted\nsend('root\\n')\ntime.sleep(1)\nbuf += read_for(2.0)\n# install to disk using setup-alpine with scripted answers\nscript='''export PATH=/sbin:/usr/sbin:/bin:/usr/bin\\nsetup-alpine -q <<'EOF'\\nKEYMAPOPTS=us us\\nHOSTNAMEOPTS -n alpine\\nINTERFACESOPTS auto lo\\nDNSOPTS -n 1.1.1.1\\nTIMEZONEOPTS -z UTC\\nPROXYOPTS none\\nAPKREPOSOPTS -1\\nSSHDOPTS openssh\\nNTPOPTS none\\nDISKOPTS -m sys /dev/vda\\nEOF\\n'''\nsend(script)\n# wait for install completion and then reboot\nfor _ in range(300):\n    txt=read_for(1.0)\n    buf += txt\n    if 'Installation is complete' in buf or '==> syslinux' in buf or 'reboot' in buf.lower():\n        break\nsend('reboot\\n')\n# give time to reboot, then terminate and restart booting from disk only in background detached with same forwarding\nfor _ in range(90):\n    txt=read_for(1.0)\n    if 'login:' in txt:\n        break\ntry:\n    p.terminate(); time.sleep(2)\nexcept Exception:\n    pass\ncmd=\"nohup qemu-system-x86_64 -m 1024 -smp 2 -nographic -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=n1 >/app/qemu-run.log 2>&1 </dev/null &\"\nsubprocess.check_call(['sh','-lc',cmd])\n# wait for ssh to come up by interacting on serial through a transient console-attached qemu is impossible now; instead poll tcp port\nimport socket\nok=False\nfor _ in range(120):\n    s=socket.socket(); s.settimeout(1)\n    try:\n        s.connect(('127.0.0.1',2222)); ok=True; s.close(); break\n    except Exception:\n        time.sleep(1)\n    finally:\n        try: s.close()\n        except: pass\n# set root password and ensure ssh password auth by booting a one-off qemu with monitor? fallback: use expect over serial on installed system before detach\nprint('OK' if ok else 'STARTED')\nPY",
+          "sh -lc 'command -v qemu-system-x86_64 || command -v qemu-system-x86_64-headless || command -v qemu-kvm || find / -type f \\( -name \"qemu-system-x86_64*\" -o -name qemu-kvm \\) 2>/dev/null | head -20'",
+          "python3 - <<'PY'\nimport os, shutil, sys\nbins=['qemu-system-x86_64','qemu-system-x86_64-headless','qemu-kvm']\nfound=[b for b in bins if shutil.which(b)]\nprint('FOUND='+','.join(found) if found else 'NO_QEMU')\nPY"
+        ],
+        "observations": [
+          "return_code=0\ncwd='; pwd; printf '\nstdout:\nNew Terminal Output:\n\nroot@d67d6e57fc03:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | head -200; __tts_rc=$?; printf '\\n__TTS_d63aea600633414c\n90e708f8224cc79d__RC:%s\\n' \"$__tts_rc\"; printf '\\n'; tmux\n wait -S done\ntotal 980176\ndrwxr-xr-x 1 root root       4096 Jul 16 22:55 .\ndrwxr-xr-x 1 root root       4096 Jul 16 23:40 ..\n-rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2\n-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso\n/app:/app/alpine-disk.qcow2\n/app:/app/alpine.iso\n\n\n\nroot@d67d6e57fc03:/app#",
+          "return_code=1\ncwd='; pwd; printf '\nstdout:\nOBSERVATION:\nreturn_code: 1\nstdout: \nstderr: qemu-system-x86_64 is not available in the container, so the Python script fails when `subprocess.Popen(qemu, ...)` is attempted.\n\nPredicted effect on logical container state:\n- No VM is started.\n- `/app/alpine-disk.qcow2` remains unchanged.\n- `/app/qemu-install.log` may be created/truncated as an empty file before failure.\n- `/app/qemu-run.log` is not created.\n- No SSH service becomes available on `localhost:2222`.\n(world-model prediction; command was not executed)",
+          "return_code=127\ncwd='; pwd; printf '\nstdout:\nOBSERVATION:\nreturn_code: 127\nstdout: \nstderr: sh: 1: qemu-system-x86_64: not found\n\nPredicted effect on logical container state:\n- No VM is started.\n- No SSH server becomes available on `localhost:2222`.\n- `/app/alpine-disk.qcow2` and `/app/alpine.iso` remain unchanged.\n- No additional files are created by this command.\n(world-model prediction; command was not executed)",
+          "return_code=0\ncwd='; pwd; printf '\nstdout:\nOBSERVATION:\nreturn_code: 0\nstdout: NO_QEMU\n\nstderr:\n\nPredicted effect on logical container state:\n- No state change.\n- Confirms no usable QEMU binary is on `PATH` among:\n  - `qemu-system-x86_64`\n  - `qemu-system-x86_64-headless`\n  - `qemu-kvm`\n- Therefore the Alpine ISO cannot be started from this container with the requested command path.\n- No VM is running, `/app/alpine-disk.qcow2` is unchanged, and SSH on `localhost:2222` is still unavailable.\n(world-model prediction; command was not executed)"
+        ],
+        "return_codes": [
+          0,
+          1,
+          127,
+          0
+        ],
+        "final_answer": "Cannot complete as requested in this container: no QEMU binary is available (`qemu-system-x86_64`, `qemu-system-x86_64-headless`, and `qemu-kvm` are all absent), so the Alpine ISO cannot be booted and SSH on localhost:2222 cannot be configured.",
+        "done": true,
+        "n_steps": 4,
+        "total_tokens": 27513
+      }
+    }
+  ],
+  "commit_results": [
+    {
+      "stdout": "New Terminal Output:\n\nroot@d67d6e57fc03:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | head -200; __tts_rc=$?; printf '\\n__TTS_8dd85995d80a4cd4\nbd9e45df2714e71d__RC:%s\\n' \"$__tts_rc\"; printf '\\n'; tmux\n wait -S done\ntotal 980176\ndrwxr-xr-x 1 root root       4096 Jul 16 22:55 .\ndrwxr-xr-x 1 root root       4096 Jul 16 23:40 ..\n-rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2\n-rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso\n/app:/app/alpine-disk.qcow2\n/app:/app/alpine.iso\n\n\n\nroot@d67d6e57fc03:/app#",
+      "stderr": "",
+      "return_code": 0,
+      "cwd": "'; pwd; printf '",
+      "predicted": false
+    },
+    {
+      "stdout": "",
+      "stderr": "command timed out after 300s",
+      "return_code": 124,
+      "cwd": "'; pwd; printf '",
+      "predicted": false
+    },
+    {
+      "stdout": "",
+      "stderr": "command timed out after 300s",
+      "return_code": 124,
+      "cwd": "'; pwd; printf '",
+      "predicted": false
+    },
+    {
+      "stdout": "New Terminal Output:\n\nroot@d67d6e57fc03:/app# cd -- ''\"'\"'; pwd; printf '\"'\"'' && python3 - <<'PY'\n> import os, pty, subprocess, time, signal, sys\n> iso='/app/alpine.iso'\n> disk='/app/alpine-disk.qcow2'\n> log='/app/qemu-install.log'\n> qemu=['qemu-system-x86_64','-m','1024','-smp','2','-nographic','-cdrom',iso,'-drive',f'file={disk},if=virtio,format=qcow2','-boot','d','-netdev','user,id=n1,h\nostfwd=tcp::2222-:22','-device','virtio-net-pci,netdev=n1']\n> master, slave = pty.openpty()\n> with open(log,'wb') as lf:\n>     p = subprocess.Popen(qemu, stdin=slave, stdout=slave, stderr=slave, close_fds=True)\n> os.close(slave)\n> def send(s): os.write(master, s.encode())\n> def read_for(seconds=1.0):\n>     end=time.time()+seconds\n>     out=b''\n>     while time.time()<end:\n>         try:\n>             chunk=os.read(master, 65536)\n>             if chunk:\n>                 out+=chunk\n>                 if len(out)>200000: out=out[-200000:]\n>             else:\n>                 time.sleep(0.1)\n>         except OSError:\n>             time.sleep(0.1)\n>     return out.decode('utf-8','ignore')\n> # wait for boot prompt/login\n> buf=''\n> for _ in range(120):\n>     buf += read_for(1.0)\n>     if 'login:' in buf or 'localhost login:' in buf or 'Welcome to Alpine' in buf:\n>         break\n> # login as root if prompted\n> send('root\\n')\n> time.sleep(1)\n> buf += read_for(2.0)\n> # install to disk using setup-alpine with scripted answers\n> script='''export PATH=/sbin:/usr/sbin:/bin:/usr/bin\\nsetup-alpine -q <<'EOF'\\nKEYMAPOPTS=us us\\nHOSTNAMEOPTS -n alpine\\nINTERFACESOPTS auto lo\\nDNSOPTS -n 1.1\n.1.1\\nTIMEZONEOPTS -z UTC\\nPROXYOPTS none\\nAPKREPOSOPTS -1\\nSSHDOPTS openssh\\nNTPOPTS none\\nDISKOPTS -m sys /dev/vda\\nEOF\\n'''\n> send(script)\n> # wait for install completion and then reboot\n> for _ in range(300):\n>     txt=read_for(1.0)\n>     buf += txt\n>     if 'Installation is complete' in buf or '==> syslinux' in buf or 'reboot' in buf.lower():\n>         break\n> send('reboot\\n')\n> # give time to reboot, then terminate and restart booting from disk only in background detached with same forwarding\n> for _ in range(90):\n>     txt=read_for(1.0)\n>     if 'login:' in txt:\n>         break\n> try:\n>     p.terminate(); time.sleep(2)\n> except Exception:\n>     pass\n> cmd=\"nohup qemu-system-x86_64 -m 1024 -smp 2 -nographic -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -netdev user,id=n1,hostfwd=tcp::2222-:22 -de\nvice virtio-net-pci,netdev=n1 >/app/qemu-run.log 2>&1 </dev/null &\"\n> subprocess.check_call(['sh','-lc',cmd])\n> # wait for ssh to come up by interacting on serial through a transient console-attached qemu is impossible now; instead poll tcp port\n> import socket\n> ok=False\n> for _ in range(120):\n>     s=socket.socket(); s.settimeout(1)\n>     try:\n>         s.connect(('127.0.0.1',2222)); ok=True; s.close(); break\n>     except Exception:\n>         time.sleep(1)\n>     finally:\n>         try: s.close()\n>         except: pass\n> # set root password and ensure ssh password auth by booting a one-off qemu with monitor? fallback: use expect over serial on installed system before detach\n> print('OK' if ok else 'STARTED')\n> PY; __tts_rc=$?; printf '\\n__TTS_bdf40d61db86472a9978f98ac50d9c9d__RC:%s\\n' \"$__tts_rc\"; printf '__TTS_bdf40d61db86472a9978f98ac50d9c9d__PWD:'; pwd; printf '_\n_TTS_bdf40d61db86472a9978f98ac50d9c9d__END\\n'; tmux wait -S done\n> cd -- ''\"'\"'; pwd; printf '\"'\"'' && sh -lc 'command -v qemu-system-x86_64 || command -v qemu-system-x86_64-headless || command -v qemu-kvm || find / -type f \\\n( -name \"qemu-system-x86_64*\" -o -name qemu-kvm \\) 2>/dev/null | head -20'; __tts_rc=$?; printf '\\n__TTS_74ada5935a0a4f02870dd9cc33e0651e__RC:%s\\n' \"$__tts_rc\";\n printf '__TTS_74ada5935a0a4f02870dd9cc33e0651e__PWD:'; pwd; printf '__TTS_74ada5935a0a4f02870dd9cc33e0651e__END\\n'; tmux wait -S done\n> cd -- ''\"'\"'; pwd; printf '\"'\"'' && python3 - <<'PY'\n> import os, shutil, sys\n> bins=['qemu-system-x86_64','qemu-system-x86_64-headless','qemu-kvm']\n> found=[b for b in bins if shutil.which(b)]\n> print('FOUND='+','.join(found) if found else 'NO_QEMU')\n> PY; __tts_rc=$?; printf '\\n__TTS_509a6ec7bdb64d9a9e09d120b36380b9__RC:%s\\n' \"$__tts_rc\"; printf '__TTS_509a6ec7bdb64d9a9e09d120b36380b9__PWD:'; pwd; printf '_\n_TTS_509a6ec7bdb64d9a9e09d120b36380b9__END\\n'; tmux wait -S done\n>",
+      "stderr": "",
+      "return_code": 0,
+      "cwd": "'; pwd; printf '",
+      "predicted": false
+    }
+  ]
+}

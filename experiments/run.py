@@ -2,7 +2,8 @@
 """Run trajectory-level TTS experiments over the REAL environments and log the full metric set.
 
 For each real task we sample ``N`` trajectories against one shared, non-forkable task
-environment (executed + scored through the **official** AppWorld / τ²-bench runners).  Each
+environment (executed + scored through the official AppWorld / OfficeBench / tau2 / Terminal-Bench
+runners). Each
 trajectory is scored by its read-grounded world model (or, for B2, an oracle on a forked
 snapshot); the single most-promising trajectory is selected and its **whole action sequence**
 is committed.  Per decision we log: success/reward, #spawns, depth distribution, #reads,
@@ -19,6 +20,7 @@ Examples
     python experiments/run.py --env tau2 --tasks 12 --N 1,2,4,8
     APPWORLD_ROOT=/path PYTHONPATH=src python experiments/run.py --env appworld --splits test_normal --levels 1 --tasks 8
     OFFICEBENCH_ROOT=/path PYTHONPATH=src python experiments/run.py --env officebench --levels 1 --tasks 8
+    python experiments/run.py --env terminalbench --terminalbench-versions 1,2 --methods ours,b2 --N 1,2,4,8
     python experiments/run.py --depth-sweep --env tau2 --tasks 12
     python experiments/run.py --report results/records.jsonl
 """
@@ -26,10 +28,13 @@ Examples
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import shutil
 import statistics
 import sys
+import time
 from collections import defaultdict
 from typing import Dict, List
 
@@ -122,8 +127,13 @@ def _specs_for(env_name, args):
     splits = args.splits.split(",") if args.splits else None
     domains = args.domains.split(",") if args.domains else (["airline"] if env_name == "tau2" else None)
     sub_filter = args.subsets.split(",") if args.subsets else None
-    return build_dataset(env_name, tasks_per_subset=args.tasks, splits=splits, levels=levels,
-                         domains=domains, subsets_filter=sub_filter)
+    specs = build_dataset(env_name, tasks_per_subset=args.tasks, splits=splits, levels=levels,
+                          domains=domains, subsets_filter=sub_filter)
+    task_indices = getattr(args, "task_indices", None)
+    if task_indices:
+        selected = {int(value.strip()) for value in task_indices.split(",") if value.strip()}
+        specs = [spec for spec in specs if spec.index in selected]
+    return specs
 
 
 def _cfg_for(env_name, spec, method, N, args, recursion_mode=None, L=None) -> Config:
@@ -132,8 +142,217 @@ def _cfg_for(env_name, spec, method, N, args, recursion_mode=None, L=None) -> Co
                   solver=SolverConfig(agent=args.agent, llm_agent=args.llm_agent,
                                       llm_user=args.llm_user or args.llm_agent,
                                       temperature=args.temperature, max_steps=args.max_steps,
+                                      rollout_retries=getattr(args, "rollout_retries", 2),
                                       p_correct=args.p_correct),
                   simulator=sim_config(args, recursion_mode, L))
+
+
+def _positive_int_env(name: str, default: int) -> int:
+    try:
+        return max(1, int(os.environ.get(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+
+def _nonnegative_int_env(name: str, default: int) -> int:
+    try:
+        return max(0, int(os.environ.get(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+
+def _float_env(name: str, default: float) -> float:
+    try:
+        return float(os.environ.get(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_enabled(name: str, default: bool = True) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value not in ("0", "false", "False")
+
+
+def _is_gpt_54(model: str | None) -> bool:
+    return "gpt-5.4" in str(model or "").strip().lower().replace("_", "-")
+
+
+def _configure_appworld_bon(args) -> None:
+    """Use robust generation and coverage-aware selection for AppWorld GPT-5.4 sweeps."""
+    if getattr(args, "agent", None) != "llm_wm":
+        return
+
+    model = (
+        getattr(args, "llm_agent", None)
+        or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+        or os.environ.get("WM_MODEL")
+        or os.environ.get("TTS_AGENT_MODEL")
+    )
+    if not _is_gpt_54(model):
+        return
+
+    if (
+        not getattr(args, "no_verifier_reference", False)
+        and "TTS_APPWORLD_VERIFIER_PERCHECK" not in os.environ
+    ):
+        os.environ["TTS_APPWORLD_VERIFIER_PERCHECK"] = "1"
+        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"
+        args.verifier_percheck = True
+
+    os.environ.setdefault("TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", "1")
+    os.environ.setdefault("TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT", "0.25")
+    os.environ.setdefault("TTS_SELECTION_CONFIDENCE_MARGIN", "0.1")
+
+    preflights = getattr(args, "appworld_instruction_preflights", None)
+    if preflights is None:
+        configured = os.environ.get("TTS_APPWORLD_INSTRUCTION_PREFLIGHTS")
+        preflights = (
+            configured not in ("0", "false", "False")
+            if configured is not None
+            else False
+        )
+        args.appworld_instruction_preflights = preflights
+    os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] = "1" if preflights else "0"
+
+    if not getattr(args, "_success_score_explicit", False):
+        args.success_score = "simulator_confidence_guarded"
+
+
+def _configure_officebench_bon(args) -> None:
+    """Use atomic-check confidence and guarded nested selection for OfficeBench GPT-5.4."""
+    if getattr(args, "agent", None) != "llm_wm":
+        return
+
+    model = (
+        getattr(args, "llm_agent", None)
+        or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+        or os.environ.get("WM_MODEL")
+        or os.environ.get("TTS_AGENT_MODEL")
+    )
+    is_gpt54 = _is_gpt_54(model)
+    if (
+        getattr(args, "verifier_samples", None) is None
+        and "TTS_OFFICEBENCH_VERIFIER_SAMPLES" not in os.environ
+        and is_gpt54
+    ):
+        os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] = "5"
+
+    if is_gpt54:
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
+        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
+        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")
+        office_margin = os.environ.get(
+            "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")
+        os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] = office_margin
+
+    if not getattr(args, "_success_score_explicit", False):
+        args.success_score = (
+            "simulator_confidence_guarded" if is_gpt54
+            else "simulator_confidence"
+        )
+
+
+def _record_run_env(record: dict):
+    """Return the CLI environment identity used for resume and coverage."""
+    run_env = record.get("run_env")
+    if run_env:
+        return run_env
+    env = record.get("env")
+    if isinstance(env, str) and env.startswith("tau2_"):
+        return "tau2"
+    return env
+
+
+def _cell_checkpoint_key(record: dict) -> tuple:
+    spec_index = record.get("spec_index")
+    return (
+        _record_run_env(record),
+        record.get("spec_subset", record.get("subset")),
+        spec_index if spec_index is not None else record.get("task_id"),
+        record.get("method"),
+        record.get("n_rollouts"),
+    )
+
+
+def _cell_checkpoint_path(directory: str, record: dict, prefix: str = "record") -> str:
+    raw = "|".join(str(part) for part in _cell_checkpoint_key(record))
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
+    return os.path.join(directory, f"{prefix}-{digest}.json")
+
+
+def _write_cell_checkpoint(args, record: dict) -> None:
+    """Atomically persist one completed cell from inside a worker process.
+
+    A task runs several increasingly expensive N cells in one worker to share its rollout cache.
+    Without this sidecar, an exception or hard-kill in a later cell discards every earlier cell because
+    the parent receives results only when the whole task future returns.
+    """
+    directory = getattr(args, "_cell_checkpoint_dir", None)
+    if not directory:
+        return
+    os.makedirs(directory, exist_ok=True)
+    path = _cell_checkpoint_path(directory, record)
+    tmp = f"{path}.tmp-p{os.getpid()}"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(record, fh, default=str)
+        fh.write("\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+
+
+def _write_cell_error(args, env_name, spec, method, N, error: Exception) -> None:
+    """Persist a failed cell's identity and exception so missing records are explainable."""
+    directory = getattr(args, "_cell_checkpoint_dir", None)
+    if not directory:
+        return
+    payload = {
+        "env": env_name,
+        "spec_subset": spec.subset,
+        "spec_index": spec.index,
+        "method": method,
+        "n_rollouts": N,
+        "error_type": type(error).__name__,
+        "error": str(error),
+    }
+    os.makedirs(directory, exist_ok=True)
+    path = _cell_checkpoint_path(directory, payload, prefix="error")
+    tmp = f"{path}.tmp-p{os.getpid()}"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, default=str)
+        fh.write("\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+
+
+def _report_cell_error(args, env_name, spec, method, N, error: Exception) -> None:
+    try:
+        _write_cell_error(args, env_name, spec, method, N, error)
+    except OSError as checkpoint_err:
+        print(f"\n[cell-checkpoint {spec.subset} idx={spec.index} {method} N={N}] failed: "
+              f"{type(checkpoint_err).__name__}: {checkpoint_err}", flush=True)
+    print(f"\n[cell {spec.subset} idx={spec.index} {method} N={N}] failed: "
+          f"{type(error).__name__}: {error}", flush=True)
+
+
+def _read_cell_sidecars(directory: str, prefix: str) -> List[dict]:
+    if not directory or not os.path.isdir(directory):
+        return []
+    records = []
+    for name in sorted(os.listdir(directory)):
+        if not name.startswith(prefix + "-") or not name.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(directory, name), "r", encoding="utf-8") as fh:
+                records.append(json.load(fh))
+        except (OSError, ValueError, TypeError):
+            continue
+    return records
 
 
 def _run_task_cells(payload) -> List[dict]:
@@ -149,18 +368,151 @@ def _run_task_cells(payload) -> List[dict]:
     env_name, spec, cells, args, usable_only = payload
     cache: dict = {}
     records: List[dict] = []
+    cell_retries = max(0, int(getattr(args, "cell_retries", 2) or 0))
+    max_n = max((N for _method, N, _recursion_mode, _L in cells), default=1)
     for (method, N, recursion_mode, L) in cells:
-        try:
-            env = make_env_from_spec(spec, usable_only=usable_only)
-        except (NotImplementedError, IndexError):
+        rec = None
+        last_error = None
+        for attempt in range(cell_retries + 1):
+            try:
+                env = make_env_from_spec(spec, usable_only=usable_only)
+            except (NotImplementedError, IndexError) as err:
+                last_error = err
+                break  # a structurally unavailable task will not become available on retry
+            except Exception as err:  # noqa: BLE001 - retry transient environment setup failures
+                last_error = err
+                if attempt < cell_retries:
+                    print(f"\n[cell-retry {spec.subset} idx={spec.index} {method} N={N}] "
+                          f"attempt {attempt + 1}/{cell_retries + 1} setup failed: "
+                          f"{type(err).__name__}: {err}", flush=True)
+                continue
+            try:
+                cfg = _cfg_for(env_name, spec, method, N, args, recursion_mode, L)
+                outcome = run_decision(env, cfg, rollout_cache=cache)
+                rec = outcome.record.to_dict()
+                rec["candidate_confidences"] = [
+                    float(rollout.predicted.reward)
+                    if rollout.predicted is not None else None
+                    for rollout in outcome.rollouts
+                ]
+                rec["candidate_scores"] = [
+                    float(rollout.score) for rollout in outcome.rollouts
+                ]
+                rec["candidate_verifier_percheck"] = [
+                    (rollout.predicted.metadata or {}).get("verifier_percheck")
+                    if rollout.predicted is not None else None
+                    for rollout in outcome.rollouts
+                ]
+                rec["candidate_comparative_rerank"] = [
+                    (rollout.predicted.metadata or {}).get("comparative_rerank")
+                    if rollout.predicted is not None else None
+                    for rollout in outcome.rollouts
+                ]
+                if (
+                    env_name == "officebench"
+                    and N == max_n
+                    and _env_enabled(
+                        "TTS_OFFICEBENCH_DIAGNOSTIC_ALL_CANDIDATES", False)
+                ):
+                    # Offline calibration only: selection and the selected commit have already
+                    # completed. Never feed these official evaluator outcomes back into ranking.
+                    candidate_actual = [
+                        env.evaluate(rollout.trajectory)
+                        if rollout.trajectory.done
+                        else None
+                        for rollout in outcome.rollouts
+                    ]
+                    rec["candidate_actual_success"] = [
+                        bool(actual.success) if actual is not None else False
+                        for actual in candidate_actual
+                    ]
+                    rec["candidate_actual_reward"] = [
+                        float(actual.reward) if actual is not None else 0.0
+                        for actual in candidate_actual
+                    ]
+                last_error = None
+                break
+            except Exception as err:  # noqa: BLE001 - retry transient env/commit/evaluation failures
+                last_error = err
+                if attempt < cell_retries:
+                    print(f"\n[cell-retry {spec.subset} idx={spec.index} {method} N={N}] "
+                          f"attempt {attempt + 1}/{cell_retries + 1} failed: "
+                          f"{type(err).__name__}: {err}", flush=True)
+        if rec is None:
+            _report_cell_error(
+                args, env_name, spec, method, N,
+                last_error or RuntimeError("cell produced no record"))
             continue
-        cfg = _cfg_for(env_name, spec, method, N, args, recursion_mode, L)
-        rec = run_decision(env, cfg, rollout_cache=cache).record.to_dict()
         # Stamp the spec identity so a resumed run can tell which tasks are already done
         # (the record stores the resolved ``task_id``, not the enumeration ``index``).
+        rec["run_env"] = env_name
         rec["spec_subset"] = spec.subset
         rec["spec_index"] = spec.index
+        rec["solver_agent"] = getattr(args, "agent", None)
+        rec["llm_agent"] = (
+            getattr(args, "llm_agent", None)
+            or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+            or os.environ.get("WM_MODEL")
+            or os.environ.get("TTS_AGENT_MODEL")
+        )
+        rec["solver_temperature"] = getattr(args, "temperature", None)
+        rec["solver_max_steps"] = getattr(args, "max_steps", None)
+        rec["seed_base"] = getattr(args, "seed_base", None)
+        rec["success_score"] = getattr(args, "success_score", None)
+        if env_name == "appworld":
+            rec["appworld_wm_tool_mode"] = getattr(
+                args, "appworld_wm_tool_mode", "python")
+            rec["appworld_precision_prompt"] = bool(
+                getattr(args, "appworld_precision_prompt", False))
+            rec["appworld_agent_reference"] = bool(
+                getattr(args, "appworld_agent_reference", False))
+            rec["appworld_deterministic_dirty_reads"] = bool(
+                getattr(args, "appworld_deterministic_dirty_reads", False))
+            rec["appworld_instruction_preflights"] = _env_enabled(
+                "TTS_APPWORLD_INSTRUCTION_PREFLIGHTS", False)
+            rec["appworld_verifier_percheck"] = _env_enabled(
+                "TTS_APPWORLD_VERIFIER_PERCHECK", False)
+            rec["appworld_verifier_samples"] = _positive_int_env(
+                "TTS_APPWORLD_VERIFIER_SAMPLES", 1)
+            rec["appworld_verifier_coverage_aware"] = _env_enabled(
+                "TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", False)
+            rec["appworld_verifier_unknown_credit"] = _float_env(
+                "TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT", 0.25)
+            rec["selection_confidence_margin"] = _float_env(
+                "TTS_SELECTION_CONFIDENCE_MARGIN", 0.1)
+        if env_name == "officebench":
+            rec["officebench_wm_tool_mode"] = getattr(
+                args, "officebench_wm_tool_mode", "python")
+            rec["officebench_verifier_samples"] = _positive_int_env(
+                "TTS_OFFICEBENCH_VERIFIER_SAMPLES", 1)
+            rec["officebench_verifier_reference"] = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_REFERENCE", True)
+            rec["officebench_verifier_state"] = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_STATE", True)
+            rec["officebench_verifier_percheck"] = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_PERCHECK", False)
+            rec["officebench_verifier_atomic_cap"] = _positive_int_env(
+                "TTS_OFFICEBENCH_VERIFIER_ATOMIC_CAP", 4)
+            rec["officebench_verifier_unknown_credit"] = _float_env(
+                "TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", 0.25)
+            rec["officebench_verifier_whole_weight"] = _float_env(
+                "TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", 0.25)
+            rec["officebench_reconstruct_gold"] = _env_enabled(
+                "TTS_OFFICEBENCH_WM_RECONSTRUCT_GOLD", False)
+            rec["officebench_comparative_rerank"] = _env_enabled(
+                "TTS_OFFICEBENCH_COMPARATIVE_RERANK", False)
+            rec["officebench_comparative_confidence_margin"] = _float_env(
+                "TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", 0.25)
+            rec["officebench_selection_confidence_margin"] = _float_env(
+                "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", 0.05)
         records.append(rec)
+        try:
+            _write_cell_checkpoint(args, rec)
+        except OSError as checkpoint_err:
+            # The cell itself succeeded and remains in ``records`` for the parent; report only the
+            # durability degradation, not a false execution failure in run_manifest.json.
+            print(f"\n[cell-checkpoint {spec.subset} idx={spec.index} {method} N={N}] failed: "
+                  f"{type(checkpoint_err).__name__}: {checkpoint_err}", flush=True)
     return records
 
 
@@ -181,11 +533,19 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
     workers = max(1, int(getattr(args, "workers", 1) or 1))
     progress = _Progress(total=len(specs), desc=desc)
     records: List[dict] = []
+    emitted_cells = set()
 
     def _emit(recs):
-        records.extend(recs)
-        if on_task_done is not None and recs:
-            on_task_done(recs)
+        fresh = []
+        for rec in recs:
+            key = _cell_checkpoint_key(rec)
+            if key in emitted_cells:
+                continue
+            emitted_cells.add(key)
+            fresh.append(rec)
+        records.extend(fresh)
+        if on_task_done is not None and fresh:
+            on_task_done(fresh)
 
     if workers == 1 or len(specs) <= 1:
         for spec in specs:
@@ -224,19 +584,51 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
     # non-terminating ``while True:`` API loop, which AppWorld's own per-cell SIGALRM does not abort
     # in the process-pool context). With a plain ``as_completed`` + ``with Executor`` that one task
     # hangs the whole sweep ("stuck at the last sample") and then blocks ``shutdown(wait=True)``.
-    # Instead we wait in slices: if NO task completes for ``stall_s`` seconds we treat the remaining
-    # futures as wedged, abandon them (their records are already checkpointed), and force-terminate
-    # the workers so shutdown can't block.  A healthy slow batch still produces completions and is
-    # never abandoned.
+    # Instead we wait in slices and observe worker-side CELL checkpoints too: if neither a task nor a
+    # cell completes for ``stall_s`` seconds we treat the remaining futures as wedged, abandon them,
+    # and force-terminate the workers. A slow task that is still completing successive N cells counts
+    # as progress and is not incorrectly abandoned.
     stall_s = float(os.environ.get("TTS_RUN_STALL_TIMEOUT_S", "1200") or "1200")
+    poll_s = min(stall_s, 30.0)
+    checkpoint_dir = getattr(args, "_cell_checkpoint_dir", None)
+    seen_sidecars = set()
+
+    def _drain_sidecars() -> int:
+        if not checkpoint_dir or not os.path.isdir(checkpoint_dir):
+            return 0
+        fresh = []
+        for name in sorted(os.listdir(checkpoint_dir)):
+            if not name.startswith("record-") or not name.endswith(".json") or name in seen_sidecars:
+                continue
+            try:
+                with open(os.path.join(checkpoint_dir, name), "r", encoding="utf-8") as fh:
+                    fresh.append(json.load(fh))
+                seen_sidecars.add(name)
+            except (OSError, ValueError, TypeError):
+                continue
+        _emit(fresh)
+        return len(fresh)
+
     ex = Executor(**pool_kwargs)
+    last_progress = time.monotonic()
+    abandoned = []
+    task_errors = []
     try:
         futures = {ex.submit(_run_task_cells, p): p[1] for p in payloads}
         pending = set(futures)
         while pending:
-            done, pending = wait(pending, timeout=stall_s, return_when=FIRST_COMPLETED)
+            done, pending = wait(pending, timeout=poll_s, return_when=FIRST_COMPLETED)
+            drained = _drain_sidecars()
+            if done or drained:
+                last_progress = time.monotonic()
             if not done:
-                print(f"\n[hang-guard] no task finished in {stall_s:.0f}s; abandoning "
+                if time.monotonic() - last_progress < stall_s:
+                    continue
+                abandoned = [
+                    {"subset": futures[fut].subset, "index": futures[fut].index}
+                    for fut in pending
+                ]
+                print(f"\n[hang-guard] no task or cell finished in {stall_s:.0f}s; abandoning "
                       f"{len(pending)} wedged task(s) (records checkpointed). "
                       f"Re-run with --resume to retry them.")
                 for fut in pending:
@@ -247,10 +639,21 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
                     _emit(fut.result())
                 except Exception as err:  # noqa: BLE001 - report and continue the sweep
                     spec = futures[fut]
+                    task_errors.append({
+                        "subset": getattr(spec, "subset", "?"),
+                        "index": getattr(spec, "index", None),
+                        "error_type": type(err).__name__,
+                        "error": str(err),
+                    })
                     print(f"\n[task {getattr(spec, 'subset', '?')} "
                           f"idx={getattr(spec, 'index', '?')}] failed: {type(err).__name__}: {err}")
                 progress.update(1, postfix=getattr(futures[fut], "subset", ""))
     finally:
+        _drain_sidecars()
+        args._last_run_status = {
+            "abandoned_tasks": abandoned,
+            "task_errors": task_errors,
+        }
         # Force the pool down without joining a wedged worker: cancel queued futures, then SIGTERM any
         # still-alive worker processes (a ProcessPool exposes them via ``_processes``).  Threads can't
         # be killed, but ``shutdown(wait=False)`` at least won't actively block on them.
@@ -301,8 +704,11 @@ def aggregate(records: List[dict], by: List[str]) -> List[dict]:
     for key, rs in groups.items():
         row = dict(zip(by, key))
         preds = [r["prediction_correct"] for r in rs if r.get("prediction_correct") is not None]
+        imputed_failures = sum(bool(r.get("coverage_imputed_failure")) for r in rs)
         row.update({
             "decisions": len(rs),
+            "recorded_decisions": len(rs) - imputed_failures,
+            "imputed_failures": imputed_failures,
             "success_rate": _mean([r["success"] for r in rs]),
             "reward": _mean([r["reward"] for r in rs]),
             "mean_spawns": _mean([r["n_spawns"] for r in rs]),
@@ -315,6 +721,7 @@ def aggregate(records: List[dict], by: List[str]) -> List[dict]:
             "mean_cost": _mean([r["cost"] for r in rs]),
             "mean_cache_hits": _mean([r["cache_hits"] for r in rs]),
             "mean_wall_clock_s": _mean([r["wall_clock_s"] for r in rs]),
+            "mean_rollout_errors": _mean([r.get("n_rollout_errors", 0) for r in rs]),
         })
         rows.append(row)
     return rows
@@ -371,35 +778,174 @@ def _expected_cells(methods, Ns):
     return {(m, (1 if m == "b0" else N)) for m in methods for N in ([1] if m == "b0" else Ns)}
 
 
-def _load_checkpoint(path):
+def _load_checkpoint(path, cell_checkpoint_dir=None):
     """Read an existing ``records.jsonl`` for resume.
 
     Returns ``(records, done)`` where ``records`` is the de-duplicated record list already on disk
-    (last writer wins per ``(env, spec_subset, spec_index, method, n_rollouts)``) and ``done`` maps
-    each task key ``(env, spec_subset, spec_index)`` to the set of ``(method, n_rollouts)`` cells it
-    already has.  Malformed lines are skipped so a half-written checkpoint still resumes cleanly.
+    (last writer wins per ``(run_env, spec_subset, spec_index, method, n_rollouts)``) and ``done``
+    maps each task key ``(run_env, spec_subset, spec_index)`` to the set of
+    ``(method, n_rollouts)`` cells it already has. Worker-side cell checkpoints are also recovered
+    when supplied, so a killed task does not lose the lower-N cells it completed before the kill.
+    Malformed entries are skipped.
     """
     by_cell: Dict[tuple, dict] = {}
     done: Dict[tuple, set] = defaultdict(set)
-    if not os.path.exists(path):
-        return [], done
-    with open(path, "r", encoding="utf-8") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                r = json.loads(line)
-            except Exception:
-                continue
-            si = r.get("spec_index")
-            sub = r.get("spec_subset", r.get("subset"))
-            task_key = (r.get("env"), sub, si)
-            cell = (r.get("method"), r.get("n_rollouts"))
-            by_cell[(r.get("env"), sub, si, r.get("method"), r.get("n_rollouts"))] = r
-            if si is not None:
-                done[task_key].add(cell)
+
+    def _add(r):
+        if not isinstance(r, dict):
+            return
+        si = r.get("spec_index")
+        sub = r.get("spec_subset", r.get("subset"))
+        run_env = _record_run_env(r)
+        task_key = (run_env, sub, si)
+        cell = (r.get("method"), r.get("n_rollouts"))
+        by_cell[(run_env, sub, si, r.get("method"), r.get("n_rollouts"))] = r
+        if si is not None:
+            done[task_key].add(cell)
+
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    _add(json.loads(line))
+                except Exception:
+                    continue
+    for r in _read_cell_sidecars(cell_checkpoint_dir, "record"):
+        _add(r)
     return list(by_cell.values()), done
+
+
+def _rewrite_checkpoint(path: str, records: List[dict]) -> None:
+    """Rewrite the canonical checkpoint after recovering/de-duplicating worker sidecars."""
+    tmp = f"{path}.tmp-p{os.getpid()}"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        for record in records:
+            fh.write(json.dumps(record, default=str) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+    if hasattr(os, "O_DIRECTORY"):
+        directory_fd = os.open(os.path.dirname(path) or ".", os.O_DIRECTORY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+
+
+def _records_with_missing_failures(env_name, specs, records, expected_cells):
+    """Return metric-only records with every absent expected cell counted as failure."""
+    metric_records = list(records)
+    existing = set()
+    metric_env_by_subset = {}
+    for record in records:
+        subset = record.get("spec_subset", record.get("subset"))
+        if subset is not None and record.get("env"):
+            metric_env_by_subset.setdefault(subset, record["env"])
+        if _record_run_env(record) != env_name or record.get("spec_index") is None:
+            continue
+        existing.add((
+            subset,
+            record.get("spec_index"),
+            record.get("method"),
+            record.get("n_rollouts"),
+        ))
+
+    for spec in specs:
+        metric_env = metric_env_by_subset.get(spec.subset)
+        if metric_env is None:
+            metric_env = f"tau2_{spec.subset}" if env_name == "tau2" else env_name
+        for method, n_rollouts in expected_cells:
+            key = (spec.subset, spec.index, method, n_rollouts)
+            if key in existing:
+                continue
+            metric_records.append({
+                "env": metric_env,
+                "run_env": env_name,
+                "subset": spec.subset,
+                "spec_subset": spec.subset,
+                "spec_index": spec.index,
+                "task_id": f"missing:{spec.subset}:{spec.index}",
+                "method": method,
+                "n_rollouts": n_rollouts,
+                "success": False,
+                "reward": 0.0,
+                "n_spawns": None,
+                "max_depth": None,
+                "n_reads": None,
+                "n_commits": 0,
+                "simulator_writes": 0,
+                "prediction_correct": None,
+                "tokens": None,
+                "cost": None,
+                "cache_hits": None,
+                "wall_clock_s": None,
+                "n_rollout_errors": None,
+                "coverage_imputed_failure": True,
+            })
+    return metric_records
+
+
+def _coverage_manifest(env_name, specs, records, expected_cells, run_status, cell_errors):
+    """Summarize expected, complete, partial, failed, and abandoned tasks for this run."""
+    records_by_task = defaultdict(set)
+    for r in records:
+        if _record_run_env(r) != env_name or r.get("spec_index") is None:
+            continue
+        key = (r.get("spec_subset", r.get("subset")), r.get("spec_index"))
+        records_by_task[key].add((r.get("method"), r.get("n_rollouts")))
+
+    by_subset = {}
+    complete = partial = missing = 0
+    recorded_decisions = missing_decisions = 0
+    for spec in specs:
+        key = (spec.subset, spec.index)
+        cells = records_by_task.get(key, set())
+        state = "complete" if expected_cells.issubset(cells) else ("partial" if cells else "missing")
+        if state == "complete":
+            complete += 1
+        elif state == "partial":
+            partial += 1
+        else:
+            missing += 1
+        row = by_subset.setdefault(spec.subset, {
+            "expected_tasks": 0, "complete_tasks": 0, "partial_tasks": 0, "missing_tasks": 0,
+            "expected_decisions": 0, "recorded_decisions": 0, "missing_decisions": 0,
+        })
+        recorded_cells = len(cells.intersection(expected_cells))
+        absent_cells = len(expected_cells) - recorded_cells
+        recorded_decisions += recorded_cells
+        missing_decisions += absent_cells
+        row["expected_tasks"] += 1
+        row[f"{state}_tasks"] += 1
+        row["expected_decisions"] += len(expected_cells)
+        row["recorded_decisions"] += recorded_cells
+        row["missing_decisions"] += absent_cells
+
+    return {
+        "env": env_name,
+        "expected_tasks": len(specs),
+        "complete_tasks": complete,
+        "partial_tasks": partial,
+        "missing_tasks": missing,
+        "expected_cells_per_task": len(expected_cells),
+        "expected_cells": [
+            {"method": method, "n_rollouts": n_rollouts}
+            for method, n_rollouts in sorted(
+                expected_cells,
+                key=lambda cell: (_METHOD_ORDER.get(cell[0], 99), cell[0], cell[1]),
+            )
+        ],
+        "expected_decisions": len(specs) * len(expected_cells),
+        "recorded_decisions": recorded_decisions,
+        "missing_decisions": missing_decisions,
+        "cell_errors": cell_errors,
+        "abandoned_tasks": run_status.get("abandoned_tasks", []),
+        "task_errors": run_status.get("task_errors", []),
+        "by_subset": by_subset,
+    }
 
 
 def dump_spawn_tree(env_name, args) -> None:
@@ -422,32 +968,175 @@ def dump_spawn_tree(env_name, args) -> None:
         print(f"(spawn-tree dump skipped: {type(e).__name__}: {e})")
 
 
+def _run_terminalbench_cli(args) -> None:
+    """Run the native Terminal-Bench harnesses and write the shared experiment artifacts.
+
+    This path returns before dataset/registry/environment construction, so adding Terminal-Bench
+    cannot alter AppWorld, OfficeBench, or tau2 task selection, rollouts, or aggregation.
+    """
+    from tts.env.terminalbench_experiment import (
+        run_terminalbench_sweep,
+        terminalbench_native_cell_count,
+    )
+
+    if args.list_subsets:
+        versions = [item.strip() for item in args.terminalbench_versions.split(",") if item.strip()]
+        for version in versions:
+            print(f"  {'v' + version:>20}  official native dataset")
+        return
+
+    os.makedirs(args.out, exist_ok=True)
+    records_path = os.path.join(args.out, "records.jsonl")
+    prior_records: List[dict] = []
+    if args.resume:
+        prior_records, _ = _load_checkpoint(records_path)
+        print(f"(resume: {len(prior_records)} Terminal-Bench records on disk; "
+              "reusing completed native jobs)")
+    else:
+        open(records_path, "w").close()
+
+    seen = {
+        (record.get("env"), record.get("spec_subset"), record.get("spec_index"),
+         record.get("method"), record.get("n_rollouts"))
+        for record in prior_records
+    }
+    checkpoint = open(records_path, "a", buffering=1)
+    progress = _Progress(
+        terminalbench_native_cell_count(args),
+        desc="terminalbench jobs",
+    )
+
+    def _checkpoint(records):
+        for record in records:
+            key = (
+                record.get("env"),
+                record.get("spec_subset"),
+                record.get("spec_index"),
+                record.get("method"),
+                record.get("n_rollouts"),
+            )
+            if key in seen:
+                continue
+            checkpoint.write(json.dumps(record, default=str) + "\n")
+            seen.add(key)
+        checkpoint.flush()
+        os.fsync(checkpoint.fileno())
+
+    try:
+        new_records = run_terminalbench_sweep(
+            args,
+            on_records=_checkpoint,
+            on_cell_done=lambda label: progress.update(1, postfix=label),
+        )
+    finally:
+        progress.close()
+        checkpoint.close()
+
+    all_records, _ = _load_checkpoint(records_path)
+    if not all_records:
+        all_records = prior_records + new_records
+    print_report(all_records)
+    aggregates = aggregate(all_records, ["env", "subset", "method", "n_rollouts"])
+    with open(os.path.join(args.out, "aggregates.json"), "w") as handle:
+        json.dump(aggregates, handle, indent=2)
+    write_csv(os.path.join(args.out, "aggregates.csv"), aggregates)
+    print(f"\nWrote {len(all_records)} decisions and {len(aggregates)} aggregate rows "
+          f"to {args.out}/")
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--env", default=None, choices=["appworld", "tau2", "officebench"])
+    p.add_argument("--env", default=None, choices=["appworld", "tau2", "officebench", "terminalbench"])
     p.add_argument("--methods", default="b0,b1,b2,ours")
     p.add_argument("--N", default="1,2,4,8")
     p.add_argument("--tasks", type=int, default=None, help="tasks PER SUBSET (default: full usable size)")
+    p.add_argument("--task-indices", default=None,
+                   help="Exact task indices to run after split/level/subset filtering, comma-separated "
+                        "(e.g. 20,27,28,32,45). Useful for targeted diagnostic reruns.")
     p.add_argument("--seed-base", type=int, default=0)
-    p.add_argument("--success-score", default="simulator_success")
+    p.add_argument("--success-score", default=None,
+                   help="trajectory ranker (default: simulator_confidence for OfficeBench llm_wm; "
+                        "simulator_success otherwise)")
     p.add_argument("--verifier-reference", action="store_true",
-                   help="AppWorld llm_wm: enable the REFERENCE-GROUNDED verifier (audits the agent's write "
-                        "log against the task's ground-truth checklist + gold values). Sets "
+                   help="AppWorld llm_wm: explicitly enable the REFERENCE-GROUNDED verifier (the default, "
+                        "matching OfficeBench; audits the agent's write log against the task's "
+                        "ground-truth checklist + gold values). Sets "
                         "TTS_APPWORLD_VERIFIER_REFERENCE=1 and, unless --success-score is given explicitly, "
                         "switches ranking to simulator_confidence. NOTE: uses the task answer key -> this is "
                         "reference-grounded (tau2-style), not blind WM-only.")
+    p.add_argument("--no-verifier-reference", action="store_true",
+                   help="AppWorld llm_wm: disable the default reference grounding and use the blind "
+                        "WM-only verifier ablation (sets TTS_APPWORLD_VERIFIER_REFERENCE=0).")
     p.add_argument("--verifier-samples", type=int, default=None,
-                   help="K self-consistency samples for the WM verifier (sets TTS_APPWORLD_VERIFIER_SAMPLES; "
-                        "K>=2 gives a graded confidence in {0,1/K,..,1}). Default 1 (binary).")
+                   help="K self-consistency samples for the AppWorld/OfficeBench WM verifier. "
+                        "K>=2 gives a graded confidence in {0,1/K,..,1}. OfficeBench GPT-5.4 "
+                        "llm_wm defaults to 5; other paths default to 1.")
     p.add_argument("--verifier-percheck", action="store_true",
                    help="AppWorld llm_wm: PER-CHECK reference auditor — a focused sub-pass audits each "
-                        "ground-truth check in isolation (MET/UNMET/UNKNOWN) and scores graded MET/decidable. "
+                        "ground-truth check in isolation (MET/UNMET/UNKNOWN). GPT-5.4 uses coverage-aware "
+                        "graded confidence so UNKNOWN checks remain in the denominator. "
                         "Implies --verifier-reference; sets TTS_APPWORLD_VERIFIER_PERCHECK=1.")
     p.add_argument("--sandbox-prompt", action="store_true",
                    help="AppWorld: prepend a truthful sandbox preamble to the agent prompt so safety-aligned "
                         "models (e.g. gpt-5.2) don't REFUSE consequential actions (orders/payments). Sets "
                         "TTS_APPWORLD_SANDBOX_PROMPT=1. NOTE: deviates from the official prompt — apply "
                         "uniformly across compared models for a fair A/B.")
+    p.add_argument("--appworld-precision-prompt", action="store_true",
+                   help="AppWorld: prepend an exact-state reasoning skill covering pagination, set/map "
+                        "reconciliation, Amazon cart isolation, calendar boundaries, and final-state "
+                        "verification. Sets TTS_APPWORLD_PRECISION_PROMPT=1 and intentionally augments "
+                        "the official agent prompt.")
+    p.add_argument("--appworld-agent-reference", action="store_true",
+                   help="AppWorld llm_wm: prepend the native evaluator checklist and gold values to "
+                        "candidate generation. Sets TTS_APPWORLD_AGENT_REFERENCE=1. NOTE: this uses the "
+                        "task answer key and is reference-conditioned, not blind benchmark generation.")
+    p.add_argument("--appworld-deterministic-dirty-reads", action="store_true",
+                   help="AppWorld llm_wm: apply supported post-write state transitions (currently Amazon "
+                        "cart operations) deterministically before falling back to the Python WM. Sets "
+                        "TTS_APPWORLD_DETERMINISTIC_DIRTY_READS=1.")
+    appworld_preflights = p.add_mutually_exclusive_group()
+    appworld_preflights.add_argument(
+        "--appworld-instruction-preflights",
+        dest="appworld_instruction_preflights",
+        action="store_true",
+        help="AppWorld llm_wm AGENT-SIDE ABLATION: replace the stochastic ReAct loop for recognized "
+             "tasks with instruction-only plans. Disabled by default and not comparable to B2.",
+    )
+    appworld_preflights.add_argument(
+        "--no-appworld-instruction-preflights",
+        dest="appworld_instruction_preflights",
+        action="store_false",
+        help="Use the unchanged stochastic ReAct agent for every AppWorld task (default).",
+    )
+    p.set_defaults(appworld_instruction_preflights=None)
+    appworld_tool_default = (
+        "python"
+        if str(os.environ.get("TTS_APPWORLD_WM_TOOL_MODE", "python")).strip().lower()
+        in ("python", "code", "coding")
+        else "text"
+    )
+    p.add_argument(
+        "--appworld-wm-tool-mode",
+        choices=["text", "python"],
+        default=appworld_tool_default,
+        help="AppWorld llm_wm subagent protocol. 'python' uses the restricted "
+             "PYTHON_READ/PYTHON_FINAL loop (default); 'text' restores the legacy "
+             "READ/LIST/CALL/TRACE ablation.",
+    )
+    officebench_tool_default = (
+        "python"
+        if str(os.environ.get("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")).strip().lower()
+        in ("python", "code", "coding")
+        else "text"
+    )
+    p.add_argument(
+        "--officebench-wm-tool-mode",
+        choices=["text", "python"],
+        default=officebench_tool_default,
+        help="OfficeBench llm_wm subagent protocol. 'python' uses AppWorld-style "
+             "PYTHON_READ/PYTHON_FINAL restricted computation (default); 'text' restores the "
+             "legacy READ/LIST/CALL/TRACE behavior.",
+    )
     p.add_argument("--agent", default="llm", choices=["llm", "llm_wm", "scripted"],
                    help="real official-prompt LLM agent on the real env (default, reproduces the "
                         "benchmark) | llm_wm: LLM solver that interacts with the world model | "
@@ -471,6 +1160,12 @@ def main() -> None:
                         "(use if the server doesn't expose GET /v1/models).")
     p.add_argument("--temperature", type=float, default=0.7, help="agent sampling temperature (B1/B2/Ours diversity)")
     p.add_argument("--max-steps", type=int, default=100, help="max agent steps per rollout")
+    p.add_argument("--rollout-retries", type=int, default=2,
+                   help="Retries after one WM-interactive candidate rollout raises. If all attempts "
+                        "fail, retain an explicit invalid/failed candidate so the N cell remains complete.")
+    p.add_argument("--cell-retries", type=int, default=2,
+                   help="Retries after a whole task/method/N cell fails during environment setup, "
+                        "selection commit, or official evaluation (default: 2).")
     p.add_argument("--all-tasks", action="store_true",
                    help="τ²: run over ALL official tasks (default for --agent llm; the official "
                         "benchmark set). Scripted/world-model methods otherwise use mutating tasks only.")
@@ -484,6 +1179,20 @@ def main() -> None:
                         "to run (1,2,3 -> the 1app/2app/3app subsets), COMMA-separated.")
     p.add_argument("--domains", default=None, help="τ² domains, COMMA-separated (e.g. airline,retail).")
     p.add_argument("--subsets", default=None, help="subset ids to keep, COMMA-separated.")
+    p.add_argument("--terminalbench-versions", "--tb-versions", default="1,2",
+                   help="Terminal-Bench generations to run, COMMA-separated: 1,2 (default: both).")
+    p.add_argument("--terminalbench-task", action="append", default=None,
+                   help="Terminal-Bench task name/glob to include. Prefix with 1: or 2: to target "
+                        "one generation (e.g. 1:hello-world). Repeat for multiple tasks.")
+    p.add_argument(
+        "--terminalbench-root",
+        default=os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             "..", ".benchmarks", "terminalbench")),
+        help="Downloaded Terminal-Bench checkout root (default: .benchmarks/terminalbench).",
+    )
+    p.add_argument("--terminalbench-conda-env",
+                   default=os.environ.get("TTS_TERMINALBENCH_ENV", "tts-terminalbench"),
+                   help="Conda environment containing tb and Harbor (default: tts-terminalbench).")
     p.add_argument("--list-subsets", action="store_true")
     p.add_argument("--report", default=None)
     p.add_argument("--recursion-mode", default="uncertainty", choices=["uncertainty", "fixed"])
@@ -510,6 +1219,21 @@ def main() -> None:
                         "interrupted sweep can be restarted with --resume to continue where it left "
                         "off. The default (no --resume) also checkpoints incrementally but starts a "
                         "fresh records.jsonl.")
+    coverage = p.add_mutually_exclusive_group()
+    coverage.add_argument(
+        "--allow-partial",
+        dest="allow_partial",
+        action="store_true",
+        help="Allow a run with missing task/N cells to exit successfully and print unmatched "
+             "curves (default; retained for compatibility).",
+    )
+    coverage.add_argument(
+        "--strict-coverage",
+        dest="allow_partial",
+        action="store_false",
+        help="Require every expected task/N cell before publishing metrics.",
+    )
+    p.set_defaults(allow_partial=True)
     p.add_argument("--keep-outputs", action="store_true",
                    help="Keep AppWorld per-task output dirs on disk (default: delete them as each "
                         "task finishes so large parallel runs don't accumulate temp files).")
@@ -518,16 +1242,26 @@ def main() -> None:
                         "progress bar and the result tables are printed).")
     p.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "results"))
     args = p.parse_args()
+    args._success_score_explicit = args.success_score is not None
+    if args.success_score is None:
+        args.success_score = "simulator_success"
+
+    if args.no_verifier_reference and (args.verifier_reference or args.verifier_percheck):
+        p.error("--no-verifier-reference cannot be combined with --verifier-reference or "
+                "--verifier-percheck")
 
     if not args.verbose:
         _quiet_logging()
 
     if args.keep_outputs:
         os.environ["TTS_KEEP_APPWORLD_OUTPUTS"] = "1"
+    os.environ["TTS_APPWORLD_WM_TOOL_MODE"] = args.appworld_wm_tool_mode
+    os.environ["TTS_OFFICEBENCH_WM_TOOL_MODE"] = args.officebench_wm_tool_mode
 
     # Verifier configuration -> env vars, set HERE (in the parent) so forked workers inherit them.
     if args.verifier_samples is not None:
         os.environ["TTS_APPWORLD_VERIFIER_SAMPLES"] = str(args.verifier_samples)
+        os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] = str(args.verifier_samples)
     if args.verifier_reference:
         os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"
         # The reference auditor yields a GRADED confidence; rank on it unless the user chose a score.
@@ -542,9 +1276,24 @@ def main() -> None:
         if args.success_score == "simulator_success":
             args.success_score = "simulator_confidence"
         print(f"[verifier] PER-CHECK reference auditor ENABLED (success_score={args.success_score})")
+    if args.no_verifier_reference:
+        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "0"
+        print("[verifier] reference grounding DISABLED (blind WM-only ablation)")
     if args.sandbox_prompt:
         os.environ["TTS_APPWORLD_SANDBOX_PROMPT"] = "1"
-        print("[agent] sandbox preamble ENABLED (reduces consequential-action refusals)")
+    if args.appworld_precision_prompt:
+        os.environ["TTS_APPWORLD_PRECISION_PROMPT"] = "1"
+        print("[agent] AppWorld precision prompt ENABLED")
+    if args.appworld_agent_reference:
+        os.environ["TTS_APPWORLD_AGENT_REFERENCE"] = "1"
+        print("[agent] AppWorld reference-conditioned task contract ENABLED")
+    if args.appworld_deterministic_dirty_reads:
+        os.environ["TTS_APPWORLD_DETERMINISTIC_DIRTY_READS"] = "1"
+        print("[wm] AppWorld deterministic dirty reads ENABLED")
+    if args.appworld_instruction_preflights is not None:
+        os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] = (
+            "1" if args.appworld_instruction_preflights else "0"
+        )
 
     # Local, self-hosted model -> configure HERE (in the parent) so forked/spawned workers inherit
     # the OpenAI-compatible endpoint env vars (works for both the AppWorld process pool and the τ²
@@ -578,6 +1327,10 @@ def main() -> None:
         print_report(load_records(args.report))
         return
 
+    if args.env == "terminalbench":
+        _run_terminalbench_cli(args)
+        return
+
     avail = available_real_envs()
     env_name = args.env or (avail[0] if avail else None)
     if env_name is None:
@@ -585,6 +1338,31 @@ def main() -> None:
               "Activate `dw` (tau2) or `env` (appworld, with APPWORLD_ROOT), or set OFFICEBENCH_ROOT "
               "with a usable Docker daemon for officebench.")
         return
+    if env_name == "appworld" and args.agent == "llm_wm":
+        _configure_appworld_bon(args)
+        if args.appworld_instruction_preflights:
+            print("[agent] AppWorld replay-safe instruction preflights ENABLED")
+        print(
+            f"[appworld-wm] tool mode={args.appworld_wm_tool_mode}, "
+            f"percheck={int(_env_enabled('TTS_APPWORLD_VERIFIER_PERCHECK', False))}, "
+            f"coverage_aware={int(_env_enabled('TTS_APPWORLD_VERIFIER_COVERAGE_AWARE', False))}, "
+            f"unknown_credit={os.environ.get('TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT', '0.25')}, "
+            f"success_score={args.success_score}"
+        )
+    if env_name == "officebench" and args.agent == "llm_wm":
+        _configure_officebench_bon(args)
+        print(
+            f"[officebench-wm] tool mode={args.officebench_wm_tool_mode}, "
+            f"reference={int(_env_enabled('TTS_OFFICEBENCH_VERIFIER_REFERENCE', True))}, "
+            f"percheck={int(_env_enabled('TTS_OFFICEBENCH_VERIFIER_PERCHECK', False))}, "
+            f"unknown_credit={os.environ.get('TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT', '0.25')}, "
+            f"whole_weight={os.environ.get('TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT', '0.25')}, "
+            f"comparative_rerank={int(_env_enabled('TTS_OFFICEBENCH_COMPARATIVE_RERANK', False))}, "
+            f"comparative_margin={_float_env('TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN', 0.25)}, "
+            f"uniform_seeds=base+i, "
+            f"verifier_samples={_positive_int_env('TTS_OFFICEBENCH_VERIFIER_SAMPLES', 1)}, "
+            f"success_score={args.success_score}"
+        )
 
     if args.list_subsets:
         for sub in env_subsets(env_name):
@@ -619,6 +1397,11 @@ def main() -> None:
         os.environ["TTS_OFFICEBENCH_RUN_ID"] = officebench_run_id
 
     specs = _specs_for(env_name, args)
+    planned_specs = list(specs)
+    if not planned_specs:
+        print("[coverage-error] task selection is empty; check --tasks/--splits/--levels/--subsets.",
+              file=sys.stderr)
+        raise SystemExit(2)
     usable_only = False  # Run on all tasks, not just WM-eligible mutating tasks
 
     # Each task runs ALL its (method, N) cells together with a task-local rollout pool, so B0/B1/B2/
@@ -630,10 +1413,353 @@ def main() -> None:
     # immediately, so an interrupted sweep (crash/OOM/hang-up/pool deadlock) keeps its progress and
     # can be continued with --resume (which skips tasks already fully present on disk).
     records_path = os.path.join(args.out, "records.jsonl")
+    cell_checkpoint_dir = os.path.join(args.out, ".cell-checkpoints")
     expected_cells = _expected_cells(methods, Ns)
     prior_records: List[dict] = []
     if args.resume:
-        prior_records, done = _load_checkpoint(records_path)
+        # Recover cells written by workers before a previous parent crash/hard-kill, then canonicalize
+        # them into records.jsonl before clearing the sidecars for this attempt.
+        prior_records, done = _load_checkpoint(records_path, cell_checkpoint_dir)
+        if env_name == "appworld":
+            requested_mode = args.appworld_wm_tool_mode
+            mismatched = [
+                record for record in prior_records
+                if record.get("appworld_wm_tool_mode", "text") != requested_mode
+            ]
+            if mismatched:
+                recorded_modes = sorted({
+                    record.get("appworld_wm_tool_mode", "text")
+                    for record in mismatched
+                })
+                p.error(
+                    f"--resume AppWorld tool-mode mismatch: records contain {recorded_modes}, "
+                    f"but this run requested {requested_mode!r}. Use a new --out directory or the "
+                    "matching --appworld-wm-tool-mode."
+                )
+            requested_coverage = _env_enabled(
+                "TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", False)
+            coverage_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "appworld_verifier_coverage_aware", False
+                )) != requested_coverage
+            ]
+            if coverage_mismatches:
+                p.error(
+                    "--resume AppWorld coverage-aware verifier mismatch. Use a new --out "
+                    "directory or matching TTS_APPWORLD_VERIFIER_COVERAGE_AWARE."
+                )
+            requested_percheck = _env_enabled(
+                "TTS_APPWORLD_VERIFIER_PERCHECK", False)
+            percheck_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "appworld_verifier_percheck", False
+                )) != requested_percheck
+            ]
+            if percheck_mismatches:
+                p.error(
+                    "--resume AppWorld per-check verifier mismatch. Use a new --out "
+                    "directory or matching TTS_APPWORLD_VERIFIER_PERCHECK."
+                )
+            requested_samples = _positive_int_env(
+                "TTS_APPWORLD_VERIFIER_SAMPLES", 1)
+            sample_mismatches = [
+                record for record in prior_records
+                if int(record.get(
+                    "appworld_verifier_samples", 1
+                )) != requested_samples
+            ]
+            if sample_mismatches:
+                p.error(
+                    "--resume AppWorld verifier-sample mismatch. Use a new --out "
+                    "directory or matching --verifier-samples."
+                )
+            requested_unknown_credit = _float_env(
+                "TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT", 0.25)
+            unknown_credit_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "appworld_verifier_unknown_credit", 0.25
+                )) != requested_unknown_credit
+            ]
+            if unknown_credit_mismatches:
+                p.error(
+                    "--resume AppWorld UNKNOWN-credit mismatch. Use a new --out directory "
+                    "or matching TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT."
+                )
+            requested_margin = _float_env(
+                "TTS_SELECTION_CONFIDENCE_MARGIN", 0.1)
+            margin_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "selection_confidence_margin", 0.1
+                )) != requested_margin
+            ]
+            if margin_mismatches:
+                p.error(
+                    "--resume AppWorld confidence-margin mismatch. Use a new --out directory "
+                    "or matching TTS_SELECTION_CONFIDENCE_MARGIN."
+                )
+            requested_preflights = _env_enabled(
+                "TTS_APPWORLD_INSTRUCTION_PREFLIGHTS", False)
+            preflight_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "appworld_instruction_preflights", False
+                )) != requested_preflights
+            ]
+            if preflight_mismatches:
+                p.error(
+                    "--resume AppWorld instruction-preflight mismatch. Use a new --out "
+                    "directory or matching --appworld-instruction-preflights setting."
+                )
+            score_mismatches = [
+                record for record in prior_records
+                if record.get("success_score", "simulator_success") != args.success_score
+            ]
+            if score_mismatches:
+                recorded_scores = sorted({
+                    record.get("success_score", "simulator_success")
+                    for record in score_mismatches
+                })
+                p.error(
+                    f"--resume AppWorld success-score mismatch: records contain "
+                    f"{recorded_scores}, but this run requested {args.success_score!r}. "
+                    f"Use a new --out directory or the matching --success-score."
+                )
+        if env_name == "officebench":
+            requested_agent = getattr(args, "agent", None)
+            agent_mismatches = [
+                record for record in prior_records
+                if record.get("solver_agent") != requested_agent
+            ]
+            if agent_mismatches:
+                p.error(
+                    f"--resume OfficeBench solver-agent mismatch: this run requested "
+                    f"{requested_agent!r}. Use a new --out directory or the matching --agent."
+                )
+            requested_model = (
+                getattr(args, "llm_agent", None)
+                or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+                or os.environ.get("WM_MODEL")
+                or os.environ.get("TTS_AGENT_MODEL")
+            )
+            model_mismatches = [
+                record for record in prior_records
+                if record.get("llm_agent") != requested_model
+            ]
+            if model_mismatches:
+                p.error(
+                    f"--resume OfficeBench model mismatch: this run requested "
+                    f"{requested_model!r}. Use a new --out directory or the matching --llm-agent."
+                )
+            requested_temperature = getattr(args, "temperature", None)
+            temperature_mismatches = [
+                record for record in prior_records
+                if record.get("solver_temperature") != requested_temperature
+            ]
+            if temperature_mismatches:
+                p.error(
+                    "--resume OfficeBench temperature mismatch. Use a new --out directory "
+                    "or the matching --temperature."
+                )
+            requested_max_steps = getattr(args, "max_steps", None)
+            max_step_mismatches = [
+                record for record in prior_records
+                if record.get("solver_max_steps") != requested_max_steps
+            ]
+            if max_step_mismatches:
+                p.error(
+                    "--resume OfficeBench max-step mismatch. Use a new --out directory "
+                    "or the matching --max-steps."
+                )
+            requested_seed_base = getattr(args, "seed_base", None)
+            seed_mismatches = [
+                record for record in prior_records
+                if record.get("seed_base") != requested_seed_base
+            ]
+            if seed_mismatches:
+                p.error(
+                    "--resume OfficeBench seed-base mismatch. Use a new --out directory "
+                    "or the matching --seed-base."
+                )
+            requested_mode = args.officebench_wm_tool_mode
+            mismatched = [
+                record for record in prior_records
+                if record.get("officebench_wm_tool_mode", "text") != requested_mode
+            ]
+            if mismatched:
+                recorded_modes = sorted({
+                    record.get("officebench_wm_tool_mode", "text")
+                    for record in mismatched
+                })
+                p.error(
+                    f"--resume OfficeBench tool-mode mismatch: records contain {recorded_modes}, "
+                    f"but this run requested {requested_mode!r}. Use a new --out directory or the "
+                    "matching --officebench-wm-tool-mode."
+                )
+            requested_reference = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_REFERENCE", True)
+            reference_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "officebench_verifier_reference", True
+                )) != requested_reference
+            ]
+            if reference_mismatches:
+                p.error(
+                    "--resume OfficeBench reference-verifier mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_VERIFIER_REFERENCE."
+                )
+            requested_state = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_STATE", True)
+            state_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "officebench_verifier_state", True
+                )) != requested_state
+            ]
+            if state_mismatches:
+                p.error(
+                    "--resume OfficeBench state-grounding mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_VERIFIER_STATE."
+                )
+            requested_samples = _positive_int_env("TTS_OFFICEBENCH_VERIFIER_SAMPLES", 1)
+            sample_mismatches = [
+                record for record in prior_records
+                if int(record.get("officebench_verifier_samples", 1)) != requested_samples
+            ]
+            if sample_mismatches:
+                recorded_samples = sorted({
+                    int(record.get("officebench_verifier_samples", 1))
+                    for record in sample_mismatches
+                })
+                p.error(
+                    f"--resume OfficeBench verifier-sample mismatch: records contain "
+                    f"{recorded_samples}, but this run requested {requested_samples}. "
+                    f"Use a new --out directory or matching --verifier-samples."
+                )
+            requested_percheck = _env_enabled(
+                "TTS_OFFICEBENCH_VERIFIER_PERCHECK", False)
+            percheck_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "officebench_verifier_percheck", False
+                )) != requested_percheck
+            ]
+            if percheck_mismatches:
+                p.error(
+                    "--resume OfficeBench per-check verifier mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_VERIFIER_PERCHECK."
+                )
+            requested_atomic_cap = _positive_int_env(
+                "TTS_OFFICEBENCH_VERIFIER_ATOMIC_CAP", 4)
+            atomic_cap_mismatches = [
+                record for record in prior_records
+                if int(record.get(
+                    "officebench_verifier_atomic_cap", 4
+                )) != requested_atomic_cap
+            ]
+            if atomic_cap_mismatches:
+                p.error(
+                    "--resume OfficeBench atomic-cap mismatch. Use a new --out directory "
+                    "or matching TTS_OFFICEBENCH_VERIFIER_ATOMIC_CAP."
+                )
+            requested_unknown_credit = _float_env(
+                "TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", 0.25)
+            unknown_credit_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "officebench_verifier_unknown_credit", 0.25
+                )) != requested_unknown_credit
+            ]
+            if unknown_credit_mismatches:
+                p.error(
+                    "--resume OfficeBench UNKNOWN-credit mismatch. Use a new --out directory "
+                    "or matching TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT."
+                )
+            requested_whole_weight = _float_env(
+                "TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", 0.25)
+            whole_weight_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "officebench_verifier_whole_weight", 0.25
+                )) != requested_whole_weight
+            ]
+            if whole_weight_mismatches:
+                p.error(
+                    "--resume OfficeBench whole-audit weight mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT."
+                )
+            requested_reconstruct_gold = _env_enabled(
+                "TTS_OFFICEBENCH_WM_RECONSTRUCT_GOLD", False)
+            reconstruct_gold_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "officebench_reconstruct_gold", False
+                )) != requested_reconstruct_gold
+            ]
+            if reconstruct_gold_mismatches:
+                p.error(
+                    "--resume OfficeBench gold-reconstruction mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_WM_RECONSTRUCT_GOLD."
+                )
+            requested_comparative_rerank = _env_enabled(
+                "TTS_OFFICEBENCH_COMPARATIVE_RERANK", False)
+            comparative_rerank_mismatches = [
+                record for record in prior_records
+                if bool(record.get(
+                    "officebench_comparative_rerank", False
+                )) != requested_comparative_rerank
+            ]
+            if comparative_rerank_mismatches:
+                p.error(
+                    "--resume OfficeBench comparative-rerank mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_COMPARATIVE_RERANK."
+                )
+            requested_comparative_margin = _float_env(
+                "TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", 0.25)
+            comparative_margin_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "officebench_comparative_confidence_margin", 0.25
+                )) != requested_comparative_margin
+            ]
+            if comparative_margin_mismatches:
+                p.error(
+                    "--resume OfficeBench comparative-confidence margin mismatch. Use a new --out "
+                    "directory or matching TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN."
+                )
+            requested_margin = _float_env(
+                "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", 0.05)
+            margin_mismatches = [
+                record for record in prior_records
+                if float(record.get(
+                    "officebench_selection_confidence_margin", 0.05
+                )) != requested_margin
+            ]
+            if margin_mismatches:
+                p.error(
+                    "--resume OfficeBench confidence-margin mismatch. Use a new --out directory "
+                    "or matching TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN."
+                )
+            score_mismatches = [
+                record for record in prior_records
+                if record.get("success_score", "simulator_success") != args.success_score
+            ]
+            if score_mismatches:
+                recorded_scores = sorted({
+                    record.get("success_score", "simulator_success")
+                    for record in score_mismatches
+                })
+                p.error(
+                    f"--resume OfficeBench success-score mismatch: records contain "
+                    f"{recorded_scores}, but this run requested {args.success_score!r}. "
+                    f"Use a new --out directory or the matching --success-score."
+                )
+        _rewrite_checkpoint(records_path, prior_records)
+        shutil.rmtree(cell_checkpoint_dir, ignore_errors=True)
         before = len(specs)
         specs = [s for s in specs
                  if not expected_cells.issubset(done.get((env_name, s.subset, s.index), set()))]
@@ -643,6 +1769,9 @@ def main() -> None:
     else:
         # fresh run — truncate any stale checkpoint
         open(records_path, "w").close()
+        shutil.rmtree(cell_checkpoint_dir, ignore_errors=True)
+    os.makedirs(cell_checkpoint_dir, exist_ok=True)
+    args._cell_checkpoint_dir = cell_checkpoint_dir
 
     ckpt_fh = open(records_path, "a", buffering=1)  # line-buffered append
 
@@ -672,11 +1801,42 @@ def main() -> None:
 
     # Re-read the checkpoint so the report/aggregates reflect EVERYTHING on disk (prior + new),
     # de-duplicated per (env, spec_subset, spec_index, method, n_rollouts).
-    all_records, _ = _load_checkpoint(records_path)
+    all_records, _ = _load_checkpoint(records_path, cell_checkpoint_dir)
     if not all_records:  # checkpoint disabled/empty (e.g. no spec_index) — fall back to in-memory
         all_records = prior_records + new_records
+    # Make records.jsonl self-contained: after this point users need not know about worker sidecars.
+    _rewrite_checkpoint(records_path, all_records)
 
-    print_report(all_records)
+    run_status = getattr(args, "_last_run_status", {})
+    cell_errors = _read_cell_sidecars(cell_checkpoint_dir, "error")
+    manifest = _coverage_manifest(
+        env_name, planned_specs, all_records, expected_cells, run_status, cell_errors)
+    with open(os.path.join(args.out, "run_manifest.json"), "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, indent=2)
+    shutil.rmtree(cell_checkpoint_dir, ignore_errors=True)
+    args._cell_checkpoint_dir = None
+
+    incomplete = manifest["partial_tasks"] + manifest["missing_tasks"]
+    if incomplete and not args.allow_partial:
+        print(
+            f"\n[coverage-error] {incomplete}/{manifest['expected_tasks']} task(s) are missing one or "
+            f"more expected cells. Refusing to publish an unequal-denominator TTS curve. "
+            f"See {os.path.join(args.out, 'run_manifest.json')} and re-run with --resume, "
+            "or omit --strict-coverage.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+    if incomplete:
+        print(
+            f"\n[coverage-warning] publishing PARTIAL metrics for {incomplete} task(s); "
+            f"{manifest['missing_decisions']} missing decision cell(s) count as failures. "
+            "Use --strict-coverage to reject incomplete runs.",
+            file=sys.stderr,
+        )
+
+    metric_records = _records_with_missing_failures(
+        env_name, planned_specs, all_records, expected_cells)
+    print_report(metric_records)
 
     if args.depth_sweep:
         print("\nDepth sweep (fixed mode, success & cost vs L):")
@@ -693,11 +1853,15 @@ def main() -> None:
 
     dump_spawn_tree(env_name, args)
 
-    aggs = aggregate(all_records, ["env", "subset", "method", "n_rollouts"])
+    aggs = aggregate(metric_records, ["env", "subset", "method", "n_rollouts"])
     with open(os.path.join(args.out, "aggregates.json"), "w") as fh:
         json.dump(aggs, fh, indent=2)
     write_csv(os.path.join(args.out, "aggregates.csv"), aggs)
-    print(f"\nWrote {len(all_records)} decisions and {len(aggs)} aggregate rows to {args.out}/")
+    print(
+        f"\nWrote {len(all_records)} recorded decisions and metrics over "
+        f"{len(metric_records)} expected decisions ({manifest['missing_decisions']} missing "
+        f"counted as failures), with {len(aggs)} aggregate rows to {args.out}/"
+    )
 
 
 if __name__ == "__main__":

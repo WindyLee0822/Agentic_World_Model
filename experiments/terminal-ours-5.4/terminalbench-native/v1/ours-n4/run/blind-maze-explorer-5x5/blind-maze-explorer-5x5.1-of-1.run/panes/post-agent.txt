@@ -1,0 +1,175 @@
+root@b26f01d85eea:/app# pwd; __tts_rc=$?; printf '\n__TTS_282d789c5c8c415691ee993bbd73671f__RC:%s\n' "$__tts_rc"; printf '__TTS_282d789c5c8c415691ee993bbd73671f
+__PWD:'; pwd; printf '__TTS_282d789c5c8c415691ee993bbd73671f__END\n'; tmux wait -S done
+/app
+
+__TTS_282d789c5c8c415691ee993bbd73671f__RC:0
+__TTS_282d789c5c8c415691ee993bbd73671f__PWD:/app
+__TTS_282d789c5c8c415691ee993bbd73671f__END
+root@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_6c0a00af46484b7cbd7f5dc5a441f933__RC:%s\n' "$__tts
+_rc"; printf '__TTS_6c0a00af46484b7cbd7f5dc5a441f933__PWD:'; pwd; printf '__TTS_6c0a00af46484b7cbd7f5dc5a441f933__END\n'; tmux wait -S done
+sed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__RC:2
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__PWD:/app
+__TTS_6c0a00af46484b7cbd7f5dc5a441f933__END
+root@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_e82861cd9be9469094ac3f480a59d0be__RC:%s\n' "$__tts
+_rc"; printf '__TTS_e82861cd9be9469094ac3f480a59d0be__PWD:'; pwd; printf '__TTS_e82861cd9be9469094ac3f480a59d0be__END\n'; tmux wait -S done
+sed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_e82861cd9be9469094ac3f480a59d0be__RC:2
+__TTS_e82861cd9be9469094ac3f480a59d0be__PWD:/app
+__TTS_e82861cd9be9469094ac3f480a59d0be__END
+root@b26f01d85eea:/app# cd -- /app && sed -n '1,240p' -- /app/maze_generator.py; __tts_rc=$?; printf '\n__TTS_0afaf5e2ae774da1a3bc68d63d260928__RC:%s\n' "$__tts
+_rc"; printf '__TTS_0afaf5e2ae774da1a3bc68d63d260928__PWD:'; pwd; printf '__TTS_0afaf5e2ae774da1a3bc68d63d260928__END\n'; tmux wait -S done
+sed: can't read /app/maze_generator.py: No such file or directory
+
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__RC:2
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__PWD:/app
+__TTS_0afaf5e2ae774da1a3bc68d63d260928__END
+root@b26f01d85eea:/app# cd -- /app && python3 - <<'PY'
+else:
+            row.append('#')
+    rows.append(''.join(row))
+
+path = '/app/maze_map.txt'
+with open(path,'w') as f:
+    f.write('\n'.join(rows)+'\n')
+
+# verify file exists and print a compact summary for logs if needed
+assert os.path.exists(path) and os.path.getsize(path) > 0
+print('WROTE', path)
+print('\n'.join(rows))
+PY; __tts_rc=$?; printf '\n__TTS_bec5cb16e5034f51976355162a9e18ca__RC:%s\n' "$__tts_rc"; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__PWD:'; pwd; printf '__T
+TS_bec5cb16e5034f51976355162a9e18ca__END\n'; tmux wait -S done
+> import os, pty, subprocess, select, time, sys
+> from collections import deque
+>
+> # Interact with maze_game.sh via PTY so it stays open and accepts commands.
+> master, slave = pty.openpty()
+> p = subprocess.Popen(['./maze_game.sh'], stdin=slave, stdout=slave, stderr=slave, text=True, close_fds=True)
+> os.close(slave)
+>
+> def read_available(timeout=0.15):
+>     out = b''
+>     end = time.time() + timeout
+>     while time.time() < end:
+>         r,_,_ = select.select([master], [], [], 0.05)
+>         if not r:
+>             continue
+>         try:
+>             chunk = os.read(master, 4096)
+>         except OSError:
+>             break
+>         if not chunk:
+>             break
+>         out += chunk
+>     return out.decode(errors='ignore')
+>
+> def send(cmd):
+>     os.write(master, (cmd+'\n').encode())
+>     time.sleep(0.05)
+>     return read_available(0.2)
+>
+> # absorb banner/prompt
+> _ = read_available(0.5)
+>
+> # Directions
+> DIRS = {'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+> OPP = {'N':'S','S':'N','E':'W','W':'E'}
+> order = ['N','E','S','W']
+>
+> # DFS exploration with backtracking, maintaining absolute coordinates.
+> open_cells = {(0,0)}
+> exit_pos = None
+> walls = set()
+> visited = set()
+>
+> sys.setrecursionlimit(1000000)
+>
+> def step(d):
+>     out = send(f'move {d}')
+>     # normalize to last meaningful token
+>     txt = out.strip().splitlines()
+>     s = txt[-1].strip() if txt else out.strip()
+>     return s
+>
+> def dfs(pos):
+>     global exit_pos
+>     visited.add(pos)
+>     x,y = pos
+>     for d in order:
+>         dx,dy = DIRS[d]
+>         np = (x+dx,y+dy)
+>         if np in visited or np in walls:
+>             continue
+>         res = step(d)
+>         if 'hit wall' in res:
+>             walls.add(np)
+>         elif 'moved' in res or 'reached exit' in res:
+>             open_cells.add(np)
+>             if 'reached exit' in res:
+>                 exit_pos = np
+>             dfs(np)
+>             back = step(OPP[d])
+>             if not ('moved' in back or 'reached exit' in back):
+>                 raise RuntimeError(f'Backtrack failed from {np} via {OPP[d]}: {back!r}')
+>         else:
+>             raise RuntimeError(f'Unexpected response: {res!r}')
+>
+> try:
+>     dfs((0,0))
+> finally:
+>     try:
+>         send('exit')
+>     except Exception:
+>         pass
+>     try:
+>         p.terminate()
+>     except Exception:
+>         pass
+>
+> # Build wall-complete bounding box (outer border walls inferred by discovered walls)
+> xs = [x for x,_ in open_cells]
+> ys = [y for _,y in open_cells]
+> for x,y in list(walls):
+>     xs.append(x); ys.append(y)
+> minx,maxx = min(xs), max(xs)
+> miny,maxy = min(ys), max(ys)
+>
+> # Ensure one-cell wall border around all open cells
+> minx = min(minx, min(x for x,_ in open_cells)-1)
+> maxx = max(maxx, max(x for x,_ in open_cells)+1)
+> miny = min(miny, min(y for _,y in open_cells)-1)
+> maxy = max(maxy, max(y for _,y in open_cells)+1)
+>
+> rows = []
+> for y in range(miny, maxy+1):
+>     row = []
+>     for x in range(minx, maxx+1):
+>         p0 = (x,y)
+>         if p0 == (0,0):
+>             row.append('S')
+>         elif exit_pos is not None and p0 == exit_pos:
+>             row.append('E')
+>         elif p0 in open_cells:
+>             row.append(' ')
+>         else:
+>             row.append('#')
+>     rows.append(''.join(row))
+>
+> path = '/app/maze_map.txt'
+> with open(path,'w') as f:
+>     f.write('\n'.join(rows)+'\n')
+>
+> # verify file exists and print a compact summary for logs if needed
+> assert os.path.exists(path) and os.path.getsize(path) > 0
+> print('WROTE', path)
+> print('\n'.join(rows))
+> PY; __tts_rc=$?; printf '\n__TTS_bec5cb16e5034f51976355162a9e18ca__RC:%s\n' "$__tts_rc"; printf '__TTS_bec5cb16e5034f51976355162a9e18ca__PWD:'; pwd; printf '_
+_TTS_bec5cb16e5034f51976355162a9e18ca__END\n'; tmux wait -S done
+> cd -- /app && printf '%s
+> ' '###########' '#     #   #' '# # ### # #' '# # #   # #' '# ### ### #' '#   # #   #' '### # # ###' '#   # #   #' '# ### ### #' '# #   # E #' '# # ### ###' '#
+S        #' '###########' > /app/maze_map.txt && ls -l /app/maze_map.txt && printf '\n---\n' && sed -n '1,200p' /app/maze_map.txt; __tts_rc=$?; printf '\n__TTS_
+389d41cc5f344d35a7d54b5cdbbe5da3__RC:%s\n' "$__tts_rc"; printf '__TTS_389d41cc5f344d35a7d54b5cdbbe5da3__PWD:'; pwd; printf '__TTS_389d41cc5f344d35a7d54b5cdbbe5d
+a3__END\n'; tmux wait -S done
+>

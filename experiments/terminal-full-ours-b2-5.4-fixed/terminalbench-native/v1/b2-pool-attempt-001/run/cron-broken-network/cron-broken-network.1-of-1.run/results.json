@@ -1,0 +1,21 @@
+{
+    "id": "ab4624e6-41a0-4908-95f5-efa2f0c13ee6",
+    "trial_name": "cron-broken-network.1-of-1.run",
+    "task_id": "cron-broken-network",
+    "instruction": "For some reason I can't curl example.com, can you figure out why and what I should do to fix it?",
+    "is_resolved": false,
+    "failure_mode": "unset",
+    "parser_results": {
+        "test_curl_file_exists": "passed",
+        "test_curl_file_content": "failed"
+    },
+    "recording_path": "run/cron-broken-network/cron-broken-network.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 6461,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-18T05:08:34.422666+00:00",
+    "trial_ended_at": "2026-07-18T05:10:41.477585+00:00",
+    "agent_started_at": "2026-07-18T05:08:58.436170+00:00",
+    "agent_ended_at": "2026-07-18T05:09:20.178993+00:00",
+    "test_started_at": "2026-07-18T05:09:23.591641+00:00",
+    "test_ended_at": "2026-07-18T05:10:30.661989+00:00"
+}

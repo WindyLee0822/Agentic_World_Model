@@ -1,0 +1,75 @@
+root@5fa59495eb41:/app# pwd; __tts_rc=$?; printf '\n__TTS_b12a30c4d4864afcbd10a7ab009c161c__RC:%s\n' "$__tts_rc"; printf '__TTS_b12a30c4d4864afcbd10a7ab009c161c
+__PWD:'; pwd; printf '__TTS_b12a30c4d4864afcbd10a7ab009c161c__END\n'; tmux wait -S done
+/app
+
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__RC:0
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__PWD:/app
+__TTS_b12a30c4d4864afcbd10a7ab009c161c__END
+root@5fa59495eb41:/app# cd -- /app && printf 'exit
+> ' | ./maze_game.sh >/dev/null 2>&1; ls -l .; __tts_rc=$?; printf '\n__TTS_c8e32142640145b59465337028739e2e__RC:%s\n' "$__tts_rc"; printf '__TTS_c8e32142640145
+b59465337028739e2e__PWD:'; pwd; printf '__TTS_c8e32142640145b59465337028739e2e__END\n'; tmux wait -S done
+total 8
+-rwxr-xr-x 1 root root   80 Jul 16 19:53 maze_game.sh
+drwxr-xr-x 2 root root 4096 Jul 16 19:53 tests
+
+__TTS_c8e32142640145b59465337028739e2e__RC:0
+__TTS_c8e32142640145b59465337028739e2e__PWD:/app
+__TTS_c8e32142640145b59465337028739e2e__END
+root@5fa59495eb41:/app# cd -- /app && sed -n '1,200p' maze_game.sh; __tts_rc=$?; printf '\n__TTS_d7897487a76c497a9eec28a4a8f352ad__RC:%s\n' "$__tts_rc"; printf
+'__TTS_d7897487a76c497a9eec28a4a8f352ad__PWD:'; pwd; printf '__TTS_d7897487a76c497a9eec28a4a8f352ad__END\n'; tmux wait -S done
+#!/bin/bash
+
+# Run the protected maze server
+python3 /protected/maze_server.py
+__TTS_d7897487a76c497a9eec28a4a8f352ad__RC:0
+__TTS_d7897487a76c497a9eec28a4a8f352ad__PWD:/app
+__TTS_d7897487a76c497a9eec28a4a8f352ad__END
+root@5fa59495eb41:/app# cd -- /app && python3 - <<'PY'
+> import pexpect, re, os
+> child = pexpect.spawn('./maze_game.sh', encoding='utf-8', timeout=2)
+> # probe startup/output shape
+> try:
+>     child.expect(['>','move','exit',pexpect.TIMEOUT,pexpect.EOF], timeout=1)
+> except Exception:
+>     pass
+> print(child.before + child.after)
+> child.sendline('exit')
+> child.expect(pexpect.EOF)
+> print(child.before)
+> PY; __tts_rc=$?; printf '\n__TTS_18cc806ba4544880afafd5dca2924d78__RC:%s\n' "$__tts_rc"; printf '__TTS_18cc806ba4544880afafd5dca2924d78__PWD:'; pwd; printf '_
+_TTS_18cc806ba4544880afafd5dca2924d78__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> import os, pty, select, subprocess, time
+> master, slave = pty.openpty()
+> p = subprocess.Popen(['./maze_game.sh'], stdin=slave, stdout=slave, stderr=slave, text=True, close_fds=True)
+> os.close(slave)
+> time.sleep(0.5)
+> out=b''
+> while True:
+>     r,_,_=select.select([master],[],[],0.2)
+>     if not r: break
+>     try: out += os.read(master, 4096)
+>     except OSError: break
+> print(out.decode('utf-8','ignore'))
+> os.write(master,b'exit\n')
+> time.sleep(0.2)
+> while True:
+>     r,_,_=select.select([master],[],[],0.2)
+>     if not r: break
+>     try: out=os.read(master,4096)
+>     except OSError: break
+>     print(out.decode('utf-8','ignore'), end='')
+> p.wait(timeout=2)
+> PY; __tts_rc=$?; printf '\n__TTS_b55a56df47324c5492a8084809527aff__RC:%s\n' "$__tts_rc"; printf '__TTS_b55a56df47324c5492a8084809527aff__PWD:'; pwd; printf '_
+_TTS_b55a56df47324c5492a8084809527aff__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import inspect,sys;print(open('/protected/maze_server.py').read())" | sed -n '1,260p'; __tts_rc=$?; printf '\n__TTS_dd8d1a37f4a243fd
+ae82e64a924f2602__RC:%s\n' "$__tts_rc"; printf '__TTS_dd8d1a37f4a243fdae82e64a924f2602__PWD:'; pwd; printf '__TTS_dd8d1a37f4a243fdae82e64a924f2602__END\n'; tmux
+ wait -S done
+> cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> p=Path('/protected/maze_server.py')
+> print('exists',p.exists(),'size',p.stat().st_size if p.exists() else -1)
+> print(p.read_text()[:4000])
+> PY; __tts_rc=$?; printf '\n__TTS_ee1fee71e21043e3a71cc74cbc7ab644__RC:%s\n' "$__tts_rc"; printf '__TTS_ee1fee71e21043e3a71cc74cbc7ab644__PWD:'; pwd; printf '_
+_TTS_ee1fee71e21043e3a71cc74cbc7ab644__END\n'; tmux wait -S done
+>

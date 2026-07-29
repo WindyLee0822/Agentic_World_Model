@@ -1,0 +1,33 @@
+{
+  "method": "b0",
+  "selected_index": 0,
+  "committed": true,
+  "rollouts": [
+    {
+      "index": 0,
+      "confidence": 1.0,
+      "n_reads": 0,
+      "n_spawns": 0,
+      "max_depth": 0,
+      "run": {
+        "commands": [
+          "python - <<'PY'\nimport os, textwrap, pathlib, sys, subprocess\nbase=pathlib.Path('/app')\n(base/'model_cache'/'sentiment_model').mkdir(parents=True, exist_ok=True)\nsubprocess.check_call([sys.executable,'-m','pip','install','-q','flask','transformers','torch','huggingface_hub'])\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nmodel_id='distilbert-base-uncased-finetuned-sst-2-english'\nsave_dir=str(base/'model_cache'/'sentiment_model')\nAutoTokenizer.from_pretrained(model_id).save_pretrained(save_dir)\nAutoModelForSequenceClassification.from_pretrained(model_id).save_pretrained(save_dir)\napp_code='''from flask import Flask, request, jsonify\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nimport torch\n\nMODEL_DIR = \"/app/model_cache/sentiment_model\"\napp = Flask(__name__)\ntokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)\nmodel = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)\nmodel.eval()\n\n@app.post(\"/sentiment\")\ndef sentiment():\n    data = request.get_json(silent=True)\n    if not data or not isinstance(data.get(\"text\"), str):\n        return jsonify({\"error\": \"Request JSON must include a string field 'text'.\"}), 400\n    text = data[\"text\"].strip()\n    if not text:\n        return jsonify({\"error\": \"Text must not be empty.\"}), 400\n    inputs = tokenizer(text, return_tensors=\"pt\", truncation=True)\n    with torch.no_grad():\n        logits = model(**inputs).logits\n        probs = torch.softmax(logits, dim=-1)[0].tolist()\n    negative, positive = probs[0], probs[1]\n    sentiment = \"positive\" if positive >= negative else \"negative\"\n    return jsonify({\n        \"sentiment\": sentiment,\n        \"confidence\": {\"positive\": positive, \"negative\": negative}\n    })\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=5000)\n'''\n(base/'app.py').write_text(app_code)\nPY\nnohup python /app/app.py >/app/flask.log 2>&1 &",
+          "python - <<'PY'\nimport urllib.request, json, time, sys\nurl='http://127.0.0.1:5000/sentiment'\ndata=json.dumps({'text':'I love this product'}).encode()\nfor _ in range(20):\n    try:\n        req=urllib.request.Request(url,data=data,headers={'Content-Type':'application/json'})\n        with urllib.request.urlopen(req, timeout=10) as r:\n            print(r.read().decode())\n        sys.exit(0)\n    except Exception:\n        time.sleep(1)\nsys.exit(1)\nPY"
+        ],
+        "observations": [
+          "return_code=0\ncwd=/app\nstdout:\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\n\n[notice] A new release of pip is available: 25.2 -> 26.1.2\n[notice] To update, run: pip install --upgrade pip\n",
+          "return_code=0\ncwd=/app\nstdout:\n{\"confidence\":{\"negative\":0.00012105620407965034,\"positive\":0.9998788833618164},\"sentiment\":\"positive\"}\n\n"
+        ],
+        "return_codes": [
+          0,
+          0
+        ],
+        "final_answer": "Downloaded the DistilBERT SST-2 sentiment model to /app/model_cache/sentiment_model, created /app/app.py with a Flask POST /sentiment API returning positive/negative confidence scores, started it in the background on 0.0.0.0:5000, and verified it responds successfully.",
+        "done": true,
+        "n_steps": 2,
+        "total_tokens": 3588
+      }
+    }
+  ],
+  "commit_results": []
+}

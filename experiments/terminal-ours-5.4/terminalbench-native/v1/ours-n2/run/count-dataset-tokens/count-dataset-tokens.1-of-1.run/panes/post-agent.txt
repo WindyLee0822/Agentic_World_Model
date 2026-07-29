@@ -1,0 +1,112 @@
+root@2a8557f71a9f:/app# pwd; __tts_rc=$?; printf '\n__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b__RC:%s\n' "$__tts_rc"; printf '__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b
+__PWD:'; pwd; printf '__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b__END\n'; tmux wait -S done
+/app
+
+__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b__RC:0
+__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b__PWD:/app
+__TTS_6589d284ea9e4c3b8fb5c54d9505fa8b__END
+root@2a8557f71a9f:/app# cd -- /app && python - <<'PY'
+> from datasets import load_dataset
+> from transformers import AutoTokenizer
+>
+> # Load dataset and tokenizer
+> try:
+>     ds = load_dataset('open-thoughts/OpenThoughts-114k', split='train')
+> except Exception:
+>     # Some environments need trust_remote_code disabled/enabled implicitly; re-raise if fails again
+>     ds = load_dataset('open-thoughts/OpenThoughts-114k', split='train')
+>
+> tok = AutoTokenizer.from_pretrained('Qwen/Qwen2.5-1.5B-Instruct')
+>
+> # Identify domain column and text columns
+> cols = ds.column_names
+> # likely domain/source columns
+> if 'domain' in cols:
+>     domain_col = 'domain'
+> elif 'category' in cols:
+>     domain_col = 'category'
+> else:
+>     raise RuntimeError(f'Could not find domain column among {cols}')
+>
+> # find science label rows
+> science = ds.filter(lambda x: x[domain_col] == 'science')
+>
+> # Determine content field(s) from README-style schema expectations
+> text_fields_priority = ['conversations', 'messages', 'text', 'problem', 'question', 'prompt', 'response', 'answer', 'chosen', 'rejected']
+> text_fields = [c for c in text_fields_priority if c in cols]
+> if not text_fields:
+>     # fallback to string/list columns by inspecting first row
+>     row = ds[0]
+>     for k,v in row.items():
+>         if isinstance(v, str) or isinstance(v, list):
+>             text_fields.append(k)
+>
+>
+> def stringify(val):
+>     if val is None:
+>         return ''
+>     if isinstance(val, str):
+>         return val
+>     if isinstance(val, list):
+>         parts = []
+>         for item in val:
+>             if isinstance(item, str):
+>                 parts.append(item)
+>             elif isinstance(item, dict):
+>                 # common chat format
+>                 if 'content' in item:
+>                     parts.append(str(item['content']))
+>                 else:
+>                     parts.append(' '.join(str(v) for v in item.values()))
+>             else:
+>                 parts.append(str(item))
+>         return '\n'.join(parts)
+>     if isinstance(val, dict):
+>         return ' '.join(str(v) for v in val.values())
+>     return str(val)
+>
+> # Prefer counting tokens over the model input text if available; otherwise concatenate meaningful text fields.
+> count = 0
+> for ex in science:
+>     if 'conversations' in ex:
+>         text = stringify(ex['conversations'])
+>     elif 'messages' in ex:
+>         text = stringify(ex['messages'])
+>     elif 'text' in ex:
+>         text = stringify(ex['text'])
+>     else:
+>         text = '\n'.join(stringify(ex[f]) for f in text_fields if f != domain_col)
+>     count += len(tok.encode(text, add_special_tokens=False))
+>
+> with open('/app/answer.txt','w') as f:
+>     f.write(str(count))
+> print(count)
+> PY; __tts_rc=$?; printf '\n__TTS_5f3e1732cdbe4bd58dcb8c47b4582fe7__RC:%s\n' "$__tts_rc"; printf '__TTS_5f3e1732cdbe4bd58dcb8c47b4582fe7__PWD:'; pwd; printf '_
+_TTS_5f3e1732cdbe4bd58dcb8c47b4582fe7__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> from datasets import load_dataset
+> from transformers import AutoTokenizer
+>
+> ds = load_dataset('open-thoughts/OpenThoughts-114k', split='train')
+> tok = AutoTokenizer.from_pretrained('Qwen/Qwen2.5-1.5B-Instruct')
+>
+> def conv_text(conv):
+>     parts = []
+>     for m in conv:
+>         if isinstance(m, dict):
+>             parts.append(str(m.get('value', m.get('content', ''))))
+>         else:
+>             parts.append(str(m))
+>     return '\n'.join(parts)
+>
+> count = 0
+> for ex in ds:
+>     if ex.get('domain') == 'science':
+>         count += len(tok.encode(conv_text(ex['conversations']), add_special_tokens=False))
+>
+> with open('/app/answer.txt', 'w') as f:
+>     f.write(str(count))
+> print(count)
+> PY; __tts_rc=$?; printf '\n__TTS_c581417208644867b9bbd92b20b13471__RC:%s\n' "$__tts_rc"; printf '__TTS_c581417208644867b9bbd92b20b13471__PWD:'; pwd; printf '_
+_TTS_c581417208644867b9bbd92b20b13471__END\n'; tmux wait -S done
+>

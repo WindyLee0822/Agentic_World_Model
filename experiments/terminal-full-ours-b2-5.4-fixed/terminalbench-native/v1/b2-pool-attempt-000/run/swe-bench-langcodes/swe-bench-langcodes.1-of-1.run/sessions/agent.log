@@ -1,0 +1,62 @@
+[?2004hroot@40e24834e90a:/app/langcodes# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@40e24834e90a:/app/langcodes# clear
+[?2004l[H[J[3J[?2004hroot@40e24834e90a:/app/langcodes# pwd; __tts_rc=$?; printf '\n__TTS_800e31e17e374c12a7dbc4402d5da140__RC:%s\n' "$__tts_rc"; printf '__TTS_800e31e17e374c12a7dbc4402d5da140__PWD:'; pwd; printf '__TTS_800e31e17e374c12a7dbc4402d5da140__END\n'; tmux wait -S done
+[?2004l/app/langcodes
+
+__TTS_800e31e17e374c12a7dbc4402d5da140__RC:0
+__TTS_800e31e17e374c12a7dbc4402d5da140__PWD:/app/langcodes
+__TTS_800e31e17e374c12a7dbc4402d5da140__END
+[?2004hroot@40e24834e90a:/app/langcodes# cd -- /app/langcodes && grep -n "def __hash__\|class Language" -n langcodes/__init__.py; __tts_rc=$?; printf '\n__TTS_0c062ff1d275462ba624bd3ca6b9410e__RC:%s\n' "$__tts_rc"; printf '__TTS_0c062ff1d275462ba624bd3ca6b9410e__PWD:'; pwd; printf '__TTS_0c062ff1d275462ba624bd3ca6b9410e__END\n'; tmux wait -S done
+[?2004l48:class Language:
+1503:    def __hash__(self) -> int:
+
+__TTS_0c062ff1d275462ba624bd3ca6b9410e__RC:0
+__TTS_0c062ff1d275462ba624bd3ca6b9410e__PWD:/app/langcodes
+__TTS_0c062ff1d275462ba624bd3ca6b9410e__END
+[?2004hroot@40e24834e90a:/app/langcodes# cd -- /app/langcodes && sed -n '1498,1508p' langcodes/__init__.py; __tts_rc=$?; printf '\n__TTS_9631f0ddc5df43589b7dfba688bd6e86__RC:%s\n' "$__tts_rc"; printf '__TTS_9631f0ddc5df43589b7dfba688bd6e86__PWD:'; pwd; printf '__TTS_9631f0ddc5df43589b7dfba688bd6e86__END\n'; tmux wait -S done
+[?2004l            return True
+        if not isinstance(other, Language):
+            return False
+        return self._str_tag == other._str_tag
+
+    def __hash__(self) -> int:
+        return hash(id(self))
+
+    def __getitem__(self, key: str) -> Optional[Union[str, List[str]]]:
+        if key in self.ATTRIBUTES:
+            return getattr(self, key)
+
+__TTS_9631f0ddc5df43589b7dfba688bd6e86__RC:0
+__TTS_9631f0ddc5df43589b7dfba688bd6e86__PWD:/app/langcodes
+__TTS_9631f0ddc5df43589b7dfba688bd6e86__END
+[?2004hroot@40e24834e90a:/app/langcodes# cd -- /app/langcodes && python - <<'PY'
+[?2004l[?2004h> from pathlib import Path
+[?2004l[?2004h> p=Path('langcodes/__init__.py')
+[?2004l[?2004h> s=p.read_text()
+[?2004l[?2004h> s=s.replace('    def __hash__(self) -> int:\n        return hash(id(self))\n','    def __hash__(self) -> int:\n        return hash(self._str_tag)\n')
+[?2004l[?2004h> p.write_text(s)
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_51e9f0f8d08147e3afafe2027d1b8307__RC:%s\n' "$__tts_rc"; printf '__TTS_51e9f0f8d08147e3afafe2027d1b8307__PWD:'; pwd; printf '__TTS_51e9f0f8d08147e3afafe2027d1b8307__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/langcodes && python -c "from pathlib import Path;p=Path('langcodes/__init__.py');s=p.read_text();old='    def __hash__(self) -> int:\n        return hash(id(self))\n';new='    def __hash__(self) -> int:\n        return hash(self._str_tag)\n';assert old in s;p.write_text(s.replace(old,new,1))"; __tts_rc=$?; printf '\n__TTS_01cd579ff9964960aa8f5b3739c110f8__RC:%s\n' "$__tts_rc"; printf '__TTS_01cd579ff9964960aa8f5b3739c110f8__PWD:'; pwd; printf '__TTS_01cd579ff9964960aa8f5b3739c110f8__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app/langcodes && perl -0pi -e 's/def __hash__\(self\) -> int:\n\s*return hash\(id\(self\)\)/def __hash__(self) -> int:\n        return hash(self._str_tag)/' langcodes/__init__.py; __tts_rc=$?; printf '\n__TTS_6bacf279d2d8490c942e3c329f5dac07__RC:%s\n' "$__tts_rc"; printf '__TTS_6bacf279d2d8490c942e3c329f5dac07__PWD:'; pwd; printf '__TTS_6bacf279d2d8490c942e3c329f5dac07__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
+  File "<stdin>", line 6
+    PY; __tts_rc=$?; printf '\n__TTS_51e9f0f8d08147e3afafe2027d1b8307__RC:%s\n' "$__tts_rc"; printf '__TTS_51e9f0f8d08147e3afafe2027d1b8307__PWD:'; pwd; printf '__TTS_51e9f0f8d08147e3afafe2027d1b8307__END\n'; tmux wait -S done
+                 ^
+SyntaxError: invalid syntax
+[?2004hroot@40e24834e90a:/app/langcodes# cd -- /app/langcodes && grep -nA2 "def __hash__" langcodes/__init__.py; __tts_rc=$?; printf '\n__TTS_998e8ddcb78e417bbb9a26d236b9470a__RC:%s\n' "$__tts_rc"; printf '__TTS_998e8ddcb78e417bbb9a26d236b9470a__PWD:'; pwd; printf '__TTS_998e8ddcb78e417bbb9a26d236b9470a__END\n'; tmux wait -S done
+[?2004l1503:    def __hash__(self) -> int:
+1504-        return hash(id(self))
+1505-
+
+__TTS_998e8ddcb78e417bbb9a26d236b9470a__RC:0
+__TTS_998e8ddcb78e417bbb9a26d236b9470a__PWD:/app/langcodes
+__TTS_998e8ddcb78e417bbb9a26d236b9470a__END
+[?2004hroot@40e24834e90a:/app/langcodes# cd -- /app/langcodes && sed -i '1504s/hash(id(self))/hash(self._str_tag)/' langcodes/__init__.py; __tts_rc=$?; printf '\n__TTS_130c615433c941289c209474859fd920__RC:%s\n' "$__tts_rc"; printf '__TTS_130c615433c941289c209474859fd920__PWD:'; pwd; printf '__TTS_130c615433c941289c209474859fd920__END\n'; tmux wait -S done
+[?2004l
+__TTS_130c615433c941289c209474859fd920__RC:0
+__TTS_130c615433c941289c209474859fd920__PWD:/app/langcodes
+__TTS_130c615433c941289c209474859fd920__END
+[?2004hroot@40e24834e90a:/app/langcodes# 

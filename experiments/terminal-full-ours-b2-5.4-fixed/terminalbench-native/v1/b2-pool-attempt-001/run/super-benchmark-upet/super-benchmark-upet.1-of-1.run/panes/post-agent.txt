@@ -1,0 +1,96 @@
+root@840a9976aa16:/app# pwd; __tts_rc=$?; printf '\n__TTS_70dd97e2144849bb97ae77f285445cae__RC:%s\n' "$__tts_rc"; printf '__TTS_70dd97e2144849bb97ae77f285445cae
+__PWD:'; pwd; printf '__TTS_70dd97e2144849bb97ae77f285445cae__END\n'; tmux wait -S done
+/app
+
+__TTS_70dd97e2144849bb97ae77f285445cae__RC:0
+__TTS_70dd97e2144849bb97ae77f285445cae__PWD:/app
+__TTS_70dd97e2144849bb97ae77f285445cae__END
+root@840a9976aa16:/app# cd -- /app && ls -la /app && git -C /app rev-parse --is-inside-work-tree 2>/dev/null && git -C /app rev-parse HEAD 2>/dev/null && find /
+app -maxdepth 2 -type f \( -iname 'README*' -o -name 'run.py' \) | sort; __tts_rc=$?; printf '\n__TTS_f4491bff39654ccfb1ce09e6b447b0a3__RC:%s\n' "$__tts_rc"; pr
+intf '__TTS_f4491bff39654ccfb1ce09e6b447b0a3__PWD:'; pwd; printf '__TTS_f4491bff39654ccfb1ce09e6b447b0a3__END\n'; tmux wait -S done
+total 12
+drwxr-xr-x 1 root root 4096 Jul 17 01:38 .
+drwxr-xr-x 1 root root 4096 Jul 18 01:23 ..
+-rw-r--r-- 1 root root  764 Jul 16 19:53 requirements.txt
+
+__TTS_f4491bff39654ccfb1ce09e6b447b0a3__RC:128
+__TTS_f4491bff39654ccfb1ce09e6b447b0a3__PWD:/app
+__TTS_f4491bff39654ccfb1ce09e6b447b0a3__END
+root@840a9976aa16:/app# cd -- /app && git clone https://github.com/wjn1996/UPET /app/UPET && git -C /app/UPET checkout 4701c3c62441077cc44a6553bf6ae909d99b8351
+&& find /app/UPET -maxdepth 2 -type f \( -iname 'README*' -o -name 'run.py' \) | sort; __tts_rc=$?; printf '\n__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__RC:%s\n' "
+$__tts_rc"; printf '__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__PWD:'; pwd; printf '__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__END\n'; tmux wait -S done
+Cloning into '/app/UPET'...
+remote: Enumerating objects: 384, done.
+remote: Counting objects: 100% (19/19), done.
+remote: Compressing objects: 100% (17/17), done.
+remote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)
+Receiving objects: 100% (384/384), 576.99 KiB | 1.69 MiB/s, done.
+Resolving deltas: 100% (72/72), done.
+Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
+/app/UPET/PT-Retrieval/README.md
+/app/UPET/README.md
+/app/UPET/run.py
+
+__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__RC:0
+__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__PWD:/app
+__TTS_d93bf01b089f4d2b9e5e9fdab33313e7__END
+root@840a9976aa16:/app# cd -- /app && cd /app/UPET && sed -n '1,240p' README.md && python - <<'PY'
+> import os
+> print('run.py exists:', os.path.exists('run.py'))
+> PY; __tts_rc=$?; printf '\n__TTS_43f7d424e2944d26bb0bbfccd44e7301__RC:%s\n' "$__tts_rc"; printf '__TTS_43f7d424e2944d26bb0bbfccd44e7301__PWD:'; pwd; printf '_
+_TTS_43f7d424e2944d26bb0bbfccd44e7301__END\n'; tmux wait -S done
+> cd -- /app && cd /app/UPET && python - <<'PY'
+> from itertools import islice
+> p='README.md'
+> with open(p,'r',encoding='utf-8') as f:
+>     for i,line in enumerate(islice(f,240),1):
+>         print(f'{i:04d}: {line}', end='')
+> print('\nrun.py exists:', __import__('os').path.exists('run.py'))
+> PY; __tts_rc=$?; printf '\n__TTS_152add7fe57340f2b0298fb4b33e5fab__RC:%s\n' "$__tts_rc"; printf '__TTS_152add7fe57340f2b0298fb4b33e5fab__PWD:'; pwd; printf '_
+_TTS_152add7fe57340f2b0298fb4b33e5fab__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> from itertools import islice
+> p='/app/UPET/README.md'
+> with open(p,'r',encoding='utf-8',errors='ignore') as f:
+>     for i,line in enumerate(islice(f,180),1):
+>         print(f'{i:04d}: {line.rstrip()}')
+> PY; __tts_rc=$?; printf '\n__TTS_e7cbd375580640cbb3a2bfb043b1c517__RC:%s\n' "$__tts_rc"; printf '__TTS_e7cbd375580640cbb3a2bfb043b1c517__PWD:'; pwd; printf '_
+_TTS_e7cbd375580640cbb3a2bfb043b1c517__END\n'; tmux wait -S done
+> cd -- /app && head -n 180 /app/UPET/README.md; __tts_rc=$?; printf '\n__TTS_a68b9e909f8140168d71cf83ec0765aa__RC:%s\n' "$__tts_rc"; printf '__TTS_a68b9e909f81
+40168d71cf83ec0765aa__PWD:'; pwd; printf '__TTS_a68b9e909f8140168d71cf83ec0765aa__END\n'; tmux wait -S done
+> cd -- /app && python -c "import os; p='/app/UPET/README.md'; print(os.path.getsize(p)); f=open(p,'rb'); print(f.read(2000).decode('utf-8','ignore'))"; __tts_r
+c=$?; printf '\n__TTS_fb1c7cf7dfff45c5afc3bc06890e6cec__RC:%s\n' "$__tts_rc"; printf '__TTS_fb1c7cf7dfff45c5afc3bc06890e6cec__PWD:'; pwd; printf '__TTS_fb1c7cf7
+dfff45c5afc3bc06890e6cec__END\n'; tmux wait -S done
+> cd -- /app && timeout 20s sh -lc "python -V && nvidia-smi -L 2>/dev/null || true && grep -Rni 'RTE\|roberta-base\|UPET\|num_examples_per_label\|seed' /app/UPE
+T -m 2 --include='README*' --include='*.sh' --include='*.py' | head -n 80"; __tts_rc=$?; printf '\n__TTS_fb3949ff867949eaac1444537ff73b5f__RC:%s\n' "$__tts_rc";
+ printf '__TTS_fb3949ff867949eaac1444537ff73b5f__PWD:'; pwd; printf '__TTS_fb3949ff867949eaac1444537ff73b5f__END\n'; tmux wait -S done
+> cd -- /app && timeout 60s sh -lc 'cd /app/UPET && python -u run.py --help | sed -n "1,220p"'; __tts_rc=$?; printf '\n__TTS_a0b36f8a9ef54fbabe1189addf089d3d__R
+C:%s\n' "$__tts_rc"; printf '__TTS_a0b36f8a9ef54fbabe1189addf089d3d__PWD:'; pwd; printf '__TTS_a0b36f8a9ef54fbabe1189addf089d3d__END\n'; tmux wait -S done
+> cd -- /app && timeout 30s sh -lc 'grep -Rni "num_examples_per_label\|task_name\|RTE\|roberta-base\|upet\|pet_per_gpu_train_batch_size\|lm_training" /app/UPET
+--include="README*" --include="*.sh" --include="*.py" | head -n 120'; __tts_rc=$?; printf '\n__TTS_05f371b2a3504071b7c6b6094f96f0f9__RC:%s\n' "$__tts_rc"; print
+f '__TTS_05f371b2a3504071b7c6b6094f96f0f9__PWD:'; pwd; printf '__TTS_05f371b2a3504071b7c6b6094f96f0f9__END\n'; tmux wait -S done
+> cd -- /app && python - <<'PY'
+> import pathlib
+> for p in ['/app/UPET/README.md','/app/UPET/run.py']:
+>     b=pathlib.Path(p).read_bytes()[:4000]
+>     print('\nFILE',p,'\n',b.decode('utf-8','ignore'))
+> PY; __tts_rc=$?; printf '\n__TTS_b7b2b4babbc74487bee122a68a90b14c__RC:%s\n' "$__tts_rc"; printf '__TTS_b7b2b4babbc74487bee122a68a90b14c__PWD:'; pwd; printf '_
+_TTS_b7b2b4babbc74487bee122a68a90b14c__END\n'; tmux wait -S done
+>

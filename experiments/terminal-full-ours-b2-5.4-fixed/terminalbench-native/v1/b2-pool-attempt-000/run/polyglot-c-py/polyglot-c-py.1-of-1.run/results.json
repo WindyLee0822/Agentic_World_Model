@@ -1,0 +1,20 @@
+{
+    "id": "67ba93f3-d6f1-4fd6-b317-9994196b1fc3",
+    "trial_name": "polyglot-c-py.1-of-1.run",
+    "task_id": "polyglot-c-py",
+    "instruction": "Write me a single file in /app/main.c.py which is a polyglot, that is, I can run `python3 main.c.py N` or `gcc main.c.py && ./a.out N`. Both of these should print to stdout the kth fibonacci number. f(0) = 0, f(1) = 1.",
+    "is_resolved": false,
+    "failure_mode": "agent_timeout",
+    "parser_results": {
+        "test_fibonacci_polyglot": "failed"
+    },
+    "recording_path": "run/polyglot-c-py/polyglot-c-py.1-of-1.run/sessions/agent.cast",
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "trial_started_at": "2026-07-18T01:08:44.407590+00:00",
+    "trial_ended_at": "2026-07-18T01:20:26.864064+00:00",
+    "agent_started_at": "2026-07-18T01:09:06.264266+00:00",
+    "agent_ended_at": "2026-07-18T01:20:06.411729+00:00",
+    "test_started_at": "2026-07-18T01:20:09.794799+00:00",
+    "test_ended_at": "2026-07-18T01:20:16.004712+00:00"
+}

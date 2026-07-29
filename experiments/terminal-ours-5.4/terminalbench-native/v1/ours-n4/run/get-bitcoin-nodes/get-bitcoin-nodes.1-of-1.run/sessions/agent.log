@@ -1,0 +1,202 @@
+[?2004hroot@e851fe538c9c:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@e851fe538c9c:/app# clear
+[?2004l[H[J[3J[?2004hroot@e851fe538c9c:/app# pwd; __tts_rc=$?; printf '\n__TTS_577d423dbf434e159cb1377cf72fdbc8__RC:%s\n' "$__tts_rc"; printf '__TTS_577d423dbf434e159cb1377cf72fdbc8__PWD:'; pwd; printf '__TTS_577d423dbf434e159cb1377cf72fdbc8__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_577d423dbf434e159cb1377cf72fdbc8__RC:0
+__TTS_577d423dbf434e159cb1377cf72fdbc8__PWD:/app
+__TTS_577d423dbf434e159cb1377cf72fdbc8__END
+[?2004hroot@e851fe538c9c:/app# cd -- /app && sh -lc 'python3 - <<"PY"
+[?2004l[?2004h> import os, textwrap, subprocess, sys
+[?2004l[?2004h> app = r'''from flask import Flask, jsonify
+[?2004lTraceback (most recent call last):
+  File [35m"<stdin>"[0m, line [35m2[0m, in [35m<module>[0m
+[1;35mNameError[0m: [35mname 'rfrom' is not defined[0m
+[?2004hroot@e851fe538c9c:/app# from bitcoin.rpc import RawProxy
+[?2004lbash: from: command not found
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# app = Flask(__name__)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# RPC_ERROR = None
+[?2004lbash: RPC_ERROR: command not found
+[?2004hroot@e851fe538c9c:/app# P2P_PORT = 8333
+[?2004lbash: P2P_PORT: command not found
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# def get_rpc():
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     global RPC_ERROR
+[?2004lbash: global: command not found
+[?2004hroot@e851fe538c9c:/app#     try:
+[?2004lbash: try:: command not found
+[?2004hroot@e851fe538c9c:/app#         rpc = RawProxy(service_port=P2P_PORT)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#         rpc.getblockchaininfo()
+[?2004l[?2004h>         RPC_ERROR = None
+[?2004lbash: syntax error near unexpected token `RPC_ERROR'
+[?2004hroot@e851fe538c9c:/app#         return rpc
+[?2004lbash: return: rpc: numeric argument required
+bash: return: can only `return' from a function or sourced script
+[?2004hroot@e851fe538c9c:/app#     except Exception as e:
+[?2004lbash: except: command not found
+[?2004hroot@e851fe538c9c:/app#         RPC_ERROR = str(e)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#         return None
+[?2004lbash: return: None: numeric argument required
+bash: return: can only `return' from a function or sourced script
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# @app.route('/status')
+[?2004lbash: syntax error near unexpected token `'/status''
+[?2004hroot@e851fe538c9c:/app# def status():
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     rpc = get_rpc()
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     if not rpc:
+[?2004l[?2004h>         return jsonify({'status': RPC_ERROR or 'not connected to Bitcoin network'}), 503
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     return jsonify({'status': 'online'})
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# @app.route('/block/<block_hash>')
+[?2004lbash: syntax error near unexpected token `'/block/<block_hash>''
+[?2004hroot@e851fe538c9c:/app# def block(block_hash):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     rpc = get_rpc()
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     if not rpc:
+[?2004l[?2004h>         return jsonify({'error': RPC_ERROR or 'not connected to Bitcoin network'}), 503
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     try:
+[?2004lbash: try:: command not found
+[?2004hroot@e851fe538c9c:/app#         b = rpc.getblock(block_hash)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#         return jsonify({
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'hash': b.get('hash'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'height': b.get('height'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'merkleroot': b.get('merkleroot'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'time': b.get('time'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'nonce': b.get('nonce'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'tx': b.get('tx', [])
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#         })
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@e851fe538c9c:/app#     except Exception as e:
+[?2004lbash: except: command not found
+[?2004hroot@e851fe538c9c:/app#         return jsonify({'error': f'invalid block hash: {e}'}), 404
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# @app.route('/transaction/<txid>')
+[?2004lbash: syntax error near unexpected token `'/transaction/<txid>''
+[?2004hroot@e851fe538c9c:/app# def transaction(txid):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     rpc = get_rpc()
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     if not rpc:
+[?2004l[?2004h>         return jsonify({'error': RPC_ERROR or 'not connected to Bitcoin network'}), 503
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#     try:
+[?2004lbash: try:: command not found
+[?2004hroot@e851fe538c9c:/app#         tx = rpc.getrawtransaction(txid, True)
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#         vin = []
+[?2004lbash: vin: command not found
+[?2004hroot@e851fe538c9c:/app#         for i in tx.get('vin', []):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             vin.append({
+[?2004lbash: syntax error near unexpected token `{'
+[?2004hroot@e851fe538c9c:/app#                 'coinbase': i.get('coinbase', ''),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                 'sequence': i.get('sequence')
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             })
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@e851fe538c9c:/app#         vout = []
+[?2004lbash: vout: command not found
+[?2004hroot@e851fe538c9c:/app#         for o in tx.get('vout', []):
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             spk = o.get('scriptPubKey', {})
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             vout.append({
+[?2004lbash: syntax error near unexpected token `{'
+[?2004hroot@e851fe538c9c:/app#                 'value': o.get('value'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                 'n': o.get('n'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                 'scriptPubKey': {
+[?2004lbash: scriptPubKey:: command not found
+[?2004hroot@e851fe538c9c:/app#                     'asm': spk.get('asm', ''),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                     'hex': spk.get('hex', ''),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                     'type': spk.get('type', '')
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#                 }
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@e851fe538c9c:/app#             })
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@e851fe538c9c:/app#         return jsonify({
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'txid': tx.get('txid'),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'blockhash': tx.get('blockhash', ''),
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app#             'vin': vin,
+[?2004lbash: vin:: command not found
+[?2004hroot@e851fe538c9c:/app#             'vout': vout
+[?2004lbash: vout:: command not found
+[?2004hroot@e851fe538c9c:/app#         })
+[?2004lbash: syntax error near unexpected token `}'
+[?2004hroot@e851fe538c9c:/app#     except Exception as e:
+[?2004lbash: except: command not found
+[?2004hroot@e851fe538c9c:/app#         return jsonify({'error': f'invalid transaction id: {e}'}), 404
+[?2004lbash: syntax error near unexpected token `('
+[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# 
+[?2004l[?2004hroot@e851fe538c9c:/app# if __name__ == '__main__':
+[?2004l[?2004h>     app.run(host='127.0.0.1', port=5000)
+[?2004lbash: syntax error near unexpected token `host='127.0.0.1','
+[?2004hroot@e851fe538c9c:/app# '''
+[?2004l[?2004h> open('/app/bitcoin_service.py','w').write(app)
+[?2004l[?2004h> subprocess.run([sys.executable,'-m','pip','install','--quiet','bitcoinlib','Flask','requests'], check=True)
+[?2004l[?2004h> subprocess.run('nohup python3 /app/bitcoin_service.py >/tmp/bitcoin_service.log 2>&1 &', shell=True, check=True)
+[?2004l[?2004h> print('done')
+[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_6aa3710bfca5450da0ec3a5b14848d24__RC:%s\n' "$__tts_rc"; printf '__TTS_6aa3710bfca5450da0ec3a5b14848d24__PWD:'; pwd; printf '__TTS_6aa3710bfca5450da0ec3a5b14848d24__END\n'; tmux wait -S done
+[?2004l[1] 123
+bash: $', shell=True, check=True)\nprint(done)\nPY': command not found
+[1]+  Exit 127                '''
+open('/app/bitcoin_service.py','w').write(app)
+subprocess.run([sys.executable,'-m','pip','install','--quiet','bitcoinlib','Flask','requests'], check=True)
+subprocess.run('nohup python3 /app/bitcoin_service.py > /tmp/bitcoin_service.log 2>&1
+
+__TTS_6aa3710bfca5450da0ec3a5b14848d24__RC:127
+__TTS_6aa3710bfca5450da0ec3a5b14848d24__PWD:/app
+__TTS_6aa3710bfca5450da0ec3a5b14848d24__END
+[?2004hroot@e851fe538c9c:/app# cd -- ''"'"'; pwd; printf '"'"'' && sh -lc 'ls -l /app && sed -n "1,220p" /app/bitcoin_service.py && python3 - <<"PY"
+[?2004l[?2004h> import importlib.util, sys
+[?2004l[?2004h> for pkg in ["bitcoinlib", "flask", "requests"]:
+[?2004l[?2004h>     print(pkg, importlib.util.find_spec(pkg) is not None)
+[?2004l[?2004h> PY
+[?2004l[?2004h> ps -ef | grep -v grep | grep bitcoin_service.py || true
+[?2004l[?2004h> curl -sS -i http://127.0.0.1:5000/status || true'; __tts_rc=$?; printf '\n__TTS_d30c40765a0d4121be056449f2c528a9__RC:%s\n' "$__tts_rc"; printf '__TTS_d30c40765a0d4121be056449f2c528a9__PWD:'; pwd; printf '__TTS_d30c40765a0d4121be056449f2c528a9__END\n'; tmux wait -S done
+[?2004lbash: cd: '; pwd; printf ': No such file or directory
+
+__TTS_d30c40765a0d4121be056449f2c528a9__RC:1
+__TTS_d30c40765a0d4121be056449f2c528a9__PWD:/app
+__TTS_d30c40765a0d4121be056449f2c528a9__END
+[?2004hroot@e851fe538c9c:/app# [?2004l
+exit
+[0;32masciinema: recording finished[0m
+[0;32masciinema: asciicast saved to /logs/agent.cast[0m
+[?2004hroot@e851fe538c9c:/app# 

@@ -1,0 +1,137 @@
+root@e3c7aa55ee1e:/app# pwd; __tts_rc=$?; printf '\n__TTS_4983c5982c954782b63724a9349645f7__RC:%s\n' "$__tts_rc"; printf '__TTS_4983c5982c954782b63724a9349645f7
+__PWD:'; pwd; printf '__TTS_4983c5982c954782b63724a9349645f7__END\n'; tmux wait -S done
+/app
+
+__TTS_4983c5982c954782b63724a9349645f7__RC:0
+__TTS_4983c5982c954782b63724a9349645f7__PWD:/app
+__TTS_4983c5982c954782b63724a9349645f7__END
+root@e3c7aa55ee1e:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_4ffd11090d2a416fadf0b
+e5144d0d1dc__RC:%s\n' "$__tts_rc"; printf '__TTS_4ffd11090d2a416fadf0be5144d0d1dc__PWD:'; pwd; printf '__TTS_4ffd11090d2a416fadf0be5144d0d1dc__END\n'; tmux wait
+ -S done
+d /app/frotz
+d /app/frotz/.git
+d /app/frotz/doc
+d /app/frotz/public
+d /app/frotz/src
+f /app/frotz/.gitattributes
+f /app/frotz/.gitignore
+f /app/frotz/.gitlab-ci.yml
+f /app/frotz/AUTHORS
+f /app/frotz/CONTRIBUTORS
+f /app/frotz/COPYING
+f /app/frotz/ChangeLog
+f /app/frotz/DUMB
+f /app/frotz/HOW_TO_PLAY
+f /app/frotz/INSTALL
+f /app/frotz/INSTALL_DOS
+f /app/frotz/INSTALL_PDP10
+f /app/frotz/Makefile
+f /app/frotz/Makefile.kcc
+f /app/frotz/Makefile.ow
+f /app/frotz/Makefile.tc
+f /app/frotz/README
+f /app/frotz/README.1st
+f /app/frotz/README.md
+f /app/frotz/TODO
+f /app/frotz/frotz
+f /app/frotz/frotz.lsm
+f /app/frotz/frotz.prj
+f /app/frotz/owbuild.bat
+f /app/frotz/tcbuild.bat
+f /app/frotz/zork1.z5
+
+__TTS_4ffd11090d2a416fadf0be5144d0d1dc__RC:0
+__TTS_4ffd11090d2a416fadf0be5144d0d1dc__PWD:/app
+__TTS_4ffd11090d2a416fadf0be5144d0d1dc__END
+root@e3c7aa55ee1e:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_0f7d12465fbb42b5a3c2d
+928259833cd__RC:%s\n' "$__tts_rc"; printf '__TTS_0f7d12465fbb42b5a3c2d928259833cd__PWD:'; pwd; printf '__TTS_0f7d12465fbb42b5a3c2d928259833cd__END\n'; tmux wait
+ -S done
+d /app/frotz
+d /app/frotz/.git
+d /app/frotz/doc
+d /app/frotz/public
+d /app/frotz/src
+f /app/frotz/.gitattributes
+f /app/frotz/.gitignore
+f /app/frotz/.gitlab-ci.yml
+f /app/frotz/AUTHORS
+f /app/frotz/CONTRIBUTORS
+f /app/frotz/COPYING
+f /app/frotz/ChangeLog
+f /app/frotz/DUMB
+f /app/frotz/HOW_TO_PLAY
+f /app/frotz/INSTALL
+f /app/frotz/INSTALL_DOS
+f /app/frotz/INSTALL_PDP10
+f /app/frotz/Makefile
+f /app/frotz/Makefile.kcc
+f /app/frotz/Makefile.ow
+f /app/frotz/Makefile.tc
+f /app/frotz/README
+f /app/frotz/README.1st
+f /app/frotz/README.md
+f /app/frotz/TODO
+f /app/frotz/frotz
+f /app/frotz/frotz.lsm
+f /app/frotz/frotz.prj
+f /app/frotz/owbuild.bat
+f /app/frotz/tcbuild.bat
+f /app/frotz/zork1.z5
+
+__TTS_0f7d12465fbb42b5a3c2d928259833cd__RC:0
+__TTS_0f7d12465fbb42b5a3c2d928259833cd__PWD:/app
+__TTS_0f7d12465fbb42b5a3c2d928259833cd__END
+root@e3c7aa55ee1e:/app# cd -- /app && find /app -maxdepth 3 -type f | sed 's#^#/FILE #'; __tts_rc=$?; printf '\n__TTS_1d8cebc913144c92915faaa7c380e31c__RC:%s\n'
+ "$__tts_rc"; printf '__TTS_1d8cebc913144c92915faaa7c380e31c__PWD:'; pwd; printf '__TTS_1d8cebc913144c92915faaa7c380e31c__END\n'; tmux wait -S done
+/FILE /app/frotz/CONTRIBUTORS
+/FILE /app/frotz/INSTALL_PDP10
+/FILE /app/frotz/TODO
+/FILE /app/frotz/DUMB
+/FILE /app/frotz/HOW_TO_PLAY
+/FILE /app/frotz/README.md
+/FILE /app/frotz/README.1st
+/FILE /app/frotz/Makefile.kcc
+/FILE /app/frotz/.gitlab-ci.yml
+/FILE /app/frotz/doc/frotz.conf-big
+/FILE /app/frotz/doc/xfrotz.6
+/FILE /app/frotz/doc/frotz.conf-small
+/FILE /app/frotz/doc/Xresources
+/FILE /app/frotz/doc/frotz.txt
+/FILE /app/frotz/doc/file_id.diz
+/FILE /app/frotz/doc/dfrotz.6
+/FILE /app/frotz/doc/sfrotz.6
+/FILE /app/frotz/doc/frotz.6
+/FILE /app/frotz/AUTHORS
+/FILE /app/frotz/frotz.prj
+/FILE /app/frotz/Makefile
+/FILE /app/frotz/owbuild.bat
+/FILE /app/frotz/Makefile.tc
+/FILE /app/frotz/.gitattributes
+/FILE /app/frotz/frotz.lsm
+/FILE /app/frotz/ChangeLog
+/FILE /app/frotz/README
+/FILE /app/frotz/.gitignore
+/FILE /app/frotz/public/frotz.png
+/FILE /app/frotz/public/index.html
+/FILE /app/frotz/Makefile.ow
+/FILE /app/frotz/COPYING
+/FILE /app/frotz/tcbuild.bat
+/FILE /app/frotz/INSTALL
+/FILE /app/frotz/.git/config
+/FILE /app/frotz/.git/description
+/FILE /app/frotz/.git/HEAD
+/FILE /app/frotz/.git/index
+/FILE /app/frotz/.git/packed-refs
+/FILE /app/frotz/INSTALL_DOS
+/FILE /app/frotz/frotz
+/FILE /app/frotz/zork1.z5
+
+__TTS_1d8cebc913144c92915faaa7c380e31c__RC:0
+__TTS_1d8cebc913144c92915faaa7c380e31c__PWD:/app
+__TTS_1d8cebc913144c92915faaa7c380e31c__END
+root@e3c7aa55ee1e:/app# cd -- /app && cd /app/frotz && printf 'look
+> quit
+> y
+> ' | ./frotz zork1.z5 | tail -n 80; __tts_rc=$?; printf '\n__TTS_ebe4d0250369402eb4f8c7916844ef89__RC:%s\n' "$__tts_rc"; printf '__TTS_ebe4d0250369402eb4f8c791
+6844ef89__PWD:'; pwd; printf '__TTS_ebe4d0250369402eb4f8c7916844ef89__END\n'; tmux wait -S done
+

@@ -1,0 +1,111 @@
+root@b321d503bb6f:/app# pwd; __tts_rc=$?; printf '\n__TTS_69f3c7bca9894344b1fbfdc2e10a4152__RC:%s\n' "$__tts_rc"; printf '__TTS_69f3c7bca9894344b1fbfdc2e10a4152
+__PWD:'; pwd; printf '__TTS_69f3c7bca9894344b1fbfdc2e10a4152__END\n'; tmux wait -S done
+/app
+
+__TTS_69f3c7bca9894344b1fbfdc2e10a4152__RC:0
+__TTS_69f3c7bca9894344b1fbfdc2e10a4152__PWD:/app
+__TTS_69f3c7bca9894344b1fbfdc2e10a4152__END
+root@b321d503bb6f:/app# cd -- /app && head -n 40 /app/data.hex; __tts_rc=$?; printf '\n__TTS_bf20ef1089fa4719a9c1860f7b5f340e__RC:%s\n' "$__tts_rc"; printf '__T
+TS_bf20ef1089fa4719a9c1860f7b5f340e__PWD:'; pwd; printf '__TTS_bf20ef1089fa4719a9c1860f7b5f340e__END\n'; tmux wait -S done
+0000000 000407 002046 000036 001074 000424 000000 000000 000001
+0000020 170011 010600 011046 005720 010066 000002 004767 000150
+0000040 022626 005000 104401 004567 001354 000002 016500 000004
+0000060 072027 177776 016501 000004 072127 177775 074100 016501
+0000100 000004 072127 177773 074100 016501 000004 074100 042700
+0000120 177776 072027 000017 016501 000004 006201 050100 000400
+0000140 000167 001300 004567 001256 000002 017516 000004 004737
+0000160 000026 010075 000004 010001 005701 006700 071065 000006
+0000200 010100 000400 000167 001234 004567 001212 000006 012765
+0000220 002322 177770 005065 177766 026527 177766 000024 002035
+0000240 012716 000144 010546 062716 177770 004737 000124 005726
+0000260 010016 012746 002046 004737 000316 005726 016501 177766
+0000300 005201 006700 071027 000012 005701 001004 012716 002052
+0000320 004737 000316 005265 177766 000737 000167 001106 004567
+0000340 001064 000200 016567 000004 001556 010504 062704 000006
+0000360 117700 001544 001411 005267 001536 020027 000045 001406
+0000400 010016 004737 001224 000764 000167 001030 005067 001512
+0000420 005067 001476 127727 001500 000055 001004 005267 001470
+0000440 005267 001466 004367 000474 002106 005067 001456 020027
+0000460 000056 001003 004367 000454 002102 010603 012701 000472
+0000500 012102 001736 020021 001374 000112 000542 000144 000670
+0000520 000157 000662 000170 000764 000146 000776 000145 000620
+0000540 000143 000636 000163 000556 000154 001010 000162 000000
+0000560 000000 012401 002005 005401 112723 000055 000401 012401
+0000600 004767 000002 000516 005000 071027 000012 010146 010001
+0000620 001402 004767 177760 012600 062700 000060 110023 000207
+0000640 112423 001001 005303 112423 001074 005303 000472 016701
+0000660 001240 005003 011402 105722 001402 005203 077104 012402
+0000700 000462 012702 002054 000402 012702 002060 012401 001405
+0000720 005767 001176 001402 112723 000060 005000 004767 000002
+0000740 000440 010146 073012 001402 004767 177766 012600 046200
+0000760 000002 062700 000060 020027 000071 003402 062700 000007
+0001000 110023 000207 016702 001124 004767 000216 000412 016702
+0001020 001112 004767 000204 000405 012404 012467 001072 000167
+0001040 177316 010602 160203 010446 012746 000040 010304 005403
+0001060 066703 001042 003406 005767 001040 001003 004737 001224
+0001100 077303 005704 001404 112216 004737 001224 077404 005703
+0001120 003405 012716 000040 004737 001224 077303 005726 012604
+0001140 000167 177214 005067 000764 005001 117700 000752 005267
+0001160 000746 162700 000060 020027 177772 001002 012400 000403
+
+__TTS_bf20ef1089fa4719a9c1860f7b5f340e__RC:0
+__TTS_bf20ef1089fa4719a9c1860f7b5f340e__PWD:/app
+__TTS_bf20ef1089fa4719a9c1860f7b5f340e__END
+root@b321d503bb6f:/app# cd -- /app && file /app/data.hex && python3 - <<'PY'
+> import re,subprocess,os,sys
+> s=open('/app/data.hex').read().splitlines()
+> ws=[]
+> for line in s:
+>     m=re.match(r'^([0-7]{7})\s+(.*)$', line)
+>     if not m: continue
+>     parts=m.group(2).split()
+>     for p in parts:
+>         if re.fullmatch(r'[0-7]{6}', p): ws.append(int(p,8))
+> open('/app/data.bin','wb').write(b''.join(w.to_bytes(2,'little') for w in ws))
+> PY
+bash: file: command not found
+root@b321d503bb6f:/app# file /app/data.bin; __tts_rc=$?; printf '\n__TTS_b4688dc676af446b872b420756b144ec__RC:%s\n' "$__tts_rc"; printf '__TTS_b4688dc676af446b8
+72b420756b144ec__PWD:'; pwd; printf '__TTS_b4688dc676af446b872b420756b144ec__END\n'; tmux wait -S done
+bash: file: command not found
+
+__TTS_b4688dc676af446b872b420756b144ec__RC:127
+__TTS_b4688dc676af446b872b420756b144ec__PWD:/app
+__TTS_b4688dc676af446b872b420756b144ec__END
+root@b321d503bb6f:/app# cd -- /app && python3 - <<'PY'
+> import re,subprocess,os
+> s=open('/app/data.hex').read().splitlines(); ws=[]
+> for line in s:
+>     m=re.match(r'^([0-7]{7})\s+(.*)$', line)
+>     if m:
+>         ws += [int(p,8) for p in m.group(2).split() if re.fullmatch(r'[0-7]{6}', p)]
+> open('/app/data.bin','wb').write(b''.join(w.to_bytes(2,'little') for w in ws))
+> print(subprocess.run(['strings','-a','/app/data.bin'],capture_output=True,text=True).stdout[:4000])
+> PY; __tts_rc=$?; printf '\n__TTS_0a1ad53a1003447e9d3bf39b2fc77d0d__RC:%s\n' "$__tts_rc"; printf '__TTS_0a1ad53a1003447e9d3bf39b2fc77d0d__PWD:'; pwd; printf '_
+_TTS_0a1ad53a1003447e9d3bf39b2fc77d0d__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import re,struct; s=open('/app/data.hex').read().splitlines(); ws=[]
+> for line in s:
+>  m=re.match(r'^([0-7]{7})\s+(.*)$', line)
+>  if m: ws += [int(p,8) for p in m.group(2).split() if re.fullmatch(r'[0-7]{6}', p)]
+> b=b''.join(struct.pack('<H',w) for w in ws); open('/app/data.bin','wb').write(b); print('size',len(b)); print('magic',oct(ws[0])); print('ascii', ''.join(chr(
+x) if 32<=x<127 else '.' for x in b[:256]))"; __tts_rc=$?; printf '\n__TTS_22441a4b0d434fdeaf5e51dfb21a539f__RC:%s\n' "$__tts_rc"; printf '__TTS_22441a4b0d434fd
+eaf5e51dfb21a539f__PWD:'; pwd; printf '__TTS_22441a4b0d434fdeaf5e51dfb21a539f__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import re,struct; f=open('/app/data.hex'); ws=[]
+> for i,line in zip(range(200),f):
+>  m=re.match(r'^([0-7]{7})\s+(.*)$',line)
+>  if m: ws += [int(p,8) for p in m.group(2).split() if len(p)==6]
+> b=b''.join(struct.pack('<H',w) for w in ws); print('words',len(ws),'bytes',len(b),'magic',oct(ws[0])); print('tail-ascii', ''.join(chr(x) if 32<=x<127 else '.
+' for x in b[-512:])); print('nulstrings', [s for s in b.split(b'\0') if any(32<=c<127 for c in s)][-20:])"; __tts_rc=$?; printf '\n__TTS_7c3a16520acc4ec38f7759
+6d411816fa__RC:%s\n' "$__tts_rc"; printf '__TTS_7c3a16520acc4ec38f77596d411816fa__PWD:'; pwd; printf '__TTS_7c3a16520acc4ec38f77596d411816fa__END\n'; tmux wait
+-S done
+> cd -- /app && python3 -c "import re,struct,itertools; ws=[]
+> for line in itertools.islice(open('/app/data.hex'),0,120):
+>  m=re.match(r'^([0-7]{7})\s+(.*)$',line)
+>  if m: ws.extend(int(p,8) for p in m.group(2).split() if len(p)==6 and set(p)<=set('01234567'))
+> b=b''.join(struct.pack('<H',w) for w in ws); print(len(ws),oct(ws[0])); print(''.join(chr(x) if 32<=x<127 else '.' for x in b))"; __tts_rc=$?; printf '\n__TTS
+_2e8db4acd6c34de88c3a4428652f713c__RC:%s\n' "$__tts_rc"; printf '__TTS_2e8db4acd6c34de88c3a4428652f713c__PWD:'; pwd; printf '__TTS_2e8db4acd6c34de88c3a4428652f7
+13c__END\n'; tmux wait -S done
+> cd -- /app && python3 -c "import pathlib,re,itertools; p=pathlib.Path('/app/data.hex'); print('bytes',p.stat().st_size); print('lines',sum(1 for _ in p.open()
+)); print('first',next(p.open()).rstrip()); print('last',deque:=__import__('collections').deque(p.open(),1)[0].rstrip())"; __tts_rc=$?; printf '\n__TTS_562bf95b
+739f49b5bce3f605057302fc__RC:%s\n' "$__tts_rc"; printf '__TTS_562bf95b739f49b5bce3f605057302fc__PWD:'; pwd; printf '__TTS_562bf95b739f49b5bce3f605057302fc__END\
+n'; tmux wait -S done
+>

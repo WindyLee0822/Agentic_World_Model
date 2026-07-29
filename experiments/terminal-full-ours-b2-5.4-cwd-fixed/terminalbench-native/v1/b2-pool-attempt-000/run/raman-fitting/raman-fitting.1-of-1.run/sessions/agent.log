@@ -1,0 +1,74 @@
+[?2004hroot@b14b6b419ca5:/app# asciinema rec --stdin /logs/agent.cast
+[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
+[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
+[?2004hroot@b14b6b419ca5:/app# clear
+[?2004l[H[J[3J[?2004hroot@b14b6b419ca5:/app# pwd; __tts_rc=$?; printf '\n__TTS_1833b4bd64f74dfc8588140bf01dc839__RC:%s\n' "$__tts_rc"; printf '__TTS_1833b4bd64f74dfc8588140bf01dc839__PWD:'; pwd; printf '__TTS_1833b4bd64f74dfc8588140bf01dc839__END\n'; tmux wait -S done
+[?2004l/app
+
+__TTS_1833b4bd64f74dfc8588140bf01dc839__RC:0
+__TTS_1833b4bd64f74dfc8588140bf01dc839__PWD:/app
+__TTS_1833b4bd64f74dfc8588140bf01dc839__END
+[?2004hroot@b14b6b419ca5:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_af382292fd8941d39266d3540533396a__RC:%s\n' "$__tts_rc"; printf '__TTS_af382292fd8941d39266d3540533396a__PWD:'; pwd; printf '__TTS_af382292fd8941d39266d3540533396a__END\n'; tmux wait -S done
+[?2004l/app/graphene.dat
+
+__TTS_af382292fd8941d39266d3540533396a__RC:0
+__TTS_af382292fd8941d39266d3540533396a__PWD:/app
+__TTS_af382292fd8941d39266d3540533396a__END
+[?2004hroot@b14b6b419ca5:/app# cd -- /app && python - <<'PY'
+[?2004l[?2004h> import json, numpy as np
+[?2004l[?2004h> from scipy.optimize import curve_fit
+[?2004l[?2004h> x,y=np.loadtxt('/app/graphene.dat',unpack=True)
+[?2004l[?2004h> def lor(x,x0,gamma,amp,offset):
+[?2004l[?2004h>     return offset + amp*(0.5*gamma)**2/((x-x0)**2+(0.5*gamma)**2)
+[?2004l[?2004h> res={}
+[?2004l[?2004h> for name,win,p0 in [('G',(1500,1650),(1580,20,max(y[(x>1500)&(x<1650)])-min(y[(x>1500)&(x<1650)]),min(y[(x>1500)&(x<1650)]))),('2D',(2600,2800),(2700,30,max(y[(x>2600)&(x<2800)])-min(y[(x>2600)&(x<2800)]),min(y[(x>2600)&(x<2800)])))]:
+[?2004l[?2004h>     m=(x>win[0])&(x<win[1])
+[?2004l[?2004h>     xs,ys=x[m],y[m]
+[?2004l[?2004h>     popt,_=curve_fit(lor,xs,ys,p0=p0,maxfev=100000,bounds=([win[0],1,0,-np.inf],[win[1],200,np.inf,np.inf]))
+[?2004l[?2004h>     res[name]={'x0':float(popt[0]),'gamma':float(popt[1]),'amplitude':float(popt[2]),'offset':float(popt[3])}
+[?2004l[?2004h> open('/app/results.json','w').write(json.dumps(res,indent=2))
+[?2004l[?2004h> print(json.dumps(res,indent=2))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_6408b9dec61d4a6d86c5368f091ebf9e__RC:%s\n' "$__tts_rc"; printf '__TTS_6408b9dec61d4a6d86c5368f091ebf9e__PWD:'; pwd; printf '__TTS_6408b9dec61d4a6d86c5368f091ebf9e__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && python -c "import numpy as np; x,y=np.loadtxt('/app/graphene.dat',unpack=True); print(x[:5]); print(x[-5:]); print(y.min(), y.max(), len(x))"; __tts_rc=$?; printf '\n__TTS_a39cd0be98494d14b0636c9173ef1eb5__RC:%s\n' "$__tts_rc"; printf '__TTS_a39cd0be98494d14b0636c9173ef1eb5__PWD:'; pwd; printf '__TTS_a39cd0be98494d14b0636c9173ef1eb5__END\n'; tmux wait -S done
+[?2004l[?2004h> cd -- /app && wc -l /app/graphene.dat && head -n 3 /app/graphene.dat; __tts_rc=$?; printf '\n__TTS_9742ee7b286341bea5dd05e6b3a2150c__RC:%s\n' "$__tts_rc"; printf '__TTS_9742ee7b286341bea5dd05e6b3a2150c__PWD:'; pwd; printf '__TTS_9742ee7b286341bea5dd05e6b3a2150c__END\n'; tmux wait -S done
+[?2004l[?2004h> [?2004l
+bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
+  File [35m"<stdin>"[0m, line [35m14[0m
+    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_6408b9dec61d4a6d86c5368f091ebf9e__RC:%s\n' "$__tts_rc"; printf '__TTS_6408b9dec61d4a6d86c5368f091ebf9e__PWD:'; pwd; printf '__TTS_6408b9dec61d4a6d86c5368f091ebf9e__END\n'; tmux wait -S done
+                 [1;31m^[0m
+[1;35mSyntaxError[0m: [35minvalid syntax[0m
+[?2004hroot@b14b6b419ca5:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_9742ee7b286341bea5dd05e6b3a2150c__END\n'"'"'; tmux wait -S done' && python - <<'PY'
+[?2004l[?2004h> import json, math
+[?2004l[?2004h> from statistics import median
+[?2004l[?2004h> fn='/app/graphene.dat'
+[?2004l[?2004h> xs=[]; ys=[]
+[?2004l[?2004h> with open(fn) as f:
+[?2004l[?2004h>     for line in f:
+[?2004l[?2004h>         p=line.split()
+[?2004l[?2004h>         if len(p)>=2:
+[?2004l[?2004h>             try:
+[?2004l[?2004h>                 xs.append(float(p[0])); ys.append(float(p[1]))
+[?2004l[?2004h>             except: pass
+[?2004l[?2004h> 
+[?2004l[?2004h> def fit(win, name):
+[?2004l[?2004h>     data=[(x,y) for x,y in zip(xs,ys) if win[0] <= x <= win[1]]
+[?2004l[?2004h>     xv=[x for x,_ in data]; yv=[y for _,y in data]
+[?2004l[?2004h>     base=median(sorted(yv)[:max(5,len(yv)//5)])
+[?2004l[?2004h>     i=max(range(len(yv)), key=lambda i: yv[i])
+[?2004l[?2004h>     x0=xv[i]; off=base; amp=yv[i]-off; half=off+amp/2
+[?2004l[?2004h>     l=i
+[?2004l[?2004h>     while l>0 and yv[l]>half: l-=1
+[?2004l[?2004h>     r=i
+[?2004l[?2004h>     while r<len(yv)-1 and yv[r]>half: r+=1
+[?2004l[?2004h>     if l==i or r==i: gamma=(win[1]-win[0])/10
+[?2004l[?2004h>     else:
+[?2004l[?2004h>         def cross(a,b):
+[?2004l[?2004h>             x1,y1=xv[a],yv[a]; x2,y2=xv[b],yv[b]
+[?2004l[?2004h>             return x1 if y2==y1 else x1+(half-y1)*(x2-x1)/(y2-y1)
+[?2004l[?2004h>         xl=cross(l,l+1); xr=cross(r-1,r); gamma=xr-xl
+[?2004l[?2004h>     return {"x0":x0,"gamma":gamma,"amplitude":amp,"offset":off}
+[?2004l[?2004h> res={"G":fit((1500,1650),'G'),"2D":fit((2600,2800),'2D')}
+[?2004l[?2004h> with open('/app/results.json','w') as f: json.dump(res,f,indent=2)
+[?2004l[?2004h> print(json.dumps(res,indent=2))
+[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e1887e0b898e4e6c8f7d164a939f75cc__RC:%s\n' "$__tts_rc"; printf '__TTS_e1887e0b898e4e6c8f7d164a939f75cc__PWD:'; pwd; printf '__TTS_e1887e0b898e4e6c8f7d164a939f75cc__END\n'; tmux wait -S done
+[?2004l[?2004h> 

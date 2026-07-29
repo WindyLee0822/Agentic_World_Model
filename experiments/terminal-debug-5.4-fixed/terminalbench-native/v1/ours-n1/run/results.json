@@ -1,0 +1,57 @@
+{
+    "id": "64bb5094-36c7-46d9-bf2f-c618878936f8",
+    "results": [
+        {
+            "id": "4ca99e6e-047b-4ede-940d-8e40debb4553",
+            "trial_name": "hello-world.1-of-1.run",
+            "task_id": "hello-world",
+            "instruction": "Create a file called hello.txt in the current directory. Write \"Hello, world!\" to it. Make sure it ends in a newline. Don't make any other files or folders.",
+            "is_resolved": true,
+            "failure_mode": "unset",
+            "parser_results": {
+                "test_hello_file_exists": "passed",
+                "test_hello_file_content": "passed"
+            },
+            "recording_path": "run/hello-world/hello-world.1-of-1.run/sessions/agent.cast",
+            "total_input_tokens": 3755,
+            "total_output_tokens": 0,
+            "trial_started_at": "2026-07-17T17:27:12.130573+00:00",
+            "trial_ended_at": "2026-07-17T17:27:49.899844+00:00",
+            "agent_started_at": "2026-07-17T17:27:16.657937+00:00",
+            "agent_ended_at": "2026-07-17T17:27:29.805102+00:00",
+            "test_started_at": "2026-07-17T17:27:33.174799+00:00",
+            "test_ended_at": "2026-07-17T17:27:39.054536+00:00"
+        },
+        {
+            "id": "a23c84b8-241c-43c0-876b-737ef4a3a171",
+            "trial_name": "create-bucket.1-of-1.run",
+            "task_id": "create-bucket",
+            "instruction": "Create an S3 bucket named \"sample-bucket\" using the aws cli and set it to public read.",
+            "is_resolved": false,
+            "failure_mode": "agent_timeout",
+            "parser_results": {
+                "test_bucket_exists": "passed",
+                "test_bucket_public_access - AssertionError: Bucket is not public": "failed"
+            },
+            "recording_path": "run/create-bucket/create-bucket.1-of-1.run/sessions/agent.cast",
+            "total_input_tokens": 0,
+            "total_output_tokens": 0,
+            "trial_started_at": "2026-07-17T17:27:12.129173+00:00",
+            "trial_ended_at": "2026-07-17T17:38:36.964360+00:00",
+            "agent_started_at": "2026-07-17T17:27:16.428713+00:00",
+            "agent_ended_at": "2026-07-17T17:38:16.537951+00:00",
+            "test_started_at": "2026-07-17T17:38:19.919949+00:00",
+            "test_ended_at": "2026-07-17T17:38:25.752775+00:00"
+        }
+    ],
+    "pass_at_k": {},
+    "n_resolved": 1,
+    "n_unresolved": 1,
+    "resolved_ids": [
+        "hello-world"
+    ],
+    "unresolved_ids": [
+        "create-bucket"
+    ],
+    "accuracy": 0.5
+}

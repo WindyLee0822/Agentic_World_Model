@@ -11,9 +11,15 @@ dependencies = ["pyyaml>=6.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
-appworld = ["appworld>=0.1.3"]
+appworld = [
+    "appworld @ https://github.com/StonyBrookNLP/appworld/archive/a072b7a86e7c1d5b1d7175659d750ebb9b79f10a.zip",
+]
 llm = ["openai>=1.30.0", "azure-identity>=1.15.0"]
 progress = ["tqdm>=4.0"]
+terminalbench = [
+    "harbor==0.18.0",
+    "terminal-bench==0.2.18",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,248 @@
+root@db807c3e3de2:/app# pwd; __tts_rc=$?; printf '\n__TTS_401a1dd7884c4654a321f1465727c348__RC:%s\n' "$__tts_rc"; printf '__TTS_401a1dd7884c4654a321f1465727c348
+__PWD:'; pwd; printf '__TTS_401a1dd7884c4654a321f1465727c348__END\n'; tmux wait -S done
+/app
+
+__TTS_401a1dd7884c4654a321f1465727c348__RC:0
+__TTS_401a1dd7884c4654a321f1465727c348__PWD:/app
+__TTS_401a1dd7884c4654a321f1465727c348__END
+root@db807c3e3de2:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_846c2e35146c4dc2a3298
+69f40e1580c__RC:%s\n' "$__tts_rc"; printf '__TTS_846c2e35146c4dc2a329869f40e1580c__PWD:'; pwd; printf '__TTS_846c2e35146c4dc2a329869f40e1580c__END\n'; tmux wait
+ -S done
+d /app/tests
+f /app/maze_game.sh
+f /app/tests/run-uv-pytest.sh
+f /app/tests/setup-uv-pytest.sh
+f /app/tests/test_outputs.py
+
+__TTS_846c2e35146c4dc2a329869f40e1580c__RC:0
+__TTS_846c2e35146c4dc2a329869f40e1580c__PWD:/app
+__TTS_846c2e35146c4dc2a329869f40e1580c__END
+root@db807c3e3de2:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_d3314566b6d94ecb81373
+92addc2b261__RC:%s\n' "$__tts_rc"; printf '__TTS_d3314566b6d94ecb8137392addc2b261__PWD:'; pwd; printf '__TTS_d3314566b6d94ecb8137392addc2b261__END\n'; tmux wait
+ -S done
+d /app/tests
+f /app/maze_game.sh
+f /app/tests/run-uv-pytest.sh
+f /app/tests/setup-uv-pytest.sh
+f /app/tests/test_outputs.py
+
+__TTS_d3314566b6d94ecb8137392addc2b261__RC:0
+__TTS_d3314566b6d94ecb8137392addc2b261__PWD:/app
+__TTS_d3314566b6d94ecb8137392addc2b261__END
+root@db807c3e3de2:/app# cd -- /app && sed -n '1,240p' -- /app/maze_game.sh; __tts_rc=$?; printf '\n__TTS_35947103a11f4687aa60d4f18918d9db__RC:%s\n' "$__tts_rc";
+ printf '__TTS_35947103a11f4687aa60d4f18918d9db__PWD:'; pwd; printf '__TTS_35947103a11f4687aa60d4f18918d9db__END\n'; tmux wait -S done
+#!/bin/bash
+
+# Run the protected maze server
+python3 /protected/maze_server.py
+__TTS_35947103a11f4687aa60d4f18918d9db__RC:0
+__TTS_35947103a11f4687aa60d4f18918d9db__PWD:/app
+__TTS_35947103a11f4687aa60d4f18918d9db__END
+root@db807c3e3de2:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_ae22a2a144554065b37c8
+83e47fd792f__RC:%s\n' "$__tts_rc"; printf '__TTS_ae22a2a144554065b37c883e47fd792f__PWD:'; pwd; printf '__TTS_ae22a2a144554065b37c883e47fd792f__END\n'; tmux wait
+ -S done
+d /app/tests
+f /app/maze_game.sh
+f /app/tests/run-uv-pytest.sh
+f /app/tests/setup-uv-pytest.sh
+f /app/tests/test_outputs.py
+
+__TTS_ae22a2a144554065b37c883e47fd792f__RC:0
+__TTS_ae22a2a144554065b37c883e47fd792f__PWD:/app
+__TTS_ae22a2a144554065b37c883e47fd792f__END
+root@db807c3e3de2:/app# cd -- /app && python3 - <<'PY'
+lt(txt):
+    m=re.findall(r'(hit wall|moved|reached exit)', txt)
+    return m[-1] if m else txt.strip().splitlines()[-1].strip() if txt.strip() else ''
+
+sys.setrecursionlimit(10000)
+
+def dfs(pos):
+    global exit_pos
+    for d in order:
+        if d in open_dirs.get(pos,set()) or (pos,d) in tried:
+            continue
+        tried.add((pos,d))
+        dx,dy=dirs[d]
+        npos=(pos[0]+dx,pos[1]+dy)
+        res=parse_result(send(f'move {d}'))
+        if res=='hit wall':
+            walls.add(npos)
+        elif res in ('moved','reached exit'):
+            open_dirs.setdefault(pos,set()).add(d)
+            open_dirs.setdefault(npos,set()).add(opp[d])
+            if res=='reached exit':
+                exit_pos=npos
+            if npos not in visited:
+                visited.add(npos)
+                dfs(npos)
+            back=parse_result(send(f'move {opp[d]}'))
+            if back not in ('moved','reached exit'):
+                raise RuntimeError(f'failed backtrack from {npos} via {opp[d]} got {back!r}')
+        else:
+            raise RuntimeError(f'unexpected response {res!r} from txt {txt!r}')
+
+tried=set()
+dfs((0,0))
+
+# terminate game politely
+send('exit')
+proc.terminate()
+try:
+    proc.wait(timeout=1)
+except Exception:
+    proc.kill()
+
+opens=set(visited)
+all_cells=opens|walls
+minx=min(x for x,y in all_cells)-1
+maxx=max(x for x,y in all_cells)+1
+miny=min(y for x,y in all_cells)-1
+maxy=max(y for x,y in all_cells)+1
+lines=[]
+for y in range(miny,maxy+1):
+    row=[]
+    for x in range(minx,maxx+1):
+        p=(x,y)
+        if p==(0,0): row.append('S')
+        elif exit_pos is not None and p==exit_pos: row.append('E')
+        elif p in opens: row.append(' ')
+        else: row.append('#')
+    lines.append(''.join(row))
+content='\n'.join(lines)+'\n'
+with open('/app/maze_map.txt','w') as f:
+    f.write(content)
+# verify file exists and show a brief diagnostic to stderr-free stdout suppressed by command wrapper
+assert os.path.exists('/app/maze_map.txt')
+# also sanity-check every open neighbor relation has non-wall cells
+for (x,y),ds in open_dirs.items():
+    for d in ds:
+        dx,dy=dirs[d]
+        assert (x+dx,y+dy) in opens
+print(content)
+PY; __tts_rc=$?; printf '\n__TTS_e2b97f34ed034a0e99c17ab9ae715718__RC:%s\n' "$__tts_rc"; printf '__TTS_e2b97f34ed034a0e99c17ab9ae715718__PWD:'; pwd; printf '__T
+TS_e2b97f34ed034a0e99c17ab9ae715718__END\n'; tmux wait -S done
+> import os, pty, subprocess, select, time, re, sys
+>
+> def read_available(fd, timeout=0.2):
+>     out=b''
+>     end=time.time()+timeout
+>     while time.time()<end:
+>         r,_,_=select.select([fd],[],[],0.05)
+>         if not r:
+>             continue
+>         try:
+>             chunk=os.read(fd,4096)
+>         except OSError:
+>             break
+>         if not chunk:
+>             break
+>         out+=chunk
+>     return out.decode(errors='ignore')
+>
+> master, slave = pty.openpty()
+> proc = subprocess.Popen(['bash','-lc','./maze_game.sh'], stdin=slave, stdout=slave, stderr=slave, close_fds=True)
+> os.close(slave)
+> read_available(master,0.5)
+>
+> dirs={'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
+> opp={'N':'S','S':'N','E':'W','W':'E'}
+> order=['N','E','S','W']
+> open_dirs={}  # coord -> set of successful directions
+> walls=set()   # wall cell coords
+> visited=set([(0,0)])
+> exit_pos=None
+>
+>
+> def send(cmd):
+>     os.write(master,(cmd+'\n').encode())
+>     time.sleep(0.05)
+>     txt=read_available(master,0.3)
+>     return txt
+>
+> def parse_result(txt):
+>     m=re.findall(r'(hit wall|moved|reached exit)', txt)
+>     return m[-1] if m else txt.strip().splitlines()[-1].strip() if txt.strip() else ''
+>
+> sys.setrecursionlimit(10000)
+>
+> def dfs(pos):
+>     global exit_pos
+>     for d in order:
+>         if d in open_dirs.get(pos,set()) or (pos,d) in tried:
+>             continue
+>         tried.add((pos,d))
+>         dx,dy=dirs[d]
+>         npos=(pos[0]+dx,pos[1]+dy)
+>         res=parse_result(send(f'move {d}'))
+>         if res=='hit wall':
+>             walls.add(npos)
+>         elif res in ('moved','reached exit'):
+>             open_dirs.setdefault(pos,set()).add(d)
+>             open_dirs.setdefault(npos,set()).add(opp[d])
+>             if res=='reached exit':
+>                 exit_pos=npos
+>             if npos not in visited:
+>                 visited.add(npos)
+>                 dfs(npos)
+>             back=parse_result(send(f'move {opp[d]}'))
+>             if back not in ('moved','reached exit'):
+>                 raise RuntimeError(f'failed backtrack from {npos} via {opp[d]} got {back!r}')
+>         else:
+>             raise RuntimeError(f'unexpected response {res!r} from txt {txt!r}')
+>
+> tried=set()
+> dfs((0,0))
+>
+> # terminate game politely
+> send('exit')
+> proc.terminate()
+> try:
+>     proc.wait(timeout=1)
+> except Exception:
+>     proc.kill()
+>
+> opens=set(visited)
+> all_cells=opens|walls
+> minx=min(x for x,y in all_cells)-1
+> maxx=max(x for x,y in all_cells)+1
+> miny=min(y for x,y in all_cells)-1
+> maxy=max(y for x,y in all_cells)+1
+> lines=[]
+> for y in range(miny,maxy+1):
+>     row=[]
+>     for x in range(minx,maxx+1):
+>         p=(x,y)
+>         if p==(0,0): row.append('S')
+>         elif exit_pos is not None and p==exit_pos: row.append('E')
+>         elif p in opens: row.append(' ')
+>         else: row.append('#')
+>     lines.append(''.join(row))
+> content='\n'.join(lines)+'\n'
+> with open('/app/maze_map.txt','w') as f:
+>     f.write(content)
+> # verify file exists and show a brief diagnostic to stderr-free stdout suppressed by command wrapper
+> assert os.path.exists('/app/maze_map.txt')
+> # also sanity-check every open neighbor relation has non-wall cells
+> for (x,y),ds in open_dirs.items():
+>     for d in ds:
+>         dx,dy=dirs[d]
+>         assert (x+dx,y+dy) in opens
+> print(content)
+> PY; __tts_rc=$?; printf '\n__TTS_e2b97f34ed034a0e99c17ab9ae715718__RC:%s\n' "$__tts_rc"; printf '__TTS_e2b97f34ed034a0e99c17ab9ae715718__PWD:'; pwd; printf '_
+_TTS_e2b97f34ed034a0e99c17ab9ae715718__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> p=Path('/app/maze_map.txt')
+> print(p.exists())
+> print(p.read_text() if p.exists() else '')
+> PY; __tts_rc=$?; printf '\n__TTS_acdc980850d14853bed2d1b79f0759e1__RC:%s\n' "$__tts_rc"; printf '__TTS_acdc980850d14853bed2d1b79f0759e1__PWD:'; pwd; printf '_
+_TTS_acdc980850d14853bed2d1b79f0759e1__END\n'; tmux wait -S done
+> cd -- /app && python3 - <<'PY'
+> from pathlib import Path
+> p=Path('/app/maze_map.txt')
+> print('exists=',p.exists())
+> print(p.read_text() if p.exists() else '')
+> PY; __tts_rc=$?; printf '\n__TTS_c1fa7122cf4f41b09334f9e9d40c6dac__RC:%s\n' "$__tts_rc"; printf '__TTS_c1fa7122cf4f41b09334f9e9d40c6dac__PWD:'; pwd; printf '_
+_TTS_c1fa7122cf4f41b09334f9e9d40c6dac__END\n'; tmux wait -S done
+>
