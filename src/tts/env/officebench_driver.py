@@ -21,6 +21,7 @@ Sub-commands (each reads a JSON request on stdin and prints exactly one
 * ``write_answer`` → write a ``finish_task`` answer to ``/testbed/data/answer.txt`` (official behaviour).
 * ``evaluate``     → run a task's ground-truth ``evaluation`` config against ``/testbed`` and return
   per-check pass/fail (the official, execution-based score).
+* ``list_state``   → list immutable testbed objects without dispatching an OfficeBench action.
 
 Only the Python standard library is imported at module top; the OfficeBench ``apps`` / ``utils``
 packages are imported lazily inside the handlers, so importing this file on the host (where those
@@ -30,6 +31,7 @@ packages are absent) never fails.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 
@@ -202,6 +204,10 @@ def _read_one_file(path: str, doc_type: str) -> str:
     if not os.path.exists(path):
         return "[file does not exist]"
     try:
+        if doc_type == "image":
+            from apps.ocr_app import ocr_recognize_file
+            text = ocr_recognize_file.ocr_recognize_file(path)
+            return text if text is not None else "[OCR failed]"
         if doc_type == "xlsx":
             from apps.excel_app import excel_read_file
             return excel_read_file.excel_read_file(path)
@@ -263,6 +269,36 @@ def handle_read_state(req: dict) -> dict:
     return {"state": out}
 
 
+def handle_list_state(req: dict) -> dict:
+    """List one testbed directory without invoking the shell app or any OfficeBench action."""
+    path = os.path.normpath(str(req.get("path") or _TESTBED))
+    recursive = bool(req.get("recursive"))
+    if path != _TESTBED and not path.startswith(_TESTBED + os.sep):
+        return {"error": "path must be under /testbed", "entries": []}
+    if not os.path.isdir(path):
+        return {"entries": [], "missing": True}
+    entries = []
+    if recursive:
+        for root, dirs, files in os.walk(path):
+            dirs.sort()
+            files.sort()
+            for name in dirs:
+                child = os.path.join(root, name)
+                entries.append({"name": name, "path": child, "type": "directory"})
+            for name in files:
+                child = os.path.join(root, name)
+                entries.append({"name": name, "path": child, "type": "file"})
+    else:
+        for name in sorted(os.listdir(path)):
+            child = os.path.join(path, name)
+            entries.append({
+                "name": name,
+                "path": child,
+                "type": "directory" if os.path.isdir(child) else "file",
+            })
+    return {"entries": entries, "missing": False}
+
+
 def handle_evaluate(req: dict) -> dict:
     """Run a task's ground-truth ``evaluation`` config against ``/testbed`` (the official score).
 
@@ -318,6 +354,7 @@ _HANDLERS = {
     "write_answer": handle_write_answer,
     "evaluate": handle_evaluate,
     "read_state": handle_read_state,
+    "list_state": handle_list_state,
 }
 
 

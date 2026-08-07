@@ -172,6 +172,14 @@ class ShadowEvaluator(abc.ABC):
     def reward_from_shadow(self, shadow: Dict[tuple, Dict], candidate_actions: List[Action]) -> RewardInfo:
         """Predict the candidate trajectory's reward from the read-grounded shadow (no commit)."""
 
+    def prepare_flat_context(self, shadow: Dict[tuple, Dict]) -> None:
+        """Prepare action-independent context for a flat world model.
+
+        Called once when the flat world model is constructed, before the solver emits any candidate
+        action. Implementations may turn the fixed reference-derived shadow into a reusable simulator
+        prompt. Recursive world models do not use this hook.
+        """
+
     def observe(self, shadow: Dict[tuple, Dict], action: Action) -> Optional[Tuple[str, bool]]:
         """Faithful read-grounded observation for one action (optional; default: advisory only).
 
@@ -247,9 +255,9 @@ class TaskEnvironment(Stepper):
 
         The official orchestrator runs unchanged (faithful prompts + the user simulator dialogue, so
         the agent receives the same kind of information it would on the real env), but every tool
-        call is served by the read-grounded world model instead of the real environment: read tools
-        are answered exactly (read-only), write tools are WM-predicted, and the real env is never
-        mutated.  Returns ``(Trajectory, predicted RewardInfo, spawn_root)`` — the trajectory carries
+        call is served by the read-grounded world model instead of the real environment: clean reads
+        are exact by default or predicted under the shared extension, writes are WM-predicted, and the
+        real env is never mutated. Returns ``(Trajectory, predicted RewardInfo, spawn_root)`` — the trajectory carries
         the realized official message log so the selected one can be committed/scored faithfully
         (including dual-control user actions).  Only envs with a read-grounded world model override
         this."""

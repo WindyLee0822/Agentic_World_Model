@@ -17,19 +17,22 @@ all share the runtime wrapper `aml/src/run_dw.sh`.
 | `job.appworld.bon2.yml` | Complete **AppWorld Python-only multi-app BoN@2 gate**: GPT-4.1, L2/L3, graded per-check selection, strict requested thresholds. |
 | `job.appworld.bon4.yml` | Complete **AppWorld Python-only WM BoN@4 gate**: GPT-4.1, all six split/level subsets, strict requested thresholds. |
 | `job.tau2.yml` | AML command job for **tau2-bench** (env `conda.yml`). |
-| `job.qwen.tau2.yml` | Single-node **Qwen + tau2** job: starts vLLM and runs the harness on one 80GB GPU. |
+| `job.qwen.tau2.yml` | Single-node **Qwen + tau2** job: local Qwen agent/world model with an optional Azure user simulator. |
 | `job.qwen.appworld.yml` | **Qwen + AppWorld** job configured for BF16 tensor/expert parallelism on two H100s. |
-| `job.officebench.yml` | AML command job for **OfficeBench** using a remote Docker VM over SSH. |
+| `job.qwen.officebench.yml` | Single-node **Qwen + OfficeBench** job using the baked no-Docker OfficeBench runtime. |
+| `job.officebench.yml` | AML command job for **OfficeBench** using the baked no-Docker local backend. |
 | `src/run_dw.sh` | Runtime wrapper on the compute node: sets Azure auth, prepares the benchmark, runs `experiments/run.py`, saves a downloadable summary + log. |
 | `src/provision_officebench_docker.py` | Creates/reuses the OfficeBench Docker VM, verifies SSH/Docker, stores credentials in the workspace Key Vault, and grants the AML identity access. |
 | `src/hydrate_appworld_bundles.py` | Replaces AppWorld source-archive Git LFS pointers with the pinned, SHA-256-verified encrypted bundles before `appworld install`. |
 | `src/summarize.py` | Builds a 4-decimal `summary.json`/`summary.txt` from `records.jsonl` (pure stdlib). |
-| `environment/conda.yml` | **tau2 + officebench** env (Python 3.12, pydantic 2): `tau2[knowledge]` from git, `openai`, `azure-identity`, `azure-keyvault-secrets`, `pyyaml`, `tqdm`. |
+| `environment/conda.yml` | **tau2** env (Python 3.12, pydantic 2): `tau2[knowledge]` from git, `openai`, `azure-identity`, `azure-keyvault-secrets`, `pyyaml`, `tqdm`. |
+| `environment/officebench-local.yml` | Baked **OfficeBench** app/evaluator runtime used on standard AML compute without Docker. |
+| `environment/officebench-qwen-local.yml` | GPU vLLM plus the baked **OfficeBench** app/evaluator runtime. |
 | `environment/conda.qwen.yml` | **Qwen + tau2** GPU env with vLLM 0.24.0 and the tau2 dependencies. |
 | `environment/conda.qwen.appworld.yml` | **Qwen + AppWorld** GPU env with vLLM and the pinned AppWorld source. |
 | `environment/conda.appworld.yml` | **appworld** env (Python 3.11): pinned AppWorld `0.2.0.dev0` source matching the mounted `0.2.0` data asset, `openai<2`, `azure-identity`, `pyyaml`, `tqdm`. |
 | `environment/conda.terminalbench.yml` | **Terminal-Bench 1 + 2** env (Python 3.12): pinned legacy `terminal-bench` and Harbor harnesses. Requires Docker-capable compute. |
-| `submit.sh` | Wrapper around `az ml job create`; automatically provisions and injects remote Docker for OfficeBench. |
+| `submit.sh` | Wrapper around `az ml job create`; registers the baked OfficeBench environment when needed. |
 | `submit_qwen.sh` | Qwen job submitter; validates/reuses a one-GPU AML cluster before calling `az ml job create`. |
 | `../.amlignore` | Keeps the uploaded code snapshot small (excludes `data/`, results, `.git`, caches). |
 
@@ -91,13 +94,25 @@ AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh         # tau2  (add inputs.aoa
 AML_JOB_FILE=aml/job.officebench.yml bash aml/submit.sh  # OfficeBench (configure remote Docker below)
 ```
 
+For tau2, set only the user-simulator model with the first-class
+`inputs.llm_user` override. Its default value, `none`, preserves the normal
+model fallback:
+
+```bash
+AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh \
+  --set inputs.llm_user=gpt-4.1
+```
+
 ### Local Qwen on one AML GPU
 
 The normal jobs above use the CPU-only `D15v2-NCUS-hipri` cluster and call a
 hosted model API. The Qwen job instead reuses the existing dedicated
 `NC40adsv5-EUS-hipri` target (`Standard_NC40ads_H100_v5`, one H100 80GB),
 starts vLLM inside the command job, waits for `/v1/models`, and runs tau2 against
-`127.0.0.1:8000`. Model-server logs are published as `vllm.log`.
+`127.0.0.1:8000`. By default the tau2 agent/world model uses local Qwen while
+the user simulator uses `azure/gpt-5.4`; LiteLLM keeps the local `openai/*` and
+hosted `azure/*` transports separate. Model-server logs are published as
+`vllm.log`.
 The default `Qwen/Qwen3.5-35B-A3B` checkpoint is the official post-trained
 variant derived from `Qwen/Qwen3.5-35B-A3B-Base`; it supports instruction
 following, reasoning, and the Qwen XML chat/tool protocol.
@@ -109,8 +124,20 @@ bash aml/submit_qwen.sh --stream
 
 # Small smoke test
 bash aml/submit_qwen.sh --stream --set \
-  inputs.workers=2 inputs.extra_args="--tasks 2"
+  inputs.workers=1 inputs.extra_args="--tasks 1"
+
+# Explicitly select GPT-5.4 as the tau2 user simulator
+bash aml/submit_qwen.sh --stream --set \
+  inputs.llm_user=azure/gpt-5.4 \
+  inputs.aoai_deployment=gpt-5.4 \
+  inputs.workers=1 \
+  inputs.extra_args="--tasks 1"
 ```
+
+The Qwen job defaults to the configured AML managed identity for GPT-5.4.
+Alternatively, pass `inputs.aoai_api_key` through your normal secret-injection
+mechanism. To use local Qwen for both sides again, set
+`inputs.llm_user=Qwen3.5-35B-A3B`.
 
 Override the compute through `AML_QWEN_COMPUTE` and `AML_QWEN_VM_SIZE`. For
 example, an existing A100 target can be selected with:
@@ -125,11 +152,25 @@ The submitter requires a pre-existing cluster by default. Set
 `AML_QWEN_CREATE_COMPUTE=1` only when the subscription has quota for the
 requested SKU. Job inputs
 such as `model`, `max_model_len`, `quantization`, `language_model_only`,
-`enable_thinking`, `domains`, `methods`, `n`, and `extra_args` can be changed with the same
-`--set inputs.*=...` syntax used by `submit.sh`.
+`enable_thinking`, `llm_user`, `domains`, `methods`, `n`, and `extra_args` can
+be changed with the same `--set inputs.*=...` syntax used by `submit.sh`.
 Use `inputs.enable_thinking=0` to disable Qwen reasoning. Do not place
 `--default-chat-template-kwargs` in `vllm_extra_args`; embedded JSON quotes are
 not stable through AML command interpolation.
+
+For tau2, the stock agent remains the default because matched B2 evaluation
+showed that no Qwen-specific profile dominates it across domains and N values.
+The opt-in policy/tool profile tracks confirmed multi-part requests, preserves
+revised or conditional intent, avoids repeated writes, enables thinking per
+agent request, and retries empty responses or malformed tool arguments without
+thinking. It does not alter the GPT user simulator or any non-Qwen agent. Use
+`--tau2-qwen-agent-profile prompt` for the enhanced prompt without thinking, or
+`--tau2-qwen-agent-profile policy` for the prompt plus thinking:
+
+```bash
+bash aml/submit_qwen.sh --stream --set \
+  inputs.extra_args="--tau2-qwen-agent-profile policy --task-indices 8,14,17,22"
+```
 
 For BF16 on the existing two-H100 target, the AppWorld job uses tensor
 parallelism size 2 plus vLLM expert parallelism. Its default selection is one
@@ -138,6 +179,24 @@ parallelism size 2 plus vLLM expert parallelism. Its default selection is one
 ```bash
 AML_QWEN_JOB_FILE=aml/job.qwen.appworld.yml \
 bash aml/submit_qwen.sh --stream
+```
+
+OfficeBench uses the same one-H100 Qwen server together with the baked local
+OfficeBench apps and official evaluator, so it does not require nested or
+remote Docker. Qwen weights and vLLM compilation caches are stored on the
+compute node's large ephemeral `/mnt/resource` disk rather than the job
+container overlay. The default job requires 200 GiB free and is a one-task
+level-1 smoke test:
+
+```bash
+AML_QWEN_JOB_FILE=aml/job.qwen.officebench.yml \
+bash aml/submit_qwen.sh --stream
+
+# Run all level-1 tasks with four benchmark workers.
+AML_QWEN_JOB_FILE=aml/job.qwen.officebench.yml \
+bash aml/submit_qwen.sh --stream --set \
+  inputs.workers=4 \
+  inputs.extra_args="--exact-clean-reads"
 ```
 
 `submit_qwen.sh` inherits the compute target from the selected job YAML. If the
@@ -442,13 +501,16 @@ is identical and reused as-is.
   add a `uri_folder` input to `job.tau2.yml` and forward it as `--tau2-data`, or
   set `TAU2_DATA_DIR` on the compute. Keep the fetched commit in sync with the
   tau2 version in `conda.yml` (both pinned to the same SHA in `run_dw.sh`).
-- **OfficeBench remote Docker**: standard AML command jobs cannot start a Docker
-  daemon. `aml/submit.sh` automatically provisions/reuses an SSH Docker VM and
-  stores its credentials in the workspace Key Vault; the job's managed identity
-  retrieves them at runtime. A direct run on a Docker-capable Compute Instance/VM
-  still works too: run `bash aml/src/run_dw.sh --env officebench ...` without
-  `--docker-host`. Register the OfficeBench clone as a `uri_folder` data asset
-  and point `inputs.officebench_root` at it.
+- **OfficeBench no-Docker backend**: standard AML command jobs cannot start a
+  Docker daemon, so `job.officebench.yml` sets `TTS_OFFICEBENCH_BACKEND=local`
+  and uses the baked `tts-officebench-local:20260803` environment. The local
+  backend uses unprivileged `proot` bind mounts so the official apps still see
+  absolute `/testbed` paths without Docker or root privileges. Docker remains
+  the default for local development and Docker-capable compute. Register the
+  OfficeBench clone as a `uri_folder` data asset and point
+  `inputs.officebench_root` at it. The job pins `--exact-clean-reads` so the
+  agent sees real pristine filenames/content while writes and post-write reads
+  remain world-model predictions.
 - AML jobs default to managed identity for `dw`'s own client (the wrapper forces
   `AZURE_AUTH_MODE=aml`); supplying `inputs.aoai_api_key` switches it to key auth.
 - The `gpt-4.1` deployment + managed identity `258f6dab-...` and the

@@ -160,8 +160,28 @@ def test_tau2_wm_agent_policy_hook_is_disabled():
     assert agent.get_init_state is original
 
 
-def test_tau2_real_and_wm_use_same_agent_sampling_config_and_unmodified_loop():
-    """Both paths share run config; WM changes only the environment response transport."""
+def test_simulator_prompt_changes_are_isolated_from_agent_prompts():
+    """Simulator discipline is domain-specific and never appended to benchmark-agent prompts."""
+    from tts.env.appworld_wm import _APPWORLD_SIMULATOR_SYSTEM
+    from tts.env.officebench_agent import PROMPT_DICT
+    from tts.env.officebench_wm_predict import _OFFICEBENCH_SIMULATOR_SYSTEM
+    from tts.env.real_tau2 import _TAU2_SIMULATOR_SYSTEM
+
+    simulator_text = "\n".join((
+        _TAU2_SIMULATOR_SYSTEM,
+        _APPWORLD_SIMULATOR_SYSTEM,
+        _OFFICEBENCH_SIMULATOR_SYSTEM,
+    ))
+    assert "not an assistant" in simulator_text
+    assert "coach the benchmark agent" in simulator_text
+    assert all(
+        "causal simulator" not in str(prompt).lower()
+        for prompt in PROMPT_DICT.values()
+    )
+
+
+def test_tau2_real_and_wm_use_same_agent_sampling_config():
+    """Both paths share one run config; Qwen customization is method-independent."""
     import inspect
 
     from tts.env.real_tau2 import Tau2TaskEnv

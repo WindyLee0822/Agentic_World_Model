@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import threading
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
@@ -12,6 +13,8 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 _PYTHON_PREFIX = "PYTHON:"
 _PYTHON_READ_PREFIX = "PYTHON_READ:"
 _PYTHON_FINAL_PREFIX = "PYTHON_FINAL:"
+_PYTHON_ERROR_LOG_LOCK = threading.Lock()
+_PYTHON_ERRORS_LOGGED = 0
 
 
 def _env_enabled(name: str, default: bool) -> bool:
@@ -60,6 +63,12 @@ def _extract_prefixed_python(text: str, prefix: str) -> Optional[str]:
     if not stripped.startswith(prefix):
         return None
     code = stripped[len(prefix):].strip()
+    code = re.split(
+        rf"(?m)^\s*(?:{re.escape(_PYTHON_READ_PREFIX)}|"
+        rf"{re.escape(_PYTHON_FINAL_PREFIX)}|{re.escape(_PYTHON_PREFIX)})\s*",
+        code,
+        maxsplit=1,
+    )[0].rstrip()
     if code.startswith("```"):
         first_line, _, remainder = code.partition("\n")
         if first_line.strip().lower() in ("```", "```python", "```py"):
@@ -114,6 +123,25 @@ def _bounded_json_text(value: Any, limit: int) -> str:
     if len(text) <= limit:
         return text
     return text[:limit] + f"... [truncated {len(text) - limit} chars]"
+
+
+def _context_variable_inventory(context: Dict[str, Any]) -> List[Dict[str, str]]:
+    """Describe copied variables without exposing their values to the model."""
+    inventory: List[Dict[str, str]] = []
+    for key, value in sorted(context.items()):
+        inventory.append({
+            "variable": f"data[{key!r}]",
+            "value_type": type(value).__name__,
+        })
+        if key == "reads" and isinstance(value, list):
+            for index, record in enumerate(value):
+                if not isinstance(record, dict) or "result" not in record:
+                    continue
+                inventory.append({
+                    "variable": f"data['reads'][{index}]['result']",
+                    "value_type": type(record["result"]).__name__,
+                })
+    return inventory
 
 
 def _parse_json(text: str) -> Optional[Any]:
@@ -179,6 +207,7 @@ def _python_protocol(
     context_chars: int,
     output_kind: str,
     allow_reads: bool,
+    allow_calls: bool = True,
 ) -> str:
     keys = ", ".join(sorted(map(str, context))) or "(none)"
     routing = (
@@ -201,24 +230,67 @@ def _python_protocol(
         )
     read_instruction = ""
     if allow_reads:
+        call_line = (
+            '  {"op":"call","name":"<app.action>","args":{...}}\n'
+            if allow_calls else ""
+        )
         read_instruction = (
             "\nTo gather environment evidence, start a turn with `PYTHON_READ:` followed by a program "
             "that prints exactly `{\"queries\":[...]}` via `print_json`. Each query must be one of:\n"
             '  {"op":"read","path":"/testbed/..."}\n'
             '  {"op":"list","path":"/testbed/..."}\n'
-            '  {"op":"call","name":"<app.action>","args":{...}}\n'
+            f"{call_line}"
             '  {"op":"trace","path":"/testbed/..."}\n'
-            "The host validates and executes only read-only operations, then copies their results into "
+            "The host validates immutable object reads, then copies their results into "
             "`data['reads']` and `data['facts']`. The program never receives the session, filesystem, "
             "apps, network, or process environment.\n"
         )
+    exact_read_instruction = ""
+    exact_call = context.get("exact_read_call")
+    if context.get("grounded_clean_read_required"):
+        exact_read_instruction = (
+            "\nEXACT GROUNDED CLEAN-READ PROTOCOL (overrides every other routing option):\n"
+            "- The host already executed the proven read-only action and copied its exact observation "
+            "into `data['grounded_clean_read']`.\n"
+            "- Return a PYTHON_FINAL program that reads this variable, performs any required string "
+            "processing in Python, and prints the complete final observation.\n"
+            "- Do not request another read, transcribe the observation into source code, or return it "
+            "directly. Only generated Python may process the copied observation.\n"
+        )
+    elif context.get("exact_read_required") and isinstance(exact_call, dict):
+        exact_read_instruction = (
+            "\nEXACT CLEAN-READ PROTOCOL (overrides direct-answer routing):\n"
+            "- Your first response MUST be PYTHON_READ and request exactly the call in "
+            f"`data['exact_read_call']`: {json.dumps(exact_call, ensure_ascii=True, sort_keys=True)}.\n"
+            "- Do not answer or request any other evidence before that call.\n"
+            "- On the next turn, return a PYTHON_FINAL program that processes "
+            "`data['reads'][-1]['result']` directly and prints the complete final observation.\n"
+            "- Do not transcribe the host result into source code or return it directly.\n"
+        )
+    elif context.get("immutable_objects") is not None:
+        exact_read_instruction = (
+            "\nIMMUTABLE SHELL-READ PROTOCOL (overrides direct-answer routing):\n"
+            "- `data['immutable_objects']` is the complete recursive inventory as a list of "
+            "`{'name','path','type'}` dictionaries. It is already decoded; do not call json.loads on it.\n"
+            "- `data['shell_stages']` contains the parsed argv for each pipeline stage.\n"
+            "- Return PYTHON_FINAL immediately. Process that variable to emulate the requested "
+            "read-only shell listing/filter pipeline exactly.\n"
+            "- Do not request another LIST, transcribe inventory values into source code, or infer "
+            "objects not present in the copied inventory.\n"
+        )
     return (
         "\n\nPURE COMPUTATION OPTION:\n"
-        f"{routing}{read_instruction}For the final answer, make the FIRST non-whitespace characters "
+        f"{routing}{read_instruction}{exact_read_instruction}For the final answer, make the FIRST "
+        "non-whitespace characters "
         "of your response exactly `PYTHON_FINAL:` followed by a Python program. The program receives "
         f"a copied JSON-like dictionary named `data` with inputs under: {keys}. It may use ordinary "
-        "list/dict/set operations, `json`/`datetime`, date helpers, and `print_json`; files, network, "
-        "environment access, subprocesses, and OfficeBench APIs are unavailable. "
+        "list/dict/set operations, generators, `json`, `re`, `fnmatch`, `ast.literal_eval`, `datetime`, "
+        "date helpers, and "
+        "`print_json`. Safe common operations include `dict.fromkeys`, `str.rsplit`, `re.compile`, "
+        "`re.finditer`, and regex flags such as `re.I`. Prefer `json_value` for values that may "
+        "already be decoded. Do not import `os` or use `eval`; derive path components with string "
+        "operations. Files, network, environment access, subprocesses, and OfficeBench APIs are "
+        "unavailable. "
         f"{output_instruction} Print only the complete requested result. The legacy `PYTHON:` prefix "
         "is accepted as an alias for `PYTHON_FINAL:`."
     )
@@ -262,6 +334,16 @@ def _run_python(
     )
     if result.error:
         stats.python_failures += 1
+        if _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_LOG_ERRORS", False):
+            global _PYTHON_ERRORS_LOGGED
+            with _PYTHON_ERROR_LOG_LOCK:
+                limit = _env_int("TTS_OFFICEBENCH_WM_PYTHON_LOG_ERROR_LIMIT", 50)
+                if _PYTHON_ERRORS_LOGGED < limit:
+                    _PYTHON_ERRORS_LOGGED += 1
+                    print(
+                        f"[officebench-python-error] {result.error[:500]}",
+                        flush=True,
+                    )
     return result
 
 
@@ -289,6 +371,9 @@ def _parse_read_requests(output: str) -> Optional[List[Dict[str, Any]]]:
 def _execute_read(query_interface, request: Dict[str, Any]) -> Any:
     op = request["op"]
     if op == "read":
+        raw_read = getattr(query_interface, "read_raw", None)
+        if callable(raw_read):
+            return raw_read(request["path"])
         return query_interface.read(request["path"])
     if op == "list":
         return query_interface.list(request["path"])
@@ -328,7 +413,8 @@ def _resolve_final(
         if code is None:
             return ""
 
-    result = _run_python(code, context, stats)
+    result = _run_python(
+        code, context, stats, allow_bare_container_output=True)
     normalized = None if result.error else _normalize_output(result.output, output_kind)
     error = result.error
     if error is None and normalized is None:
@@ -340,10 +426,12 @@ def _resolve_final(
     if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_REPAIR", True):
         return ""
 
-    repair_context = _bounded_json_text(
-        context,
+    repair_inventory = _bounded_json_text(
+        _context_variable_inventory(context),
         _env_int("TTS_OFFICEBENCH_WM_PYTHON_REPAIR_CONTEXT_CHARS", 12_000),
     )
+    if result.fatal and required:
+        return ""
     if result.fatal:
         repair_instruction = (
             "The Python helper is unavailable. Return the prediction directly in the requested format."
@@ -354,30 +442,45 @@ def _resolve_final(
         repair_instruction = (
             "Return either the direct prediction or one corrected PYTHON_FINAL program."
         )
-    repaired = complete(
-        f"{prompt}\n\nYour previous PYTHON program failed safely with:\n{error}\n\n"
-        f"FAILED PROGRAM:\n{code[:4_000]}\n\nCOPIED INPUT (bounded):\n{repair_context}\n\n"
-        f"{repair_instruction} Do not explain the failure.",
-        max_tokens,
-    )
-    repaired_code = _extract_python_program(repaired)
-    if repaired_code is None:
-        if required and not result.fatal:
-            return ""
-        normalized = _normalize_output(repaired, output_kind)
-        if normalized is not None:
-            stats.valid = True
-            return normalized
-        return ""
-    repaired_result = _run_python(repaired_code, context, stats)
-    if repaired_result.error:
-        return ""
-    normalized = _normalize_output(repaired_result.output, output_kind)
-    if normalized is None:
-        stats.python_failures += 1
-        return ""
-    stats.valid = True
-    return normalized
+    failed_code = code
+    repair_error = error
+    repair_attempts = _env_int(
+        "TTS_OFFICEBENCH_WM_PYTHON_REPAIR_ATTEMPTS", 2)
+    for attempt in range(repair_attempts):
+        repaired = complete(
+            f"{prompt}\n\nYour previous PYTHON program failed safely with:\n"
+            f"{repair_error}\n\nFAILED PROGRAM:\n{failed_code[:4_000]}\n\n"
+            "AVAILABLE COPIED VARIABLES (names and types only; inspect values in generated code):\n"
+            f"{repair_inventory}\n\n{repair_instruction} This is repair attempt "
+            f"{attempt + 1}/{repair_attempts}. Prefer a shorter program and process copied read "
+            "results through their `data[...]` variables. Do not explain the failure.",
+            max_tokens,
+        )
+        repaired_code = _extract_python_program(repaired)
+        if repaired_code is None:
+            if not required:
+                normalized = _normalize_output(repaired, output_kind)
+                if normalized is not None:
+                    stats.valid = True
+                    return normalized
+            repair_error = "the Python repair response was invalid"
+            failed_code = repaired
+            continue
+        repaired_result = _run_python(
+            repaired_code, context, stats, allow_bare_container_output=True)
+        if repaired_result.error:
+            repair_error = repaired_result.error
+            failed_code = repaired_code
+            continue
+        normalized = _normalize_output(repaired_result.output, output_kind)
+        if normalized is None:
+            stats.python_failures += 1
+            repair_error = f"repaired program output is not a valid {output_kind} result"
+            failed_code = repaired_code
+            continue
+        stats.valid = True
+        return normalized
+    return ""
 
 
 def run_python_prediction_loop(
@@ -391,10 +494,13 @@ def run_python_prediction_loop(
     max_tokens: int = 1500,
     output_kind: str = "text",
     force_long: bool = False,
+    force_always: bool = False,
 ) -> PythonLoopResult:
     """Run bounded Python-emitted read rounds followed by a direct or Python final result."""
     stats = PythonLoopResult()
     if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON", True):
+        if force_always:
+            return stats
         direct_prompt = (
             f"{header}\n\nThe restricted Python helper is disabled. Return the final result directly; "
             f"do not emit PYTHON_READ, PYTHON_FINAL, READ, LIST, CALL, or TRACE.\n\n"
@@ -417,7 +523,7 @@ def run_python_prediction_loop(
 
     threshold = _env_int("TTS_OFFICEBENCH_WM_PYTHON_FORCE_CHARS", 2_000)
     context_chars = _json_size_hint(context, threshold)
-    required = bool(force_long and context_chars > threshold)
+    required = bool(force_always or (force_long and context_chars > threshold))
     if required:
         stats.python_forced = 1
 
@@ -427,6 +533,10 @@ def run_python_prediction_loop(
         context_chars=context_chars,
         output_kind=output_kind,
         allow_reads=query_interface is not None,
+        allow_calls=bool(
+            query_interface is not None
+            and getattr(query_interface, "allow_action_execution", True)
+        ),
     )
     model_prompt = f"{header}{protocol}\n\nFINAL OUTPUT FORMAT:\n{final_instr}"
     reads = list(context.get("reads") or [])
@@ -443,9 +553,16 @@ def run_python_prediction_loop(
         "TTS_OFFICEBENCH_WM_PYTHON_READ_CONTEXT_CHARS", 12_000)
 
     for turn in range(turns):
+        read_variables = [
+            {
+                **{key: value for key, value in record.items() if key != "result"},
+                "variable": f"data['reads'][{index}]['result']",
+            }
+            for index, record in enumerate(reads)
+        ]
         response = complete(
             f"{model_prompt}\n\nCOPIED READ RESULTS SO FAR:\n"
-            f"{_bounded_json_text(reads, visible_limit)}\n\n"
+            f"{_bounded_json_text(read_variables, visible_limit)}\n\n"
             f"TOOL FACTS AND ERRORS:\n{_bounded_json_text(facts, visible_limit)}\n\n"
             f"Python tool turn {turn + 1}/{turns}:",
             max_tokens,
@@ -472,9 +589,6 @@ def run_python_prediction_loop(
                     read_result = f"ERROR: {type(exc).__name__}: {str(exc)[:300]}"
                 record = {**request, "result": read_result}
                 reads.append(record)
-                label = (
-                    f"{request['op']} {request.get('path', request.get('name', ''))}")
-                facts[label] = read_result
             continue
         if mode == "final":
             stats.output = _resolve_final(
@@ -505,8 +619,8 @@ def run_python_prediction_loop(
         return stats
 
     response = complete(
-        f"{model_prompt}\n\nYou are out of read turns. Return the final result directly or with "
-        "PYTHON_FINAL; do not request more reads.",
+        f"{model_prompt}\n\nYou are out of read turns. Return only a PYTHON_FINAL program; "
+        "do not request more reads.",
         max_tokens,
     )
     mode, _ = _extract_python_action(response)

@@ -339,6 +339,7 @@ class OfficeBenchVerifier:
         self._chat = chat_client
         self._sample_seed = sample_seed
         self._query = None
+        self._flat_system_prompt: Optional[str] = None
         self.last_precheck_failure: Optional[str] = None
         self.last_percheck_breakdown: Optional[Dict[str, Any]] = None
         self.n_python_calls = 0
@@ -349,6 +350,17 @@ class OfficeBenchVerifier:
     def bind_query_interface(self, query) -> None:
         """Allow the verifier to gather additional read-only evidence from the pristine session."""
         self._query = query
+
+    @property
+    def uses_fixed_context(self) -> bool:
+        return self._flat_system_prompt is not None
+
+    def configure_flat_context(self, system_prompt: str) -> None:
+        """Use the same pre-action B1 context as the observation predictor."""
+        self._flat_system_prompt = system_prompt
+
+    def _system(self, default: str) -> str:
+        return self._flat_system_prompt or default
 
     def _record_python_result(self, result) -> None:
         self.n_python_calls += result.python_calls
@@ -464,6 +476,7 @@ class OfficeBenchVerifier:
         votes = 0
         seedable = self._sample_seed is not None and hasattr(self._chat, "seed")
         original_seed = getattr(self._chat, "seed", None)
+        query = None if self.uses_fixed_context else self._query
         try:
             for i in range(k):
                 # K==1 -> deterministic (temp 0); K>1 -> sampled, reproducible independent votes.
@@ -480,8 +493,9 @@ class OfficeBenchVerifier:
                 if officebench_wm_tool_mode() == "python":
                     result = run_python_prediction_loop(
                         lambda text, budget: self._chat.chat(
-                            _SYSTEM, text, temperature=temp, max_tokens=budget),
-                        self._query,
+                            self._system(_SYSTEM), text,
+                            temperature=temp, max_tokens=budget),
+                        query,
                         vote_prompt,
                         "VERDICT: SUCCESS  or  VERDICT: FAILURE",
                         context=python_context,
@@ -491,16 +505,18 @@ class OfficeBenchVerifier:
                     )
                     self._record_python_result(result)
                     verdict = result.output
-                elif self._query is None:
+                elif query is None:
                     verdict = self._chat.chat(
-                        _SYSTEM, vote_prompt, temperature=temp, max_tokens=8)
+                        self._system(_SYSTEM), vote_prompt,
+                        temperature=temp, max_tokens=8)
                 else:
                     from .officebench_wm_predict import run_agentic_read_loop
 
                     terminal = run_agentic_read_loop(
                         lambda text, budget: self._chat.chat(
-                            _SYSTEM, text, temperature=temp, max_tokens=budget),
-                        self._query,
+                            self._system(_SYSTEM), text,
+                            temperature=temp, max_tokens=budget),
+                        query,
                         vote_prompt,
                         "VERDICT: SUCCESS  or  VERDICT: FAILURE",
                         max_turns=self.MAX_TURNS,
@@ -548,7 +564,7 @@ class OfficeBenchVerifier:
                     status_check=check,
                 )
                 status = self._parse_status(self._chat.chat(
-                    _STATUS_SYSTEM,
+                    self._system(_STATUS_SYSTEM),
                     prompt,
                     temperature=0.0,
                     max_tokens=16,

@@ -8,6 +8,8 @@ exactly one trajectory is committed.
 
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from tts.agents import LLMAgent
@@ -178,6 +180,27 @@ def test_faithful_llm_wm_path_selects_and_commits(method):
         assert out.record.success
 
 
+def test_simulation_only_selects_without_commit_or_grounded_score():
+    env = _FakeWMEnv()
+    pre = env.state_hash()
+    cfg = Config(
+        method="ours",
+        env="fake",
+        N=4,
+        seed=2,
+        solver=SolverConfig(agent="llm_wm"),
+    )
+
+    out = run_decision(env, cfg, commit=False)
+
+    assert env.wm_rollouts == 4
+    assert env.state_hash() == pre
+    assert out.record.n_commits == 0
+    assert out.record.simulator_writes == 0
+    assert out.record.success
+    assert out.record.prediction_correct is None
+
+
 def test_wm_rollouts_support_environment_score_refinement():
     env = _RefiningWMEnv()
     cfg = Config(
@@ -231,6 +254,31 @@ def test_failed_wm_rollout_is_not_cached_across_cell_retry():
     assert second.record.n_rollout_errors == 0
     assert env.attempts[2] == 2
     assert second.record.success
+
+
+def test_wm_rollout_cache_separates_predict_all_extension():
+    env = _FakeWMEnv()
+    cache = {}
+    base = dict(
+        method="ours",
+        env="fake",
+        N=1,
+        seed=2,
+        solver=SolverConfig(agent="llm_wm"),
+    )
+
+    run_decision(
+        env,
+        Config(**base, simulator=SimulatorConfig(predict_all_actions=False)),
+        rollout_cache=cache,
+    )
+    run_decision(
+        env,
+        Config(**base, simulator=SimulatorConfig(predict_all_actions=True)),
+        rollout_cache=cache,
+    )
+
+    assert env.wm_rollouts == 2
 
 
 def test_permanent_wm_rollout_failure_keeps_n_cell_complete():
@@ -330,8 +378,8 @@ class _RecordingAgenticEval(ShadowEvaluator):
     def reward_from_shadow(self, shadow, actions):
         return _RI()
 
-    def observe_agentic(self, reader, action, force_predict=False):
-        self.calls.append((action.name, force_predict))
+    def observe_agentic(self, reader, action, force_predict=False, clean_read=False):
+        self.calls.append((action.name, force_predict, clean_read))
         return (f"served:{action.name}", False)
 
     def reward_agentic(self, reader, trajectory):
@@ -344,7 +392,128 @@ def test_predict_step_forces_prediction_vs_step():
                                 Budget(), BudgetConfig(), ReadCache())
     wm.step(Action("get_reservation_details", {"id": "r1"}))       # normal -> may serve exact
     wm.predict_step(Action("get_reservation_details", {"id": "r1"}))  # dirty -> must force predict
-    assert ev.calls == [("get_reservation_details", False), ("get_reservation_details", True)]
+    wm.predict_step(
+        Action("get_reservation_details", {"id": "r2"}),
+        dirty=False,
+    )
+    assert ev.calls == [
+        ("get_reservation_details", False, False),
+        ("get_reservation_details", True, False),
+        ("get_reservation_details", True, True),
+    ]
+
+
+def test_tau2_predict_all_clean_read_prompt_requires_identical_native_call(monkeypatch):
+    from tts.env.real_tau2 import _LLMWorldModelPredictor
+
+    class _Chat:
+        def __init__(self):
+            self.responses = iter([
+                'CALL get_user_details {"user_id": "u1"}',
+                'PREDICT: {"user_id": "u1", "name": "Alice"}',
+            ])
+            self.prompts = []
+
+        def complete(self, messages, **kwargs):
+            self.prompts.append(messages[-1]["content"])
+            return next(self.responses)
+
+    class _Query:
+        read_tools = ["get_user_details"]
+
+        def __init__(self):
+            self.calls = []
+
+        def query(self, refs, label):
+            return {}
+
+        def list_ids(self, entity_type):
+            return []
+
+        def call(self, name, args):
+            self.calls.append((name, args))
+            return {"user_id": "u1", "name": "Alice"}
+
+    monkeypatch.setenv("TTS_TAU2_WM_TOOL_MODE", "text")
+    predictor = _LLMWorldModelPredictor("retail")
+    chat = _Chat()
+    predictor._client = chat
+    query = _Query()
+
+    result, is_error = predictor.predict_observation_agentic(
+        "retail",
+        Action("get_user_details", {"user_id": "u1"}),
+        [],
+        query,
+        ["users"],
+        clean_read=True,
+    )
+
+    assert not is_error
+    assert result == '{"user_id": "u1", "name": "Alice"}'
+    assert query.calls == [("get_user_details", {"user_id": "u1"})]
+    assert "HIGHEST-PRIORITY CLEAN-READ RULE" in chat.prompts[0]
+    assert "output it VERBATIM" in chat.prompts[0]
+
+
+def test_tau2_clean_read_python_protocol_copies_host_result():
+    from tts.env.tau2_wm_python import _python_protocol
+
+    prompt = _python_protocol(
+        {
+            "exact_read_required": True,
+            "exact_read_call": {
+                "op": "call",
+                "name": "get_user_details",
+                "args": {"user_id": "u1"},
+            },
+        },
+        required=False,
+        context_chars=100,
+        output_kind="text",
+        allow_reads=True,
+    )
+
+    assert "EXACT CLEAN-READ PROTOCOL" in prompt
+    assert "Your first response MUST be PYTHON_READ" in prompt
+    assert "data['reads'][-1]['result']" in prompt
+
+
+def test_tau2_predict_all_preloads_clean_read_for_generated_program(monkeypatch):
+    from tts.env.real_tau2 import _LLMWorldModelPredictor
+
+    class _Chat:
+        def complete(self, messages, **kwargs):
+            return "PYTHON_FINAL:\nprint(data['grounded_clean_read'])"
+
+    class _Query:
+        read_tools = ["get_user_details"]
+
+        def __init__(self):
+            self.calls = []
+
+        def call(self, name, args):
+            self.calls.append((name, args))
+            return {"user_id": "u1", "name": "Alice"}
+
+    predictor = _LLMWorldModelPredictor("retail")
+    predictor._client = _Chat()
+    query = _Query()
+
+    result, is_error = predictor.predict_observation_agentic(
+        "retail",
+        Action("get_user_details", {"user_id": "u1"}),
+        [],
+        query,
+        ["users"],
+        clean_read=True,
+        force_program=True,
+    )
+
+    assert not is_error
+    assert json.loads(result) == {"name": "Alice", "user_id": "u1"}
+    assert query.calls == [("get_user_details", {"user_id": "u1"})]
+    assert predictor.n_python_calls == 1
 
 
 def test_sandbox_preamble_opt_in(monkeypatch):

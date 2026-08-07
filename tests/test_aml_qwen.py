@@ -23,7 +23,11 @@ def test_qwen_job_runs_server_and_tau2_on_one_aml_node():
     assert job["inputs"]["enable_thinking"] == 0
     assert job["inputs"]["min_cache_free_gb"] == 100
     assert job["inputs"]["env"] == "tau2"
+    assert job["inputs"]["llm_user"] == "azure/gpt-5.4"
+    assert job["inputs"]["aoai_deployment"] == "gpt-5.4"
     assert "aml/src/run_qwen.sh" in job["command"]
+    assert "--llm-user" in job["command"]
+    assert "--aoai-endpoint" in job["command"]
     assert "--output-dir" in job["command"]
 
 
@@ -77,6 +81,45 @@ def test_qwen_appworld_environment_contains_vllm_and_pinned_appworld():
     assert "openai>=2.0.0" in pip_dependencies
 
 
+def test_qwen_officebench_job_runs_local_backend_on_gpu():
+    job = yaml.safe_load(
+        (ROOT / "aml" / "job.qwen.officebench.yml").read_text(encoding="utf-8")
+    )
+
+    assert job["compute"] == "azureml:NC40adsv5-EUS-hipri"
+    assert job["environment"] == "azureml:tts-officebench-qwen-local:20260806"
+    assert job["environment_variables"]["TTS_OFFICEBENCH_BACKEND"] == "local"
+    assert job["inputs"]["officebench_root"]["path"] == "azureml:officebench_clone:1"
+    assert job["inputs"]["env"] == "officebench"
+    assert job["inputs"]["quantization"] == "fp8"
+    assert job["inputs"]["min_cache_free_gb"] == 200
+    assert job["inputs"]["workers"] == 1
+    assert "--officebench-root" in job["command"]
+    assert "aml/src/run_qwen.sh" in job["command"]
+
+
+def test_qwen_officebench_environment_contains_vllm_and_office_apps():
+    environment = yaml.safe_load(
+        (ROOT / "aml" / "environment" / "officebench-qwen-local.yml").read_text(
+            encoding="utf-8"
+        )
+    )
+    dockerfile = (
+        ROOT
+        / "aml"
+        / "environment"
+        / "officebench-qwen-local"
+        / "Dockerfile"
+    ).read_text(encoding="utf-8")
+
+    assert environment["name"] == "tts-officebench-qwen-local"
+    assert environment["version"] == "20260806"
+    assert "vllm==0.24.0" in dockerfile
+    assert "libreoffice" in dockerfile
+    assert "proot" in dockerfile
+    assert "tts-no-network" in dockerfile
+
+
 def test_qwen_runner_uses_local_server_and_existing_aml_pipeline():
     runner = (ROOT / "aml" / "src" / "run_qwen.sh").read_text(encoding="utf-8")
 
@@ -84,15 +127,25 @@ def test_qwen_runner_uses_local_server_and_existing_aml_pipeline():
     assert 'curl -fsS "$base_url/models"' in runner
     assert "--local-base-url" in runner
     assert "--llm-agent" in runner
+    assert '--llm-user) llm_user="$2"' in runner
+    assert "TTS_LOCAL_LLM_ALLOW_AZURE=1" in runner
+    assert '--llm-user "$llm_user"' in runner
+    assert '--aoai-endpoint "${aoai_endpoint:-none}"' in runner
     assert "aml/src/run_dw.sh" in runner
     assert "--appworld-data" in runner
+    assert "--officebench-root" in runner
+    assert "tau2|appworld|officebench" in runner
     assert 'EXTRA_ARGS="$vllm_extra_args"' in runner
     assert "VLLM_USE_FLASHINFER_SAMPLER=0" in runner
     assert '--enable-thinking) enable_thinking="$2"' in runner
     assert "Do not pass --default-chat-template-kwargs" in runner
     assert 'ENABLE_THINKING="$enable_thinking"' in runner
     assert "TTS_LOCAL_LLM=1" in runner
-    assert 'HF_HOME="${HF_HOME:-$PWD/.cache/huggingface}"' in runner
+    assert 'cache_root="/mnt/resource/tts-qwen-cache"' in runner
+    assert 'HF_HOME="${HF_HOME:-$cache_root/huggingface}"' in runner
+    assert 'TMPDIR="${TMPDIR:-$cache_root/tmp}"' in runner
+    assert "TORCHINDUCTOR_CACHE_DIR" in runner
+    assert "VLLM_CACHE_ROOT" in runner
     assert "cp -f \"$server_log\" ./outputs/vllm.log" in runner
     assert 'kill -- "-$server_pid"' in runner
 
@@ -112,6 +165,8 @@ def test_qwen_submitter_validates_gpu_compute_and_submits_job():
     assert "join('|', [type, size, provisioning_state])" in submitter
     assert "IFS='|' read -r existing_type existing_size provisioning_state" in submitter
     assert '"compute=azureml:$compute_name"' in submitter
+    assert "tts-officebench-qwen-local" in submitter
+    assert "officebench-qwen-local.yml" in submitter
 
 
 def test_qwen_submitter_inherits_compute_from_selected_job(tmp_path):
@@ -156,5 +211,8 @@ fi
 def test_shared_aml_runner_skips_azure_auth_for_local_qwen():
     runner = (ROOT / "aml" / "src" / "run_dw.sh").read_text(encoding="utf-8")
 
-    assert 'if [[ "${TTS_LOCAL_LLM:-0}" == "1" ]]' in runner
-    assert '"local" if "${TTS_LOCAL_LLM:-0}" == "1"' in runner
+    assert (
+        'if [[ "${TTS_LOCAL_LLM:-0}" == "1" && '
+        '"${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" != "1" ]]' in runner
+    )
+    assert '"local+azure" if "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1"' in runner

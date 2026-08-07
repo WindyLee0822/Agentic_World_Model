@@ -12,6 +12,22 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 job_file="${AML_QWEN_JOB_FILE:-$repo_root/aml/job.qwen.tau2.yml}"
 [[ "$job_file" = /* ]] || job_file="$repo_root/$job_file"
 
+if [[ "$(basename "$job_file")" == "job.qwen.officebench.yml" ]]; then
+  if ! az ml environment show \
+    --name tts-officebench-qwen-local \
+    --version 20260806 \
+    --resource-group "$RESOURCE_GROUP" \
+    --workspace-name "$WORKSPACE" \
+    --subscription "$SUBSCRIPTION" >/dev/null 2>&1; then
+    echo "Registering the OfficeBench Qwen AML environment." >&2
+    az ml environment create \
+      --file "$repo_root/aml/environment/officebench-qwen-local.yml" \
+      --resource-group "$RESOURCE_GROUP" \
+      --workspace-name "$WORKSPACE" \
+      --subscription "$SUBSCRIPTION"
+  fi
+fi
+
 job_compute="$(
   sed -nE 's/^[[:space:]]*compute:[[:space:]]*azureml:([^[:space:]#]+).*/\1/p' \
     "$job_file" | head -n 1

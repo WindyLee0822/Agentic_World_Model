@@ -71,9 +71,11 @@ real environment through a single chokepoint.
   model falls back to the oracle grounded reward there (the same contract AppWorld uses) while B0
   still reproduces their official numbers. In `llm_wm` mode, candidate generation uses the exact
   same official agent/user prompts, sampling parameters, and orchestration loop as the real-env
-  path. Only `environment.get_response` is replaced: clean reads remain exact, while writes and
-  dirty reads are predicted. Policy/reference guidance is applied only by the world-model verifier
-  after generation and is never injected into the benchmark agent.
+  path. Only `environment.get_response` is replaced: with the default predict-all setting, recursive
+  Ours may gather untouched evidence through whitelisted read-only simulator tools, but every clean
+  read, dirty read, and write observation is produced by a required restricted Python program.
+  Policy/reference guidance is applied only by the world-model verifier after generation and is never
+  injected into the benchmark agent.
 * **AppWorld.** Official AppWorld tasks are solved with **free-form Python** in a stateful REPL
   and expose no replayable gold *action list*. A trajectory here is the realized sequence of
   code blocks emitted by the **official ReAct code agent** (the verbatim official prompt +
@@ -112,9 +114,15 @@ The world model (used by the read-grounded TTS methods on τ²) predicts a traje
 **without touching the real env** by materialising a *shadow* of the entities the trajectory
 touches:
 
-* **flat (B1)** reads only `node_read_limit` seed entities — one bounded pass, no recursion. For
-  a multi-entity action (τ²: `book`/`update` need the user + flights) it under-reads, cannot
-  certify the outcome, and mis-predicts.
+* **flat (B1)** in τ², AppWorld, and OfficeBench prepares its simulator context **before candidate
+  generation** and reuses it for every predicted observation and the final success judgment. In τ²
+  it contains task/system rules, all tool documentation, gold actions, evaluation criteria, and at
+  most `node_read_limit` reference-derived seed entities. In AppWorld it contains the task metadata, relevant API
+  documentation, native evaluator requirements/gold values, and fixed task state. In OfficeBench it
+  contains the full app catalogue, native evaluation config, testbed listing, and evaluator-selected
+  initial/reference files. Candidate actions and accumulated history are runtime inputs only; they
+  cannot trigger new adaptive grounding reads or change the fixed system prompt. There is no
+  recursion or transitive expansion, so B1 can still be under-grounded.
 * **recursive (Ours)** follows `child_references` to close over the touched subgraph
   (`reservation → user + flights`), so the prediction is correct. The stop rule is configurable:
   `uncertainty` (descend while read-coverage `< tau`) or `fixed` (descend to depth `L`). Every
@@ -122,33 +130,37 @@ touches:
   Its world-model subagent uses the AppWorld-style restricted coding protocol by default:
   `PYTHON_READ:` programs emit bounded record reads, id listings, or calls to toolkit functions
   already classified as read-only; the host validates and executes those requests and copies their
-  results into the next turn. `PYTHON_FINAL:` programs compute the predicted tool observation or
-  success verdict from copied actions, history, documentation, and read facts. Generated code has no
-  database, environment, toolkit, filesystem, network, credential, or write-tool access. Simple final
-  predictions may still be returned directly. Set `TTS_TAU2_WM_TOOL_MODE=text` to opt out and restore
-  the former `READ`/`LIST`/`CALL` protocol.
+  results as untouched variables. `PYTHON_FINAL:` programs compute and print the predicted tool
+  observation or success verdict from copied actions, history, documentation, and read variables.
+  Generated code has no database, environment, toolkit, filesystem, network, credential, or write-tool
+  access. Predict-all requires this program path for every candidate action; the text protocol remains
+  available only when predict-all is disabled.
 * **B2 (snapshot, baseline only)** deep-copies the full τ² state and scores with the oracle — the
   forking upper bound that **Ours matches without forking**. (AppWorld and OfficeBench are
   non-forkable, so B2 there falls back to best-of-`N` over the realized official rewards.)
 
 **AppWorld `llm_wm` (world-model interaction).** AppWorld also supports the `--agent llm_wm` mode: the
 official ReAct code agent runs, but every `apis.*` call is routed through the world model at the single
-chokepoint `requester.request` — documented read endpoints execute exactly against the real backing
-SQLite DBs, while task-mutating endpoints (`POST`/`PATCH`/`DELETE`), mutating admin calls, and `logout`
-are predicted from the call args + the endpoint's `response_schemas` + history (no real mutation).
+chokepoint `requester.request` — under predict-all, recursive Ours may invoke documented read endpoints
+only as bounded simulator evidence probes (flat B1 uses fixed context), while every candidate read and
+write response is generated by restricted Python from copied variables. Task-mutating endpoints
+(`POST`/`PATCH`/`DELETE`), mutating admin calls, and `logout` are never executed during sampling.
 Unknown API metadata is blocked fail-closed. `login` is the sole real POST because its token is required
 to authorize exact protected reads; it validates existing credentials without saving task-app records.
 `supervisor.complete_task` is recorded as predictor-local logical state and overlaid onto
 `show_active_task`, so candidate completion stops the loop without writing the real supervisor DB. A
-**read after a write** to an
-app is predicted by combining the exact *pre-write* result with the write history (the τ² dirty-read logic),
-so reads reflect the agent's prior writes. Write, dirty-read, and terminal-success predictions use a bounded
-world-model subagent. Its default and only environment-facing tool is restricted Python:
+**read after a write** is WM-predicted so reads reflect the agent's prior writes. With **B1**, the
+simulator first freezes one Simia-style system context containing the task, relevant API docs, native
+evaluation contract/gold values, app catalogue, frozen time, and active-task metadata. Writes, dirty
+reads, and success judgments then use that identical system prompt; candidate code/history is supplied
+only in the runtime user message, and no action-conditioned DB query is allowed. With **Ours**, dirty
+reads and terminal-success predictions retain the bounded world-model subagent and may combine exact
+pre-write state with adaptive read-only grounding. Its default environment-facing tool is restricted Python:
 `PYTHON_READ:` code emits structured read requests, which the host validates and executes through the
-read-only logical-state interface; `PYTHON_FINAL:` code emits the final predicted state or verdict.
-Simple cases may still return the final result directly. The former textual
-`READ`/`LIST`/`CALL`/`TRACE` interface is retained only as a legacy ablation with
-`TTS_APPWORLD_WM_TOOL_MODE=text`. The selected trajectory is committed
+pristine read-only interface; the raw result is exposed only as a `data['reads'][i]['result']`
+variable. `PYTHON_FINAL:` code performs every copy/transformation and its printed value is the final
+predicted state or verdict. Direct final output is rejected in predict-all mode. The former textual
+interface remains only for non-predict-all ablations. The selected trajectory is committed
 by re-executing its realized code on a fresh world and scoring with `AppWorld.evaluate()`. As in
 OfficeBench, terminal verification is **reference-grounded by default** against AppWorld's native
 `test_data.json` requirements, public/private values, and `answer.json`; it audits exact write
@@ -163,30 +175,26 @@ labeled partial metrics by default, counting every missing task/method/N cell as
 with zero reward. Pass `--strict-coverage` to require a complete run instead.
 
 AppWorld state prediction and terminal verification use the restricted Python read/computation protocol,
-enabled by default with `TTS_APPWORLD_WM_PYTHON=1`. For a simple write response, dirty read, or verifier
-judgment, the WM may still return the requested result directly.
-When exact set/count/date processing over long structured evidence would be safer in code, it may
-instead begin its final response with `PYTHON_FINAL:` (`PYTHON:` remains a compatibility alias). The
-generated program receives only copied, credential-redacted
-JSON inputs plus host-mediated read facts; a restricted helper process executes it
-with no unrestricted imports, filesystem, network, environment, AppWorld object, or write API. Its stdout becomes the
-predicted response. State-prediction inputs larger than `TTS_APPWORLD_WM_PYTHON_FORCE_CHARS` (default
-`2000`) require code mode because direct regeneration commonly truncates long record sets; verifier
-code remains optional because interpreting natural-language requirements still needs semantic reasoning. Safe `json`/`datetime`
-imports and local helper functions are supported; other imports remain blocked. Failed programs receive
-one repair attempt (`TTS_APPWORLD_WM_PYTHON_REPAIR=0` disables it), then fall back to the existing safe
-write/read/verifier fallback. Verifier programs receive copied task requirements, parsed gold sections,
-write arguments/results, predicted transitions, agent steps, and any read-only facts; they must emit a
-validated verdict/status contract and never receive the requester or benchmark world. Set
+enabled by default with `TTS_APPWORLD_WM_PYTHON=1`. In predict-all mode every write response and read
+observation must begin with `PYTHON_FINAL:` (`PYTHON:` remains a compatibility alias); direct output is
+invalid. The generated program receives only copied, credential-redacted JSON inputs plus untouched
+host-mediated read variables. A restricted helper process executes it with no unrestricted imports,
+filesystem, network, environment, AppWorld object, or write API, and stdout becomes the predicted
+response. Safe `json`/`datetime` imports and local helper functions are supported; other imports remain
+blocked. Failed programs receive one repair attempt (`TTS_APPWORLD_WM_PYTHON_REPAIR=0` disables it) and
+then fail closed in predict-all mode rather than falling back to a direct prediction. Verifier programs
+receive copied task requirements, parsed gold sections, write arguments/results, predicted transitions,
+agent steps, and any read-only variables; they must emit a validated verdict/status contract and never
+receive the requester or benchmark world. Set
 `TTS_APPWORLD_VERIFIER_PYTHON=0` to disable code only for terminal verification. Each JSONL decision
 records aggregate `n_python_calls`, `n_python_failures`,
 `n_python_forced`, and `n_python_mode_misses`, plus selected-rollout call/failure counts.
 Within both simulation and verification subagents, a `PYTHON_READ:` program prints
 `{"queries":[{"app":...,"api":...,"args":...}]}`. The host rejects undocumented/mutating endpoints,
 hydrates any required access token without exposing it to code, executes bounded reads, and copies the
-results into `data["reads"]` and `data["facts"]` for the next Python turn. A later
-`PYTHON_FINAL:` program computes the prediction/verdict. Thus generated code can iteratively gather
-information through its output while never receiving direct database or requester access.
+untouched results into `data["reads"]` for the next Python turn. The prompt receives variable
+locations rather than the read text; a later `PYTHON_FINAL:` program alone processes the value and
+prints the prediction/verdict. Generated code never receives direct database or requester access.
 For exact-state challenge tasks, `--appworld-precision-prompt` adds an explicit agent skill for complete
 pagination, set/map reconciliation, Amazon cart isolation before ordering, half-open calendar intervals,
 wishlist transfer/removal, replay-safe payment-card retries, Venmo ID-to-email resolution and funded
@@ -223,16 +231,25 @@ write-task.
 **OfficeBench `llm_wm` (world-model interaction).** OfficeBench likewise supports `--agent llm_wm`,
 obeying the **same write-safe contract** as τ²/AppWorld: the official office-app agent runs, but tool
 execution is routed through the world model (`env/officebench_wm_predict.py::OfficeBenchWMPredictor`) —
-**read** actions execute exactly against the pristine `/testbed` (a read of a file a prior write changed
-is WM-predicted, the τ² dirty-read), while every **write action is LLM-predicted and NEVER executed**,
-so the shadow environment is never mutated. This is enforced structurally: the sampling container is
-opened `read_only`, and a write action reaching `exec_action` raises (a routing bug fails loudly rather
-than silently writing). Because the real files stay pristine during sampling, the success verifier
+pristine read-only actions execute exactly in the shadow by default, while every **write** and every
+read after a predicted write remains world-model-predicted and is never executed. This gives the agent
+real filenames/source content without mutating the task. `--predict-all-actions` remains the fully
+action-free ablation, where recursive Ours may gather pristine objects through bounded driver
+reads/listings (flat B1 uses fixed context) and all candidate observations/final states are generated
+through restricted Python. Write safety is enforced structurally: the sampling container is opened
+`read_only`, and a write action reaching `exec_action` raises (a routing bug fails loudly rather than
+silently writing). Because the real files stay pristine during sampling, the success verifier
 (`env/officebench_wm.py::OfficeBenchVerifier`) judges the **predicted** final state — each gold-checked
 file's predicted content (initial content + the predicted write-log) — not real files. It is
 **reference-grounded by default** against OfficeBench's native ground truth (the per-task `evaluation`
 checks *with gold values* + the `reference/` gold expected-output files for exact-match tasks;
 `TTS_OFFICEBENCH_VERIFIER_REFERENCE=0` for a blind judge), and flags give-up/refusal answers.
+With **B1**, the task config, full app catalogue/demos, testbed file listing, evaluator-selected
+initial files, and gold reference files are all read before the first candidate action and frozen into
+one shared system prompt. The observation predictor and success verifier reuse that exact prompt;
+candidate actions/history and predicted final state are runtime user inputs only, and dirty reads do
+not trigger new container reads. With **Ours**, the existing bounded read-only grounding loop remains
+available for observation and verifier evidence.
 For GPT-5.4, the verifier atomizes small evaluator keyword/match lists and grades each native check
 as MET/UNMET/UNKNOWN; UNKNOWN receives configurable partial credit
 (`TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT`, default `0.25`). This avoids unanimous whole-task votes
@@ -252,10 +269,11 @@ trajectory is then
 committed by re-executing its actions in a fresh container (**the only real writes**) and scoring with
 the official `utils/evaluate.py` checks. Write-safety is provable, not just asserted:
 `OfficeBenchSession.testbed_digest()` hashes `/testbed` before/after a WM rollout and it is unchanged.
-The AppWorld-style coding protocol is the default: the WM emits restricted `PYTHON_READ` programs to
-request host-validated read-only evidence and `PYTHON_FINAL` programs for exact copied-data
-transformations. The helper receives no filesystem, app, network, or environment handle. Use
-`--officebench-wm-tool-mode text` to restore the legacy `READ`/`LIST`/`CALL`/`TRACE` behavior.
+For **Ours**, the AppWorld-style coding protocol is the default: the WM emits restricted `PYTHON_READ`
+programs to request host-validated read-only evidence and `PYTHON_FINAL` programs for exact copied-data
+transformations. Under `--predict-all-actions` both B1 and Ours require `PYTHON_FINAL` for every
+candidate action; direct output and host-side logical overlays are not accepted. The helper receives
+no filesystem, app, network, or environment handle.
 
 **Terminal-Bench world-model interaction.** `terminalbench_agent.py` is shared by the legacy and
 Harbor adapters, so Terminal-Bench 1 and 2 use the same solver prompt and command history.
@@ -438,6 +456,7 @@ OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/r
   --env officebench --levels 1,2,3 --methods b0 --N 1 --workers 8
 
 # OfficeBench GPT-5.4 world-model BoN. The N=1/2/4 cells share a nested rollout pool.
+# Pristine read-only actions execute exactly; writes and dirty reads remain predictive.
 # GPT-5.4 defaults to uniform consecutive seeds, atomic evaluator-check confidence,
 # a low-weight whole-task audit, and comparative guarded nested-pool ranking.
 # Add TTS_OFFICEBENCH_VERIFIER_PERCHECK=0 and --success-score simulator_confidence
@@ -445,6 +464,13 @@ OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/r
 OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/run.py \
   --env officebench --agent llm_wm --levels 1,2,3 --methods ours --N 1,2,4 \
   --temperature 1 --llm-agent gpt-5.4 --workers 8
+
+# Action-free diagnostic: predict every action, copy immutable object reads into generated Python
+# variables, and never commit or officially evaluate a selected trajectory.
+OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/run.py \
+  --env officebench --agent llm_wm --levels 1 --tasks 5 --methods ours --N 1,2,4 \
+  --temperature 1 --llm-agent gpt-5.4 --workers 1 --simulation-only \
+  --out experiments/ofbench-ours-5.4-simulation-only
 
 # Terminal-Bench unified sweep. Native tb/Harbor results are normalized into
 # <out>/records.jsonl, aggregates.json, and aggregates.csv.
@@ -469,9 +495,13 @@ scripts/run_terminalbench.sh --version 2 --agent tts --all --model gpt-4.1 -- --
 python experiments/run.py --env tau2 --agent scripted --methods b1,b2,ours --tasks 12 --N 1,2,4,8
 
 # LLM solver that INTERACTS with the world model (τ²): the official agent + user simulator run
-# against the WM (read tools exact, writes WM-predicted, real env untouched); commit the selected
-# one to the real env. Works for all single- and dual-control domains.
+# against the WM (all substantive actions predicted by default, real env untouched); commit the
+# selected one to the real env. Works for all single- and dual-control domains.
 python experiments/run.py --env tau2 --agent llm_wm --methods b0,b1,ours --domains airline --tasks 12 --N 1,2,4,8
+
+# Opt out of predict-all and execute untouched clean reads exactly.
+python experiments/run.py --env tau2 --agent llm_wm --methods ours \
+  --domains airline --tasks 12 --N 4 --exact-clean-reads
 
 # Seeded strict BoN@4 gates (Python tools are the default).
 PYTHONPATH=src python experiments/run.py \

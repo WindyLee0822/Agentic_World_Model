@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import datetime
+import json
 from contextlib import contextmanager
 
 import pytest
 
 from tts.env import appworld_react_agent, appworld_wm, real_appworld
 from tts.env.appworld_react_agent import (
+    _instruction_needs_l2_targeted_skill,
+    build_initial_messages,
+    _maybe_add_instruction_guidance,
     _maybe_add_precision_preamble,
     _maybe_add_task_contract,
 )
@@ -111,6 +115,7 @@ def test_precision_prompt_adds_conditional_cross_app_ledger(monkeypatch):
     messages = _maybe_add_precision_preamble(
         [{"role": "system", "content": "base"}],
         enable_multi_app_skill=True,
+        enable_l2_targeted_skill=True,
     )
     single = _maybe_add_precision_preamble(
         [{"role": "system", "content": "base"}],
@@ -120,7 +125,173 @@ def test_precision_prompt_adds_conditional_cross_app_ledger(monkeypatch):
     assert "MULTI-APP EXECUTION SKILL" in messages[0]["content"]
     assert "If the task spans multiple apps" in messages[0]["content"]
     assert "dependency graph" in messages[0]["content"]
+    assert "never complete after a read-only attempt" in messages[0]["content"]
+    assert "Do not net a payment against requests" in messages[0]["content"]
+    assert "expand all three sources" in messages[0]["content"]
+    assert "preserve task identity" in messages[0]["content"]
+    assert "mutate the existing target file or note in place" in messages[0]["content"]
     assert "MULTI-APP EXECUTION SKILL" not in single[0]["content"]
+
+
+def test_l2_targeted_precision_guidance_is_not_added_to_l3():
+    messages = _maybe_add_precision_preamble(
+        [{"role": "system", "content": "base"}],
+        enable_multi_app_skill=True,
+        enable_l2_targeted_skill=False,
+    )
+
+    assert "APPWORLD CHALLENGE EXECUTION SKILL" in messages[0]["content"]
+    assert "APPWORLD LEVEL-2 TARGETED EXECUTION SKILL" not in messages[0]["content"]
+    assert "Do not net a payment against requests" not in messages[0]["content"]
+    assert "Use failure status only after" in messages[0]["content"]
+
+
+@pytest.mark.parametrize(
+    "instruction",
+    [
+        "Buy a portable air conditioner from the highest-rated seller.",
+        "Download receipts of all my Amazon orders.",
+        "Update my drafted resignation email.",
+        "Update the alarm because our weekly standup time changed.",
+    ],
+)
+def test_l2_targeted_skill_routes_proven_instruction_families(instruction):
+    assert _instruction_needs_l2_targeted_skill(instruction)
+
+
+def test_l2_targeted_skill_avoids_regressed_instruction_family():
+    assert not _instruction_needs_l2_targeted_skill(
+        "Label all Gmail notification threads and ignore spam."
+    )
+
+
+def test_multi_app_precision_prompt_defaults_on_but_can_be_disabled(monkeypatch):
+    monkeypatch.delenv("TTS_APPWORLD_PRECISION_PROMPT", raising=False)
+    enabled = _maybe_add_precision_preamble(
+        [{"role": "system", "content": "base"}],
+        enable_multi_app_skill=True,
+    )
+    single = _maybe_add_precision_preamble(
+        [{"role": "system", "content": "base"}],
+        enable_multi_app_skill=False,
+    )
+    monkeypatch.setenv("TTS_APPWORLD_PRECISION_PROMPT", "0")
+    disabled = _maybe_add_precision_preamble(
+        [{"role": "system", "content": "base"}],
+        enable_multi_app_skill=True,
+    )
+
+    assert "MULTI-APP EXECUTION SKILL" in enabled[0]["content"]
+    assert enabled[0]["content"].endswith("base")
+    assert single[0]["content"] == "base"
+    assert disabled[0]["content"] == "base"
+
+
+def test_instruction_guidance_selects_only_relevant_playbooks():
+    messages = _maybe_add_instruction_guidance(
+        [{"role": "system", "content": "base"}],
+        "Compile all emailed bills into a zip, then request the shared expense on Venmo.",
+        enabled=True,
+    )
+    content = messages[0]["content"]
+
+    assert "GMAIL WORKFLOW REMINDER" in content
+    assert "RELATIONSHIP AND MONEY REMINDER" in content
+    assert "SPOTIFY WORKFLOW REMINDER" not in content
+    assert "AMAZON WORKFLOW REMINDER" not in content
+    assert "TODOIST EXECUTION REMINDER" not in content
+    assert content.endswith("base")
+
+
+def test_instruction_guidance_avoids_broad_relationship_and_spotify_matches():
+    messages = _maybe_add_instruction_guidance(
+        [{"role": "system", "content": "base"}],
+        "Reply to my wife's email with songs from my Spotify playlist.",
+        enabled=True,
+    )
+
+    assert messages[0]["content"] == "base"
+
+
+def test_instruction_guidance_can_restore_broad_routing(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_GUIDANCE_ROUTING", "broad")
+    messages = _maybe_add_instruction_guidance(
+        [{"role": "system", "content": "base"}],
+        "Reply to my wife's email with songs from my Spotify playlist.",
+        enabled=True,
+    )
+
+    assert "GMAIL WORKFLOW REMINDER" in messages[0]["content"]
+    assert "SPOTIFY WORKFLOW REMINDER" in messages[0]["content"]
+    assert "RELATIONSHIP AND MONEY REMINDER" in messages[0]["content"]
+
+
+def test_instruction_guidance_is_disabled_for_lower_levels():
+    messages = _maybe_add_instruction_guidance(
+        [{"role": "system", "content": "base"}],
+        "Buy something on Amazon and email the receipt.",
+        enabled=False,
+    )
+
+    assert messages[0]["content"] == "base"
+
+
+def test_instruction_guidance_can_be_disabled_by_environment(monkeypatch):
+    monkeypatch.setenv("TTS_APPWORLD_INSTRUCTION_GUIDANCE", "0")
+    messages = _maybe_add_instruction_guidance(
+        [{"role": "system", "content": "base"}],
+        "Buy something on Amazon and email the receipt.",
+        enabled=True,
+    )
+
+    assert messages[0]["content"] == "base"
+
+
+def test_complex_execution_reminder_is_appended_to_final_user_message(monkeypatch):
+    class _Task:
+        app_descriptions = {}
+        supervisor = object()
+        instruction = "Do the task."
+
+    class _World:
+        task = _Task()
+
+    monkeypatch.setattr(
+        "tts.env.appworld_react_agent.load_prompt_template",
+        lambda: "SYSTEM:\nbase\nUSER:\nDo the task.",
+    )
+    messages = build_initial_messages(
+        _World(),
+        enable_multi_app_skill=True,
+        enable_execution_reminder=True,
+    )
+
+    assert "COMPLEX-TASK EXECUTION REMINDER FOR THIS TASK" in messages[-1]["content"]
+    assert "batch independent API-documentation lookups" in messages[-1]["content"]
+    assert "complete_task(status='fail')" in messages[-1]["content"]
+
+
+def test_complex_execution_reminder_can_be_disabled_by_environment(monkeypatch):
+    class _Task:
+        app_descriptions = {}
+        supervisor = object()
+        instruction = "Do the task."
+
+    class _World:
+        task = _Task()
+
+    monkeypatch.setenv("TTS_APPWORLD_EXECUTION_REMINDER", "0")
+    monkeypatch.setattr(
+        "tts.env.appworld_react_agent.load_prompt_template",
+        lambda: "SYSTEM:\nbase\nUSER:\nDo the task.",
+    )
+    messages = build_initial_messages(
+        _World(),
+        enable_multi_app_skill=True,
+        enable_execution_reminder=True,
+    )
+
+    assert "COMPLEX-TASK EXECUTION REMINDER" not in messages[-1]["content"]
 
 
 def test_reference_task_contract_is_explicit_and_action_oriented():
@@ -945,6 +1116,97 @@ def test_python_prediction_receives_agentic_read_facts(monkeypatch):
     assert "READ <app.api>" not in chat.prompts[0]
 
 
+def test_python_read_ignores_trailing_final_mode_and_decodes_raw_result(monkeypatch):
+    monkeypatch.setattr(appworld_wm, "_is_strict_read", lambda app, api: True)
+    chat = _ScriptChat([
+        (
+            'PYTHON_READ:\nprint_json({"queries":[{"app":"gmail","api":"show_threads",'
+            '"args":{}}]})\nPYTHON_FINAL:\nprint_json({"wrong": true})'
+        ),
+        (
+            'PYTHON_FINAL:\nraw = data["reads"][0]["result"]\n'
+            'value = json_value(raw)\nprint_json({"thread_ids": value["thread_ids"]})'
+        ),
+    ])
+    predictor = AppWorldWMPredictor(chat)
+    predictor.bind_query_interface(
+        AppWorldWMQuery(
+            lambda app, api, **kwargs: '{"thread_ids":[7,9]}',
+            predictor,
+        )
+    )
+
+    result = predictor.predict_read(
+        "gmail", "search_threads", {}, {"thread_ids": []}, {"thread_ids": "array"})
+
+    assert result == {"thread_ids": [7, 9]}
+    assert predictor.n_python_failures == 0
+    assert '"value_type": "str"' in chat.prompts[1]
+
+
+def test_python_read_can_publish_generated_facts_before_final_program(monkeypatch):
+    monkeypatch.setattr(appworld_wm, "_is_strict_read", lambda app, api: True)
+    chat = _ScriptChat([
+        'PYTHON_READ:\nprint_json({"queries":[{"app":"spotify","api":"get_queue","args":{}}]})',
+        (
+            'PYTHON_READ:\nvalue = json_value(data["reads"][0]["result"])\n'
+            'print_json({"queries": [], "facts": {"keys": sorted(value.keys())}})'
+        ),
+        'PYTHON_FINAL:\nprint_json({"seen": "queue" in data["facts"]["python_computed_facts_2"]["keys"]})',
+    ])
+    predictor = AppWorldWMPredictor(chat)
+    predictor.bind_query_interface(
+        AppWorldWMQuery(lambda app, api, **kwargs: '{"queue":[]}', predictor))
+
+    result = predictor.predict_read(
+        "spotify", "get_queue", {}, {"seen": False}, {"seen": "boolean"})
+
+    assert result == {"seen": True}
+    assert '"python_computed_facts_2": {"keys": ["queue"]}' in chat.prompts[2]
+
+
+def test_dirty_read_must_ground_pristine_state_then_apply_writes(monkeypatch):
+    monkeypatch.setattr(appworld_wm, "_is_strict_read", lambda app, api: True)
+    chat = _ScriptChat([
+        (
+            'PYTHON_READ:\nprint_json({"queries":[{"app":"spotify",'
+            '"api":"show_song_queue","args":{}}]})'
+        ),
+        (
+            'PYTHON_FINAL:\nqueue = json_value(data["reads"][-1]["result"])\n'
+            'current = next(i for i, item in enumerate(queue) if item["is_current"])\n'
+            'for write in data["writes"]:\n'
+            '    if write["api"] == "next_song":\n'
+            '        current = (current + 1) % len(queue)\n'
+            'for i, item in enumerate(queue):\n'
+            '    item["is_current"] = i == current\n'
+            'print_json(queue)'
+        ),
+    ])
+    predictor = AppWorldWMPredictor(chat)
+    predictor.program_only = True
+    predictor.write_history = [
+        ("spotify", "next_song", {}, {"message": "Playing next song."}),
+    ]
+    predictor.bind_query_interface(
+        AppWorldWMQuery(
+            lambda app, api, **kwargs: [
+                {"song_id": 1, "position": 0, "is_current": True},
+                {"song_id": 2, "position": 1, "is_current": False},
+            ],
+            predictor,
+        )
+    )
+
+    result = predictor.predict_read(
+        "spotify", "show_song_queue", {}, None, [{"song_id": "integer"}], dirty=True)
+
+    assert result[0]["is_current"] is False
+    assert result[1]["is_current"] is True
+    assert "REQUIRED DIRTY-READ GROUNDING PROTOCOL" in chat.prompts[0]
+    assert "Do NOT copy the pristine result unchanged" in chat.prompts[0]
+
+
 def test_python_read_requests_cannot_execute_write_apis(monkeypatch):
     monkeypatch.setattr(
         appworld_wm,
@@ -1021,7 +1283,7 @@ def test_non_json_python_output_is_repaired_and_counted(monkeypatch):
     assert "not a valid JSON prediction" in chat.prompts[1]
 
 
-def test_python_repair_keeps_agentic_read_evidence(monkeypatch):
+def test_python_repair_keeps_read_variables_without_exposing_values(monkeypatch):
     monkeypatch.setattr(appworld_wm, "_is_strict_read", lambda app, api: True)
     chat = _ScriptChat([
         'PYTHON_READ:\nprint_json({"queries":[{"app":"gmail","api":"show_threads","args":{}}]})',
@@ -1036,8 +1298,33 @@ def test_python_repair_keeps_agentic_read_evidence(monkeypatch):
         "gmail", "search_threads", {}, {"thread_ids": []}, {"thread_ids": "array"})
 
     assert result == {"thread_ids": [7]}
-    assert "COPIED COMPUTATION INPUT AND GATHERED FACTS" in chat.prompts[2]
-    assert "read gmail.show_threads" in chat.prompts[2]
+    assert "AVAILABLE COPIED VARIABLES" in chat.prompts[2]
+    assert "data['reads'][0]['result']" in chat.prompts[2]
+    assert '"thread_ids": [7]' not in chat.prompts[2]
+    assert "read gmail.show_threads" not in chat.prompts[2]
+
+
+def test_required_python_gets_two_generated_repair_attempts(monkeypatch):
+    monkeypatch.delenv(
+        "TTS_APPWORLD_WM_PYTHON_REPAIR_ATTEMPTS", raising=False)
+    predictor = AppWorldWMPredictor(_ScriptChat([
+        "PYTHON_FINAL:\nprint(data['also_missing'])",
+        "PYTHON_FINAL:\nprint_json({'safe': True})",
+    ]))
+
+    result = predictor._resolve_python_prediction(
+        "PYTHON_FINAL:\nprint(data['missing'])",
+        prompt="predict",
+        context={"available": {"safe": True}},
+        max_tokens=500,
+        temperature=0.0,
+        budgeted=False,
+        python_required=True,
+    )
+
+    assert json.loads(result) == {"safe": True}
+    assert predictor.n_python_calls == 3
+    assert predictor.n_python_failures == 2
 
 
 def test_failed_python_without_repair_falls_back_to_exact_prewrite_state(monkeypatch):
@@ -1113,6 +1400,89 @@ def test_python_errors_are_bounded_before_repair_prompt():
 
     assert result.error is not None
     assert len(result.error) <= 2_000
+
+
+def test_restricted_python_supports_safe_text_and_numeric_processing():
+    result = shared_python_tool().run(
+        "import re\n"
+        "from decimal import Decimal\n"
+        "from math import ceil\n"
+        "amounts = [Decimal(value) for value in re.findall(r'\\d+\\.\\d+', data['text'])]\n"
+        "print_json({'total': str(sum(amounts)), 'boxes': ceil(float(sum(amounts)) / 10)})",
+        {"text": "items cost 12.50 and 7.25"},
+    )
+
+    assert result.error is None
+    assert json.loads(result.output) == {"boxes": 2, "total": "19.75"}
+
+
+def test_restricted_python_supports_common_safe_parsing_patterns():
+    result = shared_python_tool().run(
+        "import ast\n"
+        "import fnmatch\n"
+        "import re\n"
+        "def matches(text):\n"
+        "    for match in re.compile(r'[^/]+', re.I | re.MULTILINE).finditer(text):\n"
+        "        yield match.group(0)\n"
+        "parts = data['path'].rsplit('/', 2)\n"
+        "parsed = ast.literal_eval(data['literal'])\n"
+        "print_json({'parts': parts, 'unique': list(dict.fromkeys(matches(data['path']))), "
+        "'parsed': parsed, 'matched': fnmatch.fnmatch(data['path'], '*report.*')})",
+        {"path": "/testbed/data/report.txt", "literal": "{'ok': True}"},
+    )
+
+    assert result.error is None
+    assert json.loads(result.output) == {
+        "parsed": {"ok": True},
+        "matched": True,
+        "parts": ["/testbed", "data", "report.txt"],
+        "unique": ["testbed", "data", "report.txt"],
+    }
+
+
+def test_python_json_value_decodes_nested_json_strings_only_when_called():
+    result = shared_python_tool().run(
+        'value = json_value(data["raw"])\nprint_json(value["items"])',
+        {"raw": '"{\\"items\\":[1,2]}"'},
+    )
+
+    assert result.error is None
+    assert result.output == "[1, 2]"
+
+
+def test_python_allows_counter_for_generated_multiset_comparison():
+    result = shared_python_tool().run(
+        "from collections import Counter\n"
+        'print("STATUS: MET" if Counter(data["left"]) == Counter(data["right"]) '
+        'else "STATUS: UNMET")',
+        {"left": [1, 2, 2], "right": [2, 1, 2]},
+    )
+
+    assert result.error is None
+    assert result.output == "STATUS: MET"
+
+
+def test_python_supports_common_safe_generated_program_patterns():
+    result = shared_python_tool().run(
+        "from copy import deepcopy\n"
+        "from collections import defaultdict\n"
+        'records = deepcopy(json_records(data["raw"]))\n'
+        "grouped = defaultdict(list)\n"
+        "for _ in records:\n"
+        '    grouped[_["kind"]].append(_["id"])\n'
+        "try:\n"
+        "    if not records:\n"
+        "        raise SystemExit()\n"
+        "except SystemExit:\n"
+        "    pass\n"
+        "print_json(dict(grouped))",
+        {
+            "raw": '{"data":{"items":[{"kind":"a","id":1},{"kind":"a","id":2}]}}',
+        },
+    )
+
+    assert result.error is None
+    assert result.output == '{"a": [1, 2]}'
 
 
 def test_python_allows_labeled_diagnostics_but_rejects_bare_containers():

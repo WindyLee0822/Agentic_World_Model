@@ -2,6 +2,8 @@
 #
 # Submit:
 #   AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh
+#   AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh \
+#       --set inputs.llm_user=gpt-4.1
 #   # or directly:
 #   az ml job create -f aml/job.tau2.yml -g Singularity -w M365Research \
 #       --subscription acc09744-1ee3-4242-b375-93421c63af0c
@@ -31,6 +33,7 @@ inputs:
   methods: ours
   n: "1,2,4,8,16"
   agent: llm
+  llm_user: none
   workers: 16
   max_steps: 50
   temperature: 1
@@ -52,6 +55,7 @@ command: >-
   --methods "${{inputs.methods}}"
   --n "${{inputs.n}}"
   --agent "${{inputs.agent}}"
+  --llm-user "${{inputs.llm_user}}"
   --workers ${{inputs.workers}}
   --max-steps ${{inputs.max_steps}}
   --temperature ${{inputs.temperature}}

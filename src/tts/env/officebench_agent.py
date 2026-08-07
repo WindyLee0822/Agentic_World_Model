@@ -208,6 +208,25 @@ def construct_system_message(config: Dict, catalogue: Dict) -> str:
         "You can find files for your task in `/testbed/data`. For inspection, use only non-mutating "
         "shell commands such as ls, find, cat, grep, sed without -i, sort, head, tail, file, and wc. "
         "Do not use Python, xargs, sh, output redirection, or mutation commands merely to inspect files.\n"
+        "For multi-app tasks, first identify the exact source file, then read or recognize its actual "
+        "content with the appropriate office app before copying, summarizing, converting, or emailing "
+        "it. Copy the discovered path exactly, including its extension; never substitute a guessed "
+        "filename or change .jpg to .png. Never invent source content from a filename or task wording.\n"
+        "Complete every requested deliverable and location before finish_task. In particular, an email "
+        "request means the email body must contain the requested source information because send_email "
+        "does not attach files. After any failed action, correct its exact arguments or path instead of "
+        "finishing as if it succeeded. After a successful write, proceed to the next requested app or "
+        "finish the task; do not spend the remaining budget repeatedly searching for the predicted output.\n"
+        "Representative workflows:\n"
+        " - Image to document/PDF: discover the exact image path, switch to ocr and recognize that exact "
+        "path, then switch to word to create/write the extracted summary and convert it if requested.\n"
+        " - Spreadsheet/document to PDF plus email: read the exact source first, convert that same source "
+        "to the requested PDF path, then send an email whose content includes the relevant values from "
+        "the read observation; mentioning a PDF path is not an attachment.\n"
+        " - Output under a named folder: create the folder first if it does not exist, then use the exact "
+        "requested destination path.\n"
+        "If a file search returns no matches, do not repeatedly vary only head, tail, or sed limits on "
+        "the same search. Broaden the search once, then use an exact discovered path or change apps.\n"
         "You have following apps installed in the system:\n"
         f"{app_introduction}"
     ).strip()
@@ -276,13 +295,24 @@ def _parse_action(action_string: str) -> Optional[Dict]:
                 action = None
     if not isinstance(action, dict):
         return None
+
+    def normalize(value):
+        if value is Ellipsis:
+            return "..."
+        if isinstance(value, dict):
+            return {str(key): normalize(item) for key, item in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [normalize(item) for item in value]
+        return value
+
     # minor fix: unwrap single-element lists (mirrors OfficeAgentEnv._minor_action_fix)
+    action = normalize(action)
     return {k: (v[0] if isinstance(v, list) and len(v) == 1 else v) for k, v in action.items()}
 
 
 def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int = 40,
                           temperature: float = 0.0, max_tokens: int = 1024,
-                          predictor=None) -> AgentRun:
+                          predictor=None, predict_all_actions: bool = True) -> AgentRun:
     """Drive the official OfficeBench agent loop against a live :class:`OfficeBenchSession`.
 
     ``system`` actions (switch_app / finish_task / got_stuck) are resolved here, where the agent's
@@ -290,10 +320,10 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
 
     * ``predictor is None`` (B0 / real path): every action is **executed** in-container via
       ``session.exec_action`` — the faithful official behaviour, used for the committed rollout.
-    * ``predictor`` set (``llm_wm`` sampling): the action is routed through the **world model** — a READ
-      is executed exactly against the pristine ``/testbed`` (or, if it reads a file a prior write
-      changed, its post-write content is predicted), while a **WRITE is LLM-predicted and NEVER
-      executed**, so the shadow environment is never mutated (the τ²/AppWorld contract).
+    * ``predictor`` set (``llm_wm`` sampling): the action is routed through the **world model**. Reads
+      are predicted by default; ``predict_all_actions=False`` restores exact execution for untouched
+      clean reads. A **WRITE is LLM-predicted and NEVER executed**, so the shadow environment is never
+      mutated (the τ²/AppWorld contract).
 
     Returns an :class:`AgentRun` carrying the realized action/observation history so the trajectory can
     be committed (and, on the WM path, judged by the success verifier).
@@ -304,6 +334,7 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
         is_write_action,
         read_target,
         shell_cd_target,
+        _looks_like_failure,
     )
 
     catalogue = session.apps_catalogue()
@@ -315,9 +346,14 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
     action_window: List[str] = []
     run = AgentRun()
     if predictor is not None:
+        predictor.program_only = bool(predict_all_actions)
         bind_query = getattr(predictor, "bind_query_interface", None)
         if callable(bind_query):
-            bind_query(OfficeBenchWMQuery(session, lambda: workdir))
+            bind_query(OfficeBenchWMQuery(
+                session,
+                lambda: workdir,
+                allow_action_execution=not predict_all_actions,
+            ))
 
     # ``max_steps`` bounds the *productive* steps; pruned degenerate reads (Fix 4) don't count against
     # it, so a separate hard iteration ceiling guarantees termination regardless.
@@ -371,14 +407,37 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             last_action_string = action_string
             continue
 
+        # GPT occasionally emits the natural shorthand
+        # {"app": "shell", "action": "switch_app"} instead of the documented system action.
+        # Recover the intended target rather than reporting a successful switch to ``None`` and
+        # trapping the rollout in the undecided-app prompt.
+        if (
+            action.get("action") == "switch_app"
+            and not action.get("target_app")
+            and action.get("app") in catalogue["available_apps"]
+        ):
+            action = {
+                **action,
+                "app": "system",
+                "target_app": action["app"],
+            }
+
         act_name = action.get("action")
         app = action.get("app")
 
         # switch_app may be addressed to any app; the official code sets current_app to the target
         # (an unknown target degrades to the 'no app chosen' prompt via build_prompt).
         if act_name == "switch_app":
-            current_app = action.get("target_app")
-            observation = f"Successfully switched to app: {current_app}"
+            target_app = action.get("target_app")
+            if target_app not in catalogue["available_apps"]:
+                current_app = None
+                observation = (
+                    "Malformed switch_app action: target_app must name one of "
+                    f"{catalogue['available_apps']}. Try again with the documented system action."
+                )
+            else:
+                current_app = target_app
+                observation = f"Successfully switched to app: {current_app}"
         elif act_name == "finish_task":
             answer = action.get("answer", "None")
             # In WM (predictor) mode the answer is a PREDICTED write to answer.txt (recorded, not
@@ -411,8 +470,29 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
                 tgt = read_target(action, workdir)
                 is_cd = (action.get("app") == "shell"
                          and shell_cd_target(str(action.get("command", ""))) is not None)
-                if predictor.was_written(tgt) and not is_cd:
+                if predict_all_actions:
+                    dirty = predictor.was_written(tgt) and not is_cd
+                    if predictor.uses_fixed_context:
+                        pre = predictor.fixed_pre_write_content(tgt)
+                    else:
+                        pre = None
+                    observation = predictor.predict_read(
+                        action, pre, history, dirty=dirty)
+                    if is_cd and not _looks_like_failure(observation):
+                        cd_target = shell_cd_target(str(action.get("command", "")))
+                        if cd_target:
+                            workdir = os.path.normpath(
+                                cd_target
+                                if os.path.isabs(cd_target)
+                                else os.path.join(workdir, cd_target)
+                            )
+                elif predictor.was_written(tgt) and not is_cd:
                     pre = predictor.pre_write_content.get(tgt)
+                    if pre is None:
+                        fixed_pre_write = getattr(
+                            predictor, "fixed_pre_write_content", None)
+                        if callable(fixed_pre_write):
+                            pre = fixed_pre_write(tgt)
                     if pre is None:
                         pre = session.exec_action(action, workdir).get("observation", "")
                     observation = predictor.predict_read(action, pre, history)
@@ -427,7 +507,6 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             observation = result.get("observation", "")
             if result.get("is_cd") and result.get("new_workdir"):
                 workdir = result["new_workdir"]
-        history.append((action, observation))
         history.append((action, observation))
         run.actions.append(action)
         run.observations.append(observation)

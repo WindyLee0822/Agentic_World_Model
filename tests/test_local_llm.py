@@ -1,9 +1,7 @@
 """Local (self-hosted) OpenAI-compatible backend wiring (``--local``).
 
-These verify that :func:`tts.llm.local.configure_local_llm` points every transport at a local
-server without any Azure endpoint or ``az login`` token: the :class:`~tts.llm.chat_client.ChatClient`
-backend is forced to ``openai`` (AppWorld / OfficeBench), and τ²'s litellm model strings are routed
-through the ``openai/`` provider. No network or credentials are needed.
+These verify pure-local routing and the mixed tau2 mode where local ``openai/*`` agent calls coexist
+with an explicitly qualified ``azure/*`` user simulator.
 """
 
 from __future__ import annotations
@@ -125,6 +123,31 @@ def test_ensure_litellm_env_returns_local_string_without_azure():
     assert model == "openai/Qwen-AgentWorld-35B-A3B"
     assert os.environ["OPENAI_API_BASE"] == "http://localhost:8123/v1"
     assert os.environ.get("AZURE_OPENAI_AD_TOKEN") is None
+
+
+def test_mixed_local_and_azure_litellm_env_preserves_both_providers():
+    os.environ["TTS_LOCAL_LLM_ALLOW_AZURE"] = "1"
+    os.environ["AZURE_OPENAI_ENDPOINT"] = "https://example.openai.azure.com/"
+    os.environ["AZURE_OPENAI_API_VERSION"] = "2024-12-01-preview"
+    os.environ["AZURE_OPENAI_API_KEY"] = "azure-key"
+    os.environ["AZURE_API_KEY"] = "azure-key"
+    os.environ["AZURE_AUTH_MODE"] = "api_key"
+
+    configure_local_llm(
+        base_url="http://localhost:8123/v1",
+        model="Qwen3.5-35B-A3B",
+        api_key="EMPTY",
+    )
+    default_model = ensure_litellm_azure_env()
+
+    assert default_model == "openai/Qwen3.5-35B-A3B"
+    assert litellm_model_for("Qwen3.5-35B-A3B", default_model) == "openai/Qwen3.5-35B-A3B"
+    assert litellm_model_for("azure/gpt-5.4", default_model) == "azure/gpt-5.4"
+    assert os.environ["OPENAI_API_BASE"] == "http://localhost:8123/v1"
+    assert os.environ["OPENAI_API_KEY"] == "EMPTY"
+    assert os.environ["AZURE_API_BASE"] == "https://example.openai.azure.com/"
+    assert os.environ["AZURE_API_VERSION"] == "2024-12-01-preview"
+    assert os.environ["AZURE_API_KEY"] == "azure-key"
 
 
 def test_probe_local_server_unreachable():

@@ -1,0 +1,2 @@
+decisions,env,imputed_failures,mean_cache_hits,mean_cost,mean_max_depth,mean_reads,mean_rollout_errors,mean_spawns,mean_tokens,mean_wall_clock_s,method,n_rollouts,prediction_accuracy,recorded_decisions,reward,simulator_writes,single_commit_rate,subset,success_rate
+5,officebench,0,0.0,0.0,0.0,0.0,0.2,0.0,0.0,19.23097178414464,ours,1,,5,0.2,0,0.0,1app,0.2

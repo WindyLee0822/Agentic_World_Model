@@ -19,18 +19,25 @@ min_cache_free_gb="100"
 output_dir=""
 env_name="tau2"
 appworld_data=""
+officebench_root=""
 domains="airline"
 splits="test_normal"
 levels="1"
 methods="ours"
 n="1"
 agent="llm_wm"
+llm_user=""
 workers="8"
 max_steps="50"
 rollout_retries="2"
 cell_retries="2"
 temperature="0.7"
 stall_timeout="7200"
+aoai_endpoint=""
+aoai_deployment="gpt-5.4"
+aoai_api_version="2024-12-01-preview"
+aoai_api_key=""
+managed_identity_client_id=""
 extra_args=""
 
 while [[ $# -gt 0 ]]; do
@@ -51,18 +58,25 @@ while [[ $# -gt 0 ]]; do
     --output-dir) output_dir="$2"; shift 2 ;;
     --env) env_name="$2"; shift 2 ;;
     --appworld-data) appworld_data="$2"; shift 2 ;;
+    --officebench-root) officebench_root="$2"; shift 2 ;;
     --domains) domains="$2"; shift 2 ;;
     --splits) splits="$2"; shift 2 ;;
     --levels) levels="$2"; shift 2 ;;
     --methods) methods="$2"; shift 2 ;;
     --n) n="$2"; shift 2 ;;
     --agent) agent="$2"; shift 2 ;;
+    --llm-user) llm_user="$2"; shift 2 ;;
     --workers) workers="$2"; shift 2 ;;
     --max-steps) max_steps="$2"; shift 2 ;;
     --rollout-retries) rollout_retries="$2"; shift 2 ;;
     --cell-retries) cell_retries="$2"; shift 2 ;;
     --temperature) temperature="$2"; shift 2 ;;
     --stall-timeout) stall_timeout="$2"; shift 2 ;;
+    --aoai-endpoint) aoai_endpoint="$2"; shift 2 ;;
+    --aoai-deployment) aoai_deployment="$2"; shift 2 ;;
+    --aoai-api-version) aoai_api_version="$2"; shift 2 ;;
+    --aoai-api-key) aoai_api_key="$2"; shift 2 ;;
+    --managed-identity-client-id) managed_identity_client_id="$2"; shift 2 ;;
     --extra-args) extra_args="$2"; shift 2 ;;
     *) echo "Unknown argument: $1" >&2; exit 2 ;;
   esac
@@ -72,6 +86,11 @@ done
 [[ "$quantization" == "none" ]] && quantization=""
 [[ "$tool_call_parser" == "none" ]] && tool_call_parser=""
 [[ "$vllm_extra_args" == "none" ]] && vllm_extra_args=""
+[[ "$llm_user" == "none" ]] && llm_user=""
+[[ "$aoai_endpoint" == "none" ]] && aoai_endpoint=""
+[[ "$aoai_api_key" == "none" ]] && aoai_api_key=""
+[[ "$managed_identity_client_id" == "none" ]] && managed_identity_client_id=""
+[[ -z "$llm_user" ]] && llm_user="$served_name"
 
 case "${enable_thinking,,}" in
   auto) [[ "$env_name" == "tau2" ]] && enable_thinking="0" || enable_thinking="1" ;;
@@ -100,8 +119,14 @@ case "$env_name" in
       exit 2
     fi
     ;;
+  officebench)
+    if [[ -z "$officebench_root" ]]; then
+      echo "officebench-root is required when --env officebench" >&2
+      exit 2
+    fi
+    ;;
   *)
-    echo "run_qwen.sh supports --env tau2|appworld; got: $env_name" >&2
+    echo "run_qwen.sh supports --env tau2|appworld|officebench; got: $env_name" >&2
     exit 2
     ;;
 esac
@@ -114,10 +139,29 @@ mkdir -p "$output_dir"
 server_log="$output_dir/vllm.log"
 base_url="http://127.0.0.1:${port}/v1"
 
-# Keep model downloads in the AML job workspace rather than /tmp, which may be
-# backed by the smaller OS/overlay disk. The cache is local to the compute node.
-export HF_HOME="${HF_HOME:-$PWD/.cache/huggingface}"
-mkdir -p "$HF_HOME"
+# AML GPU SKUs expose their large ephemeral NVMe disk at /mnt/resource. Keep
+# model weights, compilation artifacts, and temporary files there instead of
+# filling the command container's smaller writable overlay.
+cache_root="${TTS_QWEN_CACHE_ROOT:-}"
+if [[ -z "$cache_root" ]]; then
+  if [[ -d /mnt/resource && -w /mnt/resource ]]; then
+    cache_root="/mnt/resource/tts-qwen-cache"
+  else
+    cache_root="$PWD/.cache/qwen"
+  fi
+fi
+export HF_HOME="${HF_HOME:-$cache_root/huggingface}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$cache_root/xdg}"
+export TMPDIR="${TMPDIR:-$cache_root/tmp}"
+export TORCHINDUCTOR_CACHE_DIR="${TORCHINDUCTOR_CACHE_DIR:-$cache_root/torchinductor}"
+export VLLM_CACHE_ROOT="${VLLM_CACHE_ROOT:-$cache_root/vllm}"
+mkdir -p \
+  "$HF_HOME" \
+  "$XDG_CACHE_HOME" \
+  "$TMPDIR" \
+  "$TORCHINDUCTOR_CACHE_DIR" \
+  "$VLLM_CACHE_ROOT"
+echo "[qwen] cache root: $cache_root"
 available_cache_kb="$(df -Pk "$HF_HOME" | awk 'NR == 2 {print $4}')"
 required_cache_kb=$((min_cache_free_gb * 1024 * 1024))
 if [[ -z "$available_cache_kb" || "$available_cache_kb" -lt "$required_cache_kb" ]]; then
@@ -126,6 +170,14 @@ if [[ -z "$available_cache_kb" || "$available_cache_kb" -lt "$required_cache_kb"
   exit 3
 fi
 export TTS_LOCAL_LLM=1
+if [[ "$llm_user" == azure/* ]]; then
+  if [[ -z "$aoai_endpoint" ]]; then
+    echo "[qwen][error] --llm-user $llm_user requires --aoai-endpoint." >&2
+    exit 2
+  fi
+  export TTS_LOCAL_LLM_ALLOW_AZURE=1
+  echo "[qwen] mixed providers: local agent=$served_name azure user=$llm_user"
+fi
 
 server_pid=""
 cleanup() {
@@ -188,7 +240,6 @@ local_args=(
   --local-base-url "$base_url"
   --local-api-key EMPTY
   --llm-agent "$served_name"
-  --llm-user "$served_name"
 )
 if [[ -n "$extra_args" ]]; then
   read -r -a forwarded_args <<< "$extra_args"
@@ -204,28 +255,38 @@ benchmark_args=(
   --methods "$methods" \
   --n "$n" \
   --agent "$agent" \
+  --llm-user "$llm_user" \
   --workers "$workers" \
   --max-steps "$max_steps" \
   --rollout-retries "$rollout_retries" \
   --cell-retries "$cell_retries" \
   --temperature "$temperature" \
-  --aoai-endpoint "$base_url" \
-  --aoai-deployment "$served_name" \
-  --aoai-api-version "local" \
-  --aoai-api-key "none" \
-  --managed-identity-client-id "none" \
+  --aoai-endpoint "${aoai_endpoint:-none}" \
+  --aoai-deployment "$aoai_deployment" \
+  --aoai-api-version "$aoai_api_version" \
+  --aoai-api-key "${aoai_api_key:-none}" \
+  --managed-identity-client-id "${managed_identity_client_id:-none}" \
   --stall-timeout "$stall_timeout" \
   --extra-args "$combined_extra_args"
 )
-if [[ "$env_name" == "appworld" ]]; then
-  benchmark_args+=(
-    --appworld-data "$appworld_data"
-    --splits "$splits"
-    --levels "$levels"
-  )
-else
-  benchmark_args+=(--domains "$domains")
-fi
+case "$env_name" in
+  appworld)
+    benchmark_args+=(
+      --appworld-data "$appworld_data"
+      --splits "$splits"
+      --levels "$levels"
+    )
+    ;;
+  officebench)
+    benchmark_args+=(
+      --officebench-root "$officebench_root"
+      --levels "$levels"
+    )
+    ;;
+  tau2)
+    benchmark_args+=(--domains "$domains")
+    ;;
+esac
 
 bash aml/src/run_dw.sh "${benchmark_args[@]}" || run_status=$?
 

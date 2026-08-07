@@ -11,8 +11,9 @@ banking_knowledge):
 * stepping uses the official ``environment.get_response(ToolCall(...))`` (the tool execution that
   mutates the domain's Pydantic ``DB``);
 * the read-grounded world model (B1/Ours) predicts observations and candidate rewards **without
-  touching the real env**. Clean read tools execute exactly; writes and dirty reads are predicted
-  from copied task/action/history data plus host-mediated, read-only evidence.
+  touching the real env**. Clean reads execute exactly by default or are predicted under the shared
+  extension; writes and dirty reads are always predicted from copied task/action/history data plus
+  host-mediated, read-only evidence.
 
 The recursive world-model subagent uses restricted Python by default. ``PYTHON_READ`` programs emit
 structured record reads, id listings, or read-only tool calls; the host validates and executes them,
@@ -47,6 +48,71 @@ from .tau2_wm_python import (
     tau2_wm_tool_mode,
 )
 
+_TAU2_SIMULATOR_SYSTEM = """You are a causal simulator for a tau2 tool environment, not an assistant
+solving the user's task. Reproduce what the real tool would return for the current call.
+
+Simulation rules, in priority order:
+1. Obey the tool documentation, current arguments, grounded records, and prior successful transitions.
+2. For an untouched read, ground with the identical read-only tool when available and generate the
+   final result by copying that observation exactly; do not answer from task intent or memory.
+3. For a write, validate every identifier, required field, policy precondition, payment method, and
+   current status before deciding success. A failed write does not change state.
+4. Preserve the native return type and complete schema. Never summarize a record, omit unchanged
+   fields, invent IDs, repair invalid inputs, or turn an error into success.
+5. Reference actions, evaluation criteria, and the task goal are context for simulation only. Never
+   use them to coach the benchmark agent or fabricate the result that would make the task succeed.
+Return only the requested tool result or tool-protocol program, with no explanatory prose."""
+
+
+def _tau2_transition_guidance(domain: str, action: Action) -> str:
+    """Give generated code exact native transition recipes for common retail writes."""
+    if domain != "retail":
+        return ""
+    common = (
+        "\nRETAIL GENERATED-TRANSITION RULE:\n"
+        "- The explicit-confirmation requirement governs when the benchmark agent may call a write; "
+        "it is not a tool argument and the tool does not reject an otherwise valid call for lacking "
+        "confirmation metadata.\n"
+        "- In PYTHON_FINAL, locate the grounded order/user in `data['seed_facts']`, call `deepcopy`, "
+        "apply the transition below, and `print_json` the COMPLETE copied record. Do not return a "
+        "confirmation request, prose summary, or unchanged record after a valid write.\n"
+    )
+    recipes = {
+        "cancel_pending_order": (
+            "- Require order.status == 'pending' and reason in {'no longer needed', "
+            "'ordered by mistake'}. Set status='cancelled', cancel_reason=reason, and append one "
+            "refund payment-history entry for every existing payment, preserving all other fields."
+        ),
+        "return_delivered_order_items": (
+            "- Require order.status == 'delivered'. Set status='return requested', "
+            "return_items=sorted(item_ids), and return_payment_method_id=payment_method_id."
+        ),
+        "exchange_delivered_order_items": (
+            "- Require order.status == 'delivered'. Set status='exchange requested', "
+            "exchange_items=sorted(item_ids), exchange_new_items=sorted(new_item_ids), "
+            "exchange_payment_method_id=payment_method_id, and the exact grounded price difference."
+        ),
+        "modify_pending_order_address": (
+            "- Require 'pending' in order.status. Replace order.address with the six supplied address "
+            "fields and preserve every other field."
+        ),
+        "modify_user_address": (
+            "- Replace user.address with the six supplied address fields and preserve every other field."
+        ),
+        "modify_pending_order_items": (
+            "- Require order.status == 'pending'. Replace each requested item with its grounded new "
+            "variant, append the exact payment/refund difference entry, then set "
+            "status='pending (item modified)'."
+        ),
+        "modify_pending_order_payment": (
+            "- Require a pending order with exactly one payment and a different valid payment method. "
+            "Replace that payment's payment_method_id while preserving its amount and transaction_type."
+        ),
+    }
+    recipe = recipes.get(action.name)
+    return f"{common}{recipe}\n" if recipe else ""
+
+
 #: airline tools that mutate the backing DB — kept for backward-compatibility (the generic path
 #: derives per-domain mutating tools from the toolkit via :func:`tau2_mutating_tools`).
 MUTATING_TOOLS = {
@@ -57,6 +123,11 @@ MUTATING_TOOLS = {
     "update_reservation_baggages",
     "send_certificate",
 }
+
+
+def _should_predict_tau2_read(*, predict_all_actions: bool, read_is_dirty: bool) -> bool:
+    """Whether an agent-visible tau2 read must be served by the world model."""
+    return bool(predict_all_actions or read_is_dirty)
 
 
 def real_tau2_available() -> bool:
@@ -552,6 +623,8 @@ class _LLMWorldModelPredictor:
         self._domain = domain
         self._model_name = model
         self._client = None
+        self._flat_system_prompt: Optional[str] = None
+        self._flat_context_data: Dict[str, Any] = {}
         self.n_python_calls = 0
         self.n_python_failures = 0
         self.n_python_forced = 0
@@ -572,10 +645,78 @@ class _LLMWorldModelPredictor:
 
     def _complete(self, prompt: str, max_tokens: int) -> str:
         return self._chat().complete(
-            [{"role": "user", "content": prompt}],
+            [
+                {"role": "system", "content": _TAU2_SIMULATOR_SYSTEM},
+                {"role": "user", "content": prompt},
+            ],
             temperature=0.0,
             max_tokens=max_tokens,
         )
+
+    def _complete_flat(self, prompt: str, max_tokens: int) -> str:
+        messages = []
+        if self._flat_system_prompt:
+            messages.append({"role": "system", "content": self._flat_system_prompt})
+        messages.append({"role": "user", "content": prompt})
+        return self._chat().complete(
+            messages,
+            temperature=0.0,
+            max_tokens=max_tokens,
+        )
+
+    def configure_flat_context(
+        self,
+        *,
+        task_text: str,
+        gold_actions: List[Action],
+        tool_docs: Dict[str, str],
+        facts: str,
+        evaluation_context: Dict[str, Any],
+    ) -> None:
+        """Fix the B1 simulator context before any candidate action is observed."""
+        gold_data = [_action_data(action) for action in gold_actions]
+        gold_text = "\n".join(_action_str(action) for action in gold_actions) or "(none)"
+        tool_text = "\n".join(
+            f"- {name}: {tool_docs[name]}" for name in sorted(tool_docs)
+        ) or "(none)"
+        criteria = dict(evaluation_context or {})
+        domain_rules = ""
+        if self._domain == "airline":
+            domain_rules = (
+                "Airline deterministic simulation rules:\n"
+                "- New reservation IDs follow HATHAT, HATHAU, HATHAV; timestamps are "
+                "2024-05-15T15:00:00.\n"
+                "- Payment certificate IDs follow certificate_3221322, certificate_3221323, "
+                "certificate_3221324.\n"
+                "- Flight updates use exact dated cabin prices, passenger-count multiplication, "
+                "and a signed payment-history difference while preserving every other field."
+            )
+        self._flat_context_data = {
+            "domain": self._domain,
+            "task": task_text,
+            "reference_actions": gold_data,
+            "tool_docs": dict(tool_docs),
+            "initial_records": facts,
+            "evaluation_context": criteria,
+            "simulation_rules": domain_rules,
+        }
+        self._flat_system_prompt = (
+            f"{_TAU2_SIMULATOR_SYSTEM}\n\n"
+            f"You are a fixed simulated environment for the tau2-bench {self._domain} domain. "
+            "The following simulation contract and evidence were selected before any candidate "
+            "agent action was observed. Keep this context unchanged throughout the rollout. "
+            "Use the reference trajectory as behavioral guidance, maintain causal consistency with "
+            "the running interaction, and use only the supplied tools and preselected records. "
+            "Do not request additional environment evidence or choose context based on the current "
+            "candidate action.\n\n"
+            f"TASK AND SYSTEM RULES:\n{task_text or '(not provided)'}\n\n"
+            f"AVAILABLE TOOLS:\n{tool_text}\n\n"
+            f"REFERENCE TRAJECTORY:\n{gold_text}\n\n"
+            f"EVALUATION CRITERIA:\n"
+            f"{json.dumps(criteria, ensure_ascii=True, sort_keys=True)}\n\n"
+            f"PRESELECTED INITIAL RECORDS:\n{facts}\n\n"
+            f"{domain_rules}"
+        ).strip()
 
     def _record_python_result(self, result) -> None:
         self.n_python_calls += result.python_calls
@@ -594,6 +735,34 @@ class _LLMWorldModelPredictor:
     # -- one-shot prediction over a pre-read shadow (used by the flat/B1 path) -------------- #
     def predict_success(self, facts: str, candidate_actions: List[Action],
                         gold_actions: List[Action], tool_docs: str = "") -> bool:
+        if self._flat_system_prompt:
+            cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
+            prompt = (
+                "Evaluate the candidate trajectory using the fixed simulator context prepared "
+                "before candidate generation.\n\n"
+                f"CANDIDATE ACTIONS:\n{cand}"
+            )
+            final = "On the LAST line answer exactly 'VERDICT: SUCCESS' or 'VERDICT: FAIL'."
+            if tau2_wm_tool_mode() == "python":
+                result = run_tau2_python_prediction_loop(
+                    self._complete_flat,
+                    None,
+                    prompt,
+                    final,
+                    context={
+                        **self._flat_context_data,
+                        "candidate_actions": [
+                            _action_data(action) for action in candidate_actions
+                        ],
+                    },
+                    max_turns=self.MAX_TURNS,
+                    max_tokens=500,
+                    output_kind="verdict",
+                )
+                self._record_python_result(result)
+                return result.valid and result.output == "SUCCESS"
+            return _parse_verdict(self._complete_flat(f"{prompt}\n\n{final}", 500))
+
         gold = "\n".join(_action_str(a) for a in gold_actions) or "(none)"
         cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
         ref = f"\nTool reference (behaviour of each tool):\n{tool_docs}\n" if tool_docs else ""
@@ -632,6 +801,46 @@ class _LLMWorldModelPredictor:
     def predict_observation(self, facts: str, history: List[tuple], action: Action,
                             tool_doc: str = "") -> Tuple[str, bool]:
         hist = "\n".join(f"{_action_str(a)} -> {o}" for a, o in history) or "(none)"
+        if self._flat_system_prompt:
+            prompt = (
+                "Continue the simulation using the fixed context. The candidate action below is "
+                "runtime input only; it must not change the simulator context.\n\n"
+                f"CURRENT INTERACTION HISTORY:\n{hist}\n\n"
+                f"CURRENT AGENT TOOL CALL:\n{_action_str(action)}"
+            )
+            final = (
+                "Return ONLY the exact tool result in the documented schema. Begin with 'ERROR:' "
+                "only if the call would genuinely fail. Preserve consistency with earlier simulated "
+                "results and never invent an identifier that is absent from the fixed context or "
+                "logically created by prior calls."
+            )
+            if tau2_wm_tool_mode() == "python":
+                result = run_tau2_python_prediction_loop(
+                    self._complete_flat,
+                    None,
+                    prompt,
+                    final,
+                    context={
+                        **self._flat_context_data,
+                        "history": [
+                            {"action": _action_data(prior), "observation": observation}
+                            for prior, observation in history
+                        ],
+                        "action": _action_data(action),
+                    },
+                    max_turns=self.MAX_TURNS,
+                    max_tokens=1500,
+                    output_kind="text",
+                )
+                self._record_python_result(result)
+                if force_program and not result.valid:
+                    raise RuntimeError(
+                        "program-only tau2 prediction did not produce a valid Python result")
+                text = result.output
+            else:
+                text = (self._complete_flat(f"{prompt}\n\n{final}", 1500) or "").strip()
+            return text, text.upper().startswith("ERROR")
+
         ref = f"\nTool reference (what {action.name} does and RETURNS):\n{tool_doc}\n" if tool_doc else ""
         
         # Add deterministic ID/timestamp generation rules for create actions
@@ -745,6 +954,8 @@ class _LLMWorldModelPredictor:
         entity_types,
         tool_doc="",
         seed_facts=None,
+        clean_read=False,
+        force_program=False,
     ) -> Tuple[str, bool]:
         hist = "\n".join(f"{_action_str(a)} -> {o}" for a, o in history) or "(none)"
         ref = f"Tool reference (what {action.name} does and RETURNS):\n{tool_doc}\n\n" if tool_doc else ""
@@ -772,11 +983,59 @@ class _LLMWorldModelPredictor:
                     "field and output the complete updated reservation. Use PYTHON_FINAL for this "
                     "arithmetic and record transformation.\n"
                 )
+        transition_guidance = _tau2_transition_guidance(domain, action)
         
+        exact_read_contract = ""
+        grounded_clean_read = None
+        if (
+            force_program
+            and clean_read
+            and action.name in set(getattr(q, "read_tools", []) or [])
+        ):
+            grounded_clean_read = q.call(action.name, dict(action.args or {}))
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                "- The simulator already performed the identical allowed read-only probe and copied "
+                "its untouched result into `data['grounded_clean_read']`.\n"
+                "- Return a PYTHON_FINAL program that prints that variable. Do not request another "
+                "read, transcribe it, summarize it, repair it, merge it, or wrap it.\n"
+            )
+        elif clean_read and action.name in set(getattr(q, "read_tools", []) or []):
+            if tau2_wm_tool_mode() == "python":
+                first_read = (
+                    "On the FIRST tool turn, use PYTHON_READ with exactly one `call` query whose "
+                    f"`name` is {action.name!r} and whose `args` exactly equal the current action args."
+                )
+            else:
+                first_read = (
+                    f"On the FIRST tool turn, output `CALL {action.name} <current action args as "
+                    "one JSON object>`."
+                )
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                f"- This action is itself a native read-only tool: {action.name}.\n"
+                "- Do NOT infer or reconstruct its observation from records.\n"
+                f"- {first_read}\n"
+                "- After the host returns that read result, output it VERBATIM as the final tool "
+                "result. Preserve all fields, ordering, wording, empty values, and ERROR text. Do not "
+                "summarize, repair, or wrap it.\n"
+            )
+        elif clean_read:
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                "- This is an untouched native read, but the identical action is not exposed as a "
+                "CALL tool to the simulator.\n"
+                "- Do not guess from general knowledge or prior conversation. On the FIRST tool turn, "
+                "use the available record READ/LIST interface to retrieve every entity needed by the "
+                "current action, then reproduce the documented native observation exactly.\n"
+                "- Preserve the native schema, wording, empty values, and ERROR text. Do not summarize "
+                "or invent missing fields.\n"
+            )
         header = (
             f"You are a world model of the τ²-bench {domain} database, predicting the EXACT result of "
-            f"a tool call.\n{ref}{id_rules}Automatically grounded records for this call:\n"
-            f"{grounded}\n\nHistory of prior calls (may have changed state):\n{hist}\n\n"
+            f"a tool call.\n{exact_read_contract}{ref}{id_rules}{transition_guidance}"
+            "Automatically grounded records and prior calls are copied into the Python `data` "
+            "variables. Do not transcribe or manipulate their contents outside generated Python.\n\n"
             f"Tool call to predict: {_action_str(action)}"
         )
         final = ("PREDICT: <the tool's result. If the tool returns a record (e.g. the updated "
@@ -785,7 +1044,7 @@ class _LLMWorldModelPredictor:
                  "summary. Validate every referenced entity and payment identifier with PYTHON_READ "
                  "when needed; never invent an identifier or assume a write succeeded when an "
                  "argument is invalid. Begin with 'ERROR:' only if the call genuinely fails>")
-        if tau2_wm_tool_mode() == "python":
+        if force_program or tau2_wm_tool_mode() == "python":
             result = run_tau2_python_prediction_loop(
                 self._complete,
                 q,
@@ -803,6 +1062,29 @@ class _LLMWorldModelPredictor:
                     "seed_facts": seed_facts or {},
                     "entity_types": list(entity_types),
                     "read_tools": list(getattr(q, "read_tools", []) or []),
+                    "clean_read_grounding_required": bool(exact_read_contract),
+                    "grounded_clean_read": grounded_clean_read,
+                    "grounded_clean_read_required": grounded_clean_read is not None,
+                    "exact_read_required": bool(
+                        grounded_clean_read is None
+                        and
+                        clean_read
+                        and action.name in set(getattr(q, "read_tools", []) or [])
+                    ),
+                    "exact_read_call": (
+                        {
+                            "op": "call",
+                            "name": action.name,
+                            "args": dict(action.args or {}),
+                        }
+                        if (
+                            grounded_clean_read is None
+                            and
+                            clean_read
+                            and action.name in set(getattr(q, "read_tools", []) or [])
+                        )
+                        else None
+                    ),
                 },
                 max_turns=self.MAX_TURNS,
                 max_tokens=1500,
@@ -811,6 +1093,7 @@ class _LLMWorldModelPredictor:
                     domain == "airline"
                     and action.name == "update_reservation_flights"
                 ),
+                force_always=force_program,
             )
             self._record_python_result(result)
             text = result.output
@@ -1410,8 +1693,24 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
             lines.append(f"{btype} {bid}: {_model_to_text(row['model'])}")
         return "\n".join(lines) or "(no records read)"
 
+    def prepare_flat_context(self, shadow: Dict[tuple, Dict]) -> None:
+        """Build B1's reusable reference-conditioned prompt before candidate generation."""
+        predictor = self._predictor_or_default()
+        configure = getattr(predictor, "configure_flat_context", None)
+        if not callable(configure):
+            return
+        configure(
+            task_text=self._task_text,
+            gold_actions=self._gold,
+            tool_docs={
+                name: self._tool_docs[name] for name in sorted(self._tool_docs)
+            },
+            facts=self._facts_text(shadow),
+            evaluation_context=self._evaluation_context,
+        )
+
     def observe(self, shadow: Dict[tuple, Dict], action: Action):
-        """Predict one tool call's observation from read-grounded facts + history (no execution)."""
+        """Predict one tool result from B1's fixed context plus runtime history (no execution)."""
         facts = self._facts_text(shadow)
         content, is_error = self._predictor_or_default().predict_observation(
             facts, self._history, action, tool_doc=self._tool_docs.get(action.name, "")
@@ -1473,7 +1772,13 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
                           metadata=self._python_metadata(predictor))
 
     # -- agentic, multi-turn DB-querying prediction (Ours) ---------------------------------- #
-    def observe_agentic(self, reader, action: Action, force_predict: bool = False):
+    def observe_agentic(
+        self,
+        reader,
+        action: Action,
+        force_predict: bool = False,
+        clean_read: bool = False,
+    ):
         """Predict the observation for one action.
 
         If the action is itself a **read-only / retrieval tool** (e.g. ``KB_search``,
@@ -1481,9 +1786,10 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
         would — by executing that read-only tool the same way the official evaluation does (no
         mutation).  For a **write** action it predicts via the agentic read loop (no execution).
 
-        ``force_predict=True`` skips the exact-read shortcut and always predicts — used for a read of
-        an entity that a prior write in this rollout already changed (a *dirty* read), so the
-        observation reflects the predicted post-write state rather than the unmutated real state."""
+        ``force_predict=True`` skips the direct exact-read shortcut and routes through the simulator
+        prompt/tool loop. ``clean_read=True`` requires that loop to select the identical native
+        read-only tool before the world model generates its final result. Dirty reads omit that rule
+        so they are inferred from pristine evidence plus predicted writes."""
         if (not force_predict and self._read_tool_runner is not None
                 and action.name in set(self._read_tools)):
             reader.probe(f"exec-read:{action.name}")
@@ -1498,6 +1804,8 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
             self._domain, action, self._history, self._query_iface(reader),
             list(self._model.buckets), tool_doc=self._tool_docs.get(action.name, ""),
             seed_facts=seed_facts,
+            clean_read=clean_read,
+            force_program=force_predict,
         )
         self._history.append((action, content))
         return (content, is_error)
@@ -1942,12 +2250,13 @@ class Tau2TaskEnv(TaskEnvironment):
     def run_agent_rollout(self, config, seed: int):
         """Run the **official** τ² agent loop and return ``(Trajectory, RewardInfo)``.
 
-        Drives the official runner — the LLM customer-service agent (with the official
-        :data:`tau2.agent.llm_agent.AGENT_INSTRUCTION` / ``SYSTEM_PROMPT``) conversing with the
-        official user simulator over the real environment for ``self.domain`` — and scores the
-        conversation with the official ``evaluate_simulation`` (``EvaluationType.ALL``).  The
-        returned reward is the genuine benchmark reward, so a single rollout (B0) reproduces the
-        official τ²-bench number for that domain.  The realised assistant tool-calls are returned
+        Drives the official runner and user simulator over the real environment
+        for ``self.domain`` and scores the conversation with the official
+        ``evaluate_simulation`` (``EvaluationType.ALL``). The stock profile
+        uses the official neutral agent prompt; Qwen can opt into the
+        method-independent policy/tool interface in
+        :mod:`tts.env.tau2_qwen_agent`. The returned reward is the genuine
+        benchmark reward, and the realised assistant tool-calls are returned
         as the trajectory.
         """
         from tau2.data_model.message import AssistantMessage
@@ -2000,14 +2309,18 @@ class Tau2TaskEnv(TaskEnvironment):
         from tau2.data_model.simulation import TextRunConfig
 
         from ..llm.local import litellm_model_for
+        from .tau2_qwen_agent import tau2_agent_name_for_model
 
         solver = config.solver
+        llm_agent = litellm_model_for(solver.llm_agent, default_model)
         llm_args = {"seed": seed}
         if solver.temperature:
             llm_args["temperature"] = solver.temperature
         return TextRunConfig(
-            domain=self.domain, agent="llm_agent", user="user_simulator",
-            llm_agent=litellm_model_for(solver.llm_agent, default_model),
+            domain=self.domain,
+            agent=tau2_agent_name_for_model(llm_agent),
+            user="user_simulator",
+            llm_agent=llm_agent,
             llm_args_agent=dict(llm_args),
             llm_user=litellm_model_for(solver.llm_user or solver.llm_agent, default_model),
             llm_args_user=dict(llm_args),
@@ -2020,9 +2333,11 @@ class Tau2TaskEnv(TaskEnvironment):
         Builds the official τ² orchestrator with the exact same agent/user configuration, prompts,
         and generation loop as the real-environment path. The only substitution is the
         tool-execution chokepoint — ``environment.get_response`` — which is routed through the
-        read-grounded world model: read tools are answered exactly (read-only), write/dual-control
-        tools are WM-predicted from read-grounded facts + the running history, and the real backing
-        DB is never mutated. Returns ``(Trajectory, predicted RewardInfo, spawn_root)``; the
+        read-grounded world model: clean reads are exact by default; with ``predict_all_actions``,
+        recursive Ours invokes the identical whitelisted read-only simulator tool while flat B1
+        predicts from fixed context. Write/dual-control tools are WM-predicted from read-grounded
+        facts + the running history, and the real backing DB is never mutated. Returns
+        ``(Trajectory, predicted RewardInfo, spawn_root)``; the
         trajectory carries the realized official message log (assistant + user tool calls) so the
         selected one can be committed and officially scored — correctly for dual-control domains too.
         """
@@ -2057,20 +2372,22 @@ class Tau2TaskEnv(TaskEnvironment):
 
         def _make_wm_get_response(orig_get_response):
             def _wm_get_response(message):
-                """Serve one tool call: clean read exact, dirty read + write WM-predicted (no real write).
+                """Serve one tool call without real mutation.
 
                 Requestor-aware: assistant- and user-side (dual-control) read tools of *untouched*
-                entities are executed exactly against the real backing DB (no mutation).  A read of an
-                entity a prior write already changed, and every write itself, is predicted by the world
-                model (history-conditioned), so reads reflect prior writes and the real env is never
-                written."""
+                entities are exact by default. With predict-all enabled, clean reads are predicted too;
+                dirty reads and every write are always predicted."""
                 name, requestor = message.name, message.requestor
                 action = Action(name, dict(message.arguments or {}))
                 refs = _entity_refs(action)
                 is_read = name in (read_user if requestor == "user" else read_assist)
                 if is_read:
                     read_is_dirty = bool(set(refs) & dirty) if refs else (global_writes[0] > 0)
-                    if not read_is_dirty:
+                    predict_read = _should_predict_tau2_read(
+                        predict_all_actions=config.simulator.predict_all_actions,
+                        read_is_dirty=read_is_dirty,
+                    )
+                    if not predict_read:
                         try:
                             tm = orig_get_response(message)  # clean read -> exact, read-only
                             wm.note(action, str(getattr(tm, "content", "")))
@@ -2079,7 +2396,7 @@ class Tau2TaskEnv(TaskEnvironment):
                             return ToolMessage(id=message.id, content=f"Error: {exc}",
                                                requestor=requestor, role="tool", error=True)
                     try:
-                        obs = wm.predict_step(action)  # dirty read -> predicted post-write state
+                        obs = wm.predict_step(action, dirty=read_is_dirty)
                         content, err = str(obs.content), bool(obs.error)
                     except Exception as exc:  # noqa: BLE001
                         content, err = f"Error: {type(exc).__name__}: {exc}", True

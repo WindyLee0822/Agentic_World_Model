@@ -230,6 +230,32 @@ def _clear_azure_api_keys() -> None:
         pass
 
 
+def _configure_litellm_azure_transport(force_refresh: bool = False) -> bool:
+    """Configure Azure routing/auth without changing the default model."""
+    endpoint = azure_endpoint()
+    if not endpoint:
+        return False
+    os.environ["AZURE_API_BASE"] = endpoint
+    os.environ["AZURE_API_VERSION"] = azure_api_version()
+
+    if _azure_auth_mode() == "api_key":
+        return True
+
+    if _install_litellm_token_provider():
+        for _k in ("AZURE_OPENAI_AD_TOKEN", "AZURE_AD_TOKEN"):
+            os.environ.pop(_k, None)
+        _clear_azure_api_keys()
+    else:
+        token = fetch_aad_token(force_refresh=force_refresh)
+        os.environ["AZURE_OPENAI_AD_TOKEN"] = token
+        os.environ["AZURE_AD_TOKEN"] = token
+        _clear_azure_api_keys()
+    if force_refresh:
+        fetch_aad_token(force_refresh=True)
+        _flush_litellm_client_cache()
+    return True
+
+
 def ensure_litellm_azure_env(force_refresh: bool = False) -> str:
     """Configure litellm for Azure auth and return the model string.
 
@@ -249,36 +275,18 @@ def ensure_litellm_azure_env(force_refresh: bool = False) -> str:
 
     if local_llm_configured():
         # Local, self-hosted server: litellm routes the openai/ provider via OPENAI_API_BASE /
-        # OPENAI_API_KEY (already set by configure_local_llm); no Azure endpoint or token needed.
+        # OPENAI_API_KEY. Mixed mode additionally configures azure/* models without changing the
+        # local model used by the agent/world model.
         base = os.environ.get("OPENAI_API_BASE") or os.environ.get("OPENAI_BASE_URL")
         if base:
             os.environ["OPENAI_API_BASE"] = base
         os.environ.setdefault("OPENAI_API_KEY", "EMPTY")
+        if os.environ.get("TTS_LOCAL_LLM_ALLOW_AZURE") == "1":
+            _configure_litellm_azure_transport(force_refresh=force_refresh)
         return litellm_model_for(local_model(), litellm_model())
 
-    endpoint = azure_endpoint()
-    if not endpoint:
+    if not _configure_litellm_azure_transport(force_refresh=force_refresh):
         return litellm_model()
-    os.environ["AZURE_API_BASE"] = endpoint
-    os.environ["AZURE_API_VERSION"] = azure_api_version()
-
-    if _azure_auth_mode() == "api_key":
-        return litellm_model()  # explicit key auth — leave litellm's key resolution untouched
-
-    if _install_litellm_token_provider():
-        # Use the always-fresh provider: drop stale static tokens AND any api-key litellm would
-        # otherwise prefer over the provider.
-        for _k in ("AZURE_OPENAI_AD_TOKEN", "AZURE_AD_TOKEN"):
-            os.environ.pop(_k, None)
-        _clear_azure_api_keys()
-    else:  # litellm internals unavailable — fall back to a static bearer token
-        token = fetch_aad_token(force_refresh=force_refresh)
-        os.environ["AZURE_OPENAI_AD_TOKEN"] = token
-        os.environ["AZURE_AD_TOKEN"] = token
-        _clear_azure_api_keys()
-    if force_refresh:
-        fetch_aad_token(force_refresh=True)  # prime/refresh the shared token cache
-        _flush_litellm_client_cache()
     return litellm_model()
 
 

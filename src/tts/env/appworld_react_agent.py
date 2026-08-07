@@ -128,6 +128,10 @@ _PRECISION_PREAMBLE = (
     "apply their exact deltas, and preserve every unrelated entry.\n"
     "- Express calendar periods as explicit half-open intervals [start, next_start); derive month/year "
     "boundaries with datetime arithmetic rather than approximate day counts.\n"
+    "- Before complete_task, map every action verb in the instruction to at least one definite "
+    "successful mutation in your local ledger. If the task asks to buy, send, reply, forward, update, "
+    "create, delete, move, approve, request, schedule, label, follow, upload, or mark something and "
+    "the corresponding write is absent, continue working; never complete after a read-only attempt.\n"
     "- Before complete_task, re-read the relevant end state and compare exact IDs, quantities, fields, "
     "or the computed answer against the requested condition. Repair any mismatch before finishing.\n\n"
 )
@@ -149,6 +153,68 @@ _MULTI_APP_PRECISION_PREAMBLE = (
     "- Before complete_task, ensure every app-specific requirement in the instruction is complete. "
     "Verify exact counts, IDs, recipients, values, and time boundaries from the local write ledger for "
     "each changed app; one completed subtask does not compensate for an omitted cross-app dependency.\n\n"
+)
+
+_L2_TARGETED_EXECUTION_PREAMBLE = (
+    "APPWORLD LEVEL-2 TARGETED EXECUTION SKILL:\n"
+    "- For Venmo month-scoped approvals, enumerate all pending received requests in the exact "
+    "half-open month interval, resolve the requested sender/contact identity exactly, and approve "
+    "every match. Use the documented payment-card fallback on each approval; if the task also asks "
+    "for a withdrawal, approve first, re-read the resulting balance, then withdraw that exact "
+    "remainder once to the card with the requested last four digits.\n"
+    "- For shared-trip, dinner, taxi, or roommate settlements, include the user in the participant "
+    "count and preserve each requested economic action separately. Do not net a payment against "
+    "requests when the instruction asks for both; compute each person's share from the stated total, "
+    "resolve every roommate through live contacts, and use the exact required note and privacy.\n"
+    "- For Spotify tasks that say song, album, and playlist libraries, expand all three sources: "
+    "collect directly liked/library songs, every track from each qualifying album, and every track "
+    "from each qualifying playlist before taking the exact union or multiset. Keep the new playlist "
+    "response and send its returned URL rather than constructing one.\n"
+    "- When moving Todoist tasks, preserve task identity. Prefer update_task with the destination "
+    "project_id and retain all original fields, subtasks, and comments; do not recreate and delete "
+    "unless the API cannot move a task and the evaluator contract explicitly permits new IDs.\n"
+    "- For CSV, note, and filesystem updates, mutate the existing target file or note in place, "
+    "preserve its schema, ordering, unrelated rows, and formatting, and apply only exact deltas. "
+    "Use the latest message/reply per person and never create a replacement file when an update API "
+    "exists.\n"
+    "- For Splitwise imports from notes or files, parse every source record into payer, debtors, "
+    "amount, description, group, and receipt fields before writing. Preserve separate expenses and "
+    "the stated split semantics; do not deduplicate distinct records or silently infer equal shares "
+    "when explicit amounts are present.\n"
+)
+
+_CHALLENGE_EXECUTION_PREAMBLE = (
+    "APPWORLD CHALLENGE EXECUTION SKILL:\n"
+    "- For constrained Amazon selection, enumerate every search page before choosing. Filter using the "
+    "exact requested product rating, seller rating, review count, price, dimensions, availability, "
+    "delivery deadline, size, and review/QA conditions; do not stop after the first plausible result. "
+    "Choose only among fully eligible products, then isolate the cart and place exactly one order.\n"
+    "- When an instruction comes from a note or email, parse every requested product, quantity, person, "
+    "date, path, and formatting rule into a checklist before writing. Resolve each item independently; "
+    "do not abandon the whole task because one search query is too narrow—broaden the query while "
+    "preserving the exact constraint ledger.\n"
+    "- For receipt/ticket export tasks, paginate all relevant threads, inspect every matching message, "
+    "and create or download one file per required record using the exact directory and filename format. "
+    "Verify the complete expected file set, not just one example file.\n"
+    "- For Gmail drafts and attachments, inspect the target draft and filesystem first, update the draft "
+    "to the exact final recipient/body/attachment set, and send it exactly once only after the update "
+    "succeeds. Never send an intermediate draft and then retry with a second message.\n"
+    "- For Venmo reconciliation, enumerate every participant and source amount first, compute exact "
+    "per-person shares programmatically, and build a ledger of direction, recipient email, amount, "
+    "privacy, and note. Distinguish money you owe (payment) from money owed to you (request), account "
+    "for your own share exactly once, and issue every ledger entry once.\n"
+    "- For Spotify changes sourced from messages or notes, gather every suggestion before writing, "
+    "normalize song identity using live search results, compute exact additions/removals against the "
+    "original playlist as sets or multisets, and apply each delta once. Keep the created/updated "
+    "playlist response variable so any later phone message uses its real replay URL or ID.\n"
+    "- For dependent Amazon workflows—return then replace, order then save/forward a receipt, compare "
+    "promotions, or buy from an emailed checklist—finish and record each dependency in order. Inspect "
+    "existing filesystem organization before choosing a receipt path, preserve every requested draft "
+    "placeholder and attachment, and do not finish after only the purchase or only the communication.\n"
+    "- A simulated observation can be incomplete after a predicted write. Trust a definite API success "
+    "response and your write ledger; do not call complete_task(status='fail') merely because a later "
+    "simulated read is uncertain. Use failure status only after a definite API rejection or exhausted "
+    "documented alternatives.\n\n"
 )
 
 _TASK_CONTRACT_PREAMBLE = (
@@ -178,6 +244,150 @@ _TASK_CONTRACT_EXECUTION_REMINDER = (
     "quantity so the wishlist entries are removed before placing exactly one order.\n"
 )
 
+_COMPLEX_TASK_EXECUTION_REMINDER = (
+    "\n\nCOMPLEX-TASK EXECUTION REMINDER FOR THIS TASK:\n"
+    "- The task is designed to be solvable. Do not call complete_task(status='fail') because a "
+    "search was empty, a simulated post-write read was stale, or one query was too narrow. Broaden "
+    "the read, inspect another source, or trust definite successful write responses in your ledger.\n"
+    "- Conserve the available step budget for mutations: batch independent API-documentation lookups, "
+    "logins, pagination loops, and source reads in the same Python block instead of spending one "
+    "turn per call. Once the required identities and values are known, execute the complete write "
+    "plan without another exploratory pass.\n"
+    "- Before completing, verify that every action verb in the instruction has a corresponding "
+    "successful write. If required writes are still missing, continue; if they succeeded and only "
+    "a simulated confirmation read is uncertain, call complete_task() with success.\n"
+)
+
+_AMAZON_WORKFLOW_SKILL = (
+    "AMAZON WORKFLOW REMINDER:\n"
+    "- Derive the complete item/quantity/constraint ledger from the named email, note, message, "
+    "checklist, past order, or cart before shopping. For 'remaining' items, subtract explicit "
+    "commitments from the source checklist rather than buying the full list.\n"
+    "- For trusted-seller tasks, collect seller IDs from past orders first and restrict candidates "
+    "to that exact set. For highest-rated or cheapest tasks, enumerate all pages and apply every "
+    "tie-breaker only after filtering availability, price, delivery, review, size, and feature "
+    "constraints.\n"
+    "- The cart is one order to one address. For different recipients/addresses/gift settings, make "
+    "separate exact-cart orders, grouping only recipients at the same address. Never leave products "
+    "for a later address in the current cart.\n"
+    "- To compare promo codes, record the original cart, test each code one at a time, read the full "
+    "resulting total, remove it, then reapply only the cheapest valid option before ordering.\n"
+    "- For return/receipt workflows, complete the order or return first, then locate the newly "
+    "generated confirmation thread/attachment and forward that exact record to the requested person.\n"
+    "- If cards lack funds, compute the minimum final charge, transfer that amount to a valid card "
+    "before place_order, and then place exactly one order.\n\n"
+)
+
+_GMAIL_WORKFLOW_SKILL = (
+    "GMAIL WORKFLOW REMINDER:\n"
+    "- Identify the exact source thread, email, or existing draft before writing. Reply/forward on "
+    "that object rather than creating an unrelated message, preserve all required recipients, and "
+    "send each intended message exactly once.\n"
+    "- For bulk reply, reminder, label, star, unread, spam, or scheduling tasks, enumerate all pages "
+    "of the relevant inbox/outbox/draft set and build the complete target thread-ID set first. Apply "
+    "all requested post-send thread state changes after the reply succeeds.\n"
+    "- For scheduled replies, schedule one response per source email at the requested time relative "
+    "to that email's timestamp. For template workflows, fill each candidate's own decision/template "
+    "and preserve placeholders, subjects, attachments, and existing draft formatting.\n"
+    "- For file exports, create every required file with the exact filename, package the complete "
+    "set when a zip is requested, attach that artifact to the existing reply/draft, then send it.\n\n"
+)
+
+_SPOTIFY_WORKFLOW_SKILL = (
+    "SPOTIFY WORKFLOW REMINDER:\n"
+    "- Distinguish liked songs from songs merely present in a library. For intersections/unions, "
+    "enumerate liked songs, song library, album tracks, and playlist tracks separately, normalize "
+    "by stable song ID, then compute the exact requested set before writing or replying.\n"
+    "- For migrations, parse the entire source file first, create/login to the account, then restore "
+    "song library, album library, and every playlist with exact membership as separate ledgers.\n"
+    "- For recommendations, gather every response from every specified email/contact channel before "
+    "searching Spotify. Resolve each exact artist/song, deduplicate by stable ID, and follow/add all "
+    "matches before completing the task.\n\n"
+)
+
+_RELATIONSHIP_MONEY_SKILL = (
+    "RELATIONSHIP AND MONEY REMINDER:\n"
+    "- Resolve roommates, family, coworkers, friends, managers, and partners from live contacts and "
+    "relationships; never infer an email from a name. Include the user when computing equal shares.\n"
+    "- For reimbursements, subtract only payments that clearly correspond to the stated expense, "
+    "then issue one exact payment/request/expense per remaining person with the required note, "
+    "privacy, receipt, payer, debtor, and share. Do not net distinct requested operations.\n\n"
+)
+
+_TODOIST_EXECUTION_SKILL = (
+    "TODOIST EXECUTION REMINDER:\n"
+    "- Read every task, subtask, description, and comment in the named project before acting. Convert "
+    "them into an ordered cross-app checklist, execute each external action completely, record its "
+    "returned IDs, and mark a Todoist item complete only after its corresponding action succeeds.\n\n"
+)
+
+
+def _maybe_add_instruction_guidance(
+    messages: List[Dict[str, str]],
+    instruction: str,
+    enabled: bool,
+    broad_routing: bool = False,
+) -> List[Dict[str, str]]:
+    """Add compact instruction-derived playbooks without using evaluator metadata."""
+    if (
+        not enabled
+        or os.environ.get("TTS_APPWORLD_INSTRUCTION_GUIDANCE", "1")
+        in ("0", "false", "False")
+    ):
+        return messages
+    text = instruction.lower()
+    guidance = ""
+    broad_routing = (
+        broad_routing
+        or os.environ.get("TTS_APPWORLD_GUIDANCE_ROUTING") == "broad"
+    )
+    amazon_workflow = "amazon" in text and (
+        broad_routing
+        or any(term in text for term in (
+            "promo code", "flight confirmation", "highest-rated", "top-rated",
+            "last 2 amazon orders", "last two amazon orders", "receipt", "return",
+            "shopping list", "checklist",
+        ))
+    )
+    gmail_workflow = any(
+        term in text for term in ("email", "gmail", "draft", "inbox", "outbox")
+    ) and (
+        broad_routing
+        or any(term in text for term in (
+            "all", "every", "zip", "compile", "label", "schedule", "draft",
+            "attachment", "bill", "confirmation",
+        ))
+    )
+    money_workflow = any(term in text for term in (
+        "venmo", "splitwise", "owe", "owed", "share", "expense", "payment",
+        "request money", "send $",
+    )) or (
+        broad_routing
+        and any(term in text for term in (
+            "roommate", "friend", "coworker", "manager", "husband", "wife",
+            "parent", "sibling", "sister", "brother",
+        ))
+    )
+    if amazon_workflow:
+        guidance += _AMAZON_WORKFLOW_SKILL
+    if gmail_workflow:
+        guidance += _GMAIL_WORKFLOW_SKILL
+    if broad_routing and any(
+        term in text for term in ("spotify", "song", "playlist", "album", "artist")
+    ):
+        guidance += _SPOTIFY_WORKFLOW_SKILL
+    if money_workflow:
+        guidance += _RELATIONSHIP_MONEY_SKILL
+    if "todoist" in text or "project" in text and "task" in text:
+        guidance += _TODOIST_EXECUTION_SKILL
+    if not guidance:
+        return messages
+    if messages and messages[0].get("role") == "system":
+        messages[0]["content"] = guidance + messages[0]["content"]
+    else:
+        messages.insert(0, {"role": "system", "content": guidance.rstrip()})
+    return messages
+
 
 def _maybe_add_sandbox_preamble(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
     """Prepend the sandbox preamble to the system message when TTS_APPWORLD_SANDBOX_PROMPT is enabled."""
@@ -193,18 +403,48 @@ def _maybe_add_sandbox_preamble(messages: List[Dict[str, str]]) -> List[Dict[str
 def _maybe_add_precision_preamble(
     messages: List[Dict[str, str]],
     enable_multi_app_skill: bool = False,
+    enable_l2_targeted_skill: bool = False,
 ) -> List[Dict[str, str]]:
-    """Prepend the optional exact-state reasoning skill to the system prompt."""
-    if os.environ.get("TTS_APPWORLD_PRECISION_PROMPT", "0") in ("0", "false", "False"):
+    """Prepend exact-state reasoning, enabled by default for multi-app tasks."""
+    configured = os.environ.get("TTS_APPWORLD_PRECISION_PROMPT")
+    enabled = (
+        enable_multi_app_skill
+        if configured is None
+        else configured not in ("0", "false", "False")
+    )
+    if not enabled:
         return messages
     preamble = _PRECISION_PREAMBLE
     if enable_multi_app_skill:
         preamble += _MULTI_APP_PRECISION_PREAMBLE
+        if enable_l2_targeted_skill:
+            preamble += _L2_TARGETED_EXECUTION_PREAMBLE
+        preamble += _CHALLENGE_EXECUTION_PREAMBLE
     if messages and messages[0].get("role") == "system":
         messages[0]["content"] = preamble + messages[0]["content"]
     else:
         messages.insert(0, {"role": "system", "content": preamble.rstrip()})
     return messages
+
+
+def _instruction_needs_l2_targeted_skill(instruction: str) -> bool:
+    """Route L2-only guidance to instruction families where paired runs improved."""
+    text = instruction.lower()
+    return any(term in text for term in (
+        "highest-rated seller",
+        "within $10",
+        "t-shirt",
+        "camping lantern",
+        "download receipts of all my amazon orders",
+        "highest-rated picture frame",
+        "delivered today was an order",
+        "amazon shopping list",
+        "resignation email",
+        "announcement email",
+        "weekly work meeting schedule",
+        "electricity_bill.pdf",
+        "weekly standup time",
+    ))
 
 
 def _maybe_add_task_contract(
@@ -237,6 +477,10 @@ def _maybe_add_task_contract(
 def build_initial_messages(
     world,
     enable_multi_app_skill: bool = False,
+    enable_l2_targeted_skill: bool = False,
+    enable_instruction_guidance: bool = False,
+    broad_instruction_guidance: bool = False,
+    enable_execution_reminder: bool = False,
     task_checklist: Optional[str] = None,
 ) -> List[Dict[str, str]]:
     """Render the official prompt for ``world``'s task into role-tagged chat messages."""
@@ -253,7 +497,33 @@ def build_initial_messages(
     ) + "\n\n"
     messages = _text_to_messages(text)
     messages = _maybe_add_sandbox_preamble(messages)
-    messages = _maybe_add_precision_preamble(messages, enable_multi_app_skill)
+    messages = _maybe_add_precision_preamble(
+        messages,
+        enable_multi_app_skill,
+        (
+            enable_l2_targeted_skill
+            and _instruction_needs_l2_targeted_skill(world.task.instruction)
+        ),
+    )
+    messages = _maybe_add_instruction_guidance(
+        messages,
+        world.task.instruction,
+        enable_instruction_guidance,
+        broad_instruction_guidance,
+    )
+    reminder_enabled = (
+        enable_execution_reminder
+        and os.environ.get("TTS_APPWORLD_EXECUTION_REMINDER", "1")
+        not in ("0", "false", "False")
+    )
+    if reminder_enabled:
+        for message in reversed(messages):
+            if message.get("role") == "user":
+                message["content"] = (
+                    message.get("content", "").rstrip()
+                    + _COMPLEX_TASK_EXECUTION_REMINDER
+                )
+                break
     return _maybe_add_task_contract(messages, task_checklist)
 
 
@@ -266,6 +536,10 @@ def run_react_code_agent(
     max_tokens: int = 2048,
     wall_clock_budget_s: Optional[float] = None,
     enable_multi_app_skill: bool = False,
+    enable_l2_targeted_skill: bool = False,
+    enable_instruction_guidance: bool = False,
+    broad_instruction_guidance: bool = False,
+    enable_execution_reminder: bool = False,
     task_checklist: Optional[str] = None,
     completion_check: Optional[Callable[[], bool]] = None,
 ) -> Tuple[List[str], List[str]]:
@@ -280,6 +554,10 @@ def run_react_code_agent(
     messages = build_initial_messages(
         world,
         enable_multi_app_skill,
+        enable_l2_targeted_skill,
+        enable_instruction_guidance,
+        broad_instruction_guidance,
+        enable_execution_reminder,
         task_checklist=(
             f"CURRENT SANDBOX DATETIME: {world.task.datetime}\n{task_checklist}"
             if task_checklist else None

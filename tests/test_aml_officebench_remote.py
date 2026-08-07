@@ -103,33 +103,38 @@ def test_configure_remote_docker_rejects_credentials_for_tcp(capsys):
     assert "SSH secrets can only be used with an ssh:// Docker host" in capsys.readouterr().err
 
 
-def test_officebench_aml_job_wires_remote_docker_inputs():
+def test_officebench_aml_job_uses_local_no_docker_backend():
     root = Path(__file__).parents[1]
     job = yaml.safe_load((root / "aml" / "job.officebench.yml").read_text(encoding="utf-8"))
     inputs = job["inputs"]
     command = job["command"]
 
-    assert inputs["docker_host"] == "none"
-    assert inputs["docker_key_vault_url"] == "none"
-    assert inputs["docker_ssh_key_secret"] == "none"
-    assert inputs["docker_ssh_known_hosts_secret"] == "none"
-    assert "--docker-host" in command
-    assert "--docker-key-vault-url" in command
-    assert "--docker-ssh-key-secret" in command
-    assert "--docker-ssh-known-hosts-secret" in command
+    assert job["environment"] == "azureml:tts-officebench-local:20260803"
+    assert job["environment_variables"]["TTS_OFFICEBENCH_BACKEND"] == "local"
+    assert job["environment_variables"]["TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S"] == "5"
+    assert inputs["agent"] == "llm_wm"
+    assert inputs["aoai_deployment"] == "gpt-5.4"
+    assert inputs["temperature"] == 1
+    assert inputs["workers"] == 8
+    assert inputs["extra_args"] == "--exact-clean-reads"
+    assert not any(key.startswith("docker_") for key in inputs)
+    assert "--docker-host" not in command
 
 
-def test_officebench_runner_configures_remote_daemon_before_probe():
+def test_officebench_runner_bypasses_docker_in_local_mode():
     runner = (
         Path(__file__).parents[1] / "aml" / "src" / "run_dw.sh"
     ).read_text(encoding="utf-8")
 
     officebench_case = runner.index("  officebench)")
-    configure = runner.index("configure_officebench_docker", officebench_case)
-    probe = runner.index("docker info", configure)
-    assert configure < probe
-    assert "configure_remote_docker.py" in runner
-    assert "download.docker.com/linux/static/stable" in runner
+    local_check = runner.index('TTS_OFFICEBENCH_BACKEND:-docker', officebench_case)
+    docker_configure = runner.index("configure_officebench_docker", local_check)
+    assert local_check < docker_configure
+    assert "using local no-Docker backend" in runner
+    assert "TTS_OFFICEBENCH_MAX_WORKERS:-64" in runner
+    assert "capping workers" in runner
+    assert "local backend requires proot" in runner
+    assert "tts-no-network sandbox launcher" in runner
     assert "TTS_OFFICEBENCH_RUN_ID" in runner
     assert 'timeout "${TTS_DOCKER_INFO_TIMEOUT_S:-60}" docker info' in runner
     assert "docker build -t officebench-tts:latest" in runner
@@ -217,17 +222,16 @@ def test_officebench_provisioner_stores_verified_ssh_credentials(tmp_path, monke
     assert stored["access"][1] == "ws-kv"
 
 
-def test_officebench_submit_auto_provisions_and_injects_remote_docker():
+def test_officebench_submit_registers_local_environment_without_provisioning_docker():
     submit = (
         Path(__file__).parents[1] / "aml" / "submit.sh"
     ).read_text(encoding="utf-8")
 
-    assert "provision_officebench_docker.py" in submit
-    assert "AML_OFFICEBENCH_AUTO_PROVISION" in submit
-    assert '"inputs.docker_host=$docker_host"' in submit
-    assert '"inputs.docker_key_vault_url=$docker_vault"' in submit
-    assert '"inputs.docker_ssh_key_secret=$docker_key_secret"' in submit
-    assert '"inputs.docker_ssh_known_hosts_secret=$docker_known_hosts_secret"' in submit
+    assert "az ml environment show" in submit
+    assert "tts-officebench-local" in submit
+    assert "aml/environment/officebench-local.yml" in submit
+    assert "provision_officebench_docker.py" not in submit
+    assert "inputs.docker_host" not in submit
 
 
 def test_provisioner_grants_rbac_by_managed_identity_object_id(monkeypatch):

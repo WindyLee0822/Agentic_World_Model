@@ -6,7 +6,7 @@
 # Supports three envs (pick via --env, and match the conda_file in the job yaml):
 #   appworld   -> mounts the AppWorld 0.2 data asset, `appworld install`
 #   tau2       -> tau2-bench via litellm (pydantic 2 env); needs api-key or az-login auth
-#   officebench-> runs apps/eval inside Docker; needs a Docker daemon + OFFICEBENCH_ROOT
+#   officebench-> Docker by default; TTS_OFFICEBENCH_BACKEND=local avoids Docker on AML
 set -euo pipefail
 
 env_name="appworld"
@@ -21,6 +21,7 @@ output_dir=""
 methods="b0,b1,b2,ours"
 n="1,2,4,8"
 agent="llm"
+llm_user=""
 appworld_wm_tool_mode="python"
 splits="test_normal"
 levels="1"
@@ -57,6 +58,7 @@ while [[ $# -gt 0 ]]; do
     --methods) methods="$2"; shift 2 ;;
     --n) n="$2"; shift 2 ;;
     --agent) agent="$2"; shift 2 ;;
+    --llm-user) llm_user="$2"; shift 2 ;;
     --appworld-wm-tool-mode) appworld_wm_tool_mode="$2"; shift 2 ;;
     --splits) splits="$2"; shift 2 ;;
     --levels) levels="$2"; shift 2 ;;
@@ -81,6 +83,7 @@ done
 # AML command jobs reject empty-string inputs ("Request is invalid and/or missing
 # fields"), so the job YAMLs use the literal "none" as the empty sentinel.
 [[ "$extra_args" == "none" ]] && extra_args=""
+[[ "$llm_user" == "none" ]] && llm_user=""
 [[ "$aoai_api_key" == "none" ]] && aoai_api_key=""
 [[ "$domains" == "none" ]] && domains=""
 [[ "$tau2_data" == "none" ]] && tau2_data=""
@@ -201,7 +204,7 @@ export AZURE_OPENAI_ENDPOINT="$aoai_endpoint"
 export AZURE_OPENAI_API_VERSION="$aoai_api_version"
 export WM_MODEL="$aoai_deployment"
 
-if [[ "${TTS_LOCAL_LLM:-0}" == "1" ]]; then
+if [[ "${TTS_LOCAL_LLM:-0}" == "1" && "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" != "1" ]]; then
   # A sibling vLLM process on this AML node serves every model call. Avoid
   # installing/logging into Azure CLI or attempting managed-identity auth.
   export AZURE_AUTH_MODE="openai"
@@ -212,14 +215,22 @@ elif [[ -n "$aoai_api_key" ]]; then
   export AZURE_OPENAI_API_KEY="$aoai_api_key"
   export AZURE_API_KEY="$aoai_api_key"
   export AZURE_AUTH_MODE="api_key"
-  echo "[auth] using Azure OpenAI API key"
+  if [[ "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1" ]]; then
+    echo "[auth] using local model server + Azure OpenAI API key"
+  else
+    echo "[auth] using Azure OpenAI API key"
+  fi
 else
   # Managed identity for dw's ChatClient.
   export AZURE_AUTH_MODE="aml"
   export AZURE_CLIENT_ID="$managed_identity_client_id"
   export DEFAULT_IDENTITY_CLIENT_ID="$managed_identity_client_id"
   export AZURE_MANAGED_IDENTITY_CLIENT_ID="$managed_identity_client_id"
-  echo "[auth] using managed identity (AZURE_AUTH_MODE=aml)"
+  if [[ "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1" ]]; then
+    echo "[auth] using local model server + Azure managed identity"
+  else
+    echo "[auth] using managed identity (AZURE_AUTH_MODE=aml)"
+  fi
   if [[ "$env_name" == "tau2" ]]; then
     # Unlike dw's AppWorld path (DefaultAzureCredential, no CLI — same as ../TTS),
     # tau2's litellm AAD token comes from dw's fetch_aad_token, which shells out to
@@ -329,29 +340,44 @@ PY
     [[ -n "$domains" ]] && env_args+=(--domains "$domains")
     ;;
   officebench)
-    # OfficeBench runs apps + scoring inside a Docker container built on demand.
+    # Standard AML command jobs cannot access a Docker daemon. The dedicated
+    # OfficeBench environment sets TTS_OFFICEBENCH_BACKEND=local and contains
+    # the app/evaluator dependencies; Docker remains available as an opt-in path.
     export OFFICEBENCH_ROOT="$officebench_root"
     export TTS_OFFICEBENCH_RUN_ID="${TTS_OFFICEBENCH_RUN_ID:-${AZUREML_RUN_ID:-aml-$(date +%s)-$$}}"
-    echo "[officebench] container run id: $TTS_OFFICEBENCH_RUN_ID"
-    configure_officebench_docker
-    docker_info=""
-    if ! docker_info="$(timeout "${TTS_DOCKER_INFO_TIMEOUT_S:-60}" docker info 2>&1)"; then
-      echo "[officebench][error] no usable Docker daemon." >&2
-      echo "  Standard AML command-job compute cannot run nested Docker. Submit with" >&2
-      echo "  aml/submit.sh so it provisions/injects the remote Docker VM, configure" >&2
-      echo "  --docker-host ssh://USER@HOST explicitly, or run the wrapper directly" >&2
-      echo "  on a Docker-capable compute instance." >&2
-      printf '%s\n' "$docker_info" | tail -n 20 | sed 's/^/  docker: /' >&2
-      exit 3
-    fi
-    if [[ -z "${TTS_OFFICEBENCH_IMAGE:-}" ]]; then
-      # Build once before worker processes start. Without this, a new daemon can
-      # receive one concurrent build per worker on the first task.
-      echo "[officebench][docker] preparing officebench-tts:latest"
-      docker build -t officebench-tts:latest src/tts/env/officebench_docker
-    elif ! docker image inspect "$TTS_OFFICEBENCH_IMAGE" >/dev/null 2>&1; then
-      echo "[officebench][docker][error] configured image not found: $TTS_OFFICEBENCH_IMAGE" >&2
-      exit 3
+    if [[ "${TTS_OFFICEBENCH_BACKEND:-docker}" == "local" ]]; then
+      echo "[officebench] using local no-Docker backend"
+      officebench_worker_cap="${TTS_OFFICEBENCH_MAX_WORKERS:-64}"
+      if (( workers > officebench_worker_cap )); then
+        echo "[officebench] capping workers from ${workers} to ${officebench_worker_cap}"
+        workers="$officebench_worker_cap"
+      fi
+      command -v proot >/dev/null 2>&1 || {
+        echo "[officebench][error] local backend requires proot from the baked AML image." >&2
+        exit 3
+      }
+      command -v tts-no-network >/dev/null 2>&1 || {
+        echo "[officebench][error] local backend requires the tts-no-network sandbox launcher." >&2
+        exit 3
+      }
+    else
+      echo "[officebench] container run id: $TTS_OFFICEBENCH_RUN_ID"
+      configure_officebench_docker
+      docker_info=""
+      if ! docker_info="$(timeout "${TTS_DOCKER_INFO_TIMEOUT_S:-60}" docker info 2>&1)"; then
+        echo "[officebench][error] no usable Docker daemon." >&2
+        echo "  Set TTS_OFFICEBENCH_BACKEND=local in the baked OfficeBench AML image," >&2
+        echo "  configure --docker-host, or run on Docker-capable compute." >&2
+        printf '%s\n' "$docker_info" | tail -n 20 | sed 's/^/  docker: /' >&2
+        exit 3
+      fi
+      if [[ -z "${TTS_OFFICEBENCH_IMAGE:-}" ]]; then
+        echo "[officebench][docker] preparing officebench-tts:latest"
+        docker build -t officebench-tts:latest src/tts/env/officebench_docker
+      elif ! docker image inspect "$TTS_OFFICEBENCH_IMAGE" >/dev/null 2>&1; then
+        echo "[officebench][docker][error] configured image not found: $TTS_OFFICEBENCH_IMAGE" >&2
+        exit 3
+      fi
     fi
     # OfficeBench uses --levels as app-counts (1/2/3 apps).
     [[ -n "$levels" ]] && env_args+=(--levels "$levels")
@@ -378,6 +404,7 @@ cmd=(
 )
 [[ ${#env_args[@]} -gt 0 ]] && cmd+=("${env_args[@]}")
 [[ ${#extra_arr[@]} -gt 0 ]] && cmd+=("${extra_arr[@]}")
+[[ -n "$llm_user" ]] && cmd+=(--llm-user "$llm_user")
 
 echo "Running: ${cmd[*]}"
 # Capture the harness stdout/stderr (incl. the printed metrics report) to a file
@@ -424,6 +451,7 @@ payload = {
     "methods": "$methods".split(","),
     "N": "$n",
     "agent": "$agent",
+    "llm_user": "$llm_user" or None,
     "appworld_wm_tool_mode": "$appworld_wm_tool_mode",
     "splits": "$splits".split(",") if "$splits" else [],
     "levels": "$levels".split(",") if "$levels" else [],
@@ -435,7 +463,8 @@ payload = {
     "temperature": float("$temperature"),
     "aoai_deployment": "$aoai_deployment",
     "auth_mode": (
-        "local" if "${TTS_LOCAL_LLM:-0}" == "1"
+        ("local+azure" if "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1" else "local")
+        if "${TTS_LOCAL_LLM:-0}" == "1"
         else ("api_key" if "$aoai_api_key" else "aml")
     ),
     "records": str(out / "records.jsonl"),

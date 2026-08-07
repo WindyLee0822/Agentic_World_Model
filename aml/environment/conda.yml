@@ -1,8 +1,9 @@
-# AML environment for the `dw` tau2-bench + OfficeBench jobs (mirrors the local
-# `dw` conda env: Python 3.12, pydantic 2).
+# AML environment for the `dw` tau2-bench jobs (mirrors the local `dw` conda
+# env: Python 3.12, pydantic 2).
 #
 # NOTE on env profiles:
-#   * tau2 + officebench  -> THIS file (Python 3.12, pydantic 2).
+#   * tau2                -> THIS file (Python 3.12, pydantic 2).
+#   * officebench         -> officebench-local.yml (baked app/evaluator deps).
 #   * appworld            -> conda.appworld.yml (Python 3.11, AppWorld 0.2 source).
 #   Keep AppWorld separate because its unreleased source pin must match the
 #   mounted 0.2.0 data asset. Point each job's `environment.conda_file` at the
@@ -13,9 +14,6 @@
 # the local `dw` checkout. The `[knowledge]` extra adds rank-bm25 for the
 # banking_knowledge domain.
 #
-# OfficeBench's app + evaluation deps run inside per-rollout Docker containers.
-# The AML environment only needs the Docker client plus Azure Key Vault support;
-# the daemon may be remote over SSH (see aml/README.md).
 name: tts-dw-aml
 channels:
   - conda-forge

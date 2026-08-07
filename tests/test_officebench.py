@@ -10,6 +10,7 @@ Docker daemon, the built app image, and (for B0) an LLM endpoint are all availab
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -139,6 +140,45 @@ def test_officebench_comparative_reranks_ambiguous_nested_pools(monkeypatch):
     assert decision["best"] == 3
 
 
+def test_officebench_comparative_always_audits_valid_incumbent(monkeypatch):
+    """A noisy high-confidence challenger cannot replace the lower-N winner without comparison."""
+    from tts.env.real_officebench import OfficeBenchTaskEnv
+
+    prompts = []
+
+    class _FakeClient:
+        def chat(self, system, user, **kwargs):
+            prompts.append(user)
+            return "BEST: 3\nREASON: the incumbent preserves the exact required value"
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
+    monkeypatch.setattr("tts.llm.make_chat_client", lambda **kwargs: _FakeClient())
+    env = OfficeBenchTaskEnv.__new__(OfficeBenchTaskEnv)
+    env._instruction = "Return the exact value from the document."
+    env._config = {"evaluation": [{"function": "evaluate_contain"}]}
+    rewards = [0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 1.0]
+    rollouts = [
+        RolloutResult(index, Trajectory(steps=[]), RewardInfo(reward=reward))
+        for index, reward in enumerate(rewards)
+    ]
+    rollouts[0].predicted.metadata["comparative_rerank"] = {
+        "pool_size": 4,
+        "best": 3,
+    }
+
+    env.refine_rollout_scores(
+        Config(seed=7, solver=SolverConfig(llm_agent="gpt-5.4")),
+        rollouts,
+    )
+
+    decision = rollouts[-1].predicted.metadata["comparative_rerank"]
+    assert decision["incumbent"] == 3
+    assert decision["native_best"] == 7
+    assert decision["contenders"] == [3, 7]
+    assert decision["best"] == 3
+    assert "### Candidate 3" in prompts[0] and "### Candidate 7" in prompts[0]
+
+
 def test_officebench_python_disabled_uses_direct_prompt(monkeypatch):
     from tts.env.officebench_wm_python import run_python_prediction_loop
 
@@ -164,6 +204,44 @@ def test_officebench_python_disabled_uses_direct_prompt(monkeypatch):
     assert result.valid and result.output == "OBSERVATION: direct fallback"
     assert result.python_calls == 0 and result.python_mode_misses == 1
     assert "PURE COMPUTATION OPTION" not in prompts[0]
+
+
+def test_officebench_python_parser_uses_one_protocol_block():
+    from tts.env.officebench_wm_python import _extract_python_action
+
+    response = (
+        'PYTHON_READ:\nprint_json({"queries": []})\n'
+        'PYTHON_FINAL:\nprint_json({"text": "should not join programs"})'
+    )
+    mode, code = _extract_python_action(response)
+
+    assert mode == "read"
+    assert code == 'print_json({"queries": []})'
+
+
+def test_officebench_python_retries_failed_repairs(monkeypatch):
+    from tts.env.officebench_wm_python import run_python_prediction_loop
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_PYTHON_REPAIR_ATTEMPTS", "2")
+    responses = iter([
+        "PYTHON_FINAL:\nraise ValueError('first')",
+        "not a program",
+        'PYTHON_FINAL:\nprint_json({"text": data["value"]})',
+    ])
+
+    result = run_python_prediction_loop(
+        lambda _prompt, _max_tokens: next(responses),
+        None,
+        "Predict the observation.",
+        "PREDICT: <observation>",
+        context={"value": "OBSERVATION: repaired"},
+        force_always=True,
+    )
+
+    assert result.valid
+    assert result.output == "OBSERVATION: repaired"
+    assert result.python_calls == 2
+    assert result.python_failures == 1
 
 
 def test_proc_action_and_parse():
@@ -195,11 +273,31 @@ def test_build_prompt_state_machine():
 
 def test_driver_pure_helpers():
     from tts.env import officebench_driver as drv
+    from tts.env.officebench_wm_predict import _doc_type
 
     assert drv._simplify_path("/testbed", "data") == "/testbed/data"
     assert drv._simplify_path("/testbed/data", "..") == "/testbed"
     assert drv._simplify_path("/a/b", "/c") == "/c"
     assert drv._minor_action_fix({"user": ["Bob"], "x": [1, 2]}) == {"user": "Bob", "x": [1, 2]}
+    assert _doc_type("/testbed/data/scan.JPG") == "image"
+    assert _doc_type("/testbed/data/report.xlsx") == "xlsx"
+
+
+def test_driver_reads_images_through_officebench_ocr(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from tts.env import officebench_driver as drv
+
+    image = tmp_path / "notice.png"
+    image.write_bytes(b"not decoded directly")
+    fake_reader = SimpleNamespace(ocr_recognize_file=lambda path: f"OCR:{path}")
+    fake_apps = SimpleNamespace(
+        ocr_app=SimpleNamespace(ocr_recognize_file=fake_reader),
+    )
+    monkeypatch.setitem(__import__("sys").modules, "apps", fake_apps)
+    monkeypatch.setitem(__import__("sys").modules, "apps.ocr_app", fake_apps.ocr_app)
+
+    assert drv._read_one_file(str(image), "image") == f"OCR:{image}"
 
 
 def test_driver_read_only_reverts_incidental_creates(tmp_path):
@@ -254,6 +352,144 @@ def test_readonly_session_passes_read_only_flag_to_driver(monkeypatch):
     with _pytest.raises(PermissionError):
         sess.exec_action({"app": "calendar", "action": "create_event", "user": "Bob"}, "/")
     assert calls == {}
+
+
+def test_predict_all_session_refuses_every_action():
+    from tts.env.officebench_lowlevel import OfficeBenchSession
+
+    session = OfficeBenchSession.__new__(OfficeBenchSession)
+    session.read_only = True
+    session.actions_disabled = True
+
+    with pytest.raises(PermissionError, match="predict-all"):
+        session.exec_action(
+            {"app": "shell", "action": "command", "command": "ls /testbed"},
+            "/",
+        )
+
+
+def test_local_backend_is_available_without_docker(tmp_path, monkeypatch):
+    from tts.env import officebench_lowlevel as lowlevel
+
+    root = tmp_path / "OfficeBench"
+    (root / "tasks").mkdir(parents=True)
+    (root / "apps").mkdir()
+    (root / "utils").mkdir()
+    (root / "utils" / "evaluate.py").write_text("", encoding="utf-8")
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_BACKEND", "local")
+    monkeypatch.setattr(lowlevel, "docker_available", lambda: False)
+
+    assert lowlevel.officebench_backend() == "local"
+    assert lowlevel.real_officebench_available(str(root))
+
+
+def test_local_backend_materializes_and_cleans_task_without_docker(tmp_path, monkeypatch):
+    from tts.env import officebench_lowlevel as lowlevel
+
+    root = tmp_path / "OfficeBench"
+    (root / "apps").mkdir(parents=True)
+    (root / "apps" / "__init__.py").write_text("", encoding="utf-8")
+    (root / "utils").mkdir()
+    (root / "utils" / "evaluate.py").write_text("", encoding="utf-8")
+    testbed = root / "tasks" / "1-1" / "testbed" / "data"
+    testbed.mkdir(parents=True)
+    (testbed / "input.txt").write_text("hello", encoding="utf-8")
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_BACKEND", "local")
+    monkeypatch.setenv("TTS_OFFICEBENCH_LOCAL_TMP", str(tmp_path))
+    monkeypatch.setattr(
+        lowlevel,
+        "ensure_image",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("local backend must not touch Docker")),
+    )
+
+    session = lowlevel.OfficeBenchSession("1-1", "0", root=str(root)).start()
+    local_root = session._local_root
+    assert local_root is not None
+    assert (
+        os.path.join(local_root, "testbed", "data", "input.txt")
+    )
+    assert open(
+        os.path.join(local_root, "testbed", "data", "input.txt"),
+        encoding="utf-8",
+    ).read() == "hello"
+
+    session.close()
+    assert not os.path.exists(local_root)
+
+
+def test_local_backend_driver_uses_unprivileged_proot_binds(tmp_path, monkeypatch):
+    import json
+    import subprocess
+
+    from tts.env import officebench_lowlevel as lowlevel
+
+    local_root = tmp_path / "session"
+    (local_root / "testbed").mkdir(parents=True)
+    (local_root / "reference").mkdir()
+    session = lowlevel.OfficeBenchSession.__new__(lowlevel.OfficeBenchSession)
+    session._local_root = str(local_root)
+    session.exec_timeout_s = 30.0
+    calls = {}
+
+    def fake_run(command, **kwargs):
+        calls["command"] = command
+        calls["kwargs"] = kwargs
+        payload = {"entries": [], "missing": False}
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=f"OFFICEBENCH_RESULT={json.dumps(payload)}\n",
+            stderr="",
+        )
+
+    monkeypatch.setattr(
+        lowlevel.shutil,
+        "which",
+        lambda name: f"/usr/bin/{name}" if name in ("proot", "tts-no-network") else None,
+    )
+    monkeypatch.setattr(lowlevel.subprocess, "run", fake_run)
+    monkeypatch.setenv("AZURE_OPENAI_API_KEY", "must-not-leak")
+
+    assert session._driver_local("list_state", {"path": "/testbed"}) == {
+        "entries": [],
+        "missing": False,
+    }
+    command = calls["command"]
+    assert command[:2] == ["/usr/bin/tts-no-network", "/usr/bin/proot"]
+    assert command[command.index("-r") + 1] == str(local_root)
+    assert "/officebench_driver.py" in command
+    assert str(Path(__file__).parents[1]) not in command
+    assert "/proc" not in command
+    assert "AZURE_OPENAI_API_KEY" not in calls["kwargs"]["env"]
+
+
+def test_local_backend_recursive_object_listing(tmp_path):
+    from tts.env import officebench_driver as driver
+
+    root = tmp_path / "testbed"
+    nested = root / "data" / "nested"
+    nested.mkdir(parents=True)
+    (root / "data" / "top.txt").write_text("top", encoding="utf-8")
+    (nested / "deep.txt").write_text("deep", encoding="utf-8")
+
+    original = driver._TESTBED
+    driver._TESTBED = str(root)
+    try:
+        result = driver.handle_list_state({
+            "path": str(root / "data"),
+            "recursive": True,
+        })
+    finally:
+        driver._TESTBED = original
+
+    assert [entry["path"] for entry in result["entries"]] == [
+        str(nested),
+        str(root / "data" / "top.txt"),
+        str(nested / "deep.txt"),
+    ]
 
 
 def test_wm_action_classification():
@@ -493,6 +729,48 @@ def test_wm_query_exposes_only_read_only_testbed_tools():
     assert "only files under /testbed" in q.read("/reference/gold.xlsx")
     assert "only directories under /testbed" in q.list("../../reference")
     assert all(call[0]["action"] != "set_cell" for call in session.exec_calls)
+
+
+def test_wm_query_predict_all_reads_objects_without_executing_actions():
+    """Predict-all exposes immutable objects as variables and disables app/shell action execution."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMQuery
+
+    class _Session:
+        def __init__(self):
+            self.exec_calls = []
+
+        def apps_catalogue(self):
+            return {"actions": {"excel": ["read_file", "set_cell"], "shell": ["command"]}}
+
+        def read_state(self, files):
+            return {files[0]["path"]: "(1, 1): 10"}
+
+        def list_state(self, path):
+            return {
+                "entries": [
+                    {"name": "s.xlsx", "path": f"{path}/s.xlsx", "type": "file"},
+                ],
+                "missing": False,
+            }
+
+        def exec_action(self, action, workdir):
+            self.exec_calls.append((action, workdir))
+            raise AssertionError("predict-all must not execute OfficeBench actions")
+
+    session = _Session()
+    query = OfficeBenchWMQuery(
+        session,
+        lambda: "/testbed/data",
+        allow_action_execution=False,
+    )
+
+    assert query.available_calls == []
+    assert query.read("./s.xlsx") == "(1, 1): 10"
+    listing = query.list("/testbed/data")
+    assert '"name": "s.xlsx"' in listing
+    assert "disabled when every action must be predicted" in query.call(
+        "excel.read_file", {"file_path": "./s.xlsx"})
+    assert session.exec_calls == []
 
 
 def test_wm_query_tools_are_overlay_aware():
@@ -751,6 +1029,59 @@ def test_wm_agentic_loop_uses_read_list_call_before_prediction(monkeypatch):
     assert chat.calls == 5
 
 
+def test_wm_predict_all_clean_read_uses_prompted_world_model(monkeypatch):
+    """A clean agent read is grounded by a tool call, then generated by the world model."""
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    chat = _ScriptChat([
+        'CALL excel.read_file {"file_path":"/testbed/data/s.xlsx"}',
+        "PREDICT: OBSERVATION: generated app read",
+    ])
+    query = _GroundingQuery()
+    predictor = OfficeBenchWMPredictor(chat)
+    predictor.bind_query_interface(query)
+
+    observation = predictor.predict_read(
+        {
+            "app": "excel",
+            "action": "read_file",
+            "file_path": "/testbed/data/s.xlsx",
+        },
+        None,
+        dirty=False,
+    )
+
+    assert observation == "OBSERVATION: generated app read"
+    assert query.tool_calls == [
+        ("excel.read_file", {"file_path": "/testbed/data/s.xlsx"})]
+    assert predictor.n_predicted_reads == 1
+    assert predictor.n_dirty_reads == 0
+    assert chat.calls == 2
+    assert "HIGHEST-PRIORITY CLEAN-READ RULE" in chat.prompts[0]
+
+
+def test_wm_clean_read_python_protocol_copies_host_observation():
+    from tts.env.officebench_wm_python import _python_protocol
+
+    prompt = _python_protocol(
+        {
+            "grounded_clean_read_required": True,
+            "grounded_clean_read": "OBSERVATION: exact",
+        },
+        required=False,
+        context_chars=100,
+        output_kind="text",
+        allow_reads=True,
+        allow_calls=False,
+    )
+
+    assert "EXACT GROUNDED CLEAN-READ PROTOCOL" in prompt
+    assert "Return a PYTHON_FINAL program" in prompt
+    assert "data['grounded_clean_read']" in prompt
+    assert '"op":"call"' not in prompt
+
+
 def test_wm_agentic_loop_forces_prediction_after_read_budget(monkeypatch):
     """As in τ², the read-turn limit is followed by one forced prediction call."""
     from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
@@ -800,6 +1131,8 @@ def test_wm_python_loop_uses_copied_read_results(monkeypatch):
     assert query.read_paths == ["/testbed/data/s.xlsx"]
     assert predictor.n_python_calls == 2
     assert predictor.n_python_failures == 0
+    assert "content of /testbed/data/s.xlsx" not in chat.prompts[1]
+    assert "data['reads'][0]['result']" in chat.prompts[1]
 
 
 def test_wm_python_forces_long_file_transform(monkeypatch):
@@ -827,6 +1160,30 @@ def test_wm_python_forces_long_file_transform(monkeypatch):
     assert predictor.n_python_forced == 1
     assert predictor.n_python_mode_misses == 1
     assert predictor.n_python_calls == 1
+
+
+def test_wm_program_only_invalid_python_fails_action_without_aborting(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+    predictor = OfficeBenchWMPredictor(_ScriptChat([
+        "not a Python program",
+        "still not a Python program",
+    ]))
+    predictor.program_only = True
+
+    observation = predictor.predict_write({
+        "app": "excel",
+        "action": "set_cell",
+        "file_path": "/testbed/data/s.xlsx",
+        "row_idx": 1,
+        "column_idx": 1,
+        "text": "new",
+    })
+
+    assert "failed to predict safely" in observation
+    assert predictor.n_failed_writes == 1
+    assert not predictor.was_written("data/s.xlsx")
 
 
 def test_wm_python_preserves_valid_empty_file_results(monkeypatch):
@@ -858,6 +1215,156 @@ def test_wm_python_preserves_valid_empty_file_results(monkeypatch):
     ) == ""
 
 
+def test_predict_all_shell_inventory_is_typed_for_generated_python(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+
+    class _Session:
+        def apps_catalogue(self):
+            return {"actions": {"shell": ["command"]}}
+
+        def list_state(self, path, *, recursive=False):
+            assert recursive
+            return {
+                "entries": [
+                    {
+                        "name": "CS161 Final.xlsx",
+                        "path": f"{path}/CS161 Final.xlsx",
+                        "type": "file",
+                    },
+                ],
+                "missing": False,
+            }
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([
+        (
+            "PYTHON_FINAL:\n"
+            "records = data['immutable_objects']\n"
+            "stages = data['shell_stages']\n"
+            "print_json({'text': records[0]['path'] if stages[0][0] == 'find' else ''})"
+        ),
+    ]))
+    predictor.program_only = True
+    predictor.bind_query_interface(OfficeBenchWMQuery(
+        _Session(),
+        lambda: "/testbed",
+        allow_action_execution=False,
+    ))
+
+    observation = predictor.predict_read(
+        {
+            "app": "shell",
+            "action": "command",
+            "command": "find /testbed/data -type f | sort",
+        },
+        None,
+        dirty=False,
+    )
+
+    assert observation == "/testbed/data/CS161 Final.xlsx"
+    assert predictor.n_python_failures == 0
+
+
+def test_predict_all_shell_inventory_emulates_common_discovery_pipeline(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
+
+    class _Session:
+        def apps_catalogue(self):
+            return {"actions": {"shell": ["command"]}}
+
+        def list_state(self, path, *, recursive=False):
+            assert recursive
+            return {
+                "entries": [
+                    {"name": "notes.txt", "path": f"{path}/notes.txt", "type": "file"},
+                    {
+                        "name": "meeting_notification.jpg",
+                        "path": f"{path}/meeting_notification.jpg",
+                        "type": "file",
+                    },
+                    {"name": "nested", "path": f"{path}/nested", "type": "directory"},
+                ],
+                "missing": False,
+            }
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    predictor.program_only = True
+    predictor.bind_query_interface(OfficeBenchWMQuery(
+        _Session(),
+        lambda: "/testbed",
+        allow_action_execution=False,
+    ))
+
+    observation = predictor.predict_read(
+        {
+            "app": "shell",
+            "action": "command",
+            "command": (
+                "find /testbed/data -maxdepth 3 -type f | sort | "
+                "grep -iE '\\.(png|jpg)$|meeting' | head -20"
+            ),
+        },
+        None,
+        dirty=False,
+    )
+
+    assert observation == "/testbed/data/meeting_notification.jpg"
+    assert predictor.n_python_calls == 0
+
+
+def test_readonly_shell_allows_quoted_regex_anchor_but_blocks_expansion():
+    from tts.env.officebench_wm_predict import (
+        _emulate_inventory_pipeline,
+        _readonly_shell_stages,
+    )
+
+    assert _readonly_shell_stages(
+        "find /testbed/data -type f | grep -E '\\.xlsx$' | sort"
+    )
+    assert _readonly_shell_stages(
+        "find /testbed/data -type f | grep '\\.png\\|\\.jpg$' | sort"
+    )
+    assert _readonly_shell_stages(
+        'find /testbed/data -type f | grep -E "\\.xlsx$" | sort'
+    )
+    assert _readonly_shell_stages("echo $HOME") is None
+    assert _readonly_shell_stages('echo "$HOME"') is None
+    assert _readonly_shell_stages("echo `pwd`") is None
+    assert _readonly_shell_stages(
+        "find /testbed/data -type f || grep x"
+    ) is None
+    assert _readonly_shell_stages(
+        "sort --files0-from=/testbed/data/names"
+    ) is None
+    assert _readonly_shell_stages(
+        "wc --files0-from=/testbed/data/names"
+    ) is None
+    objects = [
+        {"name": "meeting.jpg", "path": "/testbed/data/meeting.jpg", "type": "file"},
+        {"name": "other.jpg", "path": "/testbed/data/other.jpg", "type": "file"},
+    ]
+    assert _emulate_inventory_pipeline(
+        [["find", "/testbed/data", "-type", "f", "-name", "*.jpg", "-name", "meeting*"]],
+        objects,
+    ) == "/testbed/data/meeting.jpg"
+    assert _emulate_inventory_pipeline(
+        [["ls", "-la", "/testbed/data"]],
+        objects,
+    ) is None
+    assert _emulate_inventory_pipeline(
+        [["find", "/testbed/data", "-type", "f"], ["grep", "-F", ".jpg"]],
+        objects,
+    ) == "/testbed/data/meeting.jpg\n/testbed/data/other.jpg"
+    assert _emulate_inventory_pipeline(
+        [["find", ".", "-type", "f"]],
+        objects,
+        workdir="/testbed/data",
+    ) == "/testbed/data/meeting.jpg\n/testbed/data/other.jpg"
+
+
 def test_wm_global_dirty_fallback():
     """An unresolved-target write (e.g. an opaque shell command) makes ALL later reads predicted."""
     from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
@@ -878,10 +1385,28 @@ class _ScriptChat:
     def __init__(self, responses):
         self._responses = list(responses)
         self.calls = 0
+        self.prompts = []
 
     def chat(self, system, user, **kw):
         self.calls += 1
+        self.prompts.append(user)
         return self._responses.pop(0) if self._responses else repr({"app": "system", "action": "got_stuck"})
+
+
+def test_parse_action_normalizes_python_ellipsis():
+    from tts.env.officebench_agent import _parse_action
+
+    action = _parse_action(
+        "{'app': 'excel', 'action': 'set_cell', 'text': ..., "
+        "'nested': {'values': [1, ...]}}"
+    )
+
+    assert action == {
+        "app": "excel",
+        "action": "set_cell",
+        "text": "...",
+        "nested": {"values": [1, "..."]},
+    }
 
 
 class _RecordingSession:
@@ -927,7 +1452,10 @@ def test_wm_predictor_never_executes_writes():
     session = _RecordingSession(read_only=True)
     cfg = {"username": "Bob", "date": "2020-05-01", "weekday": "Fri", "time": "10AM",
            "task": "set a cell", "evaluation": []}
-    run = run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+    run = run_officebench_agent(
+        session, cfg, agent, max_steps=6, predictor=predictor,
+        predict_all_actions=False,
+    )
 
     # the write was predicted + recorded, never executed; only the read hit exec_action
     assert predictor.n_writes == 1 and "data/s.xlsx" in predictor.applied_writes
@@ -965,7 +1493,10 @@ def test_wm_dirty_read_uses_predictor():
     predictor = _P()
     session = _RecordingSession(read_only=True)
     cfg = {"username": "Bob", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
-    run = run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+    run = run_officebench_agent(
+        session, cfg, agent, max_steps=6, predictor=predictor,
+        predict_all_actions=False,
+    )
     assert predictor.dirty_read_called  # the read-after-write went through predict_read
     assert "predicted post-write" in run.observations[-2]  # the dirty-read observation
 
@@ -992,7 +1523,10 @@ def test_wm_cd_executes_exactly_even_after_opaque_write():
     predictor = OfficeBenchWMPredictor(_StubChat("OBSERVATION: ok"))
     session = _CdSession(read_only=True)
     cfg = {"username": "B", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
-    run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+    run_officebench_agent(
+        session, cfg, agent, max_steps=6, predictor=predictor,
+        predict_all_actions=False,
+    )
 
     assert predictor.global_dirty
     assert any(a.get("command") == "cd /testbed/data" for a in session.exec_calls)
@@ -1507,6 +2041,9 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
         verifier_samples=None,
         success_score="simulator_success",
         _success_score_explicit=False,
+        predict_all_actions=True,
+        _predict_all_actions_explicit=False,
+        simulation_only=False,
     )
     _configure_officebench_bon(args)
 
@@ -1517,6 +2054,7 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
     assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_RERANK"] == "1"
     assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN"] == "0.25"
     assert args.success_score == "simulator_confidence_guarded"
+    assert args.predict_all_actions is False
 
     monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "7")
     explicit = Namespace(
@@ -1525,10 +2063,14 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
         verifier_samples=7,
         success_score="simulator_success",
         _success_score_explicit=True,
+        predict_all_actions=True,
+        _predict_all_actions_explicit=True,
+        simulation_only=False,
     )
     _configure_officebench_bon(explicit)
     assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "7"
     assert explicit.success_score == "simulator_success"
+    assert explicit.predict_all_actions is True
 
     monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", raising=False)
     monkeypatch.setenv("AZURE_OPENAI_DEPLOYMENT", "gpt-5.4")
@@ -1538,9 +2080,41 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
         verifier_samples=None,
         success_score="simulator_success",
         _success_score_explicit=False,
+        predict_all_actions=True,
+        _predict_all_actions_explicit=False,
+        simulation_only=False,
     )
     _configure_officebench_bon(deployment_only)
     assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "5"
+
+
+def test_officebench_repairs_switch_app_shorthand():
+    """A model-addressed switch is normalized to the documented system action."""
+    from tts.env.officebench_agent import run_officebench_agent
+
+    agent = _ScriptChat([
+        repr({"app": "excel", "action": "switch_app"}),
+        repr({"app": "system", "action": "finish_task", "answer": "None"}),
+    ])
+    session = _RecordingSession(read_only=False)
+    cfg = {
+        "username": "Bob",
+        "date": "d",
+        "weekday": "w",
+        "time": "t",
+        "task": "inspect the spreadsheet",
+        "evaluation": [],
+    }
+
+    run = run_officebench_agent(session, cfg, agent, max_steps=3)
+
+    assert run.actions[0] == {
+        "app": "system",
+        "action": "switch_app",
+        "target_app": "excel",
+    }
+    assert run.observations[0] == "Successfully switched to app: excel"
+    assert run.done and run.final_answer == "None"
 
 
 def test_verifier_gold_expected_file(monkeypatch):
@@ -1805,8 +2379,8 @@ def test_signature_bounds_and_collapses_content():
 # --------------------------------------------------------------------------- #
 
 
-def test_default_step_budget_is_uniformly_increased(monkeypatch):
-    """Every OfficeBench subset gets 40 productive steps by default."""
+def test_default_step_budget_is_fixed_at_40(monkeypatch):
+    """Every OfficeBench subset has the same 40 productive-step budget."""
     import inspect
 
     from tts.env.officebench_agent import run_officebench_agent
@@ -1818,7 +2392,10 @@ def test_default_step_budget_is_uniformly_increased(monkeypatch):
     assert _scaled_max_steps(1) == 40
     assert _scaled_max_steps(2) == 40
     assert _scaled_max_steps(3) == 40
-    assert _rollout_max_steps(48, 3) == 48
+    assert _rollout_max_steps(48, 3) == 40
+    assert _rollout_max_steps(60, 1) == 40
+    assert _rollout_max_steps(60, 2) == 40
+    assert _rollout_max_steps(60, 3) == 40
     assert inspect.signature(run_officebench_agent).parameters["max_steps"].default == 40
 
 
@@ -1838,7 +2415,10 @@ def test_prune_repeated_reads_saves_budget():
     predictor = OfficeBenchWMPredictor(_StubChat("x"))
     session = _RecordingSession(read_only=True)
     cfg = {"username": "B", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
-    run = run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+    run = run_officebench_agent(
+        session, cfg, agent, max_steps=6, predictor=predictor,
+        predict_all_actions=False,
+    )
 
     ls_execs = [a for a in session.exec_calls if a.get("command") == "ls /testbed/data"]
     assert len(ls_execs) == 1                      # the 3 immediate repeats were pruned (not re-executed)
@@ -1859,7 +2439,10 @@ def test_prune_disabled_reexecutes(monkeypatch):
     predictor = OfficeBenchWMPredictor(_StubChat("x"))
     session = _RecordingSession(read_only=True)
     cfg = {"username": "B", "date": "d", "weekday": "w", "time": "t", "task": "t", "evaluation": []}
-    run_officebench_agent(session, cfg, agent, max_steps=6, predictor=predictor)
+    run_officebench_agent(
+        session, cfg, agent, max_steps=6, predictor=predictor,
+        predict_all_actions=False,
+    )
     ls_execs = [a for a in session.exec_calls if a.get("command") == "ls /testbed/data"]
     assert len(ls_execs) == 2                      # both reads executed (no pruning)
 

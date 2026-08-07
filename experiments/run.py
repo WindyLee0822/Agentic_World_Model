@@ -115,6 +115,7 @@ class _Progress:
 
 def sim_config(args, recursion_mode=None, L=None) -> SimulatorConfig:
     return SimulatorConfig(
+        predict_all_actions=bool(getattr(args, "predict_all_actions", True)),
         recursion_mode=recursion_mode or args.recursion_mode, tau=args.tau,
         L=args.L if L is None else L, hard_cap=args.hard_cap, branching=args.branching,
         node_read_limit=args.node_read_limit, caching=not args.no_cache,
@@ -204,6 +205,9 @@ def _configure_appworld_bon(args) -> None:
     os.environ.setdefault("TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", "1")
     os.environ.setdefault("TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT", "0.25")
     os.environ.setdefault("TTS_SELECTION_CONFIDENCE_MARGIN", "0.1")
+    os.environ.setdefault("TTS_APPWORLD_PREGROUND_CLEAN_READS", "1")
+    os.environ.setdefault("TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS", "1")
+    os.environ.setdefault("TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", "0")
 
     preflights = getattr(args, "appworld_instruction_preflights", None)
     if preflights is None:
@@ -224,6 +228,16 @@ def _configure_officebench_bon(args) -> None:
     """Use atomic-check confidence and guarded nested selection for OfficeBench GPT-5.4."""
     if getattr(args, "agent", None) != "llm_wm":
         return
+
+    # OfficeBench tasks depend heavily on discovering exact filenames and copying source content
+    # across apps. Execute pristine read-only actions against the shadow by default; writes and reads
+    # after predicted writes remain world-model predictions. Keep predict-all as an explicit ablation
+    # (and as the required mode for simulation-only runs).
+    if (
+        not getattr(args, "_predict_all_actions_explicit", False)
+        and not getattr(args, "simulation_only", False)
+    ):
+        args.predict_all_actions = False
 
     model = (
         getattr(args, "llm_agent", None)
@@ -388,7 +402,11 @@ def _run_task_cells(payload) -> List[dict]:
                 continue
             try:
                 cfg = _cfg_for(env_name, spec, method, N, args, recursion_mode, L)
-                outcome = run_decision(env, cfg, rollout_cache=cache)
+                if getattr(args, "simulation_only", False):
+                    outcome = run_decision(
+                        env, cfg, rollout_cache=cache, commit=False)
+                else:
+                    outcome = run_decision(env, cfg, rollout_cache=cache)
                 rec = outcome.record.to_dict()
                 rec["candidate_confidences"] = [
                     float(rollout.predicted.reward)
@@ -397,6 +415,27 @@ def _run_task_cells(payload) -> List[dict]:
                 ]
                 rec["candidate_scores"] = [
                     float(rollout.score) for rollout in outcome.rollouts
+                ]
+                rec["candidate_actions"] = [
+                    rollout.trajectory.signature() for rollout in outcome.rollouts
+                ]
+                rec["candidate_done"] = [
+                    bool(rollout.trajectory.done) for rollout in outcome.rollouts
+                ]
+                rec["candidate_errors"] = [
+                    (
+                        rollout.trajectory.final_message
+                        if not rollout.trajectory.done else None
+                    )
+                    for rollout in outcome.rollouts
+                ]
+                rec["candidate_grounded_success"] = [
+                    (
+                        bool(rollout.grounded.success)
+                        if rollout.grounded is not None
+                        else None
+                    )
+                    for rollout in outcome.rollouts
                 ]
                 rec["candidate_verifier_percheck"] = [
                     (rollout.predicted.metadata or {}).get("verifier_percheck")
@@ -411,6 +450,7 @@ def _run_task_cells(payload) -> List[dict]:
                 if (
                     env_name == "officebench"
                     and N == max_n
+                    and not getattr(args, "simulation_only", False)
                     and _env_enabled(
                         "TTS_OFFICEBENCH_DIAGNOSTIC_ALL_CANDIDATES", False)
                 ):
@@ -459,6 +499,10 @@ def _run_task_cells(payload) -> List[dict]:
         rec["solver_max_steps"] = getattr(args, "max_steps", None)
         rec["seed_base"] = getattr(args, "seed_base", None)
         rec["success_score"] = getattr(args, "success_score", None)
+        rec["predict_all_actions"] = bool(
+            getattr(args, "predict_all_actions", True))
+        rec["simulation_only"] = bool(
+            getattr(args, "simulation_only", False))
         if env_name == "appworld":
             rec["appworld_wm_tool_mode"] = getattr(
                 args, "appworld_wm_tool_mode", "python")
@@ -468,6 +512,12 @@ def _run_task_cells(payload) -> List[dict]:
                 getattr(args, "appworld_agent_reference", False))
             rec["appworld_deterministic_dirty_reads"] = bool(
                 getattr(args, "appworld_deterministic_dirty_reads", False))
+            rec["appworld_preground_clean_reads"] = _env_enabled(
+                "TTS_APPWORLD_PREGROUND_CLEAN_READS", False)
+            rec["appworld_deterministic_grounded_clean_reads"] = _env_enabled(
+                "TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS", False)
+            rec["appworld_predict_all_program_only"] = _env_enabled(
+                "TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", True)
             rec["appworld_instruction_preflights"] = _env_enabled(
                 "TTS_APPWORLD_INSTRUCTION_PREFLIGHTS", False)
             rec["appworld_verifier_percheck"] = _env_enabled(
@@ -1143,12 +1193,21 @@ def main() -> None:
                         "scripted: offline stub")
     p.add_argument("--llm-agent", default=None, help="agent model (default: Azure deployment / WM_MODEL, e.g. gpt-4.1)")
     p.add_argument("--llm-user", default=None, help="τ² user-simulator model (default: --llm-agent)")
+    p.add_argument(
+        "--tau2-qwen-agent-profile",
+        default=os.environ.get("TTS_TAU2_QWEN_AGENT_PROFILE", "off"),
+        choices=["auto", "off", "prompt", "policy"],
+        help="Opt-in Qwen-only tau2 interface: prompt adds structured tool/subgoal guidance "
+             "without thinking; policy also enables per-request thinking; off/auto preserve the "
+             "stock tau2 agent.",
+    )
     p.add_argument("--local", action="store_true",
-                   help="Route every LLM call to a LOCAL, OpenAI-compatible server (vLLM / SGLang) "
-                        "instead of the Azure/OpenAI API — for self-hosted models. Requires "
+                   help="Route the agent/world model to a LOCAL, OpenAI-compatible server "
+                        "(vLLM / SGLang). Requires "
                         "--llm-agent <served-model-id> (e.g. Qwen-AgentWorld-35B-A3B). Forces the "
                         "openai backend for AppWorld/OfficeBench and routes τ² (litellm) via the "
-                        "openai/ provider; no Azure endpoint or `az login` token is needed.")
+                        "openai/ provider. A qualified --llm-user azure/<deployment> may still use "
+                        "Azure for the τ² user simulator.")
     p.add_argument("--local-base-url", default=None,
                    help="Base URL of the local OpenAI-compatible server (default "
                         "$OPENAI_BASE_URL or http://localhost:8000/v1). Only used with --local.")
@@ -1169,6 +1228,14 @@ def main() -> None:
     p.add_argument("--all-tasks", action="store_true",
                    help="τ²: run over ALL official tasks (default for --agent llm; the official "
                         "benchmark set). Scripted/world-model methods otherwise use mutating tasks only.")
+    p.add_argument(
+        "--simulation-only",
+        action="store_true",
+        help=(
+            "llm_wm only: sample and select trajectories without committing or running the official "
+            "evaluator; records contain simulator-predicted reward and n_commits=0"
+        ),
+    )
     p.add_argument("--p-correct", type=float, default=0.5, help="prob a *scripted* trajectory follows the plan")
     p.add_argument("--splits", default=None,
                    help="AppWorld splits, COMMA-separated (e.g. test_normal,test_challenge or dev). "
@@ -1196,6 +1263,21 @@ def main() -> None:
     p.add_argument("--list-subsets", action="store_true")
     p.add_argument("--report", default=None)
     p.add_argument("--recursion-mode", default="uncertainty", choices=["uncertainty", "fixed"])
+    action_prediction = p.add_mutually_exclusive_group()
+    action_prediction.add_argument(
+        "--predict-all-actions",
+        dest="predict_all_actions",
+        action="store_true",
+        help="B1/Ours: predict clean read observations too. B1 uses fixed context; Ours may use "
+             "its bounded read-only grounding tools. This shared extension is enabled by default.",
+    )
+    action_prediction.add_argument(
+        "--exact-clean-reads",
+        dest="predict_all_actions",
+        action="store_false",
+        help="Restore the previous ablation where untouched clean reads execute exactly.",
+    )
+    p.set_defaults(predict_all_actions=True)
     p.add_argument("--tau", type=float, default=0.9)
     p.add_argument("--L", type=int, default=2)
     p.add_argument("--branching", type=int, default=2)
@@ -1243,6 +1325,10 @@ def main() -> None:
     p.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "results"))
     args = p.parse_args()
     args._success_score_explicit = args.success_score is not None
+    args._predict_all_actions_explicit = any(
+        flag in sys.argv[1:]
+        for flag in ("--predict-all-actions", "--exact-clean-reads")
+    )
     if args.success_score is None:
         args.success_score = "simulator_success"
 
@@ -1257,6 +1343,7 @@ def main() -> None:
         os.environ["TTS_KEEP_APPWORLD_OUTPUTS"] = "1"
     os.environ["TTS_APPWORLD_WM_TOOL_MODE"] = args.appworld_wm_tool_mode
     os.environ["TTS_OFFICEBENCH_WM_TOOL_MODE"] = args.officebench_wm_tool_mode
+    os.environ["TTS_TAU2_QWEN_AGENT_PROFILE"] = args.tau2_qwen_agent_profile
 
     # Verifier configuration -> env vars, set HERE (in the parent) so forked workers inherit them.
     if args.verifier_samples is not None:
@@ -1305,6 +1392,11 @@ def main() -> None:
         if not model:
             p.error("--local requires --llm-agent <served-model-id> "
                     "(e.g. --llm-agent Qwen-AgentWorld-35B-A3B)")
+        if args.llm_user and args.llm_user.startswith("azure/"):
+            if not (os.environ.get("AZURE_OPENAI_ENDPOINT") or os.environ.get("AZURE_API_BASE")):
+                p.error("--local with --llm-user azure/<deployment> requires "
+                        "AZURE_OPENAI_ENDPOINT or AZURE_API_BASE")
+            os.environ["TTS_LOCAL_LLM_ALLOW_AZURE"] = "1"
         base_url = args.local_base_url or os.environ.get("OPENAI_BASE_URL") or DEFAULT_LOCAL_BASE_URL
         api_key = args.local_api_key or os.environ.get("OPENAI_API_KEY") or "EMPTY"
         configure_local_llm(base_url=base_url, model=model, api_key=api_key)
@@ -1338,12 +1430,20 @@ def main() -> None:
               "Activate `dw` (tau2) or `env` (appworld, with APPWORLD_ROOT), or set OFFICEBENCH_ROOT "
               "with a usable Docker daemon for officebench.")
         return
+    if args.simulation_only:
+        if args.agent != "llm_wm":
+            p.error("--simulation-only requires --agent llm_wm")
+        if not args.predict_all_actions:
+            p.error("--simulation-only requires --predict-all-actions")
     if env_name == "appworld" and args.agent == "llm_wm":
         _configure_appworld_bon(args)
         if args.appworld_instruction_preflights:
             print("[agent] AppWorld replay-safe instruction preflights ENABLED")
         print(
             f"[appworld-wm] tool mode={args.appworld_wm_tool_mode}, "
+            f"preground_clean={int(_env_enabled('TTS_APPWORLD_PREGROUND_CLEAN_READS', False))}, "
+            f"deterministic_clean={int(_env_enabled('TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS', False))}, "
+            f"program_only={int(_env_enabled('TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY', True))}, "
             f"percheck={int(_env_enabled('TTS_APPWORLD_VERIFIER_PERCHECK', False))}, "
             f"coverage_aware={int(_env_enabled('TTS_APPWORLD_VERIFIER_COVERAGE_AWARE', False))}, "
             f"unknown_credit={os.environ.get('TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT', '0.25')}, "

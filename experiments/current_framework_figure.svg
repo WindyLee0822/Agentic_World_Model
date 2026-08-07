@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1322"/>
+      <stop offset="1" stop-color="#13233d"/>
+    </linearGradient>
+    <linearGradient id="sampleBand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#15233a"/>
+      <stop offset="1" stop-color="#172a45"/>
+    </linearGradient>
+    <linearGradient id="executeBand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1c2738"/>
+      <stop offset="1" stop-color="#15332f"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#9fb2cc"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#c084fc"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#36d399"/>
+    </marker>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 44px; font-weight: 700; fill: #edf3fb; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 22px; font-weight: 400; fill: #a9bad1; }
+      .bandTitle { font-family: Arial, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1.7px; }
+      .step { font-family: Arial, sans-serif; font-size: 16px; font-weight: 700; fill: #0b1322; }
+      .boxTitle { font-family: Arial, sans-serif; font-size: 26px; font-weight: 700; fill: #edf3fb; }
+      .body { font-family: Arial, sans-serif; font-size: 19px; font-weight: 400; fill: #afbed2; }
+      .bodyStrong { font-family: Arial, sans-serif; font-size: 19px; font-weight: 700; fill: #dce7f6; }
+      .small { font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; fill: #8fa5c0; }
+      .pill { font-family: Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #c8d6e8; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#0e192b"/>
+
+  <text x="80" y="78" class="title">Current Read-Grounded TTS Framework</text>
+  <text x="80" y="116" class="subtitle">Explore many trajectories without touching the task state; execute only the best one.</text>
+
+  <!-- Sampling band -->
+  <rect x="65" y="158" width="1470" height="430" rx="24" fill="url(#sampleBand)" stroke="#334a69" stroke-width="2"/>
+  <rect x="88" y="179" width="340" height="37" rx="18.5" fill="#243754"/>
+  <text x="109" y="204" class="bandTitle" fill="#a9c8f5">SAMPLING · N CANDIDATES</text>
+  <rect x="1260" y="179" width="246" height="37" rx="18.5" fill="#123c35" stroke="#287e68"/>
+  <text x="1383" y="204" text-anchor="middle" class="bandTitle" fill="#67e8bd">ZERO REAL WRITES</text>
+
+  <!-- Step 1 -->
+  <g>
+    <rect x="105" y="250" width="300" height="245" rx="20" fill="#182b49" stroke="#4a78b8" stroke-width="2"/>
+  </g>
+  <circle cx="145" cy="290" r="20" fill="#60a5fa"/>
+  <text x="145" y="296" text-anchor="middle" class="step">1</text>
+  <text x="178" y="299" class="boxTitle">Generate</text>
+  <text x="145" y="350" class="bodyStrong">Official agent × N</text>
+  <text x="145" y="386" class="body">Same task prompt</text>
+  <text x="145" y="417" class="body">Same agent loop</text>
+  <text x="145" y="448" class="body">Different rollout seeds</text>
+
+  <!-- Step 2 -->
+  <g>
+    <rect x="492" y="250" width="390" height="245" rx="20" fill="#251f42" stroke="#8b5bc4" stroke-width="2"/>
+  </g>
+  <circle cx="532" cy="290" r="20" fill="#c084fc"/>
+  <text x="532" y="296" text-anchor="middle" class="step">2</text>
+  <text x="565" y="299" class="boxTitle">Simulate safely</text>
+  <text x="532" y="350" class="bodyStrong">Restricted-Python world model</text>
+  <text x="532" y="386" class="body">Predicts tool observations</text>
+  <text x="532" y="417" class="body">Tracks the predicted final state</text>
+  <text x="532" y="448" class="body">Reads more evidence only when needed</text>
+
+  <!-- Step 3 -->
+  <g>
+    <rect x="970" y="250" width="455" height="245" rx="20" fill="#172c43" stroke="#3f8ba7" stroke-width="2"/>
+  </g>
+  <circle cx="1010" cy="290" r="20" fill="#67d0e8"/>
+  <text x="1010" y="296" text-anchor="middle" class="step">3</text>
+  <text x="1043" y="299" class="boxTitle">Verify &amp; select</text>
+  <text x="1010" y="350" class="bodyStrong">Audit each candidate</text>
+  <text x="1010" y="386" class="body">Use native task success checks</text>
+  <text x="1010" y="417" class="body">Score confidence and validity</text>
+  <text x="1010" y="448" class="body">Choose one winning trajectory</text>
+
+  <!-- Main arrows -->
+  <line x1="405" y1="372" x2="478" y2="372" stroke="#9fb2cc" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="442" y="352" text-anchor="middle" class="small">tool calls</text>
+  <line x1="882" y1="372" x2="956" y2="372" stroke="#9fb2cc" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="919" y="352" text-anchor="middle" class="small">candidate state</text>
+
+  <!-- Read-only evidence -->
+  <rect x="465" y="520" width="444" height="45" rx="22.5" fill="#123a35" stroke="#2d8d72"/>
+  <text x="687" y="548" text-anchor="middle" class="pill" fill="#8ce8c8">READ-ONLY EVIDENCE FROM PRISTINE TASK STATE</text>
+  <path d="M687 520 C687 505 687 505 687 494" fill="none" stroke="#36d399" stroke-width="3" marker-end="url(#arrowGreen)"/>
+
+  <!-- Execution band -->
+  <rect x="65" y="630" width="1470" height="190" rx="24" fill="url(#executeBand)" stroke="#35695e" stroke-width="2"/>
+  <rect x="88" y="651" width="300" height="37" rx="18.5" fill="#263443"/>
+  <text x="109" y="676" class="bandTitle" fill="#d4deea">REAL EXECUTION</text>
+  <rect x="1260" y="651" width="246" height="37" rx="18.5" fill="#164338" stroke="#36a783"/>
+  <text x="1383" y="676" text-anchor="middle" class="bandTitle" fill="#8df0cf">EXACTLY 1 COMMIT</text>
+
+  <!-- Step 4 flow -->
+  <circle cx="142" cy="742" r="20" fill="#36d399"/>
+  <text x="142" y="748" text-anchor="middle" class="step">4</text>
+  <text x="178" y="751" class="boxTitle">Commit &amp; score</text>
+
+  <rect x="465" y="703" width="280" height="78" rx="16" fill="#1c3440" stroke="#3c8f83" stroke-width="2"/>
+  <text x="605" y="734" text-anchor="middle" class="bodyStrong">Commit chokepoint</text>
+  <text x="605" y="761" text-anchor="middle" class="small">replay the winner once</text>
+
+  <line x1="745" y1="742" x2="830" y2="742" stroke="#36d399" stroke-width="4" marker-end="url(#arrowGreen)"/>
+
+  <rect x="846" y="703" width="280" height="78" rx="16" fill="#183b35" stroke="#36a783" stroke-width="2"/>
+  <text x="986" y="734" text-anchor="middle" class="bodyStrong">Real task environment</text>
+  <text x="986" y="761" text-anchor="middle" class="small">the only state mutation</text>
+
+  <line x1="1126" y1="742" x2="1210" y2="742" stroke="#36d399" stroke-width="4" marker-end="url(#arrowGreen)"/>
+
+  <rect x="1226" y="703" width="240" height="78" rx="16" fill="#1c3440" stroke="#3c8f83" stroke-width="2"/>
+  <text x="1346" y="734" text-anchor="middle" class="bodyStrong">Official evaluator</text>
+  <text x="1346" y="761" text-anchor="middle" class="small">ground-truth reward</text>
+
+  <!-- Winner arrow from sampling to commit -->
+  <path d="M1198 495 C1198 600 605 592 605 690" fill="none" stroke="#c084fc" stroke-width="4" marker-end="url(#arrowPurple)"/>
+  <rect x="833" y="590" width="226" height="34" rx="17" fill="#2a2248" stroke="#8354ba"/>
+  <text x="946" y="613" text-anchor="middle" class="pill" fill="#dec9f8">ONE SELECTED TRAJECTORY</text>
+
+  <!-- Benchmark adapters -->
+  <text x="80" y="862" class="small">Same core framework, benchmark-specific adapters:</text>
+  <rect x="466" y="836" width="105" height="38" rx="19" fill="#172b45" stroke="#3f628e"/>
+  <text x="518" y="861" text-anchor="middle" class="pill">τ²-bench</text>
+  <rect x="586" y="836" width="122" height="38" rx="19" fill="#172b45" stroke="#3f628e"/>
+  <text x="647" y="861" text-anchor="middle" class="pill">AppWorld</text>
+  <rect x="723" y="836" width="137" height="38" rx="19" fill="#172b45" stroke="#3f628e"/>
+  <text x="791" y="861" text-anchor="middle" class="pill">OfficeBench</text>
+  <rect x="875" y="836" width="158" height="38" rx="19" fill="#172b45" stroke="#3f628e"/>
+  <text x="954" y="861" text-anchor="middle" class="pill">Terminal-Bench</text>
+</svg>

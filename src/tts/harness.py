@@ -159,15 +159,22 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
     """Sample ``n`` rollouts of the **official agent + user simulator interacting with the WM**.
 
     Each rollout runs the official τ² orchestrator with tool execution routed through the
-    read-grounded world model (read tools exact, write tools predicted; the real env is never
-    written).  The selection signal (``predicted``) is the WM's success belief; the realized
+    read-grounded world model (clean reads exact by default or predicted under the shared extension;
+    writes predicted; the real env is never written). The selection signal is the WM's success belief; the realized
     official message log rides on the trajectory so the selected one can be committed and officially
     scored.  Generation is method-independent (same prompts/seeds); only the WM read depth differs
     (    flat for B1, recursive for Ours/B0)."""
     rollouts: List[RolloutResult] = []
     for i in range(n):
         rollout_seed = config.seed + i
-        key = (env.env_name, env.task_id, rollout_seed, _solver_signature(config.solver), method)
+        key = (
+            env.env_name,
+            env.task_id,
+            rollout_seed,
+            _solver_signature(config.solver),
+            method,
+            bool(config.simulator.predict_all_actions),
+        )
         if rollout_cache is not None and key in rollout_cache:
             traj, predicted, root = rollout_cache[key]
         else:
@@ -223,7 +230,7 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
 
 
 def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = None,
-                 rollout_cache: Optional[Dict] = None) -> DecisionOutcome:
+                 rollout_cache: Optional[Dict] = None, *, commit: bool = True) -> DecisionOutcome:
     method = config.method.lower()
     if method not in {"b0", "b1", "b2", "ours"}:
         raise KeyError(f"unknown method {config.method!r}; choose from b0|b1|b2|ours")
@@ -240,6 +247,8 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
     solver_agent = getattr(config.solver, "agent", "scripted")
     use_real_agent = solver_agent == "llm" and agent is None
     use_wm_agent = solver_agent == "llm_wm" and agent is None
+    if not commit and not use_wm_agent:
+        raise ValueError("commit=False is supported only for llm_wm simulation-only runs")
 
     if use_real_agent:
         rollouts = _real_agent_rollouts(env, config, method, n, budget, cache, rollout_cache)
@@ -258,6 +267,9 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         try:
             rollouts = _wm_agent_rollouts(env, config, method, n, budget, cache, rollout_cache)
         except NotImplementedError:
+            if not commit:
+                raise ValueError(
+                    "simulation-only requires an environment with llm_wm rollout support")
             use_wm_agent = False  # no WM rollout for this env -> fall back to the drive path below
         else:
             # The official agent+user-sim generated each trajectory against the WM (no real write);
@@ -281,6 +293,19 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
                 return _build_outcome(
                     env, config, method, rollouts, selected_index, actual,
                     0, simulator_writes, budget, cache, time.perf_counter() - t0,
+                    prediction_is_grounded=commit,
+                )
+            if not commit:
+                actual = RewardInfo(
+                    reward=float(selected.predicted.reward),
+                    success=bool(selected.predicted.success),
+                    grounded=False,
+                    reason="simulation-only run; no trajectory was committed or officially evaluated",
+                )
+                return _build_outcome(
+                    env, config, method, rollouts, selected_index, actual,
+                    0, simulator_writes, budget, cache, time.perf_counter() - t0,
+                    prediction_is_grounded=False,
                 )
             chokepoint = CommitChokepoint(env)
             actual = chokepoint.commit(selected.trajectory)  # the ONLY real write
@@ -349,7 +374,8 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
 
 
 def _build_outcome(env, config, method, rollouts, selected_index, actual, n_commits,
-                   simulator_writes, budget, cache, wall) -> DecisionOutcome:
+                   simulator_writes, budget, cache, wall,
+                   prediction_is_grounded: bool = True) -> DecisionOutcome:
     selected = rollouts[selected_index]
     n = len(rollouts)
 
@@ -359,7 +385,8 @@ def _build_outcome(env, config, method, rollouts, selected_index, actual, n_comm
     if method != "b0" and selected.predicted is not None:
         predicted_success = selected.predicted.success
         predicted_confidence = float(selected.predicted.reward)
-        prediction_correct = bool(selected.predicted.success) == bool(actual.success)
+        if prediction_is_grounded:
+            prediction_correct = bool(selected.predicted.success) == bool(actual.success)
 
     spawn_trees = [r.spawn_root for r in rollouts if r.spawn_root is not None]
     record = DecisionRecord(

@@ -33,6 +33,9 @@ class SolverConfig:
 class SimulatorConfig:
     #: "flat" (B1) | "snapshot" (B2) | "recursive" (Ours) | "none" (B0)
     kind: str = "recursive"
+    #: predict every agent-visible action, including clean reads. Flat B1 uses its fixed context;
+    #: recursive Ours may use its existing bounded read-only grounding tools.
+    predict_all_actions: bool = True
     #: "uncertainty" (spawn while conf < tau) | "fixed" (spawn to depth L)
     recursion_mode: str = "uncertainty"
     tau: float = 0.9

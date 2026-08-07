@@ -8,9 +8,9 @@ that shadow.
 
 Two kinds share this machinery and differ only in *how far they read*:
 
-* ``flat`` (**B1**) — one bounded read of the seed entities; no recursion, no transitive
-  expansion.  Under-reads ⇒ the shadow is missing entities the trajectory touches ⇒ the replay
-  cannot be validated ⇒ mis-prediction.
+* ``flat`` (**B1**) — before candidate generation, one bounded read of reference-derived seed
+  entities prepares a fixed simulator context. Candidate actions never change which state enters
+  that context; there is no recursion or transitive expansion.
 * ``recursive`` (**Ours**) — reads the seeds and recursively follows
   :meth:`~tts.abcs.ShadowEvaluator.child_references` to close over the touched subgraph.  The
   stop rule is configurable: ``fixed`` (descend to depth ``L``) or ``uncertainty`` (descend
@@ -96,9 +96,13 @@ class ReadGroundedWorldModel(WorldModel):
         self._bc = budget_config or BudgetConfig()
         self._cache = cache if cache is not None else ReadCache(enabled=config.caching)
         self._root: Optional[SpawnNode] = None
+        self._flat_root: Optional[SpawnNode] = None
         self._n = 0
-        #: the shadow built during the last :meth:`evaluate` (kept for ``step`` reuse).
+        #: Flat models populate this before candidate generation; recursive models build it during
+        #: evaluation and may extend it while stepping.
         self._shadow: Dict[EntRef, Dict] = {}
+        if self.kind == "flat":
+            self._prepare_flat_context()
 
     # -- identity -------------------------------------------------------- #
     name = "world_model"
@@ -176,6 +180,19 @@ class ReadGroundedWorldModel(WorldModel):
                 out.append(r)
         return out
 
+    def _prepare_flat_context(self) -> None:
+        """Materialise B1's fixed reference context before any candidate action is observed."""
+        refs = self._dedup(self._eval.seed_entities([]))
+        selected = refs[: max(1, self._cfg.node_read_limit)]
+        root = SpawnNode(
+            self._nid(), None, 0, f"flat-fixed[{len(refs)} refs]", "simulator")
+        self._read_into(selected, self._shadow, root)
+        root.confidence = sum(1 for ref in refs if ref in self._shadow) / max(1, len(refs))
+        root.note = "fixed reference context prepared before candidate actions"
+        self._flat_root = root
+        self._root = root
+        self._eval.prepare_flat_context(copy.deepcopy(self._shadow))
+
     @staticmethod
     def _split(refs: List[EntRef], branching: int) -> List[List[EntRef]]:
         branching = max(1, branching)
@@ -227,20 +244,18 @@ class ReadGroundedWorldModel(WorldModel):
             info = self._eval.reward_agentic(_Reader(self, root), trajectory)
             return RewardInfo(reward=info.reward, success=info.success, grounded=False,
                               reason=info.reason, metadata=dict(info.metadata or {}))
+        if self.kind == "flat":
+            self._root = self._flat_root
+            info = self._eval.reward_from_shadow(self._shadow, trajectory.actions)
+            return RewardInfo(reward=info.reward, success=info.success, grounded=False,
+                              reason=info.reason, metadata=dict(info.metadata or {}))
+
         seeds = self._dedup(self._eval.seed_entities(trajectory.actions))
         shadow: Dict[EntRef, Dict] = {}
-        if self.kind == "flat":
-            # B1: a single bounded read of the seeds; no recursion / no transitive expansion.
-            root = SpawnNode(self._nid(), None, 0, f"flat[{len(seeds)} refs]", "simulator")
-            self._read_into(seeds[: max(1, self._cfg.node_read_limit)], shadow, root)
-            covered = sum(1 for r in seeds if r in shadow)
-            root.confidence = covered / max(1, len(seeds))
-            self._root = root
-        else:
-            # Ours (non-agentic evaluators, e.g. the test double): recursive closure.
-            self._root = self._node(seeds, 0, None, shadow)
+        # Ours (non-agentic evaluators, e.g. the test double): recursive closure.
+        self._root = self._node(seeds, 0, None, shadow)
         self._shadow = shadow
-        info = self._eval.reward_from_shadow(shadow, trajectory.actions)
+        info = self._eval.reward_from_shadow(self._shadow, trajectory.actions)
         return RewardInfo(reward=info.reward, success=info.success, grounded=False,
                           reason=info.reason, metadata=dict(info.metadata or {}))
 
@@ -259,9 +274,10 @@ class ReadGroundedWorldModel(WorldModel):
                 return Observation(content=content, error=bool(is_error))
             except Exception:  # never let observation prediction break sampling
                 return Observation(content="missing-state", error=True)
-        refs = self._dedup(self._eval.seed_entities([action]))
-        node = SpawnNode(self._nid("s"), None, 0, f"step[{len(refs)}]", "probe")
-        self._read_into(refs[: max(1, self._cfg.node_read_limit)], self._shadow, node)
+        if self.kind != "flat":
+            refs = self._dedup(self._eval.seed_entities([action]))
+            node = SpawnNode(self._nid("s"), None, 0, f"step[{len(refs)}]", "probe")
+            self._read_into(refs[: max(1, self._cfg.node_read_limit)], self._shadow, node)
         try:
             served = self._eval.observe(self._shadow, action)
         except Exception:  # never let observation prediction break sampling
@@ -269,22 +285,24 @@ class ReadGroundedWorldModel(WorldModel):
         if served is not None:
             content, is_error = served
             return Observation(content=content, error=bool(is_error))
+        refs = self._dedup(self._eval.seed_entities([action]))
         present = all(r in self._shadow and self._shadow[r] is not None for r in refs)
         return Observation(content=("ok" if present else "missing-state"), error=not present)
 
-    def predict_step(self, action: Action) -> Observation:
+    def predict_step(self, action: Action, *, dirty: bool = True) -> Observation:
         """Predict one action's observation, **always predicting** (never serving an exact read).
 
-        Used for a *dirty* read — a read of an entity a prior write in this rollout already changed —
-        so the observation reflects the predicted post-write state (the agentic predictor conditions
-        on the running write history) rather than the unmutated real backing state.  Falls back to
-        :meth:`step` for non-agentic evaluators (which already predict / serve advisory signals)."""
+        Used for dirty reads and for every clean read under the shared predict-all extension. Falls
+        back to :meth:`step` for non-agentic evaluators, including flat B1's fixed-context predictor."""
         if self._is_agentic():
             root = SpawnNode(self._nid("s"), None, 0, "agentic-step-predict", "simulator")
             self._root = root
             try:
-                content, is_error = self._eval.observe_agentic(_Reader(self, root), action,
-                                                               force_predict=True)
+                kwargs = {"force_predict": True}
+                if not dirty:
+                    kwargs["clean_read"] = True
+                content, is_error = self._eval.observe_agentic(
+                    _Reader(self, root), action, **kwargs)
                 return Observation(content=content, error=bool(is_error))
             except Exception:  # never let observation prediction break sampling
                 return Observation(content="missing-state", error=True)

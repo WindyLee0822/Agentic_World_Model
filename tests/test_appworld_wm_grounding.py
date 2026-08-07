@@ -37,7 +37,7 @@ class _FakeChat:
 
     def complete(self, messages, **kwargs):
         self.calls += 1
-        return json.dumps(self._payload)
+        return f"PYTHON_FINAL:\nprint_json({self._payload!r})"
 
 
 class _FakeRequester:
@@ -86,7 +86,7 @@ def methods(monkeypatch):
 def test_reads_before_first_write_are_real(methods):
     world = _FakeWorld()
     predictor = AppWorldWMPredictor(_FakeChat({"message": "Liked."}))
-    install_wm_requester(world, predictor)
+    install_wm_requester(world, predictor, predict_all_actions=False)
 
     # A GET and a HEAD before any write must both hit the real requester (read-grounded prefix).
     r1 = world.requester.request("spotify", "show_song", song_id=1)
@@ -170,7 +170,7 @@ def test_dirty_read_predicted_clean_read_real(methods):
     world = _FakeWorld()
     chat = _FakeChat({"message": "post-write"})
     predictor = AppWorldWMPredictor(chat)
-    install_wm_requester(world, predictor)
+    install_wm_requester(world, predictor, predict_all_actions=False)
 
     world.requester.request("spotify", "like_song", song_id=1)   # writes -> spotify dirty
     real_calls_after_write = len(world.requester.calls)
@@ -190,7 +190,7 @@ def test_invariant_no_prediction_before_first_write(methods):
     world = _FakeWorld()
     chat = _FakeChat({"message": "x"})
     predictor = AppWorldWMPredictor(chat)
-    install_wm_requester(world, predictor)
+    install_wm_requester(world, predictor, predict_all_actions=False)
 
     # Read spotify BEFORE writing it -> must be real (not predicted), chat untouched.
     pre = world.requester.request("spotify", "show_song", song_id=1)
@@ -210,10 +210,15 @@ class _RejectChat:
 
     def complete(self, messages, **kwargs):
         self.calls += 1
-        content = messages[0]["content"]
+        content = messages[-1]["content"]
         if '"outcome"' in content:  # rejection-aware prompt
-            return json.dumps({"outcome": "failure", "status_code": 422, "response": self.failure_body})
-        return json.dumps(self.success_payload)
+            payload = {
+                "outcome": "failure",
+                "status_code": 422,
+                "response": self.failure_body,
+            }
+            return f"PYTHON_FINAL:\nprint_json({payload!r})"
+        return f"PYTHON_FINAL:\nprint_json({self.success_payload!r})"
 
 
 def test_repeat_write_predicts_rejection_and_raises(methods):
@@ -363,12 +368,17 @@ class _AgenticScriptChat:
 def test_write_prediction_uses_read_then_predict_subagent(methods, monkeypatch):
     world = _FakeWorld()
     chat = _AgenticScriptChat([
-        'READ spotify.show_song {"song_id": 7}',
-        'PREDICT: {"message": "Liked."}',
+        (
+            "PYTHON_READ:\n"
+            'print_json({"queries":[{"app":"spotify","api":"show_song",'
+            '"args":{"song_id":7}}]})'
+        ),
+        'PYTHON_FINAL:\nprint_json({"message": "Liked."})',
     ])
     predictor = AppWorldWMPredictor(chat)
     # The textual READ/LIST/CALL/TRACE protocol is now a legacy opt-in.
     monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+    monkeypatch.setenv("TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", "1")
     install_wm_requester(world, predictor)
 
     result = world.requester.request("spotify", "like_song", song_id=7)
@@ -377,7 +387,110 @@ def test_write_prediction_uses_read_then_predict_subagent(methods, monkeypatch):
     assert chat.calls == 2
     assert predictor.query_interface.reads == 1
     assert ("spotify", "show_song") in [(app, api) for app, api, _ in world.requester.calls]
-    assert "Facts gathered so far" in chat.prompts[-1]
+    assert "data['reads'][0]['result']" in chat.prompts[-1]
+    assert '"real": true' not in chat.prompts[-1].lower()
+
+
+def test_predict_all_clean_read_uses_pregrounded_prompted_world_model(
+        methods, monkeypatch):
+    world = _FakeWorld()
+    chat = _AgenticScriptChat([
+        "PYTHON_FINAL:\n"
+        "value = data['grounded_clean_read']\n"
+        "print(value)",
+    ])
+    predictor = AppWorldWMPredictor(chat)
+    monkeypatch.setenv("TTS_APPWORLD_PREGROUND_CLEAN_READS", "1")
+    monkeypatch.setenv("TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS", "0")
+    monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+    original_predict_read = predictor.predict_read
+
+    def predict_read(*args, **kwargs):
+        assert args[3] is None
+        assert world.requester.calls == []
+        return original_predict_read(*args, **kwargs)
+
+    predictor.predict_read = predict_read
+    install_wm_requester(world, predictor, predict_all_actions=True)
+
+    result = world.requester.request("spotify", "show_song", song_id=7)
+
+    assert result == {"app": "spotify", "api": "show_song", "real": True}
+    assert chat.calls == 1
+    assert predictor.n_predicted_reads == 1
+    assert predictor.n_dirty_reads == 0
+    assert len(world.requester.calls) == 1
+    assert predictor.query_interface.reads == 1
+    assert predictor.history[-1] == (
+        "spotify",
+        "show_song",
+        {"song_id": 7},
+        {"app": "spotify", "api": "show_song", "real": True},
+    )
+    assert "EXACT GROUNDED CLEAN-READ PROTOCOL" in chat.prompts[0]
+
+
+def test_predict_all_can_use_non_forced_program_predictions(methods, monkeypatch):
+    world = _FakeWorld()
+    chat = _FakeChat({"message": "Liked."})
+    predictor = AppWorldWMPredictor(chat)
+    monkeypatch.setenv("TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", "0")
+
+    install_wm_requester(world, predictor, predict_all_actions=True)
+
+    assert predictor.program_only is False
+    assert world.requester.request("spotify", "like_song", song_id=1) == {
+        "message": "Liked."
+    }
+    assert chat.calls == 1
+
+
+def test_predict_all_deterministic_grounded_read_still_uses_simulator(
+        methods, monkeypatch):
+    world = _FakeWorld()
+    chat = _FakeChat({"message": "must not be used"})
+    predictor = AppWorldWMPredictor(chat)
+    monkeypatch.setenv("TTS_APPWORLD_PREGROUND_CLEAN_READS", "1")
+    monkeypatch.setenv("TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS", "1")
+    original_predict_read = predictor.predict_read
+
+    def predict_read(*args, **kwargs):
+        assert args[3] is None
+        assert world.requester.calls == []
+        return original_predict_read(*args, **kwargs)
+
+    predictor.predict_read = predict_read
+
+    install_wm_requester(world, predictor, predict_all_actions=True)
+    result = world.requester.request("spotify", "show_song", song_id=7)
+
+    assert result == {"app": "spotify", "api": "show_song", "real": True}
+    assert chat.calls == 0
+    assert predictor.n_predicted_reads == 1
+    assert predictor.n_dirty_reads == 0
+    assert predictor.query_interface.reads == 1
+    assert predictor.history[-1] == (
+        "spotify",
+        "show_song",
+        {"song_id": 7},
+        {"app": "spotify", "api": "show_song", "real": True},
+    )
+
+
+def test_predict_all_clean_read_python_protocol_copies_host_json():
+    prompt = AppWorldWMPredictor._python_protocol(
+        {
+            "grounded_clean_read_required": True,
+            "grounded_clean_read": {"song_id": 7},
+        },
+        required=False,
+        context_chars=100,
+        allow_reads=True,
+    )
+
+    assert "EXACT GROUNDED CLEAN-READ PROTOCOL" in prompt
+    assert "Return a PYTHON_FINAL program" in prompt
+    assert "Only generated Python may process" in prompt
 
 
 def test_uniform_loop_supports_list_call_and_trace(methods, monkeypatch):

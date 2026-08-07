@@ -1513,6 +1513,9 @@ class AppWorldTaskEnv(TaskEnvironment):
                 world, chat, max_steps=max_steps, temperature=solver.temperature,
                 wall_clock_budget_s=wall_clock_budget,
                 enable_multi_app_skill=bool(self.level and self.level > 1),
+                enable_l2_targeted_skill=self.level == 2 and self.split == "test_challenge",
+                enable_instruction_guidance=self.split == "test_challenge",
+                broad_instruction_guidance=self.level == 3,
             )
             tracker = world.evaluate(suppress_errors=True)
             success = bool(tracker.success)
@@ -1532,18 +1535,27 @@ class AppWorldTaskEnv(TaskEnvironment):
         """Official ReAct code agent interacting with the **world model** (no real writes).
 
         Runs the official AppWorld ReAct loop, but routes every ``apis.*`` call through the
-        world-model interception (:func:`~tts.env.appworld_wm.install_wm_requester`): read (``GET``)
-        endpoints execute exactly against the real backing DBs (read-only), write endpoints are
-        LLM-predicted from the call args + the endpoint's response schema + history, so the real DB is
-        never mutated.  Returns ``(Trajectory, predicted RewardInfo, None)``; the realized code rides
+        world-model interception (:func:`~tts.env.appworld_wm.install_wm_requester`): reads execute
+        exactly by default; under ``predict_all_actions``, recursive Ours uses the identical
+        whitelisted read-only simulator tool while flat B1 predicts from fixed context. Writes are
+        LLM-predicted from the call args + response schema + history, so the real DB is never mutated. Returns
+        ``(Trajectory, predicted RewardInfo, None)``; the realized code rides
         on the trajectory so the selected one can be committed (re-executed for real) and officially
         scored.  AppWorld exposes no gold action list, so the selection signal is an LLM success
         verdict over the realized plan.
+
+        Under B1, task metadata, relevant API docs, native evaluator criteria/gold values, and fixed
+        task state are frozen before candidate code generation; writes, dirty reads, and success reuse
+        that system prompt without action-conditioned DB probes. Ours retains adaptive read grounding.
         """
         from ..llm import make_chat_client
         from ..llm.azure import azure_deployment
         from .appworld_react_agent import run_react_code_agent
-        from .appworld_wm import AppWorldWMPredictor, install_wm_requester
+        from .appworld_wm import (
+            AppWorldWMPredictor,
+            appworld_flat_tool_docs,
+            install_wm_requester,
+        )
 
         solver = config.solver
         model = solver.llm_agent or azure_deployment()
@@ -1561,6 +1573,7 @@ class AppWorldTaskEnv(TaskEnvironment):
         predictor.warm_up()
         predictor.prepare_python_tool()
         reference_checklist = load_task_checklist(self._task_id)
+        reference_checks = load_task_checks(self._task_id)
         agent_checklist = (
             reference_checklist
             if os.environ.get("TTS_APPWORLD_AGENT_REFERENCE", "0")
@@ -1569,7 +1582,35 @@ class AppWorldTaskEnv(TaskEnvironment):
         )
 
         with _world_session(self._task_id, self._experiment_base, f"wm{seed}") as world:
-            orig_request = install_wm_requester(world, predictor)  # reads exact, writes predicted
+            orig_request = install_wm_requester(
+                world,
+                predictor,
+                predict_all_actions=config.simulator.predict_all_actions,
+            )
+            if str(method).lower() == "b1":
+                available_apps = predictor.available_apps
+                active_task = {"instruction": self._instruction}
+                if not config.simulator.predict_all_actions:
+                    try:
+                        active_task = _verifier_read_only_request(
+                            orig_request, "supervisor", "show_active_task")
+                    except Exception:
+                        pass
+                predictor.configure_flat_context(
+                    task_text=self._instruction,
+                    tool_docs=appworld_flat_tool_docs(available_apps),
+                    reference_checklist=reference_checklist,
+                    reference_checks=reference_checks,
+                    predict_all_actions=config.simulator.predict_all_actions,
+                    fixed_state={
+                        "task_id": self._task_id,
+                        "frozen_datetime": predictor.frozen_datetime,
+                        "available_apps": list(available_apps),
+                        "app_descriptions": dict(
+                            getattr(world.task, "app_descriptions", {}) or {}),
+                        "active_task": active_task,
+                    },
+                )
             # Bound the whole rollout by the predictor's hard timeout too: the predictor raises inside
             # a runaway API loop to end the offending cell, and this stops the step loop right after,
             # so a non-terminating agent can't spin forever (AppWorld's own per-cell timeout does not
@@ -1599,6 +1640,9 @@ class AppWorldTaskEnv(TaskEnvironment):
                     world, chat, max_steps=max_steps, temperature=solver.temperature,
                     wall_clock_budget_s=wall_clock_budget,
                     enable_multi_app_skill=bool(self.level and self.level > 1),
+                    enable_l2_targeted_skill=self.level == 2 and self.split == "test_challenge",
+                    enable_instruction_guidance=self.split == "test_challenge",
+                    broad_instruction_guidance=self.level == 3,
                     task_checklist=agent_checklist,
                     completion_check=lambda: predictor.simulated_task_completion is not None,
                 )
@@ -1622,7 +1666,6 @@ class AppWorldTaskEnv(TaskEnvironment):
             # Reference-grounded auditor (default, matching OfficeBench; opt out with
             # TTS_APPWORLD_VERIFIER_REFERENCE=0): the task's ground-truth success checklist + gold
             # values audit the write log without executing the candidate.
-            reference_checks = load_task_checks(self._task_id)  # structured form for the per-check auditor
             completion_missing = predictor.simulated_task_completion is None
             hard_invalid = _rollout_hard_invalid(
                 predictor, load_task_answer(self._task_id))
@@ -1646,6 +1689,7 @@ class AppWorldTaskEnv(TaskEnvironment):
         predicted = RewardInfo(reward=float(predicted_confidence), success=predicted_confidence >= 0.5,
                                grounded=False,
                                reason=(f"AppWorld WM rollout ({predictor.n_writes} writes LLM-predicted, "
+                                       f"{predictor.n_predicted_reads} reads predicted, "
                                        f"{predictor.n_dirty_reads} dirty reads predicted, "
                                        f"{predictor.n_reads} reads exact, "
                                        f"{len(predictor.active_task_apps())} substantive apps touched, "

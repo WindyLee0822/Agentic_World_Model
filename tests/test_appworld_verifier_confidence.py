@@ -414,6 +414,9 @@ def test_appworld_gpt54_bon_defaults_are_coverage_aware_and_agent_fair(monkeypat
         "TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT",
         "TTS_APPWORLD_INSTRUCTION_PREFLIGHTS",
         "TTS_SELECTION_CONFIDENCE_MARGIN",
+        "TTS_APPWORLD_PREGROUND_CLEAN_READS",
+        "TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS",
+        "TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY",
     ):
         monkeypatch.delenv(name, raising=False)
     args = Namespace(
@@ -424,6 +427,9 @@ def test_appworld_gpt54_bon_defaults_are_coverage_aware_and_agent_fair(monkeypat
         appworld_instruction_preflights=None,
         success_score="simulator_success",
         _success_score_explicit=False,
+        predict_all_actions=True,
+        _predict_all_actions_explicit=False,
+        simulation_only=False,
     )
 
     _configure_appworld_bon(args)
@@ -431,10 +437,14 @@ def test_appworld_gpt54_bon_defaults_are_coverage_aware_and_agent_fair(monkeypat
     assert args.verifier_percheck is True
     assert args.appworld_instruction_preflights is False
     assert args.success_score == "simulator_confidence_guarded"
+    assert args.predict_all_actions is True
     assert os.environ["TTS_APPWORLD_VERIFIER_COVERAGE_AWARE"] == "1"
     assert os.environ["TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT"] == "0.25"
     assert os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] == "0"
     assert os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] == "0.1"
+    assert os.environ["TTS_APPWORLD_PREGROUND_CLEAN_READS"] == "1"
+    assert os.environ["TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS"] == "1"
+    assert os.environ["TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY"] == "0"
 
 
 def test_appworld_gpt54_bon_allows_explicit_noncomparable_preflight_ablation(monkeypatch):
@@ -451,6 +461,9 @@ def test_appworld_gpt54_bon_allows_explicit_noncomparable_preflight_ablation(mon
         appworld_instruction_preflights=True,
         success_score="simulator_success",
         _success_score_explicit=False,
+        predict_all_actions=True,
+        _predict_all_actions_explicit=False,
+        simulation_only=False,
     )
 
     _configure_appworld_bon(args)

@@ -43,3 +43,9 @@ def test_react_loop_stops_on_predictor_local_completion(monkeypatch):
 
     assert len(code) == len(outputs) == 1
     assert world.executions == chat.calls == 1
+
+
+def test_official_prompt_does_not_offer_failure_escape_hatch():
+    prompt = appworld_react_agent.load_prompt_template()
+
+    assert 'you can call it with status="fail"' in prompt

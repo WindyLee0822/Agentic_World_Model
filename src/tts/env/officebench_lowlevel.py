@@ -1,4 +1,4 @@
-"""Low-level helpers for the REAL OfficeBench benchmark (host side: Docker orchestration only).
+"""Low-level helpers for the REAL OfficeBench benchmark.
 
 OfficeBench solves office tasks by an agent that emits JSON actions ``{'app','action',...}`` against
 a set of office apps, executed inside a Docker container whose ``/testbed`` filesystem is the task's
@@ -13,17 +13,23 @@ provides the **host-side** pieces the trajectory wrapper needs:
   evaluation through the in-container :mod:`tts.env.officebench_driver` (so all OfficeBench-specific
   Python deps live in the image, never on the host).
 
-Nothing here imports OfficeBench's Python packages — the host needs only the ``docker`` CLI and the
-``OFFICEBENCH_ROOT`` clone (for the task tree + the ``apps``/``utils`` directories it copies in).
+Docker remains the default backend. AML command jobs can set
+``TTS_OFFICEBENCH_BACKEND=local`` and use a baked image containing OfficeBench's
+system/Python dependencies; the same driver then runs in-process against a
+temporary task root without requiring a Docker daemon.
 """
 
 from __future__ import annotations
 
 import glob
+import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
+import sys
+import tempfile
 import threading
 import uuid
 from typing import Dict, List, Optional, Tuple
@@ -83,13 +89,20 @@ def docker_available() -> bool:
         return False
 
 
+def officebench_backend() -> str:
+    """Execution backend: ``docker`` or the AML-compatible no-daemon ``local`` backend."""
+    return os.environ.get("TTS_OFFICEBENCH_BACKEND", "docker").strip().lower() or "docker"
+
+
 def real_officebench_available(root: Optional[str] = None) -> bool:
-    """OfficeBench is runnable iff the clone is present AND docker is usable.
+    """OfficeBench is runnable with a clone and either local mode or a Docker daemon.
 
     (The app/eval image is built on demand by :meth:`OfficeBenchSession.start`; use
     :func:`officebench_image_available` to gate tests that should not pay the one-off build.)
     """
-    return officebench_root(root) is not None and docker_available()
+    if officebench_root(root) is None:
+        return False
+    return officebench_backend() == "local" or docker_available()
 
 
 def officebench_image() -> str:
@@ -245,11 +258,19 @@ class OfficeBenchSession:
         # the shadow must never be mutated.  ``exec_action`` refuses write actions structurally, so a
         # routing mistake fails loudly instead of silently writing state.
         self.read_only = read_only
+        self.actions_disabled = False
         self._started = False
         self._apps_cache: Optional[Dict] = None
+        self.backend = officebench_backend()
+        if self.backend not in ("docker", "local"):
+            raise ValueError("TTS_OFFICEBENCH_BACKEND must be 'docker' or 'local'")
+        self._local_root: Optional[str] = None
 
     # -- lifecycle ------------------------------------------------------- #
     def start(self) -> "OfficeBenchSession":
+        if self.backend == "local":
+            return self._start_local()
+
         ensure_image()
         self._docker("run", "-d", "--name", self.name, "--label", f"{_RUN_LABEL}={_run_id()}",
                      "--entrypoint", "", self.image, "sleep", "infinity")
@@ -272,7 +293,9 @@ class OfficeBenchSession:
         return self
 
     def close(self) -> None:
-        if self._started:
+        if self.backend == "local":
+            self._close_local()
+        elif self._started:
             try:
                 self._docker("rm", "-f", self.name)
             finally:
@@ -300,6 +323,9 @@ class OfficeBenchSession:
         file an exact READ incidentally creates (create-if-missing read helpers) is reverted in-driver,
         so the read-only shadow stays byte-for-byte pristine.
         """
+        if getattr(self, "actions_disabled", False):
+            raise PermissionError(
+                "OfficeBench action execution is disabled for this predict-all simulation session")
         if self.read_only:
             from .officebench_wm_predict import is_write_action
 
@@ -341,6 +367,10 @@ class OfficeBenchSession:
         """
         return self._driver("read_state", {"files": files, "extras": False}).get("state", {})
 
+    def list_state(self, path: str, *, recursive: bool = False) -> Dict:
+        """List immutable testbed objects without executing an OfficeBench or shell action."""
+        return self._driver("list_state", {"path": path, "recursive": recursive})
+
     def testbed_digest(self) -> str:
         """A content hash of the whole ``/testbed`` tree (to PROVE the WM shadow is never written).
 
@@ -348,6 +378,31 @@ class OfficeBenchSession:
         digests taken before and after a world-model rollout must be equal — a real write-safety check,
         unlike the trivially-constant :meth:`OfficeBenchTaskEnv.state_hash`.
         """
+        if self.backend == "local":
+            root = os.path.join(self._local_root or "", "testbed")
+            digest = hashlib.md5()
+            directories: List[str] = []
+            files: List[str] = []
+            for dirpath, dirnames, names in os.walk(root):
+                directories.extend(os.path.join(dirpath, name) for name in dirnames)
+                files.extend(
+                    os.path.join(dirpath, name)
+                    for name in names
+                    if name != "answer.txt"
+                )
+            for path in sorted(directories):
+                digest.update(b"D\0")
+                digest.update(os.path.relpath(path, root).encode())
+                digest.update(b"\0")
+            for path in sorted(files):
+                digest.update(b"F\0")
+                digest.update(os.path.relpath(path, root).encode())
+                digest.update(b"\0")
+                with open(path, "rb") as fh:
+                    for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+                        digest.update(chunk)
+            return digest.hexdigest()
+
         script = (
             "cd /testbed && { find . -type d -printf 'D %p\\n'; "
             "find . -type f ! -name answer.txt -exec md5sum {} \\; ; } | "
@@ -358,6 +413,8 @@ class OfficeBenchSession:
 
     # -- low-level docker ----------------------------------------------- #
     def _driver(self, cmd: str, payload: Dict) -> Dict:
+        if self.backend == "local":
+            return self._driver_local(cmd, payload)
         try:
             proc = subprocess.run(
                 ["docker", "exec", "-i", self.name, "python3", "/officebench_driver.py", cmd],
@@ -390,10 +447,142 @@ class OfficeBenchSession:
             raise RuntimeError(f"docker {' '.join(args[:2])} failed: {res.stderr.strip()[-500:]}")
         return res
 
+    # -- local no-Docker backend --------------------------------------- #
+    def _start_local(self) -> "OfficeBenchSession":
+        """Materialize one task locally for AML command jobs without a Docker daemon.
+
+        The driver is launched through unprivileged ``proot`` bind mounts so the official apps see
+        absolute ``/testbed`` and ``/reference`` paths while each worker keeps isolated host files.
+        """
+        base = os.environ.get("TTS_OFFICEBENCH_LOCAL_TMP") or tempfile.gettempdir()
+        self._local_root = tempfile.mkdtemp(prefix=f"{self.name}_", dir=base)
+        os.makedirs(os.path.join(self._local_root, "testbed", "data"), exist_ok=True)
+        os.makedirs(os.path.join(self._local_root, "testbed", "emails"), exist_ok=True)
+        os.makedirs(os.path.join(self._local_root, "testbed", "calendar"), exist_ok=True)
+        shutil.copytree(os.path.join(self.root, "apps"), os.path.join(self._local_root, "apps"))
+        shutil.copytree(os.path.join(self.root, "utils"), os.path.join(self._local_root, "utils"))
+        shutil.copy2(_DRIVER_PATH, os.path.join(self._local_root, "officebench_driver.py"))
+        os.makedirs(os.path.join(self._local_root, "tmp", "home"), exist_ok=True)
+        os.makedirs(os.path.join(self._local_root, "dev"), exist_ok=True)
+        for name in ("null", "random", "urandom"):
+            open(os.path.join(self._local_root, "dev", name), "ab").close()
+
+        testbed = os.path.join(self.root, "tasks", self.task_id, "testbed")
+        if os.path.isdir(testbed):
+            shutil.copytree(
+                testbed,
+                os.path.join(self._local_root, "testbed"),
+                dirs_exist_ok=True,
+            )
+        reference = os.path.join(self.root, "tasks", self.task_id, "reference")
+        os.makedirs(os.path.join(self._local_root, "reference"), exist_ok=True)
+        if os.path.isdir(reference):
+            shutil.copytree(
+                reference,
+                os.path.join(self._local_root, "reference"),
+                dirs_exist_ok=True,
+            )
+
+        self._started = True
+        return self
+
+    def _close_local(self) -> None:
+        if not self._started and self._local_root is None:
+            return
+        if self._local_root:
+            shutil.rmtree(self._local_root, ignore_errors=True)
+            self._local_root = None
+        self._started = False
+
+    def _driver_local(self, cmd: str, payload: Dict) -> Dict:
+        assert self._local_root is not None
+        proot = shutil.which("proot")
+        if proot is None:
+            raise RuntimeError(
+                "OfficeBench local backend requires the 'proot' executable; "
+                "use the baked AML environment or install proot")
+        network_guard = shutil.which("tts-no-network")
+        if network_guard is None:
+            raise RuntimeError(
+                "OfficeBench local backend requires the 'tts-no-network' seccomp launcher; "
+                "use the baked AML environment")
+        env = os.environ.copy()
+        sensitive_fragments = (
+            "TOKEN",
+            "KEY",
+            "SECRET",
+            "PASSWORD",
+            "CREDENTIAL",
+            "AZURE",
+            "OPENAI",
+            "IDENTITY",
+        )
+        for name in list(env):
+            if any(fragment in name.upper() for fragment in sensitive_fragments):
+                env.pop(name, None)
+        env["PYTHONPATH"] = "/"
+        env["HOME"] = "/tmp/home"
+        env["TMPDIR"] = "/tmp"
+        bindings = []
+        for path in (
+            "/bin",
+            "/usr",
+            "/lib",
+            "/lib64",
+            "/etc/fonts",
+            "/etc/ImageMagick-6",
+            "/etc/ssl",
+        ):
+            if os.path.exists(path):
+                bindings.extend(["-b", path])
+        python_prefix = os.path.realpath(sys.prefix)
+        if not any(
+            python_prefix == path or python_prefix.startswith(path.rstrip("/") + "/")
+            for path in ("/usr", "/bin", "/lib", "/lib64")
+        ):
+            os.makedirs(
+                os.path.join(self._local_root, python_prefix.lstrip("/")),
+                exist_ok=True,
+            )
+            bindings.extend(["-b", python_prefix])
+        command = [
+            network_guard,
+            proot,
+            "-r", self._local_root,
+            "-w", "/",
+            "-b", "/dev/null",
+            "-b", "/dev/random",
+            "-b", "/dev/urandom",
+            *bindings,
+            sys.executable,
+            "/officebench_driver.py",
+            cmd,
+        ]
+        try:
+            proc = subprocess.run(
+                command,
+                input=json.dumps(payload),
+                capture_output=True,
+                text=True,
+                timeout=self.exec_timeout_s,
+                env=env,
+            )
+        except subprocess.TimeoutExpired:
+            if cmd == "apps":
+                raise
+            return {"_timeout": True}
+        for line in reversed((proc.stdout or "").splitlines()):
+            if line.startswith(_RESULT_PREFIX):
+                return json.loads(line[len(_RESULT_PREFIX):])
+        raise RuntimeError(
+            f"officebench local driver '{cmd}' returned no result (rc={proc.returncode}): "
+            f"{(proc.stderr or proc.stdout)[-500:]}")
+
 
 __all__ = [
     "officebench_root",
     "docker_available",
+    "officebench_backend",
     "real_officebench_available",
     "officebench_image",
     "officebench_image_available",

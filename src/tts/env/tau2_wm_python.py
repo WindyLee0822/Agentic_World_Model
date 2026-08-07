@@ -60,6 +60,12 @@ def _extract_prefixed_python(text: str, prefix: str) -> Optional[str]:
     if not stripped.startswith(prefix):
         return None
     code = stripped[len(prefix):].strip()
+    code = re.split(
+        rf"(?m)^\s*(?:{re.escape(_PYTHON_READ_PREFIX)}|"
+        rf"{re.escape(_PYTHON_FINAL_PREFIX)}|{re.escape(_PYTHON_PREFIX)})\s*",
+        code,
+        maxsplit=1,
+    )[0].rstrip()
     if code.startswith("```"):
         first_line, _, remainder = code.partition("\n")
         if first_line.strip().lower() in ("```", "```python", "```py"):
@@ -114,6 +120,24 @@ def _bounded_json_text(value: Any, limit: int) -> str:
     if len(text) <= limit:
         return text
     return text[:limit] + f"... [truncated {len(text) - limit} chars]"
+
+
+def _context_variable_inventory(context: Dict[str, Any]) -> List[Dict[str, str]]:
+    """Describe copied variables without exposing their values to the model."""
+    inventory: List[Dict[str, str]] = []
+    for key, value in sorted(context.items()):
+        path = f"data[{key!r}]"
+        inventory.append({"variable": path, "value_type": type(value).__name__})
+        if key == "reads" and isinstance(value, list):
+            for index, record in enumerate(value):
+                if not isinstance(record, dict) or "result" not in record:
+                    continue
+                result = record["result"]
+                inventory.append({
+                    "variable": f"data['reads'][{index}]['result']",
+                    "value_type": type(result).__name__,
+                })
+    return inventory
 
 
 def _parse_json(text: str) -> Optional[Any]:
@@ -206,8 +230,35 @@ def _python_protocol(
             '  {"op":"list","entity_type":"<type>"}\n'
             '  {"op":"call","name":"<read-only tool>","args":{...}}\n'
             "The host validates record types and tool names, executes only read-only operations, and "
-            "copies results into `data['reads']` and `data['facts']`. The program never receives the "
-            "tau2 environment, database, toolkit, network, files, or process environment.\n"
+            "copies each untouched result into `data['reads'][i]['result']`. The program never receives the "
+            "tau2 environment, database, toolkit, network, files, or process environment. If an "
+            "untouched result's shape is uncertain, use another PYTHON_READ program to print "
+            "`{\"queries\":[],\"facts\":...}` with facts computed from that variable; those generated "
+            "facts are shown on the next turn.\n"
+        )
+    exact_read_instruction = ""
+    exact_call = context.get("exact_read_call")
+    if context.get("grounded_clean_read_required"):
+        exact_read_instruction = (
+            "\nEXACT GROUNDED CLEAN-READ PROTOCOL (overrides every other routing option):\n"
+            "- The host already executed the identical allowed read-only probe and copied its untouched "
+            "result into `data['grounded_clean_read']`.\n"
+            "- Return exactly this program shape (no indexing or parsing): "
+            "`PYTHON_FINAL:\\nvalue = data['grounded_clean_read']\\nprint(value)`.\n"
+            "- Do not request another read, transcribe the value into source code, infer a replacement, "
+            "summarize it, repair it, merge it, or wrap it.\n"
+        )
+    elif context.get("exact_read_required") and isinstance(exact_call, dict):
+        exact_read_instruction = (
+            "\nEXACT CLEAN-READ PROTOCOL (overrides direct-answer routing):\n"
+            "- Your first response MUST be PYTHON_READ and request exactly the call in "
+            f"`data['exact_read_call']`: {json.dumps(exact_call, ensure_ascii=True, sort_keys=True)}.\n"
+            "- Do not answer or request any other evidence before that call.\n"
+            "- On the next turn, return PYTHON_FINAL that copies `data['reads'][-1]['result']` without "
+            "transcribing it: process the variable in Python, then use `print_json(value)` for a "
+            "record/list and `print(value)` otherwise.\n"
+            "- Do not return the result directly or copy its contents into source code. Only generated "
+            "Python may process the host result.\n"
         )
     final_routing = (
         "For the final answer, make the FIRST non-whitespace characters of your response exactly "
@@ -218,10 +269,14 @@ def _python_protocol(
     )
     return (
         "\n\nPURE COMPUTATION OPTION:\n"
-        f"{routing}{read_instruction}{final_routing} The program receives "
+        f"{routing}{read_instruction}{exact_read_instruction}{final_routing} The program receives "
         f"a copied JSON-like dictionary named `data` with inputs under: {keys}. It may use ordinary "
-        "list/dict/set operations, `json`/`datetime`, date helpers, and `print_json`; files, network, "
-        "environment access, subprocesses, and tau2 APIs are unavailable. "
+        "list/dict/set operations, `json_value`, `json_records`, `deepcopy`, `Counter`, `defaultdict`, "
+        "`json`/`datetime`, date helpers, and `print_json`; files, network, "
+        "environment access, subprocesses, and tau2 APIs are unavailable. Prefer the smallest valid "
+        "program: for a semantic prediction, put the chosen result in a Python string/dict/list literal "
+        "and print it; for copied evidence, reference the `data` variable directly. Do not call imagined "
+        "prediction helpers or APIs. "
         f"{output_instruction} Print only the complete requested result. The legacy `PYTHON:` prefix "
         "is accepted as an alias for `PYTHON_FINAL:`."
     )
@@ -263,15 +318,16 @@ def _run_python(
     return result
 
 
-def _parse_read_requests(
+def _parse_read_payload(
     output: str,
     *,
     entity_types: set[str],
     read_tools: set[str],
-) -> Optional[List[Dict[str, Any]]]:
+) -> Optional[Tuple[List[Dict[str, Any]], Any]]:
     payload = _parse_json(output)
     if not isinstance(payload, dict) or not isinstance(payload.get("queries"), list):
         return None
+    computed_facts = payload.get("facts")
     parsed = []
     for query in payload["queries"]:
         if not isinstance(query, dict):
@@ -295,14 +351,13 @@ def _parse_read_requests(
             args = query.get("args") or {}
             if name in read_tools and isinstance(args, dict):
                 parsed.append({"op": op, "name": name, "args": args})
-    return parsed or None
+    if not parsed and computed_facts is None:
+        return None
+    return parsed, computed_facts
 
 
 def _json_like(value: Any) -> Any:
     if value is None or isinstance(value, (bool, int, float, str)):
-        if isinstance(value, str):
-            parsed = _parse_json(value)
-            return parsed if parsed is not None else value
         return value
     if isinstance(value, dict):
         if "model" in value:
@@ -320,15 +375,7 @@ def _json_like(value: Any) -> Any:
 
 
 def _bounded_read_value(value: Any) -> Any:
-    copied = _json_like(value)
-    limit = _env_int("TTS_TAU2_WM_PYTHON_READ_RESULT_CHARS", 8_000)
-    try:
-        text = json.dumps(copied, ensure_ascii=True, sort_keys=True, default=str)
-    except Exception:
-        text = str(copied)
-    if len(text) <= limit:
-        return copied
-    return text[:limit] + f"... [truncated {len(text) - limit} chars]"
+    return _json_like(value)
 
 
 def _execute_read(query_interface, request: Dict[str, Any], label: str) -> Any:
@@ -339,7 +386,7 @@ def _execute_read(query_interface, request: Dict[str, Any], label: str) -> Any:
         return _bounded_read_value(rows.get(ref))
     if op == "list":
         return _bounded_read_value(
-            list(query_interface.list_ids(request["entity_type"]))[:60])
+            list(query_interface.list_ids(request["entity_type"])))
     return _bounded_read_value(query_interface.call(request["name"], request["args"]))
 
 
@@ -355,6 +402,8 @@ def _resolve_final(
     stats: Tau2PythonLoopResult,
 ) -> str:
     def recover_direct(error: str) -> str:
+        if required:
+            return ""
         recovered = complete(
             f"{prompt}\n\nThe restricted Python attempt could not produce a valid result:\n"
             f"{error[:1_000]}\n\nReturn ONLY the final result directly in the requested format. "
@@ -393,13 +442,10 @@ def _resolve_final(
         )
         code = _extract_python_program(response)
         if code is None:
-            normalized = _normalize_output(response, output_kind)
-            if normalized is not None:
-                stats.valid = True
-                return normalized
             return recover_direct("the required PYTHON_FINAL retry was invalid")
 
-    result = _run_python(code, context, stats)
+    result = _run_python(
+        code, context, stats, allow_bare_container_output=True)
     normalized = None if result.error else _normalize_output(result.output, output_kind)
     error = result.error
     if error is None and normalized is None:
@@ -411,10 +457,12 @@ def _resolve_final(
     if not _env_enabled("TTS_TAU2_WM_PYTHON_REPAIR", True):
         return recover_direct(error)
 
-    repair_context = _bounded_json_text(
-        context,
+    repair_inventory = _bounded_json_text(
+        _context_variable_inventory(context),
         _env_int("TTS_TAU2_WM_PYTHON_REPAIR_CONTEXT_CHARS", 12_000),
     )
+    if result.fatal and required:
+        return ""
     if result.fatal:
         repair_instruction = (
             "The Python helper is unavailable. Return the prediction directly in the requested format."
@@ -425,28 +473,44 @@ def _resolve_final(
         repair_instruction = (
             "Return either the direct prediction or one corrected PYTHON_FINAL program."
         )
-    repaired = complete(
-        f"{prompt}\n\nYour previous PYTHON program failed safely with:\n{error}\n\n"
-        f"FAILED PROGRAM:\n{code[:4_000]}\n\nCOPIED INPUT (bounded):\n{repair_context}\n\n"
-        f"{repair_instruction} Do not explain the failure.",
-        max_tokens,
-    )
-    repaired_code = _extract_python_program(repaired)
-    if repaired_code is None:
-        normalized = _normalize_output(repaired, output_kind)
-        if normalized is not None:
-            stats.valid = True
-            return normalized
-        return recover_direct("the Python repair response was invalid")
-    repaired_result = _run_python(repaired_code, context, stats)
-    if repaired_result.error:
-        return recover_direct(repaired_result.error)
-    normalized = _normalize_output(repaired_result.output, output_kind)
-    if normalized is None:
-        stats.python_failures += 1
-        return recover_direct(f"repaired program output is not a valid {output_kind} result")
-    stats.valid = True
-    return normalized
+    failed_code = code
+    repair_error = error
+    repair_attempts = _env_int("TTS_TAU2_WM_PYTHON_REPAIR_ATTEMPTS", 2)
+    for attempt in range(repair_attempts):
+        repaired = complete(
+            f"{prompt}\n\nYour previous PYTHON program failed safely with:\n{repair_error}\n\n"
+            f"FAILED PROGRAM:\n{failed_code[:4_000]}\n\nAVAILABLE COPIED VARIABLES "
+            f"(names and types only; inspect values in generated code):\n"
+            f"{repair_inventory}\n\n{repair_instruction} This is repair attempt "
+            f"{attempt + 1}/{repair_attempts}. Prefer a shorter program and use `json_value` before "
+            "indexing an untouched string result. Do not explain the failure.",
+            max_tokens,
+        )
+        repaired_code = _extract_python_program(repaired)
+        if repaired_code is None:
+            if not required:
+                normalized = _normalize_output(repaired, output_kind)
+                if normalized is not None:
+                    stats.valid = True
+                    return normalized
+            repair_error = "the Python repair response was invalid"
+            failed_code = repaired
+            continue
+        repaired_result = _run_python(
+            repaired_code, context, stats, allow_bare_container_output=True)
+        if repaired_result.error:
+            repair_error = repaired_result.error
+            failed_code = repaired_code
+            continue
+        normalized = _normalize_output(repaired_result.output, output_kind)
+        if normalized is None:
+            stats.python_failures += 1
+            repair_error = f"repaired program output is not a valid {output_kind} result"
+            failed_code = repaired_code
+            continue
+        stats.valid = True
+        return normalized
+    return recover_direct(repair_error)
 
 
 def run_tau2_python_prediction_loop(
@@ -460,10 +524,13 @@ def run_tau2_python_prediction_loop(
     max_tokens: int = 1500,
     output_kind: str = "text",
     force_long: bool = False,
+    force_always: bool = False,
 ) -> Tau2PythonLoopResult:
     """Run bounded Python-emitted reads followed by a direct or Python final result."""
     stats = Tau2PythonLoopResult()
     if not _env_enabled("TTS_TAU2_WM_PYTHON", True):
+        if force_always:
+            return stats
         direct_prompt = (
             f"{header}\n\nThe restricted Python helper is disabled. Return the final result directly; "
             "do not emit PYTHON_READ, PYTHON_FINAL, READ, LIST, CALL, or TRACE.\n\n"
@@ -493,7 +560,7 @@ def run_tau2_python_prediction_loop(
 
     threshold = _env_int("TTS_TAU2_WM_PYTHON_FORCE_CHARS", 2_000)
     context_chars = _json_size_hint(context, threshold)
-    required = bool(force_long and context_chars > threshold)
+    required = bool(force_always or (force_long and context_chars > threshold))
     if required:
         stats.python_forced = 1
 
@@ -519,9 +586,17 @@ def run_tau2_python_prediction_loop(
     read_tools = {str(value) for value in context.get("read_tools") or []}
 
     for turn in range(turns):
+        read_variables = [
+            {
+                **{key: value for key, value in record.items() if key != "result"},
+                "variable": f"data['reads'][{index}]['result']",
+                "value_type": type(record.get("result")).__name__,
+            }
+            for index, record in enumerate(reads)
+        ]
         response = complete(
             f"{model_prompt}\n\nCOPIED READ RESULTS SO FAR:\n"
-            f"{_bounded_json_text(reads, visible_limit)}\n\n"
+            f"{_bounded_json_text(read_variables, visible_limit)}\n\n"
             f"TOOL FACTS AND ERRORS:\n{_bounded_json_text(facts, visible_limit)}\n\n"
             f"Python tool turn {turn + 1}/{turns}:",
             max_tokens,
@@ -535,13 +610,16 @@ def run_tau2_python_prediction_loop(
                 if result.fatal:
                     break
                 continue
-            requests = _parse_read_requests(
+            payload = _parse_read_payload(
                 result.output, entity_types=entity_types, read_tools=read_tools)
-            if requests is None:
+            if payload is None:
                 stats.python_failures += 1
                 facts[f"python_read_error_{turn + 1}"] = (
-                    "PYTHON_READ output must contain a non-empty list of valid read-only queries.")
+                    "PYTHON_READ output must contain valid read-only queries or generated facts.")
                 continue
+            requests, computed_facts = payload
+            if computed_facts is not None:
+                facts[f"python_computed_facts_{turn + 1}"] = computed_facts
             for index, request in enumerate(requests[:max_reads]):
                 try:
                     read_result = _execute_read(
@@ -550,9 +628,6 @@ def run_tau2_python_prediction_loop(
                     read_result = f"ERROR: {type(exc).__name__}: {str(exc)[:300]}"
                 record = {**request, "result": read_result}
                 reads.append(record)
-                target = request.get(
-                    "entity_type", request.get("name", "unknown"))
-                facts[f"{request['op']} {target}"] = read_result
             continue
         if mode == "final":
             stats.output = _resolve_final(
@@ -583,8 +658,8 @@ def run_tau2_python_prediction_loop(
         return stats
 
     response = complete(
-        f"{model_prompt}\n\nYou are out of read turns. Return the final result directly or with "
-        "PYTHON_FINAL; do not request more reads.",
+        f"{model_prompt}\n\nYou are out of read turns. Return only a PYTHON_FINAL program; "
+        "do not request more reads.",
         max_tokens,
     )
     mode, _ = _extract_python_action(response)

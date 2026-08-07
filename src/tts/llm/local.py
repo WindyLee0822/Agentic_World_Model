@@ -1,10 +1,9 @@
-"""Route every LLM call to a **locally-served, OpenAI-compatible** model.
+"""Route the default LLM calls to a **locally-served, OpenAI-compatible** model.
 
 The real agents normally talk to a hosted API (Azure OpenAI / OpenAI).  To run experiments against
 a self-hosted model instead (e.g. ``Qwen-AgentWorld-35B-A3B`` served by vLLM or SGLang, which both
 expose an OpenAI-compatible ``/v1`` endpoint), call :func:`configure_local_llm` once in the parent
-process.  It sets a small set of environment variables that the two transports already understand,
-so **no** code path needs an Azure endpoint or an ``az login`` token:
+process. It sets a small set of environment variables that the two transports already understand:
 
 * :class:`~tts.llm.chat_client.ChatClient` (AppWorld / OfficeBench) — ``TTS_LLM_BACKEND=openai``
   forces the OpenAI backend even when ``AZURE_OPENAI_ENDPOINT`` is still set in the shell, and
@@ -12,6 +11,10 @@ so **no** code path needs an Azure endpoint or an ``az login`` token:
 * **litellm** (τ²-bench) — ``OPENAI_API_BASE`` / ``OPENAI_API_KEY`` point litellm at the local
   server, and model strings are prefixed with the ``openai/`` provider (see
   :func:`litellm_model_for`) so litellm routes them to that OpenAI-compatible endpoint.
+
+Pure-local mode removes stale Azure routing. Mixed tau2 runs may set
+``TTS_LOCAL_LLM_ALLOW_AZURE=1`` and use a qualified ``azure/<deployment>`` user simulator while
+the bare/default model remains local.
 
 Because the runner sets this up in the *parent* (see ``experiments/run.py --local``), the env vars
 are inherited by every forked/spawned worker, so it works with the AppWorld process pool and the τ²
@@ -37,7 +40,7 @@ def configure_local_llm(
     model: str,
     api_key: str = "EMPTY",
 ) -> str:
-    """Point every LLM transport at a local OpenAI-compatible server; return the served model id.
+    """Point default LLM routing at a local OpenAI-compatible server; return the served model id.
 
     ``model`` is the id the local server advertises (vLLM ``--served-model-name`` / SGLang
     ``--served-model-name``), e.g. ``"Qwen-AgentWorld-35B-A3B"``.  Idempotent: safe to call again
@@ -63,11 +66,12 @@ def configure_local_llm(
     os.environ["OPENAI_API_BASE"] = base_url
     os.environ["TTS_LITELLM_MODEL"] = litellm_model_for(model, model)
 
-    # A local server never wants Azure credentials; drop any stale Azure endpoint so nothing
-    # accidentally falls back to it (ChatClient already honours TTS_LLM_BACKEND, but litellm's
-    # azure alignment sniffs AZURE_OPENAI_ENDPOINT directly).
-    for _k in ("AZURE_OPENAI_ENDPOINT", "AZURE_API_BASE"):
-        os.environ.pop(_k, None)
+    # Pure-local mode drops stale Azure routing so nothing accidentally falls
+    # back to a hosted model. Mixed tau2 runs explicitly retain it for an
+    # azure/* user simulator while the agent remains on local vLLM.
+    if os.environ.get("TTS_LOCAL_LLM_ALLOW_AZURE") != "1":
+        for _k in ("AZURE_OPENAI_ENDPOINT", "AZURE_API_BASE"):
+            os.environ.pop(_k, None)
     return model
 
 

@@ -1,10 +1,11 @@
 # AML command job for the interactive AppWorld world-model sweep.
 #
 # Runs the official AppWorld ReAct agent against the predictive WM added in
-# src/tts/env/appworld_wm.py. During sampling, reads are exact, writes are
-# predicted, and the WM subagent may use restricted PYTHON_READ / PYTHON_FINAL
-# computation. The selected trajectory is replayed once in a fresh real AppWorld
-# and officially evaluated.
+# src/tts/env/appworld_wm.py. During predict-all sampling, every candidate
+# observation is generated through restricted PYTHON_READ / PYTHON_FINAL
+# computation; host-validated read-only probes provide untouched variables, and
+# candidate writes never execute. The selected trajectory is replayed once in a
+# fresh real AppWorld and officially evaluated.
 #
 # Submit and stream logs:
 #   AML_JOB_FILE=aml/job.appworld.wm.yml bash aml/submit.sh --stream
@@ -19,7 +20,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 display_name: dw-AppWorld-WM-gpt54-temp1
 experiment_name: dw-appworld-wm-gpt54
-description: Run all AppWorld test subsets with GPT-5.4, temperature 1, N=1,2,4,8,16, the unchanged official ReAct agent, and answer-grounded WM verification.
+description: Run all AppWorld test subsets with GPT-5.4, temperature 1, N=1,2,4,8,16, simulator-routed deterministic grounded clean reads, L2/L3 execution guidance, and answer-grounded WM verification.
 compute: azureml:D15v2-NCUS-hipri
 code: ..
 environment:

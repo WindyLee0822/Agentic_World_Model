@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 
 from tts.env.real_tau2 import _LLMWorldModelPredictor
-from tts.env.tau2_wm_python import tau2_wm_tool_mode
+from tts.env.tau2_wm_python import (
+    run_tau2_python_prediction_loop,
+    tau2_wm_tool_mode,
+)
 from tts.types import Action
 
 
@@ -58,6 +61,191 @@ def test_tau2_wm_tool_mode_defaults_to_python(monkeypatch):
     assert tau2_wm_tool_mode() == "python"
     monkeypatch.setenv("TTS_TAU2_WM_TOOL_MODE", "text")
     assert tau2_wm_tool_mode() == "text"
+
+
+def test_exact_clean_read_returns_world_model_generation_after_host_grounding():
+    chat = _ScriptChat([
+        "PYTHON_READ:\n"
+        "print_json({'queries': [{'op': 'call', 'name': 'search_kb', "
+        "'args': {'query': 'fees'}}]})",
+        "PYTHON_FINAL:\nprint(data['reads'][-1]['result'])",
+    ])
+    query = _Query()
+
+    result = run_tau2_python_prediction_loop(
+        lambda prompt, max_tokens: chat.complete(
+            [{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+        ),
+        query,
+        "predict the exact clean read",
+        "PREDICT: <result>",
+        context={
+            "read_tools": ["search_kb"],
+            "exact_read_required": True,
+            "exact_read_call": {
+                "op": "call",
+                "name": "search_kb",
+                "args": {"query": "fees"},
+            },
+        },
+        output_kind="text",
+    )
+
+    assert result.valid
+    assert json.loads(result.output) == {"matches": [1, 2]}
+    assert query.calls == [("search_kb", {"query": "fees"})]
+    assert chat.calls == 2
+
+
+def test_tau2_generated_code_can_inspect_untouched_read_variable():
+    chat = _ScriptChat([
+        (
+            "PYTHON_READ:\n"
+            "print_json({'queries': [{'op': 'call', 'name': 'search_kb', "
+            "'args': {'query': 'fees'}}]})"
+        ),
+        (
+            "PYTHON_READ:\n"
+            "raw = data['reads'][0]['result']\n"
+            "value = json_value(raw)\n"
+            "print_json({'queries': [], 'facts': "
+            "{'raw_is_string': isinstance(raw, str), 'count': len(value['matches'])}})"
+        ),
+        (
+            "PYTHON_FINAL:\n"
+            "print_json({'count': data['facts']['python_computed_facts_2']['count']})"
+        ),
+    ])
+    query = _Query()
+
+    result = run_tau2_python_prediction_loop(
+        lambda prompt, max_tokens: chat.complete(
+            [{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+        ),
+        query,
+        "inspect a read result",
+        "PREDICT: <result>",
+        context={"read_tools": ["search_kb"]},
+        output_kind="text",
+    )
+
+    assert result.valid
+    assert json.loads(result.output) == {"count": 2}
+    assert '"raw_is_string": true' in chat.prompts[2]
+
+
+def test_predict_all_forces_python_even_when_text_ablation_is_selected(monkeypatch):
+    monkeypatch.setenv("TTS_TAU2_WM_TOOL_MODE", "text")
+    predictor = _predictor([
+        '{"message":"direct output must not be accepted"}',
+        'PYTHON_FINAL:\nprint_json({"message": "generated"})',
+    ])
+
+    text, is_error = predictor.predict_observation_agentic(
+        "airline",
+        Action("write", {"id": "one"}),
+        [],
+        _Query(),
+        ["users"],
+        force_program=True,
+    )
+
+    assert json.loads(text) == {"message": "generated"}
+    assert not is_error
+    assert predictor.n_python_forced == 1
+    assert predictor.n_python_mode_misses == 1
+    assert predictor.n_python_calls == 1
+
+
+def test_required_tau2_python_gets_two_generated_repair_attempts(monkeypatch):
+    monkeypatch.delenv("TTS_TAU2_WM_PYTHON_REPAIR_ATTEMPTS", raising=False)
+    predictor = _predictor([
+        "PYTHON_FINAL:\nvalue = data['missing']\nprint(value)",
+        "PYTHON_FINAL:\nprint(data['also_missing'])",
+        'PYTHON_FINAL:\nprint_json({"message": "recovered"})',
+    ])
+
+    text, is_error = predictor.predict_observation_agentic(
+        "retail",
+        Action("update_order", {"order_id": "o1"}),
+        [],
+        _Query(),
+        ["orders"],
+        force_program=True,
+    )
+
+    assert json.loads(text) == {"message": "recovered"}
+    assert not is_error
+    assert predictor.n_python_calls == 3
+    assert predictor.n_python_failures == 2
+
+
+def test_tau2_python_repair_exposes_variable_metadata_not_values():
+    secret_read_text = '{"customer_secret":"must-stay-in-variable"}'
+    chat = _ScriptChat([
+        "PYTHON_FINAL:\nprint(data['missing'])",
+        "PYTHON_FINAL:\nprint(data['grounded_clean_read'])",
+    ])
+
+    result = run_tau2_python_prediction_loop(
+        lambda prompt, max_tokens: chat.complete(
+            [{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+        ),
+        None,
+        "copy the grounded result",
+        "PREDICT: <result>",
+        context={"grounded_clean_read": secret_read_text},
+        output_kind="text",
+        force_always=True,
+    )
+
+    assert result.valid
+    assert result.output == secret_read_text
+    assert "data['grounded_clean_read']" in chat.prompts[1]
+    assert secret_read_text not in chat.prompts[1]
+
+
+def test_retail_write_prompt_teaches_generated_native_transition():
+    predictor = _predictor([
+        (
+            "PYTHON_FINAL:\n"
+            "order = deepcopy(data['seed_facts']['orders #W1'])\n"
+            "order['status'] = 'return requested'\n"
+            "order['return_items'] = sorted(data['action']['args']['item_ids'])\n"
+            "order['return_payment_method_id'] = data['action']['args']['payment_method_id']\n"
+            "print_json(order)"
+        ),
+    ])
+
+    text, is_error = predictor.predict_observation_agentic(
+        "retail",
+        Action("return_delivered_order_items", {
+            "order_id": "#W1",
+            "item_ids": ["2", "1"],
+            "payment_method_id": "gift_card_1",
+        }),
+        [],
+        _Query(),
+        ["orders"],
+        seed_facts={
+            "orders #W1": {
+                "order_id": "#W1",
+                "status": "delivered",
+                "items": [],
+            },
+        },
+        force_program=True,
+    )
+
+    assert not is_error
+    assert json.loads(text)["return_items"] == ["1", "2"]
+    prompt = predictor._client.prompts[0]
+    assert "explicit-confirmation requirement" in prompt
+    assert "status='return requested'" in prompt
+    assert "Do not return a confirmation request" in prompt
 
 
 def test_wm_agent_policy_reminder_is_disabled_and_guidance_is_verifier_only():
@@ -274,7 +462,7 @@ print_json({"queries": [
 print(json_dumps({
     "name": data["reads"][0]["result"]["name"],
     "ids": data["reads"][1]["result"],
-    "matches": data["reads"][2]["result"]["matches"]
+    "matches": json_value(data["reads"][2]["result"])["matches"]
 }))
 """,
     ])

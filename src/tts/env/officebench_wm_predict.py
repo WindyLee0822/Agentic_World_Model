@@ -1,16 +1,17 @@
 """Predictive, write-safe world model for OfficeBench (coherent with the τ²/AppWorld contract).
 
-The read-grounded TTS premise is that during sampling the agent interacts with a **world model**, not
-the real environment: **read** actions are answered exactly (read-only) against the real starting
-state, **write** actions are **LLM-predicted and NEVER executed**, and a **read after a write** returns
-the *predicted* post-write state (the τ² "dirty read").  The real environment is therefore never
-mutated while the ``N`` candidates are drawn; only the single selected trajectory is committed (really
-executed) at the chokepoint.
+During sampling the agent interacts with a **world model**, not the real environment. Reads are exact
+only in the explicit clean-read ablation; under predict-all, recursive Ours grounds through immutable
+object reads/listings and has the world model generate the result, while flat B1 predicts from fixed
+context. Candidate actions are **LLM-predicted and NEVER executed**, and a **read after a write**
+returns predicted post-write state.
+The real environment is therefore never mutated while the ``N`` candidates are drawn; only the
+selected trajectory is committed.
 
-As in τ², nontrivial predictions use a bounded world-model subagent with four domain-neutral,
-read-only simulation tools: ``READ`` current logical state, ``LIST`` the logical namespace, ``CALL``
-a safe read-only domain operation, and ``TRACE`` the automatic transition log. The logical state is
-the immutable pristine ``/testbed`` plus predicted transitions; no candidate write is executed.
+As in τ², nontrivial predictions use a bounded world-model subagent over immutable object ``READ`` and
+``LIST`` operations plus ``TRACE`` over the predicted transition log. The exact-clean-read ablation may
+also expose ``CALL`` for safe read-only domain operations. The logical state is the immutable pristine
+``/testbed`` plus predicted transitions; under predict-all no candidate action is executed.
 
 This is the OfficeBench port of :class:`tts.env.appworld_wm.AppWorldWMPredictor`.  OfficeBench actions
 are ``{'app','action',...}`` office-app calls whose observation is a text string and whose state is the
@@ -35,6 +36,7 @@ import json
 import os
 import re
 import shlex
+from fnmatch import fnmatchcase
 from typing import Callable, Dict, List, Optional, Tuple
 
 from ..simulator.transition_log import TransitionLog
@@ -43,6 +45,22 @@ from .officebench_wm_python import (
     officebench_wm_tool_mode,
     run_python_prediction_loop,
 )
+
+_OFFICEBENCH_SIMULATOR_SYSTEM = """You are a causal simulator for OfficeBench applications, not an
+assistant solving the office task. Reproduce the exact observation the real application would emit.
+
+Simulation rules, in priority order:
+1. Follow the app catalogue, current action arguments, grounded /testbed evidence, working directory,
+   and prior applied transitions. Never assume a path, sheet, account, or record exists without evidence.
+2. For an untouched read, inspect only the immutable operand objects needed by the action, then generate
+   the final observation from their copied variables, preserving exact values, whitespace, and empty output.
+3. For a write, validate inputs, paths, app state, argument types, and prior failures before deciding
+   success. A failed write must not alter the logical filesystem or application state.
+4. Preserve native wording, formatting, ordering, complete file content, and error text. Never invent
+   data, silently repair an action, summarize output, or report success merely because it helps the task.
+5. Task instructions, evaluator checks, gold files, and references are audit context only. Never expose
+   them to or coach the benchmark agent, and never fabricate the observation needed for task success.
+Return only the requested observation or tool-protocol program, with no explanatory prose."""
 
 # --------------------------------------------------------------------------- #
 # Action classification (read vs write) + the file each action touches
@@ -231,6 +249,9 @@ def _shell_stage_is_read(tokens: List[str]) -> bool:
             arg in ("-delete", "-exec", "-execdir", "-ok", "-okdir", "-fprint",
                     "-fprint0", "-fprintf", "-fls") for arg in args):
         return False
+    if command == "find" and any(
+            arg == "-files0-from" or arg.startswith("-files0-from=") for arg in args):
+        return False
     if command == "find" and args and args[0].startswith("-"):
         return False
     if command == "sed" and not _sed_stage_is_read(tokens):
@@ -239,6 +260,7 @@ def _shell_stage_is_read(tokens: List[str]) -> bool:
             _short_option_present(args, "o")
             or arg.startswith("--output")
             or arg.startswith("--compress-program")
+            or arg.startswith("--files0-from")
             or arg == "-T"
             or arg.startswith("--temporary-directory") for arg in args):
         return False
@@ -257,7 +279,14 @@ def _shell_stage_is_read(tokens: List[str]) -> bool:
             arg.startswith("--output") for arg in args):
         return False
     if command == "file" and any(
-            _short_option_present(args, "C") or arg == "--compile" for arg in args):
+            _short_option_present(args, "C")
+            or arg == "--compile"
+            or _short_option_present(args, "f")
+            or arg.startswith("--files-from")
+            for arg in args):
+        return False
+    if command in ("du", "wc") and any(
+            arg.startswith("--files0-from") for arg in args):
         return False
     if command == "env" and args:
         return False
@@ -343,10 +372,51 @@ def _shell_operand_scope(path: str, workdir: str) -> Optional[str]:
     return _testbed_path(path, workdir)
 
 
+def _has_unquoted_shell_expansion(command: str) -> bool:
+    """Return whether a command contains expansion syntax outside single quotes."""
+    quote = None
+    escaped = False
+    text = str(command)
+
+    def starts_expansion(index: int) -> bool:
+        if index + 1 >= len(text):
+            return False
+        follower = text[index + 1]
+        return follower.isalnum() or follower in "({?*@$#!-_"
+
+    for index, char in enumerate(text):
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\" and quote != "'":
+            escaped = True
+            continue
+        if quote == "'":
+            if char == "'":
+                quote = None
+            continue
+        if quote == '"':
+            if char == '"':
+                quote = None
+            elif char == "`":
+                return True
+            elif char == "$" and starts_expansion(index):
+                return True
+            continue
+        if char in ("'", '"'):
+            quote = char
+            continue
+        if char == "`":
+            return True
+        if char == "$" and starts_expansion(index):
+            return True
+    return quote is not None
+
+
 def _readonly_shell_stages(
         command: str, workdir: str = "/testbed") -> Optional[List[List[str]]]:
     """Parse a shell command only when every stage is provably non-mutating."""
-    if not command or re.search(r"[\r\n`$]", str(command)):
+    if not command or re.search(r"[\r\n]", str(command)) or _has_unquoted_shell_expansion(command):
         return None
     cd_target = shell_cd_target(command)
     if cd_target is not None:
@@ -363,6 +433,8 @@ def _readonly_shell_stages(
     while i < len(tokens):
         token = tokens[i]
         if token in _SHELL_SEPARATORS:
+            if token not in ("|", "&&"):
+                return None
             if not stage or not _shell_stage_is_read(stage):
                 return None
             stages.append(stage)
@@ -404,6 +476,250 @@ def _readonly_shell_stages(
             if _shell_operand_scope(operand, workdir) is None:
                 return None
     return stages
+
+
+def _emulate_inventory_pipeline(
+    stages: List[List[str]],
+    objects: List[Dict],
+    workdir: str = "/testbed",
+) -> Optional[str]:
+    """Evaluate common read-only discovery pipelines from a typed immutable inventory."""
+    if not stages or not objects:
+        return "" if stages else None
+
+    lines: List[str] = []
+    first = stages[0]
+    if first[0] == "find":
+        roots = _shell_stage_operands(first)
+        if len(roots) > 1:
+            return None
+        root = _testbed_path(roots[0] if roots else ".", workdir)
+        if root is None:
+            return None
+        root = os.path.normpath(root)
+        wanted_type = None
+        max_depth = None
+        min_depth = 0
+        name_patterns: List[Tuple[str, bool]] = []
+        name_or = False
+        index = 1
+        while index < len(first):
+            token = first[index]
+            if token == "-type" and index + 1 < len(first):
+                wanted_type = {"f": "file", "d": "directory"}.get(first[index + 1])
+                if wanted_type is None:
+                    return None
+                index += 2
+                continue
+            if token in ("-maxdepth", "-mindepth") and index + 1 < len(first):
+                try:
+                    depth = int(first[index + 1])
+                except ValueError:
+                    return None
+                if token == "-maxdepth":
+                    max_depth = depth
+                else:
+                    min_depth = depth
+                index += 2
+                continue
+            if token in ("-name", "-iname") and index + 1 < len(first):
+                name_patterns.append((first[index + 1], token == "-iname"))
+                index += 2
+                continue
+            if token == "-o":
+                name_or = True
+                index += 1
+                continue
+            if token in (root, "-print"):
+                index += 1
+                continue
+            if token in ("-print0", "-a", "(", ")", "!"):
+                return None
+            if token.startswith("-"):
+                return None
+            index += 1
+
+        for record in objects:
+            path = os.path.normpath(str(record.get("path", "")))
+            if path == root or not path.startswith(root.rstrip("/") + "/"):
+                continue
+            relative = os.path.relpath(path, root)
+            depth = len(relative.split(os.sep))
+            if depth < min_depth or (max_depth is not None and depth > max_depth):
+                continue
+            if wanted_type and record.get("type") != wanted_type:
+                continue
+            name = os.path.basename(path)
+            if name_patterns:
+                matches = [
+                    fnmatchcase(
+                        name.lower() if insensitive else name,
+                        pattern.lower() if insensitive else pattern,
+                    )
+                    for pattern, insensitive in name_patterns
+                ]
+                if not (any(matches) if name_or else all(matches)):
+                    continue
+            lines.append(path)
+    elif first[0] == "ls":
+        options = [
+            char
+            for token in first[1:]
+            if token.startswith("-") and not token.startswith("--")
+            for char in token[1:]
+        ]
+        long_options = [token for token in first[1:] if token.startswith("--")]
+        if any(char not in ("1", "R") for char in options) or long_options:
+            return None
+        operands = _shell_stage_operands(first)
+        if len(operands) > 1 or "R" in options:
+            return None
+        root = _testbed_path(operands[0] if operands else ".", workdir)
+        if root is None:
+            return None
+        root = os.path.normpath(root)
+        recursive = "R" in options
+        for record in objects:
+            path = os.path.normpath(str(record.get("path", "")))
+            parent = os.path.dirname(path)
+            if (recursive and path.startswith(root.rstrip("/") + "/")) or parent == root:
+                lines.append(path if recursive else os.path.basename(path))
+    else:
+        return None
+
+    for stage in stages[1:]:
+        command = stage[0]
+        args = stage[1:]
+        if command == "sort":
+            if any(
+                token not in ("-r", "--reverse")
+                and not (
+                    token.startswith("-")
+                    and not token.startswith("--")
+                    and set(token[1:]) <= {"r"}
+                )
+                for token in args
+            ):
+                return None
+            reverse = "-r" in args or "--reverse" in args
+            lines = sorted(lines, reverse=reverse)
+            continue
+        if command in ("grep", "egrep", "fgrep"):
+            allowed_short = {"i", "v", "E", "F"}
+            allowed_long = {
+                "--ignore-case", "--invert-match", "--extended-regexp", "--fixed-strings",
+            }
+            if any(
+                (
+                    token.startswith("--") and token not in allowed_long
+                ) or (
+                    token.startswith("-")
+                    and not token.startswith("--")
+                    and not set(token[1:]) <= allowed_short
+                )
+                for token in args
+                if token.startswith("-")
+            ):
+                return None
+            insensitive = any(
+                token in ("-i", "--ignore-case")
+                or (token.startswith("-") and not token.startswith("--") and "i" in token[1:])
+                for token in args
+            )
+            invert = any(
+                token in ("-v", "--invert-match")
+                or (token.startswith("-") and not token.startswith("--") and "v" in token[1:])
+                for token in args
+            )
+            extended = command in ("egrep",) or any(
+                token in ("-E", "--extended-regexp")
+                or (token.startswith("-") and not token.startswith("--") and "E" in token[1:])
+                for token in args
+            )
+            fixed = command == "fgrep" or any(
+                token in ("-F", "--fixed-strings")
+                or (token.startswith("-") and not token.startswith("--") and "F" in token[1:])
+                for token in args
+            )
+            positional = [token for token in args if not token.startswith("-")]
+            if len(positional) != 1:
+                return None
+            pattern = positional[0]
+            flags = re.I if insensitive else 0
+            if fixed:
+                expression = re.escape(pattern)
+            elif extended:
+                expression = pattern
+            else:
+                # GNU grep basic regex uses escaped alternation/grouping while Python uses the
+                # unescaped forms. Preserve ordinary escaped characters such as ``\.``.
+                expression = (
+                    pattern
+                    .replace(r"\|", "|")
+                    .replace(r"\(", "(")
+                    .replace(r"\)", ")")
+                    .replace(r"\+", "+")
+                    .replace(r"\?", "?")
+                )
+            try:
+                matcher = re.compile(expression, flags)
+            except re.error:
+                return None
+            lines = [line for line in lines if bool(matcher.search(line)) != invert]
+            continue
+        if command in ("head", "tail"):
+            count = 10
+            consumed = set()
+            for index, token in enumerate(args):
+                value = None
+                if token == "-n" and index + 1 < len(args):
+                    value = args[index + 1]
+                    consumed.update((index, index + 1))
+                elif re.fullmatch(r"-\d+", token):
+                    value = token[1:]
+                    consumed.add(index)
+                if value is not None:
+                    if value.startswith("+"):
+                        return None
+                    try:
+                        count = max(0, int(value))
+                    except ValueError:
+                        return None
+                    break
+            if any(index not in consumed for index in range(len(args))):
+                return None
+            lines = lines[:count] if command == "head" else lines[-count:]
+            continue
+        if command == "sed":
+            if "-n" not in args and "--quiet" not in args and "--silent" not in args:
+                return None
+            scripts = [
+                token for token in args
+                if not token.startswith("-") and token not in ("--",)
+            ]
+            if not scripts:
+                return None
+            script = scripts[0]
+            match = re.fullmatch(r"(\d+)(?:,(\d+))?p", script)
+            if match:
+                start = int(match.group(1))
+                end = int(match.group(2) or start)
+                lines = lines[max(0, start - 1):end]
+                continue
+            match = re.fullmatch(r"/(.*)/p", script)
+            if match:
+                try:
+                    matcher = re.compile(match.group(1))
+                except re.error:
+                    return None
+                lines = [line for line in lines if matcher.search(line)]
+                continue
+            return None
+        if command == "wc" and args == ["-l"]:
+            lines = [str(len(lines))]
+            continue
+        return None
+    return "\n".join(lines)
 
 
 def _shell_is_read(command: str, workdir: str = "/testbed") -> bool:
@@ -851,6 +1167,12 @@ def _doc_type(path: str) -> str:
         ".docx": "docx",
         ".pdf": "pdf",
         ".ics": "ics",
+        ".bmp": "image",
+        ".jpeg": "image",
+        ".jpg": "image",
+        ".png": "image",
+        ".tif": "image",
+        ".tiff": "image",
     }.get(ext, "txt")
 
 
@@ -878,13 +1200,20 @@ class OfficeBenchWMQuery:
 
     * ``READ`` — current logical resource state (predicted overlay first, pristine state second);
     * ``LIST`` — pristine namespace plus resources created in the predicted overlay;
-    * ``CALL`` — a whitelisted read-only app operation, routed through the overlay when dirty;
+    * ``CALL`` — an optional whitelisted read-only app operation for exact-read mode only;
     * ``TRACE`` — the ordered transition log for one resource.
     """
 
-    def __init__(self, session, workdir: Callable[[], str]) -> None:
+    def __init__(
+        self,
+        session,
+        workdir: Callable[[], str],
+        *,
+        allow_action_execution: bool = True,
+    ) -> None:
         self._session = session
         self._workdir = workdir
+        self.allow_action_execution = bool(allow_action_execution)
         self.reads = 0
         self.lists = 0
         self.calls = 0
@@ -897,6 +1226,7 @@ class OfficeBenchWMQuery:
         self._revived_paths = None
         self._is_deleted = None
         self._is_dirty = None
+        self._raw_only = False
         catalogue = session.apps_catalogue()
         available = []
         for app, actions in (catalogue.get("actions", {}) or {}).items():
@@ -905,10 +1235,13 @@ class OfficeBenchWMQuery:
                 probe = {"app": app, "action": action}
                 if app not in ("system", "shell") and not is_write_action(probe):
                     available.append(name)
-        self.available_calls = list(dict.fromkeys(available))
+        self.available_calls = (
+            list(dict.fromkeys(available)) if self.allow_action_execution else []
+        )
 
     def bind_simulation(self, *, logical_read, trace, overlay_paths, deleted_paths,
-                        recursive_deleted_paths, revived_paths, is_deleted, is_dirty) -> None:
+                        recursive_deleted_paths, revived_paths, is_deleted, is_dirty,
+                        raw_only: bool = False) -> None:
         """Bind domain state operations after the predictor and query interface are constructed."""
         self._logical_read = logical_read
         self._trace = trace
@@ -918,6 +1251,7 @@ class OfficeBenchWMQuery:
         self._revived_paths = revived_paths
         self._is_deleted = is_deleted
         self._is_dirty = is_dirty
+        self._raw_only = bool(raw_only)
 
     def workdir(self) -> str:
         return self._workdir() or "/"
@@ -926,9 +1260,20 @@ class OfficeBenchWMQuery:
         try:
             state = self._session.read_state(
                 [{"path": safe_path, "doc_type": _doc_type(safe_path)}])
-            return str(state.get(safe_path, "[file does not exist]"))[:_READ_CONTENT_CHARS]
+            return str(state.get(safe_path, "[file does not exist]"))
         except Exception as exc:
             return f"ERROR: {type(exc).__name__}: {exc}"
+
+    def read_raw(self, path: str) -> str:
+        """Return untouched pristine evidence for generated Python."""
+        path = str(path or "").strip()
+        if not path:
+            return "ERROR: READ requires a file path"
+        safe_path = _testbed_path(path, self.workdir())
+        if safe_path is None:
+            return "ERROR: READ may access only files under /testbed"
+        self.reads += 1
+        return self._read_pristine(safe_path)
 
     def read(self, path: str) -> str:
         """Read the current logical state: overlay first, pristine state if untouched."""
@@ -945,7 +1290,7 @@ class OfficeBenchWMQuery:
             return str(self._logical_read(target, pristine))[:_READ_CONTENT_CHARS]
         return pristine
 
-    def list(self, path: str) -> str:
+    def list(self, path: str, *, recursive: bool = False) -> str:
         """List the pristine directory plus predicted overlay resources below it."""
         path = str(path or "/testbed").strip() or "/testbed"
         safe_path = _testbed_path(path, self.workdir())
@@ -979,16 +1324,40 @@ class OfficeBenchWMQuery:
                 "PREDICTED LOGICAL DIRECTORY "
                 "(pristine descendants were removed recursively):\n" + entries
             )
-        action = {
-            "app": "shell",
-            "action": "command",
-            "command": f"ls -la -- {shlex.quote(safe_path)}",
-        }
-        try:
-            result = self._session.exec_action(action, self.workdir())
-            base = str(result.get("observation", result))[:_READ_CONTENT_CHARS]
-        except Exception as exc:
-            return f"ERROR: {type(exc).__name__}: {exc}"
+        list_state = getattr(self._session, "list_state", None)
+        if callable(list_state):
+            try:
+                result = (
+                    list_state(safe_path, recursive=True)
+                    if recursive else list_state(safe_path)
+                )
+                if result.get("missing"):
+                    base = "[directory does not exist]"
+                elif result.get("error"):
+                    base = f"ERROR: {result['error']}"
+                else:
+                    base = json.dumps(
+                        result.get("entries", []),
+                        ensure_ascii=True,
+                        sort_keys=True,
+                    )
+            except Exception as exc:
+                return f"ERROR: {type(exc).__name__}: {exc}"
+        elif self.allow_action_execution:
+            action = {
+                "app": "shell",
+                "action": "command",
+                "command": f"ls -la -- {shlex.quote(safe_path)}",
+            }
+            try:
+                result = self._session.exec_action(action, self.workdir())
+                base = str(result.get("observation", result))
+            except Exception as exc:
+                return f"ERROR: {type(exc).__name__}: {exc}"
+        else:
+            return "ERROR: immutable object listing is unavailable"
+        if self._raw_only:
+            return base
         if self._overlay_paths is None:
             return base
         directory = directory.rstrip("/")
@@ -1018,6 +1387,8 @@ class OfficeBenchWMQuery:
 
     def call(self, name: str, args: Dict) -> str:
         """Invoke a whitelisted read action, using the overlay instead of stale state when dirty."""
+        if not self.allow_action_execution:
+            return "ERROR: CALL is disabled when every action must be predicted"
         if name not in self.available_calls or "." not in name:
             return f"ERROR: tool {name!r} is not an available read-only tool"
         app, action_name = name.split(".", 1)
@@ -1042,7 +1413,12 @@ class OfficeBenchWMQuery:
             return f"ERROR: tool {name!r} is not read-only for these arguments"
         self.calls += 1
         target = read_target(action, self.workdir())
-        if target and self._is_dirty is not None and self._is_dirty(target):
+        if (
+            not self._raw_only
+            and target
+            and self._is_dirty is not None
+            and self._is_dirty(target)
+        ):
             return self.read(f"/testbed/{target}")
         try:
             result = self._session.exec_action(action, self.workdir())
@@ -1326,6 +1702,57 @@ def _looks_like_failure(observation: str) -> bool:
     return any(m in o for m in _FAILURE_MARKERS)
 
 
+def build_officebench_flat_system_prompt(
+    *,
+    task_config: Dict,
+    catalogue: Dict,
+    initial_state: Optional[Dict[str, str]] = None,
+    gold_files: Optional[Dict[str, str]] = None,
+    testbed_listing: str = "",
+    predict_all_actions: bool = True,
+) -> str:
+    """Build the shared action-independent B1 prompt for prediction and verification."""
+    fixed_context = {
+        "task": task_config,
+        "tool_documentation": catalogue,
+        "fixed_initial_state": {
+            str(path): str(content)[:_STATE_CONTENT_CHARS]
+            for path, content in (initial_state or {}).items()
+        },
+        "gold_reference_files": {
+            str(path): str(content)[:_STATE_CONTENT_CHARS]
+            for path, content in (gold_files or {}).items()
+        },
+        "testbed_listing": str(testbed_listing)[:_READ_CONTENT_CHARS],
+    }
+    rendered = json.dumps(
+        fixed_context, ensure_ascii=True, sort_keys=True, default=str)
+    limit = _int_env("TTS_OFFICEBENCH_B1_CONTEXT_CHARS", 60_000)
+    if len(rendered) > limit:
+        rendered = rendered[:limit] + f"... [truncated {len(rendered) - limit} chars]"
+    read_contract = (
+        "every app read and write observation is predicted during sampling; clean reads use only "
+        "this fixed context; dirty reads and final files additionally apply ordered predicted writes; "
+        if predict_all_actions
+        else
+        "clean reads are executed exactly outside this prompt; writes are never executed during "
+        "sampling; dirty reads and final files are inferred from the fixed initial records plus "
+        "ordered predicted writes; "
+    )
+    return (
+        f"{_OFFICEBENCH_SIMULATOR_SYSTEM}\n\n"
+        "You are the fixed-context B1 world model for OfficeBench. The complete simulator context "
+        "below was selected before any candidate agent action was observed. Use only this fixed "
+        "context plus the candidate action/history supplied later in the user message. Do not request "
+        "or perform READ, LIST, CALL, TRACE, or PYTHON_READ operations, and do not assume access to "
+        "any additional files or environment state.\n\n"
+        f"Simulate OfficeBench faithfully: {read_contract}"
+        "and success means every native evaluator check passes. Match the documented app observation "
+        "wording and fail writes whose inputs, paths, or arguments are invalid.\n\n"
+        f"FIXED PRE-ACTION CONTEXT:\n{rendered}"
+    )
+
+
 class OfficeBenchWMPredictor:
     """Agentically predicts OfficeBench observations and final file state without executing writes."""
 
@@ -1334,6 +1761,8 @@ class OfficeBenchWMPredictor:
     def __init__(self, chat_client) -> None:
         self._chat = chat_client
         self._query: Optional[OfficeBenchWMQuery] = None
+        self._flat_system_prompt: Optional[str] = None
+        self._flat_initial_state: Dict[str, str] = {}
         self.transition_log = TransitionLog()
         #: target (normalised path) -> list of (action, predicted_observation) applied to it, in order.
         self.applied_writes: Dict[str, List[Tuple[Dict, str]]] = {}
@@ -1350,12 +1779,14 @@ class OfficeBenchWMPredictor:
         self.n_writes = 0
         self.n_failed_writes = 0
         self.n_reads = 0
+        self.n_predicted_reads = 0
         self.n_dirty_reads = 0
         self.n_llm_calls = 0
         self.n_python_calls = 0
         self.n_python_failures = 0
         self.n_python_forced = 0
         self.n_python_mode_misses = 0
+        self.program_only = False
 
     def bind_query_interface(self, query: OfficeBenchWMQuery) -> None:
         """Give the WM subagent read-only access to the logical simulated environment."""
@@ -1371,7 +1802,39 @@ class OfficeBenchWMPredictor:
                 revived_paths=lambda: sorted(self.revived_paths),
                 is_deleted=self.is_deleted,
                 is_dirty=self.was_written,
+                raw_only=self.program_only,
             )
+
+    @property
+    def uses_fixed_context(self) -> bool:
+        return self._flat_system_prompt is not None
+
+    @property
+    def flat_system_prompt(self) -> Optional[str]:
+        return self._flat_system_prompt
+
+    def configure_flat_context(
+        self,
+        system_prompt: str,
+        *,
+        initial_state: Optional[Dict[str, str]] = None,
+    ) -> None:
+        """Install the precomputed B1 prompt before candidate actions are generated."""
+        self._flat_system_prompt = system_prompt
+        self._flat_initial_state = {
+            _norm_path(path): str(content)
+            for path, content in (initial_state or {}).items()
+            if _norm_path(path)
+        }
+
+    def fixed_pre_write_content(self, target: Optional[str]) -> Optional[str]:
+        """Return a baseline selected before actions, without reading the live shadow."""
+        if target is None or not self.uses_fixed_context:
+            return None
+        return self._flat_initial_state.get(
+            _norm_path(target),
+            "[not included in the fixed pre-action context]",
+        )
 
     @property
     def query_interface(self) -> Optional[OfficeBenchWMQuery]:
@@ -1600,8 +2063,9 @@ class OfficeBenchWMPredictor:
                 f"You are a faithful world model of the OfficeBench '{app}' app. Predict the observation "
                 f"the real app prints for the WRITE action '{app}.{act}' with arguments "
                 f"{_action_str(action)}.\n{footprint}\n\n"
-                f"TRAJECTORY SO FAR (action -> observation; shows which files/dirs exist and whether "
-                f"earlier steps errored):\n{self._agent_context_text(history)}\n\n"
+                "The trajectory and prior write observations are available only through the copied "
+                "`data['history']` and `data['writes']` variables. Generated Python must inspect or "
+                "transform their contents.\n\n"
                 f"Decide whether this write would actually SUCCEED given that context and the app's "
                 f"semantics. If a required input/target file is missing, the path is wrong, an argument "
                 f"is invalid, or a prior step already failed, return the app's realistic FAILURE "
@@ -1631,8 +2095,14 @@ class OfficeBenchWMPredictor:
                 "history": self._agent_context_data(history),
                 "writes": self._write_history_data(),
             },
-        ) or f"OBSERVATION: Successfully executed {app}.{act}."
-        obs = obs.strip().splitlines()[0] if obs.strip() else obs
+            python_force_always=self.program_only,
+        )
+        if obs is None:
+            obs = (
+                "OBSERVATION: World model failed to predict safely; the action was not applied."
+                if self.program_only
+                else f"OBSERVATION: Successfully executed {app}.{act}."
+            )
         # A predicted FAILURE leaves the environment unchanged: record it in the write-history (so the
         # verifier can see the attempted-and-failed write) but do NOT mark any target as written, and do
         # NOT trip global-dirty — a write that did not take effect cannot make a later read dirty.
@@ -1697,41 +2167,187 @@ class OfficeBenchWMPredictor:
         self.write_history.append((action, observation))
         self.transition_log.record(action, observation, [target], applied=True)
 
-    def predict_read(self, action: Dict, pre_write_content: str, history: List[Tuple] = ()) -> str:
-        """A read AFTER a write to the same file: predict the post-write content it returns now."""
-        self.n_dirty_reads += 1
+    def predict_read(
+        self,
+        action: Dict,
+        pre_write_content: Optional[str],
+        history: List[Tuple] = (),
+        *,
+        dirty: bool = True,
+    ) -> str:
+        """Predict a clean or dirty read observation without executing the agent action."""
+        self.n_predicted_reads += 1
         target = read_target(action, self._current_workdir()) or ""
+        if dirty:
+            self.n_dirty_reads += 1
         app, act = action.get("app"), action.get("action")
-        # Deterministic short-circuit: if every write to this file is exactly modelable, apply them with
-        # a pure function (no LLM, no drift) instead of asking the LLM to re-derive the post-write file.
-        exact = self._exact_overlay_content(target, pre_write_content)
-        if exact is not None:
-            return exact
+        if not self.program_only:
+            exact = self._exact_overlay_content(target, pre_write_content or "")
+            if dirty and exact is not None:
+                return exact
         # target-specific writes, or — when the read is dirty only via the global-dirty fallback — the
         # full write history (so a globally-dirty read still sees what may have changed the file).
-        writes_text = self._history_text(k=20) if self.global_dirty else self._writes_text(target)
+
+        baseline = (
+            "Pristine evidence is available only through `data['pre_write_content']`."
+            if pre_write_content is not None
+            else
+            "Use bounded read-only grounding tools; their untouched outputs are available only through "
+            "`data['reads'][index]['result']` variables."
+        )
+        state_instruction = (
+            "Earlier predicted writes may have changed the target. Apply those transitions to pristine "
+            "evidence and return the logical post-write result."
+            if dirty else
+            (
+                "This clean read is not executed directly for the agent. The host has copied the exact "
+                "read-only action observation into the grounding evidence below; generate the "
+                "agent-visible response by reproducing it exactly."
+                if pre_write_content is not None else
+                "This clean read is not executed directly for the agent. Predict its exact observation "
+                "from the available fixed context or read-only grounding evidence."
+            )
+        )
+        tool_name = f"{app}.{act}"
+        grounded_clean_read = bool(not dirty and pre_write_content is not None)
+        can_call_exact = bool(
+            not dirty
+            and not grounded_clean_read
+            and not self.uses_fixed_context
+            and self._query is not None
+            and tool_name in set(getattr(self._query, "available_calls", []) or [])
+        )
+        exact_read_contract = ""
+        if grounded_clean_read:
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                "- The PRISTINE / FIXED evidence below is the exact native observation.\n"
+                "- Generate the final response by copying it VERBATIM, preserving exact wording, "
+                "formatting, whitespace, ordering, empty output, and failure text.\n"
+                "- Do not make another read, infer a different value, summarize, or repair it.\n"
+            )
+        elif can_call_exact:
+            if self.program_only or officebench_wm_tool_mode() == "python":
+                first_read = (
+                    "On the FIRST tool turn, issue PYTHON_READ with exactly one `call` query"
+                )
+            else:
+                first_read = "On the FIRST tool turn, issue exactly one CALL command"
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                f"- {first_read} for "
+                f"{tool_name!r}, using the current action arguments unchanged except `app`/`action`.\n"
+                "- Do not infer the observation from file contents or history before making that call.\n"
+                "- Return the host tool result VERBATIM. Preserve exact wording, formatting, whitespace, "
+                "empty values, and failure text; do not summarize or repair it.\n"
+            )
+        elif not dirty and not self.uses_fixed_context and self._query is not None:
+            first_read = (
+                "use PYTHON_READ with READ/LIST operations"
+                if self.program_only or officebench_wm_tool_mode() == "python"
+                else "issue READ/LIST commands"
+            )
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                f"- This read has no identical CALL tool. On the FIRST tool turn, {first_read} over "
+                "every operand needed by the current action.\n"
+                "- Reproduce the native read observation exactly from those host results, including "
+                "formatting, ordering, counts, empty output, and error wording. Do not guess without "
+                "grounding first.\n"
+            )
+        immutable_objects = None
+        immutable_objects_error = None
+        shell_stages = None
+        shell_command = str(action.get("command") or "").strip()
+        shell_listing_read = bool(
+            app == "shell"
+            and re.match(r"^(?:find|ls)\b", shell_command)
+        )
+        if (
+            not dirty
+            and shell_listing_read
+            and self._query is not None
+            and target
+        ):
+            raw_immutable_objects = self._query.list(
+                target,
+                recursive=True,
+            )
+            try:
+                parsed_objects = json.loads(raw_immutable_objects)
+            except (TypeError, ValueError, json.JSONDecodeError):
+                parsed_objects = None
+            if isinstance(parsed_objects, list):
+                immutable_objects = parsed_objects
+            else:
+                immutable_objects = []
+                immutable_objects_error = str(raw_immutable_objects)[:1_000]
+            parsed_stages = _readonly_shell_stages(
+                shell_command,
+                self._current_workdir(),
+            )
+            shell_stages = parsed_stages if parsed_stages is not None else []
+            if immutable_objects_error is None:
+                emulated = _emulate_inventory_pipeline(
+                    shell_stages,
+                    immutable_objects,
+                    self._current_workdir(),
+                )
+                if emulated is not None:
+                    return emulated
+            exact_read_contract = (
+                "\nHIGHEST-PRIORITY CLEAN-READ RULE:\n"
+                "- The host copied a recursive immutable inventory as a list of "
+                "`{'name','path','type'}` records in `data['immutable_objects']` and parsed the "
+                "pipeline argv into `data['shell_stages']`.\n"
+                "- Use PYTHON_FINAL to reproduce the requested read-only shell pipeline from that "
+                "inventory. Do not request repeated one-level LIST operations or guess paths.\n"
+            )
+        program_output = self.program_only or officebench_wm_tool_mode() == "python"
+        processing_instruction = (
+            "Do not transcribe, truncate, summarize, or otherwise process evidence text outside "
+            "generated Python. Return a PYTHON_FINAL program whose printed value is the exact content "
+            "or observation the read would print."
+            if program_output else
+            "Use the bounded READ/LIST/CALL/TRACE protocol when grounding is needed, then return the "
+            "exact content or observation in the requested PREDICT format."
+        )
         prompt = (
-            f"You are a world model of the OfficeBench '{app}' app's files. The agent READS via "
-            f"'{app}.{act}' ({_action_str(action)}) a file that earlier WRITE actions may have changed. "
-            f"Predict the EXACT content the read returns NOW by applying those writes to the pre-write "
-            f"content.\n\n"
-            f"PRE-WRITE content (what the real file held BEFORE the writes below):\n"
-            f"{pre_write_content[:_READ_CONTENT_CHARS]}\n\n"
-            f"WRITE actions applied since (in order):\n{writes_text}\n\n"
-            f"Apply ONLY changes the listed writes clearly justify; leave every other part of the file "
-            f"exactly as in the pre-write content, and never invent data. If none of the writes affect "
-            f"this file, return the pre-write content UNCHANGED. Return ONLY the resulting file "
-            f"content/observation as the read would print it. No prose."
+            f"You are a world model of the OfficeBench '{app}' app. The agent called the READ action "
+            f"'{app}.{act}' ({_action_str(action)}). {state_instruction}"
+            f"{exact_read_contract}\n"
+            f"PRISTINE / FIXED evidence:\n{baseline}\n\n"
+            "Applied writes and history are available only through `data['writes']` and "
+            f"`data['history']`. {processing_instruction}"
         )
         out = self._predict(
             prompt,
             "PREDICT: <the exact resulting file content or read observation, with no prose>",
             max_tokens=_READ_MAX_TOKENS,
             python_context={
-                "kind": "dirty_read",
+                "kind": "dirty_read" if dirty else "clean_read",
                 "action": _canonical_action_paths(action, self._current_workdir()),
                 "target": target,
                 "pre_write_content": pre_write_content,
+                "grounded_clean_read": (
+                    pre_write_content if grounded_clean_read else None
+                ),
+                "grounded_clean_read_required": grounded_clean_read,
+                "exact_read_required": bool(exact_read_contract),
+                "exact_read_call": (
+                    {
+                        "name": tool_name,
+                        "args": {
+                            key: value
+                            for key, value in action.items()
+                            if key not in ("app", "action")
+                        },
+                    }
+                    if can_call_exact else None
+                ),
+                "immutable_objects": immutable_objects,
+                "immutable_objects_error": immutable_objects_error,
+                "shell_stages": shell_stages,
                 "writes": [
                     {"action": write, "observation": observation}
                     for write, observation in self._related_writes(target)
@@ -1739,8 +2355,16 @@ class OfficeBenchWMPredictor:
                 "history": self._agent_context_data(history),
             },
             python_force_long=True,
+            python_force_always=self.program_only,
         )
-        return out if out is not None else self.logical_read(target, pre_write_content)
+        if out is not None:
+            return out
+        if self.program_only:
+            return (
+                "OBSERVATION: World model failed to predict safely; "
+                "no environment action was executed."
+            )
+        return self.logical_read(target, pre_write_content or "")
 
     def predict_file_state(self, path: str, initial_content: str) -> str:
         """Render a gold-checked file's PREDICTED final content (initial + its writes) for the verifier.
@@ -1752,23 +2376,23 @@ class OfficeBenchWMPredictor:
         """
         target = _norm_path(path)
         writes = self._related_writes(target)
-        if not writes and not self._is_deleted(target) and not self.global_dirty:
-            return initial_content  # untouched by the trajectory
-        exact = self._exact_overlay_content(target, initial_content)
-        if exact is not None:
-            return exact  # exact deterministic reconstruction (no LLM re-derivation, no drift)
+        if not self.program_only:
+            if not writes and not self._is_deleted(target) and not self.global_dirty:
+                return initial_content
+            exact = self._exact_overlay_content(target, initial_content)
+            if exact is not None:
+                return exact
         app_hint = writes[0][0].get("app", "office") if writes else "office"
-        writes_text = self._history_text(k=40) if self.global_dirty else self._writes_text(target)
         prompt = (
             f"You are a world model of an OfficeBench '{app_hint}' file. Given the initial content of "
             f"file '{target}' and the WRITE actions the agent applied to it, predict the EXACT FINAL "
-            f"content of the file.\n\n"
-            f"INITIAL content:\n{initial_content[:_STATE_CONTENT_CHARS]}\n\n"
-            f"WRITE actions applied (in order):\n{writes_text}\n\n"
+            "content of the file. Initial content and writes are available only through "
+            "`data['initial_content']`, `data['writes']`, and `data['global_writes']`; generated Python "
+            "must perform every copy or transformation.\n\n"
             f"Change ONLY the cells/lines a listed write clearly determines (e.g. a set_cell write sets "
             f"exactly that cell to that value); copy every other part of the file verbatim from the "
-            f"initial content and never invent values. Return ONLY the final file content as it would be "
-            f"read back. No prose."
+            "initial content and never invent values. Return a PYTHON_FINAL program whose printed value "
+            "is the exact final file content."
         )
         out = self._predict(
             prompt,
@@ -1786,6 +2410,7 @@ class OfficeBenchWMPredictor:
                 "global_dirty": self.global_dirty,
             },
             python_force_long=True,
+            python_force_always=self.program_only,
         )
         return out if out is not None else self.logical_read(target, initial_content)
 
@@ -1804,12 +2429,17 @@ class OfficeBenchWMPredictor:
         max_tokens: int,
         python_context: Optional[Dict] = None,
         python_force_long: bool = False,
+        python_force_always: bool = False,
     ) -> Optional[str]:
         """Use the agentic grounding loop when a pristine-session query interface is available."""
-        if officebench_wm_tool_mode() == "python" and python_context is not None:
+        query = None if self.uses_fixed_context else self._query
+        if (
+            (self.program_only or officebench_wm_tool_mode() == "python")
+            and python_context is not None
+        ):
             result = run_python_prediction_loop(
                 lambda text, budget: self._complete(text, max_tokens=budget),
-                self._query,
+                query,
                 prompt,
                 final_instr,
                 context=python_context,
@@ -1817,15 +2447,16 @@ class OfficeBenchWMPredictor:
                 max_tokens=max_tokens,
                 output_kind="text",
                 force_long=python_force_long,
+                force_always=python_force_always,
             )
             self._record_python_result(result)
             return result.output if result.valid else None
-        if self._query is None:
+        if query is None:
             output = self._complete(prompt, max_tokens=max_tokens)
             return output if output else None
         terminal = run_agentic_read_loop(
             lambda text, budget: self._complete(text, max_tokens=budget),
-            self._query,
+            query,
             prompt,
             final_instr,
             max_turns=self.MAX_TURNS,
@@ -1837,7 +2468,11 @@ class OfficeBenchWMPredictor:
     def _complete(self, prompt: str, *, max_tokens: int) -> str:
         try:
             self.n_llm_calls += 1
-            return (self._chat.chat("You are a faithful world model. Answer exactly, no prose.",
+            system = (
+                self._flat_system_prompt
+                or _OFFICEBENCH_SIMULATOR_SYSTEM
+            )
+            return (self._chat.chat(system,
                                     prompt, temperature=0.0, max_tokens=max_tokens) or "").strip()
         except Exception:  # noqa: BLE001 - a prediction failure must never crash the rollout
             return ""
@@ -1846,6 +2481,7 @@ class OfficeBenchWMPredictor:
 __all__ = [
     "OfficeBenchWMPredictor",
     "OfficeBenchWMQuery",
+    "build_officebench_flat_system_prompt",
     "action_inputs",
     "is_write_action",
     "run_agentic_read_loop",

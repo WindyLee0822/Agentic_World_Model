@@ -11,11 +11,17 @@ from __future__ import annotations
 import ast
 import atexit
 import builtins
+import collections
+import copy
 import datetime as datetime_module
+import decimal
+import fnmatch
 import io
 import json
+import math
 import multiprocessing
 import os
+import re
 import shutil
 import tempfile
 import threading
@@ -47,7 +53,11 @@ _ALLOWED_NODES = {
     ast.ImportFrom,
     ast.alias,
     ast.For,
+    ast.While,
     ast.If,
+    ast.Try,
+    ast.ExceptHandler,
+    ast.Raise,
     ast.Pass,
     ast.Break,
     ast.Continue,
@@ -55,6 +65,8 @@ _ALLOWED_NODES = {
     ast.SetComp,
     ast.DictComp,
     ast.GeneratorExp,
+    ast.Yield,
+    ast.YieldFrom,
     ast.comprehension,
     ast.Call,
     ast.keyword,
@@ -97,6 +109,11 @@ _ALLOWED_NODES = {
     ast.NotIn,
     ast.Is,
     ast.IsNot,
+    ast.BitOr,
+    ast.BitAnd,
+    ast.BitXor,
+    ast.LShift,
+    ast.RShift,
 }
 
 _SAFE_CALL_NAMES = {
@@ -104,39 +121,66 @@ _SAFE_CALL_NAMES = {
     "all",
     "any",
     "bool",
+    "chr",
+    "Counter",
+    "copy",
     "date_add",
     "date",
     "datetime",
+    "Decimal",
+    "defaultdict",
     "dict",
+    "deepcopy",
     "dumps",
     "enumerate",
+    "Exception",
+    "filter",
+    "fnmatch",
+    "fnmatchcase",
     "float",
+    "ceil",
+    "floor",
+    "format",
     "globals",
     "int",
     "isinstance",
     "json_dumps",
     "json_loads",
+    "json_records",
+    "json_value",
+    "KeyError",
     "len",
     "list",
     "locals",
     "loads",
+    "literal_eval",
+    "map",
     "max",
     "min",
     "month_end",
     "month_start",
     "next",
+    "ord",
+    "pow",
     "parse_date",
     "parse_datetime",
     "print",
     "print_json",
     "range",
+    "repr",
+    "reversed",
     "round",
+    "sqrt",
     "set",
     "sorted",
     "str",
     "sum",
+    "SystemExit",
     "timedelta",
     "tuple",
+    "type",
+    "TypeError",
+    "ValueError",
     "zip",
     "exit",
 }
@@ -144,34 +188,67 @@ _SAFE_CALL_NAMES = {
 _SAFE_METHODS = {
     "add",
     "append",
+    "capitalize",
+    "casefold",
     "clear",
     "copy",
     "count",
     "date",
+    "deepcopy",
     "discard",
+    "defaultdict",
     "endswith",
+    "escape",
     "extend",
+    "find",
+    "findall",
+    "finditer",
+    "fnmatch",
+    "fnmatchcase",
+    "format",
+    "format_map",
+    "fromkeys",
     "fromisoformat",
+    "fullmatch",
     "get",
+    "group",
+    "groupdict",
+    "groups",
     "index",
     "insert",
+    "isalnum",
+    "isalpha",
+    "isdigit",
+    "islower",
+    "isspace",
+    "isupper",
     "isoformat",
     "items",
     "join",
     "keys",
     "lower",
     "lstrip",
+    "match",
+    "partition",
     "pop",
+    "removeprefix",
+    "removesuffix",
     "remove",
     "replace",
     "reverse",
+    "rfind",
+    "rpartition",
+    "rsplit",
     "rstrip",
     "setdefault",
     "sort",
+    "search",
     "split",
     "splitlines",
     "startswith",
     "strip",
+    "sub",
+    "swapcase",
     "title",
     "upper",
     "update",
@@ -179,9 +256,28 @@ _SAFE_METHODS = {
     "dumps",
     "loads",
     "strptime",
+    "zfill",
+    "ceil",
+    "floor",
+    "isfinite",
+    "isnan",
+    "quantize",
+    "sqrt",
+    "compile",
+    "literal_eval",
 }
 
 _SAFE_ATTRIBUTES = _SAFE_METHODS | {
+    "A",
+    "ASCII",
+    "DOTALL",
+    "I",
+    "IGNORECASE",
+    "M",
+    "MULTILINE",
+    "S",
+    "VERBOSE",
+    "X",
     "day",
     "datetime",
     "days",
@@ -193,6 +289,13 @@ _SAFE_ATTRIBUTES = _SAFE_METHODS | {
     "seconds",
     "timedelta",
     "year",
+    "ROUND_CEILING",
+    "ROUND_DOWN",
+    "ROUND_FLOOR",
+    "ROUND_HALF_DOWN",
+    "ROUND_HALF_EVEN",
+    "ROUND_HALF_UP",
+    "ROUND_UP",
 }
 
 _FORBIDDEN_NAMES = {
@@ -214,7 +317,6 @@ _FORBIDDEN_NAMES = {
     "socket",
     "subprocess",
     "sys",
-    "type",
     "vars",
 }
 
@@ -234,7 +336,7 @@ class _Validator(ast.NodeVisitor):
         super().generic_visit(node)
 
     def visit_Name(self, node: ast.Name) -> None:
-        if node.id.startswith("_") or node.id in _FORBIDDEN_NAMES:
+        if (node.id.startswith("_") and node.id != "_") or node.id in _FORBIDDEN_NAMES:
             raise ValueError(f"name {node.id!r} is not allowed")
         self.generic_visit(node)
 
@@ -265,14 +367,23 @@ class _Validator(ast.NodeVisitor):
 
     def visit_Import(self, node: ast.Import) -> None:
         for alias in node.names:
-            if alias.name not in ("datetime", "json"):
+            if alias.name not in (
+                "ast", "collections", "copy", "datetime", "decimal", "fnmatch", "json", "math", "re"
+            ):
                 raise ValueError(f"import of {alias.name!r} is not allowed")
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
         allowed = {
+            "ast": {"literal_eval"},
+            "collections": {"Counter", "defaultdict"},
+            "copy": {"copy", "deepcopy"},
             "datetime": {"date", "datetime", "timedelta"},
+            "decimal": {"Decimal"},
+            "fnmatch": {"filter", "fnmatch", "fnmatchcase"},
             "json": {"dumps", "loads"},
+            "math": {"ceil", "floor", "isfinite", "isnan", "sqrt"},
+            "re": {"escape", "findall", "fullmatch", "match", "search", "sub"},
         }
         if node.level or node.module not in allowed:
             raise ValueError(f"import from {node.module!r} is not allowed")
@@ -326,6 +437,10 @@ def _safe_max(value, *args, **kwargs):
     if args:
         return max((value, *args), **kwargs)
     return max(_bounded_sequence(value), **kwargs)
+
+
+def _safe_type(value):
+    return type(value)
 
 
 def _parse_datetime(value: Any) -> datetime:
@@ -443,6 +558,54 @@ def _execute_restricted(
     def json_loads(value):
         return json.loads(str(value))
 
+    def json_value(value):
+        current = value
+        for _ in range(3):
+            if not isinstance(current, str):
+                break
+            stripped = current.strip()
+            if not stripped or stripped[0] not in '[{"-0123456789tfn':
+                break
+            try:
+                current = json.loads(stripped)
+            except (TypeError, ValueError, json.JSONDecodeError):
+                break
+        return current
+
+    def json_records(value):
+        current = json_value(value)
+        preferred_keys = (
+            "items", "results", "data", "records", "songs", "queue", "threads",
+            "emails", "messages", "events", "playlists", "notes", "transactions",
+        )
+        for _ in range(3):
+            if isinstance(current, list):
+                return current
+            if not isinstance(current, dict):
+                return []
+            next_value = None
+            for key in preferred_keys:
+                candidate = json_value(current.get(key))
+                if isinstance(candidate, list):
+                    return candidate
+                if isinstance(candidate, dict) and next_value is None:
+                    next_value = candidate
+            if next_value is None:
+                containers = [
+                    json_value(candidate)
+                    for candidate in current.values()
+                    if isinstance(candidate, (dict, list, str))
+                ]
+                lists = [candidate for candidate in containers if isinstance(candidate, list)]
+                if len(lists) == 1:
+                    return lists[0]
+                dicts = [candidate for candidate in containers if isinstance(candidate, dict)]
+                next_value = dicts[0] if len(dicts) == 1 else None
+            if next_value is None:
+                return []
+            current = next_value
+        return current if isinstance(current, list) else []
+
     def safe_scope():
         return {"data": data}
 
@@ -454,9 +617,23 @@ def _execute_restricted(
             raise ImportError("relative imports are unavailable")
         if name == "json":
             return json
+        if name == "ast":
+            return ast
+        if name == "fnmatch":
+            return fnmatch
         if name == "datetime":
             return datetime_module
-        if name in {"_locale", "_strptime", "calendar", "locale", "re", "time"}:
+        if name == "copy":
+            return copy
+        if name == "collections":
+            return collections
+        if name == "decimal":
+            return decimal
+        if name == "math":
+            return math
+        if name == "re":
+            return re
+        if name in {"_locale", "_strptime", "calendar", "locale", "time"}:
             # Internal dependencies lazily imported by ``datetime.strptime``. Model code cannot
             # request them directly because the AST validator permits only ``json``/``datetime``.
             return builtins.__import__(name, globals, locals, fromlist, level)
@@ -468,40 +645,73 @@ def _execute_restricted(
         "all": all,
         "any": any,
         "bool": bool,
+        "chr": chr,
+        "Counter": collections.Counter,
+        "copy": copy.copy,
+        "Decimal": decimal.Decimal,
+        "defaultdict": collections.defaultdict,
+        "deepcopy": copy.deepcopy,
         "dict": dict,
         "enumerate": enumerate,
+        "filter": filter,
+        "fnmatch": fnmatch.fnmatch,
+        "fnmatchcase": fnmatch.fnmatchcase,
         "float": float,
+        "ceil": math.ceil,
+        "floor": math.floor,
+        "format": format,
         "globals": safe_scope,
         "int": int,
         "isinstance": isinstance,
         "len": len,
         "list": list,
         "locals": safe_scope,
+        "map": map,
         "max": _safe_max,
         "min": _safe_min,
         "next": next,
+        "ord": ord,
+        "pow": pow,
         "print": safe_print,
         "range": _safe_range,
+        "repr": repr,
+        "reversed": reversed,
         "round": round,
         "set": set,
         "sorted": _safe_sorted,
+        "sqrt": math.sqrt,
         "str": str,
         "sum": _safe_sum,
         "tuple": tuple,
+        "type": _safe_type,
         "zip": zip,
         "exit": safe_exit,
+        "Exception": Exception,
+        "KeyError": KeyError,
+        "literal_eval": ast.literal_eval,
+        "TypeError": TypeError,
+        "ValueError": ValueError,
+        "SystemExit": _ProgramExit,
     }
     globals_dict = {
         "__builtins__": safe_builtins,
         "data": data,
         "date_add": _date_add,
+        "Decimal": decimal.Decimal,
+        "decimal": decimal,
         "json_dumps": json_dumps,
         "json_loads": json_loads,
+        "json_records": json_records,
+        "json_value": json_value,
+        "ast": ast,
+        "fnmatch": fnmatch,
+        "math": math,
         "month_end": _month_end,
         "month_start": _month_start,
         "parse_date": _parse_date,
         "parse_datetime": _parse_datetime,
         "print_json": print_json,
+        "re": re,
         "timedelta": timedelta,
     }
 

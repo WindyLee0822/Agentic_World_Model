@@ -15,6 +15,7 @@ solver:
 
 simulator:
   kind: recursive            # overridden by `method`
+  predict_all_actions: true  # predict clean reads too; use --exact-clean-reads to opt out
   recursion_mode: uncertainty   # uncertainty | fixed
   tau: 0.9                   # uncertainty: spawn while confidence < tau
   L: 2                       # fixed: number of recursion layers
