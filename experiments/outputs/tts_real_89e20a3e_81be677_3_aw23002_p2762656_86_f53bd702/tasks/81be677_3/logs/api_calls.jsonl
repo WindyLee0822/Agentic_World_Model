@@ -1,0 +1,6 @@
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "login"}}
+{"method": "post", "url": "/amazon/auth/token", "data": {"username": "kri-powe@gmail.com", "password": "OrQa$16"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_orders"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_order"}}

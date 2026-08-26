@@ -48,7 +48,7 @@ from tts.env import subsets as env_subsets  # noqa: E402
 from tts.env.registry import available_real_envs, make_env, make_env_from_spec  # noqa: E402
 from tts.harness import run_decision  # noqa: E402
 
-_METHOD_ORDER = {"b0": 0, "b1": 1, "b2": 2, "ours": 3}
+_METHOD_ORDER = {"b0": 0, "b1": 1, "b2": 2, "ours": 3, "agentworld": 4}
 
 
 def _quiet_logging() -> None:
@@ -120,6 +120,52 @@ def sim_config(args, recursion_mode=None, L=None) -> SimulatorConfig:
         L=args.L if L is None else L, hard_cap=args.hard_cap, branching=args.branching,
         node_read_limit=args.node_read_limit, caching=not args.no_cache,
         selective_invalidation=not args.no_selective_invalidation,
+        world_model_model=getattr(
+            args,
+            "wm_model",
+            None,
+        ),
+
+        world_model_base_url=getattr(
+            args,
+            "wm_base_url",
+            None,
+        ),
+
+        world_model_api_key=(
+            getattr(args, "wm_api_key", None)
+            or "EMPTY"
+        ),
+
+        world_model_system_prompt_file=getattr(
+            args,
+            "wm_system_prompt_file",
+            None,
+        ),
+
+        world_model_temperature=getattr(
+            args,
+            "wm_temperature",
+            0.6,
+        ),
+
+        world_model_top_p=getattr(
+            args,
+            "wm_top_p",
+            0.95,
+        ),
+
+        world_model_top_k=getattr(
+            args,
+            "wm_top_k",
+            20,
+        ),
+
+        world_model_max_tokens=getattr(
+            args,
+            "wm_max_tokens",
+            32768,
+        ),
     )
 
 
@@ -239,35 +285,24 @@ def _configure_officebench_bon(args) -> None:
     ):
         args.predict_all_actions = False
 
-    model = (
-        getattr(args, "llm_agent", None)
-        or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
-        or os.environ.get("WM_MODEL")
-        or os.environ.get("TTS_AGENT_MODEL")
-    )
-    is_gpt54 = _is_gpt_54(model)
     if (
         getattr(args, "verifier_samples", None) is None
         and "TTS_OFFICEBENCH_VERIFIER_SAMPLES" not in os.environ
-        and is_gpt54
     ):
         os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] = "5"
 
-    if is_gpt54:
-        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
-        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
-        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
-        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
-        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")
-        office_margin = os.environ.get(
-            "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")
-        os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] = office_margin
+    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
+    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
+    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
+    os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
+    os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")
+
+    office_margin = os.environ.get(
+        "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")
+    os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] = office_margin
 
     if not getattr(args, "_success_score_explicit", False):
-        args.success_score = (
-            "simulator_confidence_guarded" if is_gpt54
-            else "simulator_confidence"
-        )
+        args.success_score = "simulator_confidence_guarded"
 
 
 def _record_run_env(record: dict):
@@ -1194,6 +1229,52 @@ def main() -> None:
     p.add_argument("--llm-agent", default=None, help="agent model (default: Azure deployment / WM_MODEL, e.g. gpt-4.1)")
     p.add_argument("--llm-user", default=None, help="τ² user-simulator model (default: --llm-agent)")
     p.add_argument(
+        "--wm-model",
+        default=None,
+        help="AgentWorld served model name.",
+    )
+
+    p.add_argument(
+        "--wm-base-url",
+        default=None,
+        help="Separate AgentWorld OpenAI-compatible endpoint.",
+    )
+
+    p.add_argument(
+        "--wm-api-key",
+        default="EMPTY",
+    )
+
+    p.add_argument(
+        "--wm-system-prompt-file",
+        default=None,
+    )
+
+    p.add_argument(
+        "--wm-temperature",
+        type=float,
+        default=0.6,
+    )
+
+    p.add_argument(
+        "--wm-top-p",
+        type=float,
+        default=0.95,
+    )
+
+    p.add_argument(
+        "--wm-top-k",
+        type=int,
+        default=20,
+    )
+
+    p.add_argument(
+        "--wm-max-tokens",
+        type=int,
+        default=32768,
+    )
+
+    p.add_argument(
         "--tau2-qwen-agent-profile",
         default=os.environ.get("TTS_TAU2_QWEN_AGENT_PROFILE", "off"),
         choices=["auto", "off", "prompt", "policy"],
@@ -1336,6 +1417,39 @@ def main() -> None:
         p.error("--no-verifier-reference cannot be combined with --verifier-reference or "
                 "--verifier-percheck")
 
+    requested_methods = {
+        value.strip().lower()
+        for value in args.methods.split(",")
+        if value.strip()
+    }
+
+    if "agentworld" in requested_methods:
+
+        if args.agent != "llm_wm":
+            p.error(
+                "--methods agentworld requires "
+                "--agent llm_wm"
+            )
+
+        if not args.wm_model:
+            p.error(
+                "--methods agentworld requires "
+                "--wm-model"
+            )
+
+        if not args.wm_base_url:
+            p.error(
+                "--methods agentworld requires "
+                "--wm-base-url"
+            )
+
+        if not args.wm_system_prompt_file:
+            p.error(
+                "--methods agentworld requires "
+                "--wm-system-prompt-file pointing to "
+                "Qwen's official MCP prompt"
+            )
+
     if not args.verbose:
         _quiet_logging()
 
@@ -1435,6 +1549,14 @@ def main() -> None:
             p.error("--simulation-only requires --agent llm_wm")
         if not args.predict_all_actions:
             p.error("--simulation-only requires --predict-all-actions")
+    if (
+        "agentworld" in requested_methods
+        and env_name not in ["tau2","appworld"]
+    ):
+        p.error(
+            "AgentWorld baseline currently "
+            "supports tau2/appworld only."
+        )
     if env_name == "appworld" and args.agent == "llm_wm":
         _configure_appworld_bon(args)
         if args.appworld_instruction_preflights:

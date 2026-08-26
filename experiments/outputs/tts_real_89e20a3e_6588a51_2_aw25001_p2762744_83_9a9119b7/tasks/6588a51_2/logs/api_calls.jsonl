@@ -1,0 +1,4 @@
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_orders"}}
+{"method": "post", "url": "/amazon/auth/token", "data": {"username": "normansmit@gmail.com", "password": "%+=X&(Z"}}

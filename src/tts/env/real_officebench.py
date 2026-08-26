@@ -219,6 +219,58 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                 not bool((metadata or {}).get("hard_invalid", False)),
             )
 
+        def compare_two(candidate_a: int, candidate_b: int) -> tuple[int, str]:
+            pair = [candidate_a, candidate_b]
+            rendered = []
+
+            for index in pair:
+                rollout = rollouts[index]
+                metadata = rollout.predicted.metadata or {}
+                state = metadata.get("verifier_final_state") or {}
+                audit = metadata.get("verifier_percheck") or {}
+
+                rendered.append(
+                    f"### Candidate {index}\n"
+                    f"confidence={float(rollout.predicted.reward):.4f}; "
+                    f"done={rollout.trajectory.done}; "
+                    f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
+                    f"termination={rollout.trajectory.termination_reason!r}\n"
+                    f"per-check: "
+                    f"met={audit.get('met')}, "
+                    f"unmet={audit.get('unmet')}, "
+                    f"unknown={audit.get('unknown')}, "
+                    f"total={audit.get('total')}\n"
+                    f"predicted final state:\n"
+                    f"{_compact_final_state(state)}\n"
+                    f"trajectory diagnostics:\n"
+                    f"{_compact_trajectory(rollout.trajectory)}"
+                )
+
+            prompt = (
+                "Choose the candidate most likely to pass every native "
+                "OfficeBench evaluator check. The predicted final state is "
+                "the primary evidence. Use trajectory diagnostics only to "
+                "detect failed, malformed, incomplete, or destructive actions.\n\n"
+                f"## User task\n{self._instruction}\n\n"
+                f"## Native evaluator checks\n"
+                f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
+                f"{chr(10).join(rendered)}\n\n"
+                f"Valid candidate IDs: {pair}\n"
+                "Return exactly:\n"
+                "BEST: <candidate ID>\n"
+                "REASON: <one concise sentence>"
+            )
+
+            response = client.chat(
+                "You are a precise comparative OfficeBench trajectory verifier.",
+                prompt,
+                temperature=0.0,
+                max_tokens=256,
+                extra_body=extra_body,
+            )
+
+            return _parse_comparative_best(response, len(rollouts)), response
+
         new_indices = list(range(prior_pool_size, len(rollouts)))
         if not new_indices:
             return
@@ -263,58 +315,255 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         from ..llm import make_chat_client
         from ..llm.azure import azure_deployment
 
+        # if len(contenders) >= 2:
+        #     rendered = []
+        #     for index in contenders:
+        #         rollout = rollouts[index]
+        #         steps = "\n".join(
+        #             f"  {step_index}. action={_action_of(step.action)}\n"
+        #             f"     observation={str(step.observation.content)[:500]}"
+        #             for step_index, step in enumerate(rollout.trajectory.steps)
+        #         )
+        #         metadata = rollout.predicted.metadata or {}
+        #         state = metadata.get("verifier_final_state") or {}
+        #         rendered.append(
+        #             f"### Candidate {index}\n"
+        #             f"confidence={float(rollout.predicted.reward):.4f}; "
+        #             f"done={rollout.trajectory.done}; "
+        #             f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
+        #             f"termination={rollout.trajectory.termination_reason!r}\n"
+        #             f"per-check audit={json.dumps(metadata.get('verifier_percheck'), default=str)}\n"
+        #             f"predicted final state={json.dumps(state, default=str)[:12000]}\n"
+        #             f"trajectory:\n{steps or '  (no actions)'}"
+        #         )
+        #     prompt = (
+        #         "Choose the ONE candidate most likely to pass every native OfficeBench evaluator check. "
+        #         "Audit the predicted final state against every check, then use the action/observation "
+        #         "trace to detect malformed, failed, incomplete, or destructive edits. Confidence values "
+        #         "are noisy and tied candidates are common, so do not prefer the incumbent or a higher "
+        #         "index without evaluator-visible evidence. If all candidates are flawed, choose the "
+        #         "least flawed.\n\n"
+        #         f"## User task\n{self._instruction}\n\n"
+        #         f"## Native evaluator checks\n"
+        #         f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
+        #         f"{chr(10).join(rendered)}\n\n"
+        #         f"Valid candidate IDs: {contenders}\n"
+        #         "Return exactly:\nBEST: <candidate ID>\nREASON: <one concise sentence>"
+        #     )
+        #     model = config.solver.llm_agent or azure_deployment()
+            
+        #     client = make_chat_client(
+        #         model=model,
+        #         seed=20_000_000 + int(config.seed) + len(rollouts),
+        #     )
+        #     extra_body = None
+        #     if (
+        #         getattr(client, "backend", "") == "openai"
+        #         and "qwen" in str(model).lower()
+        #     ):
+        #         extra_body = {
+        #             "chat_template_kwargs": {
+        #                 "enable_thinking": False,
+        #             }
+        #         }
+
+        #     response = client.chat(
+        #         "You are a precise comparative OfficeBench trajectory verifier.",
+        #         prompt,
+        #         temperature=0.0,
+        #         max_tokens=256,
+        #         extra_body=extra_body,
+        #     )
+        #     best = _parse_comparative_best(response, len(rollouts))
+        #     if best not in contenders:
+        #         raise ValueError(
+        #             f"OfficeBench comparative verifier selected non-contender {best}; "
+        #             f"valid contenders were {contenders}"
+        #         )
         if len(contenders) >= 2:
-            rendered = []
-            for index in contenders:
-                rollout = rollouts[index]
-                steps = "\n".join(
-                    f"  {step_index}. action={_action_of(step.action)}\n"
-                    f"     observation={str(step.observation.content)[:500]}"
-                    for step_index, step in enumerate(rollout.trajectory.steps)
-                )
-                metadata = rollout.predicted.metadata or {}
-                state = metadata.get("verifier_final_state") or {}
-                rendered.append(
-                    f"### Candidate {index}\n"
-                    f"confidence={float(rollout.predicted.reward):.4f}; "
-                    f"done={rollout.trajectory.done}; "
-                    f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
-                    f"termination={rollout.trajectory.termination_reason!r}\n"
-                    f"per-check audit={json.dumps(metadata.get('verifier_percheck'), default=str)}\n"
-                    f"predicted final state={json.dumps(state, default=str)[:12000]}\n"
-                    f"trajectory:\n{steps or '  (no actions)'}"
-                )
-            prompt = (
-                "Choose the ONE candidate most likely to pass every native OfficeBench evaluator check. "
-                "Audit the predicted final state against every check, then use the action/observation "
-                "trace to detect malformed, failed, incomplete, or destructive edits. Confidence values "
-                "are noisy and tied candidates are common, so do not prefer the incumbent or a higher "
-                "index without evaluator-visible evidence. If all candidates are flawed, choose the "
-                "least flawed.\n\n"
-                f"## User task\n{self._instruction}\n\n"
-                f"## Native evaluator checks\n"
-                f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
-                f"{chr(10).join(rendered)}\n\n"
-                f"Valid candidate IDs: {contenders}\n"
-                "Return exactly:\nBEST: <candidate ID>\nREASON: <one concise sentence>"
-            )
             model = config.solver.llm_agent or azure_deployment()
-            response = make_chat_client(
-                model=model,
-                seed=20_000_000 + int(config.seed) + len(rollouts),
-            ).chat(
-                "You are a precise comparative OfficeBench trajectory verifier.",
-                prompt,
-                temperature=0.0,
-                max_tokens=256,
-            )
-            best = _parse_comparative_best(response, len(rollouts))
-            if best not in contenders:
-                raise ValueError(
-                    f"OfficeBench comparative verifier selected non-contender {best}; "
-                    f"valid contenders were {contenders}"
+            is_qwen = "qwen" in str(model).lower()
+
+            # ================================================================
+            # GPT-5.4: KEEP THE ORIGINAL LISTWISE COMPARATIVE VERIFIER EXACTLY
+            # ================================================================
+            if not is_qwen:
+                rendered = []
+                for index in contenders:
+                    rollout = rollouts[index]
+                    steps = "\n".join(
+                        f"  {step_index}. action={_action_of(step.action)}\n"
+                        f"     observation={str(step.observation.content)[:500]}"
+                        for step_index, step in enumerate(rollout.trajectory.steps)
+                    )
+                    metadata = rollout.predicted.metadata or {}
+                    state = metadata.get("verifier_final_state") or {}
+                    rendered.append(
+                        f"### Candidate {index}\n"
+                        f"confidence={float(rollout.predicted.reward):.4f}; "
+                        f"done={rollout.trajectory.done}; "
+                        f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
+                        f"termination={rollout.trajectory.termination_reason!r}\n"
+                        f"per-check audit={json.dumps(metadata.get('verifier_percheck'), default=str)}\n"
+                        f"predicted final state={json.dumps(state, default=str)[:12000]}\n"
+                        f"trajectory:\n{steps or '  (no actions)'}"
+                    )
+
+                prompt = (
+                    "Choose the ONE candidate most likely to pass every native OfficeBench evaluator check. "
+                    "Audit the predicted final state against every check, then use the action/observation "
+                    "trace to detect malformed, failed, incomplete, or destructive edits. Confidence values "
+                    "are noisy and tied candidates are common, so do not prefer the incumbent or a higher "
+                    "index without evaluator-visible evidence. If all candidates are flawed, choose the "
+                    "least flawed.\n\n"
+                    f"## User task\n{self._instruction}\n\n"
+                    f"## Native evaluator checks\n"
+                    f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
+                    f"{chr(10).join(rendered)}\n\n"
+                    f"Valid candidate IDs: {contenders}\n"
+                    "Return exactly:\nBEST: <candidate ID>\nREASON: <one concise sentence>"
                 )
 
+                response = make_chat_client(
+                    model=model,
+                    seed=20_000_000 + int(config.seed) + len(rollouts),
+                ).chat(
+                    "You are a precise comparative OfficeBench trajectory verifier.",
+                    prompt,
+                    temperature=0.0,
+                    max_tokens=256,
+                )
+
+                best = _parse_comparative_best(
+                    response,
+                    len(rollouts),
+                )
+
+                if best not in contenders:
+                    raise ValueError(
+                        f"OfficeBench comparative verifier selected non-contender {best}; "
+                        f"valid contenders were {contenders}"
+                    )
+
+            # ================================================================
+            # QWEN: PAIRWISE COMPARISON TO AVOID HUGE N-WAY PROMPTS
+            # ================================================================
+            else:
+                client = make_chat_client(
+                    model=model,
+                    seed=20_000_000 + int(config.seed) + len(rollouts),
+                )
+
+                # Keep your Qwen verifier-thinking fix here.
+                extra_body = {
+                    "chat_template_kwargs": {
+                        "enable_thinking": False,
+                    }
+                }
+
+                def render_qwen_candidate(index: int) -> str:
+                    rollout = rollouts[index]
+                    metadata = rollout.predicted.metadata or {}
+                    state = metadata.get("verifier_final_state") or {}
+
+                    # Qwen-specific compact trace:
+                    # preserve the full action sequence, but do not dump
+                    # 500 chars of observation for every step.
+                    steps = []
+                    for step_index, step in enumerate(rollout.trajectory.steps):
+                        action_text = str(_action_of(step.action))
+                        observation_text = str(step.observation.content or "")
+
+                        # Actions are much more informative than full observations
+                        # for the comparative audit.
+                        steps.append(
+                            f"  {step_index}. "
+                            f"action={action_text[:400]}\n"
+                            f"     observation={observation_text[:120]}"
+                        )
+
+                    return (
+                        f"### Candidate {index}\n"
+                        f"confidence={float(rollout.predicted.reward):.4f}; "
+                        f"done={rollout.trajectory.done}; "
+                        f"hard_invalid={bool(metadata.get('hard_invalid', False))}; "
+                        f"termination={rollout.trajectory.termination_reason!r}\n"
+                        f"per-check audit="
+                        f"{json.dumps(metadata.get('verifier_percheck'), default=str)}\n"
+                        f"predicted final state="
+                        f"{json.dumps(state, default=str)[:8000]}\n"
+                        f"trajectory:\n"
+                        f"{chr(10).join(steps) or '  (no actions)'}"
+                    )
+
+                # Start from the native winner, then challenge it one candidate
+                # at a time. At most TWO trajectories enter any Qwen prompt.
+                best = native_best
+                pairwise_responses = []
+
+                for challenger_index in contenders:
+                    if challenger_index == best:
+                        continue
+
+                    pair = [best, challenger_index]
+
+                    rendered = [
+                        render_qwen_candidate(index)
+                        for index in pair
+                    ]
+
+                    prompt = (
+                        "Choose the ONE candidate most likely to pass every native "
+                        "OfficeBench evaluator check. Audit the predicted final state "
+                        "against every check, then use the action/observation trace "
+                        "to detect malformed, failed, incomplete, or destructive edits. "
+                        "Confidence values are noisy, so use evaluator-visible evidence. "
+                        "If both candidates are flawed, choose the least flawed.\n\n"
+                        f"## User task\n{self._instruction}\n\n"
+                        f"## Native evaluator checks\n"
+                        f"{json.dumps(self._config.get('evaluation', []), default=str)[:12000]}\n\n"
+                        f"{chr(10).join(rendered)}\n\n"
+                        f"Valid candidate IDs: {pair}\n"
+                        "Return exactly:\n"
+                        "BEST: <candidate ID>\n"
+                        "REASON: <one concise sentence>"
+                    )
+
+                    pair_response = client.chat(
+                        "You are a precise comparative OfficeBench trajectory verifier.",
+                        prompt,
+                        temperature=0.0,
+                        max_tokens=256,
+                        extra_body=extra_body,
+                    )
+
+                    pair_best = _parse_comparative_best(
+                        pair_response,
+                        len(rollouts),
+                    )
+
+                    if pair_best not in pair:
+                        raise ValueError(
+                            f"OfficeBench pairwise verifier selected "
+                            f"non-contender {pair_best}; "
+                            f"valid candidates were {pair}"
+                        )
+
+                    best = pair_best
+
+                    pairwise_responses.append(
+                        f"PAIR {pair}: {pair_response}"
+                    )
+
+                # Keep metadata structure compatible with the old code:
+                # response remains one serializable string.
+                response = "\n\n".join(pairwise_responses)
+
+                if best not in contenders:
+                    raise ValueError(
+                        f"OfficeBench comparative verifier selected non-contender {best}; "
+                        f"valid contenders were {contenders}"
+                    )
         decision = {
             "pool_size": len(rollouts),
             "prior_pool_size": prior_pool_size,

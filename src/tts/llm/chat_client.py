@@ -241,12 +241,13 @@ class ChatClient:
         *,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        extra_body: Optional[dict[str, Any]] = None,
     ) -> str:
         messages = [
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ]
-        return self.complete(messages, temperature=temperature, max_tokens=max_tokens)
+        return self.complete(messages, temperature=temperature, max_tokens=max_tokens, extra_body=extra_body,)
 
     def complete(
         self,
@@ -254,6 +255,7 @@ class ChatClient:
         *,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        extra_body: Optional[dict[str, Any]] = None,
     ) -> str:
         """Send a raw ``[{role, content}, ...]`` message list (multi-turn) and return the text."""
         eff_temp = self.temperature if temperature is None else temperature
@@ -264,7 +266,7 @@ class ChatClient:
         cache_key = None
         if _response_cache_enabled() and not eff_temp:
             cache_key = hashlib.sha256(
-                json.dumps([self.model, messages, eff_tok, self.seed], default=str, sort_keys=True).encode()
+                json.dumps([self.model, messages, eff_tok, self.seed, extra_body], default=str, sort_keys=True).encode()
             ).hexdigest()
             with _RESPONSE_CACHE_LOCK:
                 if cache_key in _RESPONSE_CACHE:
@@ -281,6 +283,8 @@ class ChatClient:
                 kwargs["temperature"] = eff_temp
             if self._supports_seed and self.seed is not None:
                 kwargs["seed"] = self.seed
+            if extra_body is not None:
+                kwargs["extra_body"] = extra_body
             try:
                 _throttle()  # space out bursts so they don't trip the deployment's RPM quota
                 resp = self._client.chat.completions.create(**kwargs)

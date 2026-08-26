@@ -1531,6 +1531,406 @@ class AppWorldTaskEnv(TaskEnvironment):
                         reason=f"official AppWorld.evaluate TGC {passed}/{total}")
         return traj, ri
 
+    def _run_agentworld_rollout_wm(
+        self,
+        config,
+        seed: int,
+        budget,
+        cache=None,
+    ):
+        """Pure AgentWorld baseline for AppWorld.
+
+        Agent:
+            existing Qwen3.5 ReAct agent
+
+        Simulation:
+            Qwen-AgentWorld + official MCP prompt
+
+        Verification:
+            same Qwen-AgentWorld session through a verifier MCP tool
+
+        Does NOT use:
+            AppWorldWMPredictor
+            install_wm_requester
+            predict_success
+            read grounding
+            Python WM
+            reference verifier
+        """
+
+        from ..llm import (
+            make_chat_client,
+        )
+
+        from ..llm.agentworld import (
+            AgentWorldSession,
+            build_agentworld_system_prompt,
+        )
+
+        from ..llm.azure import (
+            azure_deployment,
+        )
+
+        from .appworld_agentworld import (
+            AppWorldAgentWorldSimulator,
+            appworld_agentworld_tool_docs,
+            build_appworld_initial_state,
+            format_appworld_initial_state,
+            install_agentworld_requester,
+        )
+
+        from .appworld_react_agent import (
+            run_react_code_agent,
+        )
+
+        solver = config.solver
+        sim_cfg = config.simulator
+
+        # ---------------------------------------------------------
+        # Qwen3.5 AGENT — exactly separate from AgentWorld
+        # ---------------------------------------------------------
+
+        agent_model = (
+            solver.llm_agent
+            or azure_deployment()
+        )
+
+        chat = make_chat_client(
+            model=agent_model,
+            seed=seed,
+        )
+
+        # ---------------------------------------------------------
+        # AgentWorld
+        # ---------------------------------------------------------
+
+        if (
+            not sim_cfg.world_model_model
+            or not sim_cfg.world_model_base_url
+        ):
+            raise ValueError(
+                "agentworld requires "
+                "world_model_model and "
+                "world_model_base_url"
+            )
+
+        session = AgentWorldSession(
+            model=(
+                sim_cfg.world_model_model
+            ),
+
+            base_url=(
+                sim_cfg.world_model_base_url
+            ),
+
+            api_key=(
+                sim_cfg.world_model_api_key
+            ),
+
+            # AppWorld API catalog becomes available
+            # after opening world.
+            system_prompt="",
+
+            temperature=(
+                sim_cfg
+                .world_model_temperature
+            ),
+
+            top_p=(
+                sim_cfg
+                .world_model_top_p
+            ),
+
+            top_k=(
+                sim_cfg
+                .world_model_top_k
+            ),
+
+            max_tokens=(
+                sim_cfg
+                .world_model_max_tokens
+            ),
+        )
+
+        simulator = (
+            AppWorldAgentWorldSimulator(
+                session
+            )
+        )
+
+        max_steps = (
+            solver.max_steps
+            if (
+                solver.max_steps
+                and solver.max_steps
+                <= 50
+            )
+            else 40
+        )
+
+        # ---------------------------------------------------------
+        # Open pristine AppWorld task.
+        #
+        # We use the real world only as the shell executing agent Python.
+        # Substantive API calls are intercepted before real execution.
+        # ---------------------------------------------------------
+
+        with _world_session(
+            self._task_id,
+            self._experiment_base,
+            f"aw{seed}",
+        ) as world:
+
+            # -----------------------------------------------------
+            # Qwen's OFFICIAL MCP system prompt.
+            #
+            # No AppWorldWMPredictor prompt.
+            # No reference criteria.
+            # No gold task checks.
+            # -----------------------------------------------------
+
+            tool_docs = (
+                appworld_agentworld_tool_docs(
+                    world
+                )
+            )
+
+            system_prompt = (
+                build_agentworld_system_prompt(
+                    tool_docs,
+                    template_file=(
+                        sim_cfg
+                        .world_model_system_prompt_file
+                    ),
+                )
+            )
+            initial_state = (
+                build_appworld_initial_state(
+                    world,
+                    instruction=self._instruction,
+                    max_records_per_table=5,
+                    max_total_records=40,
+                    max_value_chars=200,
+                    max_total_chars=25000,
+                )
+            )
+
+            initial_state_text = json.dumps(
+                initial_state,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                default=str,
+            )
+
+            system_prompt += (
+                "\n\n"
+                "# Initial Environment State\n"
+                "The following contains selected facts "
+                "from the initial AppWorld state that may "
+                "be relevant to the task. It is not a "
+                "complete database snapshot. Do not assume "
+                "unlisted records do not exist.\n"
+                + initial_state_text
+            )
+            system_prompt += """
+            # api_docs
+            api_docs documents the tools listed above.
+            For api_docs calls, return documentation consistent
+            with those tool definitions. Never invent API names
+            or parameters.
+            """
+
+            session.set_system_prompt(
+                system_prompt
+            )
+
+            # -----------------------------------------------------
+            # Install the standalone requester.
+            #
+            # DO NOT call install_wm_requester().
+            # -----------------------------------------------------
+
+            install_agentworld_requester(
+                world,
+                simulator,
+            )
+
+            # -----------------------------------------------------
+            # Run the SAME Qwen3.5 ReAct agent.
+            # -----------------------------------------------------
+
+            code_blocks, outputs = (
+                run_react_code_agent(
+                    world,
+                    chat,
+
+                    max_steps=max_steps,
+
+                    temperature=(
+                        solver.temperature
+                    ),
+
+                    # No predictor hard-timeout machinery.
+                    wall_clock_budget_s=None,
+
+                    enable_multi_app_skill=bool(
+                        self.level
+                        and self.level > 1
+                    ),
+
+                    enable_l2_targeted_skill=(
+                        self.level == 2
+                        and self.split
+                        == "test_challenge"
+                    ),
+
+                    enable_instruction_guidance=(
+                        self.split
+                        == "test_challenge"
+                    ),
+
+                    broad_instruction_guidance=(
+                        self.level == 3
+                    ),
+
+                    # Do NOT feed gold/reference checklist
+                    # into the baseline agent.
+                    task_checklist=None,
+
+                    # Since real supervisor DB is not mutated,
+                    # stop when our standalone simulator saw
+                    # supervisor.complete_task.
+                    completion_check=lambda: (
+                        simulator.completed
+                    ),
+                )
+            )
+
+            # -----------------------------------------------------
+            # AgentWorld SELF-VERIFICATION
+            #
+            # SAME checkpoint.
+            # SAME stateful session.
+            # SAME official MCP system prompt.
+            #
+            # No predictor.predict_success().
+            # -----------------------------------------------------
+
+            (
+                predicted_confidence,
+                verification_result,
+                verification_raw,
+            ) = simulator.verify_task(
+                self._instruction
+            )
+
+        # ---------------------------------------------------------
+        # Convert agent rollout to the normal project Trajectory object.
+        # This is just harness plumbing, not WM logic.
+        # ---------------------------------------------------------
+
+        steps = [
+            Step(
+                action=Action(
+                    "execute_code",
+                    {
+                        "step": i,
+                        "code": code,
+                    },
+                ),
+
+                observation=Observation(
+                    content=str(out)[-400:],
+
+                    error=(
+                        "Execution failed"
+                        in str(out)
+                    ),
+                ),
+            )
+
+            for i, (code, out)
+            in enumerate(
+                zip(
+                    code_blocks,
+                    outputs,
+                )
+            )
+        ]
+
+        traj = Trajectory(
+            steps=steps,
+            final_message=(
+                "complete_task"
+                if simulator.completed
+                else "max_steps"
+            ),
+        )
+
+        predicted = RewardInfo(
+            reward=float(
+                predicted_confidence
+            ),
+
+            success=(
+                predicted_confidence
+                >= 0.5
+            ),
+
+            grounded=False,
+
+            reason=(
+                "AgentWorld-native AppWorld "
+                f"simulation: "
+                f"{simulator.n_transition_calls} "
+                "simulated API transitions; "
+                "AgentWorld self-verification="
+                f"{predicted_confidence:.3f}"
+            ),
+
+            metadata={
+                "transition_model":
+                    sim_cfg.world_model_model,
+
+                "verification_model":
+                    sim_cfg.world_model_model,
+
+                "transition_model_tokens":
+                    int(
+                        session.total_tokens
+                    ),
+
+                "transition_chat_format":
+                    "agentworld_mcp_alternating",
+
+                "agentworld_native":
+                    True,
+
+                "agentworld_completed":
+                    simulator.completed,
+
+                "agentworld_completion_args":
+                    dict(
+                        simulator.completion_args
+                    ),
+
+                "agentworld_transition_calls":
+                    simulator.n_transition_calls,
+
+                "agentworld_verification":
+                    verification_result,
+
+                "agentworld_verification_raw":
+                    verification_raw,
+            },
+        )
+
+        return (
+            traj,
+            predicted,
+            None,
+        )
+    
     def run_agent_rollout_wm(self, config, method: str, seed: int, budget, cache=None):
         """Official ReAct code agent interacting with the **world model** (no real writes).
 
@@ -1548,6 +1948,13 @@ class AppWorldTaskEnv(TaskEnvironment):
         task state are frozen before candidate code generation; writes, dirty reads, and success reuse
         that system prompt without action-conditioned DB probes. Ours retains adaptive read grounding.
         """
+        if str(method).lower() == "agentworld":
+            return self._run_agentworld_rollout_wm(
+                config,
+                seed,
+                budget,
+                cache,
+            )
         from ..llm import make_chat_client
         from ..llm.azure import azure_deployment
         from .appworld_react_agent import run_react_code_agent

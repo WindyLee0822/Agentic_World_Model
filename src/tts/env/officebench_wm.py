@@ -563,12 +563,37 @@ class OfficeBenchVerifier:
                     gold_files,
                     status_check=check,
                 )
-                status = self._parse_status(self._chat.chat(
+                # status = self._parse_status(self._chat.chat(
+                #     self._system(_STATUS_SYSTEM),
+                #     prompt,
+                #     temperature=0.0,
+                #     max_tokens=16,
+                # ))
+                extra_body = None
+                if (
+                    getattr(self._chat, "backend", "") == "openai"
+                    and "qwen" in str(getattr(self._chat, "model", "")).lower()
+                ):
+                    extra_body = {
+                        "chat_template_kwargs": {
+                            "enable_thinking": False,
+                        }
+                    }
+
+                raw_status = self._chat.chat(
                     self._system(_STATUS_SYSTEM),
                     prompt,
                     temperature=0.0,
                     max_tokens=16,
-                ))
+                    extra_body=extra_body,
+                )
+
+                if not raw_status.strip():
+                    raise ValueError(
+                        "OfficeBench per-check verifier returned empty response"
+                    )
+
+                status = self._parse_status(raw_status)
                 if status == "MET":
                     met += 1
                 elif status == "UNMET":

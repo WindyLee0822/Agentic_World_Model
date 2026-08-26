@@ -2327,6 +2327,193 @@ class Tau2TaskEnv(TaskEnvironment):
             max_steps=solver.max_steps, seed=seed,
         )
 
+    def _run_agentworld_rollout_wm(
+        self,
+        config,
+        seed: int,
+        budget,
+        cache=None,
+    ):
+        """Run Qwen3.5 agent against Qwen-AgentWorld simulated environment."""
+
+        from dataclasses import replace
+
+        from tau2.data_model.message import (
+            AssistantMessage,
+            ToolMessage,
+        )
+        from tau2.run import build_text_orchestrator
+
+        from ..llm import ensure_litellm_azure_env
+        from ..llm.agentworld import (
+            AgentWorldSession,
+            build_agentworld_system_prompt,
+        )
+
+        sim_cfg = config.simulator
+
+        if not sim_cfg.world_model_model:
+            raise ValueError(
+                "agentworld requires simulator.world_model_model"
+            )
+
+        if not sim_cfg.world_model_base_url:
+            raise ValueError(
+                "agentworld requires simulator.world_model_base_url"
+            )
+
+        # Fill official Qwen AgentWorld MCP prompt using τ² tool docs.
+        system_prompt = build_agentworld_system_prompt(
+            self._tool_docstrings(),
+            template_file=sim_cfg.world_model_system_prompt_file,
+        )
+
+        # IMPORTANT:
+        # This client is completely independent from Qwen3.5 agent routing.
+        session = AgentWorldSession(
+            model=sim_cfg.world_model_model,
+            base_url=sim_cfg.world_model_base_url,
+            api_key=sim_cfg.world_model_api_key,
+            system_prompt=system_prompt,
+            temperature=sim_cfg.world_model_temperature,
+            top_p=sim_cfg.world_model_top_p,
+            top_k=sim_cfg.world_model_top_k,
+            max_tokens=sim_cfg.world_model_max_tokens,
+        )
+
+        def agentworld_get_response(message):
+            try:
+                content = session.predict_tool(
+                    message.name,
+                    dict(message.arguments or {}),
+                )
+
+                upper = content.lstrip().upper()
+
+                is_error = upper.startswith(
+                    (
+                        "ERROR",
+                        "EXCEPTION",
+                        "TRACEBACK",
+                    )
+                )
+
+            except Exception as exc:
+                content = (
+                    f"Error: {type(exc).__name__}: {exc}"
+                )
+                is_error = True
+
+            return ToolMessage(
+                id=message.id,
+                content=content,
+                requestor=message.requestor,
+                role="tool",
+                error=is_error,
+            )
+
+        # ---------------------------------------------------------
+        # BUILD AGENT EXACTLY AS BEFORE.
+        # ---------------------------------------------------------
+
+        default_model = ensure_litellm_azure_env()
+
+        _align_tau2_judge_models(default_model)
+        _align_tau2_embedder_azure()
+
+        run_cfg = self._build_run_cfg(
+            config,
+            seed,
+            default_model,
+        )
+
+        orch = build_text_orchestrator(
+            run_cfg,
+            self._task,
+            seed=seed,
+        )
+
+        # ---------------------------------------------------------
+        # THIS IS THE ONLY THING WE REPLACE.
+        #
+        # Do NOT replace:
+        #     orch.agent
+        #     orch.user
+        #
+        # Qwen3.5 is still orch.agent.
+        # ---------------------------------------------------------
+
+        orch.environment.get_response = (
+            agentworld_get_response
+        )
+
+        sim = orch.run()
+
+        # Convert normal τ² messages into your existing Trajectory.
+        steps = []
+        final_message = "Done."
+
+        for msg in sim.messages:
+            if isinstance(msg, AssistantMessage):
+
+                if msg.content:
+                    final_message = str(msg.content)
+
+                for tc in (msg.tool_calls or []):
+                    steps.append(
+                        Step(
+                            action=Action(
+                                tc.name,
+                                dict(tc.arguments or {}),
+                            )
+                        )
+                    )
+
+        agent_traj = Trajectory(
+            steps=steps,
+            final_message=final_message,
+        )
+
+        agent_traj.sim_messages = list(
+            sim.messages
+        )
+
+        agent_traj.termination_reason = (
+            sim.termination_reason
+        )
+
+        # Keep your current trajectory verifier fixed.
+        # AgentWorld changes only transition prediction.
+        verifier = self.world_model(
+            replace(
+                config.simulator,
+                kind="recursive",
+            ),
+            budget,
+            cache,
+        )
+
+        predicted = verifier.evaluate(
+            agent_traj
+        )
+
+        predicted.metadata = {
+            **(predicted.metadata or {}),
+            "transition_model":
+                sim_cfg.world_model_model,
+            "transition_model_tokens":
+                int(session.total_tokens),
+            "transition_chat_format":
+                "agentworld_mcp_alternating",
+        }
+
+        return (
+            agent_traj,
+            predicted,
+            verifier.spawn_root,
+        )
+
+
     def run_agent_rollout_wm(self, config, method: str, seed: int, budget, cache=None):
         """Official agent + user simulator interacting with the **world model** (no real writes).
 
@@ -2344,6 +2531,13 @@ class Tau2TaskEnv(TaskEnvironment):
         if not self._world_model_eligible():
             raise NotImplementedError(
                 f"no read-grounded world model for this {self.domain!r} task")
+        if str(method).lower() == "agentworld":
+            return self._run_agentworld_rollout_wm(
+                config,
+                seed,
+                budget,
+                cache,
+            )
 
         from tau2.data_model.message import AssistantMessage, ToolMessage
         from tau2.run import build_text_orchestrator

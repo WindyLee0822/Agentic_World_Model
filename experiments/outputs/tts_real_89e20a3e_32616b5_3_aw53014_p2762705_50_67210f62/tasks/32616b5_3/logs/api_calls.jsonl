@@ -1,0 +1,7 @@
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "simple_note"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "splitwise"}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "simple_note", "api_name": "login"}}
+{"method": "post", "url": "/simple_note/auth/token", "data": {"username": "les_ball@gmail.com", "password": "ynNV=(s"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "simple_note", "api_name": "search_notes"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "simple_note", "api_name": "show_note"}}

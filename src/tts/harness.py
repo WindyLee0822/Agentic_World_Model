@@ -100,6 +100,46 @@ def _solver_signature(solver) -> tuple:
         getattr(solver, "rollout_retries", 2),
     )
 
+def _world_model_signature(simulator) -> tuple:
+    """World-model settings, intentionally separate from agent settings."""
+
+    return (
+        getattr(
+            simulator,
+            "world_model_model",
+            None,
+        ),
+        getattr(
+            simulator,
+            "world_model_base_url",
+            None,
+        ),
+        getattr(
+            simulator,
+            "world_model_system_prompt_file",
+            None,
+        ),
+        getattr(
+            simulator,
+            "world_model_temperature",
+            0.6,
+        ),
+        getattr(
+            simulator,
+            "world_model_top_p",
+            0.95,
+        ),
+        getattr(
+            simulator,
+            "world_model_top_k",
+            20,
+        ),
+        getattr(
+            simulator,
+            "world_model_max_tokens",
+            32768,
+        ),
+    )
 
 def _agent_rollout(env: TaskEnvironment, config: Config, seed_i: int,
                    rollout_cache: Optional[Dict] = None):
@@ -167,13 +207,32 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
     rollouts: List[RolloutResult] = []
     for i in range(n):
         rollout_seed = config.seed + i
+        # key = (
+        #     env.env_name,
+        #     env.task_id,
+        #     rollout_seed,
+        #     _solver_signature(config.solver),
+        #     method,
+        #     bool(config.simulator.predict_all_actions),
+        # )
         key = (
             env.env_name,
             env.task_id,
             rollout_seed,
+
+            # agent identity
             _solver_signature(config.solver),
+
             method,
-            bool(config.simulator.predict_all_actions),
+
+            # world-model identity
+            _world_model_signature(
+                config.simulator
+            ),
+
+            bool(
+                config.simulator.predict_all_actions
+            ),
         )
         if rollout_cache is not None and key in rollout_cache:
             traj, predicted, root = rollout_cache[key]
@@ -232,7 +291,7 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
 def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = None,
                  rollout_cache: Optional[Dict] = None, *, commit: bool = True) -> DecisionOutcome:
     method = config.method.lower()
-    if method not in {"b0", "b1", "b2", "ours"}:
+    if method not in {"b0", "b1", "b2", "ours","agentworld",}:
         raise KeyError(f"unknown method {config.method!r}; choose from b0|b1|b2|ours")
 
     budget = Budget(max_spawns=config.budget.max_spawns, max_cost=config.budget.max_cost, max_reads=config.budget.max_reads)
@@ -245,6 +304,13 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
     n = 1 if method == "b0" else config.N
 
     solver_agent = getattr(config.solver, "agent", "scripted")
+    if (
+        method == "agentworld"
+        and solver_agent != "llm_wm"
+    ):
+        raise ValueError(
+            "agentworld requires solver.agent='llm_wm'"
+        )
     use_real_agent = solver_agent == "llm" and agent is None
     use_wm_agent = solver_agent == "llm_wm" and agent is None
     if not commit and not use_wm_agent:

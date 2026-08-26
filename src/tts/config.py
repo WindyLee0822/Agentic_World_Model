@@ -47,6 +47,17 @@ class SimulatorConfig:
     caching: bool = True
     selective_invalidation: bool = True
 
+    # Dedicated world-model backend for AgentWorld baseline.
+    # Do NOT mix these with solver.llm_agent.
+    world_model_model: Optional[str] = None
+    world_model_base_url: Optional[str] = None
+    world_model_api_key: str = "EMPTY"
+    world_model_system_prompt_file: Optional[str] = None
+
+    world_model_temperature: float = 0.6
+    world_model_top_p: float = 0.95
+    world_model_top_k: int = 20
+    world_model_max_tokens: int = 32768
 
 @dataclass
 class BudgetConfig:
@@ -59,7 +70,7 @@ class BudgetConfig:
 
 @dataclass
 class Config:
-    method: str = "ours"  # b0 | b1 | b2 | ours
+    method: str = "ours"  # b0 | b1 | b2 | ours | agentworld
     env: str = "tau2"  # appworld | tau2
     N: int = 8
     success_score: str = "simulator_success"

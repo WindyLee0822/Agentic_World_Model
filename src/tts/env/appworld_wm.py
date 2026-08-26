@@ -3303,6 +3303,21 @@ def install_wm_requester(
 
     def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
                    show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+
+            except WMPredictedHTTPError as exc:
+
+                if raise_on_failure is False:
+                    return exc.body
+
+                raise Exception(
+                    str(exc)
+                ) from None
         doc = _api_doc(_app_name, _api_name)
         if not doc:
             body = {
@@ -3325,7 +3340,7 @@ def install_wm_requester(
             )
             if predict_all_actions and not passthrough:
                 dirty = _app_name in predictor.dirty_apps
-                return predictor.predict_read(
+                return _predicted_read(
                     _app_name,
                     _api_name,
                     data,
@@ -3338,7 +3353,7 @@ def install_wm_requester(
                     and _app_name in predictor.dirty_apps
                     and _app_name not in _PASSTHROUGH_APPS
                     and _api_name not in _PASSTHROUGH_APIS):
-                return predictor.predict_read(
+                return _predicted_read(
                     _app_name, _api_name, data, None,
                     _success_schema(_app_name, _api_name))
             real = orig_request(_app_name, _api_name, client=client,
@@ -3366,13 +3381,13 @@ def install_wm_requester(
                     pass
                 return real
             # read after a write to this app -> predict the post-write result from pre-write + history
-            return predictor.predict_read(_app_name, _api_name, data, real,
+            return _predicted_read(_app_name, _api_name, data, real,
                                           _success_schema(_app_name, _api_name))
         # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
         # to the agent exactly like the real requester: raised as the plain real-format Exception when
         # raise_on_failure is not explicitly False, else returned as the failure body dict.
         try:
-            return predictor.predict_write(_app_name, _api_name, data,
+            return predictor.predicted_write(_app_name, _api_name, data,
                                            _success_schema(_app_name, _api_name))
         except WMPredictedHTTPError as exc:
             if raise_on_failure is False:

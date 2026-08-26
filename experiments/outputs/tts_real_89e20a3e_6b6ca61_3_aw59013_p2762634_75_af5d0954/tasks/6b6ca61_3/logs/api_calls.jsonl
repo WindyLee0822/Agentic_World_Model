@@ -1,0 +1,18 @@
+{"method": "get", "url": "/api_docs/app_descriptions", "data": {}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "supervisor"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "file_system"}}
+{"method": "get", "url": "/supervisor/profile", "data": {}}
+{"method": "post", "url": "/file_system/auth/token", "data": {}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "post", "url": "/file_system/auth/token", "data": {"username": "ce-maldonado@gmail.com", "password": "7w[90e6"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "file_system"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "file_system", "api_name": "show_directory"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "file_system", "api_name": "show_directory"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "file_system", "api_name": "show_file"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "supervisor"}}
+{"method": "get", "url": "/supervisor/active_task", "data": {}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "venmo"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "simple_note"}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "post", "url": "/venmo/auth/token", "data": {"username": "ce-maldonado@gmail.com", "password": "8^x3#y8"}}

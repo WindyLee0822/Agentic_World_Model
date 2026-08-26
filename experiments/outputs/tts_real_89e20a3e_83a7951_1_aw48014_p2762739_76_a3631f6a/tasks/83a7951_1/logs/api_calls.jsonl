@@ -1,0 +1,8 @@
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "splitwise"}}
+{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "venmo"}}
+{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
+{"method": "post", "url": "/splitwise/auth/token", "data": {"username": "jepowell@gmail.com", "password": "1QB%1+0"}}
+{"method": "post", "url": "/venmo/auth/token", "data": {"username": "jepowell@gmail.com", "password": "b8E]-&R"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "splitwise", "api_name": "show_activity"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "splitwise", "api_name": "show_groups"}}
+{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "splitwise", "api_name": "show_no_group_expenses"}}
