@@ -18,6 +18,7 @@ from typing import Dict, List, Optional
 
 from .abcs import Agent, Stepper, TaskEnvironment
 from .agents import ScriptedAgent
+from .aggregation import aggregate_trajectories
 from .budget import Budget
 from .cache import ReadCache
 from .commit import CommitChokepoint
@@ -249,11 +250,13 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
                     raise
                 except Exception as err:  # noqa: BLE001 - preserve N with an explicit failed candidate
                     error = err
+                    if not getattr(err, "retryable", True):
+                        break  # bounded local program repairs already exhausted; identical replay cannot help
                     if attempt < retries:
                         continue
             if error is not None:
                 reason = (
-                    f"WM rollout seed {rollout_seed} failed after {retries + 1} attempt(s): "
+                    f"WM rollout seed {rollout_seed} failed after {attempt + 1} attempt(s): "
                     f"{type(error).__name__}: {error}"
                 )
                 print(f"[rollout-error] {env.env_name}/{env.task_id}: {reason}")
@@ -268,6 +271,9 @@ def _wm_agent_rollouts(env: TaskEnvironment, config: Config, method: str, n: int
                     success=False,
                     grounded=False,
                     reason=reason,
+                    metadata={**getattr(error, "simulation_metrics", {}),
+                              "rollout_attempts": attempt + 1,
+                              "persistent_simulation_error": not getattr(error, "retryable", True)},
                 )
                 root = None
             if rollout_cache is not None and error is None:
@@ -313,11 +319,30 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         )
     use_real_agent = solver_agent == "llm" and agent is None
     use_wm_agent = solver_agent == "llm_wm" and agent is None
+    self_aggregate = bool(getattr(config.solver, "self_aggregate", False)) and n > 1
     if not commit and not use_wm_agent:
         raise ValueError("commit=False is supported only for llm_wm simulation-only runs")
 
     if use_real_agent:
         rollouts = _real_agent_rollouts(env, config, method, n, budget, cache, rollout_cache)
+        if self_aggregate:
+            aggregated = aggregate_trajectories(env, config, rollouts)
+            selected_index = aggregated.source_index if aggregated.source_index is not None else -1
+            committed = RolloutResult(
+                index=-1,
+                trajectory=aggregated.trajectory,
+                predicted=RewardInfo(),
+            )
+            chokepoint = CommitChokepoint(env)
+            actual = chokepoint.commit(aggregated.trajectory)
+            simulator_writes = 0 if env.state_hash() == pre_hash else 1
+            return _build_outcome(
+                env, config, method, rollouts, selected_index, actual,
+                int(chokepoint.used), simulator_writes, budget, cache,
+                time.perf_counter() - t0, committed_rollout=committed,
+                selection_prediction=False, aggregation_tokens=aggregated.tokens,
+                aggregation_wall_clock_s=aggregated.wall_clock_s,
+            )
         if method == "b0":
             selected_index = 0
         else:
@@ -340,15 +365,27 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
         else:
             # The official agent+user-sim generated each trajectory against the WM (no real write);
             # select by the WM's predicted success, then commit the chosen one to the real env.
-            refine_fn = getattr(env, "refine_rollout_scores", None)
-            if callable(refine_fn):
-                refine_fn(config, rollouts)
-            if method == "b0":
-                selected_index = 0
+            if self_aggregate:
+                aggregated = aggregate_trajectories(env, config, rollouts)
+                selected_index = (
+                    aggregated.source_index if aggregated.source_index is not None else -1
+                )
+                committed = RolloutResult(
+                    index=-1,
+                    trajectory=aggregated.trajectory,
+                    predicted=RewardInfo(),
+                )
             else:
+                refine_fn = getattr(env, "refine_rollout_scores", None)
+                if callable(refine_fn):
+                    refine_fn(config, rollouts)
+                committed = None
+            if not self_aggregate and method == "b0":
+                selected_index = 0
+            elif not self_aggregate:
                 selected_index, rollouts = Selector(config.success_score).select(rollouts)
             simulator_writes = 0 if env.state_hash() == pre_hash else 1
-            selected = rollouts[selected_index]
+            selected = committed or rollouts[selected_index]
             if not selected.trajectory.done:
                 actual = RewardInfo(
                     reward=0.0,
@@ -359,7 +396,10 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
                 return _build_outcome(
                     env, config, method, rollouts, selected_index, actual,
                     0, simulator_writes, budget, cache, time.perf_counter() - t0,
-                    prediction_is_grounded=commit,
+                    prediction_is_grounded=commit, committed_rollout=committed,
+                    selection_prediction=not self_aggregate,
+                    aggregation_tokens=(aggregated.tokens if self_aggregate else 0),
+                    aggregation_wall_clock_s=(aggregated.wall_clock_s if self_aggregate else 0.0),
                 )
             if not commit:
                 actual = RewardInfo(
@@ -371,13 +411,20 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
                 return _build_outcome(
                     env, config, method, rollouts, selected_index, actual,
                     0, simulator_writes, budget, cache, time.perf_counter() - t0,
-                    prediction_is_grounded=False,
+                    prediction_is_grounded=False, committed_rollout=committed,
+                    selection_prediction=not self_aggregate,
+                    aggregation_tokens=(aggregated.tokens if self_aggregate else 0),
+                    aggregation_wall_clock_s=(aggregated.wall_clock_s if self_aggregate else 0.0),
                 )
             chokepoint = CommitChokepoint(env)
             actual = chokepoint.commit(selected.trajectory)  # the ONLY real write
             return _build_outcome(env, config, method, rollouts, selected_index, actual,
                                   int(chokepoint.used), simulator_writes, budget, cache,
-                                  time.perf_counter() - t0)
+                                  time.perf_counter() - t0, committed_rollout=committed,
+                                  selection_prediction=not self_aggregate,
+                                  aggregation_tokens=(aggregated.tokens if self_aggregate else 0),
+                                  aggregation_wall_clock_s=(
+                                      aggregated.wall_clock_s if self_aggregate else 0.0))
 
     agent = agent or build_agent(env, config)
 
@@ -400,7 +447,8 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
             traj = drive(agent, view, fork, config.seed + i)
             predicted = fork.evaluate(traj)  # official reward on the snapshot = oracle
             rollouts.append(RolloutResult(index=i, trajectory=traj, predicted=predicted))
-        selected_index, rollouts = Selector(config.success_score).select(rollouts)
+        if not self_aggregate:
+            selected_index, rollouts = Selector(config.success_score).select(rollouts)
     else:  # b1 / ours
         kind = _METHOD_TO_KIND[method]
         sim_cfg = replace(config.simulator, kind=kind)
@@ -426,29 +474,50 @@ def run_decision(env: TaskEnvironment, config: Config, agent: Optional[Agent] = 
                 tokens=root.total_tokens() if root else 0,
                 cost=root.total_cost() if root else 0.0,
             ))
-        selected_index, rollouts = Selector(config.success_score).select(rollouts)
+        if not self_aggregate:
+            selected_index, rollouts = Selector(config.success_score).select(rollouts)
 
     # simulator-never-writes invariant: the real env is untouched during the sampling phase.
     simulator_writes = 0 if env.state_hash() == pre_hash else 1
 
-    selected = rollouts[selected_index]
+    committed = None
+    aggregation_tokens = 0
+    aggregation_wall_clock_s = 0.0
+    if self_aggregate:
+        aggregated = aggregate_trajectories(env, config, rollouts)
+        selected_index = aggregated.source_index if aggregated.source_index is not None else -1
+        committed = RolloutResult(
+            index=-1,
+            trajectory=aggregated.trajectory,
+            predicted=RewardInfo(),
+        )
+        aggregation_tokens = aggregated.tokens
+        aggregation_wall_clock_s = aggregated.wall_clock_s
+    selected = committed or rollouts[selected_index]
     chokepoint = CommitChokepoint(env)
     actual = chokepoint.commit(selected.trajectory)  # the ONLY real write
     return _build_outcome(env, config, method, rollouts, selected_index, actual,
                           int(chokepoint.used), simulator_writes, budget, cache,
-                          time.perf_counter() - t0)
+                          time.perf_counter() - t0, committed_rollout=committed,
+                          selection_prediction=not self_aggregate,
+                          aggregation_tokens=aggregation_tokens,
+                          aggregation_wall_clock_s=aggregation_wall_clock_s)
 
 
 def _build_outcome(env, config, method, rollouts, selected_index, actual, n_commits,
                    simulator_writes, budget, cache, wall,
-                   prediction_is_grounded: bool = True) -> DecisionOutcome:
-    selected = rollouts[selected_index]
+                   prediction_is_grounded: bool = True,
+                   committed_rollout: Optional[RolloutResult] = None,
+                   selection_prediction: bool = True,
+                   aggregation_tokens: int = 0,
+                   aggregation_wall_clock_s: float = 0.0) -> DecisionOutcome:
+    selected = committed_rollout or rollouts[selected_index]
     n = len(rollouts)
 
     predicted_success: Optional[bool] = None
     prediction_correct: Optional[bool] = None
     predicted_confidence: Optional[float] = None
-    if method != "b0" and selected.predicted is not None:
+    if selection_prediction and method != "b0" and selected.predicted is not None:
         predicted_success = selected.predicted.success
         predicted_confidence = float(selected.predicted.reward)
         if prediction_is_grounded:
@@ -473,9 +542,10 @@ def _build_outcome(env, config, method, rollouts, selected_index, actual, n_comm
         n_commits=n_commits,
         cache_hits=cache.hits,
         cache_misses=cache.misses,
-        tokens=budget.tokens,
+        tokens=budget.tokens + int(aggregation_tokens),
         cost=budget.cost,
         wall_clock_s=wall,
+        aggregation_wall_clock_s=aggregation_wall_clock_s,
         prediction_correct=prediction_correct,
         predicted_success=predicted_success,
         predicted_confidence=predicted_confidence,

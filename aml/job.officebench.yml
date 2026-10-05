@@ -33,8 +33,8 @@ inputs:
   max_steps: 40
   temperature: 1
   stall_timeout: "3600"
-  # Exact pristine reads expose real filenames/content while writes and dirty reads stay predictive.
-  extra_args: --exact-clean-reads
+  # Use model/method defaults; GPT and DeepSeek Ours predict all candidate observations.
+  extra_args: none
   aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
   aoai_deployment: gpt-5.4
   aoai_api_version: 2024-12-01-preview

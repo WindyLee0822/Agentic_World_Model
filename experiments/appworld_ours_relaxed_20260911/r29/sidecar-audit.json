@@ -1,0 +1,925 @@
+{
+  "goal": "overall AppWorld Ours N=1 evaluation",
+  "record_contract_passed": false,
+  "accuracy_target": null,
+  "target_difference": null,
+  "completion_proven": false,
+  "full_coverage": true,
+  "expected_decisions": 585,
+  "observed_decisions": 585,
+  "official_successes": 265,
+  "success_rate": 0.452991452991453,
+  "missing": [],
+  "extra": [],
+  "duplicates": [],
+  "contract_violations": [
+    {
+      "task_id": "13547f5_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "5a83b05_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "5a83b05_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "634f342_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "59fae45_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "634f342_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "634f342_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "3d9a636_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "3d9a636_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d194965_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "8749218_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "8749218_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d194965_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d194965_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "0d01c76_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c77c005_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c77c005_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c77c005_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "042a9fc_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "042a9fc_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d18139b_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "652485c_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "652485c_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "90adc3f_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d18139b_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9016950_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "042a9fc_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f861c32_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f861c32_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "986aa4e_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "986aa4e_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "32616b5_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "6b6ca61_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "bde252e_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "6b6ca61_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "07bb666_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "8ce6779_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "32616b5_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "bde252e_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "6a5e690_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "277d81d_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "a8f302f_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f6936d4_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b05f69a_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9b2dc64_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "099174d_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b05f69a_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "099174d_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b05f69a_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f099b4c_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "bcb9696_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f099b4c_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "30e8586_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f099b4c_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "30e8586_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "7bdaf23_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e52623a_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d37c235_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e52623a_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e52623a_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e0fe09c_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "09ac073_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e0fe09c_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "af84964_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "af84964_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "af84964_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "0de03ad_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ac62177_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "8a13317_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "1b2bae9_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "23d431c_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ac62177_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ec437da_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "8a13317_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "0de03ad_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ec437da_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "fdc4b74_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "fdc4b74_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ec655df_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "ec655df_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "efc3cea_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "efc3cea_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "1b2bae9_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d6d8cb6_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f3a6713_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f3a6713_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f3a6713_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f86d850_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f86d850_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b6d1f70_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b6d1f70_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "dc5c5c6_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "59bcfc8_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e201314_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f86d850_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "7e1be84_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "7e1be84_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9ef034e_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c9458ed_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c9458ed_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c9458ed_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b08d5ef_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b08d5ef_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "cdaaea5_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "d8e490b_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b08d5ef_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "c8f5f44_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "cdaaea5_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "998908e_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "33e202d_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "cdaaea5_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "a97e35d_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "998908e_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "33e202d_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "998908e_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f6f2e67_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "a97e35d_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b68eb83_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f6f2e67_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e70b117_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f6f2e67_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b68eb83_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e70b117_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "e70b117_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "36705ae_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "36705ae_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "3fcc458_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "4441ee9_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "69ba40f_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "4441ee9_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "4441ee9_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "69ba40f_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f37e804_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f37e804_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "f37e804_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "b71318e_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9a16324_2",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9a16324_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "9a16324_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "988af8e_3",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    },
+    {
+      "task_id": "988af8e_1",
+      "fields": [
+        "candidate_setup_prediction"
+      ]
+    }
+  ],
+  "by_subset": {
+    "test_normal/L1": {
+      "decisions": 57,
+      "successes": 46,
+      "expected": 57
+    },
+    "test_normal/L2": {
+      "decisions": 48,
+      "successes": 18,
+      "expected": 48
+    },
+    "test_normal/L3": {
+      "decisions": 63,
+      "successes": 29,
+      "expected": 63
+    },
+    "test_challenge/L1": {
+      "decisions": 72,
+      "successes": 55,
+      "expected": 72
+    },
+    "test_challenge/L2": {
+      "decisions": 150,
+      "successes": 66,
+      "expected": 150
+    },
+    "test_challenge/L3": {
+      "decisions": 195,
+      "successes": 51,
+      "expected": 195
+    }
+  }
+}

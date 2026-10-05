@@ -1,0 +1,51 @@
+{
+  "diagnostic_only": true,
+  "n": 1,
+  "records": [
+    {
+      "task_id": "024c982_2",
+      "success": true,
+      "candidate_scores": [
+        1.0
+      ],
+      "candidate_errors": [
+        null
+      ],
+      "candidate_setup_prediction": [
+        {
+          "enabled": true,
+          "count": 23
+        }
+      ],
+      "n_rollout_errors": 0,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "wall_clock_s": 326.76387224099926,
+      "selected_python_calls": 38,
+      "selected_python_failures": 3
+    },
+    {
+      "task_id": "5a83b05_1",
+      "success": true,
+      "candidate_scores": [
+        1.0
+      ],
+      "candidate_errors": [
+        null
+      ],
+      "candidate_setup_prediction": [
+        {
+          "enabled": true,
+          "count": 15
+        }
+      ],
+      "n_rollout_errors": 0,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "wall_clock_s": 2839.6296661060005,
+      "selected_python_calls": 325,
+      "selected_python_failures": 27
+    }
+  ],
+  "limitation": "Two targeted tasks, not a full BoN@16 result; verifier accuracy and setup routing require separate evidence."
+}

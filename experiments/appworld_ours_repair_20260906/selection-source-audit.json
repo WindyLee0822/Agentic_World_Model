@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-09-07T16:17:41.971326+00:00",
+  "source_sha256": {
+    "src/tts/harness.py": "97f3b60ddb875e7b8b2c4f9cb8d9e051b13f0b92d894224ff0fa61d09be83830",
+    "src/tts/selection.py": "3585d1a8d25b2354784c6654043aed81af05d8b66ad41beaf986d89ff5f71b21",
+    "src/tts/env/real_appworld.py": "a88892e77f8a5fa830b40748e748b19d22b5834ae5820620a6eeafaf23d3c7e9",
+    "src/tts/env/appworld_wm.py": "421f4d6e867766ef28f6c875c21ae9721bfa903974b6ca2959c43926b891cbfe"
+  },
+  "selection_evidence": [
+    "harness.py: WM candidate generation precedes Selector.select; official commit occurs only after selection.",
+    "selection.py: simulator_success uses predicted.success, with trajectory validity, cost, and index tie rules.",
+    "AppWorldTaskEnv has no refine_rollout_scores override; the repository implementation is OfficeBench-only.",
+    "real_appworld.py: simulator verifier predicts confidence from candidate logs and reference checks without native candidate execution. Existing reference checklist/gold values are available to this verifier."
+  ],
+  "observation_scope": "Existing supervisor/api_docs/login passthroughs remain exact; substantive observations use predict_all_actions. User clarification pending for literal every-observation requirement.",
+  "goal_complete": false
+}

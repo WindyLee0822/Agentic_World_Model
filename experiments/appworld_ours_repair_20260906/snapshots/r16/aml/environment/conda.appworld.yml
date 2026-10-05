@@ -1,0 +1,18 @@
+# AML environment for the `dw` AppWorld jobs.
+#
+# The mounted data asset is AppWorld data version 0.2.0. PyPI currently only
+# publishes AppWorld 0.1.x (which accepts data version 0.1.0), so pin the
+# upstream 0.2.0.dev0 commit that matches the asset. `openai` remains on its v1
+# API because dw's ChatClient is implemented against that interface.
+name: tts-dw-aml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - appworld @ https://github.com/StonyBrookNLP/appworld/archive/a072b7a86e7c1d5b1d7175659d750ebb9b79f10a.zip
+      - openai>=1.30.0,<2
+      - azure-identity>=1.15.0
+      - tqdm>=4.66.0
+      - pyyaml>=6.0

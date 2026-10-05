@@ -1,0 +1,11 @@
+{
+  "initial_regression_run_passed": 35,
+  "initial_pytest_exit_code": 0,
+  "after_empty_query_edge_adjustment_passed": 10,
+  "final_pytest_exit_code": 0,
+  "new_parser_cases": 7,
+  "source_isolation_passed": true,
+  "actual_read_loop_and_write_rejection_tested": true,
+  "live_verifier_recovery_proven": false,
+  "full_benchmark_target_proven": false
+}

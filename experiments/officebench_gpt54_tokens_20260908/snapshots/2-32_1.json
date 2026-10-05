@@ -1,0 +1,30 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Compare income and expenditure based on company trading record. Larger or smaller? Answer the question with `larger` or `smaller`",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/answer.txt",
+          "doc_type": "txt",
+          "keywords": [
+            "smaller"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/company_budget.jpg": "Company Reimbursement\nSalary Reimbursement\nemployee: 35, salary for each: $150000\n\nMachine Purchase Reimbursement\nAmount: $150000\n\nBudget for the Year\nTotal Budget: $600000\n\f",
+    "/testbed/data/company_trading_records.jpg": "company Trading Records\n\npate\n\n2024-01-01\n\n2024-01-05\n\n2024-01-10\n\n2024-01-12\n\n2024-01-15\n\n2024-01-20\n\n2024-01-25\n\n2024-01-20\n\n\u2018Transaction\n\nBought\n\nsola\n\nBought\n\nsola\n\nBought\n\nsola\n\nBought\n\nsola\n\nten\n\nLaptop\n\npesk\n\nMonitor\n\nPrinter\n\nTablet\n\nPhone\n\nKeyboard\n\nnowt\n\n$1500\n\n$300\n\n$200\n\n$400\n\n$250\n\n500\n\n600\n\nS100\n\f"
+  },
+  "initial_state": {
+    "data/answer.txt": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/company_budget.jpg\n/testbed/data/company_trading_records.jpg"
+}

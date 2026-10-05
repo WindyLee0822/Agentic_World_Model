@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-09-14T03:51:21.853705+00:00",
+  "job_status": "Queued",
+  "job_compute": "GWC-NC24ads-A100-hipri",
+  "job_error": "{}",
+  "compute_provisioning_state": "Succeeded",
+  "compute_allocation_state": null,
+  "min_instances": 0,
+  "max_instances": 6,
+  "compute_provisioning_errors": "None"
+}

@@ -1,0 +1,1096 @@
+....................FF.............................F.F.F.FFF...FF.F...                               [100%]
+================================================= FAILURES =================================================
+________ test_success_rate_cannot_override_simulation_contract[appworld_preground_clean_reads-True] ________
+
+field = 'appworld_preground_clean_reads', value = True
+
+    @pytest.mark.parametrize("field,value", [
+        ("predict_all_actions", False), ("simulator_writes", 1),
+        ("candidate_grounded_success", [True, False]), ("agent_self_aggregate", True),
+        ("appworld_deterministic_grounded_clean_reads", True), ("n_commits", 2),
+        ("appworld_preground_clean_reads", True),
+        ("appworld_deterministic_dirty_reads", True),
+    ])
+    def test_success_rate_cannot_override_simulation_contract(field, value):
+        rows = records(585)
+        rows[0][field] = value
+        result = goal.evaluate(rows, records(0))
+>       assert not result["passed"]
+E       assert not True
+
+tests/test_appworld_ours_goal.py:62: AssertionError
+______ test_success_rate_cannot_override_simulation_contract[appworld_deterministic_dirty_reads-True] ______
+
+field = 'appworld_deterministic_dirty_reads', value = True
+
+    @pytest.mark.parametrize("field,value", [
+        ("predict_all_actions", False), ("simulator_writes", 1),
+        ("candidate_grounded_success", [True, False]), ("agent_self_aggregate", True),
+        ("appworld_deterministic_grounded_clean_reads", True), ("n_commits", 2),
+        ("appworld_preground_clean_reads", True),
+        ("appworld_deterministic_dirty_reads", True),
+    ])
+    def test_success_rate_cannot_override_simulation_contract(field, value):
+        rows = records(585)
+        rows[0][field] = value
+        result = goal.evaluate(rows, records(0))
+>       assert not result["passed"]
+E       assert not True
+
+tests/test_appworld_ours_goal.py:62: AssertionError
+___________________________________ test_write_is_predicted_not_executed ___________________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_write_is_predicted_not_executed(methods):
+        world = _FakeWorld()
+        chat = _FakeChat({"message": "Liked."})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor)
+    
+>       out = world.requester.request("spotify", "like_song", song_id=1)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 1}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56fdf060>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+_____________________________ test_logout_and_admin_writes_are_never_executed ______________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_logout_and_admin_writes_are_never_executed(methods):
+        world = _FakeWorld()
+        chat = _FakeChat({"message": "simulated"})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor)
+    
+        login = world.requester.request("spotify", "login", username="u", password="p")
+>       logout = world.requester.request("spotify", "logout", access_token="token")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'logout', client = None, raise_on_failure = None, show = False
+track = True, data = {'access_token': 'token'}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56e4ac00>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+________________________________ test_dirty_read_predicted_clean_read_real _________________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_dirty_read_predicted_clean_read_real(methods):
+        world = _FakeWorld()
+        chat = _FakeChat({"message": "post-write"})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor, predict_all_actions=False)
+    
+>       world.requester.request("spotify", "like_song", song_id=1)   # writes -> spotify dirty
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 1}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56e4b600>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+_____________________________ test_repeat_write_predicts_rejection_and_raises ______________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_repeat_write_predicts_rejection_and_raises(methods):
+        """A repeat of the same state-changing write to the same target is predicted as a real rejection."""
+        world = _FakeWorld()
+        chat = _RejectChat({"message": "Liked."}, {"message": "You have already liked this song."})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor)
+    
+>       first = world.requester.request("spotify", "like_song", song_id=7)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:231: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 7}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56fdeca0>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+_______________________ test_rejected_write_returns_body_when_raise_on_failure_false _______________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_rejected_write_returns_body_when_raise_on_failure_false(methods):
+        world = _FakeWorld()
+        chat = _RejectChat({"message": "Liked."}, {"message": "You have already liked this song."})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor)
+    
+>       world.requester.request("spotify", "like_song", song_id=7)
+
+tests/test_appworld_wm_grounding.py:250: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 7}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56fddee0>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+____________________________________ test_distinct_writes_each_succeed _____________________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_distinct_writes_each_succeed(methods):
+        """Distinct targets are not duplicates -> each uses the success path (burst-dedup preserved)."""
+        world = _FakeWorld()
+        chat = _RejectChat({"message": "Liked."}, {"message": "already liked"})
+        predictor = AppWorldWMPredictor(chat)
+        install_wm_requester(world, predictor)
+    
+>       a = world.requester.request("spotify", "like_song", song_id=1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:263: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 1}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56fded40>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+____________________________ test_dirty_query_returns_pristine_state_plus_trace ____________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+
+    def test_dirty_query_returns_pristine_state_plus_trace(methods):
+        world = _FakeWorld()
+        predictor = AppWorldWMPredictor(_FakeChat({"message": "Liked."}))
+        install_wm_requester(world, predictor)
+    
+>       world.requester.request("spotify", "like_song", song_id=1)
+
+tests/test_appworld_wm_grounding.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 1}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56e4b6a0>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+__________________________ test_write_prediction_uses_read_then_predict_subagent ___________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x753a56f12690>
+
+    def test_write_prediction_uses_read_then_predict_subagent(methods, monkeypatch):
+        world = _FakeWorld()
+        chat = _AgenticScriptChat([
+            (
+                "PYTHON_READ:\n"
+                'print_json({"queries":[{"app":"spotify","api":"show_song",'
+                '"args":{"song_id":7}}]})'
+            ),
+            'PYTHON_FINAL:\nprint_json({"message": "Liked."})',
+        ])
+        predictor = AppWorldWMPredictor(chat)
+        # The textual READ/LIST/CALL/TRACE protocol is now a legacy opt-in.
+        monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+        monkeypatch.setenv("TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", "1")
+        install_wm_requester(world, predictor)
+    
+>       result = world.requester.request("spotify", "like_song", song_id=7)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_appworld_wm_grounding.py:384: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 7}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56dca480>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+_________________________ test_predict_all_can_use_non_forced_program_predictions __________________________
+
+methods = {('admin', 'credit_to_card'): 'POST', ('spotify', 'like_song'): 'POST', ('spotify', 'login'): 'POST', ('spotify', 'logout'): 'POST', ...}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x753a56f25910>
+
+    def test_predict_all_can_use_non_forced_program_predictions(methods, monkeypatch):
+        world = _FakeWorld()
+        chat = _FakeChat({"message": "Liked."})
+        predictor = AppWorldWMPredictor(chat)
+        monkeypatch.setenv("TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY", "0")
+    
+        install_wm_requester(world, predictor, predict_all_actions=True)
+    
+        assert predictor.program_only is False
+>       assert world.requester.request("spotify", "like_song", song_id=1) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "message": "Liked."
+        }
+
+tests/test_appworld_wm_grounding.py:442: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'spotify', _api_name = 'like_song', client = None, raise_on_failure = None, show = False
+track = True, data = {'song_id': 1}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x753a56dc8c20>
+doc = {'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not predictor.is_write_api(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3420: AttributeError
+============================================= warnings summary =============================================
+tests/test_appworld_strict_program_prediction.py::test_actual_program_produces_setup_response[api_docs-show_api_doc-evidence0]
+  /tmp/appworld-strict-env/lib/python3.11/site-packages/appworld/apps/api_docs/models.py:96: PydanticDeprecatedSince20: Pydantic V1 style `@validator` validators are deprecated. You should migrate to Pydantic V2 style `@field_validator` validators, see the migration guide for more details. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    @validator("parameters")
+
+tests/test_appworld_ours_wm.py::test_get_download_is_predicted_and_never_available_as_grounding
+  /tmp/appworld-strict-env/lib/python3.11/site-packages/appworld/apps/amazon/models.py:522: PydanticDeprecatedSince20: Pydantic V1 style `@validator` validators are deprecated. You should migrate to Pydantic V2 style `@field_validator` validators, see the migration guide for more details. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    @validator("returned_quantity")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================================= short test summary info ==========================================
+FAILED tests/test_appworld_ours_goal.py::test_success_rate_cannot_override_simulation_contract[appworld_preground_clean_reads-True]
+FAILED tests/test_appworld_ours_goal.py::test_success_rate_cannot_override_simulation_contract[appworld_deterministic_dirty_reads-True]
+FAILED tests/test_appworld_wm_grounding.py::test_write_is_predicted_not_executed - AttributeError: 'AppWo...
+FAILED tests/test_appworld_wm_grounding.py::test_logout_and_admin_writes_are_never_executed - AttributeEr...
+FAILED tests/test_appworld_wm_grounding.py::test_dirty_read_predicted_clean_read_real - AttributeError: '...
+FAILED tests/test_appworld_wm_grounding.py::test_repeat_write_predicts_rejection_and_raises - AttributeEr...
+FAILED tests/test_appworld_wm_grounding.py::test_rejected_write_returns_body_when_raise_on_failure_false
+FAILED tests/test_appworld_wm_grounding.py::test_distinct_writes_each_succeed - AttributeError: 'AppWorld...
+FAILED tests/test_appworld_wm_grounding.py::test_dirty_query_returns_pristine_state_plus_trace - Attribut...
+FAILED tests/test_appworld_wm_grounding.py::test_write_prediction_uses_read_then_predict_subagent - Attri...
+FAILED tests/test_appworld_wm_grounding.py::test_predict_all_can_use_non_forced_program_predictions - Att...

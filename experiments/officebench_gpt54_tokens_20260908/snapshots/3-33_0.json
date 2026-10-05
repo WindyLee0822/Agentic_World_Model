@@ -1,0 +1,42 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Scan printed car inventory lists from PDF, convert them to Excel file car_inventory.xlsx, create a meeting.ics to schedule meeting for Bob with the first driver in car_inventory.xlsx at 6/1/2024 10:00 a.m",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/car_inventory.xlsx"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "calendar/Smith.ics"
+        }
+      },
+      {
+        "function": "evaluate_not_contain",
+        "args": {
+          "file": "calendar/Smith.ics",
+          "doc_type": "ics",
+          "keywords": [
+            "DTSTART:20240601T1000"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/car_inventory.pdf": "Car ID Make\nMake\n(Full\nName)\nModel\nModel\n(Full\nName)\nManufacture\nYear Age\nMiles\nMiles\n/\nYear\nColor\nDriver Warantee\nMiles Covered?\nNew\nCar\nID\n0 FD06MTG001\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 40326.8\nNaN\nBlack Smith\n50000.0\nNaN\nNaN\n1 FD06MTG002\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 44974.8\nNaN\nWhite McCall\n50000.0\nNaN\nNaN\n2 FD08MTG003\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 44946.5\nNaN\nGreen Lyon\n50000.0\nNaN\nNaN\n3 FD08MTG004\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 37558.8\nNaN\nBlack Jones\n50000.0\nNaN\nNaN\n4 FD08MTG005\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 36438.5\nNaN\nWhite Smith\n50000.0\nNaN\nNaN\n5 FDO6FCS006\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 46311.4\nNaN\nGreen Ewenty\n75000.0\nNaN\nNaN\n"
+  },
+  "initial_state": {
+    "data/car_inventory.xlsx": "[file does not exist]",
+    "calendar/Smith.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/car_inventory.pdf"
+}

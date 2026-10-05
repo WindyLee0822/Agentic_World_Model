@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "name": "convert_new_logical_input",
+      "match": true,
+      "observation": "Successfully convert /testbed/data/new.docx to /testbed/data/new.pdf"
+    },
+    {
+      "name": "conversion_final_state_snapshot",
+      "match": true,
+      "observation": "PRIVATE_WORD_4731"
+    },
+    {
+      "name": "send_original_recipient",
+      "match": true,
+      "observation": "Successfully sent email to Tom@example.org."
+    },
+    {
+      "name": "read_after_send",
+      "match": true,
+      "observation": "Successfully list emails for Tom:\nEmail ID: notice.eml\nFrom: Alice@example.com\nTo: Tom@example.com\nSubject: notice\nContent: A notification body ...\n--------------------------------------------------"
+    },
+    {
+      "name": "ocr_preserves_private_string",
+      "match": true,
+      "observation": "The text from /testbed/data/private.png is:\nPRIVATE_OCR_8294\nLine two"
+    }
+  ],
+  "native_candidate_actions": 0,
+  "programs": [
+    "PYTHON_FINAL:\nrecord = data.get('current_state', {}).get('data/new.docx', {})\nexists = record.get('exists')\nif exists is False:\n    value = 'The word file /testbed/data/new.docx does not exist. Failed to convert the file to pdf.'\nelse:\n    value = 'Successfully convert /testbed/data/new.docx to /testbed/data/new.pdf'\nprint_json({\"text\": value})",
+    "PYTHON_FINAL:\ndef get_action(entry):\n    return entry.get(\"action\", {}) if isinstance(entry, dict) else {}\n\ndef applied_entries(seq):\n    for e in seq or []:\n        if isinstance(e, dict) and e.get(\"applied\", False):\n            yield e\n\n# For a .pdf target in Word, actual PDF text is only determined by a real conversion.\n# If conversion_source is provided, it contains the copied logical input at conversion time.\nsnapshot = data.get(\"conversion_source\")\nif isinstance(snapshot, dict):\n    state = snapshot.get(\"state\", {})\n    if isinstance(state, dict):\n        content = state.get(\"content\", \"\")\n    else:\n        content = \"\"\nelse:\n    # Without a conversion snapshot, a Word file named .pdf is still a DOCX container,\n    # and no pure-computation PDF text can be derived from later writes alone.\n    content = \"\"\n\nprint_json({\"text\": content})",
+    "PYTHON_FINAL:\nrecipient = data[\"observation_action\"][\"args\"][\"recipient\"]\nvalue = f\"Successfully sent email to {recipient}.\"\nprint_json({\"text\": value})",
+    "PYTHON_FINAL:\nobs = data.get(\"observation_action\", {})\nrecipient = obs.get(\"recipient\")\nif recipient is None:\n    recipient = data.get(\"action\", {}).get(\"recipient\")\nif isinstance(recipient, list):\n    value = \"Failed to send email to Multiple recipients. Only support one recipient.\"\nelse:\n    value = f\"Successfully sent email to {recipient}.\"\nprint_json({\"text\": value})",
+    "PYTHON_FINAL:\nfile_path = data[\"action\"][\"file_path\"]\ntext = data[\"reads\"][0][\"result\"]\nif text == \"\" or text == \"[OCR failed]\":\n    value = f\"Failed to recognize text from {file_path}\"\nelse:\n    value = f\"The text from {file_path} is:\\n{text}\"\nvalue = value.strip()\nprint_json({\"text\": value})"
+  ],
+  "private_values_hidden": true,
+  "python_calls": 5,
+  "python_failures": 1
+}

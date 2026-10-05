@@ -1,0 +1,77 @@
+{
+  "source_root": "/tmp/appworld-r16-experiment",
+  "source_sha256": {
+    "src/tts/env/appworld_ours_wm.py": "255cb066bf9a4d8c4feae7d8f00d3efdc221f0bd947a58912a911831ff837ed3",
+    "src/tts/env/appworld_react_agent.py": "55ca25de820e57ce417b74c10e555dfcde83b6c73ea08d17a97b7ca63216ae98"
+  },
+  "root_worktree_is_r14": true,
+  "status": "All4targetedofficialN2regressionsPASS; filesystemdiagnosticRunning",
+  "validation": "165focusedchecks pass after missingrunnerfixturecopied; logsadjacent",
+  "goal_achieved": false,
+  "completed_local_results": [
+    {
+      "task_id": "7847649_3",
+      "success": true,
+      "n_rollouts": 2,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "candidate_grounded": [
+        null,
+        null
+      ],
+      "candidate_rewards": [
+        1.0,
+        1.0
+      ],
+      "selected_index": 0
+    },
+    {
+      "task_id": "3d9a636_1",
+      "success": true,
+      "n_rollouts": 2,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "candidate_grounded": [
+        null,
+        null
+      ],
+      "candidate_rewards": [
+        0.0,
+        0.0
+      ],
+      "selected_index": 0
+    },
+    {
+      "task_id": "5238afc_1",
+      "success": true,
+      "n_rollouts": 2,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "candidate_grounded": [
+        null,
+        null
+      ],
+      "candidate_rewards": [
+        0.0,
+        0.0
+      ],
+      "selected_index": 0
+    },
+    {
+      "task_id": "1150ed6_2",
+      "success": true,
+      "n_rollouts": 2,
+      "n_commits": 1,
+      "simulator_writes": 0,
+      "candidate_grounded": [
+        null,
+        null
+      ],
+      "candidate_rewards": [
+        0.0,
+        0.0
+      ],
+      "selected_index": 0
+    }
+  ]
+}

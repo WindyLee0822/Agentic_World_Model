@@ -1,0 +1,47 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Collect car trading records and only organize the information about the car I bought into car_records.xlsx",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/car_records.xlsx",
+          "doc_type": "xlsx",
+          "keywords": [
+            "2024-03-18",
+            "Toyota Camry",
+            "Alice",
+            "Bob",
+            "15000"
+          ]
+        }
+      },
+      {
+        "function": "evaluate_not_contain",
+        "args": {
+          "file": "data/car_records.xlsx",
+          "doc_type": "xlsx",
+          "keywords": [
+            "Honda Civic",
+            "Ford Mustang",
+            "BMW",
+            "Benz",
+            "Porsche"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/company_trading_records.jpg": "company Trading Records\n\npate\n\n2024-01-01\n\n2024-01-05\n\n2024-01-10\n\n2024-01-12\n\n2024-01-15\n\n2024-01-20\n\n2024-01-25\n\n2024-01-20\n\n\u2018Transaction\n\nBought\n\nsola\n\nBought\n\nsola\n\nBought\n\nsola\n\nBought\n\nsola\n\nten\n\nLaptop\n\npesk\n\nMonitor\n\nPrinter\n\nTablet\n\nPhone\n\nKeyboard\n\nnowt\n\n$1500\n\n$300\n\n$200\n\n$400\n\n$250\n\n500\n\n600\n\nS100\n\f"
+  },
+  "initial_state": {
+    "data/car_records.xlsx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/company_trading_records.jpg"
+}

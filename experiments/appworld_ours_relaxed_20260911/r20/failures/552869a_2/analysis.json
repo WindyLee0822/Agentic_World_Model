@@ -1,0 +1,26 @@
+{
+  "task_id": "552869a_2",
+  "diagnostic_files": 16,
+  "selected_seed": 31000,
+  "model_call_error_events": 0,
+  "record_findings": {
+    "all_16_simulator_scores_zero": true,
+    "rollout_errors": 0,
+    "selected_answer_literal": 240.0,
+    "python_failures": 100,
+    "selected_python_failures": 6
+  },
+  "trace_findings": [
+    "Selected verifier initially queries year2025 with timestamp-formatted dates and page_limit50, then repeatedly attempts date-format and schema repair.",
+    "Read programs repeatedly mix diagnostic prints with query envelopes; these may fail program protocol validation. Full tool feedback is not in these model-response logs.",
+    "Verifier exhausts10 read turns, produces a FAIL program claiming insufficient evidence, then another final program collects guessed transactions dictionary entries and compares a computed total to literal144.0.",
+    "Model claims about missing reads and literal gold are not authoritative. Source context includes writes and frozen datetime; exact supplied values were not captured here."
+  ],
+  "limits": [
+    "No claim that all16 candidates fail native replay.",
+    "Local checkpoint actions are truncated; final verifier programs may be retries and exact accepted program is not independently recorded.",
+    "No evidence of a new observation bypass.",
+    "No live job changes."
+  ],
+  "next_action": "Continue full R20 measurement. This is another verifier evidence/schema/budget failure pattern, distinct from the earlier invented write preconditions."
+}

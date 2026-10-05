@@ -1,0 +1,105 @@
+{
+  "task_id": "cef9191_2",
+  "selected_index": 0,
+  "native_success": true,
+  "n_commits": 1,
+  "simulator_writes": 0,
+  "candidate_scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "candidate_setup_prediction": [
+    {
+      "enabled": true,
+      "count": 10
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 9
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 10
+    },
+    {
+      "enabled": true,
+      "count": 10
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 10
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 12
+    },
+    {
+      "enabled": true,
+      "count": 10
+    }
+  ],
+  "n_rollout_errors": 0,
+  "trace_count": 16,
+  "selected_final_programs": [
+    {
+      "task_id": "cef9191_2",
+      "seed": 13000,
+      "max_tokens": 4096,
+      "response_prefix": "PYTHON_FINAL:\nimport json\n\n# The candidate's answer\ncandidate_answer = \"Dylan Stone\"\n\n# Gold values\ngold_public = json_value(data['gold']['sections']['public_data'])\ngold_answer = json_value(data['gold']['sections']['answer'])\n\n# Check 1: answers match\nanswers_match = (candidate_answer == gold_answer)\n\n# Check 2: no model changes\n# No writes were executed, so no model changes occurred.\nno_model_changes = True\n\n# Verify the candidate answer against the actual data\n# The following artists list is from the pristine read of show_following_artists\nartists = [\n    {\"artist_id\": 9, \"name\": \"Zoey James\", \"follower_count\": 24},\n    {\"artist_id\": 11, \"name\": \"Eliana Harper\", \"follower_count\": 29},\n    {\"artist_id\": 17, \"name\": \"Dylan Stone\", \"follower_count\": 14},\n    {\"artist_id\": 19, \"name\": \"Ethan Wallace\", \"follower_count\": 22},\n    {\"artist_id\": 25, \"name\": \"Velvet Echo\", \"follower_count\": 23},\n    {\"artist_id\": 26, \"name\": \"Isabella Cruz\", \"follower_count\": 15},\n    {\"artist_id\": 28, \"name\": \"Evelyn Rose\", \"follower_count\": 16},\n    {\"artist_id\": 33, \"name\": \"Felix Blackwood\", \"follower_count\": 19},\n    {\"artist_id\": 35, \"name\": \"Nova Harmony\", \"follower_count\": 20},\n]\n\n# Find the least followed artist\nleast_followed = min(artists, key=lambda x: x['follower_count'])\ndata_least_name = least_followed['name']\n\n# Verify that the candidate answer matches the data\ndata_matches = (candidate_answer == data_least_name)\n\n# Final verdict\nif answers_match and no_model_changes and data_matches:\n    print(\"VERDICT: SUCCESS\")\nelse:\n    print(\"VERDICT: FAIL\")",
+      "response_chars": 1565,
+      "elapsed_s": 3.810002179998264
+    }
+  ],
+  "finding": "Selected final program compares literal candidate answer Dylan Stone to reference answer and least-followed artist computed from a literal artist list. Candidate selection was followed by one successful native commit; no candidate oracle results are recorded.",
+  "limits": "Program embeds evidence as literals; full model inputs and raw grounding results are not logged, so the trace cannot independently prove provenance/accuracy of those literals. Setup counters and record metadata do not prove every observation matches the real environment. Full585 benchmark incomplete."
+}

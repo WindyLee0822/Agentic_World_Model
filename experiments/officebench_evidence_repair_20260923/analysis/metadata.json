@@ -1,0 +1,34 @@
+{
+  "env": "officebench",
+  "methods": [
+    "ours"
+  ],
+  "N": "1,2,4",
+  "agent": "llm_wm",
+  "llm_user": null,
+  "appworld_wm_tool_mode": "python",
+  "splits": [
+    "test_normal"
+  ],
+  "levels": [
+    "1",
+    "2",
+    "3"
+  ],
+  "domains": [
+    "airline"
+  ],
+  "workers": 4,
+  "max_steps": 40,
+  "rollout_retries": 2,
+  "cell_retries": 2,
+  "temperature": 1.0,
+  "agent_self_aggregate": false,
+  "aggregation_max_tokens": 2048,
+  "aoai_deployment": "gpt-5.4",
+  "auth_mode": "aml",
+  "records": "/mnt/azureml/cr/j/a8dd57a21ac24e4ea515b986e4437b43/cap/data-capability/wd/output_dir/records.jsonl",
+  "run_manifest": "/mnt/azureml/cr/j/a8dd57a21ac24e4ea515b986e4437b43/cap/data-capability/wd/output_dir/run_manifest.json",
+  "extra_args": "--predict-all-actions --task-ids 1-3/0,1-4/0,1-7/0,1-8/0,1-20/0,3-12/0,3-65/0,3-82/0",
+  "benchmark_gate": ""
+}

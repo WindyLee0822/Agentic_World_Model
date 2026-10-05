@@ -17,8 +17,11 @@ offline/unit-test paths never require Azure credentials.
 from __future__ import annotations
 
 import os
+import json
 import threading
 import time
+import urllib.parse
+import urllib.request
 from typing import Optional
 
 COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default"
@@ -63,6 +66,15 @@ def fetch_aad_token(scope: str = COGNITIVE_SERVICES_SCOPE, *, force_refresh: boo
         tok = _TOKEN_CACHE["token"]
         if tok and not force_refresh and (_TOKEN_CACHE["exp"] - now) > min_remaining:
             return tok
+        obo_endpoint = os.environ.get("OBO_ENDPOINT")
+        if obo_endpoint:
+            resource = scope.removesuffix(".default")
+            url = obo_endpoint + "?" + urllib.parse.urlencode({"resource": resource})
+            with urllib.request.urlopen(url, timeout=30) as response:
+                payload = json.load(response)
+            _TOKEN_CACHE["token"] = payload["access_token"]
+            _TOKEN_CACHE["exp"] = float(payload.get("expires_on", now + 3000))
+            return _TOKEN_CACHE["token"]
         try:
             from azure.identity import AzureCliCredential  # type: ignore
 

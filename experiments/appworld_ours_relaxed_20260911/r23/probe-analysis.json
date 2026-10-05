@@ -1,0 +1,31 @@
+{
+  "task_id": "5a83b05_1",
+  "n_rollouts": 1,
+  "success": false,
+  "commits": 0,
+  "candidate_errors": [
+    "WM rollout seed 9000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+  ],
+  "attempts": [
+    {
+      "file": "wm-198-485975a6fa414491bdbc2682380e0297.jsonl",
+      "events": 387,
+      "last_response_chars": 465,
+      "last_prefix": "PYTHON_READ:\nimport json\n\ndef json_value(v):\n    if isinstance(v, str):\n        try:\n            return json.loads(v)\n        except Exception:\n            return v\n    return v\n\nreads = data.get('reads', [])\nfacts = {\n    'applied_writes': data.get('writes', []),\n    'read_values': []\n}\nfor r in reads:\n    val = json_value(r.get('result'))\n    facts['read_values'].append({'name': r.get('name'), 'value': val})\n\nprint(json.dumps({'queries': [], 'facts': facts}))"
+    },
+    {
+      "file": "wm-198-6e18cda1795a415ba7fb0686f281b958.jsonl",
+      "events": 271,
+      "last_response_chars": 6976,
+      "last_prefix": "PYTHON_FINAL:\nimport json\n\ndata = json.loads(\"\"\"{\"api\": \"delete_file\", \"api_documentation\": \"Delete a file. The file must exist and the user must own it.\", \"app\": \"file_system\", \"args\": {\"access_token\": \"<redacted>\", \"file_path\": \"~/downloads/puzzle_solvers_guide.pdf\"}, \"facts\": {\"already_deleted\": false, \"already_deleted_in_prior_write\": false, \"already_deleted_in_prior_writes\": false, \"api\": \"delete_file\", \"app\": \"file_system\", \"applied_writes\": [{\"api\": \"delete_file\", \"args\": {\"access_token\": \"<redacted>\", \"file_path\": \"/home/jeffrey/downloads/anniversary_dinner.pdf\"}, \"name\": \"file_system.delete_file\", \"result\": {\"file_path\": \"/home/jeffrey/downloads/anniversary_dinner.pdf\", \"message\": \"File deleted successfully.\"}}, {\"api\": \"delete_file\", \"args\": {\"access_token\": \"<redacted>\", \"file_path\": \"/home/jeffrey/downloads/car_insurance.pdf\"}, \"name\": \"file_system.delete_file\", \"result\": {\"file_path\": \"/home/jeffrey/downloads/car_insurance.pdf\", \"message\": \"File deleted successfully.\"}}, {\"api\": \"delete_file\", \"args\": {\"access_token\": \"<redacted>\", \"file_path\": \"/home/jeffrey/downloads/car_repair_sibling.pdf\"}, \"name\": \"file_system.delete_file\", \"result\": {\"file_path\": \"/home/jeffrey/downloads/car_repair_sibling.pdf\", \"message\": \"File deleted successfully.\"}}, {\"api\": \"delete_file\", \"args\": {\"access_token\": \"<redacted>\", \"file_path\": \"/home/jeffrey/downloads/chocolate_new.pdf\"}, \"name\": \"file_system.delete_file\", \"result\": {\"file_path\": \"/home/jeffrey/downloads/chocolate_new.pdf\", \"message\": \"File deleted successfully.\"}}, {\"api\": \"delete_file\", \"args\": {\"access_token\": \"<redac"
+    },
+    {
+      "file": "wm-198-bf26295871114ee8b34e8ac4a79eff35.jsonl",
+      "events": 412,
+      "last_response_chars": 1036,
+      "last_prefix": "PYTHON_FINAL:\nimport json\n\napi_doc = data['api_documentation']\nargs = data['args']\nreads = data['reads']\n\n# Inspect reads to determine logical state\n# reads[0] is show_directory for source parent\n# reads[1] is show_directory for destination parent\n# reads[2] is file_exists for source\n\nsource_exists = json_value(reads[2]['result'])\n# file_exists returns {\"file_exists\": true/false} on success\n\nif not source_exists.get('file_exists', False):\n    # Source file not found\n    # Find the exact failure response from api_doc\n    for endpoint in api_doc:\n        if endpoint['api'] == 'move_file':\n            for fr in endpoint.get('failure_responses', []):\n                if 'source_not_found' in fr.get('condition', ''):\n                    print_json({\n                        \"outcome\": \"failure\",\n                        \"status_code\": fr['status_code'],\n                        \"response\": fr['response']\n                    })\n                    break\n            break\nelse:\n    # Would succeed, but source doesn't exist\n    pass"
+    }
+  ],
+  "finding": "Evidence preservation did not recover the task. Traces include substantial logical file operations, then observation failures. One fully logged final program iterates api_documentation as endpoint objects, inconsistent with supplied current-API dictionary; another rebuilds data from a large literal. An attempt ends during repeated read-inspection rounds.",
+  "limits": "No exception cause chain or full model inputs recorded. Cannot identify precise cause of every failed attempt or causally measure improvement versus R22. N1 probe cannot establish BoN16 target."
+}

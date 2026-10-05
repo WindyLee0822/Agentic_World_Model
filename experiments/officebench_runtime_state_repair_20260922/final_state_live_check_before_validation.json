@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "name": "convert_new_logical_input",
+      "match": true,
+      "observation": "Successfully convert /testbed/data/new.docx to /testbed/data/new.pdf"
+    },
+    {
+      "name": "conversion_final_state_snapshot",
+      "match": false,
+      "observation": "[file does not exist]"
+    },
+    {
+      "name": "send_original_recipient",
+      "match": true,
+      "observation": "Successfully sent email to Tom@example.org."
+    },
+    {
+      "name": "read_after_send",
+      "match": true,
+      "observation": "Successfully list emails for Tom:\nEmail ID: notice.eml\nFrom: Alice@example.com\nTo: Tom@example.com\nSubject: notice\nContent: A notification body ...\n--------------------------------------------------"
+    },
+    {
+      "name": "ocr_preserves_private_string",
+      "match": true,
+      "observation": "The text from /testbed/data/private.png is:\nPRIVATE_OCR_8294\nLine two"
+    }
+  ],
+  "native_candidate_actions": 0,
+  "private_values_hidden": true,
+  "python_calls": 6,
+  "python_failures": 2
+}

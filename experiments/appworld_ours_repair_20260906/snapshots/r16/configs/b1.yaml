@@ -1,0 +1,4 @@
+# B1: fixed pre-action context in tau2, AppWorld, and OfficeBench; no adaptive grounding.
+method: b1
+N: 8
+simulator: {kind: flat, predict_all_actions: true}

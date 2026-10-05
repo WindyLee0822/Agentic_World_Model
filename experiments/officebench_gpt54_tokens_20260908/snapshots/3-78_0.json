@@ -1,0 +1,30 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Identify whether the reimbursement amount exceeds the company budget, report to manager Tom about reimbursement",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Tom",
+          "keywords": [
+            "reimbursement",
+            "yes"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/company_budget.jpg": "Company Reimbursement\nSalary Reimbursement\nemployee: 35, salary for each: $150000\n\nMachine Purchase Reimbursement\nAmount: $150000\n\nBudget for the Year\nTotal Budget: $600000\n\f"
+  },
+  "initial_state": {
+    "./calendar/Tom.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/company_budget.jpg"
+}

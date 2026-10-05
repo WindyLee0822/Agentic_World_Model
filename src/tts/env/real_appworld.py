@@ -1963,6 +1963,7 @@ class AppWorldTaskEnv(TaskEnvironment):
             appworld_flat_tool_docs,
             install_wm_requester,
         )
+        from .appworld_ours_wm import AppWorldOursWMPredictor
 
         solver = config.solver
         model = solver.llm_agent or azure_deployment()
@@ -1971,7 +1972,13 @@ class AppWorldTaskEnv(TaskEnvironment):
         # diversity selection needs. The WM predictor stays unseeded (its temp-0 predictions are
         # deterministic and benefit from the shared response cache).
         chat = make_chat_client(model=model, seed=seed)
-        predictor = AppWorldWMPredictor(make_chat_client(model=model))
+        predictor_class = (
+            AppWorldOursWMPredictor if str(method).lower() == "ours"
+            else AppWorldWMPredictor
+        )
+        predictor = predictor_class(make_chat_client(model=model))
+        if isinstance(predictor, AppWorldOursWMPredictor):
+            predictor.set_diagnostic_context(self._task_id, seed)
         max_steps = solver.max_steps if solver.max_steps and solver.max_steps <= 50 else 40
 
         # Pre-fetch auth and start the optional pure-computation worker before constructing/entering
@@ -1989,6 +1996,11 @@ class AppWorldTaskEnv(TaskEnvironment):
         )
 
         with _world_session(self._task_id, self._experiment_base, f"wm{seed}") as world:
+            if isinstance(predictor, AppWorldOursWMPredictor):
+                # Each API in a cell waits for simulator programs. Native's
+                # 100s limit otherwise interrupts ordinary pagination loops.
+                world.timeout_seconds = max(1, int(os.environ.get(
+                    "TTS_APPWORLD_OURS_CELL_TIMEOUT_S", "600")))
             orig_request = install_wm_requester(
                 world,
                 predictor,
@@ -2023,6 +2035,8 @@ class AppWorldTaskEnv(TaskEnvironment):
             # so a non-terminating agent can't spin forever (AppWorld's own per-cell timeout does not
             # abort it in the IPython+freezegun+process-pool context). A small margin lets the
             # predictor's in-cell raise fire first.
+            if isinstance(predictor, AppWorldOursWMPredictor):
+                predictor.start_rollout()
             wall_clock_budget = (predictor.hard_timeout_s + 30.0) if predictor.hard_timeout_s and predictor.hard_timeout_s > 0 else None
             instruction_plan = (
                 _instruction_execution_plan(self._instruction, world.task.supervisor)
@@ -2052,12 +2066,15 @@ class AppWorldTaskEnv(TaskEnvironment):
                     broad_instruction_guidance=self.level == 3,
                     task_checklist=agent_checklist,
                     completion_check=lambda: predictor.simulated_task_completion is not None,
+                    executed_code_feedback=str(method).lower() == "ours",
                 )
 
             # Read-only DB query tool for the grounded verifier. Route reads through the WM requester so
             # a query to an app the agent WROTE returns the *post-write* predicted state (predict_read),
             # i.e. the resulting state after the agent's simulated actions — what the verifier must judge.
             def _verifier_query(app, api, **qargs):
+                if isinstance(predictor, AppWorldOursWMPredictor) and not predictor.allows_grounding(app, api):
+                    return {"error": f"{app}.{api} is not a read-only grounding tool"}
                 return _verifier_read_only_request(
                     world.requester.request, app, api,
                     **predictor.hydrate_read_args(app, api, qargs))
@@ -2066,6 +2083,8 @@ class AppWorldTaskEnv(TaskEnvironment):
             # (exact, faithful starting state — NOT predict_read), so a per-check sub-pass can resolve
             # entities / fetch the actual starting set. Writes are blocked.
             def _verifier_real_read(app, api, **qargs):
+                if isinstance(predictor, AppWorldOursWMPredictor) and not predictor.allows_grounding(app, api):
+                    return {"error": f"{app}.{api} is not a read-only grounding tool"}
                 return _verifier_read_only_request(
                     orig_request, app, api,
                     **predictor.hydrate_read_args(app, api, qargs))
@@ -2076,6 +2095,8 @@ class AppWorldTaskEnv(TaskEnvironment):
             completion_missing = predictor.simulated_task_completion is None
             hard_invalid = _rollout_hard_invalid(
                 predictor, load_task_answer(self._task_id))
+            if isinstance(predictor, AppWorldOursWMPredictor) and predictor.hard_timed_out:
+                hard_invalid = True
             if hard_invalid:
                 predicted_confidence = 0.0
             else:
@@ -2110,6 +2131,8 @@ class AppWorldTaskEnv(TaskEnvironment):
                                    "active_task_apps": list(predictor.active_task_apps()),
                                    "completion_missing": completion_missing,
                                    "hard_invalid": hard_invalid,
+                                   **({"verifier_error": getattr(predictor, "verifier_error", None)}
+                                      if isinstance(predictor, AppWorldOursWMPredictor) else {}),
                                    "verifier_percheck": predictor.last_percheck_breakdown,
                                    "completion_deferrals": predictor.n_completion_deferrals,
                                    "instruction_plan": bool(instruction_plan),

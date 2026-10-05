@@ -1,0 +1,37 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "read pdf google form file, make an image post welcome.jpg, email corresponding person with welcome image in welcome.eml",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/welcome.jpg"
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Bob",
+          "keywords": [
+            "welcome",
+            "event"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/google_form.pdf": "Google Form - Event Registration\nName:\nBob\nEmail:\nBob3@gmail.com\nPhone Number:\n123-456-7890\nEvent Date:\n2024-06-25\nComments:\nLooking forward to the event!\n"
+  },
+  "initial_state": {
+    "data/welcome.jpg": "[file does not exist]",
+    "./calendar/Bob.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/google_form.pdf"
+}

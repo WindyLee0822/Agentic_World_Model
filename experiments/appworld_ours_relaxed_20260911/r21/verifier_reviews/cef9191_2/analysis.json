@@ -1,0 +1,32 @@
+{
+  "task_id": "cef9191_2",
+  "selected_seed": 13000,
+  "selected_native_success": true,
+  "candidate_scores": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "trace_files": 16,
+  "finding": "Selected final verifier program checks len(data[\"writes\"]) == 0 for no model changes. The structured verifier input includes supervisor.complete_task in write history. This condition can reject a correctly completed read-only task.",
+  "verdict_protocol": "Both SUCCESS and FAIL strings used in this trace are accepted by the parser.",
+  "limitations": [
+    "Full verifier input/runtime computed values are not logged; do not assume model comments prove actual gold values.",
+    "Only the selected candidate was natively evaluated.",
+    "This finding does not establish the entire cause of all 16 zero scores."
+  ],
+  "next": "Use as evidence for an opt-in simulator prompt clarification if full-run ranking quality requires further improvement; do not remove task completion evidence or hardcode verdicts."
+}

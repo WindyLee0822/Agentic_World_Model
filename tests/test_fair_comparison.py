@@ -146,6 +146,48 @@ def test_b2_samples_real_env_and_selects_by_real_success():
     assert run_decision(env3, cfg3).record.success is False  # only a failing rollout available
 
 
+def test_opt_in_self_aggregation_bypasses_selector_and_keeps_legacy_default(monkeypatch):
+    import tts.harness as harness
+    from tts.aggregation import AggregationResult
+
+    original_select = harness.Selector.select
+    legacy = run_decision(
+        _FairFakeEnv([]),
+        Config(method="b2", env="fake", N=2, solver=SolverConfig(agent="llm")),
+    )
+    assert legacy.selected_index in (0, 1)
+
+    monkeypatch.setattr(
+        harness.Selector,
+        "select",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("selector must not run in self-aggregation mode")
+        ),
+    )
+    monkeypatch.setattr(
+        harness,
+        "aggregate_trajectories",
+        lambda env, config, rollouts: AggregationResult(
+            rollouts[1].trajectory, source_index=1, tokens=23
+        ),
+    )
+    aggregated = run_decision(
+        _FairFakeEnv([]),
+        Config(
+            method="b2",
+            env="fake",
+            N=2,
+            solver=SolverConfig(agent="llm", self_aggregate=True),
+        ),
+    )
+    assert aggregated.selected_index == 1
+    assert aggregated.record.n_rollouts == 2
+    assert aggregated.record.n_commits == 1
+    assert aggregated.record.tokens == 23
+
+    monkeypatch.setattr(harness.Selector, "select", original_select)
+
+
 def test_tau2_wm_agent_policy_hook_is_disabled():
     """τ² WM sampling must not inject verifier guidance into the official agent prompt."""
     from tts.env.real_tau2 import _add_wm_agent_policy_reminder

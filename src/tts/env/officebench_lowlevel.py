@@ -367,6 +367,10 @@ class OfficeBenchSession:
         """
         return self._driver("read_state", {"files": files, "extras": False}).get("state", {})
 
+    def runtime_capabilities(self) -> Dict:
+        """Read public availability metadata without disclosing credentials."""
+        return self._driver('capabilities', {})
+
     def list_state(self, path: str, *, recursive: bool = False) -> Dict:
         """List immutable testbed objects without executing an OfficeBench or shell action."""
         return self._driver("list_state", {"path": path, "recursive": recursive})
@@ -463,6 +467,15 @@ class OfficeBenchSession:
         shutil.copytree(os.path.join(self.root, "utils"), os.path.join(self._local_root, "utils"))
         shutil.copy2(_DRIVER_PATH, os.path.join(self._local_root, "officebench_driver.py"))
         os.makedirs(os.path.join(self._local_root, "tmp", "home"), exist_ok=True)
+        # LibreOffice resolves the current UID through NSS even with HOME set.
+        # Supply a synthetic account, never the host account database or /proc tree.
+        os.makedirs(os.path.join(self._local_root, "etc"), exist_ok=True)
+        with open(os.path.join(self._local_root, 'etc', 'passwd'), 'w') as fh:
+            fh.write(f'officebench:x:{os.getuid()}:{os.getgid()}:OfficeBench:/tmp/home:/bin/sh\n')
+        with open(os.path.join(self._local_root, 'etc', 'group'), 'w') as fh:
+            fh.write(f'officebench:x:{os.getgid()}:\n')
+        with open(os.path.join(self._local_root, 'etc', 'nsswitch.conf'), 'w') as fh:
+            fh.write('passwd: files\ngroup: files\n')
         os.makedirs(os.path.join(self._local_root, "dev"), exist_ok=True)
         for name in ("null", "random", "urandom"):
             open(os.path.join(self._local_root, "dev", name), "ab").close()
@@ -523,6 +536,18 @@ class OfficeBenchSession:
         env["PYTHONPATH"] = "/"
         env["HOME"] = "/tmp/home"
         env["TMPDIR"] = "/tmp"
+        # Without /proc/self/exe, the dynamic loader cannot recover LibreOffice's
+        # $ORIGIN. An explicit library path keeps host process metadata unmounted.
+        lo_lib = '/usr/lib/libreoffice/program'
+        if os.path.isdir(lo_lib):
+            env['LD_LIBRARY_PATH'] = lo_lib + (':' + env['LD_LIBRARY_PATH'] if env.get('LD_LIBRARY_PATH') else '')
+        java_home = '/usr/lib/jvm/default-java'
+        if os.path.isdir(java_home):
+            env['JAVA_HOME'] = java_home
+            env['UNO_JAVA_JFW_ENV_JREHOME'] = '1'
+            env['LD_LIBRARY_PATH'] = ':'.join(
+                [env.get('LD_LIBRARY_PATH', '')] +
+                [java_home + suffix for suffix in ('/lib', '/lib/jli', '/lib/server')])
         bindings = []
         for path in (
             "/bin",
@@ -530,11 +555,15 @@ class OfficeBenchSession:
             "/lib",
             "/lib64",
             "/etc/fonts",
+            "/etc/libreoffice",
+            "/proc/version",
             "/etc/ImageMagick-6",
             "/etc/ssl",
         ):
             if os.path.exists(path):
                 bindings.extend(["-b", path])
+        for path in glob.glob('/etc/java-*-openjdk'):
+            bindings.extend(['-b', path])
         python_prefix = os.path.realpath(sys.prefix)
         if not any(
             python_prefix == path or python_prefix.startswith(path.rstrip("/") + "/")

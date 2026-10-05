@@ -1,0 +1,322 @@
+FFFF                                                                                                 [100%]
+================================================= FAILURES =================================================
+_____________________ test_appworld_b1_reuses_fixed_prompt_and_skips_dirty_read_probe ______________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7876319bf490>
+
+    def test_appworld_b1_reuses_fixed_prompt_and_skips_dirty_read_probe(monkeypatch):
+        monkeypatch.setenv("TTS_APPWORLD_WM_TOOL_MODE", "text")
+        monkeypatch.setenv("TTS_APPWORLD_VERIFIER_PERCHECK", "0")
+        methods = {
+            ("notes", "update_note"): "POST",
+            ("notes", "show_note"): "GET",
+        }
+        monkeypatch.setattr(
+            appworld_wm,
+            "_api_doc",
+            lambda app, api: {
+                "method": methods[(app, api)],
+                "description": f"{api} documentation",
+            },
+        )
+        monkeypatch.setattr(
+            appworld_wm,
+            "_success_schema",
+            lambda app, api: {"message": "string"},
+        )
+    
+        requester = _AppWorldRequester()
+        world = type(
+            "World",
+            (),
+            {
+                "requester": requester,
+                "task": type(
+                    "Task",
+                    (),
+                    {
+                        "datetime": type(
+                            "Frozen",
+                            (),
+                            {"isoformat": lambda self: "2026-01-01T00:00:00"},
+                        )(),
+                        "app_descriptions": {"notes": "Manage notes."},
+                    },
+                )(),
+            },
+        )()
+        chat = _AppWorldFlatChat()
+        predictor = AppWorldWMPredictor(chat)
+        appworld_wm.install_wm_requester(world, predictor)
+        predictor.configure_flat_context(
+            task_text="Update the reference note.",
+            tool_docs={"notes": {"update_note": {"method": "POST"}}},
+            reference_checklist="note content equals REFERENCE",
+            reference_checks=(["note content equals REFERENCE"], "note_id=REF-1"),
+            fixed_state={"reference_note": {"note_id": "REF-1", "content": "old"}},
+        )
+    
+>       world.requester.request(
+            "notes", "update_note", note_id="CANDIDATE-1", content="new")
+
+tests/test_b1_fixed_context.py:272: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_app_name = 'notes', _api_name = 'update_note', client = None, raise_on_failure = None, show = False
+track = True, data = {'content': 'new', 'note_id': 'CANDIDATE-1'}
+_predicted_read = <function install_wm_requester.<locals>.wm_request.<locals>._predicted_read at 0x787631bb27a0>
+doc = {'description': 'update_note documentation', 'method': 'POST'}
+
+    def wm_request(_app_name, _api_name, client=None, raise_on_failure=None,
+                   show=False, track=True, **data):
+        def _predicted_read(*args, **kwargs):
+            try:
+                return predictor.predict_read(
+                    *args,
+                    **kwargs,
+                )
+    
+            except WMPredictedHTTPError as exc:
+    
+                if raise_on_failure is False:
+                    return exc.body
+    
+                raise Exception(
+                    str(exc)
+                ) from None
+        doc = _api_doc(_app_name, _api_name)
+        if not doc:
+            body = {
+                "message": (
+                    f"{_app_name}.{_api_name} has no API metadata; blocked to preserve "
+                    "read-only world-model sampling."
+                )
+            }
+            if raise_on_failure is False:
+                return body
+            raise Exception(f"Response status code is 404:\n{json.dumps(body)}")
+    
+        if _app_name == "supervisor" and _api_name == "complete_task":
+            return predictor.simulate_task_completion(data)
+    
+        if not _is_write(_app_name, _api_name):
+            passthrough = (
+                _app_name in _PASSTHROUGH_APPS
+                or _api_name in _PASSTHROUGH_APIS
+            )
+            if predict_all_actions and not passthrough:
+                dirty = _app_name in predictor.dirty_apps
+                return _predicted_read(
+                    _app_name,
+                    _api_name,
+                    data,
+                    None,
+                    _success_schema(_app_name, _api_name),
+                    dirty=dirty,
+                )
+            if (predictor.uses_fixed_context
+                    and predictor.first_write_seen
+                    and _app_name in predictor.dirty_apps
+                    and _app_name not in _PASSTHROUGH_APPS
+                    and _api_name not in _PASSTHROUGH_APIS):
+                return _predicted_read(
+                    _app_name, _api_name, data, None,
+                    _success_schema(_app_name, _api_name))
+            real = orig_request(_app_name, _api_name, client=client,
+                                raise_on_failure=raise_on_failure, show=show, track=track, **data)
+            if _app_name == "supervisor" and _api_name == "show_active_task":
+                completion = predictor.simulated_task_completion
+                if completion and isinstance(real, dict):
+                    real = {
+                        **real,
+                        "status": completion["status"],
+                        "answer": completion["answer"],
+                    }
+            if passthrough:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # Read-grounded prefix: before any write, and for any app no write has touched, the read
+            # is exact.  Only a read of a dirty app *after* a write is predicted (post-write state).
+            if not predictor.first_write_seen or _app_name not in predictor.dirty_apps:
+                try:
+                    predictor.note_read(_app_name, _api_name, data, real)
+                except Exception:
+                    pass
+                return real
+            # read after a write to this app -> predict the post-write result from pre-write + history
+            return _predicted_read(_app_name, _api_name, data, real,
+                                          _success_schema(_app_name, _api_name))
+        # write -> predicted (no real mutation), marks the app dirty. A predicted REJECTION is surfaced
+        # to the agent exactly like the real requester: raised as the plain real-format Exception when
+        # raise_on_failure is not explicitly False, else returned as the failure body dict.
+        try:
+>           return predictor.predicted_write(_app_name, _api_name, data,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+                                           _success_schema(_app_name, _api_name))
+E                                          AttributeError: 'AppWorldWMPredictor' object has no attribute 'predicted_write'
+
+src/tts/env/appworld_wm.py:3390: AttributeError
+________________________ test_airline_cancel_preflight_regenerates_ineligible_call _________________________
+
+    def test_airline_cancel_preflight_regenerates_ineligible_call():
+        from types import SimpleNamespace
+    
+        from tts.env.real_tau2 import _add_airline_cancel_preflight
+    
+        cancel = SimpleNamespace(
+            role="assistant",
+            content=None,
+            tool_calls=[
+                SimpleNamespace(
+                    name="cancel_reservation",
+                    arguments={"reservation_id": "r1"},
+                ),
+            ],
+        )
+        refusal = SimpleNamespace(
+            role="assistant",
+            content="This reservation is outside the cancellation window.",
+            tool_calls=None,
+        )
+        reservation = SimpleNamespace(
+            role="tool",
+            content=json.dumps({
+                "reservation_id": "r1",
+                "created_at": "2024-05-13T10:00:00",
+                "cabin": "economy",
+                "insurance": "yes",
+                "flights": [{"date": "2024-05-20"}],
+            }),
+        )
+    
+        class _Agent:
+            def __init__(self):
+                self.responses = [cancel, refusal]
+                self.calls = 0
+    
+            def generate_next_message(self, message, state):
+                state.messages.append(message)
+                response = self.responses[self.calls]
+                self.calls += 1
+                state.messages.append(response)
+                return response, state
+    
+        agent = _Agent()
+        state = SimpleNamespace(system_messages=[], messages=[reservation])
+        _add_airline_cancel_preflight(agent)
+    
+>       response, state = agent.generate_next_message(
+            SimpleNamespace(role="user", content="Cancel it."), state)
+
+tests/test_tau2_python_prediction.py:324: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+message = namespace(role='user', content='Cancel it.')
+state = namespace(system_messages=[], messages=[namespace(role='tool', content='{"reservation_id": "r1", "created_at": "2024-05-13T10:00:00", "cabin": "economy", "insurance": "yes", "flights": [{"date": "2024-05-20"}]}')])
+
+    def guarded_generate(message, state):
+        feedback = ""
+        for attempt in range(3):
+            original_messages = list(getattr(state, "messages", []) or [])
+            reminder = None
+            if feedback:
+>               from tau2.data_model.message import SystemMessage
+E               ModuleNotFoundError: No module named 'tau2'
+
+src/tts/env/real_tau2.py:1319: ModuleNotFoundError
+____________________ test_airline_certificate_preflight_requires_completed_delay_change ____________________
+
+    def test_airline_certificate_preflight_requires_completed_delay_change():
+        from types import SimpleNamespace
+    
+        from tts.env.real_tau2 import _add_airline_certificate_preflight
+    
+        wrong = SimpleNamespace(
+            role="assistant",
+            content=None,
+            tool_calls=[
+                SimpleNamespace(
+                    name="send_certificate",
+                    arguments={"user_id": "u1", "amount": 50},
+                ),
+            ],
+        )
+        corrected = SimpleNamespace(
+            role="assistant",
+            content="I can’t offer delayed-flight compensation without changing or cancelling it.",
+            tool_calls=None,
+        )
+    
+        class _Agent:
+            def __init__(self):
+                self.responses = [wrong, corrected]
+                self.calls = 0
+    
+            def generate_next_message(self, message, state):
+                state.messages.append(message)
+                response = self.responses[self.calls]
+                self.calls += 1
+                state.messages.append(response)
+                return response, state
+    
+        agent = _Agent()
+        state = SimpleNamespace(
+            system_messages=[],
+            messages=[
+                SimpleNamespace(
+                    role="user",
+                    content="The flight was delayed, but I do not want to change or cancel it.",
+                ),
+            ],
+        )
+        _add_airline_certificate_preflight(agent)
+    
+>       response, _ = agent.generate_next_message(
+            SimpleNamespace(role="user", content="Can I get compensation?"), state)
+
+tests/test_tau2_python_prediction.py:443: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+message = namespace(role='user', content='Can I get compensation?')
+state = namespace(system_messages=[], messages=[namespace(role='user', content='The flight was delayed, but I do not want to change or cancel it.')])
+
+    def guarded_generate(message, state):
+        feedback = ""
+        for attempt in range(3):
+            original_messages = list(getattr(state, "messages", []) or [])
+            reminder = None
+            if feedback:
+>               from tau2.data_model.message import SystemMessage
+E               ModuleNotFoundError: No module named 'tau2'
+
+src/tts/env/real_tau2.py:1524: ModuleNotFoundError
+________________________________________ test_usable_only_disabled _________________________________________
+
+    def test_usable_only_disabled():
+        """Test that usable_only filter is now disabled for all agents."""
+        from tts.env.registry import _tau2_all_tasks, _tau2_usable_tasks
+    
+>       all_tasks = _tau2_all_tasks('airline')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_tau2_wm_deterministic_ids.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+domain = 'airline'
+
+    @lru_cache(maxsize=None)
+    def _tau2_all_tasks(domain: str):
+        """All official τ² tasks of a domain (the set the official benchmark / B0 is scored over)."""
+>       from tau2.registry import registry
+E       ModuleNotFoundError: No module named 'tau2'
+
+src/tts/env/registry.py:39: ModuleNotFoundError
+========================================= short test summary info ==========================================
+FAILED tests/test_b1_fixed_context.py::test_appworld_b1_reuses_fixed_prompt_and_skips_dirty_read_probe - ...
+FAILED tests/test_tau2_python_prediction.py::test_airline_cancel_preflight_regenerates_ineligible_call - ...
+FAILED tests/test_tau2_python_prediction.py::test_airline_certificate_preflight_requires_completed_delay_change
+FAILED tests/test_tau2_wm_deterministic_ids.py::test_usable_only_disabled - ModuleNotFoundError: No modul...
+4 failed in 0.58s

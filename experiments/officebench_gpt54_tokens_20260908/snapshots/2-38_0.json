@@ -1,0 +1,35 @@
+{
+  "config": {
+    "username": "Jack",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "read notification pdf file and send email notification.eml to Alice",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Alice",
+          "keywords": [
+            "notification",
+            "July",
+            "15",
+            "2024",
+            "Conference",
+            "Room 1"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/notification.docx": "Important Notification\n\n\nThis is to inform you about an important update.\n\n\n\nDetails of the Notification:\n\nDate: July 15, 2024\n\nTime: 2:00 PM\n\nLocation: Conference Room 1\n\n\n\nPeople who need to be aware of this notification:\n\nAlice Johnson (HR Department, alice@gmail.com)\n\nBob Smith (Finance Department, bob@abc.com)\n\nCarol Williams (IT Department, carol@abc.com)\n\nDavid Brown (Operations Department, david@gmail.com)\n\nEmma Davis (Marketing Department, emma@abc.com)\n\n\n\nPlease ensure to mark your calendars and attend the meeting on time.\n\n\n\nThank you, Management",
+    "/testbed/data/party.pdf": "Party Announcement\n    You're invited to an exciting party!\n    Host: Jane Doe\n    Date: August 20, 2024\n    Time: 8:00 PM onwards\n    Venue: Doe Mansion\n    Address: 456 Oak Avenue, Townsville\n    Join us for a night of fun, music, and celebration!\n    \n"
+  },
+  "initial_state": {
+    "./calendar/Alice.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/notification.docx\n/testbed/data/party.pdf"
+}

@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "name": "calendar_format",
+      "match": true,
+      "predicted": "Successfully list events for Alice:\nSummary: PRIVATE_EVENT_7329\nStart Time: 2014-01-01 14:10:00\nEnd Time: 2014-01-01 14:30:00\nDescription: None\nLocation: None\n--------------------------------------------------",
+      "expected": "Successfully list events for Alice:\nSummary: PRIVATE_EVENT_7329\nStart Time: 2014-01-01 14:10:00\nEnd Time: 2014-01-01 14:30:00\nDescription: None\nLocation: None\n--------------------------------------------------"
+    },
+    {
+      "name": "create_then_edit",
+      "match": true,
+      "predicted": "Successfully write text to /testbed/data/new.xlsx"
+    },
+    {
+      "name": "read_after_edit",
+      "match": true,
+      "predicted": "The following is the table from the excel file:\n(1, 1): Agenda"
+    },
+    {
+      "name": "missing_file_not_confused_with_state_record",
+      "match": true,
+      "predicted": "The file /testbed/data/missing.xlsx does not exist. Failed to write to the file."
+    }
+  ],
+  "native_candidate_actions": 0,
+  "prompt_values_hidden": true,
+  "python_calls": 3,
+  "python_failures": 0,
+  "generated_programs": [
+    "PYTHON_FINAL:\nimport re\nfrom datetime import datetime\n\ntext = data['reads'][0]['result']\n\ndef unfold_ics(s):\n    lines = s.splitlines()\n    out = []\n    for line in lines:\n        if line.startswith(' ') or line.startswith('\\t'):\n            if out:\n                out[-1] += line[1:]\n            else:\n                out.append(line[1:])\n        else:\n            out.append(line)\n    return out\n\ndef unescape_text(v):\n    v = v.replace('\\\\\\\\', '\\0')\n    v = v.replace('\\\\n', '\\n').replace('\\\\N', '\\n')\n    v = v.replace('\\\\,', ',').replace('\\\\;', ';')\n    v = v.replace('\\0', '\\\\')\n    return v\n\ndef parse_dt(v):\n    if re.fullmatch(r'\\d{8}', v):\n        return datetime.strptime(v, '%Y%m%d').strftime('%Y-%m-%d 00:00:00')\n    if re.fullmatch(r'\\d{8}T\\d{6}Z?', v):\n        vv = v[:-1] if v.endswith('Z') else v\n        return datetime.strptime(vv, '%Y%m%dT%H%M%S').strftime('%Y-%m-%d %H:%M:%S')\n    raise ValueError\n\ntry:\n    lines = unfold_ics(text)\n    events = []\n    in_event = False\n    current = None\n\n    for line in lines:\n        if line == 'BEGIN:VEVENT':\n            in_event = True\n            current = {}\n            continue\n        if line == 'END:VEVENT':\n            if in_event and current is not None:\n                events.append(current)\n            in_event = False\n            current = None\n            continue\n        if not in_event or ':' not in line:\n            continue\n\n        left, value = line.split(':', 1)\n        parts = left.split(';')\n        prop = parts[0].upper()\n        params = parts[1:]\n\n        if prop in ('SUMMARY', 'DESCRIPTION', 'LOCATION'):\n            current[prop] = unescape_text(value)\n        elif prop in ('DTSTART', 'DTEND'):\n            current[prop] = parse_dt(value)\n\n    if not events:\n        result = 'No events found for Alice.'\n    else:\n        blocks = []\n        for ev in events:\n            block = '\\n'.join([\n                f\"Summary: {ev.get('SUMMARY', 'None')}\",\n                f\"Start Time: {ev.get('DTSTART', 'None')}\",\n                f\"End Time: {ev.get('DTEND', 'None')}\",\n                f\"Description: {ev.get('DESCRIPTION', 'None')}\",\n                f\"Location: {ev.get('LOCATION', 'None')}\",\n                \"-\" * 50,\n            ])\n            blocks.append(block)\n        result = 'Successfully list events for Alice:\\n' + '\\n'.join(blocks).rstrip()\nexcept Exception:\n    result = 'Failed to list events for Alice.'\n\nprint_json({\"text\": result})",
+    "PYTHON_FINAL:\ndef get_record(data):\n    targets = data.get('targets') or []\n    key = targets[0] if targets else None\n    return (data.get('current_state') or {}).get(key, {})\n\nfile_path = data.get('observation_action', {}).get('file_path') or data.get('action', {}).get('file_path')\nrecord = get_record(data)\nexists = record.get('exists')\n\nif exists is False:\n    value = f\"The file {file_path} does not exist. Failed to write to the file.\"\nelse:\n    value = f\"Successfully write text to {file_path}\"\n\nprint_json({\"text\": value})",
+    "PYTHON_FINAL:\nrecord = data.get('current_state', {}).get(data.get('targets', [''])[0], {})\nexists = record.get('exists')\nfile_path = data.get('observation_action', {}).get('file_path', data.get('action', {}).get('file_path'))\nif exists is False:\n    value = f\"The file {file_path} does not exist. Failed to write to the file.\"\nelif exists is True:\n    value = f\"Successfully write text to {file_path}\"\nelse:\n    value = f\"The file {file_path} does not exist. Failed to write to the file.\"\nprint_json({\"text\": value})"
+  ],
+  "repair_feedback": []
+}

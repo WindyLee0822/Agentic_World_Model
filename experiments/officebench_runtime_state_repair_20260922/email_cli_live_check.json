@@ -1,0 +1,7 @@
+{
+  "observation": "Failed to send email to ('Bob', 'Tom').",
+  "match": true,
+  "applied_resources": [],
+  "python_calls": 1,
+  "python_failures": 0
+}

@@ -1,0 +1,8 @@
+{
+  "boundary_unit_tests": 10,
+  "native_boundary_cases": 3,
+  "native_plain_model_error_cases": 1,
+  "staged_regression_tests": 26,
+  "all_passed": true,
+  "performance_verified": false
+}

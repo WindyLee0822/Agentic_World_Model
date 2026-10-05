@@ -1,0 +1,11 @@
+{
+  "job": "dw-appworld-ours-strict-r17-full-20260907",
+  "observed_at": "2026-09-07T22:18:24Z",
+  "diagnostic_files_present": true,
+  "example_task": "cef9191_2",
+  "example_seed": 13000,
+  "model_prediction_programs_observed": 3,
+  "program_prefix": "PYTHON_FINAL:",
+  "completed_task_score_available": false,
+  "interpretation": "Model prediction activity is present; this is not task completion or performance evidence."
+}

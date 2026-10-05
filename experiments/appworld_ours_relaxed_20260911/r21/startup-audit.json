@@ -1,0 +1,23 @@
+{
+  "name": "dw-appworld-ours-relaxed-r21-n16-full-20260913",
+  "status": "Running",
+  "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/fa24e82c-45e5-41b8-bbf3-ee3758e07c60/versions/1",
+  "checked_at": "2026-09-13T01:49:29.082807+00:00",
+  "environment_matches": {
+    "TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY": true,
+    "TTS_APPWORLD_OURS_MODEL_DRIVEN_WRITES": true,
+    "TTS_APPWORLD_COMPLETION_GUARD": true,
+    "TTS_APPWORLD_AGENT_REFERENCE": true,
+    "TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS": true
+  },
+  "command_has_n16": true,
+  "command_has_worker_recycling": true,
+  "command_has_extended_watchdog": true,
+  "properties": {
+    "ProcessInfoFile": "azureml-logs/process_info.json",
+    "ProcessStatusFile": "azureml-logs/process_status.json",
+    "StartTimeUtc": "2026-09-13 01:34:35"
+  },
+  "log_bytes": 0,
+  "log_modified": "2026-09-13T01:36:42+00:00"
+}

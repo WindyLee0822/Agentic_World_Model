@@ -1,0 +1,25 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Analyze Excel data of students' grade and generate a teaching report in teaching.docx",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/teaching.docx"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/score.xlsx": "(1, 1): Name\t(1, 2): Score\t\n(2, 1): Bob\t(2, 2): 62\t\n(3, 1): Henry\t(3, 2): 94\t\n(4, 1): Quinn\t(4, 2): 80\t\n(5, 1): Henry\t(5, 2): 62\t\n(6, 1): Noah\t(6, 2): 80\t\n(7, 1): Ivy\t(7, 2): 67\t\n(8, 1): Quinn\t(8, 2): 88\t\n(9, 1): Quinn\t(9, 2): 87\t\n(10, 1): Emma\t(10, 2): 67\t\n(11, 1): Emma\t(11, 2): 77\t\n(12, 1): Liam\t(12, 2): 99\t\n(13, 1): Olivia\t(13, 2): 79\t\n(14, 1): Tina\t(14, 2): 95\t\n(15, 1): Olivia\t(15, 2): 69\t\n(16, 1): Rachel\t(16, 2): 81\t\n(17, 1): Olivia\t(17, 2): 91\t\n(18, 1): Noah\t(18, 2): 60\t\n(19, 1): Quinn\t(19, 2): 94\t\n(20, 1): Carol\t(20, 2): 81\t\n(21, 1): Alice\t(21, 2): 74\t\n"
+  },
+  "initial_state": {
+    "data/teaching.docx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/score.xlsx"
+}

@@ -1,0 +1,7 @@
+{
+  "changed_python_files_vs_r23": [
+    "src/tts/env/appworld_ours_model_driven.py"
+  ],
+  "all_other_python_identical": true,
+  "change": "Write prediction instructions only, within existing opt-in subclass"
+}

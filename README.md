@@ -231,16 +231,18 @@ write-task.
 **OfficeBench `llm_wm` (world-model interaction).** OfficeBench likewise supports `--agent llm_wm`,
 obeying the **same write-safe contract** as τ²/AppWorld: the official office-app agent runs, but tool
 execution is routed through the world model (`env/officebench_wm_predict.py::OfficeBenchWMPredictor`) —
-pristine read-only actions execute exactly in the shadow by default, while every **write** and every
-read after a predicted write remains world-model-predicted and is never executed. This gives the agent
-real filenames/source content without mutating the task. `--predict-all-actions` remains the fully
-action-free ablation, where recursive Ours may gather pristine objects through bounded driver
-reads/listings (flat B1 uses fixed context) and all candidate observations/final states are generated
-through restricted Python. Write safety is enforced structurally: the sampling container is opened
+with `--methods ours` and a GPT or DeepSeek model, the repaired profile predicts **all candidate
+observations** by default, selects the best trajectory, and commits only that trajectory. Ours may
+gather copied pristine objects through bounded driver reads/listings; restricted Python and pure
+state-transition helpers process these inputs without putting private contents in model prompts.
+Explicit `--exact-clean-reads` restores native pristine reads in the shadow. Other model/method
+profiles retain their previous defaults. Write safety is enforced structurally: the sampling container is opened
 `read_only`, and a write action reaching `exec_action` raises (a routing bug fails loudly rather than
 silently writing). Because the real files stay pristine during sampling, the success verifier
 (`env/officebench_wm.py::OfficeBenchVerifier`) judges the **predicted** final state — each gold-checked
-file's predicted content (initial content + the predicted write-log) — not real files. It is
+file's materialized predicted content where supported, with unresolved state kept uncertain — not
+the environment after executing a candidate. Supported native predicates are computed directly on
+this predicted state; unsupported checks use the legacy verifier. It is
 **reference-grounded by default** against OfficeBench's native ground truth (the per-task `evaluation`
 checks *with gold values* + the `reference/` gold expected-output files for exact-match tasks;
 `TTS_OFFICEBENCH_VERIFIER_REFERENCE=0` for a blind judge), and flags give-up/refusal answers.
@@ -455,12 +457,11 @@ APPWORLD_ROOT=/home/t-wendili/env-tts PYTHONPATH=src python experiments/run.py \
 OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/run.py \
   --env officebench --levels 1,2,3 --methods b0 --N 1 --workers 8
 
-# OfficeBench GPT-5.4 world-model BoN. The N=1/2/4 cells share a nested rollout pool.
-# Pristine read-only actions execute exactly; writes and dirty reads remain predictive.
-# GPT-5.4 defaults to uniform consecutive seeds, atomic evaluator-check confidence,
-# a low-weight whole-task audit, and comparative guarded nested-pool ranking.
-# Add TTS_OFFICEBENCH_VERIFIER_PERCHECK=0 and --success-score simulator_confidence
-# for the legacy whole-task vote selector.
+# Repaired OfficeBench Ours + llm_wm defaults for GPT and DeepSeek.
+# Predict all candidate observations, select best, commit only selected trajectory.
+# Typed predicted-state checks, guarded comparative selection, 5 fallback verifier votes,
+# and a 5-second Python timeout are enabled by default. Explicit flags/env overrides win.
+# Replace gpt-5.4 below with DeepSeek-V4-Pro to use the same repaired defaults.
 OFFICEBENCH_ROOT=/home/t-wendili/OfficeBench PYTHONPATH=src python experiments/run.py \
   --env officebench --agent llm_wm --levels 1,2,3 --methods ours --N 1,2,4 \
   --temperature 1 --llm-agent gpt-5.4 --workers 8

@@ -1,0 +1,13 @@
+{
+  "completed_tasks": 6,
+  "official_successes": 6,
+  "setup_predictions_total": 139,
+  "setup_predictions_per_candidate_min": 9,
+  "setup_predictions_per_candidate_max": 14,
+  "all_candidates_setup_enabled": true,
+  "all_no_native_candidate_scores": true,
+  "all_one_official_commit": true,
+  "all_zero_simulator_writes": true,
+  "rollout_errors": 0,
+  "overall_goal_verified": false
+}

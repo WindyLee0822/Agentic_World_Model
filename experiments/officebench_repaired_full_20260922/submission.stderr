@@ -1,0 +1,16 @@
+
+**************************************************************************************************************
+* WARNING:                                                                                                   *
+* Extension "azure-cli-ml" cannot be used along with extension "ml". This may result in unexpected behaviour.*
+* Please remove azure-cli-ml extension by running  "az extension remove -n azure-cli-ml                      *
+**************************************************************************************************************
+                
+Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):   0%| | 0/Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):   1%| | 19Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):   6%| | 13Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  19%|▏| 44Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  33%|▎| 75Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  39%|▍| 89Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  43%|▍| 97Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  49%|▍| 11Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  56%|▌| 12Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  63%|▋| 14Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  72%|▋| 16Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  85%|▊| 19Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  93%|▉| 21Uploading officebench-repaired-full-n124-20260922 (22.65 MBs):  99%|▉| 22Uploading officebench-repaired-full-n124-20260922 (22.65 MBs): 100%|█| 22
+
+

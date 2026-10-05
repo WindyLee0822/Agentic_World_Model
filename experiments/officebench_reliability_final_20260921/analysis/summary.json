@@ -1,0 +1,80 @@
+{
+  "decisions": 1,
+  "recorded_decisions": 1,
+  "imputed_failures": 0,
+  "partial": false,
+  "coverage": {
+    "env": "officebench",
+    "expected_tasks": 1,
+    "complete_tasks": 1,
+    "partial_tasks": 0,
+    "missing_tasks": 0,
+    "expected_cells_per_task": 1,
+    "expected_cells": [
+      {
+        "method": "ours",
+        "n_rollouts": 1
+      }
+    ],
+    "expected_decisions": 1,
+    "recorded_decisions": 1,
+    "missing_decisions": 0,
+    "cell_errors": [],
+    "abandoned_tasks": [],
+    "task_errors": [],
+    "by_subset": {
+      "2app": {
+        "expected_tasks": 1,
+        "complete_tasks": 1,
+        "partial_tasks": 0,
+        "missing_tasks": 0,
+        "expected_decisions": 1,
+        "recorded_decisions": 1,
+        "missing_decisions": 0
+      }
+    }
+  },
+  "by_method_n": [
+    {
+      "env": "officebench",
+      "subset": "2app",
+      "method": "ours",
+      "n_rollouts": 1,
+      "decisions": 1,
+      "recorded_decisions": 1,
+      "imputed_failures": 0,
+      "success_rate": 0.0,
+      "reward": 0.0,
+      "prediction_accuracy": 1.0,
+      "single_commit_rate": 1.0,
+      "mean_spawns": 0.0,
+      "mean_reads": 0.0,
+      "mean_tokens": 0.0,
+      "mean_cost": 0.0,
+      "mean_wall_clock_s": 176.9701,
+      "mean_rollout_errors": 0.0,
+      "simulator_writes": 0
+    }
+  ],
+  "by_method_n_overall": [
+    {
+      "env": "officebench",
+      "method": "ours",
+      "n_rollouts": 1,
+      "decisions": 1,
+      "recorded_decisions": 1,
+      "imputed_failures": 0,
+      "success_rate": 0.0,
+      "reward": 0.0,
+      "prediction_accuracy": 1.0,
+      "single_commit_rate": 1.0,
+      "mean_spawns": 0.0,
+      "mean_reads": 0.0,
+      "mean_tokens": 0.0,
+      "mean_cost": 0.0,
+      "mean_wall_clock_s": 176.9701,
+      "mean_rollout_errors": 0.0,
+      "simulator_writes": 0
+    }
+  ]
+}

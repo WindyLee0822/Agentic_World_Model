@@ -880,11 +880,10 @@ def test_wm_delete_tombstone_overrides_pristine_state():
         "app": "word", "action": "create_new_file",
         "file_path": "/testbed/data/archive/new.docx",
     })
-    assert not predictor.is_deleted("data/archive")
+    assert predictor.is_deleted("data/archive")  # Word does not create missing parent dirs
     assert not predictor.is_deleted("data/archive/new.docx")
     revived_listing = query.list("archive")
-    assert "PREDICTED LOGICAL DIRECTORY" in revived_listing
-    assert "data/archive/new.docx" in revived_listing
+    assert "[directory does not exist]" in revived_listing
     assert session.exec_calls == calls_before
 
     predictor.predict_write({
@@ -964,7 +963,7 @@ def test_wm_exact_delete_and_answer_bypass_llm_reconstruction():
     assert predictor.predict_read(
         {"app": "word", "action": "read_file", "file_path": "/testbed/data/old.txt"},
         "PRISTINE",
-    ) == "[file does not exist]"
+    ) == "OBSERVATION: The file /testbed/data/old.txt does not exist. Failed to read the file."
     assert predictor.predict_file_state("data/old.txt", "PRISTINE") == "[file does not exist]"
 
     predictor.record_answer('O\'Brien said "done"')
@@ -1162,8 +1161,8 @@ def test_wm_python_forces_long_file_transform(monkeypatch):
     assert predictor.n_python_calls == 1
 
 
-def test_wm_program_only_invalid_python_fails_action_without_aborting(monkeypatch):
-    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+def test_wm_program_only_invalid_python_is_a_rollout_error(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchSimulationError
 
     monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
     predictor = OfficeBenchWMPredictor(_ScriptChat([
@@ -1172,17 +1171,19 @@ def test_wm_program_only_invalid_python_fails_action_without_aborting(monkeypatc
     ]))
     predictor.program_only = True
 
-    observation = predictor.predict_write({
-        "app": "excel",
-        "action": "set_cell",
-        "file_path": "/testbed/data/s.xlsx",
-        "row_idx": 1,
-        "column_idx": 1,
-        "text": "new",
-    })
+    with pytest.raises(OfficeBenchSimulationError, match="PYTHON_FINAL"):
+        predictor.predict_write({
+            "app": "excel",
+            "action": "set_cell",
+            "file_path": "/testbed/data/s.xlsx",
+            "row_idx": 1,
+            "column_idx": 1,
+            "text": "new",
+        })
 
-    assert "failed to predict safely" in observation
-    assert predictor.n_failed_writes == 1
+    assert predictor.n_failed_writes == 0
+    assert predictor.write_history == []
+    assert predictor.transition_log.entries() == []
     assert not predictor.was_written("data/s.xlsx")
 
 
@@ -1266,7 +1267,8 @@ def test_predict_all_shell_inventory_is_typed_for_generated_python(monkeypatch):
     assert predictor.n_python_failures == 0
 
 
-def test_predict_all_shell_inventory_emulates_common_discovery_pipeline(monkeypatch):
+@pytest.mark.parametrize("workdir", ["/", "/testbed", "/testbed/data"])
+def test_predict_all_shell_inventory_emulates_common_discovery_pipeline(monkeypatch, workdir):
     from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
 
     monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")
@@ -1277,6 +1279,7 @@ def test_predict_all_shell_inventory_emulates_common_discovery_pipeline(monkeypa
 
         def list_state(self, path, *, recursive=False):
             assert recursive
+            assert path == "/testbed/data"
             return {
                 "entries": [
                     {"name": "notes.txt", "path": f"{path}/notes.txt", "type": "file"},
@@ -1294,7 +1297,7 @@ def test_predict_all_shell_inventory_emulates_common_discovery_pipeline(monkeypa
     predictor.program_only = True
     predictor.bind_query_interface(OfficeBenchWMQuery(
         _Session(),
-        lambda: "/testbed",
+        lambda: workdir,
         allow_action_execution=False,
     ))
 
@@ -1580,8 +1583,8 @@ def test_wm_success_write_still_applies(monkeypatch):
     assert p.was_written("data/s.xlsx") and p.n_failed_writes == 0
 
 
-def test_predicted_state_gold_backed_uses_writelog_not_reconstruction():
-    """A gold-referenced written file is shown as initial + write-log — NOT an LLM reconstruction."""
+def test_predicted_state_gold_backed_materializes_exact_edits_without_llm():
+    """Materialize exact edits to gold-backed files without asking an LLM to rewrite them."""
     from tts.env.real_officebench import OfficeBenchTaskEnv
     from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
 
@@ -1608,7 +1611,7 @@ def test_predicted_state_gold_backed_uses_writelog_not_reconstruction():
                                               gold_labels={"sorted_score.xlsx"})
     entry = out["./data/sorted_score.xlsx"]
     assert not p.reconstructed                         # gold-backed -> reconstruction skipped
-    assert "INITIAL content" in entry and "WRITE actions" in entry and "set_cell" in entry
+    assert entry == "(1, 1): Alice\t(1, 2): 95\t\n"
 
 
 def test_predicted_state_gold_backed_ignores_global_dirty_reconstruction():
@@ -1705,7 +1708,8 @@ class _StubChat:
         return self.verdict
 
 
-def test_verifier_deterministic_prechecks_reject_proven_failures():
+def test_verifier_deterministic_prechecks_reject_proven_failures(monkeypatch):
+    monkeypatch.setenv('TTS_OFFICEBENCH_WM_TOOL_MODE', 'text')
     from tts.env.officebench_wm import OfficeBenchVerifier
 
     class _NoChat:
@@ -1748,7 +1752,7 @@ def test_verifier_deterministic_prechecks_reject_proven_failures():
     ) == 0.0
     assert "left empty" in empty_redirect.last_precheck_failure
 
-    overwrite_append = OfficeBenchVerifier(_NoChat())
+    overwrite_append = OfficeBenchVerifier(_StubChat("SUCCESS"))
     append_config = {
         "task": "Add the sentence hello to the end of result.docx.",
         "evaluation": [{
@@ -1763,8 +1767,8 @@ def test_verifier_deterministic_prechecks_reject_proven_failures():
     assert overwrite_append.predict_success(
         append_config["task"], [overwrite], ["Successfully wrote"],
         config=append_config, final_state={"./data/result.docx": "hello"},
-    ) == 0.0
-    assert "without first reading" in overwrite_append.last_precheck_failure
+    ) == 1.0
+    assert overwrite_append.last_precheck_failure is None
 
     comma_cell = OfficeBenchVerifier(_NoChat())
     comma_config = {
@@ -1789,7 +1793,8 @@ def test_verifier_deterministic_prechecks_reject_proven_failures():
     assert "comma-containing text" in comma_cell.last_precheck_failure
 
 
-def test_verifier_prechecks_allow_substantive_output():
+def test_verifier_prechecks_allow_substantive_output(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
     from tts.env.officebench_wm import OfficeBenchVerifier
 
     config = {"evaluation": [{
@@ -1874,6 +1879,7 @@ def test_verifier_prechecks_allow_substantive_output():
 
 
 def test_verifier_blind_and_reference(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
     from tts.env.officebench_wm import OfficeBenchVerifier
 
     actions = [{"app": "calendar", "action": "create_event", "user": "Bob"}]
@@ -1964,7 +1970,8 @@ def test_verifier_atomic_requirements_split_small_lists():
     assert checks[3]["args"]["matches"] == list(range(5))
 
 
-def test_verifier_percheck_returns_coverage_aware_confidence(monkeypatch):
+def test_verifier_percheck_keeps_partial_coverage_separate(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
     from tts.env.officebench_wm import OfficeBenchVerifier
 
     monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
@@ -1985,17 +1992,19 @@ def test_verifier_percheck_returns_coverage_aware_confidence(monkeypatch):
         final_state={"a.txt": "a"},
     )
 
-    assert confidence == pytest.approx((1 + 0.25) / 3)
+    assert confidence == 0.0
     assert verifier.last_percheck_breakdown == {
         "met": 1,
         "unmet": 1,
         "unknown": 1,
         "total": 3,
         "unknown_credit": 0.25,
+        "atomic_score": pytest.approx((1 + 0.25) / 3),
+        "whole_score": 0.0,
     }
 
 
-def test_verifier_percheck_blends_whole_task_calibration(monkeypatch):
+def test_verifier_percheck_uses_whole_task_calibration(monkeypatch):
     from tts.env.officebench_wm import OfficeBenchVerifier
 
     monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
@@ -2017,13 +2026,16 @@ def test_verifier_percheck_blends_whole_task_calibration(monkeypatch):
         final_state={"a.txt": "content"},
     )
 
-    assert confidence == pytest.approx(0.75)
+    assert confidence == 0.0
     assert verifier.last_percheck_breakdown["atomic_score"] == 1.0
     assert verifier.last_percheck_breakdown["whole_score"] == 0.0
-    assert verifier.last_percheck_breakdown["whole_weight"] == 0.25
 
 
-def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
+@pytest.mark.parametrize("model", ["gpt-5.4", "gpt-4.1", "DeepSeek-V4-Pro"])
+def test_officebench_repaired_defaults_and_overrides(monkeypatch, model):
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_TYPED", raising=False)
+    monkeypatch.delenv("TTS_SELECTION_CONFIDENCE_MARGIN", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S", raising=False)
     from argparse import Namespace
 
     from experiments.run import _configure_officebench_bon
@@ -2037,7 +2049,8 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
     monkeypatch.delenv("TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", raising=False)
     args = Namespace(
         agent="llm_wm",
-        llm_agent="gpt-5.4",
+        methods="ours",
+        llm_agent=model,
         verifier_samples=None,
         success_score="simulator_success",
         _success_score_explicit=False,
@@ -2054,28 +2067,33 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
     assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_RERANK"] == "1"
     assert os.environ["TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN"] == "0.25"
     assert args.success_score == "simulator_confidence_guarded"
-    assert args.predict_all_actions is False
+    assert args.predict_all_actions is True
+    assert os.environ["TTS_OFFICEBENCH_VERIFIER_TYPED"] == "1"
+    assert os.environ["TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S"] == "5"
+    assert os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] == "0.05"
 
     monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", "7")
     explicit = Namespace(
         agent="llm_wm",
-        llm_agent="gpt-5.4",
+        methods="ours",
+        llm_agent=model,
         verifier_samples=7,
         success_score="simulator_success",
         _success_score_explicit=True,
-        predict_all_actions=True,
+        predict_all_actions=False,
         _predict_all_actions_explicit=True,
         simulation_only=False,
     )
     _configure_officebench_bon(explicit)
     assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "7"
     assert explicit.success_score == "simulator_success"
-    assert explicit.predict_all_actions is True
+    assert explicit.predict_all_actions is False
 
     monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_SAMPLES", raising=False)
-    monkeypatch.setenv("AZURE_OPENAI_DEPLOYMENT", "gpt-5.4")
+    monkeypatch.setenv("AZURE_OPENAI_DEPLOYMENT", model)
     deployment_only = Namespace(
         agent="llm_wm",
+        methods="ours",
         llm_agent=None,
         verifier_samples=None,
         success_score="simulator_success",
@@ -2086,6 +2104,49 @@ def test_officebench_gpt54_bon_defaults_to_graded_selection(monkeypatch):
     )
     _configure_officebench_bon(deployment_only)
     assert os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] == "5"
+
+
+@pytest.mark.parametrize("model,methods,agent", [
+    ("DeepSeek-V4-Pro", "b1", "llm_wm"),
+    ("qwen3", "ours", "llm_wm"),
+    ("DeepSeek-V4-Pro", "ours", "llm"),
+])
+def test_officebench_repaired_profile_scope(monkeypatch, model, methods, agent):
+    from argparse import Namespace
+    from experiments.run import _configure_officebench_bon
+
+    monkeypatch.delenv("TTS_OFFICEBENCH_VERIFIER_TYPED", raising=False)
+    monkeypatch.delenv("TTS_OFFICEBENCH_COMPARATIVE_RERANK", raising=False)
+    args = Namespace(agent=agent, methods=methods, llm_agent=model,
+                     predict_all_actions=False, success_score="simulator_success")
+    _configure_officebench_bon(args)
+    assert args.predict_all_actions is False
+    assert args.success_score != "simulator_confidence_guarded"
+    assert "TTS_OFFICEBENCH_COMPARATIVE_RERANK" not in os.environ
+
+
+def test_officebench_repaired_profile_respects_environment(monkeypatch):
+    from argparse import Namespace
+    from experiments.run import _configure_officebench_bon
+
+    overrides = {
+        "TTS_OFFICEBENCH_VERIFIER_TYPED": "0",
+        "TTS_OFFICEBENCH_VERIFIER_PERCHECK": "0",
+        "TTS_OFFICEBENCH_VERIFIER_SAMPLES": "2",
+        "TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT": "0",
+        "TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT": "0",
+        "TTS_OFFICEBENCH_COMPARATIVE_RERANK": "0",
+        "TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN": "0.4",
+        "TTS_SELECTION_CONFIDENCE_MARGIN": "0.3",
+        "TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S": "9",
+    }
+    for key, value in overrides.items():
+        monkeypatch.setenv(key, value)
+    args = Namespace(agent="llm_wm", methods="b1,ours", llm_agent="DeepSeek-V4-Pro",
+                     predict_all_actions=True, success_score="simulator_success")
+    _configure_officebench_bon(args)
+    assert args.predict_all_actions is True
+    assert all(os.environ[key] == value for key, value in overrides.items())
 
 
 def test_officebench_repairs_switch_app_shorthand():
@@ -2118,6 +2179,8 @@ def test_officebench_repairs_switch_app_shorthand():
 
 
 def test_verifier_gold_expected_file(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_TYPED", "0")
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
     """For exact_match tasks the verifier is shown the GOLD expected-output file contents."""
     from tts.env.officebench_wm import OfficeBenchVerifier, reference_files_from_config
 
@@ -2136,7 +2199,9 @@ def test_verifier_gold_expected_file(monkeypatch):
     assert "GOLD EXPECTED OUTPUT" in chat.last_prompt and "(1, 1): Alice" in chat.last_prompt
 
 
-def test_verifier_state_grounding_and_giveup():
+def test_verifier_state_grounding_and_giveup(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_TYPED", "0")
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
     """The grounded verifier shows the ACTUAL resulting file state and flags give-up answers."""
     from tts.env.officebench_wm import OfficeBenchVerifier, _is_giveup, state_files_from_config
 
@@ -2208,6 +2273,60 @@ def test_verifier_python_loop_uses_host_mediated_evidence(monkeypatch):
     assert verifier.n_python_failures == 0
 
 
+def test_verifier_private_percheck_and_whole_votes(monkeypatch):
+    monkeypatch.setenv("TTS_OFFICEBENCH_VERIFIER_TYPED", "0")
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    monkeypatch.setenv('TTS_OFFICEBENCH_WM_TOOL_MODE', 'python')
+    monkeypatch.setenv('TTS_OFFICEBENCH_WM_PYTHON', '1')
+    monkeypatch.setenv('TTS_OFFICEBENCH_VERIFIER_PERCHECK', '1')
+    monkeypatch.setenv('TTS_OFFICEBENCH_VERIFIER_SAMPLES', '5')
+    secret = 'PRIVATE_CHECK_VALUE_731'
+    email_check = {'function': 'evaluate_contain', 'args': {
+        'doc_type': 'email', 'username': secret, 'keywords': [secret]}}
+    email_prompt = OfficeBenchVerifier(None)._build_prompt(
+        secret, [], [], {'evaluation': [email_check]}, status_check=email_check)
+    assert 'This is an EMAIL check' in email_prompt
+    assert secret not in email_prompt
+
+    class Chat:
+        def __init__(self):
+            self.calls = 0
+
+        def chat(self, system, prompt, **kwargs):
+            assert secret not in system + prompt
+            assert 'successful recovery' in system + prompt
+            self.calls += 1
+            if self.calls == 1:
+                return (
+                    'PYTHON_FINAL:\n'
+                    'args = data["status_check"]["args"]\n'
+                    'met = all(k in data["final_state"][args["file"]] '
+                    'for k in args["keywords"])\n'
+                    'print_json({"text": "STATUS: MET" if met else "STATUS: UNMET"})'
+                )
+            return (
+                'PYTHON_FINAL:\n'
+                'args = data["config"]["evaluation"][0]["args"]\n'
+                'met = all(k in data["final_state"][args["file"]] '
+                'for k in args["keywords"])\n'
+                'print_json({"verdict": "SUCCESS" if met else "FAILURE"})'
+            )
+
+    for content, expected_calls, expected_score in ((secret, 6, 1.0), ('wrong', 1, 0.0)):
+        chat = Chat()
+        verifier = OfficeBenchVerifier(chat)
+        score = verifier.predict_success(
+            secret, [], [], final_answer='None',
+            config={'evaluation': [{'function': 'evaluate_contain',
+                'args': {'file': 'data/private.txt', 'keywords': [secret]}}]},
+            final_state={'data/private.txt': content}, gold_files={'gold': secret})
+        assert score == expected_score
+        assert chat.calls == expected_calls
+        assert verifier.n_python_calls == expected_calls
+        assert verifier.n_python_failures == 0
+
+
 def test_state_files_from_config():
     """The result-file list (path + doc_type) is derived from the eval config (incl. calendar)."""
     from tts.env.officebench_wm import state_files_from_config
@@ -2252,7 +2371,7 @@ def test_symbolic_new_workbook_create_set_delete():
         ({"app": "excel", "action": "delete_cell", "row_idx": 1, "column_idx": 1}, "o"),
     ]
     out = symbolic_file_state("data/new.xlsx", "[file does not exist]", writes)
-    assert out == "(1, 1): [Empty Cell]\t(1, 2): Alice"
+    assert out == "(1, 1): [Empty Cell]\t(1, 2): Alice\t\n"
 
 
 def test_symbolic_create_existing_file_is_noop():
@@ -2310,7 +2429,8 @@ def test_symbolic_disabled_by_env(monkeypatch):
     assert symbolic_file_state("x", "(1, 1): 10", writes) is None
 
 
-def test_predict_file_state_symbolic_skips_llm():
+@pytest.mark.parametrize("program_only", [False, True])
+def test_predict_file_state_symbolic_skips_llm(program_only):
     """predict_file_state uses the symbolic reconstruction and never calls the LLM for set_cell."""
     from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
 
@@ -2319,10 +2439,11 @@ def test_predict_file_state_symbolic_skips_llm():
             raise AssertionError("LLM must not be called for an exactly-modelable file")
 
     p = OfficeBenchWMPredictor(_BoomChat())
+    p.program_only = program_only
     p.applied_writes["data/s.xlsx"] = [
         ({"app": "excel", "action": "set_cell", "row_idx": 1, "column_idx": 1, "text": 42}, "o")]
     out = p.predict_file_state("./data/s.xlsx", "(1, 1): 10")
-    assert out == "(1, 1): 42" and p.n_llm_calls == 0
+    assert out == "(1, 1): 42\t\n" and p.n_llm_calls == 0
 
 
 # --------------------------------------------------------------------------- #
@@ -2423,7 +2544,8 @@ def test_prune_repeated_reads_saves_budget():
     ls_execs = [a for a in session.exec_calls if a.get("command") == "ls /testbed/data"]
     assert len(ls_execs) == 1                      # the 3 immediate repeats were pruned (not re-executed)
     assert run.final_answer == "None"              # finish still reached within the budget
-    assert any("repeated action" in o for o in run.observations)
+    assert len(set(run.observations[1:5])) == 1
+    assert all("repeated action" not in o for o in run.observations)
 
 
 def test_prune_disabled_reexecutes(monkeypatch):
@@ -2591,3 +2713,168 @@ def test_officebench_wm_rollout_leaves_testbed_pristine():
         assert predictor.n_writes >= 1  # the agent DID issue writes — they were predicted, not run
     finally:
         s.close()
+
+
+@pytest.mark.parametrize('listing', [
+    {'error': 'inventory timed out'},
+    {'missing': True},
+    {'_timeout': True},
+    {},
+])
+def test_predict_all_failed_inventory_is_not_an_empty_directory(listing):
+    from tts.env.officebench_wm_predict import (
+        OfficeBenchSimulationError, OfficeBenchWMPredictor, OfficeBenchWMQuery,
+    )
+
+    class Session:
+        def apps_catalogue(self):
+            return {}
+
+        def list_state(self, path, **kwargs):
+            return listing
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    predictor.program_only = True
+    predictor.bind_query_interface(OfficeBenchWMQuery(
+        Session(), lambda: '/', allow_action_execution=False))
+    with pytest.raises(OfficeBenchSimulationError, match='inventory'):
+        predictor.predict_read(
+            {'app': 'shell', 'action': 'command', 'command': 'find /testbed/data -type f'},
+            None, dirty=False)
+
+
+def test_predict_all_empty_inventory_remains_a_valid_empty_read():
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    class Session:
+        def apps_catalogue(self):
+            return {}
+
+        def list_state(self, path, **kwargs):
+            assert path == '/testbed'
+            return {'entries': [], 'missing': False}
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    predictor.program_only = True
+    predictor.bind_query_interface(OfficeBenchWMQuery(
+        Session(), lambda: '/', allow_action_execution=False))
+    assert predictor.predict_read(
+        {'app': 'shell', 'action': 'command', 'command': 'find /testbed -type f'},
+        None, dirty=False) == ''
+
+
+def test_predict_all_symbolic_dirty_read_preserves_unedited_cells():
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor, OfficeBenchWMQuery
+
+    initial = '(1, 1): old\n(2, 1): ' + 'x' * 8000 + 'TAIL'
+
+    class Session:
+        def apps_catalogue(self):
+            return {}
+
+        def read_state(self, specs):
+            assert specs[0]['path'] == '/testbed/data/s.xlsx'
+            return {specs[0]['path']: initial}
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    predictor.program_only = True
+    predictor.bind_query_interface(OfficeBenchWMQuery(
+        Session(), lambda: '/', allow_action_execution=False))
+    predictor.applied_writes['data/s.xlsx'] = [(
+        {'app': 'excel', 'action': 'set_cell', 'row_idx': 1, 'column_idx': 1, 'text': 'new'},
+        'OBSERVATION: Successfully set cell',
+    )]
+    observation = predictor.predict_read(
+        {'app': 'excel', 'action': 'read_file', 'file_path': '/testbed/data/s.xlsx'},
+        None, dirty=True)
+    assert observation == 'OBSERVATION: The following is the table from the excel file:\n' + initial.replace('(1, 1): old\n', '(1, 1): new\t\n') + '\t\n'
+    assert predictor.n_llm_calls == 0
+
+
+def test_driver_and_verifier_preserve_complete_file_evidence(monkeypatch, tmp_path):
+    monkeypatch.setenv("TTS_OFFICEBENCH_WM_TOOL_MODE", "text")
+    from tts.env import officebench_driver as driver
+    from tts.env.officebench_wm import OfficeBenchVerifier
+
+    text = 'x' * 9000 + 'REQUIRED_TAIL'
+    (tmp_path / 'data').mkdir()
+    (tmp_path / 'calendar').mkdir()
+    (tmp_path / 'data' / 'answer.txt').write_text(text)
+    (tmp_path / 'calendar' / 'Bob.ics').write_text(text)
+    monkeypatch.setattr(driver, '_TESTBED', str(tmp_path))
+    monkeypatch.setattr(driver, '_ensure_path', lambda: None)
+    for extras in (False, True):
+        state = driver.handle_read_state({
+            'files': [{'path': 'data/answer.txt', 'doc_type': 'txt'}], 'extras': extras,
+        })['state']
+        assert state['data/answer.txt'] == text
+        if extras:
+            assert state['calendar/Bob.ics'] == text
+    monkeypatch.setenv('TTS_OFFICEBENCH_VERIFIER_REFERENCE', '1')
+    prompt = OfficeBenchVerifier(_ScriptChat([]))._build_prompt(
+        'Check the tail', [], [], {},
+        final_state={'out': text}, gold_files={'gold': text})
+    assert prompt.count(text) == 2
+
+
+def test_write_prediction_has_program_budget_and_preserves_native_failure(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    monkeypatch.delenv('TTS_OFFICEBENCH_WM_WRITE_TOKENS', raising=False)
+
+    class Chat:
+        def chat(self, system, prompt, **kwargs):
+            assert kwargs['max_tokens'] >= 2048
+            return 'PYTHON_FINAL:\nprint_json({"text": "OBSERVATION: Failed to write text to /testbed/data/s.xlsx"})'
+
+    predictor = OfficeBenchWMPredictor(Chat())
+    predictor.program_only = True
+    observation = predictor.predict_write({
+        'app': 'excel', 'action': 'set_cell', 'file_path': '/testbed/data/s.xlsx',
+        'row_idx': -1, 'column_idx': 1, 'text': 'x',
+    })
+    assert 'Failed to write' in observation
+    assert predictor.n_failed_writes == 1
+    assert not predictor.was_written('data/s.xlsx')
+    assert predictor.transition_log.entries()[0].applied is False
+
+
+def test_final_state_simulation_failure_does_not_fall_back_to_pristine(monkeypatch):
+    from tts.env.officebench_wm_predict import OfficeBenchSimulationError, OfficeBenchWMPredictor
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    predictor.global_dirty = True
+    monkeypatch.setattr(predictor, '_predict', lambda *a, **kw: None)
+    with pytest.raises(OfficeBenchSimulationError, match='final state is unknown'):
+        predictor.predict_file_state('data/out.txt', 'old')
+
+
+def test_reconstruction_logs_preserve_all_writes_and_literal_tails():
+    from tts.env.officebench_wm_predict import OfficeBenchWMPredictor
+
+    predictor = OfficeBenchWMPredictor(_ScriptChat([]))
+    content = 'x' * 8000 + 'REQUIRED_TAIL'
+    for i in range(45):
+        action = {'app': 'word', 'action': 'write_to_file', 'contents': content + str(i)}
+        predictor.transition_log.record(action, 'ok', ['data/out.docx'], applied=True)
+        predictor.write_history.append((action, 'ok'))
+    for rendered in (predictor.trace_text('data/out.docx'),
+                     predictor.file_write_log('data/out.docx'),
+                     predictor.predicted_write_log()):
+        assert rendered.count('REQUIRED_TAIL') == 45
+        assert 'REQUIRED_TAIL44' in rendered
+    assert len(predictor._write_history_data()) == 45
+
+
+def test_fixed_context_preserves_files_or_reports_budget_exhaustion(monkeypatch):
+    from tts.env.officebench_wm_predict import (
+        OfficeBenchSimulationError, build_officebench_flat_system_prompt,
+    )
+
+    text = 'x' * 9000 + 'REQUIRED_TAIL'
+    kwargs = dict(task_config={}, catalogue={}, initial_state={'file': text})
+    monkeypatch.setenv('TTS_OFFICEBENCH_B1_CONTEXT_CHARS', '20000')
+    assert text in build_officebench_flat_system_prompt(**kwargs)
+    monkeypatch.setenv('TTS_OFFICEBENCH_B1_CONTEXT_CHARS', '1000')
+    with pytest.raises(OfficeBenchSimulationError, match='rather than truncate'):
+        build_officebench_flat_system_prompt(**kwargs)

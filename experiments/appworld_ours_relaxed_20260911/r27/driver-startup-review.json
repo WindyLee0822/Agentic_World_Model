@@ -1,0 +1,14 @@
+{
+  "command": "Running: python experiments/run.py --env appworld --methods ours --N 1 --agent llm_wm --appworld-wm-tool-mode python --workers 2 --max-steps 40 --rollout-retries 2 --cell-retries 2 --temperature 1 --aggregation-max-tokens 2048 --aggregation-strategy flat --aggregation-group-size 4 --out /mnt/azureml/cr/j/89f4027279e94adeab844043f6e5b446/cap/data-capability/wd/output_dir --splits test_normal --levels 1 --strict-coverage --max-tasks-per-child 1 --task-indices 9,34 --predict-all-actions",
+  "checks": {
+    "--N 1 ": true,
+    "--methods ours": true,
+    "--workers 2": true,
+    "--task-indices 9,34": true,
+    "--predict-all-actions": true
+  },
+  "task_loop_started": true,
+  "traceback_in_sample": false,
+  "observer_exit": 124,
+  "note": "30-second observer stopped; AML job was not stopped."
+}

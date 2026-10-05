@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-09-15T17:24:16.660830+00:00",
+  "accepted_jobs": 18,
+  "submission_status_counts": {
+    "Queued": 2,
+    "Starting": 16
+  },
+  "tasks_per_n": 585,
+  "n": [
+    1,
+    2,
+    4
+  ],
+  "predict_all_actions": true,
+  "all_commands_verified": true,
+  "accuracy_results_pending": true
+}

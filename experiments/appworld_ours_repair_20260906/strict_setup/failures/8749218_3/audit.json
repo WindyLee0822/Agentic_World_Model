@@ -1,0 +1,26 @@
+{
+  "task_id": "8749218_3",
+  "subset": "test_normal/L2",
+  "r17_official_success": false,
+  "r16_official_success": true,
+  "candidate_confidences": [
+    0.0,
+    0.0
+  ],
+  "selected_index": 0,
+  "setup_prediction_counts": [
+    7,
+    20
+  ],
+  "python_failures": 22,
+  "rollout_errors": 0,
+  "recorded_contract_violations": 0,
+  "observations": [
+    "Selected candidate calls show_recommendations once with default pagination and enqueues the returned items.",
+    "Verifier trace lists five enqueued song IDs: 17,22,36,39,63.",
+    "Both candidate verifier scores were zero."
+  ],
+  "hypothesis": "Selected candidate may have omitted further recommendation pages. Full task/error evidence is needed to confirm the official failure cause.",
+  "runtime_changed": false,
+  "full_evaluation_pending": true
+}

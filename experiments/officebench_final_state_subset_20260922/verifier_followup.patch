@@ -1,0 +1,160 @@
+--- a/src/tts/env/officebench_wm.py
++++ b/src/tts/env/officebench_wm.py
+@@ -81,7 +81,7 @@
+ _AUDIT_LENSES = (
+     "Completeness: look for any required app, output, or evaluator check the trajectory omitted.",
+     "Exactness: verify names, values, paths, formulas, dates, times, and cardinalities against the gold.",
+-    "Execution: look for malformed, blocked, failed, stale-read, or no-op actions that break the plan.",
++    "Execution: look for unresolved errors in final state; a failed attempt followed by recovery is not a failure.",
+     "Final state: compare every predicted result artifact with every ground-truth success check.",
+     "Adversarial review: actively try to prove the trajectory fails before accepting it as complete.",
+ )
+@@ -483,8 +483,9 @@
+                         "VERDICT: SUCCESS  or  VERDICT: FAILURE",
+                         context=python_context,
+                         max_turns=self.MAX_TURNS,
+-                        max_tokens=600,
++                        max_tokens=2000,
+                         output_kind="verdict",
++                        force_always=os.environ.get('TTS_OFFICEBENCH_WM_PYTHON', '1') not in ('0', 'false', 'False'),
+                     )
+                     self._record_python_result(result)
+                     verdict = result.output
+@@ -546,12 +547,6 @@
+                     gold_files,
+                     status_check=check,
+                 )
+-                # status = self._parse_status(self._chat.chat(
+-                #     self._system(_STATUS_SYSTEM),
+-                #     prompt,
+-                #     temperature=0.0,
+-                #     max_tokens=16,
+-                # ))
+                 extra_body = None
+                 if (
+                     getattr(self._chat, "backend", "") == "openai"
+@@ -563,13 +558,25 @@
+                         }
+                     }
+ 
+-                raw_status = self._chat.chat(
+-                    self._system(_STATUS_SYSTEM),
+-                    prompt,
+-                    temperature=0.0,
+-                    max_tokens=16,
+-                    extra_body=extra_body,
+-                )
++                if _private_python_verifier():
++                    context = self._python_context(
++                        instruction, actions, observations, check_config,
++                        final_state, final_answer, gold_files)
++                    context['status_check'] = check
++                    result = run_python_prediction_loop(
++                        lambda text, budget: self._chat.chat(
++                            self._system(_STATUS_SYSTEM), text, temperature=0.0,
++                            max_tokens=budget, extra_body=extra_body),
++                        None if self.uses_fixed_context else self._query,
++                        prompt, 'STATUS: MET, STATUS: UNMET, or STATUS: UNKNOWN',
++                        context=context, max_turns=self.MAX_TURNS,
++                        max_tokens=2000, force_always=True)
++                    self._record_python_result(result)
++                    raw_status = result.output if result.valid else 'STATUS: UNKNOWN'
++                else:
++                    raw_status = self._chat.chat(
++                        self._system(_STATUS_SYSTEM), prompt, temperature=0.0,
++                        max_tokens=16, extra_body=extra_body)
+ 
+                 if not raw_status.strip():
+                     raise ValueError(
+@@ -617,6 +624,32 @@
+                       config: Optional[Dict], final_state: Optional[Dict] = None,
+                       final_answer: Optional[str] = None, gold_files: Optional[Dict] = None,
+                       status_check: Optional[Dict] = None) -> str:
++        if _private_python_verifier():
++            scope = ('Classify only data["status_check"] as MET, UNMET, or UNKNOWN.'
++                     if status_check is not None else
++                     'Predict whether ALL data["config"]["evaluation"] checks pass together; return SUCCESS or FAILURE.')
++            # Public operation names guide code generation; arguments and resource contents
++            # remain exclusively in copied Python input.
++            public_operations = {
++                'evaluate_file_exist', 'evaluate_file_not_exist', 'evaluate_contain',
++                'evaluate_not_contain', 'evaluate_excel_cell_value',
++                'evaluate_excel_cell_comparator', 'evaluate_calendar_no_overlap',
++                'evaluate_exact_match', 'evaluate_diff_contain_text',
++            }
++            checks = [status_check] if status_check is not None else (
++                (config or {}).get('evaluation', []) if _reference_enabled() else [])
++            operations = sorted({c.get('function') for c in checks
++                                 if c.get('function') in public_operations})
++            if operations:
++                scope += '\nRequired evaluator operations: ' + ', '.join(operations)
++                scope += '. Implement only these operations, using copied arguments; keep the program concise.'
++            if status_check is not None and status_check.get('args', {}).get('doc_type') == 'email':
++                scope += (
++                    '\nThis is an EMAIL check, with no file/result_file argument. '
++                    'Resolve its resource as "emails/" + data["status_check"]["args"]["username"], '
++                    'then read that normalized key in data["final_state"]. '
++                    'Do not report UNKNOWN merely because args["file"] is absent.')
++            return _VERIFIER_PROGRAM_CONTRACT + '\n\n' + scope
+         lines = [f"TASK INSTRUCTION:\n{instruction}\n", "REALIZED AGENT TRAJECTORY (action -> observation):"]
+         for i, action in enumerate(actions):
+             obs = (observations[i] if i < len(observations) else "").replace("\n", "\\n")
+@@ -665,6 +698,47 @@
+         return "\n".join(lines)
+ 
+ 
++def _private_python_verifier() -> bool:
++    return (officebench_wm_tool_mode() == 'python'
++            and os.environ.get('TTS_OFFICEBENCH_WM_PYTHON', '1') not in ('0', 'false', 'False'))
++
++
++_VERIFIER_PROGRAM_CONTRACT = """
++Inspect copied values only in Python. Task, evaluation arguments, trajectory, final state and gold
++contents are in data, not in this prompt. Do not transcribe or invent their values.
++Use if/elif to dispatch evaluator functions; calling a function through a dictionary subscript is
++not supported by the restricted Python runtime.
++SCHEMA: data['config']['evaluation'] is a list of {'function': name, 'args': {...}}.
++data['final_state'] maps file/resource paths to decoded strings. Normalize './' and '/testbed/'
++prefixes when matching paths. Email resources are 'emails/' + args['username']; other checks use
++args['file'] or args['result_file']. A missing record is unknown evidence. The exact marker
++'[file does not exist]' proves absence; '[unknown predicted content]' does not prove existence or
++absence. Empty strings may be existing empty files. 'INITIAL content ... WRITE actions ...' is a
++delta representation: reason about the ordered writes, not just the initial missing marker.
++Native evaluate_file_exist checks existence; evaluate_file_not_exist negates existence.
++Native evaluate_contain checks that EVERY keyword is
++a case-insensitive substring of decoded content (for numeric keywords, commas are removed from
++content, with the removal persisting for later keywords). evaluate_not_contain negates that entire
++predicate, including a missing file. evaluate_excel_cell_value requires each literal
++'(row, col): value' from args['matches'] to be a substring of decoded workbook text; this is the
++native substring test, not typed equality. Decoded cells are separated by tabs.
++Gold expected files are copied in data['gold_files']. Do not guess unsupported check semantics;
++classify an atomic check UNKNOWN when evidence or semantics are insufficient.
++data['trajectory'] entries contain an 'action' DICTIONARY and an 'observation' string. Action
++arguments are directly in that dictionary, not inside 'args'. Final state is AFTER the trajectory.
++An earlier failed attempt followed by successful recovery is NOT grounds for failure. Do not use
++any('failed' in observation ...) as a whole-task verdict. A finish_task answer of None/'None' is
++normal for file-changing tasks, not itself a failure. Judge the final required state.
++When config.evaluation exists, forecast those native checks; do not add unlisted filename,
++attachment, wording or perfect-action-history requirements from the natural-language task.
++Whole-task success requires every check to pass together; missing, contradictory or unknown
++required evidence cannot establish success. Do not return success merely because a write printed
++'Successfully'. If no reference checks exist, assess data['instruction'] from the available state.
++Read tools, when available, describe pristine objects; they must not override the supplied
++post-write state with pristine absence. Never execute native apps or write files during verification.
++"""
++
++
+ _SYSTEM = (
+     "You are a strict evaluator for an office-automation agent. The agent manipulates files, emails, "
+     "calendars and spreadsheets through office apps. Judge whether the task was fully and correctly "
+@@ -673,7 +747,9 @@
+     "they did not achieve). When a file is shown as initial content + write actions, decide whether "
+     "those writes truly transform it into what the task/gold requires. Be conservative: if a required "
+     "change is missing, wrong, written as an uncomputed formula/string instead of a value, only "
+-    "partially done, a write failed, or the agent gave up, answer FAILURE. Reply with a single word: "
++    "partially done, or a required error remains unrecovered, answer FAILURE. Earlier failed attempts "
++    "do not invalidate successful recovery. A None finish answer is normal for file tasks. When native "
++    "checks are supplied, predict their conjunction without adding unlisted requirements. Reply with a single word: "
+     "SUCCESS or FAILURE."
+ )
+ 

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/aggregates.csv",
+    "bytes": 369
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/aggregates.json",
+    "bytes": 543
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/metadata.json",
+    "bytes": 836
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/records.jsonl",
+    "bytes": 2074
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/run.log",
+    "bytes": 145673
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/run_manifest.json",
+    "bytes": 626
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/summary.json",
+    "bytes": 1848
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/summary.txt",
+    "bytes": 292
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/wm_diagnostics",
+    "bytes": 0
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/wm_diagnostics/wm-198-485975a6fa414491bdbc2682380e0297.jsonl",
+    "bytes": 301542
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/wm_diagnostics/wm-198-6e18cda1795a415ba7fb0686f281b958.jsonl",
+    "bytes": 222980
+  },
+  {
+    "name": "azureml/dw-appworld-ours-relaxed-r23-n1-probe-20260913/output_dir/wm_diagnostics/wm-198-bf26295871114ee8b34e8ac4a79eff35.jsonl",
+    "bytes": 292490
+  }
+]

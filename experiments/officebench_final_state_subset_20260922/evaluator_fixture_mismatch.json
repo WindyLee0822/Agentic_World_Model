@@ -1,0 +1,18 @@
+{
+  "task_id": "3-1/0",
+  "native_required_keywords": [
+    "Activaty1",
+    "Activaty2",
+    "Activaty3",
+    "Activaty4"
+  ],
+  "observed_source_labels": [
+    "Activity 1",
+    "Activity 2",
+    "Activity 3",
+    "Activity 4"
+  ],
+  "all_observed_labels_present": true,
+  "native_keyword_check_on_source": false,
+  "explanation": "Native evaluation expects Activaty1..4, while the source spreadsheet has Activity 1..4. Faithfully preserving source labels cannot satisfy those keyword checks. Evaluator and fixture were left unchanged."
+}

@@ -1,0 +1,50 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Scan printed car inventory lists from PDF, convert them to Excel file car_inventory.xlsx using OCR, save in folder named cars",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/car_inventory.xlsx"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/cars/car_inventory.xlsx"
+        }
+      },
+      {
+        "function": "evaluate_excel_cell_value",
+        "file": "data/car_inventory.xlsx",
+        "args": {
+          "matches": [
+            {
+              "row": "2",
+              "col": "2",
+              "value": "FD06MTG001"
+            },
+            {
+              "row": "3",
+              "col": "2",
+              "value": "FD06MTG002"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/car_inventory.pdf": "Car ID Make\nMake\n(Full\nName)\nModel\nModel\n(Full\nName)\nManufacture\nYear Age\nMiles\nMiles\n/\nYear\nColor\nDriver Warantee\nMiles Covered?\nNew\nCar\nID\n0 FD06MTG001\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 40326.8\nNaN\nBlack Smith\n50000.0\nNaN\nNaN\n1 FD06MTG002\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 44974.8\nNaN\nWhite McCall\n50000.0\nNaN\nNaN\n2 FD08MTG003\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 44946.5\nNaN\nGreen Lyon\n50000.0\nNaN\nNaN\n3 FD08MTG004\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 37558.8\nNaN\nBlack Jones\n50000.0\nNaN\nNaN\n4 FD08MTG005\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 36438.5\nNaN\nWhite Smith\n50000.0\nNaN\nNaN\n5 FDO6FCS006\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 46311.4\nNaN\nGreen Ewenty\n75000.0\nNaN\nNaN\n6 FD06FCS007\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 52229.5\nNaN\nGreen Lyon\n75000.0\nNaN\nNaN\n7 FD09FCS008\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 35137.0\nNaN\nBlack Howard\n75000.0\nNaN\nNaN\n8 FD13FCS009\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 27637.1\nNaN\nBlack Smith\n75000.0\nNaN\nNaN\n9 FD13FCS010\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 27534.8\nNaN\nWhite Praulty\n75000.0\nNaN\nNaN\n10 FD12FCS011\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 19341.7\nNaN\nWhite Yousef\n75000.0\nNaN\nNaN\n11 FD13FCS012\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 22521.6\nNaN\nBlack Vizzini\n75000.0\nNaN\nNaN\n12 FD13FCS013\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 13682.9\nNaN\nBlack Rodriguez 75000.0\nNaN\nNaN\n13 GMO9CMR014 NaN\nNaN\nNaN\nNaN\nNaN\nNaN 28464.8\nNaN\nWhite Santos\n100000.0 NaN\nNaN\n14 GM12CMR015 NaN\nNaN\nNaN\nNaN\nNaN\nNaN 19421.1\nNaN\nBlack Bard\n100000.0 NaN\nNaN\n15 GM14CMR016 NaN\nNaN\nNaN\nNaN\nNaN\nNaN 14289.6\nNaN\nWhite Torrens\n100000.0 NaN\nNaN\n16 GM10SLV017\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 31144.4\nNaN\nBlack Hulinski\n100000.0 NaN\nNaN\n17 GM98SLV018\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 83162.7\nNaN\nBlack Santos\n100000.0 NaN\nNaN\n18 GM00SLV019\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 80685.8\nNaN\nBlue\nVizzini\n100000.0 NaN\nNaN\n19 TY96CAM020\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 114660.6 NaN\nGreen Chan\n100000.0 NaN\nNaN\n20 TY98CAM021\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 93382.6\nNaN\nBlack Swartz\n100000.0 NaN\nNaN\n21 TY00CAM022\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 85928.0\nNaN\nGreen Ewenty\n100000.0 NaN\nNaN\n22 TY02CAM023\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 67829.1\nNaN\nBlack Smith\n100000.0 NaN\nNaN\n23 TY09CAM024\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 48114.2\nNaN\nWhite Howard\n100000.0 NaN\nNaN\n24 TY02COR025\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 64467.4\nNaN\nRed\nGaul\n100000.0 NaN\nNaN\n25 TY03COR026\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 73444.4\nNaN\nBlack Gaul\n100000.0 NaN\nNaN\n26 TY14COR027\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 17556.3\nNaN\nBlue\nPraulty\n100000.0 NaN\nNaN\n27 TY12COR028\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 29601.9\nNaN\nBlack Santos\n100000.0 NaN\nNaN\n28 TY12CAM029\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 22128.2\nNaN\nBlue\nChan\n100000.0 NaN\nNaN\n29 HO99CIV030\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 82374.0\nNaN\nWhite Rodriguez 75000.0\nNaN\nNaN\n30 HO01CIV031\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 69891.9\nNaN\nBlue\nJones\n75000.0\nNaN\nNaN\n31 HO10CIV032\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 22573.0\nNaN\nBlue\nTorrens\n75000.0\nNaN\nNaN\n32 HO10CIV033\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 33477.2\nNaN\nBlack Swartz\n75000.0\nNaN\nNaN\n33 HO11CIV034\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 30555.3\nNaN\nBlack Lyon\n75000.0\nNaN\nNaN\n34 HO12CIV035\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 24513.2\nNaN\nBlack Hulinski\n75000.0\nNaN\nNaN\n35 HO13CIV036\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 13867.6\nNaN\nBlack Chan\n75000.0\nNaN\nNaN\n36 HOO5ODY037 NaN\nNaN\nNaN\nNaN\nNaN\nNaN 60389.5\nNaN\nWhite Howard\n100000.0 NaN\nNaN\n37 HO07ODY038\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 50854.1\nNaN\nBlack Swartz\n100000.0 NaN\nNaN\n38 HO08ODY039\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 42504.6\nNaN\nWhite Rodriguez 100000.0 NaN\nNaN\n39 HO010ODY040 NaN\nNaN\nNaN\nNaN\nNaN\nNaN 68658.9\nNaN\nBlack Smith\n100000.0 NaN\nNaN\n40 HO14ODY041\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 3708.1\nNaN\nBlack McCall\n100000.0 NaN\nNaN\n41 CR04PTC042\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 64542.0\nNaN\nBlue\nSmith\n75000.0\nNaN\nNaN\n42 CR07PTC043\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 42074.2\nNaN\nGreen Gaul\n75000.0\nNaN\nNaN\n43 CR11PTC044\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 27394.2\nNaN\nBlack Vizzini\n75000.0\nNaN\nNaN\n44 CR99CAR045\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN 79420.6\nNaN\nGreen Hulinski\n75000.0\nNaN\nNaN\n"
+  },
+  "initial_state": {
+    "data/car_inventory.xlsx": "[file does not exist]",
+    "data/cars/car_inventory.xlsx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/car_inventory.pdf"
+}

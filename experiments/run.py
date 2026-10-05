@@ -48,7 +48,7 @@ from tts.env import subsets as env_subsets  # noqa: E402
 from tts.env.registry import available_real_envs, make_env, make_env_from_spec  # noqa: E402
 from tts.harness import run_decision  # noqa: E402
 
-_METHOD_ORDER = {"b0": 0, "b1": 1, "b2": 2, "ours": 3, "agentworld": 4}
+_METHOD_ORDER = {"b0": 0, "b1": 1, "b2": 2, "ours": 3}
 
 
 def _quiet_logging() -> None:
@@ -120,52 +120,6 @@ def sim_config(args, recursion_mode=None, L=None) -> SimulatorConfig:
         L=args.L if L is None else L, hard_cap=args.hard_cap, branching=args.branching,
         node_read_limit=args.node_read_limit, caching=not args.no_cache,
         selective_invalidation=not args.no_selective_invalidation,
-        world_model_model=getattr(
-            args,
-            "wm_model",
-            None,
-        ),
-
-        world_model_base_url=getattr(
-            args,
-            "wm_base_url",
-            None,
-        ),
-
-        world_model_api_key=(
-            getattr(args, "wm_api_key", None)
-            or "EMPTY"
-        ),
-
-        world_model_system_prompt_file=getattr(
-            args,
-            "wm_system_prompt_file",
-            None,
-        ),
-
-        world_model_temperature=getattr(
-            args,
-            "wm_temperature",
-            0.6,
-        ),
-
-        world_model_top_p=getattr(
-            args,
-            "wm_top_p",
-            0.95,
-        ),
-
-        world_model_top_k=getattr(
-            args,
-            "wm_top_k",
-            20,
-        ),
-
-        world_model_max_tokens=getattr(
-            args,
-            "wm_max_tokens",
-            32768,
-        ),
     )
 
 
@@ -180,6 +134,17 @@ def _specs_for(env_name, args):
     if task_indices:
         selected = {int(value.strip()) for value in task_indices.split(",") if value.strip()}
         specs = [spec for spec in specs if spec.index in selected]
+    task_ids = getattr(args, 'task_ids', None)
+    if task_ids:
+        if env_name != 'officebench':
+            raise ValueError('--task-ids currently requires OfficeBench')
+        from tts.env.officebench_lowlevel import load_officebench_subtasks
+        selected = set(task_ids.split(','))
+        pairs = {level: load_officebench_subtasks(level) for level in (1, 2, 3)}
+        specs = [spec for spec in specs if '/'.join(pairs[spec.level][spec.index]) in selected]
+        found = {'/'.join(pairs[spec.level][spec.index]) for spec in specs}
+        if selected != found:
+            raise ValueError(f'Task IDs not in selected dataset: {sorted(selected - found)}')
     return specs
 
 
@@ -190,7 +155,14 @@ def _cfg_for(env_name, spec, method, N, args, recursion_mode=None, L=None) -> Co
                                       llm_user=args.llm_user or args.llm_agent,
                                       temperature=args.temperature, max_steps=args.max_steps,
                                       rollout_retries=getattr(args, "rollout_retries", 2),
-                                      p_correct=args.p_correct),
+                                      p_correct=args.p_correct,
+                                      self_aggregate=getattr(args, "agent_self_aggregate", False),
+                                      aggregation_max_tokens=getattr(
+                                          args, "aggregation_max_tokens", 2048),
+                                      aggregation_strategy=getattr(
+                                          args, "aggregation_strategy", "flat"),
+                                      aggregation_group_size=getattr(
+                                          args, "aggregation_group_size", 4)),
                   simulator=sim_config(args, recursion_mode, L))
 
 
@@ -271,38 +243,53 @@ def _configure_appworld_bon(args) -> None:
 
 
 def _configure_officebench_bon(args) -> None:
-    """Use atomic-check confidence and guarded nested selection for OfficeBench GPT-5.4."""
+    """Default GPT/DeepSeek Ours to the validated repaired OfficeBench profile."""
     if getattr(args, "agent", None) != "llm_wm":
         return
 
-    # OfficeBench tasks depend heavily on discovering exact filenames and copying source content
-    # across apps. Execute pristine read-only actions against the shadow by default; writes and reads
-    # after predicted writes remain world-model predictions. Keep predict-all as an explicit ablation
-    # (and as the required mode for simulation-only runs).
-    if (
-        not getattr(args, "_predict_all_actions_explicit", False)
-        and not getattr(args, "simulation_only", False)
-    ):
-        args.predict_all_actions = False
+    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_TYPED", "1")
 
+    model = (
+        getattr(args, "llm_agent", None)
+        or os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+        or os.environ.get("WM_MODEL")
+        or os.environ.get("TTS_AGENT_MODEL")
+    )
+    methods = {m.strip().lower() for m in getattr(args, "methods", "").split(",")}
+    model_name = str(model or "").lower()
+    repaired = "ours" in methods and ("gpt" in model_name or "deepseek" in model_name)
+
+    # The validated repaired profile predicts every candidate observation, then commits
+    # only the selected trajectory. Explicit clean-read ablations still take precedence.
+    if (not getattr(args, "_predict_all_actions_explicit", False)
+            and not getattr(args, "simulation_only", False)):
+        args.predict_all_actions = repaired
+    if repaired:
+        os.environ.setdefault("TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S", "5")
+
+    is_gpt54 = _is_gpt_54(model)
     if (
         getattr(args, "verifier_samples", None) is None
         and "TTS_OFFICEBENCH_VERIFIER_SAMPLES" not in os.environ
+        and (is_gpt54 or repaired)
     ):
         os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] = "5"
 
-    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
-    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
-    os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
-    os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
-    os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")
-
-    office_margin = os.environ.get(
-        "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")
-    os.environ["TTS_SELECTION_CONFIDENCE_MARGIN"] = office_margin
+    if is_gpt54 or repaired:
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_PERCHECK", "1")
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT", "0.25")
+        os.environ.setdefault("TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", "0.25")
+        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_RERANK", "1")
+        os.environ.setdefault("TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN", "0.25")
+        office_margin = os.environ.get(
+            "TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN", "0.05")
+        os.environ.setdefault("TTS_SELECTION_CONFIDENCE_MARGIN", office_margin)
 
     if not getattr(args, "_success_score_explicit", False):
-        args.success_score = "simulator_confidence_guarded"
+        args.success_score = (
+            "simulator_confidence_guarded" if is_gpt54 or repaired
+            else "simulator_confidence"
+        )
 
 
 def _record_run_env(record: dict):
@@ -532,6 +519,9 @@ def _run_task_cells(payload) -> List[dict]:
         )
         rec["solver_temperature"] = getattr(args, "temperature", None)
         rec["solver_max_steps"] = getattr(args, "max_steps", None)
+        rec["agent_self_aggregate"] = bool(
+            getattr(args, "agent_self_aggregate", False))
+        rec["aggregation_strategy"] = getattr(args, "aggregation_strategy", "flat")
         rec["seed_base"] = getattr(args, "seed_base", None)
         rec["success_score"] = getattr(args, "success_score", None)
         rec["predict_all_actions"] = bool(
@@ -574,6 +564,7 @@ def _run_task_cells(payload) -> List[dict]:
                 "TTS_OFFICEBENCH_VERIFIER_REFERENCE", True)
             rec["officebench_verifier_state"] = _env_enabled(
                 "TTS_OFFICEBENCH_VERIFIER_STATE", True)
+            rec["officebench_verifier_typed"] = _env_enabled("TTS_OFFICEBENCH_VERIFIER_TYPED", False)
             rec["officebench_verifier_percheck"] = _env_enabled(
                 "TTS_OFFICEBENCH_VERIFIER_PERCHECK", False)
             rec["officebench_verifier_atomic_cap"] = _positive_int_env(
@@ -1135,6 +1126,7 @@ def main() -> None:
     p.add_argument("--methods", default="b0,b1,b2,ours")
     p.add_argument("--N", default="1,2,4,8")
     p.add_argument("--tasks", type=int, default=None, help="tasks PER SUBSET (default: full usable size)")
+    p.add_argument("--task-ids", default=None, help="Exact OfficeBench task/subtask IDs, comma-separated.")
     p.add_argument("--task-indices", default=None,
                    help="Exact task indices to run after split/level/subset filtering, comma-separated "
                         "(e.g. 20,27,28,32,45). Useful for targeted diagnostic reruns.")
@@ -1226,54 +1218,21 @@ def main() -> None:
                    help="real official-prompt LLM agent on the real env (default, reproduces the "
                         "benchmark) | llm_wm: LLM solver that interacts with the world model | "
                         "scripted: offline stub")
+    p.add_argument(
+        "--agent-self-aggregate",
+        action="store_true",
+        help="Opt-in: after sampling N trajectories, ask the solver model to aggregate them into "
+             "the one trajectory to commit instead of using verifier/grounded-score selection. "
+             "Disabled by default, so legacy experiments are unchanged.",
+    )
+    p.add_argument(
+        "--aggregation-max-tokens",
+        type=int,
+        default=2048,
+        help="Maximum output tokens for the deterministic agent self-aggregation call.",
+    )
     p.add_argument("--llm-agent", default=None, help="agent model (default: Azure deployment / WM_MODEL, e.g. gpt-4.1)")
     p.add_argument("--llm-user", default=None, help="τ² user-simulator model (default: --llm-agent)")
-    p.add_argument(
-        "--wm-model",
-        default=None,
-        help="AgentWorld served model name.",
-    )
-
-    p.add_argument(
-        "--wm-base-url",
-        default=None,
-        help="Separate AgentWorld OpenAI-compatible endpoint.",
-    )
-
-    p.add_argument(
-        "--wm-api-key",
-        default="EMPTY",
-    )
-
-    p.add_argument(
-        "--wm-system-prompt-file",
-        default=None,
-    )
-
-    p.add_argument(
-        "--wm-temperature",
-        type=float,
-        default=0.6,
-    )
-
-    p.add_argument(
-        "--wm-top-p",
-        type=float,
-        default=0.95,
-    )
-
-    p.add_argument(
-        "--wm-top-k",
-        type=int,
-        default=20,
-    )
-
-    p.add_argument(
-        "--wm-max-tokens",
-        type=int,
-        default=32768,
-    )
-
     p.add_argument(
         "--tau2-qwen-agent-profile",
         default=os.environ.get("TTS_TAU2_QWEN_AGENT_PROFILE", "off"),
@@ -1371,6 +1330,10 @@ def main() -> None:
                    help="Parallel tasks. Tasks are independent and LLM-bound, so >1 gives a near-"
                         "linear speed-up. AppWorld uses a PROCESS pool (it is not thread-safe); τ² "
                         "uses a THREAD pool. Default 1 (sequential).")
+    p.add_argument("--aggregation-strategy", choices=["flat", "tournament"], default="flat",
+                   help="Self-aggregation layout; flat preserves prior experiment behavior.")
+    p.add_argument("--aggregation-group-size", type=int, default=4,
+                   help="Candidates per concurrent tournament group (default 4).")
     p.add_argument("--max-tasks-per-child", type=int, default=0,
                    help="AppWorld process pool: if >0, recycle each worker after this many tasks to "
                         "bound per-worker memory growth (0 = never recycle, the default). A positive "
@@ -1405,6 +1368,8 @@ def main() -> None:
                         "progress bar and the result tables are printed).")
     p.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "results"))
     args = p.parse_args()
+    if getattr(args, "agent_self_aggregate", False):
+        os.environ["TTS_AGENT_SELF_AGGREGATE"] = "1"
     args._success_score_explicit = args.success_score is not None
     args._predict_all_actions_explicit = any(
         flag in sys.argv[1:]
@@ -1416,39 +1381,6 @@ def main() -> None:
     if args.no_verifier_reference and (args.verifier_reference or args.verifier_percheck):
         p.error("--no-verifier-reference cannot be combined with --verifier-reference or "
                 "--verifier-percheck")
-
-    requested_methods = {
-        value.strip().lower()
-        for value in args.methods.split(",")
-        if value.strip()
-    }
-
-    if "agentworld" in requested_methods:
-
-        if args.agent != "llm_wm":
-            p.error(
-                "--methods agentworld requires "
-                "--agent llm_wm"
-            )
-
-        if not args.wm_model:
-            p.error(
-                "--methods agentworld requires "
-                "--wm-model"
-            )
-
-        if not args.wm_base_url:
-            p.error(
-                "--methods agentworld requires "
-                "--wm-base-url"
-            )
-
-        if not args.wm_system_prompt_file:
-            p.error(
-                "--methods agentworld requires "
-                "--wm-system-prompt-file pointing to "
-                "Qwen's official MCP prompt"
-            )
 
     if not args.verbose:
         _quiet_logging()
@@ -1549,14 +1481,6 @@ def main() -> None:
             p.error("--simulation-only requires --agent llm_wm")
         if not args.predict_all_actions:
             p.error("--simulation-only requires --predict-all-actions")
-    if (
-        "agentworld" in requested_methods
-        and env_name not in ["tau2","appworld"]
-    ):
-        p.error(
-            "AgentWorld baseline currently "
-            "supports tau2/appworld only."
-        )
     if env_name == "appworld" and args.agent == "llm_wm":
         _configure_appworld_bon(args)
         if args.appworld_instruction_preflights:
@@ -1575,6 +1499,8 @@ def main() -> None:
         _configure_officebench_bon(args)
         print(
             f"[officebench-wm] tool mode={args.officebench_wm_tool_mode}, "
+            f"predict_all={int(args.predict_all_actions)}, "
+            f"typed={int(_env_enabled('TTS_OFFICEBENCH_VERIFIER_TYPED', False))}, "
             f"reference={int(_env_enabled('TTS_OFFICEBENCH_VERIFIER_REFERENCE', True))}, "
             f"percheck={int(_env_enabled('TTS_OFFICEBENCH_VERIFIER_PERCHECK', False))}, "
             f"unknown_credit={os.environ.get('TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT', '0.25')}, "
@@ -1642,6 +1568,18 @@ def main() -> None:
         # Recover cells written by workers before a previous parent crash/hard-kill, then canonicalize
         # them into records.jsonl before clearing the sidecars for this attempt.
         prior_records, done = _load_checkpoint(records_path, cell_checkpoint_dir)
+        requested_self_aggregate = bool(
+            getattr(args, "agent_self_aggregate", False))
+        aggregation_mismatches = [
+            record for record in prior_records
+            if bool(record.get("agent_self_aggregate", False))
+            != requested_self_aggregate
+        ]
+        if aggregation_mismatches:
+            p.error(
+                "--resume agent-self-aggregation mismatch. Use a new --out directory or the "
+                "matching --agent-self-aggregate setting."
+            )
         if env_name == "appworld":
             requested_mode = args.appworld_wm_tool_mode
             mismatched = [
@@ -1847,6 +1785,9 @@ def main() -> None:
                     "--resume OfficeBench state-grounding mismatch. Use a new --out "
                     "directory or matching TTS_OFFICEBENCH_VERIFIER_STATE."
                 )
+            requested_typed = _env_enabled("TTS_OFFICEBENCH_VERIFIER_TYPED", False)
+            if any(bool(r.get("officebench_verifier_typed", False)) != requested_typed for r in prior_records):
+                p.error("--resume OfficeBench typed-verifier mismatch; use a new output directory.")
             requested_samples = _positive_int_env("TTS_OFFICEBENCH_VERIFIER_SAMPLES", 1)
             sample_mismatches = [
                 record for record in prior_records

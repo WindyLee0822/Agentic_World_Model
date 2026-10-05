@@ -1,0 +1,32 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "scan concert post file, save as notification image named notification.jpg, convert image into a concert_activaty.docx file",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/notification.jpg"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/concert_activaty.docx"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/concert_post.pdf": "Concert Announcement\nWe are excited to announce an upcoming concert featuring:\nArtist: John Smith\nDate: July 15, 2024\nTime: 7:00 PM\nVenue: Music Hall\nAddress: 123 Main Street, Cityville\nTickets are available for purchase at www.example.com/concert.\nDon't miss this amazing opportunity to enjoy live music!\n"
+  },
+  "initial_state": {
+    "data/notification.jpg": "[file does not exist]",
+    "data/concert_activaty.docx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/concert_post.pdf"
+}

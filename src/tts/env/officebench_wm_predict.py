@@ -40,6 +40,7 @@ from fnmatch import fnmatchcase
 from typing import Callable, Dict, List, Optional, Tuple
 
 from ..simulator.transition_log import TransitionLog
+from .officebench_semantics import NATIVE_SEMANTICS, excel_cell_text, cli_literal, read_schema, action_contract, email_cli_data
 from .officebench_lowlevel import normalize_answer
 from .officebench_wm_python import (
     officebench_wm_tool_mode,
@@ -61,6 +62,15 @@ Simulation rules, in priority order:
 5. Task instructions, evaluator checks, gold files, and references are audit context only. Never expose
    them to or coach the benchmark agent, and never fabricate the observation needed for task success.
 Return only the requested observation or tool-protocol program, with no explanatory prose."""
+
+
+class OfficeBenchSimulationError(RuntimeError):
+    """Unknown simulation outcome, distinct from a native application failure."""
+
+    def __init__(self, message, *, retryable=True):
+        super().__init__(message)
+        self.retryable = retryable
+
 
 # --------------------------------------------------------------------------- #
 # Action classification (read vs write) + the file each action touches
@@ -539,12 +549,14 @@ def _emulate_inventory_pipeline(
                 return None
             index += 1
 
-        for record in objects:
+        find_objects = (sorted(objects, key=lambda obj: obj['native_order'])
+                        if all(isinstance(obj.get('native_order'), int) for obj in objects) else objects)
+        for record in find_objects:
             path = os.path.normpath(str(record.get("path", "")))
-            if path == root or not path.startswith(root.rstrip("/") + "/"):
+            if path != root and not path.startswith(root.rstrip("/") + "/"):
                 continue
             relative = os.path.relpath(path, root)
-            depth = len(relative.split(os.sep))
+            depth = 0 if path == root else len(relative.split(os.sep))
             if depth < min_depth or (max_depth is not None and depth > max_depth):
                 continue
             if wanted_type and record.get("type") != wanted_type:
@@ -582,6 +594,9 @@ def _emulate_inventory_pipeline(
         for record in objects:
             path = os.path.normpath(str(record.get("path", "")))
             parent = os.path.dirname(path)
+            if path == root and record.get('type') == 'file':
+                lines.append(operands[0] if operands else path)
+                continue
             if (recursive and path.startswith(root.rstrip("/") + "/")) or parent == root:
                 lines.append(path if recursive else os.path.basename(path))
     else:
@@ -984,10 +999,7 @@ def _canonical_action_paths(action: Dict, workdir: str) -> Dict:
 
 def _creates_parent_dirs(action: Dict) -> bool:
     """Whether a successful action creates missing parent directories for its output."""
-    return (
-        action.get("app") in ("word", "excel")
-        and action.get("action") == "create_new_file"
-    )
+    return action.get("app") == "calendar" and action.get("action") == "create_event"
 
 
 def _parent_resources(target: str) -> List[str]:
@@ -998,6 +1010,10 @@ def _parent_resources(target: str) -> List[str]:
 def action_inputs(action: Dict, workdir: str = "/testbed") -> List[str]:
     """Logical resources an action reads as inputs before producing its result."""
     app, act = action.get("app"), action.get("action")
+    if app in ("word", "excel") and act == "create_new_file":
+        target = _path_arg(action, "file_path", workdir=workdir)
+        # The output need not exist. Only its parent is a required input resource.
+        return [target.rsplit("/", 1)[0] if "/" in target else "/testbed"] if target else []
     if app in ("word", "excel") and act == "convert_to_pdf":
         key = "word_file_path" if app == "word" else "excel_file_path"
         path = _path_arg(action, key, "file_path", workdir=workdir)
@@ -1018,10 +1034,10 @@ def write_targets(action: Dict, workdir: str = "/testbed") -> List[str]:
     if app in ("excel", "word"):
         if act == "convert_to_pdf":
             output = _path_arg(a, "pdf_file_path", workdir=workdir)
-            if output:
-                return [output]
             source_key = "excel_file_path" if app == "excel" else "word_file_path"
             source = _path_arg(a, source_key, "file_path", workdir=workdir)
+            if output and source:
+                return [os.path.join(os.path.dirname(output), os.path.splitext(os.path.basename(source))[0] + '.pdf')]
             return [_derive_output(source, "pdf", "/testbed")] if source else ["<unknown>"]
         if a.get("file_path"):
             return [_norm_path(a["file_path"], workdir)]
@@ -1041,7 +1057,7 @@ def write_targets(action: Dict, workdir: str = "/testbed") -> List[str]:
         return [f"calendar/{user}.ics"]
     if app == "email" and act == "send_email":
         out = []
-        for who in (a.get("recipient"), a.get("sender")):
+        for who in (email_cli_data(a)['recipient'], a.get("sender")):
             if who:
                 who = str(who).split("@")[0]
                 out.append(f"emails/{who}")
@@ -1260,9 +1276,16 @@ class OfficeBenchWMQuery:
         try:
             state = self._session.read_state(
                 [{"path": safe_path, "doc_type": _doc_type(safe_path)}])
-            return str(state.get(safe_path, "[file does not exist]"))
+            if safe_path not in state:
+                raise ValueError("grounding returned no file state")
+            content = str(state[safe_path])
+            if content.startswith("[unreadable:") or content == "[OCR failed]":
+                raise ValueError(content)
+            return content
         except Exception as exc:
-            return f"ERROR: {type(exc).__name__}: {exc}"
+            raise OfficeBenchSimulationError(
+                f"Unable to read immutable evidence {safe_path}: {exc}"
+            ) from exc
 
     def read_raw(self, path: str) -> str:
         """Return untouched pristine evidence for generated Python."""
@@ -1287,7 +1310,7 @@ class OfficeBenchWMQuery:
         pristine = self._read_pristine(safe_path)
         target = _norm_path(safe_path)
         if self._logical_read is not None:
-            return str(self._logical_read(target, pristine))[:_READ_CONTENT_CHARS]
+            return str(self._logical_read(target, pristine))
         return pristine
 
     def list(self, path: str, *, recursive: bool = False) -> str:
@@ -1335,9 +1358,11 @@ class OfficeBenchWMQuery:
                     base = "[directory does not exist]"
                 elif result.get("error"):
                     base = f"ERROR: {result['error']}"
+                elif result.get("_timeout") or not isinstance(result.get("entries"), list):
+                    base = "ERROR: immutable listing returned no complete inventory"
                 else:
                     base = json.dumps(
-                        result.get("entries", []),
+                        result["entries"],
                         ensure_ascii=True,
                         sort_keys=True,
                     )
@@ -1385,6 +1410,10 @@ class OfficeBenchWMQuery:
             )
         return "\n".join(sections)
 
+    def runtime_capabilities(self):
+        getter = getattr(self._session, 'runtime_capabilities', None)
+        return getter() if callable(getter) else {}
+
     def call(self, name: str, args: Dict) -> str:
         """Invoke a whitelisted read action, using the overlay instead of stale state when dirty."""
         if not self.allow_action_execution:
@@ -1422,7 +1451,7 @@ class OfficeBenchWMQuery:
             return self.read(f"/testbed/{target}")
         try:
             result = self._session.exec_action(action, self.workdir())
-            return str(result.get("observation", result))[:_READ_CONTENT_CHARS]
+            return str(result.get("observation", result))
         except Exception as exc:
             return f"ERROR: {type(exc).__name__}: {exc}"
 
@@ -1434,7 +1463,7 @@ class OfficeBenchWMQuery:
         self.traces += 1
         if self._trace is None:
             return "  (no transition log bound)"
-        return str(self._trace(_norm_path(safe_path)))[:_READ_CONTENT_CHARS]
+        return str(self._trace(_norm_path(safe_path)))
 
 
 def _parse_agentic(text: str):
@@ -1530,12 +1559,6 @@ def run_agentic_read_loop(complete: Callable[[str, int], str], query: OfficeBenc
     return terminal if terminal is not None else ("predict", (response or "").strip())
 
 
-#: How much exact file content to feed the predictor.  Real OfficeBench files render LONG (measured on
-#: the task corpus: docx median ~1.8k / p90 ~13k chars, pdf median ~0.6k / p90 ~12k, xlsx p90 ~1.3k /
-#: max ~15k), so the previous 2000-char cap truncated ~9-26% of files (and the informative tail of the
-#: big ones).  Default 6000 keeps the vast majority intact; override with the env vars.
-_READ_CONTENT_CHARS = _int_env("TTS_OFFICEBENCH_WM_READ_CHARS", 6000)
-_STATE_CONTENT_CHARS = _int_env("TTS_OFFICEBENCH_WM_STATE_CHARS", 6000)
 #: Output budget for a predicted read / reconstructed file (must be able to emit the larger inputs).
 _READ_MAX_TOKENS = _int_env("TTS_OFFICEBENCH_WM_READ_TOKENS", 3000)
 _STATE_MAX_TOKENS = _int_env("TTS_OFFICEBENCH_WM_STATE_TOKENS", 3000)
@@ -1571,25 +1594,26 @@ def _wm_symbolic() -> bool:
 # Deterministic (execution-free) symbolic reconstruction of a written file
 # --------------------------------------------------------------------------- #
 
-_CELL_RE = re.compile(r"\((\d+),\s*(\d+)\):\s*([^\t\n]*)")
+_CELL_RE = re.compile(r"\((\d+),\s*(\d+)\): ?([^\t\n]*)")
 
 
 def _parse_excel_grid(content: str) -> Dict[Tuple[int, int], str]:
     """Parse the official ``excel_read_file`` rendering (``(r, c): value`` tokens) into a cell map."""
     grid: Dict[Tuple[int, int], str] = {}
     for m in _CELL_RE.finditer(content or ""):
-        grid[(int(m.group(1)), int(m.group(2)))] = m.group(3).rstrip()
+        grid[(int(m.group(1)), int(m.group(2)))] = m.group(3)
     return grid
 
 
 def _render_excel_grid(grid: Dict[Tuple[int, int], str]) -> str:
     """Render a cell map back into the official ``(r, c): value`` form (rows by ``\\n``, cells by tab)."""
-    from itertools import groupby
-
-    lines = []
-    for row, cells in groupby(sorted(grid), key=lambda rc: rc[0]):
-        lines.append("\t".join(f"({row}, {c}): {grid[(row, c)]}" for (_, c) in cells))
-    return "\n".join(lines)
+    if not grid:
+        return ""
+    return "".join(
+        "".join(f"({r}, {c}): {grid.get((r, c), '[Empty Cell]')}\t"
+                for c in range(1, max(c for _, c in grid) + 1)) + "\n"
+        for r in range(1, max(r for r, _ in grid) + 1)
+    )
 
 
 def _content_arg(action: Dict) -> Optional[str]:
@@ -1632,7 +1656,18 @@ def _apply_excel_writes(initial: str, writes: List[Tuple[Dict, str]]) -> Optiona
             changed = True
         elif act == "set_cell":
             val = action.get("text", action.get("value", ""))
-            grid[(row, col)] = str(val)
+            try:
+                if cli_literal(val) is None:
+                    # openpyxl.cell(value=None) leaves an existing value unchanged.
+                    grid.setdefault((row, col), "[Empty Cell]")
+                    changed = True
+                    continue
+            except ValueError:
+                return None
+            rendered = excel_cell_text(val)
+            if rendered is None or row < 1 or col < 1:
+                return None
+            grid[(row, col)] = rendered
             changed = True
         else:
             return None
@@ -1640,27 +1675,24 @@ def _apply_excel_writes(initial: str, writes: List[Tuple[Dict, str]]) -> Optiona
 
 
 def _apply_word_writes(initial: str, writes: List[Tuple[Dict, str]]) -> Optional[str]:
-    """Reconstruct a word file authored in-trajectory by carrying its literal ``contents`` verbatim.
-
-    Only handled when the file is created/empty in the trajectory (so its content is fully determined
-    by the write literals); a write_to_file with no literal content, or an append onto pre-existing
-    real content whose overwrite/append semantics we cannot be sure of, returns ``None`` (→ LLM).
-    """
-    created = any(a.get("action") == "create_new_file" for a, _ in writes)
-    init_empty = (not initial) or initial.strip() in ("", "[file does not exist]")
-    if not (created or init_empty):
-        return None
-    parts: List[str] = []
+    """Apply native quote stripping and paragraph append/create semantics to copied text."""
+    missing = initial.strip() == "[file does not exist]"
+    parts: List[str] = [] if missing or not initial else initial.split("\n")
     for action, _obs in writes:
         content = _content_arg(action)
         if action.get("action") == "create_new_file":
             parts = []
-            if content:
-                parts.append(content)
+            missing = False
         else:  # write_to_file
+            if missing:
+                return None
             if content is None:
                 return None
-            parts.append(content)
+            # Native construct_action strips quotes, then Fire parses the argument.
+            value = cli_literal(content.replace("'", "").replace('"', ''))
+            if not isinstance(value, str):
+                return None
+            parts.append(value)
     return "\n".join(parts)
 
 
@@ -1716,20 +1748,23 @@ def build_officebench_flat_system_prompt(
         "task": task_config,
         "tool_documentation": catalogue,
         "fixed_initial_state": {
-            str(path): str(content)[:_STATE_CONTENT_CHARS]
+            str(path): str(content)
             for path, content in (initial_state or {}).items()
         },
         "gold_reference_files": {
-            str(path): str(content)[:_STATE_CONTENT_CHARS]
+            str(path): str(content)
             for path, content in (gold_files or {}).items()
         },
-        "testbed_listing": str(testbed_listing)[:_READ_CONTENT_CHARS],
+        "testbed_listing": str(testbed_listing),
     }
     rendered = json.dumps(
         fixed_context, ensure_ascii=True, sort_keys=True, default=str)
     limit = _int_env("TTS_OFFICEBENCH_B1_CONTEXT_CHARS", 60_000)
     if len(rendered) > limit:
-        rendered = rendered[:limit] + f"... [truncated {len(rendered) - limit} chars]"
+        raise OfficeBenchSimulationError(
+            f"Fixed evidence exceeds TTS_OFFICEBENCH_B1_CONTEXT_CHARS={limit}; "
+            "increase the budget rather than truncate file contents"
+        )
     read_contract = (
         "every app read and write observation is predicted during sampling; clean reads use only "
         "this fixed context; dirty reads and final files additionally apply ordered predicted writes; "
@@ -1769,6 +1804,9 @@ class OfficeBenchWMPredictor:
         #: exact pre-write content read once per target (for dirty-read grounding).
         self.pre_write_content: Dict[str, str] = {}
         self.write_history: List[Tuple[Dict, str]] = []
+        self.conversion_sources: Dict[str, Dict] = {}
+        self.file_snapshots: Dict[str, Dict] = {}
+        self.logical_directories: set[str] = set()
         self.deleted_paths: set[str] = set()
         self.recursive_deleted_paths: set[str] = set()
         self.revived_paths: set[str] = set()
@@ -1905,7 +1943,7 @@ class OfficeBenchWMPredictor:
         ]
         if entries:
             return "\n".join(
-                f"  - {_action_str(entry.action)} -> [{entry.observation[:200]}]"
+                f"  - {json.dumps(entry.action, default=str)} -> [{entry.observation}]"
                 for entry in entries
             )
         # Compatibility for tests/callers that seed ``applied_writes`` directly.
@@ -1914,11 +1952,21 @@ class OfficeBenchWMPredictor:
             if related(resource)
             for item in resource_items
         ]
-        return "\n".join(f"  - {_action_str(a)} -> [{o[:200]}]" for a, o in items) or "  (none)"
+        return "\n".join(
+            f"  - {json.dumps(a, default=str)} -> [{o}]" for a, o in items
+        ) or "  (none)"
 
     def _related_writes(self, target: str) -> List[Tuple[Dict, str]]:
         target = _norm_path(target)
         prefix = "" if not target else target.rstrip("/") + "/"
+        entries = self.transition_log.entries(applied_only=True)
+        if entries:
+            # One transition can affect several resources. Preserve global order and include
+            # it once, rather than regrouping/repeating it through the per-resource index.
+            return [(entry.action, entry.observation) for entry in entries if any(
+                resource == target or resource.startswith(prefix)
+                or (bool(resource) and target.startswith(resource.rstrip('/') + '/'))
+                for resource in entry.resources)]
         return [
             item for resource, items in self.applied_writes.items()
             if (
@@ -1933,7 +1981,16 @@ class OfficeBenchWMPredictor:
         """Human-readable log of the WRITE actions applied to ``path`` (for reference-grounded verify)."""
         target = _norm_path(path)
         entries = self.transition_log.entries(target)
-        return self.transition_log.render(target) if entries else self._writes_text(target)
+        return self._complete_trace(entries) if entries else self._writes_text(target)
+
+    @staticmethod
+    def _complete_trace(entries) -> str:
+        """State reconstruction needs complete write literals, not a display-sized preview."""
+        return "\n".join(
+            f"  - {'APPLIED' if entry.applied else 'REJECTED'} "
+            f"{json.dumps(entry.action, default=str)} -> [{entry.observation}]"
+            for entry in entries
+        )
 
     def overlay_paths(self) -> List[str]:
         """Resources created or changed by applied predicted transitions."""
@@ -1948,7 +2005,7 @@ class OfficeBenchWMPredictor:
         target = _norm_path(path)
         entries = self.transition_log.entries(target)
         if entries:
-            return self.transition_log.render(target)
+            return self._complete_trace(entries)
         return self._writes_text(target)
 
     def _exact_overlay_content(self, target: str, pristine_content: str) -> Optional[str]:
@@ -1964,6 +2021,11 @@ class OfficeBenchWMPredictor:
                 return str(action.get("answer", "None")) + "\n"
         if self.global_dirty:
             return None
+        if target in self.file_snapshots:
+            snapshot = self.file_snapshots[target]
+            tail = writes[snapshot['offset']:]
+            return (symbolic_file_state(target, snapshot['content'], tail)
+                    if tail else snapshot['content'])
         return symbolic_file_state(target, pristine_content, writes)
 
     def logical_read(self, target: str, pristine_content: str) -> str:
@@ -2030,11 +2092,205 @@ class OfficeBenchWMPredictor:
             for a, o in list(history)[-k:]
         ]
 
-    def _write_history_data(self, k: int = 40) -> List[Dict]:
+    def _write_history_data(self) -> List[Dict]:
+        entries = self.transition_log.entries()
+        if entries:
+            return [{'action': entry.action, 'observation': entry.observation,
+                     'applied': entry.applied, 'resources': list(entry.resources)}
+                    for entry in entries]
         return [
-            {"action": action, "observation": observation}
-            for action, observation in self.write_history[-k:]
+            {"action": action, "observation": observation,
+             "applied": not _looks_like_failure(observation)}
+            for action, observation in self.write_history
         ]
+
+    def _current_state_data(self, target: str, pristine: Optional[str] = None) -> Dict:
+        """Copied logical evidence for Python, never rendered into the model prompt.
+
+        Unsupported transitions remain explicitly unknown. This does not execute candidate
+        actions or use native post-write state.
+        """
+        target = _norm_path(target)
+        if pristine is None:
+            if self.uses_fixed_context:
+                pristine = self.fixed_pre_write_content(target)
+            elif self._query is not None:
+                pristine = self._query.read_raw(f'/testbed/{target}')
+        if pristine is None:
+            return {'status': 'unknown', 'exists': None, 'content': None}
+        schema = read_schema(target, pristine)
+        writes = self._related_writes(target)
+        exact = self._exact_overlay_content(target, pristine)
+        if exact is None and not writes and not self.global_dirty and schema['status'] != 'tool_error':
+            if not str(pristine).startswith('[not included in the fixed pre-action context]'):
+                exact = pristine
+        if exact is not None:
+            missing = exact.strip() == '[file does not exist]'
+            return {'status': 'exact', 'state_version': 'predicted_current',
+                    'exists': not missing, 'content': None if missing else exact}
+        return {'status': 'unknown', 'state_version': 'predicted_current', 'exists': None,
+                'content': None, 'pristine_content': pristine,
+                'conversion_source': self.conversion_sources.get(target),
+                'transitions': [{'action': a, 'observation': o} for a, o in writes]}
+
+    def _mailbox_messages(self, target: str):
+        """Pure MIME parsing and send transitions over copied pristine messages.
+
+        No native action or filesystem mutation. Unsupported transitions stay unknown.
+        """
+        if self.global_dirty or self._query is None or self.uses_fixed_context:
+            return None
+        writes = self._related_writes(target)
+        if any(a.get('app') != 'email' or a.get('action') != 'send_email' for a, _ in writes):
+            return None
+        from email import policy
+        from email.parser import Parser
+        from email.message import EmailMessage
+        try:
+            listing = self._query.list('/testbed/' + target)
+            entries = [] if listing.startswith('[directory does not exist]') else json.loads(listing)
+            if not isinstance(entries, list):
+                return None
+            messages = {}
+            for item in sorted(entries, key=lambda e: e.get('native_order', 0)):
+                name = item['name']
+                if item.get('type') == 'file' and name.endswith('.eml') and not name.startswith('.'):
+                    raw = self._query.read_raw(item['path'])
+                    messages[name] = Parser(policy=policy.default).parsestr(raw)
+            for action, _ in writes:
+                subject = cli_literal(str(action['subject']).replace("'", '').replace('"', ''))
+                content = cli_literal(str(action['content']).replace("'", '').replace('"', ''))
+                if not isinstance(subject, str) or not isinstance(content, str) or '/' in subject:
+                    return None
+                msg = EmailMessage()
+                msg['From'] = str(action['sender']).split('@')[0] + '@example.com'
+                recipient = email_cli_data(action)['recipient']
+                if not isinstance(recipient, str):
+                    return None
+                msg['To'] = recipient.split('@')[0] + '@example.com'
+                msg['Subject'] = subject
+                msg.set_content(content)
+                messages[subject + '.eml'] = msg
+            return messages
+        except (ValueError, TypeError, KeyError, AttributeError):
+            return None
+
+    @staticmethod
+    def _email_body(msg):
+        parts = list(msg.iter_parts()) if msg.is_multipart() else [msg]
+        return '\n'.join(part.get_payload(decode=True).decode(part.get_content_charset(), errors='replace')
+                         for part in parts if not msg.is_multipart()
+                         or part.get_content_type() in ('text/plain', 'text/html'))
+
+    def _mailbox_state(self, target: str, limit: int = -1) -> Optional[str]:
+        messages = self._mailbox_messages(target)
+        if messages is None:
+            return None
+        blocks = []
+        for name, msg in messages.items():
+            text = self._email_body(msg)
+            if limit != -1:
+                text = text[:limit] + '...'
+            blocks.append(f"Email ID: {name}\nFrom: {msg['From']}\nTo: {msg['To']}\nSubject: {msg['Subject']}\nContent: {text}\n" + '-' * 50 + '\n')
+        return ''.join(blocks) if blocks else 'No emails found.'
+
+    def _predict_shell(self, action):
+        """Common single-command filesystem transitions over copied inputs only."""
+        if not self.program_only or self.global_dirty or self._query is None or action.get('app') != 'shell':
+            return None, {}, set()
+        command = action.get('command', '')
+        if not isinstance(command, str) or re.search(r"[;&|<>$`\\*?]", command):
+            return None, {}, set()
+        try:
+            argv = shlex.split(command)
+        except ValueError:
+            return None, {}, set()
+        if not argv:
+            return None, {}, set()
+        snapshots, directories = {}, set()
+        if argv[0] in ('mv', 'cp') and len(argv) == 3 and not argv[1].startswith('-'):
+            source, dest = (_testbed_path(p, self._current_workdir()) for p in argv[1:])
+            if not source or not dest or source == dest:
+                return None, {}, set()
+            # Bound this adapter to file-to-file operations and existing parent directories.
+            listing = self._query.list(dest.rsplit('/', 1)[0])
+            try:
+                entries = json.loads(listing)
+            except (ValueError, TypeError):
+                return None, {}, set()
+            if not isinstance(entries, list) or any(e.get('path') == dest and e.get('type') == 'directory' for e in entries):
+                return None, {}, set()
+            state = self._current_state_data(_norm_path(source))
+            if state.get('status') != 'exact' or state.get('exists') is not True:
+                return None, {}, set()
+            snapshots[_norm_path(dest)] = state['content']
+        elif len(argv) == 3 and argv[:2] == ['mkdir', '-p']:
+            target = _testbed_path(argv[2], self._current_workdir())
+            if target is None:
+                return None, {}, set()
+            # Refuse to certify success if any existing prefix is a regular file.
+            parts = target.removeprefix('/testbed/').split('/') if target != '/testbed' else []
+            parent = '/testbed'
+            for part in parts:
+                raw = self._query.list(parent)
+                try:
+                    entries = json.loads(raw)
+                except (ValueError, TypeError):
+                    if not str(raw).startswith('[directory does not exist]') or (
+                            _norm_path(parent) not in directories | self.logical_directories):
+                        return None, {}, set()
+                    entries = None
+                if entries is not None and not isinstance(entries, list):
+                    return None, {}, set()
+                if entries is not None and any(e.get('name') == part and e.get('type') == 'file' for e in entries):
+                    return None, {}, set()
+                parent += '/' + part
+                directories.add(_norm_path(parent))
+        else:
+            return None, {}, set()
+        return f'Successfully executed command: {command}. The output was [].', snapshots, directories
+
+    def _predict_creation(self, action: Dict) -> Optional[str]:
+        """Pure creation transition from immutable inventory and the predicted overlay."""
+        if (not self.program_only or self.global_dirty or self._query is None
+                or action.get("app") not in ("word", "excel")
+                or action.get("action") != "create_new_file"):
+            return None
+        raw = str(action.get("file_path", ""))
+        # Native constructors do not quote paths. Leave complex shell arguments to the WM.
+        if not re.fullmatch(r"[A-Za-z0-9_./-]+", raw):
+            return None
+        safe = _testbed_path(raw, self._current_workdir())
+        if safe is None:
+            return None
+        target = _norm_path(safe)
+        parent = safe.rsplit("/", 1)[0]
+        parent_target = _norm_path(parent)
+        failed = f"Failed to create new file {raw}"
+        if self._is_deleted(parent_target):
+            return failed
+        listing = self._query.list(parent)
+        if parent_target in self.logical_directories and str(listing).startswith("[directory does not exist]"):
+            listing = "[]"
+        if str(listing).startswith("[directory does not exist]"):
+            return None if self.was_written(parent_target) else failed
+        try:
+            entries = json.loads(listing)
+        except (TypeError, ValueError):
+            return None
+        if not isinstance(entries, list):
+            return None
+        if any(e.get("path") == parent and e.get("type") == "file"
+               for e in entries if isinstance(e, dict)):
+            return failed
+        matching = [e for e in entries if isinstance(e, dict)
+                    and _norm_path(str(e.get("path", ""))) == target]
+        exists = not self._is_deleted(target) and (bool(matching) or target in self.applied_writes)
+        if action["app"] == "excel" and exists:
+            return f"File {raw} already exists"
+        if exists and any(e.get("type") == "directory" for e in matching):
+            return failed
+        return f"Successfully create new file {raw}"
 
     # -- prediction ----------------------------------------------------- #
     def predict_write(self, action: Dict, history: List[Tuple] = ()) -> str:
@@ -2056,8 +2312,17 @@ class OfficeBenchWMPredictor:
         footprint = (
             f"Action state footprint: inputs={inputs or '(none)'}, "
             f"outputs={targets or '(unknown)'}. "
-            "Use READ for current logical state and TRACE for prior predicted transitions."
+            "READ/LIST are pristine evidence. Apply prior predicted writes from TRACE or "
+            "data['writes'] to derive CURRENT logical state before checking preconditions."
         )
+        if app in ("word", "excel") and act == "create_new_file":
+            footprint += (
+                " This action CREATES its output; a missing output is expected, not failure. "
+                "The inputs above are parent DIRECTORIES: inspect them with LIST, not READ. "
+                "A valid LIST array (even []) establishes that the queried directory exists; its entries "
+                "contain children, not the directory itself. Word overwrites an existing document; "
+                "Excel reports an existing workbook and leaves it unchanged."
+            )
         if _wm_check_writes():
             prompt = (
                 f"You are a faithful world model of the OfficeBench '{app}' app. Predict the observation "
@@ -2083,25 +2348,35 @@ class OfficeBenchWMPredictor:
                 f"its wording (office apps print e.g. 'OBSERVATION: Successfully create a new event to "
                 f"Bob's calendar.'). No prose, no explanation."
             )
-        obs = self._predict(
-            prompt,
-            "PREDICT: <the exact single-line observation returned by the write action>",
-            max_tokens=120,
-            python_context={
-                "kind": "write_observation",
-                "action": recorded_action,
-                "inputs": inputs,
-                "targets": targets,
-                "history": self._agent_context_data(history),
-                "writes": self._write_history_data(),
-            },
-            python_force_always=self.program_only,
-        )
+        current_state = {}
+        obs, shell_snapshots, shell_directories = self._predict_shell(action)
         if obs is None:
-            obs = (
-                "OBSERVATION: World model failed to predict safely; the action was not applied."
-                if self.program_only
-                else f"OBSERVATION: Successfully executed {app}.{act}."
+            obs = self._predict_creation(action)
+        if obs is None:
+            if self.program_only and app in ('excel', 'word') and act in ('set_cell', 'delete_cell', 'write_to_file', 'convert_to_pdf'):
+                current_state = {target: self._current_state_data(target)
+                                 for target in dict.fromkeys(targets + inputs)}
+            obs = self._predict(
+                prompt + '\n\n' + action_contract(action),
+                "PREDICT: <the exact single-line observation returned by the write action>",
+                max_tokens=_int_env("TTS_OFFICEBENCH_WM_WRITE_TOKENS", 2048),
+                python_context={
+                    "kind": "write_observation",
+                    "action": recorded_action,
+                    "observation_action": dict(action),
+                    "current_state": current_state,
+                    "email_cli": email_cli_data(action) if app == 'email' and act == 'send_email' else None,
+                    "enforce_observation_contract": self.program_only,
+                    "inputs": inputs,
+                    "targets": targets,
+                    "history": self._agent_context_data(history),
+                    "writes": self._write_history_data(),
+                },
+                python_force_always=self.program_only,
+            )
+        if obs is None:
+            raise OfficeBenchSimulationError(
+                f"Unable to simulate {app}.{act}; application outcome is unknown"
             )
         # A predicted FAILURE leaves the environment unchanged: record it in the write-history (so the
         # verifier can see the attempted-and-failed write) but do NOT mark any target as written, and do
@@ -2113,12 +2388,28 @@ class OfficeBenchWMPredictor:
             self.transition_log.record(recorded_action, obs, resources, applied=False)
             return obs
         for tgt in targets:
+            self.conversion_sources.pop(tgt, None)
             self.applied_writes.setdefault(tgt, []).append((recorded_action, obs))
             if tgt in ("<shell>", "<unknown>"):
                 # an unresolved write target: we can no longer certify any file is untouched, so from
                 # here every read is predicted (τ²'s global-dirty fallback for ref-less writes).
                 self.global_dirty = True
+        self.file_snapshots.update({target: {'content': content, 'offset': len(self.applied_writes[target])}
+                                    for target, content in shell_snapshots.items()})
+        self.logical_directories.update(shell_directories)
+        if app in ('word', 'excel') and act == 'convert_to_pdf' and inputs and current_state:
+            # Freeze the source AT conversion, not when final state is later queried.
+            # This is evidence for prediction, not a claim of exact PDF layout or success.
+            import copy
+            for target in targets:
+                self.conversion_sources[target] = {
+                    'action': dict(recorded_action), 'path': inputs[0],
+                    'state': copy.deepcopy(current_state.get(inputs[0], {})),
+                }
         if self.global_dirty:
+            self.conversion_sources.clear()
+            self.file_snapshots.clear()
+            self.logical_directories.clear()
             # An opaque transition may recreate or remove any resource, so old tombstones are no
             # longer definitive; subsequent reads use the qualified global-dirty representation.
             self.deleted_paths.clear()
@@ -2181,10 +2472,45 @@ class OfficeBenchWMPredictor:
         if dirty:
             self.n_dirty_reads += 1
         app, act = action.get("app"), action.get("action")
-        if not self.program_only:
-            exact = self._exact_overlay_content(target, pre_write_content or "")
-            if dirty and exact is not None:
-                return exact
+        if self.program_only and app == 'llm' and act == 'complete_text':
+            getter = getattr(self._query, 'runtime_capabilities', None)
+            caps = getter() if callable(getter) else {}
+            prompt_text = action.get('prompt')
+            if (caps.get('llm_key_file_present') is False and isinstance(prompt_text, str)
+                    and "'" not in prompt_text and '\x00' not in prompt_text):
+                return "Error: [Errno 2] No such file or directory: '/openai_key.txt'"
+        if self.program_only and app == 'email' and act == 'read_email':
+            messages = self._mailbox_messages(target)
+            if messages is not None:
+                username = action.get('username')
+                email_id = str(action.get('email_id', ''))
+                name = email_id if email_id.endswith('.eml') else email_id + '.eml'
+                msg = messages.get(name)
+                if msg is None:
+                    return f'Failed to read email {email_id} for {username}.'
+                text = self._email_body(msg)
+                return (f"Successfully read email {email_id} for {username}:\n"
+                        f"From: {msg['From']}\nTo: {msg['To']}\nSubject: {msg['Subject']}\n"
+                        f"Content: {text}...\n").strip()
+        if self.program_only and app == 'email' and act == 'list_emails':
+            mailbox = self._mailbox_state(target, 20)
+            if mailbox is not None:
+                username = action.get('username')
+                return (f'No emails found for {username}.' if mailbox == 'No emails found.'
+                        else f'Successfully list emails for {username}:\n{mailbox}'.strip())
+        if dirty and app in ("word", "excel") and act == "read_file":
+            # Symbolic transitions are pure computations, also valid under predict-all.
+            # Use the actual pristine baseline rather than treating an uncached file as empty.
+            if pre_write_content is None and self._query is not None:
+                pre_write_content = self._query.read_raw(f"/testbed/{target}")
+            if pre_write_content is not None:
+                exact = self._exact_overlay_content(target, pre_write_content)
+                if exact is not None:
+                    if exact == "[file does not exist]":
+                        return f"OBSERVATION: The file {action.get('file_path', target)} does not exist. Failed to read the file."
+                    prefix = ("OBSERVATION: The following is the table from the excel file:\n"
+                              if app == "excel" else "OBSERVATION: The following is the content from the word file:" + ("\n" if exact else ""))
+                    return prefix + exact
         # target-specific writes, or — when the read is dirty only via the global-dirty fallback — the
         # full write history (so a globally-dirty read still sees what may have changed the file).
 
@@ -2267,10 +2593,10 @@ class OfficeBenchWMPredictor:
             not dirty
             and shell_listing_read
             and self._query is not None
-            and target
+            and read_target(action, self._current_workdir()) is not None
         ):
             raw_immutable_objects = self._query.list(
-                target,
+                f"/testbed/{target}",
                 recursive=True,
             )
             try:
@@ -2280,8 +2606,10 @@ class OfficeBenchWMPredictor:
             if isinstance(parsed_objects, list):
                 immutable_objects = parsed_objects
             else:
-                immutable_objects = []
-                immutable_objects_error = str(raw_immutable_objects)[:1_000]
+                raise OfficeBenchSimulationError(
+                    f"Unable to ground shell inventory for /testbed/{target}: "
+                    f"{str(raw_immutable_objects)[:1000]}"
+                )
             parsed_stages = _readonly_shell_stages(
                 shell_command,
                 self._current_workdir(),
@@ -2303,6 +2631,19 @@ class OfficeBenchWMPredictor:
                 "- Use PYTHON_FINAL to reproduce the requested read-only shell pipeline from that "
                 "inventory. Do not request repeated one-level LIST operations or guess paths.\n"
             )
+        operand_reads = []
+        if (not dirty and not self.uses_fixed_context and self._query is not None
+                and not grounded_clean_read and not can_call_exact and target
+                and app in ("excel", "word", "pdf", "ocr", "calendar")):
+            path = f"/testbed/{target}"
+            content = self._query.read_raw(path)
+            operand_reads = [{"op": "read", "path": path, "result": content,
+                              **read_schema(path, content)}]
+            exact_read_contract = (
+                "\nThe immutable operand is already grounded in data['reads'][0]['result'], "
+                "with its representation schema. Return PYTHON_FINAL to compute the full native "
+                "observation from that copied value. Do not reinterpret it as bytes or omit app wording.\n"
+            )
         program_output = self.program_only or officebench_wm_tool_mode() == "python"
         processing_instruction = (
             "Do not transcribe, truncate, summarize, or otherwise process evidence text outside "
@@ -2321,13 +2662,18 @@ class OfficeBenchWMPredictor:
             f"`data['history']`. {processing_instruction}"
         )
         out = self._predict(
-            prompt,
+            prompt + '\n\n' + action_contract(action),
             "PREDICT: <the exact resulting file content or read observation, with no prose>",
             max_tokens=_READ_MAX_TOKENS,
             python_context={
                 "kind": "dirty_read" if dirty else "clean_read",
                 "action": _canonical_action_paths(action, self._current_workdir()),
+                "observation_action": dict(action),
+                "enforce_observation_contract": self.program_only,
+                "current_state": ({target: self._current_state_data(target, pre_write_content)}
+                                  if dirty and target else {}),
                 "target": target,
+                "reads": operand_reads,
                 "pre_write_content": pre_write_content,
                 "grounded_clean_read": (
                     pre_write_content if grounded_clean_read else None
@@ -2359,12 +2705,9 @@ class OfficeBenchWMPredictor:
         )
         if out is not None:
             return out
-        if self.program_only:
-            return (
-                "OBSERVATION: World model failed to predict safely; "
-                "no environment action was executed."
-            )
-        return self.logical_read(target, pre_write_content or "")
+        raise OfficeBenchSimulationError(
+            f"Unable to simulate {app}.{act}; application observation is unknown"
+        )
 
     def predict_file_state(self, path: str, initial_content: str) -> str:
         """Render a gold-checked file's PREDICTED final content (initial + its writes) for the verifier.
@@ -2375,13 +2718,16 @@ class OfficeBenchWMPredictor:
         else verbatim — so the reconstruction is as trustworthy as possible without executing writes.
         """
         target = _norm_path(path)
+        if target.startswith('emails/'):
+            mailbox = self._mailbox_state(target)
+            if mailbox is not None:
+                return mailbox
         writes = self._related_writes(target)
-        if not self.program_only:
-            if not writes and not self._is_deleted(target) and not self.global_dirty:
-                return initial_content
-            exact = self._exact_overlay_content(target, initial_content)
-            if exact is not None:
-                return exact
+        if not writes and not self._is_deleted(target) and not self.global_dirty:
+            return initial_content
+        exact = self._exact_overlay_content(target, initial_content)
+        if exact is not None:
+            return exact
         app_hint = writes[0][0].get("app", "office") if writes else "office"
         prompt = (
             f"You are a world model of an OfficeBench '{app_hint}' file. Given the initial content of "
@@ -2389,6 +2735,18 @@ class OfficeBenchWMPredictor:
             "content of the file. Initial content and writes are available only through "
             "`data['initial_content']`, `data['writes']`, and `data['global_writes']`; generated Python "
             "must perform every copy or transformation.\n\n"
+            "WRITE SCHEMA: each entry['action'] is a DICTIONARY with 'app', 'action', and argument "
+            "fields directly inside it (not an action name string and not an 'args' wrapper). "
+            "Skip entries with applied=False. A conversion may supply data['conversion_source']: "
+            "its state is the copied logical INPUT at conversion time, including prior edits. "
+            "SCHEMA: snapshot = data['conversion_source']; input_record = snapshot['state']; "
+            "input_text = input_record['content'] (a decoded STRING, not bytes or a dict). "
+            "For Word conversion this is paragraph text: preserve its characters and predict only "
+            "PDF whitespace/layout. For Excel it is the documented decoded cell representation. "
+            "Use that snapshot, not pristine output absence or later source edits. Predict decoded "
+            "PDF text from this evidence; preserve input values and distinguish unknown layout "
+            "from missing content. Never execute LibreOffice, native apps, subprocesses, file I/O "
+            "or binary encoders. Only pure computation over copied values is permitted.\n\n"
             f"Change ONLY the cells/lines a listed write clearly determines (e.g. a set_cell write sets "
             f"exactly that cell to that value); copy every other part of the file verbatim from the "
             "initial content and never invent values. Return a PYTHON_FINAL program whose printed value "
@@ -2400,8 +2758,10 @@ class OfficeBenchWMPredictor:
             max_tokens=_STATE_MAX_TOKENS,
             python_context={
                 "kind": "final_file_state",
+                "enforce_observation_contract": self.program_only,
                 "target": target,
                 "initial_content": initial_content,
+                "conversion_source": self.conversion_sources.get(target),
                 "writes": [
                     {"action": write, "observation": observation}
                     for write, observation in writes
@@ -2412,13 +2772,19 @@ class OfficeBenchWMPredictor:
             python_force_long=True,
             python_force_always=self.program_only,
         )
-        return out if out is not None else self.logical_read(target, initial_content)
+        if out is None:
+            raise OfficeBenchSimulationError(
+                f"Unable to reconstruct /testbed/{target}; final state is unknown"
+            )
+        return out
 
-    def predicted_write_log(self, cap: int = 40) -> str:
-        """A compact rendering of every predicted write (for the verifier when no gold file is checked)."""
+    def predicted_write_log(self) -> str:
+        """Complete transitions for reconstruction and verification, including write literals."""
         if self.transition_log.entries():
-            return self.transition_log.render(cap=cap)
-        lines = [f"  - {_action_str(a)} -> [{o[:200]}]" for a, o in self.write_history[:cap]]
+            return self._complete_trace(self.transition_log.entries())
+        lines = [
+            f"  - {json.dumps(a, default=str)} -> [{o}]" for a, o in self.write_history
+        ]
         return "\n".join(lines) or "  (no writes)"
 
     def _predict(
@@ -2450,7 +2816,13 @@ class OfficeBenchWMPredictor:
                 force_always=python_force_always,
             )
             self._record_python_result(result)
-            return result.output if result.valid else None
+            if not result.valid:
+                raise OfficeBenchSimulationError(
+                    f"Python simulation failed for {python_context.get('kind', 'prediction')}: "
+                    f"{result.error or 'prediction protocol exhausted without a valid result'}",
+                    retryable=False,
+                )
+            return result.output
         if query is None:
             output = self._complete(prompt, max_tokens=max_tokens)
             return output if output else None

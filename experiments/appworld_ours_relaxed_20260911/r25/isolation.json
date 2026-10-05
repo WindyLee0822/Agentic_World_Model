@@ -1,0 +1,7 @@
+{
+  "changed_python_files_vs_r24": [
+    "src/tts/env/appworld_ours_model_driven.py"
+  ],
+  "all_other_python_identical": true,
+  "change": "Opt-in read prediction instructions only"
+}

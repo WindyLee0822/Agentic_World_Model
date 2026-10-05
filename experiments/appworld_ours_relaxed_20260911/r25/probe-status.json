@@ -1,0 +1,21 @@
+{
+  "name": "dw-appworld-ours-relaxed-r25-n1-probe-20260913",
+  "status": "Completed",
+  "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/812af04e-581e-42d8-aea5-47a3b17d25d8/versions/1",
+  "checked_at": "2026-09-14T02:51:00.538745+00:00",
+  "record_source": "final records.jsonl",
+  "records": 1,
+  "successes": 0,
+  "diagnostic_only": true,
+  "command_checks": {
+    "n1": true,
+    "task_index7": true,
+    "normal_only": true,
+    "one_worker": true,
+    "level2": true
+  },
+  "expected_tasks": [
+    "634f342_2"
+  ],
+  "expected_n": 1
+}

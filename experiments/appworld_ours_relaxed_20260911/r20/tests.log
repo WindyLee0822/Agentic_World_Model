@@ -1,0 +1,7 @@
+.....................................                                                                [100%]
+============================================= warnings summary =============================================
+tests/test_model_driven.py::test_actual_simulator_program_decides_write[success-200]
+  /anaconda/envs/appwm/lib/python3.11/site-packages/polyfactory/factories/base.py:246: DeprecationWarning: Use of deprecated default '__check_model__'. Deprecated in polyfactory v2.22.0. This default will be removed in the next major version. Use 'set to `False` explicitly to keep existing behaviour' instead
+    warn_deprecation(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

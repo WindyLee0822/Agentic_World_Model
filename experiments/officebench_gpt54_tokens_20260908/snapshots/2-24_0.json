@@ -1,0 +1,29 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Extract the score and name then calculate the average score in excel score.xlsx",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/score.xlsx",
+          "doc_type": "xlsx",
+          "keywords": [
+            "79"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/score.xlsx": "(1, 1): Name\t(1, 2): Score\t\n(2, 1): Bob\t(2, 2): 62\t\n(3, 1): Henry\t(3, 2): 94\t\n(4, 1): Quinn\t(4, 2): 81\t\n"
+  },
+  "initial_state": {
+    "data/score.xlsx": "(1, 1): Name\t(1, 2): Score\t\n(2, 1): Bob\t(2, 2): 62\t\n(3, 1): Henry\t(3, 2): 94\t\n(4, 1): Quinn\t(4, 2): 81\t\n"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/score.xlsx"
+}

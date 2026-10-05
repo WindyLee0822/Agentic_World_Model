@@ -27,6 +27,13 @@ class SolverConfig:
     rollout_retries: int = 2
     #: probability a *scripted* rollout follows the plan (offline stub only)
     p_correct: float = 0.0
+    #: Opt-in: have the solver model aggregate the N sampled trajectories instead of using
+    #: the verifier/grounded score selector. Disabled by default for exact legacy behavior.
+    self_aggregate: bool = False
+    #: Output budget for the one deterministic aggregation call.
+    aggregation_max_tokens: int = 2048
+    aggregation_strategy: str = "flat"
+    aggregation_group_size: int = 4
 
 
 @dataclass

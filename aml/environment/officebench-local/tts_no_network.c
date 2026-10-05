@@ -32,6 +32,12 @@ static int install_filter(void) {
         BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_KILL_PROCESS),
         BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
                  (unsigned int)offsetof(struct seccomp_data, nr)),
+        /* Ubuntu's PRoot 5.1 does not translate statx paths. Force libc/coreutils
+         * to use the supported stat/fstatat fallback inside the guest root. */
+#ifdef __NR_statx
+        BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, __NR_statx, 0, 1),
+        BPF_STMT(BPF_RET | BPF_K, DENY_SYSCALL(ENOSYS)),
+#endif
         BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, __NR_socket, 0, 5),
         BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
                  (unsigned int)offsetof(struct seccomp_data, args[0])),

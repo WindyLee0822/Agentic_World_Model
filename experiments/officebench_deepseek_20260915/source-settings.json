@@ -1,0 +1,12 @@
+{
+  "source_job": "dw-officebench-b1-llm-wm-gpt54-n124-20260904",
+  "status": "Completed",
+  "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/328cf242-2c2e-43f9-867e-b99b9ff78638/versions/1",
+  "environment": "CliV2AnonymousEnvironment:9872fac1b843bfd01c9cdaf22251013c978c50c12d30b505334dcb04199a7be0",
+  "compute": "GWC-NC24ads-A100-hipri",
+  "command": "apt-get update && apt-get install -y --no-install-recommends bsdmainutils gcc imagemagick libtesseract-dev libreoffice poppler-utils proot python3-pip tesseract-ocr tree && gcc -O2 -Wall -Wextra -o /usr/local/bin/tts-no-network aml/environment/officebench-local/tts_no_network.c && python -m pip install --no-cache-dir fire pandas python-docx openpyxl tabulate Pillow PyMuPDF PyPDF2 pdf2docx pytesseract icalendar pytz 'openai>=1.30.0' 'azure-identity>=1.15.0' 'pyyaml>=6.0' 'tqdm>=4.66.0' && bash aml/src/run_dw.sh --env officebench --officebench-root officebench_data --output-dir \"${{outputs.output_dir}}\" --levels \"1,2,3\" --methods b1 --n \"1,2,4\" --agent llm_wm --workers 16 --max-steps 40 --temperature 1 --aoai-endpoint \"https://ai-m365researchefficientaieus2212654625773.cognitiveservices.azure.com/\" --aoai-deployment \"gpt-5.4\" --aoai-api-version \"2024-12-01-preview\" --aoai-api-key none --managed-identity-client-id \"3cd4a6ca-c848-40dd-bb6f-e6f20c7f0755\" --stall-timeout 7200 --extra-args \"--exact-clean-reads --strict-coverage\"",
+  "environment_variables": {
+    "TTS_OFFICEBENCH_BACKEND": "local",
+    "TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S": "5"
+  }
+}

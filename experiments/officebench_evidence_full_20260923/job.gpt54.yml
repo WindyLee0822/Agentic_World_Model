@@ -1,0 +1,66 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-officebench-gpt54-evidence-r2-full-n124-20260923
+experiment_name: dw-officebench-ours-gpt54-predict-all
+description: Full 300-subtask OfficeBench, gpt-5.4, N=1,2,4. Exact source from validated
+  evidence-r2 subset. Predict all observations, select best, commit selected trajectory
+  only; native evaluator unchanged.
+compute: azureml:GWC-NC24ads-A100-hipri
+code: /tmp/officebench-evidence-r2-full-20260923
+environment: azureml:CliV2AnonymousEnvironment:9872fac1b843bfd01c9cdaf22251013c978c50c12d30b505334dcb04199a7be0
+environment_variables:
+  TTS_OFFICEBENCH_BACKEND: local
+  TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S: '5'
+  TTS_OFFICEBENCH_WM_WRITE_TOKENS: '2048'
+  TTS_OFFICEBENCH_WM_PYTHON_LOG_ERRORS: '1'
+  TTS_OFFICEBENCH_WM_PYTHON_LOG_ERROR_LIMIT: '1000'
+  TTS_OFFICEBENCH_COMMIT_TRACE: '1'
+  TTS_OFFICEBENCH_WM_TOOL_MODE: python
+  TTS_OFFICEBENCH_WM_PYTHON: '1'
+  TTS_OFFICEBENCH_VERIFIER_PERCHECK: '1'
+  TTS_OFFICEBENCH_VERIFIER_SAMPLES: '5'
+  TTS_OFFICEBENCH_VERIFIER_TYPED: '1'
+  TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT: '0.25'
+  TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT: '0.25'
+  TTS_OFFICEBENCH_COMPARATIVE_RERANK: '1'
+  TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN: '0.25'
+  TTS_SELECTION_CONFIDENCE_MARGIN: '0.05'
+inputs:
+  env: officebench
+  levels: 1,2,3
+  methods: ours
+  n: 1,2,4
+  agent: llm_wm
+  workers: 4
+  max_steps: 40
+  temperature: 1
+  stall_timeout: '7200'
+  extra_args: --predict-all-actions --strict-coverage --success-score simulator_confidence_guarded
+  aoai_endpoint: https://ai-m365researchefficientaieus2212654625773.cognitiveservices.azure.com/
+  aoai_deployment: gpt-5.4
+  aoai_api_version: 2024-12-01-preview
+  aoai_api_key: none
+  managed_identity_client_id: 3cd4a6ca-c848-40dd-bb6f-e6f20c7f0755
+outputs:
+  output_dir:
+    type: uri_folder
+command: mkdir -p /usr/share/man/man1 && apt-get update && apt-get install -y --no-install-recommends
+  bsdmainutils gcc imagemagick libtesseract-dev libreoffice libreoffice-java-common
+  default-jre-headless poppler-utils proot python3-pip tesseract-ocr tree && gcc -O2
+  -Wall -Wextra -o /usr/local/bin/tts-no-network aml/environment/officebench-local/tts_no_network.c
+  && python -m pip install --no-cache-dir fire pandas python-docx openpyxl tabulate
+  Pillow PyMuPDF PyPDF2 pdf2docx pytesseract icalendar pytz 'openai>=1.30.0' 'azure-identity>=1.15.0'
+  'pyyaml>=6.0' 'tqdm>=4.66.0' && OFFICEBENCH_RUNTIME_REPORT="${{outputs.output_dir}}/runtime_preflight.json"
+  python experiments/officebench_runtime_preflight.py && bash aml/src/run_dw.sh --env
+  "${{inputs.env}}" --officebench-root "officebench_data" --output-dir "${{outputs.output_dir}}"
+  --levels "${{inputs.levels}}" --methods "${{inputs.methods}}" --n "${{inputs.n}}"
+  --agent "${{inputs.agent}}" --workers ${{inputs.workers}} --max-steps ${{inputs.max_steps}}
+  --temperature ${{inputs.temperature}} --aoai-endpoint "${{inputs.aoai_endpoint}}"
+  --aoai-deployment "${{inputs.aoai_deployment}}" --aoai-api-version "${{inputs.aoai_api_version}}"
+  --aoai-api-key "${{inputs.aoai_api_key}}" --managed-identity-client-id "${{inputs.managed_identity_client_id}}"
+  --stall-timeout "${{inputs.stall_timeout}}" --extra-args "${{inputs.extra_args}}"
+name: dw-officebench-gpt54-evidence-r2-full-n124-20260923
+identity:
+  type: user_identity
+limits:
+  timeout: 604800

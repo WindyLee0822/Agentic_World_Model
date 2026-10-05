@@ -542,6 +542,7 @@ def run_react_code_agent(
     enable_execution_reminder: bool = False,
     task_checklist: Optional[str] = None,
     completion_check: Optional[Callable[[], bool]] = None,
+    executed_code_feedback: bool = False,
 ) -> Tuple[List[str], List[str]]:
     """Run the official ReAct loop on an open :class:`appworld.AppWorld`.
 
@@ -563,6 +564,25 @@ def run_react_code_agent(
             if task_checklist else None
         ),
     )
+    if executed_code_feedback:
+        messages.append({"role": "user", "content": (
+            "Emit exactly one Python code block per turn, then wait for its output. "
+            "Only the first code block is executed. Define variables in executed code "
+            "before using them. Discover API signatures before calling them. "
+            "When a task requires all matching items, gather every page before computing "
+            "the changes. An API's default page is not the complete collection. "
+            "Resolve the exact target category using documented filters and structured attributes. "
+            "A relationship such as friends is a subset of contacts; inspect relationship values. "
+            "For product types, inspect category/type metadata rather than requiring a literal "
+            "phrase in the product name. Preserve every matching item and its quantity. "
+            "When counting items in a note or document, parse the actual item records or lines. "
+            "Exclude headings, legends, format explanations and examples from the count, "
+            "even when they contain the same status marker as the items. "
+            "If the task asks only for actions, finish with complete_task() without an answer. "
+            "Return the requested answer itself, not an extra report or dictionary of metrics. "
+            "Match the requested quantity: combined activity adds the relevant categories; "
+            "a net amount or difference subtracts them."
+        )})
     code_blocks: List[str] = []
     outputs: List[str] = []
     # Use a freezegun-immune clock: AppWorld freezes time inside world.execute, which pins
@@ -573,14 +593,31 @@ def run_react_code_agent(
             break  # hard wall-clock backstop (e.g. a non-terminating agent loop)
         content = chat_client.complete(messages, temperature=temperature, max_tokens=max_tokens)
         code = _extract_first_code(content or "")
-        messages.append({"role": "assistant", "content": (content or "") + "\n\n"})
+        # Some models emit a whole hypothetical multi-cell solution. Preserve the
+        # actual executed action in Ours' history so later turns cannot mistake
+        # unexecuted assignments or writes for observed progress.
+        assistant_content = (
+            f"```python\n{code}\n```"
+            if executed_code_feedback and code else (content or "")
+        )
+        messages.append({"role": "assistant", "content": assistant_content + "\n\n"})
         if not code:
             break  # no actionable code: the agent has stalled
         output = world.execute(code)
         code_blocks.append(code)
         outputs.append(output)
-        tail = "\n" if not output.endswith("\n") else ""
-        messages.append({"role": "user", "content": f"Output:\n```\n{output}{tail}```\n\n"})
+        prompt_output = output
+        if os.environ.get("TTS_AGENT_SELF_AGGREGATE", "").lower() in {"1", "true", "yes", "on"}:
+            max_output_chars = int(os.environ.get("TTS_APPWORLD_PROMPT_OUTPUT_CHARS", "30000"))
+            if len(prompt_output) > max_output_chars:
+                prompt_output = prompt_output[:max_output_chars] + "\n...[tool output truncated]"
+        tail = "\n" if not prompt_output.endswith("\n") else ""
+        execution_note = (
+            "This output is from the single code block shown above. "
+            "Return one next code block and wait for its output.\n"
+            if executed_code_feedback else ""
+        )
+        messages.append({"role": "user", "content": f"Output:\n```\n{prompt_output}{tail}```\n\n{execution_note}"})
         if (completion_check is not None and completion_check()) or world.task_completed():
             break
     return code_blocks, outputs

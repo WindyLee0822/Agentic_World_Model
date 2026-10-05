@@ -1,0 +1,29 @@
+# AML environment for the `dw` tau2-bench jobs (mirrors the local `dw` conda
+# env: Python 3.12, pydantic 2).
+#
+# NOTE on env profiles:
+#   * tau2                -> THIS file (Python 3.12, pydantic 2).
+#   * officebench         -> officebench-local.yml (baked app/evaluator deps).
+#   * appworld            -> conda.appworld.yml (Python 3.11, AppWorld 0.2 source).
+#   Keep AppWorld separate because its unreleased source pin must match the
+#   mounted 0.2.0 data asset. Point each job's `environment.conda_file` at the
+#   corresponding profile.
+#
+# tau2-bench is NOT on PyPI under `tau2` (that name is an unrelated package), so
+# it is installed from the upstream git repo, pinned to the commit that matches
+# the local `dw` checkout. The `[knowledge]` extra adds rank-bm25 for the
+# banking_knowledge domain.
+#
+name: tts-dw-aml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - "tau2[knowledge] @ git+https://github.com/sierra-research/tau2-bench.git@1746a25db265724f6fed2260934bb67f1514fad7"
+      - openai>=1.30.0
+      - azure-identity>=1.15.0
+      - azure-keyvault-secrets>=4.8.0
+      - pyyaml>=6.0
+      - tqdm>=4.66.0

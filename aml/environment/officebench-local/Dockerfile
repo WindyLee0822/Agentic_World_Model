@@ -8,7 +8,7 @@ ENV PATH=/opt/officebench-venv/bin:${PATH}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update && \
+RUN mkdir -p /usr/share/man/man1 && apt-get update && \
     apt-get install -y --no-install-recommends \
       bzip2 \
       bsdmainutils \
@@ -18,6 +18,8 @@ RUN apt-get update && \
       imagemagick \
       libtesseract-dev \
       libreoffice \
+      libreoffice-java-common \
+      default-jre-headless \
       poppler-utils \
       proot \
       tesseract-ocr \

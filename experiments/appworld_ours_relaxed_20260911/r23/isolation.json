@@ -1,0 +1,8 @@
+{
+  "changed_python_files": [
+    "src/tts/env/appworld_ours_model_driven.py",
+    "src/tts/env/appworld_wm.py"
+  ],
+  "all_other_python_identical": true,
+  "legacy_final_prompts_byte_equal_tested": true
+}

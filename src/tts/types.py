@@ -170,6 +170,7 @@ class DecisionRecord:
     tokens: int = 0
     cost: float = 0.0
     wall_clock_s: float = 0.0
+    aggregation_wall_clock_s: float = 0.0
     prediction_correct: Optional[bool] = None
     predicted_success: Optional[bool] = None
     predicted_confidence: Optional[float] = None  # selected rollout's verifier confidence (graded if K>1)

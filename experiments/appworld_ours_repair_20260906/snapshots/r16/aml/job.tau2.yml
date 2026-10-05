@@ -1,0 +1,68 @@
+# AML command job: runs dw's experiments/run.py on real tau2-bench.
+#
+# Submit:
+#   AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh
+#   AML_JOB_FILE=aml/job.tau2.yml bash aml/submit.sh \
+#       --set inputs.llm_user=gpt-4.1
+#   # or directly:
+#   az ml job create -f aml/job.tau2.yml -g Singularity -w M365Research \
+#       --subscription acc09744-1ee3-4242-b375-93421c63af0c
+#
+# AUTH NOTE: tau2 drives its agent/user models through litellm, whose AAD token
+# in dw is fetched via the `az` CLI (NOT managed identity). On AML the simplest
+# reliable auth is an API KEY: set inputs.aoai_api_key (ideally from a secret),
+# e.g. `--set inputs.aoai_api_key=$AOAI_KEY`. With an empty key the wrapper falls
+# back to managed identity + `az login --identity`, which only works if the `az`
+# CLI is present on the compute and the resource accepts AAD.
+#
+# Uses the Python-3.12 / pydantic-2 env (conda.yml). No data asset needed —
+# tau2 domains ship with the package.
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-tau2-ours
+experiment_name: dw-tau2-ours
+description: Run the dw test-time-scaling harness (b0/b1/b2/ours) on real tau2-bench on AML compute.
+compute: azureml:D15v2-NCUS-hipri
+code: ..
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+  conda_file: environment/conda.yml
+inputs:
+  env: tau2
+  domains: airline,retail
+  methods: ours
+  n: "1,2,4,8,16"
+  agent: llm
+  llm_user: none
+  workers: 16
+  max_steps: 50
+  temperature: 1
+  stall_timeout: "7200"
+  extra_args: none
+  aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
+  aoai_deployment: gpt-4.1
+  aoai_api_version: 2024-12-01-preview
+  aoai_api_key: none
+  managed_identity_client_id: 258f6dab-3e80-4254-83e3-bfb24a9ae8d9
+outputs:
+  output_dir:
+    type: uri_folder
+command: >-
+  bash aml/src/run_dw.sh
+  --env "${{inputs.env}}"
+  --output-dir "${{outputs.output_dir}}"
+  --domains "${{inputs.domains}}"
+  --methods "${{inputs.methods}}"
+  --n "${{inputs.n}}"
+  --agent "${{inputs.agent}}"
+  --llm-user "${{inputs.llm_user}}"
+  --workers ${{inputs.workers}}
+  --max-steps ${{inputs.max_steps}}
+  --temperature ${{inputs.temperature}}
+  --aoai-endpoint "${{inputs.aoai_endpoint}}"
+  --aoai-deployment "${{inputs.aoai_deployment}}"
+  --aoai-api-version "${{inputs.aoai_api_version}}"
+  --aoai-api-key "${{inputs.aoai_api_key}}"
+  --managed-identity-client-id "${{inputs.managed_identity_client_id}}"
+  --stall-timeout "${{inputs.stall_timeout}}"
+  --extra-args "${{inputs.extra_args}}"

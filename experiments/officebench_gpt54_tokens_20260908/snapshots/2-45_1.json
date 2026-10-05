@@ -1,0 +1,47 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "read business traveling image, send emails bussiness_travel.eml to corresponding staff",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Bob",
+          "keywords": [
+            "business",
+            "travel",
+            "new york",
+            "meeting"
+          ]
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Tom",
+          "keywords": [
+            "business",
+            "travel",
+            "new york",
+            "meeting"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/business_travel.jpg": "business Travel notification\n\nDear Bob and Ton,\n\nYou are requixed to travel to our New York office for a business necting.\nPlease arvmge your travel accordingly.\n\nBest regards,\nyour company\n\f",
+    "/testbed/data/daily_schedule.jpg": "bes\n\noa,\n0s:\n8.\n07,\noe,\n\nSPSPEP eye ee\n\nbes\n\noa,\n04:\n8.\n07,\n\nbes\n\nEPEPE Leyes\n\nDaily Schedule for Bob\n\nBreakfast\n\u2018Team Meeting\nProject Vork\n\nLamch Break,\n\nClient calls\n\ncoffee Break\nDevelopment Tine\nReading / Relaxation\nPrepare for Bed\n\f"
+  },
+  "initial_state": {
+    "./calendar/Bob.ics": "[file does not exist]",
+    "./calendar/Tom.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/business_travel.jpg\n/testbed/data/daily_schedule.jpg"
+}

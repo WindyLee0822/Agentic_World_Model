@@ -1,0 +1,3351 @@
+{
+  "records": 108,
+  "records_sha256": "1bb69b25f3e021e1f12dfac7ff98d5ad15612626493419256a11fc65c0764203",
+  "affected_candidates": 417,
+  "affected_tasks": 47,
+  "categories": {
+    "observation_failure_placeholder": 415,
+    "other_failed_candidate": 2
+  },
+  "selected_affected_candidates": 8,
+  "selected_affected_with_native_commit": 0,
+  "interpretation": "Metadata correlation only: failed-candidate placeholders do not prove native observation bypass. Original conservative contract flags remain unchanged; full trace/routing verification and benchmark coverage are still required.",
+  "candidates": [
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 26000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 26015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 27013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 7015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 13,
+      "category": "other_failed_candidate",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5013 failed after 3 attempt(s): WMHardTimeout: AppWorld Ours prediction budget exhausted; refusing an unpredicted observation"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "270f1ff_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 31003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "325d6ec_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 4000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "6f4b9a5_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 3000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "6f4b9a5_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 3003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 17015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 54003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 29000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "522e5e5_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 29012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 16015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "59fae45_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 47011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 34014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 3000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 3015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 21015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 18002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 18004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 18005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 18006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 18012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 33013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 8 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "2d9f728_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 13 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3aa1a22_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 46015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 0 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "fd1f8fa_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 1013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "325d6ec_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 5001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 9000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "5a83b05_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 9015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 22010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "13547f5_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 36010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 2010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 15000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 12,
+      "category": "other_failed_candidate",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15012 failed after 3 attempt(s): WMHardTimeout: AppWorld Ours prediction budget exhausted; refusing an unpredicted observation"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "0d01c76_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 15015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 56000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "f3f60f0_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 56015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "d194965_3",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 23015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 25000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 25015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "9ef798c_3",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 35014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "634f342_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 6015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_3",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 20003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 4 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 9 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 11 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 12 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 13 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 14 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "3d9a636_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 15 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "8749218_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 10015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 24000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ccf4b82_1",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 24015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 0,
+      "category": "observation_failure_placeholder",
+      "selected": true,
+      "commits": 0,
+      "error": "WM rollout seed 4000 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 3,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4003 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 4,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4004 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 5,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4005 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 6,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4006 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 7,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4007 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 8,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4008 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 9,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4009 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 10,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4010 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 12,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4012 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 14,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4014 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "29a7b7e_2",
+      "candidate": 15,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 0,
+      "error": "WM rollout seed 4015 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_2",
+      "candidate": 1,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 19001 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_2",
+      "candidate": 2,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 19002 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_2",
+      "candidate": 11,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 19011 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    },
+    {
+      "task_id": "ff58e36_2",
+      "candidate": 13,
+      "category": "observation_failure_placeholder",
+      "selected": false,
+      "commits": 1,
+      "error": "WM rollout seed 19013 failed after 3 attempt(s): SimulatorObservationFailure: Simulator observation unavailable"
+    }
+  ]
+}

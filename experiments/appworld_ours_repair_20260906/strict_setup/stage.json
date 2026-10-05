@@ -1,0 +1,24 @@
+{
+  "stage": "/tmp/appworld-strict-stage",
+  "local_runtime": "/tmp/appworld-strict-code",
+  "n2_session": null,
+  "test_session": null,
+  "root_runtime_still_r16": true,
+  "sha256": {
+    "src/tts/env/appworld_ours_setup.py": "e80482a9352e55802b16306e222a38342a3e2d3eda3e02cb273bd5620013d3ef",
+    "src/tts/env/real_appworld.py": "00ae0859dc091777c12550a6915ce249aa10ae5b676de1c679cfae53231265ad",
+    "experiments/run.py": "ad968d1906d79d4a03055264af0d4269e205a8191c161f8f343c9c988d94d4e7",
+    "aml/src/check_appworld_ours_goal.py": "be694e351c07da3ac6c0a7b4fd8953ea930a9042729776c2ca29aaaf8696a57b",
+    "tests/test_appworld_strict_routing.py": "e35c96b9695b52ef40e74bb6ccb93cafc415e7173256606698c4d0ec500c3ade",
+    "tests/test_appworld_strict_program_prediction.py": "14449ac05691242e30a61f776ac9766d229771263d9ba3d75c54164426ff606f",
+    "tests/test_appworld_ours_goal.py": "8aca943437f95c97f5b3ae24ccad7054b188f026fc00665911559b4f8300e288"
+  },
+  "focused_tests": "53 passed, 2 deprecation warnings",
+  "expanded_suite_limitations": "Nine existing shared AppWorldWMPredictor.predicted_write callback failures; shared file hash unchanged. Two older snapshot gate failures fixed and rechecked.",
+  "n2_status": "Official success; 2 simulator-predicted candidates; setup counts 17 and 21; selected 1; one official commit; simulator_writes 0",
+  "aml_submission": {
+    "name": "dw-appworld-ours-strict-r17-full-20260907",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/2abdb0fb-9282-46e4-ab3a-e33f4c1daeba/versions/1"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "scan resume pdf file, extract name and contact information saved it as contact card in image file named contact.jpg, save basic information in cotact.xlsx",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/contact.jpg"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/contact.xlsx"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/resume.pdf": "Created with an evaluation copy of Aspose.Words. To discover the full versions of our APIs \nplease visit: https://products.aspose.com/words/ \n \nEvaluation Only. Created with Aspose.Words. Copyright 2003-2023 Aspose Pty Ltd. \nChris Bob \nbob@ucsd.edu | (123) 345-6789 | linkedin.com/in/bob \n \nSUMMARY \nA short (2-4 lines) overview of your qualifications as they relate to the role you\u2019re pursuing, demonstrating you are a good \nmatch for the role with your experience, knowledge, and skills \u2013 consider adding words from the role as part of your summary. \n \nEDUCATION \nUNIVERSITY Zoom \nB.A, CS \n  \n \n \nMay 2018  \n\u25cf \nInclude any relevant certifications \n \nUNIVERSITY Home \nM.S, Math \n \nMar 2023 \n\u25cf \nOptional: GPA (if relevant to your industry) \n\u25cf \nInclude noteworthy academic honors and study abroad experience \n \n \nEXPERIENCE (Optional: tailor sub-headings to role or student club \u2013 e.g., \u201cLeadership Experience,\u201d \u201cVolunteer Research \nExperience\u201d - Reverse chronological order, start with the most recent experience) \n \nCOMPANY/ORGANIZATION NAME, City, State \nMonth/Year-Month/Year \nPosition (e.g., Intern, Research Analyst) \n\u25cf \n3-5 bullet points describing your outcomes and accomplishments, tailored to the position. \n\u25cf \nFocus on the results rather than just listing your responsibilities; quantify when possible with $, #, %. \n\u25cf \nHighlight leadership roles and demonstrate how you\u2019ve found solutions to challenges. \n\u25cf \nBegin bullet points with a variety of direct action verbs (e.g., Led, Directed, Researched) and avoid passive verbs (e.g., \nResponsible, Assisted). \n \nCOMPANY/ORGANIZATION NAME, City, State \nMonth/Year-Month/Year \nPosition \n\u25cf \nKeep position summaries short and to the point. Many hiring managers spend only 20-30 seconds scanning a resume \u2013 \nbeing clear and concise is essential. \n\u25cf \nDon\u2019t try to include all of your job duties; only highlight the ones most relevant to the job you\u2019re applying for and your \nmost important accomplishments. \n\u25cf \nMake sure to include any internships and unpaid/volunteer work under this experience section. \n \nCOMPANY/ORGANIZATION NAME, City, State \nMonth/Year-Month/Year \nPosition \n\u25cf \nList various positions under one employer with dates to show progression if applicable. \n\u25cf \nAs a general rule, the amount of information beneath each position should decrease as you move toward older \npositions. \n \n \nSKILLS & ACTIVITIES \n\u25cf This section helps show an employer you\u2019re the \ncomplete person, with experiences listed above. \n\u25cf Include certifications or awards or honors \n \n\u25cf Include hard skills (e.g., C++, Spanish) but not soft \nskills (i.e., communication). \n\nCreated with an evaluation copy of Aspose.Words. To discover the full versions of our APIs \nplease visit: https://products.aspose.com/words/ \n \n\u25cf List hobbies and interests (e.g. be specific, list \nvolleyball rather than sports, thai cooking rather \nthan cooking, write poetry rather than author). \n\u25cf Include native, fluent, or conversational speaker in \na language(s) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n"
+  },
+  "initial_state": {
+    "data/contact.jpg": "[file does not exist]",
+    "data/contact.xlsx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/resume.pdf"
+}

@@ -1,0 +1,16 @@
+
+**************************************************************************************************************
+* WARNING:                                                                                                   *
+* Extension "azure-cli-ml" cannot be used along with extension "ml". This may result in unexpected behaviour.*
+* Please remove azure-cli-ml extension by running  "az extension remove -n azure-cli-ml                      *
+**************************************************************************************************************
+                
+Class AutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class AutoDeleteConditionSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseAutoDeleteSettingSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class IntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class ProtectionLevelSchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Class BaseIntellectualPropertySchema: This is an experimental class, and may change at any time. Please see https://aka.ms/azuremlexperimental for more information.
+Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):   0%| | 0/Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  20%|▏| 44Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  40%|▍| 89Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  49%|▍| 11Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  58%|▌| 13Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  81%|▊| 18Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs):  93%|▉| 20Uploading officebench-evidence-r2-subset-20260923 (22.67 MBs): 100%|█| 22
+
+

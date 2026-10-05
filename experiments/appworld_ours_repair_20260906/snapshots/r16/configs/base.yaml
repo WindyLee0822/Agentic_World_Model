@@ -1,0 +1,33 @@
+# Base configuration; per-method configs overlay this. All ablation knobs live here.
+method: ours                 # b0 | b1 | b2 | ours
+env: tau2                    # appworld | tau2
+N: 8                         # number of parallel rollouts
+success_score: simulator_success   # simulator_success | self_consistency | probe_agreement
+seed: 0
+
+solver:
+  agent: llm                 # llm (real official-prompt agent) | scripted (offline stub)
+  llm_agent: null            # default: Azure deployment / WM_MODEL (e.g. gpt-4.1)
+  llm_user: null             # τ² user-simulator model (default: llm_agent)
+  temperature: 0.0           # agent sampling temperature (B1/B2/Ours diversity)
+  max_steps: 100             # max agent steps per rollout (official runners)
+  p_correct: 0.5             # scripted-only: prob a sampled trajectory follows the reference plan
+
+simulator:
+  kind: recursive            # overridden by `method`
+  predict_all_actions: true  # predict clean reads too; use --exact-clean-reads to opt out
+  recursion_mode: uncertainty   # uncertainty | fixed
+  tau: 0.9                   # uncertainty: spawn while confidence < tau
+  L: 2                       # fixed: number of recursion layers
+  hard_cap: 6                # absolute depth safety cap (both modes)
+  branching: 2               # fan-out per spawn
+  node_read_limit: 1         # max keys one node may read (no full state in context)
+  caching: true
+  selective_invalidation: true
+
+budget:
+  max_spawns: 1024           # hard kill-switch target
+  max_cost: null
+  max_reads: null
+  tokens_per_node: 100
+  cost_per_token: 1.0e-6

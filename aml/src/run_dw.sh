@@ -31,6 +31,10 @@ max_steps="40"
 rollout_retries="2"
 cell_retries="2"
 temperature="0.7"
+agent_self_aggregate="0"
+aggregation_max_tokens="2048"
+aggregation_strategy="flat"
+aggregation_group_size="4"
 aoai_endpoint=""
 aoai_deployment="gpt-4.1"
 aoai_api_version="2024-12-01-preview"
@@ -68,6 +72,10 @@ while [[ $# -gt 0 ]]; do
     --rollout-retries) rollout_retries="$2"; shift 2 ;;
     --cell-retries) cell_retries="$2"; shift 2 ;;
     --temperature) temperature="$2"; shift 2 ;;
+    --agent-self-aggregate) agent_self_aggregate="1"; shift ;;
+    --aggregation-max-tokens) aggregation_max_tokens="$2"; shift 2 ;;
+    --aggregation-strategy) aggregation_strategy="$2"; shift 2 ;;
+    --aggregation-group-size) aggregation_group_size="$2"; shift 2 ;;
     --aoai-endpoint) aoai_endpoint="$2"; shift 2 ;;
     --aoai-deployment) aoai_deployment="$2"; shift 2 ;;
     --aoai-api-version) aoai_api_version="$2"; shift 2 ;;
@@ -232,6 +240,9 @@ else
     echo "[auth] using managed identity (AZURE_AUTH_MODE=aml)"
   fi
   if [[ "$env_name" == "tau2" ]]; then
+    if [[ -n "${OBO_ENDPOINT:-}" ]]; then
+      echo "[auth] using AML OBO identity for tau2 litellm AAD (no az login)"
+    else
     # Unlike dw's AppWorld path (DefaultAzureCredential, no CLI — same as ../TTS),
     # tau2's litellm AAD token comes from dw's fetch_aad_token, which shells out to
     # `az`. The AML image has no `az`, so install it, then log in as the compute's
@@ -266,6 +277,7 @@ else
       fi
     else
       echo "[auth][error] az CLI unavailable; tau2 litellm cannot authenticate via managed identity." >&2
+    fi
     fi
   fi
 fi
@@ -344,6 +356,15 @@ PY
     # OfficeBench environment sets TTS_OFFICEBENCH_BACKEND=local and contains
     # the app/evaluator dependencies; Docker remains available as an opt-in path.
     export OFFICEBENCH_ROOT="$officebench_root"
+    officebench_testbed_files="$(
+      find "$officebench_root/tasks" -path '*/testbed/data/*' -type f 2>/dev/null | wc -l
+    )"
+    if (( officebench_testbed_files == 0 )); then
+      echo "[officebench][error] no task input files found under */testbed/data/." >&2
+      echo "  The OfficeBench clone may have been filtered by .amlignore; use /data/ for a root-only exclusion." >&2
+      exit 3
+    fi
+    echo "[officebench] preflight found ${officebench_testbed_files} task input files"
     export TTS_OFFICEBENCH_RUN_ID="${TTS_OFFICEBENCH_RUN_ID:-${AZUREML_RUN_ID:-aml-$(date +%s)-$$}}"
     if [[ "${TTS_OFFICEBENCH_BACKEND:-docker}" == "local" ]]; then
       echo "[officebench] using local no-Docker backend"
@@ -400,8 +421,12 @@ cmd=(
   --rollout-retries "$rollout_retries"
   --cell-retries "$cell_retries"
   --temperature "$temperature"
+  --aggregation-max-tokens "$aggregation_max_tokens"
+  --aggregation-strategy "$aggregation_strategy"
+  --aggregation-group-size "$aggregation_group_size"
   --out "$output_dir"
 )
+[[ "$agent_self_aggregate" == "1" ]] && cmd+=(--agent-self-aggregate)
 [[ ${#env_args[@]} -gt 0 ]] && cmd+=("${env_args[@]}")
 [[ ${#extra_arr[@]} -gt 0 ]] && cmd+=("${extra_arr[@]}")
 [[ -n "$llm_user" ]] && cmd+=(--llm-user "$llm_user")
@@ -461,6 +486,8 @@ payload = {
     "rollout_retries": int("$rollout_retries"),
     "cell_retries": int("$cell_retries"),
     "temperature": float("$temperature"),
+    "agent_self_aggregate": "$agent_self_aggregate" == "1",
+    "aggregation_max_tokens": int("$aggregation_max_tokens"),
     "aoai_deployment": "$aoai_deployment",
     "auth_mode": (
         ("local+azure" if "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1" else "local")

@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-09-07T16:04:28.341570+00:00",
+  "change": "Require preground clean reads and deterministic dirty reads disabled in every evaluated row.",
+  "test_command": "PYTHONPATH=/tmp/appworld-audit-deps PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_appworld_ours_goal.py -q",
+  "exit_code": 0,
+  "passed_tests": 10,
+  "runtime_source_changed": false
+}
