@@ -1,28 +1,12 @@
 #!/usr/bin/env python3
-"""Run trajectory-level TTS experiments over the REAL environments and log the full metric set.
+"""Run paper experiments on tau2, AppWorld, or OfficeBench.
 
-For each real task we sample ``N`` trajectories against one shared, non-forkable task
-environment (executed + scored through the official AppWorld / OfficeBench / tau2 / Terminal-Bench
-runners). Each
-trajectory is scored by its read-grounded world model (or, for B2, an oracle on a forked
-snapshot); the single most-promising trajectory is selected and its **whole action sequence**
-is committed.  Per decision we log: success/reward, #spawns, depth distribution, #reads,
-#commits, prediction accuracy (predicted vs official committed reward), wall-clock, tokens/cost,
-and the simulator-writes counter (must be 0).
+b2 + llm is the real-environment Best-of-N ceiling.
+ours + llm_wm is Agentic World Modeling (AWM).
+ours + agent_world uses the trained Qwen-AgentWorld baseline.
 
-Produces the **TTS curve** (success vs ``N``, per method) and a **depth curve** (success & cost
-vs recursion depth ``L``, fixed mode), reported overall and per subset; writes JSON/CSV + a
-spawn-tree dump.  The two real benchmarks live in different interpreters (AppWorld → Python 3.11
-``env``; τ²-bench → Python 3.12 ``dw``); the runner auto-detects the available one or takes ``--env``.
-
-Examples
---------
-    python experiments/run.py --env tau2 --tasks 12 --N 1,2,4,8
-    APPWORLD_ROOT=/path PYTHONPATH=src python experiments/run.py --env appworld --splits test_normal --levels 1 --tasks 8
-    OFFICEBENCH_ROOT=/path PYTHONPATH=src python experiments/run.py --env officebench --levels 1 --tasks 8
-    python experiments/run.py --env terminalbench --terminalbench-versions 1,2 --methods ours,b2 --N 1,2,4,8
-    python experiments/run.py --depth-sweep --env tau2 --tasks 12
-    python experiments/run.py --report results/records.jsonl
+Use --help for the shared paper CLI. Results are checkpointed per task;
+reported success comes from the benchmark's official evaluation.
 """
 
 from __future__ import annotations
@@ -48,7 +32,7 @@ from tts.env import subsets as env_subsets  # noqa: E402
 from tts.env.registry import available_real_envs, make_env, make_env_from_spec  # noqa: E402
 from tts.harness import run_decision  # noqa: E402
 
-_METHOD_ORDER = {"b0": 0, "b1": 1, "b2": 2, "ours": 3}
+_METHOD_ORDER = {"b2": 0, "ours": 1, "agentworld": 2}
 
 
 def _quiet_logging() -> None:
@@ -155,14 +139,7 @@ def _cfg_for(env_name, spec, method, N, args, recursion_mode=None, L=None) -> Co
                                       llm_user=args.llm_user or args.llm_agent,
                                       temperature=args.temperature, max_steps=args.max_steps,
                                       rollout_retries=getattr(args, "rollout_retries", 2),
-                                      p_correct=args.p_correct,
-                                      self_aggregate=getattr(args, "agent_self_aggregate", False),
-                                      aggregation_max_tokens=getattr(
-                                          args, "aggregation_max_tokens", 2048),
-                                      aggregation_strategy=getattr(
-                                          args, "aggregation_strategy", "flat"),
-                                      aggregation_group_size=getattr(
-                                          args, "aggregation_group_size", 4)),
+                                      p_correct=args.p_correct),
                   simulator=sim_config(args, recursion_mode, L))
 
 
@@ -195,7 +172,7 @@ def _env_enabled(name: str, default: bool = True) -> bool:
 
 
 def _is_gpt_54(model: str | None) -> bool:
-    return "gpt-5.4" in str(model or "").strip().lower().replace("_", "-")
+    return "gpt-5.4" in str(model).strip().lower().replace("_", "-")
 
 
 def _configure_appworld_bon(args) -> None:
@@ -256,7 +233,7 @@ def _configure_officebench_bon(args) -> None:
         or os.environ.get("TTS_AGENT_MODEL")
     )
     methods = {m.strip().lower() for m in getattr(args, "methods", "").split(",")}
-    model_name = str(model or "").lower()
+    model_name = str(model).lower()
     repaired = "ours" in methods and ("gpt" in model_name or "deepseek" in model_name)
 
     # The validated repaired profile predicts every candidate observation, then commits
@@ -395,7 +372,7 @@ def _run_task_cells(payload) -> List[dict]:
     """Run EVERY (method, N) cell for ONE task, sharing a task-local agent-rollout pool.
 
     This is the unit of parallel work.  Grouping all cells of a task in one worker keeps the
-    fair-comparison guarantee (B0/B1/B2/Ours over this task select from the same rollout pool —
+    fair-comparison guarantee (each rollout budget over this task select from the same rollout pool —
     the cache key already includes the task id, so cross-task sharing never happened anyway) and
     makes each job fully independent, so workers never touch shared mutable state.
 
@@ -404,7 +381,7 @@ def _run_task_cells(payload) -> List[dict]:
     env_name, spec, cells, args, usable_only = payload
     cache: dict = {}
     records: List[dict] = []
-    cell_retries = max(0, int(getattr(args, "cell_retries", 2) or 0))
+    cell_retries = max(0, int(getattr(args, 'cell_retries', 2)))
     max_n = max((N for _method, N, _recursion_mode, _L in cells), default=1)
     for (method, N, recursion_mode, L) in cells:
         rec = None
@@ -517,11 +494,10 @@ def _run_task_cells(payload) -> List[dict]:
             or os.environ.get("WM_MODEL")
             or os.environ.get("TTS_AGENT_MODEL")
         )
+        rec["paper_method"] = getattr(args, "paper_method", None)
+        rec["paper_agent"] = getattr(args, "paper_agent", getattr(args, "agent", None))
         rec["solver_temperature"] = getattr(args, "temperature", None)
         rec["solver_max_steps"] = getattr(args, "max_steps", None)
-        rec["agent_self_aggregate"] = bool(
-            getattr(args, "agent_self_aggregate", False))
-        rec["aggregation_strategy"] = getattr(args, "aggregation_strategy", "flat")
         rec["seed_base"] = getattr(args, "seed_base", None)
         rec["success_score"] = getattr(args, "success_score", None)
         rec["predict_all_actions"] = bool(
@@ -646,7 +622,7 @@ def _run_tasks(env_name, specs, cells, args, usable_only, desc, on_task_done=Non
     pool_kwargs = {"max_workers": workers}
     if env_name in ("appworld", "officebench"):
         Executor = ProcessPoolExecutor
-        mtpc = int(getattr(args, "max_tasks_per_child", 0) or 0)
+        mtpc = int(getattr(args, 'max_tasks_per_child', 0))
         if mtpc > 0:
             import multiprocessing as _mp
 
@@ -812,11 +788,7 @@ def tts_table(records: List[dict], title: str) -> str:
     lut = {(r["method"], r["n_rollouts"]): r["success_rate"] for r in aggregate(records, ["method", "n_rollouts"])}
     out = [f"\n{title}", "-" * len(title), "  method | " + " ".join(f"N={n:<4}" for n in Ns)]
     for m in _ordered_methods(records):
-        if m == "b0":  # N-independent: broadcast its single measured value
-            base = next((lut[k] for k in lut if k[0] == "b0"), float("nan"))
-            vals = [base] * len(Ns)
-        else:
-            vals = [lut.get((m, n), float("nan")) for n in Ns]
+        vals = [lut.get((m, n), float("nan")) for n in Ns]
         out.append(f"  {m:>6} | " + " ".join(f"{v:<6.2f}" for v in vals))
     return "\n".join(out)
 
@@ -851,7 +823,7 @@ def load_records(path):
 
 def _expected_cells(methods, Ns):
     """The set of ``(method, n_rollouts)`` cells one task produces for this sweep."""
-    return {(m, (1 if m == "b0" else N)) for m in methods for N in ([1] if m == "b0" else Ns)}
+    return {(m, (N)) for m in methods for N in (Ns)}
 
 
 def _load_checkpoint(path, cell_checkpoint_dir=None):
@@ -1044,332 +1016,20 @@ def dump_spawn_tree(env_name, args) -> None:
         print(f"(spawn-tree dump skipped: {type(e).__name__}: {e})")
 
 
-def _run_terminalbench_cli(args) -> None:
-    """Run the native Terminal-Bench harnesses and write the shared experiment artifacts.
-
-    This path returns before dataset/registry/environment construction, so adding Terminal-Bench
-    cannot alter AppWorld, OfficeBench, or tau2 task selection, rollouts, or aggregation.
-    """
-    from tts.env.terminalbench_experiment import (
-        run_terminalbench_sweep,
-        terminalbench_native_cell_count,
-    )
-
-    if args.list_subsets:
-        versions = [item.strip() for item in args.terminalbench_versions.split(",") if item.strip()]
-        for version in versions:
-            print(f"  {'v' + version:>20}  official native dataset")
-        return
-
-    os.makedirs(args.out, exist_ok=True)
-    records_path = os.path.join(args.out, "records.jsonl")
-    prior_records: List[dict] = []
-    if args.resume:
-        prior_records, _ = _load_checkpoint(records_path)
-        print(f"(resume: {len(prior_records)} Terminal-Bench records on disk; "
-              "reusing completed native jobs)")
-    else:
-        open(records_path, "w").close()
-
-    seen = {
-        (record.get("env"), record.get("spec_subset"), record.get("spec_index"),
-         record.get("method"), record.get("n_rollouts"))
-        for record in prior_records
-    }
-    checkpoint = open(records_path, "a", buffering=1)
-    progress = _Progress(
-        terminalbench_native_cell_count(args),
-        desc="terminalbench jobs",
-    )
-
-    def _checkpoint(records):
-        for record in records:
-            key = (
-                record.get("env"),
-                record.get("spec_subset"),
-                record.get("spec_index"),
-                record.get("method"),
-                record.get("n_rollouts"),
-            )
-            if key in seen:
-                continue
-            checkpoint.write(json.dumps(record, default=str) + "\n")
-            seen.add(key)
-        checkpoint.flush()
-        os.fsync(checkpoint.fileno())
-
-    try:
-        new_records = run_terminalbench_sweep(
-            args,
-            on_records=_checkpoint,
-            on_cell_done=lambda label: progress.update(1, postfix=label),
-        )
-    finally:
-        progress.close()
-        checkpoint.close()
-
-    all_records, _ = _load_checkpoint(records_path)
-    if not all_records:
-        all_records = prior_records + new_records
-    print_report(all_records)
-    aggregates = aggregate(all_records, ["env", "subset", "method", "n_rollouts"])
-    with open(os.path.join(args.out, "aggregates.json"), "w") as handle:
-        json.dump(aggregates, handle, indent=2)
-    write_csv(os.path.join(args.out, "aggregates.csv"), aggregates)
-    print(f"\nWrote {len(all_records)} decisions and {len(aggregates)} aggregate rows "
-          f"to {args.out}/")
-
-
 def main() -> None:
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--env", default=None, choices=["appworld", "tau2", "officebench", "terminalbench"])
-    p.add_argument("--methods", default="b0,b1,b2,ours")
-    p.add_argument("--N", default="1,2,4,8")
-    p.add_argument("--tasks", type=int, default=None, help="tasks PER SUBSET (default: full usable size)")
-    p.add_argument("--task-ids", default=None, help="Exact OfficeBench task/subtask IDs, comma-separated.")
-    p.add_argument("--task-indices", default=None,
-                   help="Exact task indices to run after split/level/subset filtering, comma-separated "
-                        "(e.g. 20,27,28,32,45). Useful for targeted diagnostic reruns.")
-    p.add_argument("--seed-base", type=int, default=0)
-    p.add_argument("--success-score", default=None,
-                   help="trajectory ranker (default: simulator_confidence for OfficeBench llm_wm; "
-                        "simulator_success otherwise)")
-    p.add_argument("--verifier-reference", action="store_true",
-                   help="AppWorld llm_wm: explicitly enable the REFERENCE-GROUNDED verifier (the default, "
-                        "matching OfficeBench; audits the agent's write log against the task's "
-                        "ground-truth checklist + gold values). Sets "
-                        "TTS_APPWORLD_VERIFIER_REFERENCE=1 and, unless --success-score is given explicitly, "
-                        "switches ranking to simulator_confidence. NOTE: uses the task answer key -> this is "
-                        "reference-grounded (tau2-style), not blind WM-only.")
-    p.add_argument("--no-verifier-reference", action="store_true",
-                   help="AppWorld llm_wm: disable the default reference grounding and use the blind "
-                        "WM-only verifier ablation (sets TTS_APPWORLD_VERIFIER_REFERENCE=0).")
-    p.add_argument("--verifier-samples", type=int, default=None,
-                   help="K self-consistency samples for the AppWorld/OfficeBench WM verifier. "
-                        "K>=2 gives a graded confidence in {0,1/K,..,1}. OfficeBench GPT-5.4 "
-                        "llm_wm defaults to 5; other paths default to 1.")
-    p.add_argument("--verifier-percheck", action="store_true",
-                   help="AppWorld llm_wm: PER-CHECK reference auditor — a focused sub-pass audits each "
-                        "ground-truth check in isolation (MET/UNMET/UNKNOWN). GPT-5.4 uses coverage-aware "
-                        "graded confidence so UNKNOWN checks remain in the denominator. "
-                        "Implies --verifier-reference; sets TTS_APPWORLD_VERIFIER_PERCHECK=1.")
-    p.add_argument("--sandbox-prompt", action="store_true",
-                   help="AppWorld: prepend a truthful sandbox preamble to the agent prompt so safety-aligned "
-                        "models (e.g. gpt-5.2) don't REFUSE consequential actions (orders/payments). Sets "
-                        "TTS_APPWORLD_SANDBOX_PROMPT=1. NOTE: deviates from the official prompt — apply "
-                        "uniformly across compared models for a fair A/B.")
-    p.add_argument("--appworld-precision-prompt", action="store_true",
-                   help="AppWorld: prepend an exact-state reasoning skill covering pagination, set/map "
-                        "reconciliation, Amazon cart isolation, calendar boundaries, and final-state "
-                        "verification. Sets TTS_APPWORLD_PRECISION_PROMPT=1 and intentionally augments "
-                        "the official agent prompt.")
-    p.add_argument("--appworld-agent-reference", action="store_true",
-                   help="AppWorld llm_wm: prepend the native evaluator checklist and gold values to "
-                        "candidate generation. Sets TTS_APPWORLD_AGENT_REFERENCE=1. NOTE: this uses the "
-                        "task answer key and is reference-conditioned, not blind benchmark generation.")
-    p.add_argument("--appworld-deterministic-dirty-reads", action="store_true",
-                   help="AppWorld llm_wm: apply supported post-write state transitions (currently Amazon "
-                        "cart operations) deterministically before falling back to the Python WM. Sets "
-                        "TTS_APPWORLD_DETERMINISTIC_DIRTY_READS=1.")
-    appworld_preflights = p.add_mutually_exclusive_group()
-    appworld_preflights.add_argument(
-        "--appworld-instruction-preflights",
-        dest="appworld_instruction_preflights",
-        action="store_true",
-        help="AppWorld llm_wm AGENT-SIDE ABLATION: replace the stochastic ReAct loop for recognized "
-             "tasks with instruction-only plans. Disabled by default and not comparable to B2.",
-    )
-    appworld_preflights.add_argument(
-        "--no-appworld-instruction-preflights",
-        dest="appworld_instruction_preflights",
-        action="store_false",
-        help="Use the unchanged stochastic ReAct agent for every AppWorld task (default).",
-    )
-    p.set_defaults(appworld_instruction_preflights=None)
-    appworld_tool_default = (
-        "python"
-        if str(os.environ.get("TTS_APPWORLD_WM_TOOL_MODE", "python")).strip().lower()
-        in ("python", "code", "coding")
-        else "text"
-    )
-    p.add_argument(
-        "--appworld-wm-tool-mode",
-        choices=["text", "python"],
-        default=appworld_tool_default,
-        help="AppWorld llm_wm subagent protocol. 'python' uses the restricted "
-             "PYTHON_READ/PYTHON_FINAL loop (default); 'text' restores the legacy "
-             "READ/LIST/CALL/TRACE ablation.",
-    )
-    officebench_tool_default = (
-        "python"
-        if str(os.environ.get("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")).strip().lower()
-        in ("python", "code", "coding")
-        else "text"
-    )
-    p.add_argument(
-        "--officebench-wm-tool-mode",
-        choices=["text", "python"],
-        default=officebench_tool_default,
-        help="OfficeBench llm_wm subagent protocol. 'python' uses AppWorld-style "
-             "PYTHON_READ/PYTHON_FINAL restricted computation (default); 'text' restores the "
-             "legacy READ/LIST/CALL/TRACE behavior.",
-    )
-    p.add_argument("--agent", default="llm", choices=["llm", "llm_wm", "scripted"],
-                   help="real official-prompt LLM agent on the real env (default, reproduces the "
-                        "benchmark) | llm_wm: LLM solver that interacts with the world model | "
-                        "scripted: offline stub")
-    p.add_argument(
-        "--agent-self-aggregate",
-        action="store_true",
-        help="Opt-in: after sampling N trajectories, ask the solver model to aggregate them into "
-             "the one trajectory to commit instead of using verifier/grounded-score selection. "
-             "Disabled by default, so legacy experiments are unchanged.",
-    )
-    p.add_argument(
-        "--aggregation-max-tokens",
-        type=int,
-        default=2048,
-        help="Maximum output tokens for the deterministic agent self-aggregation call.",
-    )
-    p.add_argument("--llm-agent", default=None, help="agent model (default: Azure deployment / WM_MODEL, e.g. gpt-4.1)")
-    p.add_argument("--llm-user", default=None, help="τ² user-simulator model (default: --llm-agent)")
-    p.add_argument(
-        "--tau2-qwen-agent-profile",
-        default=os.environ.get("TTS_TAU2_QWEN_AGENT_PROFILE", "off"),
-        choices=["auto", "off", "prompt", "policy"],
-        help="Opt-in Qwen-only tau2 interface: prompt adds structured tool/subgoal guidance "
-             "without thinking; policy also enables per-request thinking; off/auto preserve the "
-             "stock tau2 agent.",
-    )
-    p.add_argument("--local", action="store_true",
-                   help="Route the agent/world model to a LOCAL, OpenAI-compatible server "
-                        "(vLLM / SGLang). Requires "
-                        "--llm-agent <served-model-id> (e.g. Qwen-AgentWorld-35B-A3B). Forces the "
-                        "openai backend for AppWorld/OfficeBench and routes τ² (litellm) via the "
-                        "openai/ provider. A qualified --llm-user azure/<deployment> may still use "
-                        "Azure for the τ² user simulator.")
-    p.add_argument("--local-base-url", default=None,
-                   help="Base URL of the local OpenAI-compatible server (default "
-                        "$OPENAI_BASE_URL or http://localhost:8000/v1). Only used with --local.")
-    p.add_argument("--local-api-key", default=None,
-                   help="API key for the local server (default $OPENAI_API_KEY or 'EMPTY'; most "
-                        "vLLM/SGLang servers accept any value). Only used with --local.")
-    p.add_argument("--skip-local-healthcheck", action="store_true",
-                   help="Skip the --local preflight that pings the server before running "
-                        "(use if the server doesn't expose GET /v1/models).")
-    p.add_argument("--temperature", type=float, default=0.7, help="agent sampling temperature (B1/B2/Ours diversity)")
-    p.add_argument("--max-steps", type=int, default=100, help="max agent steps per rollout")
-    p.add_argument("--rollout-retries", type=int, default=2,
-                   help="Retries after one WM-interactive candidate rollout raises. If all attempts "
-                        "fail, retain an explicit invalid/failed candidate so the N cell remains complete.")
-    p.add_argument("--cell-retries", type=int, default=2,
-                   help="Retries after a whole task/method/N cell fails during environment setup, "
-                        "selection commit, or official evaluation (default: 2).")
-    p.add_argument("--all-tasks", action="store_true",
-                   help="τ²: run over ALL official tasks (default for --agent llm; the official "
-                        "benchmark set). Scripted/world-model methods otherwise use mutating tasks only.")
-    p.add_argument(
-        "--simulation-only",
-        action="store_true",
-        help=(
-            "llm_wm only: sample and select trajectories without committing or running the official "
-            "evaluator; records contain simulator-predicted reward and n_commits=0"
-        ),
-    )
-    p.add_argument("--p-correct", type=float, default=0.5, help="prob a *scripted* trajectory follows the plan")
-    p.add_argument("--splits", default=None,
-                   help="AppWorld splits, COMMA-separated (e.g. test_normal,test_challenge or dev). "
-                        "All splits are locally scorable: every task ships its test checkers and is "
-                        "scored by AppWorld.evaluate() (ground_truth_mode='minimal').")
-    p.add_argument("--levels", default=None,
-                   help="AppWorld difficulty levels (e.g. 1 or 1,2,3); for OfficeBench, the app-counts "
-                        "to run (1,2,3 -> the 1app/2app/3app subsets), COMMA-separated.")
-    p.add_argument("--domains", default=None, help="τ² domains, COMMA-separated (e.g. airline,retail).")
-    p.add_argument("--subsets", default=None, help="subset ids to keep, COMMA-separated.")
-    p.add_argument("--terminalbench-versions", "--tb-versions", default="1,2",
-                   help="Terminal-Bench generations to run, COMMA-separated: 1,2 (default: both).")
-    p.add_argument("--terminalbench-task", action="append", default=None,
-                   help="Terminal-Bench task name/glob to include. Prefix with 1: or 2: to target "
-                        "one generation (e.g. 1:hello-world). Repeat for multiple tasks.")
-    p.add_argument(
-        "--terminalbench-root",
-        default=os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                             "..", ".benchmarks", "terminalbench")),
-        help="Downloaded Terminal-Bench checkout root (default: .benchmarks/terminalbench).",
-    )
-    p.add_argument("--terminalbench-conda-env",
-                   default=os.environ.get("TTS_TERMINALBENCH_ENV", "tts-terminalbench"),
-                   help="Conda environment containing tb and Harbor (default: tts-terminalbench).")
-    p.add_argument("--list-subsets", action="store_true")
-    p.add_argument("--report", default=None)
-    p.add_argument("--recursion-mode", default="uncertainty", choices=["uncertainty", "fixed"])
-    action_prediction = p.add_mutually_exclusive_group()
-    action_prediction.add_argument(
-        "--predict-all-actions",
-        dest="predict_all_actions",
-        action="store_true",
-        help="B1/Ours: predict clean read observations too. B1 uses fixed context; Ours may use "
-             "its bounded read-only grounding tools. This shared extension is enabled by default.",
-    )
-    action_prediction.add_argument(
-        "--exact-clean-reads",
-        dest="predict_all_actions",
-        action="store_false",
-        help="Restore the previous ablation where untouched clean reads execute exactly.",
-    )
-    p.set_defaults(predict_all_actions=True)
-    p.add_argument("--tau", type=float, default=0.9)
-    p.add_argument("--L", type=int, default=2)
-    p.add_argument("--branching", type=int, default=2)
-    p.add_argument("--node-read-limit", type=int, default=1)
-    p.add_argument("--hard-cap", type=int, default=6)
-    p.add_argument("--no-cache", action="store_true")
-    p.add_argument("--no-selective-invalidation", action="store_true")
-    p.add_argument("--depth-sweep", action="store_true")
-    p.add_argument("--workers", type=int, default=1,
-                   help="Parallel tasks. Tasks are independent and LLM-bound, so >1 gives a near-"
-                        "linear speed-up. AppWorld uses a PROCESS pool (it is not thread-safe); τ² "
-                        "uses a THREAD pool. Default 1 (sequential).")
-    p.add_argument("--aggregation-strategy", choices=["flat", "tournament"], default="flat",
-                   help="Self-aggregation layout; flat preserves prior experiment behavior.")
-    p.add_argument("--aggregation-group-size", type=int, default=4,
-                   help="Candidates per concurrent tournament group (default 4).")
-    p.add_argument("--max-tasks-per-child", type=int, default=0,
-                   help="AppWorld process pool: if >0, recycle each worker after this many tasks to "
-                        "bound per-worker memory growth (0 = never recycle, the default). A positive "
-                        "value switches the pool to a 'forkserver' context (incompatible with the "
-                        "default 'fork' start method), which also avoids inherited-lock deadlocks.")
-    p.add_argument("--resume", action="store_true",
-                   help="Append to (and skip tasks already present in) <out>/records.jsonl instead "
-                        "of overwriting it. Each finished task is checkpointed immediately, so an "
-                        "interrupted sweep can be restarted with --resume to continue where it left "
-                        "off. The default (no --resume) also checkpoints incrementally but starts a "
-                        "fresh records.jsonl.")
-    coverage = p.add_mutually_exclusive_group()
-    coverage.add_argument(
-        "--allow-partial",
-        dest="allow_partial",
-        action="store_true",
-        help="Allow a run with missing task/N cells to exit successfully and print unmatched "
-             "curves (default; retained for compatibility).",
-    )
-    coverage.add_argument(
-        "--strict-coverage",
-        dest="allow_partial",
-        action="store_false",
-        help="Require every expected task/N cell before publishing metrics.",
-    )
-    p.set_defaults(allow_partial=True)
-    p.add_argument("--keep-outputs", action="store_true",
-                   help="Keep AppWorld per-task output dirs on disk (default: delete them as each "
-                        "task finishes so large parallel runs don't accumulate temp files).")
-    p.add_argument("--verbose", action="store_true",
-                   help="Show the underlying tau2/litellm DEBUG logs (default: quiet — only the "
-                        "progress bar and the result tables are printed).")
-    p.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "results"))
-    args = p.parse_args()
-    if getattr(args, "agent_self_aggregate", False):
-        os.environ["TTS_AGENT_SELF_AGGREGATE"] = "1"
+    from tts.llm.chat_client import default_model
+    from tts_qwen.routing import use_qwen
+
+    if use_qwen(sys.argv[1:], default_model()):
+        # A fresh interpreter keeps source runner multiprocessing and module
+        # globals independent of the preserved GPT/DeepSeek implementation.
+        os.execv(sys.executable, [sys.executable,
+                 os.path.join(os.path.dirname(__file__), "run_qwen.py"),
+                 *sys.argv[1:]])
+
+    from awm.cli import parse_args, validate_resume
+
+    p, args = parse_args(qwen=False)
     args._success_score_explicit = args.success_score is not None
     args._predict_all_actions_explicit = any(
         flag in sys.argv[1:]
@@ -1378,9 +1038,6 @@ def main() -> None:
     if args.success_score is None:
         args.success_score = "simulator_success"
 
-    if args.no_verifier_reference and (args.verifier_reference or args.verifier_percheck):
-        p.error("--no-verifier-reference cannot be combined with --verifier-reference or "
-                "--verifier-percheck")
 
     if not args.verbose:
         _quiet_logging()
@@ -1395,34 +1052,6 @@ def main() -> None:
     if args.verifier_samples is not None:
         os.environ["TTS_APPWORLD_VERIFIER_SAMPLES"] = str(args.verifier_samples)
         os.environ["TTS_OFFICEBENCH_VERIFIER_SAMPLES"] = str(args.verifier_samples)
-    if args.verifier_reference:
-        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"
-        # The reference auditor yields a GRADED confidence; rank on it unless the user chose a score.
-        if args.success_score == "simulator_success":
-            args.success_score = "simulator_confidence"
-        print(f"[verifier] reference-grounded auditor ENABLED "
-              f"(TTS_APPWORLD_VERIFIER_SAMPLES={os.environ.get('TTS_APPWORLD_VERIFIER_SAMPLES','1')}, "
-              f"success_score={args.success_score})")
-    if args.verifier_percheck:
-        os.environ["TTS_APPWORLD_VERIFIER_PERCHECK"] = "1"
-        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "1"  # per-check is a reference-grounded variant
-        if args.success_score == "simulator_success":
-            args.success_score = "simulator_confidence"
-        print(f"[verifier] PER-CHECK reference auditor ENABLED (success_score={args.success_score})")
-    if args.no_verifier_reference:
-        os.environ["TTS_APPWORLD_VERIFIER_REFERENCE"] = "0"
-        print("[verifier] reference grounding DISABLED (blind WM-only ablation)")
-    if args.sandbox_prompt:
-        os.environ["TTS_APPWORLD_SANDBOX_PROMPT"] = "1"
-    if args.appworld_precision_prompt:
-        os.environ["TTS_APPWORLD_PRECISION_PROMPT"] = "1"
-        print("[agent] AppWorld precision prompt ENABLED")
-    if args.appworld_agent_reference:
-        os.environ["TTS_APPWORLD_AGENT_REFERENCE"] = "1"
-        print("[agent] AppWorld reference-conditioned task contract ENABLED")
-    if args.appworld_deterministic_dirty_reads:
-        os.environ["TTS_APPWORLD_DETERMINISTIC_DIRTY_READS"] = "1"
-        print("[wm] AppWorld deterministic dirty reads ENABLED")
     if args.appworld_instruction_preflights is not None:
         os.environ["TTS_APPWORLD_INSTRUCTION_PREFLIGHTS"] = (
             "1" if args.appworld_instruction_preflights else "0"
@@ -1465,9 +1094,6 @@ def main() -> None:
         print_report(load_records(args.report))
         return
 
-    if args.env == "terminalbench":
-        _run_terminalbench_cli(args)
-        return
 
     avail = available_real_envs()
     env_name = args.env or (avail[0] if avail else None)
@@ -1476,11 +1102,6 @@ def main() -> None:
               "Activate `dw` (tau2) or `env` (appworld, with APPWORLD_ROOT), or set OFFICEBENCH_ROOT "
               "with a usable Docker daemon for officebench.")
         return
-    if args.simulation_only:
-        if args.agent != "llm_wm":
-            p.error("--simulation-only requires --agent llm_wm")
-        if not args.predict_all_actions:
-            p.error("--simulation-only requires --predict-all-actions")
     if env_name == "appworld" and args.agent == "llm_wm":
         _configure_appworld_bon(args)
         if args.appworld_instruction_preflights:
@@ -1513,7 +1134,7 @@ def main() -> None:
         )
 
     if args.list_subsets:
-        for sub in env_subsets(env_name):
+        for sub in (args.domains.split(",") if env_name == "tau2" else env_subsets(env_name)):
             try:
                 print(f"  {sub:>20}  official_size={subset_size(env_name, sub)}")
             except Exception:
@@ -1552,10 +1173,9 @@ def main() -> None:
         raise SystemExit(2)
     usable_only = False  # Run on all tasks, not just WM-eligible mutating tasks
 
-    # Each task runs ALL its (method, N) cells together with a task-local rollout pool, so B0/B1/B2/
-    # Ours over a task select from the SAME real-agent rollouts (fair best-of-N). Tasks are
+    # Each task runs ALL its (method, N) cells together with a task-local rollout pool, so the rollout budgets over a task select from the SAME real-agent rollouts (fair best-of-N). Tasks are
     # independent, so --workers runs them in parallel (process pool for AppWorld, threads for τ²).
-    cells = [(m, N, None, None) for m in methods for N in ([1] if m == "b0" else Ns)]
+    cells = [(m, N, None, None) for m in methods for N in (Ns)]
 
     # Incremental checkpoint + resume: each finished task's records are appended to records.jsonl
     # immediately, so an interrupted sweep (crash/OOM/hang-up/pool deadlock) keeps its progress and
@@ -1568,18 +1188,7 @@ def main() -> None:
         # Recover cells written by workers before a previous parent crash/hard-kill, then canonicalize
         # them into records.jsonl before clearing the sidecars for this attempt.
         prior_records, done = _load_checkpoint(records_path, cell_checkpoint_dir)
-        requested_self_aggregate = bool(
-            getattr(args, "agent_self_aggregate", False))
-        aggregation_mismatches = [
-            record for record in prior_records
-            if bool(record.get("agent_self_aggregate", False))
-            != requested_self_aggregate
-        ]
-        if aggregation_mismatches:
-            p.error(
-                "--resume agent-self-aggregation mismatch. Use a new --out directory or the "
-                "matching --agent-self-aggregate setting."
-            )
+        validate_resume(prior_records, args, p)
         if env_name == "appworld":
             requested_mode = args.appworld_wm_tool_mode
             mismatched = [
@@ -1594,7 +1203,7 @@ def main() -> None:
                 p.error(
                     f"--resume AppWorld tool-mode mismatch: records contain {recorded_modes}, "
                     f"but this run requested {requested_mode!r}. Use a new --out directory or the "
-                    "matching --appworld-wm-tool-mode."
+                    "matching --tool-mode."
                 )
             requested_coverage = _env_enabled(
                 "TTS_APPWORLD_VERIFIER_COVERAGE_AWARE", False)
@@ -1757,7 +1366,7 @@ def main() -> None:
                 p.error(
                     f"--resume OfficeBench tool-mode mismatch: records contain {recorded_modes}, "
                     f"but this run requested {requested_mode!r}. Use a new --out directory or the "
-                    "matching --officebench-wm-tool-mode."
+                    "matching --tool-mode."
                 )
             requested_reference = _env_enabled(
                 "TTS_OFFICEBENCH_VERIFIER_REFERENCE", True)
@@ -2001,18 +1610,6 @@ def main() -> None:
         env_name, planned_specs, all_records, expected_cells)
     print_report(metric_records)
 
-    if args.depth_sweep:
-        print("\nDepth sweep (fixed mode, success & cost vs L):")
-        print(f"{'L':>3} {'success':>8} {'mean_spawns':>12} {'mean_tokens':>12} {'mean_reads':>11} {'pred_acc':>9}")
-        for L in range(0, 4):
-            # one L at a time so per-L aggregation stays exact; tasks within each L run in parallel
-            recs = _run_tasks(env_name, specs, [("ours", max(Ns), "fixed", L)], args, usable_only,
-                              desc=f"{env_name} depth-sweep L={L}")
-            a = aggregate(recs, ["env"])[0] if recs else {}
-            pa = a.get("prediction_accuracy")
-            print(f"{L:>3} {(a.get('success_rate') or 0):>8.2f} {(a.get('mean_spawns') or 0):>12.1f} "
-                  f"{(a.get('mean_tokens') or 0):>12.0f} {(a.get('mean_reads') or 0):>11.1f} "
-                  f"{('%.2f' % pa) if pa is not None else '   n/a':>9}")
 
     dump_spawn_tree(env_name, args)
 

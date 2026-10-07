@@ -38,14 +38,6 @@ def test_cache_disabled_re_reads():
     assert budget.n_reads > first  # re-reads with no cache
 
 
-def test_flat_reads_less_than_recursive():
-    env = make_feasible_infeasible_env()
-    b_flat, b_rec = Budget(), Budget()
-    cfg_flat = SimulatorConfig(kind="flat", node_read_limit=1)
-    cfg_rec = SimulatorConfig(kind="recursive", recursion_mode="uncertainty", tau=0.9, node_read_limit=1, hard_cap=6)
-    env.world_model(cfg_flat, b_flat, ReadCache()).evaluate(env.gold_trajectory())
-    env.world_model(cfg_rec, b_rec, ReadCache()).evaluate(env.gold_trajectory())
-    assert b_flat.n_reads < b_rec.n_reads
 
 
 def test_budget_kill_switch_caps_spawns():

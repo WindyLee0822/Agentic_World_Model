@@ -1734,58 +1734,6 @@ def _looks_like_failure(observation: str) -> bool:
     return any(m in o for m in _FAILURE_MARKERS)
 
 
-def build_officebench_flat_system_prompt(
-    *,
-    task_config: Dict,
-    catalogue: Dict,
-    initial_state: Optional[Dict[str, str]] = None,
-    gold_files: Optional[Dict[str, str]] = None,
-    testbed_listing: str = "",
-    predict_all_actions: bool = True,
-) -> str:
-    """Build the shared action-independent B1 prompt for prediction and verification."""
-    fixed_context = {
-        "task": task_config,
-        "tool_documentation": catalogue,
-        "fixed_initial_state": {
-            str(path): str(content)
-            for path, content in (initial_state or {}).items()
-        },
-        "gold_reference_files": {
-            str(path): str(content)
-            for path, content in (gold_files or {}).items()
-        },
-        "testbed_listing": str(testbed_listing),
-    }
-    rendered = json.dumps(
-        fixed_context, ensure_ascii=True, sort_keys=True, default=str)
-    limit = _int_env("TTS_OFFICEBENCH_B1_CONTEXT_CHARS", 60_000)
-    if len(rendered) > limit:
-        raise OfficeBenchSimulationError(
-            f"Fixed evidence exceeds TTS_OFFICEBENCH_B1_CONTEXT_CHARS={limit}; "
-            "increase the budget rather than truncate file contents"
-        )
-    read_contract = (
-        "every app read and write observation is predicted during sampling; clean reads use only "
-        "this fixed context; dirty reads and final files additionally apply ordered predicted writes; "
-        if predict_all_actions
-        else
-        "clean reads are executed exactly outside this prompt; writes are never executed during "
-        "sampling; dirty reads and final files are inferred from the fixed initial records plus "
-        "ordered predicted writes; "
-    )
-    return (
-        f"{_OFFICEBENCH_SIMULATOR_SYSTEM}\n\n"
-        "You are the fixed-context B1 world model for OfficeBench. The complete simulator context "
-        "below was selected before any candidate agent action was observed. Use only this fixed "
-        "context plus the candidate action/history supplied later in the user message. Do not request "
-        "or perform READ, LIST, CALL, TRACE, or PYTHON_READ operations, and do not assume access to "
-        "any additional files or environment state.\n\n"
-        f"Simulate OfficeBench faithfully: {read_contract}"
-        "and success means every native evaluator check passes. Match the documented app observation "
-        "wording and fail writes whose inputs, paths, or arguments are invalid.\n\n"
-        f"FIXED PRE-ACTION CONTEXT:\n{rendered}"
-    )
 
 
 class OfficeBenchWMPredictor:
@@ -1845,30 +1793,16 @@ class OfficeBenchWMPredictor:
 
     @property
     def uses_fixed_context(self) -> bool:
-        return self._flat_system_prompt is not None
+        return False
 
     @property
     def flat_system_prompt(self) -> Optional[str]:
         return self._flat_system_prompt
 
-    def configure_flat_context(
-        self,
-        system_prompt: str,
-        *,
-        initial_state: Optional[Dict[str, str]] = None,
-    ) -> None:
-        """Install the precomputed B1 prompt before candidate actions are generated."""
-        self._flat_system_prompt = system_prompt
-        self._flat_initial_state = {
-            _norm_path(path): str(content)
-            for path, content in (initial_state or {}).items()
-            if _norm_path(path)
-        }
 
     def fixed_pre_write_content(self, target: Optional[str]) -> Optional[str]:
         """Return a baseline selected before actions, without reading the live shadow."""
-        if target is None or not self.uses_fixed_context:
-            return None
+        return None
         return self._flat_initial_state.get(
             _norm_path(target),
             "[not included in the fixed pre-action context]",
@@ -2112,9 +2046,7 @@ class OfficeBenchWMPredictor:
         """
         target = _norm_path(target)
         if pristine is None:
-            if self.uses_fixed_context:
-                pristine = self.fixed_pre_write_content(target)
-            elif self._query is not None:
+            if self._query is not None:
                 pristine = self._query.read_raw(f'/testbed/{target}')
         if pristine is None:
             return {'status': 'unknown', 'exists': None, 'content': None}
@@ -2798,7 +2730,7 @@ class OfficeBenchWMPredictor:
         python_force_always: bool = False,
     ) -> Optional[str]:
         """Use the agentic grounding loop when a pristine-session query interface is available."""
-        query = None if self.uses_fixed_context else self._query
+        query = self._query
         if (
             (self.program_only or officebench_wm_tool_mode() == "python")
             and python_context is not None
@@ -2853,7 +2785,6 @@ class OfficeBenchWMPredictor:
 __all__ = [
     "OfficeBenchWMPredictor",
     "OfficeBenchWMQuery",
-    "build_officebench_flat_system_prompt",
     "action_inputs",
     "is_write_action",
     "run_agentic_read_loop",

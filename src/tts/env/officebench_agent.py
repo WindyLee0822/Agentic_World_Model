@@ -318,7 +318,7 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
     ``system`` actions (switch_app / finish_task / got_stuck) are resolved here, where the agent's
     app + workdir state lives.  Non-system actions are dispatched two ways:
 
-    * ``predictor is None`` (B0 / real path): every action is **executed** in-container via
+    * ``predictor is None`` (real-env path): every action is **executed** in-container via
       ``session.exec_action`` — the faithful official behaviour, used for the committed rollout.
     * ``predictor`` set (``llm_wm`` sampling): the action is routed through the **world model**. Reads
       are predicted by default; ``predict_all_actions=False`` restores exact execution for untouched

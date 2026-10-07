@@ -21,7 +21,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 display_name: dw-tau2-ours
 experiment_name: dw-tau2-ours
-description: Run the dw test-time-scaling harness (b0/b1/b2/ours) on real tau2-bench on AML compute.
+description: Run the dw test-time-scaling harness (AWM and real-environment BoN) on real tau2-bench on AML compute.
 compute: azureml:D15v2-NCUS-hipri
 code: ..
 environment:
@@ -32,7 +32,7 @@ inputs:
   domains: airline,retail
   methods: ours
   n: "1,2,4,8,16"
-  agent: llm
+  agent: llm_wm
   llm_user: none
   workers: 16
   max_steps: 50

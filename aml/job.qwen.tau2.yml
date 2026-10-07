@@ -40,7 +40,7 @@ inputs:
   max_steps: 50
   rollout_retries: 2
   cell_retries: 2
-  temperature: 0.7
+  temperature: 1.0
   stall_timeout: "7200"
   extra_args: --tasks 10
   aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com

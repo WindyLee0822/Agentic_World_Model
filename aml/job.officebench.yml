@@ -26,7 +26,7 @@ inputs:
     type: uri_folder
     path: azureml:officebench_clone:1
   levels: "1"            # OfficeBench uses --levels as app-counts: 1 / 2 / 3 apps
-  methods: b0,b1,b2,ours
+  methods: ours
   n: "1,2,4,8"
   agent: llm_wm
   workers: 8

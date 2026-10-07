@@ -350,11 +350,8 @@ class OfficeBenchVerifier:
 
     @property
     def uses_fixed_context(self) -> bool:
-        return self._flat_system_prompt is not None
+        return False
 
-    def configure_flat_context(self, system_prompt: str) -> None:
-        """Use the same pre-action B1 context as the observation predictor."""
-        self._flat_system_prompt = system_prompt
 
     def _system(self, default: str) -> str:
         return self._flat_system_prompt or default
@@ -478,7 +475,7 @@ class OfficeBenchVerifier:
         votes = 0
         seedable = self._sample_seed is not None and hasattr(self._chat, "seed")
         original_seed = getattr(self._chat, "seed", None)
-        query = None if self.uses_fixed_context else self._query
+        query = self._query
         try:
             for i in range(k):
                 # K==1 -> deterministic (temp 0); K>1 -> sampled, reproducible independent votes.
@@ -586,7 +583,7 @@ class OfficeBenchVerifier:
                         lambda text, budget: self._chat.chat(
                             self._system(_STATUS_SYSTEM), text, temperature=0.0,
                             max_tokens=budget, extra_body=extra_body),
-                        None if self.uses_fixed_context else self._query,
+                        self._query,
                         prompt, 'STATUS: MET, STATUS: UNMET, or STATUS: UNKNOWN',
                         context=context, max_turns=self.MAX_TURNS,
                         max_tokens=2000, force_always=True)

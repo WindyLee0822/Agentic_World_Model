@@ -4,10 +4,10 @@ OfficeBench tasks are solved by an agent that emits JSON office-app actions
 (``{'app','action',...}``) against a Docker ``/testbed`` filesystem, and scored by execution-based,
 file-state checks (``utils/evaluate.py``).  This wrapper runs the **official OfficeBench agent loop**
 (:mod:`tts.env.officebench_agent`) against a throwaway per-rollout container and scores it with the
-**official evaluation config**, so a single rollout (B0) reproduces the official OfficeBench number.
+**official evaluation config**, so a single rollout (real-env N=1) reproduces the official OfficeBench number.
 
 Like AppWorld (free-form actions, execution-based scoring, **no replayable gold action list**), there
-is no read-grounded DB-replay world model: B1/Ours fall back to the oracle reward on the real-agent
+is no read-grounded DB-replay world model: AWM fall back to the oracle reward on the real-agent
 path, and the ``llm_wm`` path uses an LLM verifier (:class:`tts.env.officebench_wm.OfficeBenchVerifier`)
 as the selection signal, then commits (re-executes) the selected trajectory and scores it officially.
 
@@ -664,7 +664,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         reason = f"official OfficeBench evaluate {res.get('num_passed', 0)}/{res.get('num_checks', 0)}"
         return RewardInfo(1.0 if success else 0.0, success, grounded=True, reason=reason)
 
-    # -- REAL official agent (B0 / sampling) ---------------------------- #
+    # -- REAL official agent (real-env sampling) ---------------------------- #
     def run_agent_rollout(self, config, seed: int):
         """Run the **official OfficeBench agent** and return ``(Trajectory, RewardInfo)``.
 
@@ -705,11 +705,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         files are still the initial ones.  The realized actions ride on the trajectory so the selected
         one can be committed (really executed) and officially scored.
 
-        Under B1, the app catalogue, evaluator criteria, initial checked files, reference files, and
-        testbed listing are frozen before the first candidate action and reused by observation and
-        success prompts; candidate actions cannot trigger new grounding reads. Under Ours, observation
-        and success predictions retain the bounded agentic grounding loop over read-only state.
-        Returns ``(Trajectory, predicted RewardInfo, None)``.
+
         """
         from ..llm import make_chat_client
         from ..llm.azure import azure_deployment
@@ -724,7 +720,6 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         from .officebench_wm_predict import (
             OfficeBenchWMPredictor,
             OfficeBenchSimulationError,
-            build_officebench_flat_system_prompt,
         )
         from .officebench_wm_python import prepare_officebench_python_tool
 
@@ -738,7 +733,6 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         )
         prepare_officebench_python_tool()
         max_steps = _rollout_max_steps(solver.max_steps, self.level)
-        flat_context = str(method).lower() == "b1"
 
         # read_only: the sampling container is used for EXACT READS ONLY; a write action would raise.
         session = self._new_session(f"wm{seed}")
@@ -757,53 +751,6 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             )
             initial_state = None
             gold_files = None
-            if flat_context:
-                try:
-                    initial_state = session.read_state(state_specs) if state_specs else {}
-                except Exception:  # noqa: BLE001
-                    initial_state = {}
-                if ref_specs:
-                    try:
-                        raw = session.read_reference(ref_specs)
-                        spec_by_path = {
-                            spec["path"]: spec.get("label", spec["path"])
-                            for spec in ref_specs
-                        }
-                        gold_files = {
-                            spec_by_path.get(path, path): content
-                            for path, content in raw.items()
-                        }
-                    except Exception:  # noqa: BLE001
-                        gold_files = None
-                testbed_listing = ""
-                if not config.simulator.predict_all_actions:
-                    try:
-                        listing_result = session.exec_action(
-                            {
-                                "app": "shell",
-                                "action": "command",
-                                "command": (
-                                    "find /testbed/data -maxdepth 3 -type f "
-                                    "2>/dev/null | sort"
-                                ),
-                            },
-                            "/",
-                        )
-                        testbed_listing = str(
-                            listing_result.get("observation", listing_result))
-                    except Exception:  # noqa: BLE001
-                        testbed_listing = ""
-                flat_system_prompt = build_officebench_flat_system_prompt(
-                    task_config=self._config,
-                    catalogue=session.apps_catalogue(),
-                    initial_state=initial_state,
-                    gold_files=gold_files,
-                    testbed_listing=testbed_listing,
-                    predict_all_actions=config.simulator.predict_all_actions,
-                )
-                predictor.configure_flat_context(
-                    flat_system_prompt, initial_state=initial_state)
-                verifier.configure_flat_context(flat_system_prompt)
             run = run_officebench_agent(
                 session,
                 self._config,
@@ -818,7 +765,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             # (exact_match tasks) are read-only starting artifacts, so they are read exactly.  Resolved
             # BEFORE the state so a gold-backed file is judged from initial+write-log vs the gold (no
             # fabricated reconstruction), rather than an LLM-reconstructed final file.
-            if not flat_context and _reference_enabled():
+            if _reference_enabled():
                 if ref_specs:
                     try:
                         raw = session.read_reference(ref_specs)

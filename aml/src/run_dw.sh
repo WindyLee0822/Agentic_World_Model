@@ -18,9 +18,9 @@ docker_ssh_key_secret=""
 docker_ssh_known_hosts_secret=""
 tau2_data=""
 output_dir=""
-methods="b0,b1,b2,ours"
+methods="ours"
 n="1,2,4,8"
-agent="llm"
+agent="llm_wm"
 llm_user=""
 appworld_wm_tool_mode="python"
 splits="test_normal"
@@ -30,11 +30,7 @@ workers="8"
 max_steps="40"
 rollout_retries="2"
 cell_retries="2"
-temperature="0.7"
-agent_self_aggregate="0"
-aggregation_max_tokens="2048"
-aggregation_strategy="flat"
-aggregation_group_size="4"
+temperature="1.0"
 aoai_endpoint=""
 aoai_deployment="gpt-4.1"
 aoai_api_version="2024-12-01-preview"
@@ -72,10 +68,6 @@ while [[ $# -gt 0 ]]; do
     --rollout-retries) rollout_retries="$2"; shift 2 ;;
     --cell-retries) cell_retries="$2"; shift 2 ;;
     --temperature) temperature="$2"; shift 2 ;;
-    --agent-self-aggregate) agent_self_aggregate="1"; shift ;;
-    --aggregation-max-tokens) aggregation_max_tokens="$2"; shift 2 ;;
-    --aggregation-strategy) aggregation_strategy="$2"; shift 2 ;;
-    --aggregation-group-size) aggregation_group_size="$2"; shift 2 ;;
     --aoai-endpoint) aoai_endpoint="$2"; shift 2 ;;
     --aoai-deployment) aoai_deployment="$2"; shift 2 ;;
     --aoai-api-version) aoai_api_version="$2"; shift 2 ;;
@@ -415,18 +407,14 @@ cmd=(
   --methods "$methods"
   --N "$n"
   --agent "$agent"
-  --appworld-wm-tool-mode "$appworld_wm_tool_mode"
+  --tool-mode "$appworld_wm_tool_mode"
   --workers "$workers"
   --max-steps "$max_steps"
   --rollout-retries "$rollout_retries"
   --cell-retries "$cell_retries"
   --temperature "$temperature"
-  --aggregation-max-tokens "$aggregation_max_tokens"
-  --aggregation-strategy "$aggregation_strategy"
-  --aggregation-group-size "$aggregation_group_size"
   --out "$output_dir"
 )
-[[ "$agent_self_aggregate" == "1" ]] && cmd+=(--agent-self-aggregate)
 [[ ${#env_args[@]} -gt 0 ]] && cmd+=("${env_args[@]}")
 [[ ${#extra_arr[@]} -gt 0 ]] && cmd+=("${extra_arr[@]}")
 [[ -n "$llm_user" ]] && cmd+=(--llm-user "$llm_user")
@@ -486,8 +474,6 @@ payload = {
     "rollout_retries": int("$rollout_retries"),
     "cell_retries": int("$cell_retries"),
     "temperature": float("$temperature"),
-    "agent_self_aggregate": "$agent_self_aggregate" == "1",
-    "aggregation_max_tokens": int("$aggregation_max_tokens"),
     "aoai_deployment": "$aoai_deployment",
     "auth_mode": (
         ("local+azure" if "${TTS_LOCAL_LLM_ALLOW_AZURE:-0}" == "1" else "local")

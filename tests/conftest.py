@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import os
 from typing import Dict, List, Optional
 
 import pytest
@@ -264,3 +265,21 @@ __all__ = [
     "make_feasible_infeasible_env", "make_recursive_wm", "make_chain_wm", "fake_env", "SELECT",
     "ChainStore", "ChainEvaluator",
 ]
+
+
+@pytest.fixture(autouse=True)
+def isolate_qwen_source_environment(request):
+    if not request.node.path.name.startswith("test_qwen_source_"):
+        yield
+        return
+    previous = dict(os.environ)
+    # Runner configuration tests set process-wide TTS defaults directly. Each
+    # source test needs a fresh configuration, as it has in a standalone run.
+    for key in list(os.environ):
+        if key.startswith("TTS_"):
+            del os.environ[key]
+    try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(previous)

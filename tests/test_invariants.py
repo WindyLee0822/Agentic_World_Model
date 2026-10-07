@@ -12,7 +12,7 @@ from tts.harness import run_decision
 from conftest import make_feasible_infeasible_env, make_recursive_wm
 
 
-@pytest.mark.parametrize("method", ["b0", "b1", "b2", "ours"])
+@pytest.mark.parametrize("method", ["b2", "ours"])
 def test_simulator_never_writes_real_env(method):
     """The real backing state hash is unchanged by the whole sampling phase."""
     env = make_feasible_infeasible_env()

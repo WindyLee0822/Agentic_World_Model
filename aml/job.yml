@@ -6,7 +6,7 @@
 #
 # Override inputs at submit time, e.g. a quick smoke test:
 #   az ml job create -f aml/job.yml -g Singularity -w M365Research \
-#       --set inputs.workers=4 inputs.n="1,2" inputs.methods="b0,ours" \
+#       --set inputs.workers=4 inputs.n="1,2" inputs.methods="ours" \
 #             display_name=dw-smoke
 #
 # Paths (`code`, `environment.conda_file`) are resolved relative to THIS file.
@@ -14,7 +14,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 display_name: dw-AppWorld-BoN
 experiment_name: dw-appworld
-description: Run the dw test-time-scaling harness (b0/b1/b2/ours) on real AppWorld on AML compute.
+description: Run the dw test-time-scaling harness (AWM and real-environment BoN) on real AppWorld on AML compute.
 compute: azureml:D15v2-NCUS-hipri
 code: ..
 environment:
@@ -25,14 +25,14 @@ inputs:
     type: uri_folder
     path: azureml:tts_appworld_data:20260606050627
   env: appworld
-  methods: b0,b1,b2,ours
+  methods: ours
   n: "1,2,4,8"
-  agent: llm
+  agent: llm_wm
   splits: test_normal
   levels: "1"
   workers: 8
   max_steps: 40
-  temperature: 0.7
+  temperature: 1.0
   stall_timeout: "3600"
   extra_args: none
   aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com

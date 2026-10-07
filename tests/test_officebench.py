@@ -2864,17 +2864,3 @@ def test_reconstruction_logs_preserve_all_writes_and_literal_tails():
         assert rendered.count('REQUIRED_TAIL') == 45
         assert 'REQUIRED_TAIL44' in rendered
     assert len(predictor._write_history_data()) == 45
-
-
-def test_fixed_context_preserves_files_or_reports_budget_exhaustion(monkeypatch):
-    from tts.env.officebench_wm_predict import (
-        OfficeBenchSimulationError, build_officebench_flat_system_prompt,
-    )
-
-    text = 'x' * 9000 + 'REQUIRED_TAIL'
-    kwargs = dict(task_config={}, catalogue={}, initial_state={'file': text})
-    monkeypatch.setenv('TTS_OFFICEBENCH_B1_CONTEXT_CHARS', '20000')
-    assert text in build_officebench_flat_system_prompt(**kwargs)
-    monkeypatch.setenv('TTS_OFFICEBENCH_B1_CONTEXT_CHARS', '1000')
-    with pytest.raises(OfficeBenchSimulationError, match='rather than truncate'):
-        build_officebench_flat_system_prompt(**kwargs)

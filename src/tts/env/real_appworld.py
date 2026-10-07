@@ -3,7 +3,7 @@
 AppWorld tasks are solved by an agent emitting **free-form Python** in a stateful REPL and scored
 by the official ``AppWorld.evaluate()`` (Task Goal Completion - every hidden test passes).  This
 wrapper runs the **official ReAct code agent** (verbatim official prompt + loop, see
-:mod:`tts.env.appworld_react_agent`) against the genuine environment, so a single rollout (B0)
+:mod:`tts.env.appworld_react_agent`) against the genuine environment, so a single rollout (real-env N=1)
 reproduces the official AppWorld benchmark.
 
 There is **no analog task** here: the instruction is the real task instruction, execution goes
@@ -1485,7 +1485,7 @@ class AppWorldTaskEnv(TaskEnvironment):
     def gold_trajectory(self) -> Trajectory:
         return Trajectory(steps=[])  # free-form tasks expose no replayable gold action list
 
-    # -- REAL official agent (B0 / sampling) ---------------------------- #
+    # -- REAL official agent (real-env sampling) ---------------------------- #
     def run_agent_rollout(self, config, seed: int):
         """Run the **official AppWorld ReAct code agent** and return ``(Trajectory, RewardInfo)``.
 
@@ -1937,16 +1937,14 @@ class AppWorldTaskEnv(TaskEnvironment):
         Runs the official AppWorld ReAct loop, but routes every ``apis.*`` call through the
         world-model interception (:func:`~tts.env.appworld_wm.install_wm_requester`): reads execute
         exactly by default; under ``predict_all_actions``, recursive Ours uses the identical
-        whitelisted read-only simulator tool while flat B1 predicts from fixed context. Writes are
+        whitelisted read-only simulator tool with adaptive read-only grounding. Writes are
         LLM-predicted from the call args + response schema + history, so the real DB is never mutated. Returns
         ``(Trajectory, predicted RewardInfo, None)``; the realized code rides
         on the trajectory so the selected one can be committed (re-executed for real) and officially
         scored.  AppWorld exposes no gold action list, so the selection signal is an LLM success
         verdict over the realized plan.
 
-        Under B1, task metadata, relevant API docs, native evaluator criteria/gold values, and fixed
-        task state are frozen before candidate code generation; writes, dirty reads, and success reuse
-        that system prompt without action-conditioned DB probes. Ours retains adaptive read grounding.
+
         """
         if str(method).lower() == "agentworld":
             return self._run_agentworld_rollout_wm(
@@ -1960,7 +1958,6 @@ class AppWorldTaskEnv(TaskEnvironment):
         from .appworld_react_agent import run_react_code_agent
         from .appworld_wm import (
             AppWorldWMPredictor,
-            appworld_flat_tool_docs,
             install_wm_requester,
         )
         from .appworld_ours_wm import AppWorldOursWMPredictor
@@ -2006,30 +2003,6 @@ class AppWorldTaskEnv(TaskEnvironment):
                 predictor,
                 predict_all_actions=config.simulator.predict_all_actions,
             )
-            if str(method).lower() == "b1":
-                available_apps = predictor.available_apps
-                active_task = {"instruction": self._instruction}
-                if not config.simulator.predict_all_actions:
-                    try:
-                        active_task = _verifier_read_only_request(
-                            orig_request, "supervisor", "show_active_task")
-                    except Exception:
-                        pass
-                predictor.configure_flat_context(
-                    task_text=self._instruction,
-                    tool_docs=appworld_flat_tool_docs(available_apps),
-                    reference_checklist=reference_checklist,
-                    reference_checks=reference_checks,
-                    predict_all_actions=config.simulator.predict_all_actions,
-                    fixed_state={
-                        "task_id": self._task_id,
-                        "frozen_datetime": predictor.frozen_datetime,
-                        "available_apps": list(available_apps),
-                        "app_descriptions": dict(
-                            getattr(world.task, "app_descriptions", {}) or {}),
-                        "active_task": active_task,
-                    },
-                )
             # Bound the whole rollout by the predictor's hard timeout too: the predictor raises inside
             # a runaway API loop to end the offending cell, and this stops the step loop right after,
             # so a non-terminating agent can't spin forever (AppWorld's own per-cell timeout does not
