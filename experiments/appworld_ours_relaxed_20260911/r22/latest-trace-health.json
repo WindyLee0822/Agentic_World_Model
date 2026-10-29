@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-09-13T17:11:16.240816+00:00",
+  "job_status": "Running",
+  "listed_trace_files": 1852,
+  "samples": [
+    {
+      "file": "wm-4298-a203fc2bd57a41a7b4595c51f3bb3efd.jsonl",
+      "modified": "2026-09-13T17:09:01+00:00",
+      "bytes": 142,
+      "task_id": "634f342_3",
+      "seed": 8014,
+      "sample_events": 1
+    },
+    {
+      "file": "wm-4298-403d773f57b9404ea86fbf17c42e1ffc.jsonl",
+      "modified": "2026-09-13T17:09:00+00:00",
+      "bytes": 7988,
+      "task_id": "634f342_3",
+      "seed": 8014,
+      "sample_events": 33
+    },
+    {
+      "file": "wm-4298-f45a985d9b434bb6998c2246e899ad79.jsonl",
+      "modified": "2026-09-13T17:08:33+00:00",
+      "bytes": 68454,
+      "task_id": "634f342_3",
+      "seed": 8014,
+      "sample_events": 72
+    },
+    {
+      "file": "wm-6219-21597404a8cc4107bed862cf3d8e37af.jsonl",
+      "modified": "2026-09-13T17:08:16+00:00",
+      "bytes": 142,
+      "task_id": "d194965_1",
+      "seed": 21001,
+      "sample_events": 1
+    }
+  ],
+  "interpretation": "Recent blob modifications confirm trace activity. Samples are file prefixes, not necessarily current tails. Short response timings can reflect cached model output. Generated read programs are visible, but this sample does not prove successful execution or task completion."
+}

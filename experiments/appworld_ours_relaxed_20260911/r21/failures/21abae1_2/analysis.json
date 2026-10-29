@@ -1,0 +1,22 @@
+{
+  "task_id": "21abae1_2",
+  "all_candidate_errors": true,
+  "commits": 0,
+  "trace_files": 48,
+  "tail_categories": [
+    {
+      "max_tokens": 4096,
+      "prefix": "PYTHON_FINAL:",
+      "count": 47
+    },
+    {
+      "max_tokens": 2048,
+      "prefix": "PYTHON_FINAL:",
+      "count": 1
+    }
+  ],
+  "model_call_errors": [],
+  "confirmed_source_regression": "R21 wraps every _predict exception, including verifier errors outside requester. This changes RuntimeError text and bypasses AppWorldOursWMPredictor.predict_success prefix-based score-zero recovery. Candidate becomes generation error and is retried/discarded.",
+  "limits": "Full final programs and exception causes were not logged; cannot attribute each failed attempt to identical underlying cause. At least one explicit rate-limit exhaustion in candidate record. Placeholder setup counts are not runtime evidence of bypass.",
+  "fix": "R22 restricts _predict error conversion to active requester scope, preserving verifier exception behavior."
+}

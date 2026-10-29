@@ -5,7 +5,7 @@
 # SGLang both expose one; this script launches vLLM by default. Once it is up, run experiments with:
 #
 #   PYTHONPATH=src python experiments/run.py --local \
-#     --llm-agent Qwen-AgentWorld-35B-A3B --env appworld --methods b0 --N 1 --tasks 8
+#     --llm-agent Qwen-AgentWorld-35B-A3B --env appworld --method b2 --agent llm --N 1 --tasks 8
 #
 # Usage:
 #   bash scripts/serve_local_model.sh <MODEL_PATH_OR_HF_ID> [SERVED_NAME] [PORT]

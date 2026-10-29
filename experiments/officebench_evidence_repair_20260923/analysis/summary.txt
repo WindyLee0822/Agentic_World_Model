@@ -1,0 +1,15 @@
+
+TTS curve — success vs N  [officebench | ALL subsets]
+-----------------------------------------------------
+  method | N=1        N=2        N=4       
+    ours | 0.6250     0.6250     0.7500    
+
+TTS — success vs N  [officebench | 1app]
+----------------------------------------
+  method | N=1        N=2        N=4       
+    ours | 0.6000     0.6000     0.8000    
+
+TTS — success vs N  [officebench | 3app]
+----------------------------------------
+  method | N=1        N=2        N=4       
+    ours | 0.6667     0.6667     0.6667    

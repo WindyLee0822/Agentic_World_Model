@@ -1,0 +1,28 @@
+{
+  "task_id": "024c982_3",
+  "r17_official_success": false,
+  "r16_official_success": true,
+  "r17_candidate_confidences": [
+    0.0,
+    0.0
+  ],
+  "r17_setup_prediction_counts": [
+    33,
+    22
+  ],
+  "r17_python_failures": 29,
+  "r17_rollout_errors": 0,
+  "recorded_contract_violations": 0,
+  "finding": "Captured generated program reconstructs data through a non-raw triple-quoted JSON literal. Python interprets the embedded backslash-n, causing json.loads to raise Invalid control character before the captured prefix truncation.",
+  "reproduction": {
+    "seed": 35000,
+    "json_error_position": 1210,
+    "decoded_prefix_length": 1372,
+    "error_precedes_truncation": true
+  },
+  "limits": [
+    "Diagnostic captures response prefixes, not complete execution traces.",
+    "This demonstrates a defect in a captured program; it does not fully explain both candidates or establish the overall performance rate."
+  ],
+  "next_action": "Preserve the fixed R17 evaluation and track whether this recurs; consider an Ours-only generated-program correction if needed after broader results."
+}

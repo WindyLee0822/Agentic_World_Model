@@ -1,0 +1,992 @@
+[
+  {
+    "file": "wm-202-2badf48b1e3b4790a193fc6d0b4aaa65.jsonl",
+    "modified": "2026-09-07 17:57:03+00:00",
+    "task_ids": [
+      "e70b117_3"
+    ],
+    "model_calls": 145,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 67,
+      "download_attachment": 50,
+      "file_exists": 6,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-206-8fb84421f0c44dcf93dee16cae852fd4.jsonl",
+    "modified": "2026-09-07 17:56:08+00:00",
+    "task_ids": [
+      "4ac4a8d_2"
+    ],
+    "model_calls": 64,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 24,
+      "download_attachment": 0,
+      "file_exists": 2,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-208-f2d9345965fe48b088cc2bd9fdf84018.jsonl",
+    "modified": "2026-09-07 17:54:10+00:00",
+    "task_ids": [
+      "f6f2e67_3"
+    ],
+    "model_calls": 130,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 138,
+      "download_attachment": 17,
+      "file_exists": 0,
+      "permission": 1,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-214-09b5bbc40c71490a806d59dbfe840963.jsonl",
+    "modified": "2026-09-07 17:52:43+00:00",
+    "task_ids": [
+      "36705ae_2"
+    ],
+    "model_calls": 128,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 66,
+      "download_attachment": 6,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-216-f8c0fd2e90174867a7cae39468bfdb46.jsonl",
+    "modified": "2026-09-07 17:52:21+00:00",
+    "task_ids": [
+      "4ac4a8d_1"
+    ],
+    "model_calls": 65,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 43,
+      "download_attachment": 0,
+      "file_exists": 12,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-212-ca2cc3bc8c8242ff9e2813a5e92c58ba.jsonl",
+    "modified": "2026-09-07 17:52:19+00:00",
+    "task_ids": [
+      "f6f2e67_1"
+    ],
+    "model_calls": 185,
+    "model_errors": 2,
+    "mentions": {
+      "401": 0,
+      "access_token": 158,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-215-18ec6c896b5146268370463a7236d494.jsonl",
+    "modified": "2026-09-07 17:50:35+00:00",
+    "task_ids": [
+      "f6f2e67_2"
+    ],
+    "model_calls": 170,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 102,
+      "download_attachment": 35,
+      "file_exists": 11,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-209-4032a2be26674059907a38c440e42a9e.jsonl",
+    "modified": "2026-09-07 17:49:35+00:00",
+    "task_ids": [
+      "4ac4a8d_3"
+    ],
+    "model_calls": 78,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 39,
+      "download_attachment": 0,
+      "file_exists": 2,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-205-89de518c30334aadaa8f84b6f67f512f.jsonl",
+    "modified": "2026-09-07 17:47:59+00:00",
+    "task_ids": [
+      "e70b117_2"
+    ],
+    "model_calls": 181,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 144,
+      "download_attachment": 9,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-213-2cff90cebf974e029d2b35928cfacfff.jsonl",
+    "modified": "2026-09-07 17:47:25+00:00",
+    "task_ids": [
+      "b68eb83_2"
+    ],
+    "model_calls": 156,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 100,
+      "download_attachment": 20,
+      "file_exists": 24,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-206-b940552f004b4422864fc271c26cce03.jsonl",
+    "modified": "2026-09-07 17:43:34+00:00",
+    "task_ids": [
+      "4ac4a8d_2"
+    ],
+    "model_calls": 52,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 32,
+      "download_attachment": 0,
+      "file_exists": 9,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-216-e0a87ebe05214f0a8cca8d8676a03093.jsonl",
+    "modified": "2026-09-07 17:41:29+00:00",
+    "task_ids": [
+      "4ac4a8d_1"
+    ],
+    "model_calls": 59,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 28,
+      "download_attachment": 0,
+      "file_exists": 3,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-211-1fc32ac0c0b74f8ca6330202a8cdc4c2.jsonl",
+    "modified": "2026-09-07 17:39:53+00:00",
+    "task_ids": [
+      "b68eb83_1"
+    ],
+    "model_calls": 158,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 64,
+      "download_attachment": 41,
+      "file_exists": 26,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-204-5f550732dd9b481a904889e82c608d91.jsonl",
+    "modified": "2026-09-07 17:39:38+00:00",
+    "task_ids": [
+      "e70b117_1"
+    ],
+    "model_calls": 195,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 158,
+      "download_attachment": 10,
+      "file_exists": 0,
+      "permission": 1,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-201-9c7b15d9feb048cc86d47f316cc10ac7.jsonl",
+    "modified": "2026-09-07 17:37:45+00:00",
+    "task_ids": [
+      "36705ae_3"
+    ],
+    "model_calls": 181,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 131,
+      "download_attachment": 33,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-214-22d9605cb0534a419ceb4d34934248c3.jsonl",
+    "modified": "2026-09-07 17:35:49+00:00",
+    "task_ids": [
+      "36705ae_2"
+    ],
+    "model_calls": 212,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 118,
+      "download_attachment": 27,
+      "file_exists": 3,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-203-c8208d857f2045d291d26e3c45da03b2.jsonl",
+    "modified": "2026-09-07 17:32:53+00:00",
+    "task_ids": [
+      "a53a8fd_2"
+    ],
+    "model_calls": 190,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 83,
+      "download_attachment": 0,
+      "file_exists": 1,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-210-09aeb5bac8fb4df7840a313eb61cd02c.jsonl",
+    "modified": "2026-09-07 17:32:46+00:00",
+    "task_ids": [
+      "33e202d_3"
+    ],
+    "model_calls": 181,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 92,
+      "download_attachment": 40,
+      "file_exists": 6,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-207-9af9adfef8eb493d8b67d9294a392589.jsonl",
+    "modified": "2026-09-07 17:32:28+00:00",
+    "task_ids": [
+      "36705ae_1"
+    ],
+    "model_calls": 184,
+    "model_errors": 0,
+    "mentions": {
+      "401": 1,
+      "access_token": 121,
+      "download_attachment": 9,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-209-48dc1076c1e84ffe91b92fb88f2295ec.jsonl",
+    "modified": "2026-09-07 17:31:49+00:00",
+    "task_ids": [
+      "33e202d_2"
+    ],
+    "model_calls": 241,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 68,
+      "download_attachment": 132,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-206-a341f87992564af4ac026c945927c4c4.jsonl",
+    "modified": "2026-09-07 17:30:08+00:00",
+    "task_ids": [
+      "33e202d_1"
+    ],
+    "model_calls": 204,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 98,
+      "download_attachment": 61,
+      "file_exists": 10,
+      "permission": 1,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-216-f9a47541a17e46a8bf2f705b82279d2e.jsonl",
+    "modified": "2026-09-07 17:27:17+00:00",
+    "task_ids": [
+      "a53a8fd_3"
+    ],
+    "model_calls": 215,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 115,
+      "download_attachment": 0,
+      "file_exists": 15,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-202-e6a82a6acc614d50af54497f48431b05.jsonl",
+    "modified": "2026-09-07 17:25:40+00:00",
+    "task_ids": [
+      "b68eb83_3"
+    ],
+    "model_calls": 68,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 54,
+      "download_attachment": 3,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-208-5c458e84a3e247fbb2657b40ef11acd9.jsonl",
+    "modified": "2026-09-07 17:25:35+00:00",
+    "task_ids": [
+      "f6f2e67_3"
+    ],
+    "model_calls": 173,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 100,
+      "download_attachment": 34,
+      "file_exists": 26,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-212-adacb6585b0d49c6b9096e5578da9585.jsonl",
+    "modified": "2026-09-07 17:20:45+00:00",
+    "task_ids": [
+      "f6f2e67_1"
+    ],
+    "model_calls": 182,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 70,
+      "download_attachment": 36,
+      "file_exists": 68,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-215-edefd0b615c84b2ba1d0a1c7546b21f8.jsonl",
+    "modified": "2026-09-07 17:19:05+00:00",
+    "task_ids": [
+      "f6f2e67_2"
+    ],
+    "model_calls": 188,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 162,
+      "download_attachment": 16,
+      "file_exists": 34,
+      "permission": 1,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-213-0fbda2698775404da0c1cb3fba8e255a.jsonl",
+    "modified": "2026-09-07 17:17:07+00:00",
+    "task_ids": [
+      "b68eb83_2"
+    ],
+    "model_calls": 140,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 94,
+      "download_attachment": 7,
+      "file_exists": 48,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-205-f66d4651af0d424faea54bdf6a667d0a.jsonl",
+    "modified": "2026-09-07 17:17:07+00:00",
+    "task_ids": [
+      "a53a8fd_1"
+    ],
+    "model_calls": 149,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 50,
+      "download_attachment": 0,
+      "file_exists": 19,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-202-b8bacec83a28431bac763918a0eded5e.jsonl",
+    "modified": "2026-09-07 17:10:32+00:00",
+    "task_ids": [
+      "b68eb83_3"
+    ],
+    "model_calls": 145,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 111,
+      "download_attachment": 15,
+      "file_exists": 16,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-211-f39637ae3f8a46399f81a205325dd28d.jsonl",
+    "modified": "2026-09-07 17:09:04+00:00",
+    "task_ids": [
+      "b68eb83_1"
+    ],
+    "model_calls": 176,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 68,
+      "download_attachment": 34,
+      "file_exists": 8,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-204-6b2dc315324f4260b0e0e113d6a86ef8.jsonl",
+    "modified": "2026-09-07 17:08:51+00:00",
+    "task_ids": [
+      "a97e35d_3"
+    ],
+    "model_calls": 264,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 107,
+      "download_attachment": 0,
+      "file_exists": 73,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-201-32e076793337422583c258966cbebfd3.jsonl",
+    "modified": "2026-09-07 17:06:29+00:00",
+    "task_ids": [
+      "a97e35d_2"
+    ],
+    "model_calls": 177,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 94,
+      "download_attachment": 0,
+      "file_exists": 27,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-214-d0357d68200945c99a0ff10de1831269.jsonl",
+    "modified": "2026-09-07 17:04:53+00:00",
+    "task_ids": [
+      "a97e35d_1"
+    ],
+    "model_calls": 226,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 107,
+      "download_attachment": 0,
+      "file_exists": 20,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-207-c7c71537c5634ebba81f3843a2c07195.jsonl",
+    "modified": "2026-09-07 17:01:31+00:00",
+    "task_ids": [
+      "906f2c7_3"
+    ],
+    "model_calls": 51,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 33,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-210-d9580517eb814956b44bd93931f155c3.jsonl",
+    "modified": "2026-09-07 17:01:05+00:00",
+    "task_ids": [
+      "33e202d_3"
+    ],
+    "model_calls": 192,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 78,
+      "download_attachment": 37,
+      "file_exists": 6,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-209-bced93cf29aa416bb79973dae7c04fea.jsonl",
+    "modified": "2026-09-07 16:59:47+00:00",
+    "task_ids": [
+      "33e202d_2"
+    ],
+    "model_calls": 185,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 126,
+      "download_attachment": 13,
+      "file_exists": 4,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-203-085a49c063194b5484f2ff6571814bf8.jsonl",
+    "modified": "2026-09-07 16:59:29+00:00",
+    "task_ids": [
+      "a53a8fd_2"
+    ],
+    "model_calls": 142,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 59,
+      "download_attachment": 0,
+      "file_exists": 4,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-216-aa232853d7e14ea29efd694bee4251aa.jsonl",
+    "modified": "2026-09-07 16:56:23+00:00",
+    "task_ids": [
+      "a53a8fd_3"
+    ],
+    "model_calls": 134,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 89,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-206-9e107924aa4c48eab59fec36b82cd481.jsonl",
+    "modified": "2026-09-07 16:56:23+00:00",
+    "task_ids": [
+      "33e202d_1"
+    ],
+    "model_calls": 205,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 98,
+      "download_attachment": 15,
+      "file_exists": 16,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-208-77c57dfa60af4df98a6a8e8fa9ba9441.jsonl",
+    "modified": "2026-09-07 16:54:11+00:00",
+    "task_ids": [
+      "906f2c7_1"
+    ],
+    "model_calls": 41,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 47,
+      "download_attachment": 0,
+      "file_exists": 5,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-205-9255e6f276b54873b8d49a15aafeafac.jsonl",
+    "modified": "2026-09-07 16:53:44+00:00",
+    "task_ids": [
+      "a53a8fd_1"
+    ],
+    "model_calls": 195,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 92,
+      "download_attachment": 0,
+      "file_exists": 24,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-207-46a19e1db0184151bfd8abaec68145da.jsonl",
+    "modified": "2026-09-07 16:52:26+00:00",
+    "task_ids": [
+      "906f2c7_3"
+    ],
+    "model_calls": 78,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 80,
+      "download_attachment": 0,
+      "file_exists": 1,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-215-f92efa1ce1244b35849d00698204480a.jsonl",
+    "modified": "2026-09-07 16:49:30+00:00",
+    "task_ids": [
+      "906f2c7_2"
+    ],
+    "model_calls": 44,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 19,
+      "download_attachment": 0,
+      "file_exists": 1,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-212-d6c148c3532e4910b7fbbb504a2bfbb1.jsonl",
+    "modified": "2026-09-07 16:48:00+00:00",
+    "task_ids": [
+      "998908e_3"
+    ],
+    "model_calls": 209,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 67,
+      "download_attachment": 79,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-208-10a1b9bb3a154351a120e51cb6566152.jsonl",
+    "modified": "2026-09-07 16:46:59+00:00",
+    "task_ids": [
+      "906f2c7_1"
+    ],
+    "model_calls": 58,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 46,
+      "download_attachment": 0,
+      "file_exists": 9,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-202-44232f8820a34427af5e47f86cbae893.jsonl",
+    "modified": "2026-09-07 16:45:47+00:00",
+    "task_ids": [
+      "998908e_2"
+    ],
+    "model_calls": 190,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 143,
+      "download_attachment": 10,
+      "file_exists": 0,
+      "permission": 2,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-213-05b66df5fd274fc09b71209ee5ae2737.jsonl",
+    "modified": "2026-09-07 16:45:31+00:00",
+    "task_ids": [
+      "998908e_1"
+    ],
+    "model_calls": 182,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 47,
+      "download_attachment": 63,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-215-1f7b27941a864964ac7fad7e0989026f.jsonl",
+    "modified": "2026-09-07 16:41:21+00:00",
+    "task_ids": [
+      "906f2c7_2"
+    ],
+    "model_calls": 22,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 24,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-211-136e021e7d6f4508a4ed2ac26a0a9cbb.jsonl",
+    "modified": "2026-09-07 16:38:15+00:00",
+    "task_ids": [
+      "d8e490b_2"
+    ],
+    "model_calls": 137,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 99,
+      "download_attachment": 41,
+      "file_exists": 5,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-207-83ea20b9330549efbb9251eb13069701.jsonl",
+    "modified": "2026-09-07 16:37:40+00:00",
+    "task_ids": [
+      "d8e490b_3"
+    ],
+    "model_calls": 163,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 100,
+      "download_attachment": 29,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-204-4237b9676488451bb0c8d6d838d0891d.jsonl",
+    "modified": "2026-09-07 16:36:55+00:00",
+    "task_ids": [
+      "a97e35d_3"
+    ],
+    "model_calls": 188,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 98,
+      "download_attachment": 0,
+      "file_exists": 19,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-201-e1c8426579414557bab9d4f7f9b2cee9.jsonl",
+    "modified": "2026-09-07 16:35:27+00:00",
+    "task_ids": [
+      "a97e35d_2"
+    ],
+    "model_calls": 174,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 95,
+      "download_attachment": 0,
+      "file_exists": 21,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-215-0a7e7b59c83444dc939e00ca74489ce6.jsonl",
+    "modified": "2026-09-07 16:35:07+00:00",
+    "task_ids": [
+      "6d59d90_3"
+    ],
+    "model_calls": 328,
+    "model_errors": 1,
+    "mentions": {
+      "401": 0,
+      "access_token": 84,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-208-ad7b3c66d7244c1fb95af57daf4592da.jsonl",
+    "modified": "2026-09-07 16:34:26+00:00",
+    "task_ids": [
+      "6d59d90_1"
+    ],
+    "model_calls": 197,
+    "model_errors": 0,
+    "mentions": {
+      "401": 0,
+      "access_token": 74,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  },
+  {
+    "file": "wm-214-81491f3ea2394871972a5dc0469c7d77.jsonl",
+    "modified": "2026-09-07 16:33:58+00:00",
+    "task_ids": [
+      "a97e35d_1"
+    ],
+    "model_calls": 148,
+    "model_errors": 2,
+    "mentions": {
+      "401": 0,
+      "access_token": 53,
+      "download_attachment": 0,
+      "file_exists": 0,
+      "permission": 0,
+      "Python execution failed": 0,
+      "WMHardTimeout": 0
+    }
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "extract concert post from pdf file and save as image named 'concert_post.jpg'",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/concert_post.jpg"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/concert_post.pdf": "Concert Announcement\nWe are excited to announce an upcoming concert featuring:\nArtist: John Smith\nDate: July 15, 2024\nTime: 7:00 PM\nVenue: Music Hall\nAddress: 123 Main Street, Cityville\nTickets are available for purchase at www.example.com/concert.\nDon't miss this amazing opportunity to enjoy live music!\n"
+  },
+  "initial_state": {
+    "data/concert_post.jpg": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/concert_post.pdf"
+}

@@ -1,0 +1,75 @@
+# AML command job for the interactive AppWorld world-model sweep.
+#
+# Runs the official AppWorld ReAct agent against the predictive WM added in
+# src/tts/env/appworld_wm.py. During predict-all sampling, every candidate
+# observation is generated through restricted PYTHON_READ / PYTHON_FINAL
+# computation; host-validated read-only probes provide untouched variables, and
+# candidate writes never execute. The selected trajectory is replayed once in a
+# fresh real AppWorld and officially evaluated.
+#
+# Submit and stream logs:
+#   AML_JOB_FILE=aml/job.appworld.wm.yml bash aml/submit.sh --stream
+#
+# Quick smoke test:
+#   AML_JOB_FILE=aml/job.appworld.wm.yml bash aml/submit.sh --stream --set \
+#       inputs.n="1,2" inputs.workers=2 \
+#       inputs.extra_args="--tasks 2"
+#
+# Paths (`code`, `environment.conda_file`) are resolved relative to this file.
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-AppWorld-WM-gpt54-temp1
+experiment_name: dw-appworld-wm-gpt54
+description: Run all AppWorld test subsets with GPT-5.4, temperature 1, N=1,2,4,8,16, simulator-routed deterministic grounded clean reads, L2/L3 execution guidance, and answer-grounded WM verification.
+compute: azureml:D15v2-NCUS-hipri
+code: ..
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+  conda_file: environment/conda.appworld.yml
+inputs:
+  appworld_data:
+    type: uri_folder
+    path: azureml:tts_appworld_data:20260606050627
+  env: appworld
+  methods: ours
+  n: "1,2,4,8,16"
+  agent: llm_wm
+  splits: test_normal,test_challenge
+  levels: "1,2,3"
+  workers: 8
+  max_steps: 40
+  rollout_retries: 2
+  cell_retries: 2
+  temperature: 1
+  stall_timeout: "7200"
+  extra_args: none
+  aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
+  aoai_deployment: gpt-5.4
+  aoai_api_version: 2024-12-01-preview
+  aoai_api_key: none
+  managed_identity_client_id: 258f6dab-3e80-4254-83e3-bfb24a9ae8d9
+outputs:
+  output_dir:
+    type: uri_folder
+command: >-
+  bash aml/src/run_dw.sh
+  --env "${{inputs.env}}"
+  --appworld-data "${{inputs.appworld_data}}"
+  --output-dir "${{outputs.output_dir}}"
+  --methods "${{inputs.methods}}"
+  --n "${{inputs.n}}"
+  --agent "${{inputs.agent}}"
+  --splits "${{inputs.splits}}"
+  --levels "${{inputs.levels}}"
+  --workers ${{inputs.workers}}
+  --max-steps ${{inputs.max_steps}}
+  --rollout-retries ${{inputs.rollout_retries}}
+  --cell-retries ${{inputs.cell_retries}}
+  --temperature ${{inputs.temperature}}
+  --aoai-endpoint "${{inputs.aoai_endpoint}}"
+  --aoai-deployment "${{inputs.aoai_deployment}}"
+  --aoai-api-version "${{inputs.aoai_api_version}}"
+  --aoai-api-key "${{inputs.aoai_api_key}}"
+  --managed-identity-client-id "${{inputs.managed_identity_client_id}}"
+  --stall-timeout "${{inputs.stall_timeout}}"
+  --extra-args "${{inputs.extra_args}}"

@@ -463,7 +463,7 @@ class AppWorldWMQuery:
         if args is None:
             return "ERROR: API arguments must be one JSON object"
         app, api = split
-        if not _is_strict_read(app, api):
+        if not self._predictor.allows_grounding(app, api):
             return f"ERROR: {app}.{api} is a write API; the world-model subagent may only read"
         if any(key in args for key in ("client", "raise_on_failure", "show", "track")):
             return "ERROR: transport-only requester arguments are not allowed"
@@ -494,7 +494,7 @@ class AppWorldWMQuery:
         if args is None:
             return "ERROR: API arguments must be one JSON object"
         app, api = split
-        if not _is_strict_read(app, api):
+        if not self._predictor.allows_grounding(app, api):
             return f"ERROR: {app}.{api} is a write API; the world-model subagent may only read"
         if any(key in args for key in ("client", "raise_on_failure", "show", "track")):
             return "ERROR: transport-only requester arguments are not allowed"
@@ -511,7 +511,7 @@ class AppWorldWMQuery:
         if split is None or args is None:
             raise ValueError("expected a read API name and one argument object")
         app, api = split
-        if not _is_strict_read(app, api):
+        if not self._predictor.allows_grounding(app, api):
             raise ValueError(f"{app}.{api} is not an allowed read")
         request_args = self._predictor.hydrate_read_args(app, api, args)
         return self._request(app, api, raise_on_failure=False, **request_args)
@@ -531,7 +531,7 @@ class AppWorldWMQuery:
             return "ERROR: LIST expects an app name or 'apps'"
         rows = []
         for api, doc in sorted(_api_docs(target).items()):
-            if not _is_strict_read(target, api):
+            if not self._predictor.allows_grounding(target, api):
                 continue
             method = str(doc.get("method") or "GET").upper()
             desc = str(doc.get("description") or "").replace("\n", " ")[:240]
@@ -732,62 +732,21 @@ class AppWorldWMPredictor:
         """Give observation and success predictors read-only access to logical AppWorld state."""
         self._query = query
 
+    def is_write_api(self, app, api):
+        return _is_write(app, api)
+
+    def allows_grounding(self, app, api):
+        return _is_strict_read(app, api)
+
     @property
     def uses_fixed_context(self) -> bool:
-        """Whether this predictor is using B1's pre-action fixed context."""
-        return self._flat_system_prompt is not None
+        """Compatibility hook: the supported predictor uses adaptive context."""
+        return False
 
     @property
     def flat_system_prompt(self) -> Optional[str]:
         return self._flat_system_prompt
 
-    def configure_flat_context(
-        self,
-        *,
-        task_text: str,
-        tool_docs: Dict[str, Any],
-        reference_checklist: Optional[str] = None,
-        reference_checks: Optional[Tuple[List[str], str]] = None,
-        fixed_state: Optional[Dict[str, Any]] = None,
-        predict_all_actions: bool = True,
-    ) -> str:
-        """Prepare AppWorld B1's action-independent simulator prompt."""
-        checks, gold = reference_checks or ([], "")
-        context = {
-            "task": task_text,
-            "tool_documentation": tool_docs,
-            "evaluation_checklist": reference_checklist or "",
-            "evaluation_checks": list(checks),
-            "gold_values": gold,
-            "fixed_initial_state": fixed_state or {},
-        }
-        self._flat_context_data = copy.deepcopy(context)
-        rendered = _bounded_json_text(
-            _redact_python_value(context),
-            max(8_000, _env_int("TTS_APPWORLD_B1_CONTEXT_CHARS", 60_000)),
-        )
-        read_contract = (
-            "every task-app read and write observation is predicted during sampling; clean reads "
-            "use only this fixed context; dirty reads additionally apply ordered predicted writes; "
-            if predict_all_actions
-            else
-            "clean reads are executed exactly outside this prompt; writes are never executed during "
-            "sampling; dirty reads are inferred from the fixed initial context and ordered predicted "
-            "writes; "
-        )
-        self._flat_system_prompt = (
-            f"{_APPWORLD_SIMULATOR_SYSTEM}\n\n"
-            "You are the fixed-context B1 world model for AppWorld. The complete simulator context "
-            "below was selected before any candidate agent action was observed. Use only this fixed "
-            "context plus the candidate action/history supplied later in the user message. Do not "
-            "request or perform READ, LIST, CALL, TRACE, or PYTHON_READ operations, and do not assume "
-            "access to any additional environment state.\n\n"
-            f"Simulate AppWorld faithfully: {read_contract}"
-            "and success means every native evaluator criterion is satisfied with no missing or extra "
-            "mutation. Match documented response schemas and failure behavior exactly.\n\n"
-            f"FIXED PRE-ACTION CONTEXT:\n{rendered}"
-        )
-        return self._flat_system_prompt
 
     def bind_app_catalog(self, available_apps) -> None:
         """Record the substantive AppWorld catalog for rollout activity diagnostics."""
@@ -1127,6 +1086,16 @@ class AppWorldWMPredictor:
             return None
         return None
 
+    def _python_tool_limits(self):
+        return {
+            "timeout_s": _env_float("TTS_APPWORLD_WM_PYTHON_TIMEOUT_S", 1.0),
+            "max_input_chars": _env_int("TTS_APPWORLD_WM_PYTHON_MAX_INPUT_CHARS", 200_000),
+            "max_output_chars": _env_int("TTS_APPWORLD_WM_PYTHON_MAX_OUTPUT_CHARS", 20_000),
+            "max_code_chars": _env_int("TTS_APPWORLD_WM_PYTHON_MAX_CODE_CHARS", 12_000),
+            "max_nodes": _env_int("TTS_APPWORLD_WM_PYTHON_MAX_AST_NODES", 2_000),
+            "max_steps": _env_int("TTS_APPWORLD_WM_PYTHON_MAX_STEPS", 100_000),
+        }
+
     def _run_python_prediction(
         self,
         code: str,
@@ -1142,12 +1111,7 @@ class AppWorldWMPredictor:
         result = shared_python_tool().run(
             code,
             _redact_python_value(context),
-            timeout_s=_env_float("TTS_APPWORLD_WM_PYTHON_TIMEOUT_S", 1.0),
-            max_input_chars=_env_int("TTS_APPWORLD_WM_PYTHON_MAX_INPUT_CHARS", 200_000),
-            max_output_chars=_env_int("TTS_APPWORLD_WM_PYTHON_MAX_OUTPUT_CHARS", 20_000),
-            max_code_chars=_env_int("TTS_APPWORLD_WM_PYTHON_MAX_CODE_CHARS", 12_000),
-            max_nodes=_env_int("TTS_APPWORLD_WM_PYTHON_MAX_AST_NODES", 2_000),
-            max_steps=_env_int("TTS_APPWORLD_WM_PYTHON_MAX_STEPS", 100_000),
+            **self._python_tool_limits(),
             allow_bare_container_output=allow_bare_container_output,
         )
         if result.error:
@@ -1306,6 +1270,12 @@ class AppWorldWMPredictor:
             return None
         return parsed, computed_facts
 
+    def _record_python_facts(self, facts, computed_facts, turn):
+        facts[f"python_computed_facts_{turn}"] = computed_facts
+
+    def _requires_read_inspection(self, context, output_kind):
+        return False
+
     def _python_read_loop(
         self,
         prompt: str,
@@ -1333,6 +1303,7 @@ class AppWorldWMPredictor:
             allow_reads=True,
         )
         model_prompt = f"{prompt}{protocol}\n\nFINAL OUTPUT FORMAT:\n{final_instr}"
+        inspected_read_count = 0
 
         def current_context() -> Dict[str, Any]:
             return {**context, "reads": list(reads), "facts": dict(facts)}
@@ -1381,7 +1352,10 @@ class AppWorldWMPredictor:
                     continue
                 requests, computed_facts = payload
                 if computed_facts is not None:
-                    facts[f"python_computed_facts_{turn + 1}"] = computed_facts
+                    self._record_python_facts(facts, computed_facts, turn + 1)
+                    inspected_read_count = len(reads)
+                    if self._requires_read_inspection(context, output_kind):
+                        facts.pop("python_inspection_required", None)
                 for request in requests[:max_reads]:
                     app = request["app"]
                     api = request["api"]
@@ -1398,6 +1372,15 @@ class AppWorldWMPredictor:
                         "result": read_result,
                     }
                     reads.append(record)
+                continue
+            if (len(reads) > inspected_read_count
+                    and self._requires_read_inspection(context, output_kind)):
+                facts["python_inspection_required"] = (
+                    "Inspect fresh read values with a PYTHON_READ program before the verdict. "
+                    "Print one envelope with queries:[] and facts containing the needed read "
+                    "values and their shapes. Use json_value; preserve lists as lists. "
+                    "Do not guess wrapper keys or which result belongs to which API."
+                )
                 continue
             if mode == "final":
                 return self._resolve_python_prediction(
@@ -1455,9 +1438,6 @@ class AppWorldWMPredictor:
                  python_read_fn: Optional[Callable[[str, str, dict], Any]] = None,
                  python_force: bool = False) -> str:
         """Predict directly or through the bounded tool-using subagent when it is bound."""
-        if self.uses_fixed_context:
-            use_query = False
-            python_read_fn = None
         tool_mode = "python" if self.program_only else _wm_tool_mode()
         use_python = (
             python_context is not None
@@ -2305,7 +2285,7 @@ class AppWorldWMPredictor:
 
         Dirty reads additionally apply the ordered predicted writes to an optional exact pre-write
         result. Clean reads receive no direct action result; recursive Ours may gather it through the
-        existing bounded read-only tool loop, while flat B1 must use its fixed pre-action context.
+        existing bounded read-only tool loop, using evidence gathered for the current transition.
         """
         self.n_predicted_reads += 1
         if dirty:
@@ -2347,7 +2327,7 @@ class AppWorldWMPredictor:
             if cart is not None:
                 return cart
         if self._over_budget():
-            # Rollout budget spent: recursive mode returns the exact pre-write state; flat B1 has no
+            # Rollout budget spent: recursive mode returns the exact pre-write state; the fixed-context compatibility path has no
             # action-conditioned baseline, so return an empty structured result.
             self._fallback_calls += 1
             self._check_runaway()
@@ -2356,15 +2336,10 @@ class AppWorldWMPredictor:
             return fallback
         doc = _api_doc(app, api)
         desc = (doc.get("description") or "").strip()[:200]
-        if self.uses_fixed_context:
-            baseline = (
-                "Fixed pre-action evidence is available only through `data['fixed_initial_state']`."
-            )
-        else:
-            baseline = (
-                "Read evidence is available only through variables added to `data['reads']` by bounded "
-                "read-only grounding tools."
-            )
+        baseline = (
+            "Read evidence is available only through variables added to `data['reads']` by bounded "
+            "read-only grounding tools."
+        )
         state_instruction = (
             "Some earlier writes changed this app. Apply the ordered predicted writes to the pristine "
             "evidence before returning the logical post-write result."
@@ -2446,9 +2421,7 @@ class AppWorldWMPredictor:
                 "pristine_read_required": bool(
                     dirty and not self.uses_fixed_context and self._query is not None
                 ),
-                "fixed_initial_state": copy.deepcopy(
-                    (self._flat_context_data or {}).get("fixed_initial_state", {})
-                ) if self.uses_fixed_context else {},
+                "fixed_initial_state": {},
                 "exact_read_required": bool(exact_read_contract) and not dirty,
                 "exact_read_call": (
                     {"app": app, "api": api, "args": dict(args)}
@@ -3088,17 +3061,6 @@ class AppWorldWMPredictor:
           compute exact set/count/date comparisons over copied gold, writes, transitions, steps, and
           read facts. It receives no environment handle and cannot execute candidate writes.
         """
-        if self.uses_fixed_context:
-            fixed = self._flat_context_data or {}
-            instruction = str(fixed.get("task") or "")
-            reference_checklist = str(fixed.get("evaluation_checklist") or "") or None
-            fixed_checks = list(fixed.get("evaluation_checks") or [])
-            fixed_gold = str(fixed.get("gold_values") or "")
-            reference_checks = (
-                (fixed_checks, fixed_gold) if fixed_checks else None
-            )
-            query_fn = None
-            real_read_fn = None
 
         step_records = [
             {"index": i, "code": code, "output": str(output)}
@@ -3333,7 +3295,7 @@ def install_wm_requester(
         if _app_name == "supervisor" and _api_name == "complete_task":
             return predictor.simulate_task_completion(data)
 
-        if not _is_write(_app_name, _api_name):
+        if not predictor.is_write_api(_app_name, _api_name):
             passthrough = (
                 _app_name in _PASSTHROUGH_APPS
                 or _api_name in _PASSTHROUGH_APIS
@@ -3348,14 +3310,6 @@ def install_wm_requester(
                     _success_schema(_app_name, _api_name),
                     dirty=dirty,
                 )
-            if (predictor.uses_fixed_context
-                    and predictor.first_write_seen
-                    and _app_name in predictor.dirty_apps
-                    and _app_name not in _PASSTHROUGH_APPS
-                    and _api_name not in _PASSTHROUGH_APIS):
-                return _predicted_read(
-                    _app_name, _api_name, data, None,
-                    _success_schema(_app_name, _api_name))
             real = orig_request(_app_name, _api_name, client=client,
                                 raise_on_failure=raise_on_failure, show=show, track=track, **data)
             if _app_name == "supervisor" and _api_name == "show_active_task":
@@ -3400,20 +3354,6 @@ def install_wm_requester(
     return orig_request
 
 
-def appworld_flat_tool_docs(available_apps) -> Dict[str, Dict[str, Any]]:
-    """Return fixed API documentation for the task's substantive apps."""
-    out: Dict[str, Dict[str, Any]] = {}
-    for app in available_apps or ():
-        endpoints = {}
-        for api, doc in sorted(_api_docs(str(app)).items()):
-            endpoints[api] = {
-                "method": doc.get("method"),
-                "description": doc.get("description"),
-                "parameters": doc.get("parameters") or [],
-                "response_schemas": doc.get("response_schemas") or {},
-            }
-        out[str(app)] = endpoints
-    return out
 
 
 __all__ = [
@@ -3426,6 +3366,5 @@ __all__ = [
     "_success_schema",
     "_failure_schema",
     "_available_app_names",
-    "appworld_flat_tool_docs",
     "WMPredictedHTTPError",
 ]

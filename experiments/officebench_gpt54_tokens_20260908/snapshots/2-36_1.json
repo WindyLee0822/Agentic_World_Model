@@ -1,0 +1,29 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "if Dean's list requires term average gpa to be higher than 3.9, how many terms can this students be awarded on Dean's list?",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/answer.txt",
+          "doc_type": "txt",
+          "keywords": [
+            "11"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/sales_report.pdf": "Sales Report\nSales Data\nMonth\nUnits Sold\nSales Revenue ($)\nRegion\nProduct Line\nJanuary\n212\n7,844\nNorth America\nElectronics\nJanuary\n996\n53,784\nNorth America\nClothing\nJanuary\n482\n43,380\nNorth America\nHome Goods\nJanuary\n114\n9,234\nNorth America\nSports Equipment\nJanuary\n614\n26,402\nSouth America\nElectronics\nJanuary\n907\n78,002\nSouth America\nClothing\nJanuary\n475\n14,250\nSouth America\nHome Goods\nJanuary\n253\n24,035\nSouth America\nSports Equipment\nJanuary\n408\n22,848\nSouth America\nToys\nJanuary\n252\n2,772\nAustralia\nElectronics\nJanuary\n624\n56,784\nAustralia\nClothing\nPage 1\n"
+  },
+  "initial_state": {
+    "data/answer.txt": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/sales_report.pdf"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "dw-appworld-ours-relaxed-r22-n16-full-20260913",
+  "status": "Running",
+  "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/a90114c7-8565-4f3a-8d2e-0d136b32fe21/versions/1",
+  "checked_at": "2026-09-14T20:07:14.527757+00:00",
+  "sidecar_records": 149,
+  "successes": 87,
+  "audit_flags": 75,
+  "full_coverage": false,
+  "success_rate": null,
+  "record_source": "individual cell checkpoints"
+}

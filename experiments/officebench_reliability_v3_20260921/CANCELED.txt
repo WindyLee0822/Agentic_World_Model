@@ -1,0 +1,1 @@
+Canceled during startup; superseded by v4 to include strict final-result validation.

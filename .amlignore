@@ -1,5 +1,5 @@
 # Files NOT uploaded as the AML code snapshot (keeps the upload small + fast).
-data/
+/data/
 experiments/results/
 experiments/results_*/
 experiments/tmp*/

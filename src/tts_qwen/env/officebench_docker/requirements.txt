@@ -1,0 +1,17 @@
+# Python deps for the OfficeBench app/eval image (faithful to OfficeBench docker/requirements.txt,
+# plus pytz which utils/evaluate.py needs).  The image only runs the official `apps` action modules
+# and the official `utils/evaluate.py` checkers, so the networky/intercode-only deps (docker, rpyc,
+# mysql-connector, gymnasium, rich) are dropped to keep the build lean.
+fire
+pandas
+python-docx
+openpyxl
+tabulate
+Pillow
+PyMuPDF
+PyPDF2
+pdf2docx
+pytesseract
+icalendar
+pytz
+openai==0.28.1

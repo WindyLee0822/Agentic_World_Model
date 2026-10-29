@@ -871,7 +871,7 @@ def test_tau2_reward_carries_python_telemetry(monkeypatch):
 
     class _Predictor:
         @staticmethod
-        def predict_success(facts, candidate_actions, gold_actions, tool_docs=""):
+        def predict_success_agentic(*args, **kwargs):
             return True
 
         @staticmethod
@@ -889,7 +889,7 @@ def test_tau2_reward_carries_python_telemetry(monkeypatch):
     world_model = make_world_model(
         _Store(),
         evaluator,
-        SimulatorConfig(kind="flat"),
+        SimulatorConfig(kind="recursive"),
         Budget(),
         cache=ReadCache(),
     )
@@ -902,4 +902,5 @@ def test_tau2_reward_carries_python_telemetry(monkeypatch):
         "python_failures": 1,
         "python_forced": 2,
         "python_mode_misses": 1,
+        "reference_score": 1.0,
     }

@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-09-07T16:14:36.489688+00:00",
+  "job": "dw-appworld-ours-combined-r16-full-20260907",
+  "partial": true,
+  "selected_simulator_score": {
+    "0.0": {
+      "decisions": 376,
+      "official_successes": 238
+    },
+    "1.0": {
+      "decisions": 103,
+      "official_successes": 91
+    }
+  },
+  "by_subset": {
+    "test_normal/L1": {
+      "decisions": 57,
+      "official_successes": 54
+    },
+    "test_normal/L2": {
+      "decisions": 48,
+      "official_successes": 36
+    },
+    "test_normal/L3": {
+      "decisions": 63,
+      "official_successes": 39
+    },
+    "test_challenge/L1": {
+      "decisions": 72,
+      "official_successes": 63
+    },
+    "test_challenge/L2": {
+      "decisions": 150,
+      "official_successes": 89
+    },
+    "test_challenge/L3": {
+      "decisions": 89,
+      "official_successes": 48
+    }
+  }
+}

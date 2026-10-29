@@ -1,0 +1,20 @@
+{
+  "stage": "/tmp/appworld-r29-stage",
+  "base": "/tmp/appworld-r28-stage",
+  "changed_file_sha256": "d63dc8534ccfae79eced7756760f83055942412251734093cb1f80905d211d77",
+  "job_scope": {
+    "n": 1,
+    "tasks": 585,
+    "splits": [
+      "test_normal",
+      "test_challenge"
+    ],
+    "levels": [
+      1,
+      2,
+      3
+    ],
+    "workers": 16,
+    "task_filter": null
+  }
+}

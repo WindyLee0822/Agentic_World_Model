@@ -1,0 +1,51 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "extract text from power failure notification image, save in power_failure.pdf, send email power_failure.eml to notify workers Bob and Tom",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/power_failure.pdf"
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Bob",
+          "keywords": [
+            "power",
+            "failure"
+          ]
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "email",
+          "username": "Tom",
+          "keywords": [
+            "power",
+            "failure"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/combined_notifications.jpg": "Persomel Departnent party Notification\n\nWe are excited to iuvite you to the smual Persomel Department party!\nDate: ame 25, 2024\n\nTine: 6:00 Pw ~ 10:00 PM\n\nLocation: grand pallxoom, Hotel x2\n\nPlease join us for an evening of fun, food, and entertainment.\n\nBest Regards,\nPersomel Department,\n\nFinance Departnent Report Meeting Notification\n\nYou are invited to the Finance Department report neeting.\n\nDate: ame 22, 2024\nKine: 2:00 Py - 4:00 24\nLocation: conference Room \u00ae\n\nagenda:\n41. Financial. performace Review\n\n2. wudget Plaming for Next quarter\n3. open Discussion\n\nYour presence and input will be highly valued.\n\f",
+    "/testbed/data/meeting_notification.jpg": "Meeting Notification\n\nMeeting with: Project Team\nDate: ame 20, 2024\n\nKine: 10:00 34 - 11:00 24\nLocation: conference Roo\n\nayenda:\n1. Project update\n2. Task Assignments\n3. GaR Session\n\f",
+    "/testbed/data/power_failure_notification.jpg": "Electric Failure\n\nPower outage detected Our team isworking on resolving the issue\n\f"
+  },
+  "initial_state": {
+    "data/power_failure.pdf": "[file does not exist]",
+    "./calendar/Bob.ics": "[file does not exist]",
+    "./calendar/Tom.ics": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/combined_notifications.jpg\n/testbed/data/meeting_notification.jpg\n/testbed/data/power_failure_notification.jpg"
+}

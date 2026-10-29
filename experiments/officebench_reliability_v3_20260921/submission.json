@@ -1,0 +1,6 @@
+{
+  "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/975a6502-8fe6-481f-8955-0342ac240362/versions/1",
+  "name": "dw-officebench-gpt54-reliability-v3-focused-n124-20260921",
+  "status": "Starting",
+  "url": "https://ml.azure.com/runs/dw-officebench-gpt54-reliability-v3-focused-n124-20260921?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+}

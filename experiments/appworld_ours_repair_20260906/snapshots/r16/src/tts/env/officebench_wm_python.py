@@ -1,0 +1,646 @@
+"""Restricted Python-only tool protocol for OfficeBench world-model predictions."""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import threading
+from dataclasses import dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+
+_PYTHON_PREFIX = "PYTHON:"
+_PYTHON_READ_PREFIX = "PYTHON_READ:"
+_PYTHON_FINAL_PREFIX = "PYTHON_FINAL:"
+_PYTHON_ERROR_LOG_LOCK = threading.Lock()
+_PYTHON_ERRORS_LOGGED = 0
+
+
+def _env_enabled(name: str, default: bool) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value not in ("0", "false", "False")
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return max(1, int(os.environ.get(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return max(0.05, float(os.environ.get(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+
+def officebench_wm_tool_mode() -> str:
+    """Return the OfficeBench WM tool protocol; Python is the default."""
+    value = str(os.environ.get("TTS_OFFICEBENCH_WM_TOOL_MODE", "python")).strip().lower()
+    return "text" if value in ("text", "legacy", "read") else "python"
+
+
+def prepare_officebench_python_tool() -> bool:
+    """Start the shared restricted worker before an OfficeBench rollout needs it."""
+    if officebench_wm_tool_mode() != "python":
+        return False
+    if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON", True):
+        return False
+    try:
+        from ..llm.python_tool import shared_python_tool
+
+        return shared_python_tool().prepare()
+    except Exception:
+        return False
+
+
+def _extract_prefixed_python(text: str, prefix: str) -> Optional[str]:
+    stripped = (text or "").lstrip()
+    if not stripped.startswith(prefix):
+        return None
+    code = stripped[len(prefix):].strip()
+    code = re.split(
+        rf"(?m)^\s*(?:{re.escape(_PYTHON_READ_PREFIX)}|"
+        rf"{re.escape(_PYTHON_FINAL_PREFIX)}|{re.escape(_PYTHON_PREFIX)})\s*",
+        code,
+        maxsplit=1,
+    )[0].rstrip()
+    if code.startswith("```"):
+        first_line, _, remainder = code.partition("\n")
+        if first_line.strip().lower() in ("```", "```python", "```py"):
+            code = remainder
+        if code.rstrip().endswith("```"):
+            code = code.rstrip()[:-3]
+    return code.strip()
+
+
+def _extract_python_program(text: str) -> Optional[str]:
+    code = _extract_prefixed_python(text, _PYTHON_FINAL_PREFIX)
+    if code is not None:
+        return code
+    return _extract_prefixed_python(text, _PYTHON_PREFIX)
+
+
+def _extract_python_action(text: str) -> Tuple[Optional[str], Optional[str]]:
+    code = _extract_prefixed_python(text, _PYTHON_READ_PREFIX)
+    if code is not None:
+        return "read", code
+    code = _extract_python_program(text)
+    if code is not None:
+        return "final", code
+    return None, None
+
+
+def _contains_legacy_text_tool(text: str) -> bool:
+    return any(
+        line.strip().upper().startswith(("READ ", "LIST ", "CALL ", "TRACE "))
+        for line in (text or "").splitlines()
+    )
+
+
+def _json_size_hint(value: Any, stop_after: int) -> int:
+    try:
+        total = 0
+        encoder = json.JSONEncoder(ensure_ascii=True, sort_keys=True, default=str)
+        for chunk in encoder.iterencode(value):
+            total += len(chunk)
+            if total > stop_after:
+                break
+        return total
+    except Exception:
+        return stop_after + 1
+
+
+def _bounded_json_text(value: Any, limit: int) -> str:
+    try:
+        text = json.dumps(value, ensure_ascii=True, sort_keys=True, default=str)
+    except Exception:
+        text = repr(value)
+    if len(text) <= limit:
+        return text
+    return text[:limit] + f"... [truncated {len(text) - limit} chars]"
+
+
+def _context_variable_inventory(context: Dict[str, Any]) -> List[Dict[str, str]]:
+    """Describe copied variables without exposing their values to the model."""
+    inventory: List[Dict[str, str]] = []
+    for key, value in sorted(context.items()):
+        inventory.append({
+            "variable": f"data[{key!r}]",
+            "value_type": type(value).__name__,
+        })
+        if key == "reads" and isinstance(value, list):
+            for index, record in enumerate(value):
+                if not isinstance(record, dict) or "result" not in record:
+                    continue
+                inventory.append({
+                    "variable": f"data['reads'][{index}]['result']",
+                    "value_type": type(record["result"]).__name__,
+                })
+    return inventory
+
+
+def _parse_json(text: str) -> Optional[Any]:
+    try:
+        return json.loads((text or "").strip())
+    except Exception:
+        match = re.search(r"(\{.*\}|\[.*\])", text or "", re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except Exception:
+                return None
+    return None
+
+
+def _normalize_output(output: str, output_kind: str) -> Optional[str]:
+    if output_kind == "text":
+        payload = _parse_json(output)
+        if isinstance(payload, dict) and isinstance(payload.get("text"), str):
+            return payload["text"]
+        text = (output or "").strip()
+        if text.upper().startswith("PREDICT:"):
+            text = text[len("PREDICT:"):].strip()
+        return text or None
+    direct = (output or "").strip().upper()
+    if direct == "SUCCESS":
+        return "SUCCESS"
+    if direct in ("FAIL", "FAILURE"):
+        return "FAILURE"
+    for line in reversed((output or "").splitlines()):
+        match = re.fullmatch(
+            r"VERDICT\s*[:=]\s*(SUCCESS|FAIL|FAILURE)", line.strip().upper())
+        if match:
+            return "SUCCESS" if match.group(1) == "SUCCESS" else "FAILURE"
+    payload = None
+    for line in reversed((output or "").splitlines()):
+        try:
+            candidate = json.loads(line.strip())
+        except Exception:
+            continue
+        if isinstance(candidate, dict):
+            payload = candidate
+            break
+    if payload is None:
+        payload = _parse_json(output)
+    if not isinstance(payload, dict):
+        return None
+    verdict = str(payload.get("verdict", "")).upper()
+    if verdict == "SUCCESS":
+        return "SUCCESS"
+    if verdict in ("FAIL", "FAILURE"):
+        return "FAILURE"
+    success = payload.get("success")
+    if isinstance(success, bool):
+        return "SUCCESS" if success else "FAILURE"
+    return None
+
+
+def _python_protocol(
+    context: Dict[str, Any],
+    *,
+    required: bool,
+    context_chars: int,
+    output_kind: str,
+    allow_reads: bool,
+    allow_calls: bool = True,
+) -> str:
+    keys = ", ".join(sorted(map(str, context))) or "(none)"
+    routing = (
+        f"The copied structured input is larger than the direct-output reliability threshold "
+        f"(at least {context_chars} characters). You MUST use PYTHON_FINAL for the final prediction."
+        if required else
+        "If the result is straightforward, you may answer directly. Use PYTHON_FINAL when exact "
+        "filtering, copying, counting, comparison, or transformation is safer."
+    )
+    if output_kind == "verdict":
+        output_instruction = (
+            'End by calling `print_json({"verdict": "SUCCESS"})` or '
+            '`print_json({"verdict": "FAILURE"})`; alternatively print exactly '
+            "`VERDICT: SUCCESS` or `VERDICT: FAILURE` as the final line."
+        )
+    else:
+        output_instruction = (
+            'End by calling `print_json({"text": value})` with the complete observation or file '
+            "content. The JSON string framing preserves leading/trailing whitespace and empty files."
+        )
+    read_instruction = ""
+    if allow_reads:
+        call_line = (
+            '  {"op":"call","name":"<app.action>","args":{...}}\n'
+            if allow_calls else ""
+        )
+        read_instruction = (
+            "\nTo gather environment evidence, start a turn with `PYTHON_READ:` followed by a program "
+            "that prints exactly `{\"queries\":[...]}` via `print_json`. Each query must be one of:\n"
+            '  {"op":"read","path":"/testbed/..."}\n'
+            '  {"op":"list","path":"/testbed/..."}\n'
+            f"{call_line}"
+            '  {"op":"trace","path":"/testbed/..."}\n'
+            "The host validates immutable object reads, then copies their results into "
+            "`data['reads']` and `data['facts']`. The program never receives the session, filesystem, "
+            "apps, network, or process environment.\n"
+        )
+    exact_read_instruction = ""
+    exact_call = context.get("exact_read_call")
+    if context.get("grounded_clean_read_required"):
+        exact_read_instruction = (
+            "\nEXACT GROUNDED CLEAN-READ PROTOCOL (overrides every other routing option):\n"
+            "- The host already executed the proven read-only action and copied its exact observation "
+            "into `data['grounded_clean_read']`.\n"
+            "- Return a PYTHON_FINAL program that reads this variable, performs any required string "
+            "processing in Python, and prints the complete final observation.\n"
+            "- Do not request another read, transcribe the observation into source code, or return it "
+            "directly. Only generated Python may process the copied observation.\n"
+        )
+    elif context.get("exact_read_required") and isinstance(exact_call, dict):
+        exact_read_instruction = (
+            "\nEXACT CLEAN-READ PROTOCOL (overrides direct-answer routing):\n"
+            "- Your first response MUST be PYTHON_READ and request exactly the call in "
+            f"`data['exact_read_call']`: {json.dumps(exact_call, ensure_ascii=True, sort_keys=True)}.\n"
+            "- Do not answer or request any other evidence before that call.\n"
+            "- On the next turn, return a PYTHON_FINAL program that processes "
+            "`data['reads'][-1]['result']` directly and prints the complete final observation.\n"
+            "- Do not transcribe the host result into source code or return it directly.\n"
+        )
+    elif context.get("immutable_objects") is not None:
+        exact_read_instruction = (
+            "\nIMMUTABLE SHELL-READ PROTOCOL (overrides direct-answer routing):\n"
+            "- `data['immutable_objects']` is the complete recursive inventory as a list of "
+            "`{'name','path','type'}` dictionaries. It is already decoded; do not call json.loads on it.\n"
+            "- `data['shell_stages']` contains the parsed argv for each pipeline stage.\n"
+            "- Return PYTHON_FINAL immediately. Process that variable to emulate the requested "
+            "read-only shell listing/filter pipeline exactly.\n"
+            "- Do not request another LIST, transcribe inventory values into source code, or infer "
+            "objects not present in the copied inventory.\n"
+        )
+    return (
+        "\n\nPURE COMPUTATION OPTION:\n"
+        f"{routing}{read_instruction}{exact_read_instruction}For the final answer, make the FIRST "
+        "non-whitespace characters "
+        "of your response exactly `PYTHON_FINAL:` followed by a Python program. The program receives "
+        f"a copied JSON-like dictionary named `data` with inputs under: {keys}. It may use ordinary "
+        "list/dict/set operations, generators, `json`, `re`, `fnmatch`, `ast.literal_eval`, `datetime`, "
+        "date helpers, and "
+        "`print_json`. Safe common operations include `dict.fromkeys`, `str.rsplit`, `re.compile`, "
+        "`re.finditer`, and regex flags such as `re.I`. Prefer `json_value` for values that may "
+        "already be decoded. Do not import `os` or use `eval`; derive path components with string "
+        "operations. Files, network, environment access, subprocesses, and OfficeBench APIs are "
+        "unavailable. "
+        f"{output_instruction} Print only the complete requested result. The legacy `PYTHON:` prefix "
+        "is accepted as an alias for `PYTHON_FINAL:`."
+    )
+
+
+@dataclass
+class PythonLoopResult:
+    output: str = ""
+    valid: bool = False
+    python_calls: int = 0
+    python_failures: int = 0
+    python_forced: int = 0
+    python_mode_misses: int = 0
+
+
+def _run_python(
+    code: str,
+    context: Dict[str, Any],
+    stats: PythonLoopResult,
+    *,
+    allow_bare_container_output: bool = False,
+):
+    from ..llm.python_tool import shared_python_tool
+
+    stats.python_calls += 1
+    result = shared_python_tool().run(
+        code,
+        context,
+        timeout_s=_env_float("TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S", 1.0),
+        max_input_chars=_env_int(
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_INPUT_CHARS", 200_000),
+        max_output_chars=_env_int(
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_OUTPUT_CHARS", 20_000),
+        max_code_chars=_env_int(
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_CODE_CHARS", 12_000),
+        max_nodes=_env_int(
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_AST_NODES", 2_000),
+        max_steps=_env_int(
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_STEPS", 100_000),
+        allow_bare_container_output=allow_bare_container_output,
+    )
+    if result.error:
+        stats.python_failures += 1
+        if _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_LOG_ERRORS", False):
+            global _PYTHON_ERRORS_LOGGED
+            with _PYTHON_ERROR_LOG_LOCK:
+                limit = _env_int("TTS_OFFICEBENCH_WM_PYTHON_LOG_ERROR_LIMIT", 50)
+                if _PYTHON_ERRORS_LOGGED < limit:
+                    _PYTHON_ERRORS_LOGGED += 1
+                    print(
+                        f"[officebench-python-error] {result.error[:500]}",
+                        flush=True,
+                    )
+    return result
+
+
+def _parse_read_requests(output: str) -> Optional[List[Dict[str, Any]]]:
+    payload = _parse_json(output)
+    if not isinstance(payload, dict) or not isinstance(payload.get("queries"), list):
+        return None
+    parsed = []
+    for query in payload["queries"]:
+        if not isinstance(query, dict):
+            continue
+        op = str(query.get("op", "")).strip().lower()
+        if op in ("read", "list", "trace"):
+            path = str(query.get("path", "")).strip()
+            if path:
+                parsed.append({"op": op, "path": path})
+        elif op == "call":
+            name = str(query.get("name", "")).strip()
+            args = query.get("args") or {}
+            if name and isinstance(args, dict):
+                parsed.append({"op": op, "name": name, "args": args})
+    return parsed or None
+
+
+def _execute_read(query_interface, request: Dict[str, Any]) -> Any:
+    op = request["op"]
+    if op == "read":
+        raw_read = getattr(query_interface, "read_raw", None)
+        if callable(raw_read):
+            return raw_read(request["path"])
+        return query_interface.read(request["path"])
+    if op == "list":
+        return query_interface.list(request["path"])
+    if op == "trace":
+        return query_interface.trace(request["path"])
+    return query_interface.call(request["name"], request["args"])
+
+
+def _resolve_final(
+    response: str,
+    *,
+    complete: Callable[[str, int], str],
+    prompt: str,
+    context: Dict[str, Any],
+    max_tokens: int,
+    required: bool,
+    output_kind: str,
+    stats: PythonLoopResult,
+) -> str:
+    code = _extract_python_program(response)
+    if code is None:
+        if _extract_prefixed_python(response, _PYTHON_READ_PREFIX) is not None:
+            return ""
+        if not required:
+            normalized = _normalize_output(response, output_kind)
+            if normalized is not None:
+                stats.valid = True
+                return normalized
+            return ""
+        stats.python_mode_misses += 1
+        response = complete(
+            f"{prompt}\n\nYour previous response incorrectly used direct output. Return ONLY a "
+            "PYTHON_FINAL program that computes and prints the complete result.",
+            max_tokens,
+        )
+        code = _extract_python_program(response)
+        if code is None:
+            return ""
+
+    result = _run_python(
+        code, context, stats, allow_bare_container_output=True)
+    normalized = None if result.error else _normalize_output(result.output, output_kind)
+    error = result.error
+    if error is None and normalized is None:
+        error = f"program output is not a valid {output_kind} result"
+        stats.python_failures += 1
+    if error is None:
+        stats.valid = True
+        return normalized or ""
+    if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_REPAIR", True):
+        return ""
+
+    repair_inventory = _bounded_json_text(
+        _context_variable_inventory(context),
+        _env_int("TTS_OFFICEBENCH_WM_PYTHON_REPAIR_CONTEXT_CHARS", 12_000),
+    )
+    if result.fatal and required:
+        return ""
+    if result.fatal:
+        repair_instruction = (
+            "The Python helper is unavailable. Return the prediction directly in the requested format."
+        )
+    elif required:
+        repair_instruction = "Return one corrected PYTHON_FINAL program; direct output is not allowed."
+    else:
+        repair_instruction = (
+            "Return either the direct prediction or one corrected PYTHON_FINAL program."
+        )
+    failed_code = code
+    repair_error = error
+    repair_attempts = _env_int(
+        "TTS_OFFICEBENCH_WM_PYTHON_REPAIR_ATTEMPTS", 2)
+    for attempt in range(repair_attempts):
+        repaired = complete(
+            f"{prompt}\n\nYour previous PYTHON program failed safely with:\n"
+            f"{repair_error}\n\nFAILED PROGRAM:\n{failed_code[:4_000]}\n\n"
+            "AVAILABLE COPIED VARIABLES (names and types only; inspect values in generated code):\n"
+            f"{repair_inventory}\n\n{repair_instruction} This is repair attempt "
+            f"{attempt + 1}/{repair_attempts}. Prefer a shorter program and process copied read "
+            "results through their `data[...]` variables. Do not explain the failure.",
+            max_tokens,
+        )
+        repaired_code = _extract_python_program(repaired)
+        if repaired_code is None:
+            if not required:
+                normalized = _normalize_output(repaired, output_kind)
+                if normalized is not None:
+                    stats.valid = True
+                    return normalized
+            repair_error = "the Python repair response was invalid"
+            failed_code = repaired
+            continue
+        repaired_result = _run_python(
+            repaired_code, context, stats, allow_bare_container_output=True)
+        if repaired_result.error:
+            repair_error = repaired_result.error
+            failed_code = repaired_code
+            continue
+        normalized = _normalize_output(repaired_result.output, output_kind)
+        if normalized is None:
+            stats.python_failures += 1
+            repair_error = f"repaired program output is not a valid {output_kind} result"
+            failed_code = repaired_code
+            continue
+        stats.valid = True
+        return normalized
+    return ""
+
+
+def run_python_prediction_loop(
+    complete: Callable[[str, int], str],
+    query_interface,
+    header: str,
+    final_instr: str,
+    *,
+    context: Dict[str, Any],
+    max_turns: int = 6,
+    max_tokens: int = 1500,
+    output_kind: str = "text",
+    force_long: bool = False,
+    force_always: bool = False,
+) -> PythonLoopResult:
+    """Run bounded Python-emitted read rounds followed by a direct or Python final result."""
+    stats = PythonLoopResult()
+    if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON", True):
+        if force_always:
+            return stats
+        direct_prompt = (
+            f"{header}\n\nThe restricted Python helper is disabled. Return the final result directly; "
+            f"do not emit PYTHON_READ, PYTHON_FINAL, READ, LIST, CALL, or TRACE.\n\n"
+            f"FINAL OUTPUT FORMAT:\n{final_instr}"
+        )
+        response = complete(direct_prompt, max_tokens)
+        mode, _ = _extract_python_action(response)
+        if mode is not None or _contains_legacy_text_tool(response):
+            stats.python_mode_misses += 1
+            response = complete(
+                f"{direct_prompt}\n\nYour previous response used a disabled tool protocol. "
+                "Return only the direct final result.",
+                max_tokens,
+            )
+        normalized = _normalize_output(response, output_kind)
+        if normalized is not None:
+            stats.output = normalized
+            stats.valid = True
+        return stats
+
+    threshold = _env_int("TTS_OFFICEBENCH_WM_PYTHON_FORCE_CHARS", 2_000)
+    context_chars = _json_size_hint(context, threshold)
+    required = bool(force_always or (force_long and context_chars > threshold))
+    if required:
+        stats.python_forced = 1
+
+    protocol = _python_protocol(
+        context,
+        required=required,
+        context_chars=context_chars,
+        output_kind=output_kind,
+        allow_reads=query_interface is not None,
+        allow_calls=bool(
+            query_interface is not None
+            and getattr(query_interface, "allow_action_execution", True)
+        ),
+    )
+    model_prompt = f"{header}{protocol}\n\nFINAL OUTPUT FORMAT:\n{final_instr}"
+    reads = list(context.get("reads") or [])
+    base_facts = context.get("facts")
+    facts = dict(base_facts) if isinstance(base_facts, dict) else {}
+
+    def current_context() -> Dict[str, Any]:
+        return {**context, "reads": list(reads), "facts": dict(facts)}
+
+    turns = max(
+        1, _env_int("TTS_OFFICEBENCH_WM_PYTHON_READ_TURNS", max_turns))
+    max_reads = _env_int("TTS_OFFICEBENCH_WM_PYTHON_READS_PER_TURN", 4)
+    visible_limit = _env_int(
+        "TTS_OFFICEBENCH_WM_PYTHON_READ_CONTEXT_CHARS", 12_000)
+
+    for turn in range(turns):
+        read_variables = [
+            {
+                **{key: value for key, value in record.items() if key != "result"},
+                "variable": f"data['reads'][{index}]['result']",
+            }
+            for index, record in enumerate(reads)
+        ]
+        response = complete(
+            f"{model_prompt}\n\nCOPIED READ RESULTS SO FAR:\n"
+            f"{_bounded_json_text(read_variables, visible_limit)}\n\n"
+            f"TOOL FACTS AND ERRORS:\n{_bounded_json_text(facts, visible_limit)}\n\n"
+            f"Python tool turn {turn + 1}/{turns}:",
+            max_tokens,
+        )
+        mode, code = _extract_python_action(response)
+        if mode == "read" and code is not None:
+            result = _run_python(
+                code, current_context(), stats, allow_bare_container_output=True)
+            if result.error:
+                facts[f"python_read_error_{turn + 1}"] = result.error
+                if result.fatal:
+                    break
+                continue
+            requests = _parse_read_requests(result.output)
+            if requests is None:
+                stats.python_failures += 1
+                facts[f"python_read_error_{turn + 1}"] = (
+                    "PYTHON_READ output must contain a non-empty queries list.")
+                continue
+            for request in requests[:max_reads]:
+                try:
+                    read_result = _execute_read(query_interface, request)
+                except Exception as exc:
+                    read_result = f"ERROR: {type(exc).__name__}: {str(exc)[:300]}"
+                record = {**request, "result": read_result}
+                reads.append(record)
+            continue
+        if mode == "final":
+            stats.output = _resolve_final(
+                response,
+                complete=complete,
+                prompt=model_prompt,
+                context=current_context(),
+                max_tokens=max_tokens,
+                required=required,
+                output_kind=output_kind,
+                stats=stats,
+            )
+            return stats
+        if _contains_legacy_text_tool(response):
+            facts[f"python_tool_error_{turn + 1}"] = (
+                "READ/LIST/CALL/TRACE are disabled in Python mode. Use PYTHON_READ.")
+            continue
+        stats.output = _resolve_final(
+            response,
+            complete=complete,
+            prompt=model_prompt,
+            context=current_context(),
+            max_tokens=max_tokens,
+            required=required,
+            output_kind=output_kind,
+            stats=stats,
+        )
+        return stats
+
+    response = complete(
+        f"{model_prompt}\n\nYou are out of read turns. Return only a PYTHON_FINAL program; "
+        "do not request more reads.",
+        max_tokens,
+    )
+    mode, _ = _extract_python_action(response)
+    if mode != "read" and not _contains_legacy_text_tool(response):
+        stats.output = _resolve_final(
+            response,
+            complete=complete,
+            prompt=model_prompt,
+            context=current_context(),
+            max_tokens=max_tokens,
+            required=required,
+            output_kind=output_kind,
+            stats=stats,
+        )
+    return stats
+
+
+__all__ = [
+    "PythonLoopResult",
+    "officebench_wm_tool_mode",
+    "prepare_officebench_python_tool",
+    "run_python_prediction_loop",
+]

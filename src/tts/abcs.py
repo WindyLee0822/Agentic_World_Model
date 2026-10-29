@@ -172,13 +172,6 @@ class ShadowEvaluator(abc.ABC):
     def reward_from_shadow(self, shadow: Dict[tuple, Dict], candidate_actions: List[Action]) -> RewardInfo:
         """Predict the candidate trajectory's reward from the read-grounded shadow (no commit)."""
 
-    def prepare_flat_context(self, shadow: Dict[tuple, Dict]) -> None:
-        """Prepare action-independent context for a flat world model.
-
-        Called once when the flat world model is constructed, before the solver emits any candidate
-        action. Implementations may turn the fixed reference-derived shadow into a reusable simulator
-        prompt. Recursive world models do not use this hook.
-        """
 
     def observe(self, shadow: Dict[tuple, Dict], action: Action) -> Optional[Tuple[str, bool]]:
         """Faithful read-grounded observation for one action (optional; default: advisory only).
@@ -246,7 +239,7 @@ class TaskEnvironment(Stepper):
         """Run the env's **real, official-prompt agent** once, returning ``(Trajectory, RewardInfo)``.
 
         The returned :class:`RewardInfo` is the *grounded, official* benchmark reward (so a single
-        rollout reproduces the official B0 number).  Real envs override this; the abstract test
+        rollout reproduces the official single-rollout number).  Real envs override this; the abstract test
         doubles (which exercise the env-agnostic machinery with a scripted stand-in) do not."""
         raise NotImplementedError("this environment has no real official agent wired")
 

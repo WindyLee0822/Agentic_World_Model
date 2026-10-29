@@ -1,4 +1,8 @@
-# B2: parallel sampling with per-rollout snapshot copies (forking — baseline only).
+# Real-environment Best-of-N ceiling.
 method: b2
-N: 8
-simulator: {kind: snapshot}
+N: 16
+solver:
+  agent: llm
+  temperature: 1.0
+simulator:
+  kind: snapshot

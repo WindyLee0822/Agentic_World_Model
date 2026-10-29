@@ -1,0 +1,7 @@
+{
+  "passed": 34,
+  "failed": 0,
+  "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=src /anaconda/envs/appwm/bin/python -m pytest -q tests/test_model_driven.py tests/test_appworld_strict_routing.py tests/test_appworld_strict_program_prediction.py tests/test_appworld_ours_goal.py",
+  "cwd": "/tmp/appworld-ours-relaxed-r19-stage",
+  "scope": "Focused local checks, not official benchmark accuracy"
+}

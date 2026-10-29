@@ -104,6 +104,7 @@ class Selector:
                 bool(scored[i].trajectory.done),
                 not is_hard_invalid(scored[i]),
                 scored[i].score,
+                float((scored[i].predicted.metadata or {}).get("partial_progress", 0.0)) if scored[i].predicted else 0.0,
                 -scored[i].cost,
                 -i,
             )

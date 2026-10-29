@@ -1,0 +1,23 @@
+{
+  "limitation": "Diagnostic samples are prefixes, not guaranteed full traces.",
+  "samples": [
+    {
+      "file": "wm-219-5f36a770b0fa4ef48244f2cab7b42a39.jsonl",
+      "task": "cef9191_2",
+      "seed": 13006,
+      "sample_events": 23,
+      "verifier_events": 8,
+      "model_errors": 0,
+      "last_event_prefix": "PYTHON_FINAL:\nimport json\n\n# The candidate's answer from the task context\ncandidate_answer = \"Dylan Stone\"\n\n# Gold values\ngold_answer = json_value(data['gold']['sections']['answer'])  # \"Dylan Stone\"\ngold_most_least = json_value(data['gold']['sections']['public_data'])['most_least']  # \"least\"\n\n# Checks\nchecks = data['checklist']  # string: \"- assert answers match.\\n- assert no model changes.\"\n\n# Verify answer matches gold\nanswer_match = (candidate_answer == gold_answer)\n\n# Verify no model changes: no writes were applied\nno_model_changes = (len(data['writes']) == 0)\n\n# All checks pass?\nif answ"
+    },
+    {
+      "file": "wm-217-42f43c4628aa4e528c8d1f766c184a88.jsonl",
+      "task": "cef9191_1",
+      "seed": 12003,
+      "sample_events": 19,
+      "verifier_events": 6,
+      "model_errors": 0,
+      "last_event_prefix": "PYTHON_FINAL:\nimport json\n\n# The candidate's answer\ncandidate_answer = \"Eliana Harper\"\n\n# Gold values\ngold_most_least = json_value(data['gold']['sections']['public_data'])['most_least']\ngold_answer = json_value(data['gold']['sections']['answer'])\n\n# The following artists list from the successful read (reads[2] is a list of 9 artists)\nartists = data['reads'][2]['result']\n\n# Find the most followed artist among those the user follows\nmost_followed = max(artists, key=lambda a: a['follower_count'])\nmost_followed_name = most_followed['name']\n\n# Check 1: answers match\nanswers_match = (candidate_answe"
+    }
+  ]
+}

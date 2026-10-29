@@ -26,15 +26,15 @@ inputs:
     type: uri_folder
     path: azureml:officebench_clone:1
   levels: "1"            # OfficeBench uses --levels as app-counts: 1 / 2 / 3 apps
-  methods: b0,b1,b2,ours
+  methods: ours
   n: "1,2,4,8"
   agent: llm_wm
   workers: 8
   max_steps: 40
   temperature: 1
   stall_timeout: "3600"
-  # Exact pristine reads expose real filenames/content while writes and dirty reads stay predictive.
-  extra_args: --exact-clean-reads
+  # Use model/method defaults; GPT and DeepSeek Ours predict all candidate observations.
+  extra_args: none
   aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
   aoai_deployment: gpt-5.4
   aoai_api_version: 2024-12-01-preview

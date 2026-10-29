@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-09-07T21:32:30.068635+00:00",
+  "source_and_log_sha256": {
+    "src/tts/env/real_appworld.py": "a88892e77f8a5fa830b40748e748b19d22b5834ae5820620a6eeafaf23d3c7e9",
+    "src/tts/env/appworld_react_agent.py": "55ca25de820e57ce417b74c10e555dfcde83b6c73ea08d17a97b7ca63216ae98",
+    "experiments/appworld_ours_repair_20260906/isolation-tests.log": "b9e1eca38554c50ea07438fe939e9bd85a68219e128a5782b53ac1e0b20e3c66",
+    "experiments/appworld_ours_repair_20260906/focused-r16-local.log": "eb496db9f0a0adad189e9ae5cb53346348b402be94d489f83394f207663f80f7",
+    "experiments/appworld_ours_repair_20260906/focused-r16-recheck.log": "cb67bff61bba8061fae3a8686905995782d86d0084ffe7356c630a5368c14cf8"
+  },
+  "source_evidence": [
+    "real_appworld.py:1976 selects AppWorldOursWMPredictor only when method.lower() == ours",
+    "real_appworld.py:1999 guards the changed cell timeout with the Ours predictor type",
+    "real_appworld.py:2069 enables executed_code_feedback only for ours",
+    "appworld_react_agent.py:545 defaults executed_code_feedback to False; line 567 guards added guidance"
+  ],
+  "validation_evidence": {
+    "r16_focused_initial_passed": 163,
+    "r16_fixture_recheck_passed": 2,
+    "earlier_isolation_passed": 152,
+    "earlier_isolation_skipped": 8,
+    "earlier_isolation_failures": 4,
+    "failure_context": "Saved validation identifies one existing B1 callback failure and three missing-tau2 dependency failures."
+  },
+  "limitations": [
+    "Earlier isolation suite is not a fresh full evaluation of every other method or dataset.",
+    "Exact setup API responses remain unresolved under the literal every-observation requirement."
+  ],
+  "goal_complete": false
+}

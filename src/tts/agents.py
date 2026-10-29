@@ -10,7 +10,7 @@ real env for the committed rollout, or a world model while sampling).
   whole pipeline runnable and testable without any LLM calls, while still producing the diverse
   pool of good/bad trajectories that best-of-``N`` selection ranks.
 * :class:`LLMAgent` — a minimal adapter for an interactive, observation-driven solver.  The
-  **real official-prompt agents** that produce B0 (and the sampled rollouts) are not driven
+  **real official-prompt agents** that produce real rollouts (and the sampled rollouts) are not driven
   through this class; they live in the env wrappers (``Tau2TaskEnv.run_agent_rollout`` runs the
   official τ² orchestrator; ``AppWorldTaskEnv.run_agent_rollout`` runs the official ReAct loop),
   so the official prompts and evaluators are used verbatim.  This adapter remains for plugging a

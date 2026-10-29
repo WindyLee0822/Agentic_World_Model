@@ -1,0 +1,13 @@
+[
+  {
+    "solver_catches_error": false,
+    "host_rejected_output": true
+  },
+  {
+    "solver_catches_error": true,
+    "host_rejected_output": true
+  },
+  {
+    "predicted_api_rejection_preserved": true
+  }
+]

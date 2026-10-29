@@ -1,0 +1,10 @@
+{
+  "focused_tests_passed": 30,
+  "appworld_regression_tests_passed": 28,
+  "failures": 0,
+  "errors": 0,
+  "source_isolation_passed": true,
+  "new_behavior_verified": "Generated final verifier uses fresh copied reads in two calls; default Ours retains four-call inspection behavior.",
+  "performance_improvement_proven": false,
+  "full_dataset_result_pending": true
+}

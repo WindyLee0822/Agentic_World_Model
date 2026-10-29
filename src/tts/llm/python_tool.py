@@ -186,6 +186,9 @@ _SAFE_CALL_NAMES = {
 }
 
 _SAFE_METHODS = {
+    "start",
+    "end",
+    "span",
     "add",
     "append",
     "capitalize",
@@ -256,6 +259,7 @@ _SAFE_METHODS = {
     "dumps",
     "loads",
     "strptime",
+    "strftime",
     "zfill",
     "ceil",
     "floor",

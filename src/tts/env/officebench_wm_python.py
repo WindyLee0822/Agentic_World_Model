@@ -9,6 +9,8 @@ import threading
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from .officebench_semantics import NATIVE_SEMANTICS, read_schema, inventory_schema, observation_contract_error
+
 
 _PYTHON_PREFIX = "PYTHON:"
 _PYTHON_READ_PREFIX = "PYTHON_READ:"
@@ -160,8 +162,10 @@ def _parse_json(text: str) -> Optional[Any]:
 def _normalize_output(output: str, output_kind: str) -> Optional[str]:
     if output_kind == "text":
         payload = _parse_json(output)
-        if isinstance(payload, dict) and isinstance(payload.get("text"), str):
-            return payload["text"]
+        if isinstance(payload, dict):
+            # A query envelope is a request for evidence, never an app observation.
+            # Require the documented final-result schema instead of leaking protocol JSON.
+            return payload.get("text") if isinstance(payload.get("text"), str) else None
         text = (output or "").strip()
         if text.upper().startswith("PREDICT:"):
             text = text[len("PREDICT:"):].strip()
@@ -279,7 +283,7 @@ def _python_protocol(
             "objects not present in the copied inventory.\n"
         )
     return (
-        "\n\nPURE COMPUTATION OPTION:\n"
+        f"\n\n{NATIVE_SEMANTICS}\nPURE COMPUTATION OPTION:\n"
         f"{routing}{read_instruction}{exact_read_instruction}For the final answer, make the FIRST "
         "non-whitespace characters "
         "of your response exactly `PYTHON_FINAL:` followed by a Python program. The program receives "
@@ -304,6 +308,7 @@ class PythonLoopResult:
     python_failures: int = 0
     python_forced: int = 0
     python_mode_misses: int = 0
+    error: str = ""
 
 
 def _run_python(
@@ -321,9 +326,9 @@ def _run_python(
         context,
         timeout_s=_env_float("TTS_OFFICEBENCH_WM_PYTHON_TIMEOUT_S", 1.0),
         max_input_chars=_env_int(
-            "TTS_OFFICEBENCH_WM_PYTHON_MAX_INPUT_CHARS", 200_000),
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_INPUT_CHARS", 2_000_000),
         max_output_chars=_env_int(
-            "TTS_OFFICEBENCH_WM_PYTHON_MAX_OUTPUT_CHARS", 20_000),
+            "TTS_OFFICEBENCH_WM_PYTHON_MAX_OUTPUT_CHARS", 2_000_000),
         max_code_chars=_env_int(
             "TTS_OFFICEBENCH_WM_PYTHON_MAX_CODE_CHARS", 12_000),
         max_nodes=_env_int(
@@ -334,6 +339,7 @@ def _run_python(
     )
     if result.error:
         stats.python_failures += 1
+        stats.error = str(result.error)
         if _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_LOG_ERRORS", False):
             global _PYTHON_ERRORS_LOGGED
             with _PYTHON_ERROR_LOG_LOCK:
@@ -341,7 +347,7 @@ def _run_python(
                 if _PYTHON_ERRORS_LOGGED < limit:
                     _PYTHON_ERRORS_LOGGED += 1
                     print(
-                        f"[officebench-python-error] {result.error[:500]}",
+                        "[officebench-python-error] " + json.dumps({"error": str(result.error), "kind": context.get("kind"), "action": context.get("action"), "code": code, "read_schemas": [{k:v for k,v in r.items() if k != "result"} for r in context.get("reads", [])]}),
                         flush=True,
                     )
     return result
@@ -411,6 +417,7 @@ def _resolve_final(
         )
         code = _extract_python_program(response)
         if code is None:
+            stats.error = "required PYTHON_FINAL program was not returned"
             return ""
 
     result = _run_python(
@@ -421,7 +428,14 @@ def _resolve_final(
         error = f"program output is not a valid {output_kind} result"
         stats.python_failures += 1
     if error is None:
+        error = observation_contract_error(context, normalized)
+        if error:
+            stats.python_failures += 1
+    if error is not None:
+        stats.error = str(error)
+    if error is None:
         stats.valid = True
+        stats.error = ""
         return normalized or ""
     if not _env_enabled("TTS_OFFICEBENCH_WM_PYTHON_REPAIR", True):
         return ""
@@ -451,7 +465,9 @@ def _resolve_final(
             f"{prompt}\n\nYour previous PYTHON program failed safely with:\n"
             f"{repair_error}\n\nFAILED PROGRAM:\n{failed_code[:4_000]}\n\n"
             "AVAILABLE COPIED VARIABLES (names and types only; inspect values in generated code):\n"
-            f"{repair_inventory}\n\n{repair_instruction} This is repair attempt "
+            f"{repair_inventory}\n\nREAD SCHEMAS:\n"
+            f"{json.dumps([{k:v for k,v in r.items() if k != 'result'} for r in context.get('reads', [])])}\n"
+            f"{NATIVE_SEMANTICS}\n{repair_instruction} This is repair attempt "
             f"{attempt + 1}/{repair_attempts}. Prefer a shorter program and process copied read "
             "results through their `data[...]` variables. Do not explain the failure.",
             max_tokens,
@@ -478,8 +494,16 @@ def _resolve_final(
             repair_error = f"repaired program output is not a valid {output_kind} result"
             failed_code = repaired_code
             continue
+        contract_error = observation_contract_error(context, normalized)
+        if contract_error:
+            stats.python_failures += 1
+            repair_error = contract_error
+            failed_code = repaired_code
+            continue
         stats.valid = True
+        stats.error = ""
         return normalized
+    stats.error = str(repair_error)
     return ""
 
 
@@ -586,8 +610,16 @@ def run_python_prediction_loop(
                 try:
                     read_result = _execute_read(query_interface, request)
                 except Exception as exc:
+                    from .officebench_wm_predict import OfficeBenchSimulationError
+
+                    if isinstance(exc, OfficeBenchSimulationError):
+                        raise
                     read_result = f"ERROR: {type(exc).__name__}: {str(exc)[:300]}"
                 record = {**request, "result": read_result}
+                if request['op'] == 'read':
+                    record.update(read_schema(request['path'], read_result))
+                elif request['op'] == 'list':
+                    record.update(inventory_schema(request['path'], read_result))
                 reads.append(record)
             continue
         if mode == "final":

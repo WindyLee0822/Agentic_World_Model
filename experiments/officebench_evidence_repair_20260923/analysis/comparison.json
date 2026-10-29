@@ -1,0 +1,2504 @@
+{
+  "before": {
+    "1": {
+      "tasks": 8,
+      "success": 6,
+      "agreement": 1,
+      "TP": 0,
+      "FP": 1,
+      "FN": 6,
+      "TN": 1,
+      "all_zero": 7,
+      "python_calls": 98,
+      "python_failures": 10,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    },
+    "2": {
+      "tasks": 8,
+      "success": 6,
+      "agreement": 1,
+      "TP": 0,
+      "FP": 1,
+      "FN": 6,
+      "TN": 1,
+      "all_zero": 7,
+      "python_calls": 199,
+      "python_failures": 24,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    },
+    "4": {
+      "tasks": 8,
+      "success": 5,
+      "agreement": 2,
+      "TP": 0,
+      "FP": 1,
+      "FN": 5,
+      "TN": 2,
+      "all_zero": 7,
+      "python_calls": 381,
+      "python_failures": 42,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    }
+  },
+  "after": {
+    "1": {
+      "tasks": 8,
+      "success": 5,
+      "agreement": 8,
+      "TP": 5,
+      "FP": 0,
+      "FN": 0,
+      "TN": 3,
+      "all_zero": 3,
+      "python_calls": 34,
+      "python_failures": 1,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    },
+    "2": {
+      "tasks": 8,
+      "success": 5,
+      "agreement": 8,
+      "TP": 5,
+      "FP": 0,
+      "FN": 0,
+      "TN": 3,
+      "all_zero": 3,
+      "python_calls": 68,
+      "python_failures": 1,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    },
+    "4": {
+      "tasks": 8,
+      "success": 6,
+      "agreement": 8,
+      "TP": 6,
+      "FP": 0,
+      "FN": 0,
+      "TN": 2,
+      "all_zero": 2,
+      "python_calls": 133,
+      "python_failures": 1,
+      "simulator_writes": 0,
+      "commits": 8,
+      "rollout_errors": 0
+    }
+  },
+  "observations_before": {
+    "total": 162,
+    "exact": 120,
+    "by_action": {
+      "shell.command": {
+        "total": 38,
+        "exact": 25
+      },
+      "excel.read_file": {
+        "total": 14,
+        "exact": 14
+      },
+      "excel.set_cell": {
+        "total": 3,
+        "exact": 3
+      },
+      "excel.delete_cell": {
+        "total": 45,
+        "exact": 45
+      },
+      "email.list_emails": {
+        "total": 6,
+        "exact": 6
+      },
+      "email.read_email": {
+        "total": 9,
+        "exact": 0
+      },
+      "ocr.recognize_file": {
+        "total": 3,
+        "exact": 3
+      },
+      "word.create_new_file": {
+        "total": 8,
+        "exact": 8
+      },
+      "word.write_to_file": {
+        "total": 8,
+        "exact": 8
+      },
+      "word.convert_to_pdf": {
+        "total": 3,
+        "exact": 3
+      },
+      "email.send_email": {
+        "total": 5,
+        "exact": 5
+      },
+      "llm.complete_text": {
+        "total": 20,
+        "exact": 0
+      }
+    }
+  },
+  "observations_after": {
+    "total": 141,
+    "exact": 139,
+    "by_action": {
+      "shell.command": {
+        "total": 26,
+        "exact": 26
+      },
+      "excel.read_file": {
+        "total": 15,
+        "exact": 15
+      },
+      "excel.set_cell": {
+        "total": 3,
+        "exact": 3
+      },
+      "excel.delete_cell": {
+        "total": 45,
+        "exact": 45
+      },
+      "email.list_emails": {
+        "total": 3,
+        "exact": 3
+      },
+      "email.read_email": {
+        "total": 10,
+        "exact": 10
+      },
+      "ocr.recognize_file": {
+        "total": 3,
+        "exact": 3
+      },
+      "word.create_new_file": {
+        "total": 9,
+        "exact": 9
+      },
+      "word.write_to_file": {
+        "total": 9,
+        "exact": 9
+      },
+      "word.convert_to_pdf": {
+        "total": 3,
+        "exact": 3
+      },
+      "email.send_email": {
+        "total": 11,
+        "exact": 11
+      },
+      "llm.complete_text": {
+        "total": 4,
+        "exact": 2
+      }
+    }
+  },
+  "paired": [
+    {
+      "task_id": "1-20/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 2
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 0.5,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-20/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          },
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 3
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 0.5,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 0.5,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-20/0",
+      "n": 4,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          },
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          },
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          },
+          {
+            "met": 3,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 4,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.75,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 5
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 2,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 0.5,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 0.5,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-3/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-3/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-3/0",
+      "n": 4,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-4/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 1
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-4/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 7
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-4/0",
+      "n": 4,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.0,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 9
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_excel_cell_value",
+                "status": "MET",
+                "reason": "native cell substring predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-7/0",
+      "n": 1,
+      "before": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 4
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-7/0",
+      "n": 2,
+      "before": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 9
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-7/0",
+      "n": 4,
+      "before": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 3,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 20
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          },
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 0.0,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_diff_contain_text",
+                "status": "UNMET",
+                "reason": "paired-file decoder unavailable"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-8/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 1
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-8/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 1
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "1-8/0",
+      "n": 4,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          },
+          {
+            "met": 0,
+            "unmet": 0,
+            "unknown": 1,
+            "total": 1,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.25,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 1
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 1,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_exact_match",
+                "status": "MET",
+                "reason": "decoded nonnumeric workbook cells"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-12/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 2
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 1
+      }
+    },
+    {
+      "task_id": "3-12/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 4
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 1
+      }
+    },
+    {
+      "task_id": "3-12/0",
+      "n": 4,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          },
+          {
+            "met": 1,
+            "unmet": 0,
+            "unknown": 4,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.4,
+            "whole_score": 0.0
+          }
+        ],
+        "n_python_failures": 7
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 3,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 3,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 1
+      }
+    },
+    {
+      "task_id": "3-65/0",
+      "n": 1,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          null
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-65/0",
+      "n": 2,
+      "before": {
+        "success": true,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          null,
+          null
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 1,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-65/0",
+      "n": 4,
+      "before": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 2,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          null,
+          null,
+          {
+            "met": 0,
+            "unmet": 1,
+            "unknown": 2,
+            "total": 3,
+            "unknown_credit": 0.25,
+            "atomic_score": 0.16666666666666666,
+            "whole_score": 0.0
+          },
+          null
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": true,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 1,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          },
+          {
+            "met": 2,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 2,
+            "atomic_score": 1.0,
+            "whole_score": 1.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "MET",
+                "reason": "native whole-keyword predicate"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-82/0",
+      "n": 1,
+      "before": {
+        "success": false,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-82/0",
+      "n": 2,
+      "before": {
+        "success": false,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 1,
+        "candidate_confidences": [
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          },
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    },
+    {
+      "task_id": "3-82/0",
+      "n": 4,
+      "before": {
+        "success": false,
+        "predicted_success": true,
+        "predicted_confidence": 1.0,
+        "selected_index": 1,
+        "candidate_confidences": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          },
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          },
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          },
+          {
+            "met": 5,
+            "unmet": 0,
+            "unknown": 0,
+            "total": 5,
+            "unknown_credit": 0.25,
+            "atomic_score": 1.0,
+            "whole_score": 1.0
+          }
+        ],
+        "n_python_failures": 0
+      },
+      "after": {
+        "success": false,
+        "predicted_success": false,
+        "predicted_confidence": 0.0,
+        "selected_index": 0,
+        "candidate_confidences": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "candidate_verifier_percheck": [
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          },
+          {
+            "met": 1,
+            "unmet": 2,
+            "unknown": 0,
+            "total": 3,
+            "atomic_score": 0.3333333333333333,
+            "whole_score": 0.0,
+            "typed": true,
+            "checks": [
+              {
+                "function": "evaluate_file_exist",
+                "status": "MET",
+                "reason": "predicted resource existence"
+              },
+              {
+                "function": "evaluate_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              },
+              {
+                "function": "evaluate_not_contain",
+                "status": "UNMET",
+                "reason": "openpyxl rejects this filename extension"
+              }
+            ]
+          }
+        ],
+        "n_python_failures": 0
+      }
+    }
+  ]
+}

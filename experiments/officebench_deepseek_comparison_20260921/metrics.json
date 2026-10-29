@@ -1,0 +1,38 @@
+{
+  "1": {
+    "tasks": 300,
+    "successes": 104,
+    "rollout_errors": 10,
+    "all_zero_pools": 239,
+    "false_positive": 13,
+    "false_negative": 56
+  },
+  "2": {
+    "tasks": 300,
+    "successes": 118,
+    "rollout_errors": 7,
+    "all_zero_pools": 209,
+    "false_positive": 21,
+    "false_negative": 48
+  },
+  "settings": {
+    "predict_all_actions": [
+      "False"
+    ],
+    "officebench_wm_tool_mode": [
+      "python"
+    ],
+    "officebench_verifier_samples": [
+      "1"
+    ],
+    "officebench_verifier_percheck": [
+      "False"
+    ],
+    "officebench_comparative_rerank": [
+      "False"
+    ],
+    "success_score": [
+      "simulator_confidence"
+    ]
+  }
+}

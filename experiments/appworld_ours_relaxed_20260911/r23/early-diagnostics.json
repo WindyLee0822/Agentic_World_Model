@@ -1,0 +1,26 @@
+{
+  "status": {
+    "name": "dw-appworld-ours-relaxed-r23-n1-probe-20260913",
+    "status": "Running",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/620e6a50-6208-415e-bbf6-2025359dcfab/versions/1",
+    "checked_at": "2026-09-13T04:44:11.105239+00:00"
+  },
+  "listed_files": 1,
+  "samples": [
+    {
+      "file": "wm-198-485975a6fa414491bdbc2682380e0297.jsonl",
+      "bytes": 137,
+      "modified": "2026-09-13T04:33:57+00:00",
+      "events": [
+        {
+          "task_id": "5a83b05_1",
+          "seed": 9000,
+          "max_tokens": 1,
+          "response_prefix": "Hello",
+          "response_chars": 5,
+          "elapsed_s": 7.444163636000212
+        }
+      ]
+    }
+  ]
+}

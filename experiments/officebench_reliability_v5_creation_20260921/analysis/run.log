@@ -1,0 +1,33 @@
+[officebench-wm] tool mode=python, reference=1, percheck=1, unknown_credit=0.25, whole_weight=0.25, comparative_rerank=1, comparative_margin=0.25, uniform_seeds=base+i, verifier_samples=5, success_score=simulator_confidence_guarded
+officebench tasks:   0%|          | 0/1 [00:00<?, ?task/s][officebench-commit-trace] {"task_id": "2-15/0", "action": {"app": "calendar", "action": "list_events", "username": "Alice"}, "predicted": "Summary: Strategy by Charlie\nStart Time: 20140101T141000Z\nEnd Time: 20140101T143000Z\nDescription: None\nLocation: None\n--------------------------------------------------\nSummary: Introductions by Linda\nStart Time: 20140101T130000Z\nEnd Time: 20140101T133000Z\nDescription: None\nLocation: None\n--------------------------------------------------\nSummary: Agenda by Davide\nStart Time: 20140101T133000Z\nEnd Time: 20140101T141000Z\nDescription: None\nLocation: None\n--------------------------------------------------", "actual": "Successfully list events for Alice:\nSummary: Strategy by Charlie\nStart Time: 2014-01-01 14:10:00\nEnd Time: 2014-01-01 14:30:00\nDescription: None\nLocation: None\n--------------------------------------------------\nSummary: Introductions by Linda\nStart Time: 2014-01-01 13:00:00\nEnd Time: 2014-01-01 13:30:00\nDescription: None\nLocation: None\n--------------------------------------------------\nSummary: Agenda by Davide\nStart Time: 2014-01-01 13:30:00\nEnd Time: 2014-01-01 14:10:00\nDescription: None\nLocation: None\n--------------------------------------------------"}
+[officebench-commit-trace] {"task_id": "2-15/0", "action": {"app": "excel", "action": "create_new_file", "file_path": "/testbed/data/meeting_agenda.xlsx"}, "predicted": "The directory /testbed/data does not exist. Failed to create the file.", "actual": "Successfully create new file /testbed/data/meeting_agenda.xlsx"}
+[officebench-commit-trace] {"task_id": "2-15/0", "action": {"app": "shell", "action": "command", "command": "find / -maxdepth 3 -type d -name data 2>/dev/null | sort"}, "predicted": "This action was not executed because it cannot be proven read-only within /testbed. Inspect files using only /testbed paths and safe commands such as ls, find without -delete/-exec, cat, grep, sed without -i/e/w, sort, head, tail, file, or wc; do not use Python, xargs, sh, or output redirection for inspection.", "actual": "/testbed/data"}
+[officebench-commit-trace] {"task_id": "2-15/0", "action": {"app": "shell", "action": "command", "command": "find /testbed -maxdepth 3 -type d -name data | sort"}, "predicted": "/testbed/data", "actual": "/testbed/data"}
+officebench tasks:   0%|          | 0/1 [02:06<?, ?task/s, 2app]officebench tasks: 100%|██████████| 1/1 [02:06<00:00, 126.35s/task, 2app]officebench tasks: 100%|██████████| 1/1 [02:06<00:00, 126.35s/task, 2app]
+
+TTS curve — success vs N  [officebench | ALL subsets]
+-----------------------------------------------------
+  method | N=1   
+    ours | 0.00  
+
+TTS — success vs N  [officebench | 2app]
+----------------------------------------
+  method | N=1   
+    ours | 0.00  
+
+Wrote 1 recorded decisions and metrics over 1 expected decisions (0 missing counted as failures), with 1 aggregate rows to /mnt/azureml/cr/j/8cca6a0cdf5242e3aa8682f87546252a/cap/data-capability/wd/output_dir/
+
+============================================================
+METRICS (4 decimal places)
+============================================================
+
+TTS curve — success vs N  [officebench | ALL subsets]
+-----------------------------------------------------
+  method | N=1       
+    ours | 0.0000    
+
+TTS — success vs N  [officebench | 2app]
+----------------------------------------
+  method | N=1       
+    ours | 0.0000    
+[summarize] wrote /mnt/azureml/cr/j/8cca6a0cdf5242e3aa8682f87546252a/cap/data-capability/wd/output_dir/summary.json and /mnt/azureml/cr/j/8cca6a0cdf5242e3aa8682f87546252a/cap/data-capability/wd/output_dir/summary.txt (4-decimal metrics)

@@ -203,6 +203,8 @@ def _read_one_file(path: str, doc_type: str) -> str:
 
     if not os.path.exists(path):
         return "[file does not exist]"
+    if os.path.isdir(path):
+        return "ERROR: operand is a directory; use LIST instead of READ"
     try:
         if doc_type == "image":
             from apps.ocr_app import ocr_recognize_file
@@ -243,7 +245,7 @@ def handle_read_state(req: dict) -> dict:
         if not path:
             continue
         abspath = path if path.startswith("/") else os.path.join(_TESTBED, path.lstrip("./"))
-        out[path] = _read_one_file(abspath, spec.get("doc_type", "txt"))[:2000]
+        out[path] = _read_one_file(abspath, spec.get("doc_type", "txt"))
 
     # ``extras`` (default on) also dumps the agent's answer + calendars + emails, for state grounding.
     # Reference-file reads pass ``extras=False`` so only the requested gold files are returned.
@@ -253,17 +255,17 @@ def handle_read_state(req: dict) -> dict:
     # The agent's written answer (give-ups / wrong answers show up here).
     ans = f"{_TESTBED}/data/answer.txt"
     if os.path.exists(ans):
-        out["data/answer.txt"] = _read_one_file(ans, "txt")[:1000]
+        out["data/answer.txt"] = _read_one_file(ans, "txt")
 
     # Calendars + emails referenced by username-style checks.
     for ics in glob.glob(f"{_TESTBED}/calendar/*.ics"):
-        out[os.path.relpath(ics, _TESTBED)] = _read_one_file(ics, "ics")[:1500]
+        out[os.path.relpath(ics, _TESTBED)] = _read_one_file(ics, "ics")
     try:
         from apps.email_app import email_list_emails
         for acct in glob.glob(f"{_TESTBED}/emails/*"):
             if os.path.isdir(acct):
                 user = os.path.basename(acct)
-                out[f"emails/{user}"] = str(email_list_emails.list_emails(user, _TESTBED, -1))[:1500]
+                out[f"emails/{user}"] = str(email_list_emails.list_emails(user, _TESTBED, -1))
     except Exception:  # noqa: BLE001
         pass
     return {"state": out}
@@ -275,26 +277,42 @@ def handle_list_state(req: dict) -> dict:
     recursive = bool(req.get("recursive"))
     if path != _TESTBED and not path.startswith(_TESTBED + os.sep):
         return {"error": "path must be under /testbed", "entries": []}
-    if not os.path.isdir(path):
+    if not os.path.exists(path):
         return {"entries": [], "missing": True}
+    if not os.path.isdir(path):
+        return {"entries": [{"name": os.path.basename(path), "path": path, "type": "file"}],
+                "missing": False, "operand_type": "file"}
     entries = []
     if recursive:
+        # Keep the existing sorted inventory API, but retain native DFS/readdir
+        # order so a predicted `find` need not hallucinate alphabetical output.
+        native_order = {}
+        def visit(directory):
+            with os.scandir(directory) as children:
+                for child in children:
+                    native_order[child.path] = len(native_order)
+                    if child.is_dir(follow_symlinks=False):
+                        visit(child.path)
+        visit(path)
         for root, dirs, files in os.walk(path):
             dirs.sort()
             files.sort()
             for name in dirs:
                 child = os.path.join(root, name)
-                entries.append({"name": name, "path": child, "type": "directory"})
+                entries.append({"name": name, "path": child, "type": "directory", "native_order": native_order[child]})
             for name in files:
                 child = os.path.join(root, name)
-                entries.append({"name": name, "path": child, "type": "file"})
+                entries.append({"name": name, "path": child, "type": "file", "native_order": native_order[child]})
     else:
-        for name in sorted(os.listdir(path)):
+        names = os.listdir(path)
+        native_order = {name: index for index, name in enumerate(names)}
+        for name in sorted(names):
             child = os.path.join(path, name)
             entries.append({
                 "name": name,
                 "path": child,
                 "type": "directory" if os.path.isdir(child) else "file",
+                "native_order": native_order[name],
             })
     return {"entries": entries, "missing": False}
 
@@ -348,8 +366,15 @@ def handle_evaluate(req: dict) -> dict:
             "num_passed": sum(1 for c in checks if c["pass"]), "checks": checks}
 
 
+def handle_capabilities(req):
+    # Presence metadata only: never read or return credential contents.
+    import os
+    return {'llm_key_file_present': os.path.isfile('/openai_key.txt')}
+
+
 _HANDLERS = {
     "apps": lambda req: handle_apps(),
+    "capabilities": handle_capabilities,
     "exec": handle_exec,
     "write_answer": handle_write_answer,
     "evaluate": handle_evaluate,

@@ -1,0 +1,7 @@
+
+**************************************************************************************************************
+* WARNING:                                                                                                   *
+* Extension "azure-cli-ml" cannot be used along with extension "ml". This may result in unexpected behaviour.*
+* Please remove azure-cli-ml extension by running  "az extension remove -n azure-cli-ml                      *
+**************************************************************************************************************
+                

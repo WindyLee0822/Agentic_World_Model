@@ -1,0 +1,7 @@
+{
+  "regression_tests_passed": 29,
+  "pytest_exit_code": 0,
+  "source_isolation_passed": true,
+  "live_task_recovery_proven": false,
+  "full_benchmark_target_proven": false
+}

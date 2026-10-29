@@ -1,17 +1,5 @@
-export AZURE_OPENAI_ENDPOINT="https://ai-m365researchefficientaieus2212654625773.openai.azure.com/"
-export AZURE_OPENAI_API_VERSION="2024-12-01-preview"
-export AZURE_AUTH_MODE=gcr
-export WM_MODEL="gpt-5.4"
-export TTS_APPWORLD_VERIFIER_COVERAGE_AWARE=1
-export TTS_APPWORLD_VERIFIER_UNKNOWN_CREDIT=0.25
-export TTS_SELECTION_CONFIDENCE_MARGIN=0.1
-export TTS_OFFICEBENCH_VERIFIER_SAMPLES=5
-export TTS_OFFICEBENCH_VERIFIER_REFERENCE=1
-export TTS_OFFICEBENCH_VERIFIER_PERCHECK=1
-export TTS_OFFICEBENCH_VERIFIER_UNKNOWN_CREDIT=0.25
-export TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT=0.25
-export TTS_OFFICEBENCH_SELECTION_CONFIDENCE_MARGIN=0.05
-export TTS_OFFICEBENCH_COMPARATIVE_RERANK=1
-export TTS_OFFICEBENCH_COMPARATIVE_CONFIDENCE_MARGIN=0.25
-# OfficeBench clone (host needs only Docker + this clone; the app/eval image builds on demand).
-export OFFICEBENCH_ROOT="/home/t-wendili/OfficeBench"
+#!/usr/bin/env bash
+# Source after setting your own endpoint and benchmark installation paths.
+export AZURE_OPENAI_API_VERSION="${AZURE_OPENAI_API_VERSION:-2024-12-01-preview}"
+export WM_MODEL="${WM_MODEL:-gpt-5.4}"
+export PYTHONPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/src${PYTHONPATH:+:$PYTHONPATH}"

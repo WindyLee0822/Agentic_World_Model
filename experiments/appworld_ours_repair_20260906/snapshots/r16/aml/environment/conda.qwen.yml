@@ -1,0 +1,17 @@
+# AML environment for running a local Qwen vLLM server and the tau2 harness in
+# the same GPU command job. Azure ML caches the built environment, so vLLM is
+# installed during environment creation rather than on every job invocation.
+name: tts-dw-qwen-aml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - "vllm==0.24.0"
+      - "tau2[knowledge] @ git+https://github.com/sierra-research/tau2-bench.git@1746a25db265724f6fed2260934bb67f1514fad7"
+      - openai>=1.30.0
+      - azure-identity>=1.15.0
+      - pyyaml>=6.0
+      - tqdm>=4.66.0
+

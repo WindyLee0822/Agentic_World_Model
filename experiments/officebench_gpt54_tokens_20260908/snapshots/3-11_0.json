@@ -1,0 +1,54 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "read notification, send email to people mentioned in post, create folders using their own names for each person and save email notification.eml in it",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/Bob/notification.eml"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/Tom/notification.eml"
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "txt",
+          "file": "data/Bob/notification.eml",
+          "keywords": [
+            "travel",
+            "meeting"
+          ]
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "txt",
+          "file": "data/Tom/notification.eml",
+          "keywords": [
+            "travel",
+            "meeting"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/business_travel_notification.jpg": "business Travel notification\n\nDear Bob and Ton,\n\nYou are requixed to travel to our New York office for a business necting.\nPlease arvmge your travel accordingly.\n\nBest regards,\nyour company\n\f"
+  },
+  "initial_state": {
+    "data/Bob/notification.eml": "[file does not exist]",
+    "data/Tom/notification.eml": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/business_travel_notification.jpg"
+}

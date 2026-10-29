@@ -1,0 +1,50 @@
+[
+  {
+    "name": "dw-appworld-ours-llm-wm-deepseek-defaults-n124-20261001",
+    "dataset": "appworld",
+    "model": "DeepSeek-V4-Pro",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-appworld-ours-llm-wm-deepseek-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  },
+  {
+    "name": "dw-appworld-ours-llm-wm-gpt54-defaults-n124-20261001",
+    "dataset": "appworld",
+    "model": "gpt-5.4",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-appworld-ours-llm-wm-gpt54-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  },
+  {
+    "name": "dw-officebench-ours-llm-wm-deepseek-defaults-n124-20261001",
+    "dataset": "officebench",
+    "model": "DeepSeek-V4-Pro",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-officebench-ours-llm-wm-deepseek-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  },
+  {
+    "name": "dw-officebench-ours-llm-wm-gpt54-defaults-n124-20261001",
+    "dataset": "officebench",
+    "model": "gpt-5.4",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-officebench-ours-llm-wm-gpt54-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  },
+  {
+    "name": "dw-tau2-ours-llm-wm-deepseek-defaults-n124-20261001",
+    "dataset": "tau2",
+    "model": "DeepSeek-V4-Pro",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-tau2-ours-llm-wm-deepseek-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  },
+  {
+    "name": "dw-tau2-ours-llm-wm-gpt54-defaults-n124-20261001",
+    "dataset": "tau2",
+    "model": "gpt-5.4",
+    "status_at_submission": "Starting",
+    "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/d2b70d4c-981c-4c26-ae27-c60fa1d16856/versions/1",
+    "url": "https://ml.azure.com/runs/dw-tau2-ours-llm-wm-gpt54-defaults-n124-20261001?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
+  }
+]

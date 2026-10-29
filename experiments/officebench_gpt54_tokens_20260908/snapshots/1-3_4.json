@@ -1,0 +1,49 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "move all docx, pdf, and image files to a new subdirectory named new_dir, create this directory if does not exist",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "./data/new_dir/file1.docx"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "./data/new_dir/file2.pdf"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "./data/new_dir/file3.xlsx"
+        }
+      },
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "./data/new_dir/file4.jpg"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/file1.docx": "PDF test file 2",
+    "/testbed/data/file2.pdf": "PDF test file 2 \n",
+    "/testbed/data/file3.xlsx": "(1, 1): excel test file3\t\n",
+    "/testbed/data/file4.jpg": "Image test file 4\n\f"
+  },
+  "initial_state": {
+    "./data/new_dir/file1.docx": "[file does not exist]",
+    "./data/new_dir/file2.pdf": "[file does not exist]",
+    "./data/new_dir/file3.xlsx": "[file does not exist]",
+    "./data/new_dir/file4.jpg": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/file1.docx\n/testbed/data/file2.pdf\n/testbed/data/file3.xlsx\n/testbed/data/file4.jpg"
+}

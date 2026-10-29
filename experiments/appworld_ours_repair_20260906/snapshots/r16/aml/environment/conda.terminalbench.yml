@@ -1,0 +1,19 @@
+# Shared Python 3.12 environment for Terminal-Bench 1.0 and 2.0.
+#
+# Terminal-Bench 1.0 uses the legacy `tb` harness (`terminal-bench` package).
+# Terminal-Bench 2.0 uses Harbor. Both harnesses require a usable Docker daemon
+# on the host; Docker itself is intentionally not installed into this conda env.
+name: tts-terminalbench
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - git
+  - pip:
+      - "terminal-bench==0.2.18"
+      - "harbor==0.18.0"
+      - "openai>=1.59.9"
+      - "azure-identity>=1.15.0"
+      - "pyyaml>=6.0"
+      - "tqdm>=4.66.0"

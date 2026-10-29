@@ -4,10 +4,10 @@ OfficeBench tasks are solved by an agent that emits JSON office-app actions
 (``{'app','action',...}``) against a Docker ``/testbed`` filesystem, and scored by execution-based,
 file-state checks (``utils/evaluate.py``).  This wrapper runs the **official OfficeBench agent loop**
 (:mod:`tts.env.officebench_agent`) against a throwaway per-rollout container and scores it with the
-**official evaluation config**, so a single rollout (B0) reproduces the official OfficeBench number.
+**official evaluation config**, so a single rollout (real-env N=1) reproduces the official OfficeBench number.
 
 Like AppWorld (free-form actions, execution-based scoring, **no replayable gold action list**), there
-is no read-grounded DB-replay world model: B1/Ours fall back to the oracle reward on the real-agent
+is no read-grounded DB-replay world model: AWM fall back to the oracle reward on the real-agent
 path, and the ``llm_wm`` path uses an LLM verifier (:class:`tts.env.officebench_wm.OfficeBenchVerifier`)
 as the selection signal, then commits (re-executes) the selected trajectory and scores it officially.
 
@@ -274,6 +274,12 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         new_indices = list(range(prior_pool_size, len(rollouts)))
         if not new_indices:
             return
+        # A predicted task failure is not proof that its completed trajectory is invalid.
+        # Keep it eligible in a zero-confidence pool, even if a precheck rejected its state.
+        zero_pool = all(float(r.predicted.reward) == 0.0 for r in rollouts)
+        if zero_pool:
+            def priority(index):
+                return (bool(rollouts[index].trajectory.done), True)
         challenger = max(
             new_indices,
             key=lambda index: (
@@ -380,7 +386,23 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         #             f"OfficeBench comparative verifier selected non-contender {best}; "
         #             f"valid contenders were {contenders}"
         #         )
-        if len(contenders) >= 2:
+        zero_confidence_pool = all(float(rollouts[i].predicted.reward) == 0.0 for i in contenders)
+        if zero_confidence_pool:
+            # A free-text comparison cannot manufacture evidence for a zero-score
+            # replacement. Use the explicit per-check audit, retaining the incumbent
+            # on ties or incomplete audits. This does not turn partial credit into success.
+            def audited_progress(index):
+                audit = (rollouts[index].predicted.metadata or {}).get('verifier_percheck') or {}
+                total = audit.get('total', 0)
+                if not total or audit.get('unknown', 0) or not audit.get('met'):
+                    return -1.0
+                return float(audit['met']) / float(total)
+            best = native_best
+            for index in contenders:
+                if audited_progress(index) > audited_progress(best):
+                    best = index
+            response = 'Zero-confidence guard: replace only for a strictly better complete per-check audit; retain incumbent on ties.'
+        if len(contenders) >= 2 and not zero_confidence_pool:
             model = config.solver.llm_agent or azure_deployment()
             is_qwen = "qwen" in str(model).lower()
 
@@ -605,7 +627,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             name = self._action_name(action)
             steps.append(Step(
                 action=Action(name, {"step": i, "action": action}),
-                observation=Observation(content=str(obs)[-400:],
+                observation=Observation(content=str(obs),
                                         error=str(obs).lower().startswith(("malformed", "failed", "error")))))
         return Trajectory(steps=steps, final_message=run.final_answer or "finish_task")
 
@@ -621,12 +643,18 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         for step in trajectory.steps:
             action = _action_of(step.action)
             act = action.get("action")
-            if act == "switch_app" or act == "got_stuck" or not action:
+            if act == "switch_app" or act == "got_stuck" or not action or "app" not in action:
                 continue  # system bookkeeping: no container effect
             if act == "finish_task":
                 session.write_answer(str(action.get("answer", "None")))
                 continue
             result = session.exec_action(action, workdir)
+            if os.environ.get("TTS_OFFICEBENCH_COMMIT_TRACE", "0") == "1":
+                print("[officebench-commit-trace] " + json.dumps({
+                    "task_id": self.task_id, "action": action,
+                    "predicted": step.observation.content,
+                    "actual": str(result.get("observation", result)),
+                }), flush=True)
             if result.get("is_cd") and result.get("new_workdir"):
                 workdir = result["new_workdir"]
 
@@ -636,7 +664,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         reason = f"official OfficeBench evaluate {res.get('num_passed', 0)}/{res.get('num_checks', 0)}"
         return RewardInfo(1.0 if success else 0.0, success, grounded=True, reason=reason)
 
-    # -- REAL official agent (B0 / sampling) ---------------------------- #
+    # -- REAL official agent (real-env sampling) ---------------------------- #
     def run_agent_rollout(self, config, seed: int):
         """Run the **official OfficeBench agent** and return ``(Trajectory, RewardInfo)``.
 
@@ -677,11 +705,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         files are still the initial ones.  The realized actions ride on the trajectory so the selected
         one can be committed (really executed) and officially scored.
 
-        Under B1, the app catalogue, evaluator criteria, initial checked files, reference files, and
-        testbed listing are frozen before the first candidate action and reused by observation and
-        success prompts; candidate actions cannot trigger new grounding reads. Under Ours, observation
-        and success predictions retain the bounded agentic grounding loop over read-only state.
-        Returns ``(Trajectory, predicted RewardInfo, None)``.
+
         """
         from ..llm import make_chat_client
         from ..llm.azure import azure_deployment
@@ -695,7 +719,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         from .officebench_wm import _reference_enabled
         from .officebench_wm_predict import (
             OfficeBenchWMPredictor,
-            build_officebench_flat_system_prompt,
+            OfficeBenchSimulationError,
         )
         from .officebench_wm_python import prepare_officebench_python_tool
 
@@ -709,7 +733,6 @@ class OfficeBenchTaskEnv(TaskEnvironment):
         )
         prepare_officebench_python_tool()
         max_steps = _rollout_max_steps(solver.max_steps, self.level)
-        flat_context = str(method).lower() == "b1"
 
         # read_only: the sampling container is used for EXACT READS ONLY; a write action would raise.
         session = self._new_session(f"wm{seed}")
@@ -728,53 +751,6 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             )
             initial_state = None
             gold_files = None
-            if flat_context:
-                try:
-                    initial_state = session.read_state(state_specs) if state_specs else {}
-                except Exception:  # noqa: BLE001
-                    initial_state = {}
-                if ref_specs:
-                    try:
-                        raw = session.read_reference(ref_specs)
-                        spec_by_path = {
-                            spec["path"]: spec.get("label", spec["path"])
-                            for spec in ref_specs
-                        }
-                        gold_files = {
-                            spec_by_path.get(path, path): content
-                            for path, content in raw.items()
-                        }
-                    except Exception:  # noqa: BLE001
-                        gold_files = None
-                testbed_listing = ""
-                if not config.simulator.predict_all_actions:
-                    try:
-                        listing_result = session.exec_action(
-                            {
-                                "app": "shell",
-                                "action": "command",
-                                "command": (
-                                    "find /testbed/data -maxdepth 3 -type f "
-                                    "2>/dev/null | sort"
-                                ),
-                            },
-                            "/",
-                        )
-                        testbed_listing = str(
-                            listing_result.get("observation", listing_result))
-                    except Exception:  # noqa: BLE001
-                        testbed_listing = ""
-                flat_system_prompt = build_officebench_flat_system_prompt(
-                    task_config=self._config,
-                    catalogue=session.apps_catalogue(),
-                    initial_state=initial_state,
-                    gold_files=gold_files,
-                    testbed_listing=testbed_listing,
-                    predict_all_actions=config.simulator.predict_all_actions,
-                )
-                predictor.configure_flat_context(
-                    flat_system_prompt, initial_state=initial_state)
-                verifier.configure_flat_context(flat_system_prompt)
             run = run_officebench_agent(
                 session,
                 self._config,
@@ -789,7 +765,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             # (exact_match tasks) are read-only starting artifacts, so they are read exactly.  Resolved
             # BEFORE the state so a gold-backed file is judged from initial+write-log vs the gold (no
             # fabricated reconstruction), rather than an LLM-reconstructed final file.
-            if not flat_context and _reference_enabled():
+            if _reference_enabled():
                 if ref_specs:
                     try:
                         raw = session.read_reference(ref_specs)
@@ -812,6 +788,8 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                         gold_labels,
                         initial_state=initial_state,
                     )
+                except OfficeBenchSimulationError:
+                    raise  # unknown state must reach the rollout retry/error path
                 except Exception:  # noqa: BLE001 - fall back to the write-log-only judge on any error
                     final_state = {"WRITE LOG (predicted)": predictor.predicted_write_log()}
             verifier.bind_query_interface(predictor.query_interface)
@@ -824,6 +802,14 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                     raise RuntimeError(
                         "OfficeBench world-model write-safety violation: the shadow /testbed was mutated "
                         "during sampling/judging (no write must reach the environment before commit)")
+        except OfficeBenchSimulationError as exc:
+            exc.simulation_metrics = {
+                "python_calls": predictor.n_python_calls + verifier.n_python_calls,
+                "python_failures": predictor.n_python_failures + verifier.n_python_failures,
+                "python_forced": predictor.n_python_forced + verifier.n_python_forced,
+                "python_mode_misses": predictor.n_python_mode_misses + verifier.n_python_mode_misses,
+            }
+            raise
         finally:
             session.close()
         python_calls = predictor.n_python_calls + verifier.n_python_calls
@@ -847,6 +833,7 @@ class OfficeBenchTaskEnv(TaskEnvironment):
                                    "python_forced": python_forced,
                                    "python_mode_misses": python_mode_misses,
                                    "verifier_percheck": verifier.last_percheck_breakdown,
+                                   "partial_progress": (verifier.last_percheck_breakdown or {}).get("atomic_score", 0.0),
                                    "verifier_final_state": final_state,
                                    "hard_invalid": verifier.last_precheck_failure is not None,
                                })
@@ -889,12 +876,23 @@ class OfficeBenchTaskEnv(TaskEnvironment):
             key = path
             init = initial.get(path, "[file does not exist]")
             target = _norm_path(path)
-            if not predictor.was_written(target):
+            if spec.get('doc_type') == 'email':
+                out[key] = predictor.predict_file_state(path, init)
+            elif not predictor.was_written(target):
                 out[key] = init  # untouched by the trajectory
+            elif ((spec.get("doc_type", "txt") in ("txt", "pdf") or target.lower().endswith('.pdf'))
+                  and predictor.applied_writes.get(target)
+                  and predictor.applied_writes[target][-1][0].get('app') == 'word'
+                  and predictor.applied_writes[target][-1][0].get('action') in ('create_new_file', 'write_to_file')):
+                out[key] = "[incompatible file format: Word produced DOCX; required output is plain text or PDF]"
             elif predictor.is_deleted(target):
                 out[key] = predictor.predict_file_state(path, init)
             elif os.path.basename(target) in gold_labels and not reconstruct_gold:
                 # gold-backed: judge from initial + write-log vs the gold (no reconstruction).
+                exact = predictor._exact_overlay_content(target, init)
+                if exact is not None:
+                    out[key] = exact
+                    continue
                 out[key] = (f"INITIAL content (before the trajectory):\n{init}\n\n"
                             f"WRITE actions the agent applied to this file (predicted, not executed):\n"
                             f"{predictor.file_write_log(path)}")

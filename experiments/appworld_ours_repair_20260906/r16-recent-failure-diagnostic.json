@@ -1,0 +1,255 @@
+{
+  "checked_at": "2026-09-07T16:52:24.380330+00:00",
+  "partial": true,
+  "recent_results": [
+    {
+      "task_id": "5800354_3",
+      "success": false,
+      "wall_clock_s": 3306.7381443049962,
+      "n_python_calls": 436,
+      "n_python_failures": 14,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "cdaaea5_1",
+      "success": true,
+      "wall_clock_s": 3706.8889768139998,
+      "n_python_calls": 465,
+      "n_python_failures": 35,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "cdaaea5_2",
+      "success": false,
+      "wall_clock_s": 3873.0635826149955,
+      "n_python_calls": 615,
+      "n_python_failures": 48,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "cdaaea5_3",
+      "success": false,
+      "wall_clock_s": 3822.8627390949987,
+      "n_python_calls": 549,
+      "n_python_failures": 46,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "6d59d90_2",
+      "success": true,
+      "wall_clock_s": 3670.3604080419973,
+      "n_python_calls": 553,
+      "n_python_failures": 45,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "d8e490b_1",
+      "success": false,
+      "wall_clock_s": 3520.2971754750033,
+      "n_python_calls": 397,
+      "n_python_failures": 85,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "dcbd34b_3",
+      "success": true,
+      "wall_clock_s": 1947.2550304999968,
+      "n_python_calls": 242,
+      "n_python_failures": 9,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "task_id": "6d59d90_1",
+      "success": false,
+      "wall_clock_s": 4024.636797442996,
+      "n_python_calls": 423,
+      "n_python_failures": 28,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "6d59d90_3",
+      "success": false,
+      "wall_clock_s": 3882.357785078995,
+      "n_python_calls": 492,
+      "n_python_failures": 25,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "d8e490b_3",
+      "success": false,
+      "wall_clock_s": 3603.9535806809945,
+      "n_python_calls": 323,
+      "n_python_failures": 39,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "d8e490b_2",
+      "success": false,
+      "wall_clock_s": 3693.7689152839957,
+      "n_python_calls": 307,
+      "n_python_failures": 90,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "998908e_1",
+      "success": false,
+      "wall_clock_s": 3985.868037886001,
+      "n_python_calls": 326,
+      "n_python_failures": 38,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "998908e_2",
+      "success": false,
+      "wall_clock_s": 3913.999311284999,
+      "n_python_calls": 365,
+      "n_python_failures": 37,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "998908e_3",
+      "success": false,
+      "wall_clock_s": 3952.6614661300046,
+      "n_python_calls": 364,
+      "n_python_failures": 42,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "task_id": "906f2c7_2",
+      "success": true,
+      "wall_clock_s": 844.088652295999,
+      "n_python_calls": 64,
+      "n_python_failures": 3,
+      "n_rollout_errors": 0,
+      "candidate_done": [
+        true,
+        true
+      ],
+      "candidate_scores": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "diagnosis": "Recent failures cluster in Amazon checkout and Gmail attachment workflows, with long runtime and many Python calls but no recorded rollout exceptions. This does not establish the exact cause; no source change adopted.",
+  "trace_evidence": {
+    "file": "recent-traces/wm-212-d6c148c3532e4910b7fbbb504a2bfbb1.jsonl",
+    "task_id": "998908e_3",
+    "model_calls": 209,
+    "confirmed_error": "TimeoutError: Function run_cell execution timed out after 600 seconds.",
+    "finding": "Repeated inspection programs occur around attachment writes and unchanged email reads. Response-prefix logs omit Python execution feedback, so they cannot establish the exact cause of the repeated rounds.",
+    "next_if_full_run_falls_short": "Reproduce a targeted attachment task with Python feedback captured in an isolated experiment before changing prediction guidance or budgets."
+  }
+}

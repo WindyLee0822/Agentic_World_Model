@@ -1,0 +1,31 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "What is the average score and variance for student scores shown in the image",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/answer.txt",
+          "doc_type": "txt",
+          "keywords": [
+            "264",
+            "64"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/house_price_index.jpg": "FRED Graph Observations\nFederal Reserve Economic Data\nLink: https://fred.stlouisfed.org\nHelp: https://fredhelp.stlouisfed.org\nEconomic Research Division\nFederal Reserve Bank of St. Louis\n\nATNHPIUS06037A All-Transactions House Price Index for Los Angeles County, CA, Index 2000=100, Annual, Not Seasonally Adjusted\n\nFrequency: Annual\n\nobservation_date ATNHPIUS06037A\n1975-01-01 16.91\n1976-01-01 20.46\n1977-01-01 25.17\n1978-01-01 30.20\n1979-01-01 35.67\n1980-01-01 41.86\n1981-01-01 45.26\n1982-01-01 40.03\n1983-01-01 47.50\n1984-01-01 49.00\n1985-01-01 51.76\n1986-01-01 55.43\n1987-01-01 61.53\n1988-01-01 74.92\n1989-01-01 93.82\n1990-01-01 98.38\n1991-01-01 96.45\n1992-01-01 94.36\n1993-01-01 87.50\n1994-01-01 82.36\n1995-01-01 78.62\n1996-01-01 77.89\n1997-01-01 78.95\n1998-01-01 86.69\n1999-01-01 91.84\n2000-01-01 100.00\n2001-01-01 109.68\n2002-01-01 123.50\n2003-01-01 138.67\n2004-01-01 172.78\n2005-01-01 219.47\n2006-01-01 255.34\n2007-01-01 253.85\n2008-01-01 208.17\n2009-01-01 175.88\n2010-01-01 174.33\n2011-01-01 166.07\n2012-01-01 165.26\n2013-01-01 180.41\n2014-01-01 204.42\n2015-01-01 215.92\n2016-01-01 232.25\n2017-01-01 248.16\n2018-01-01 264.82\n2019-01-01 274.07\n2020-01-01 281.48\n2021-01-01 313.89\n2022-01-01 362.60\n\n2023-01-01 375.20\n\f",
+    "/testbed/data/students_scores.jpg": "Students\u2019 Kanes and scores\n\nalice: 100\n\nob: 222\n\ncarol: 938\n\navid: 250\n\neva: 180\n\nFrank: 275\n\nerace: 190\n\nawk: 220\n\nyy: 205\n\nyack: 235\n\nKelly: 200\n\nLee: 270\n\nMona: 290\n\nrina: 205\n\noscar: 910\n\npaul: 240\n\nquimm: 255\n\nRick: 390\n\nsara: 240\n\nrom: 360\n\f"
+  },
+  "initial_state": {
+    "data/answer.txt": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/house_price_index.jpg\n/testbed/data/students_scores.jpg"
+}

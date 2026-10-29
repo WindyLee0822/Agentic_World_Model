@@ -1,0 +1,27 @@
+{
+  "root": "/tmp/officebench-runtime-proof-cv931brl",
+  "checks": [
+    {
+      "operand": "proof.docx",
+      "exit_code": 0,
+      "stdout": "convert /testbed/data/proof.docx -> /testbed/data/proof.pdf using filter : writer_pdf_Export\n",
+      "stderr": "",
+      "valid_pdf": true,
+      "content_match": true
+    },
+    {
+      "operand": "sheet.xlsx",
+      "exit_code": 0,
+      "stdout": "convert /testbed/data/sheet.xlsx -> /testbed/data/sheet.pdf using filter : calc_pdf_Export\n",
+      "stderr": "",
+      "valid_pdf": true,
+      "content_match": true
+    }
+  ],
+  "ls": {
+    "exit_code": 0,
+    "stdout": "proof.docx\nproof.pdf\nsheet.pdf\nsheet.xlsx\n",
+    "stderr": ""
+  },
+  "network_blocked": true
+}

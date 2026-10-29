@@ -1,0 +1,38 @@
+[
+  {
+    "n": 1,
+    "tasks": 300,
+    "success": 59,
+    "previous_success": 22,
+    "tp": 30,
+    "fp": 7,
+    "fn": 29,
+    "all_zero": 242,
+    "candidate_errors": 91,
+    "all_error_tasks": 91
+  },
+  {
+    "n": 2,
+    "tasks": 300,
+    "success": 74,
+    "previous_success": 24,
+    "tp": 49,
+    "fp": 12,
+    "fn": 25,
+    "all_zero": 213,
+    "candidate_errors": 166,
+    "all_error_tasks": 62
+  },
+  {
+    "n": 4,
+    "tasks": 300,
+    "success": 92,
+    "previous_success": 36,
+    "tp": 62,
+    "fp": 15,
+    "fn": 30,
+    "all_zero": 196,
+    "candidate_errors": 327,
+    "all_error_tasks": 42
+  }
+]

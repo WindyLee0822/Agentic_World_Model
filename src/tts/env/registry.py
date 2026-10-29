@@ -21,7 +21,7 @@ def _tau2_usable_tasks(domain: str):
     A task is *usable* when it is single-control with a DB-mutating agent action (see
     :func:`tts.env.real_tau2.tau2_task_world_model_eligible`): read-only tasks score 1.0 for any
     trajectory (no flat-vs-recursive gap) and dual-control / retrieval tasks expose no faithful
-    read-grounded DB target.  This filter is a world-model concern only; the **real LLM agent** (B0)
+    read-grounded DB target.  This filter is a world-model concern only; the **real LLM agent** (real-env N=1)
     handles every official task, so the official-benchmark path uses :func:`_tau2_all_tasks`.
     """
     from tau2.registry import registry

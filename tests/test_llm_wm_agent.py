@@ -31,7 +31,7 @@ def _gold_decider(env):
     return decide
 
 
-@pytest.mark.parametrize("method", ["b0", "b1", "ours"])
+@pytest.mark.parametrize("method", ["ours"])
 def test_llm_wm_agent_interacts_with_world_model(method):
     env = make_feasible_infeasible_env()
     pre = env.state_hash()
@@ -47,11 +47,11 @@ def test_llm_wm_agent_interacts_with_world_model(method):
     assert out.record.success  # the gold (feasible) item was selected and committed
 
 
-def test_llm_wm_b0_steps_against_world_model_not_noop():
+def test_single_rollout_awm_steps_against_world_model():
     """B0 in llm_wm mode must drive the agent against the WM stepper (observation 'ok'), not NoOp."""
     env = make_feasible_infeasible_env()
     agent = LLMAgent(_gold_decider(env), max_steps=4)
-    cfg = Config(method="b0", env="fake", N=1, seed=0, solver=SolverConfig(agent="llm_wm"))
+    cfg = Config(method="ours", env="fake", N=1, seed=0, solver=SolverConfig(agent="llm_wm"))
 
     out = run_decision(env, cfg, agent=agent)
 
@@ -162,7 +162,7 @@ class _RefiningWMEnv(_FakeWMEnv):
             rollouts[2].predicted.reward = 2.0
 
 
-@pytest.mark.parametrize("method", ["b0", "b1", "ours"])
+@pytest.mark.parametrize("method", ["ours"])
 def test_faithful_llm_wm_path_selects_and_commits(method):
     env = _FakeWMEnv()
     pre = env.state_hash()
@@ -170,11 +170,11 @@ def test_faithful_llm_wm_path_selects_and_commits(method):
 
     out = run_decision(env, cfg)  # agent is None -> faithful WM-agent path
 
-    assert env.wm_rollouts == (1 if method == "b0" else 4)  # N rollouts against the WM
+    assert env.wm_rollouts == 4  # N rollouts against the WM
     assert out.record.simulator_writes == 0  # sampling never wrote the real env
     assert out.record.n_commits == 1  # exactly one commit
     assert env.state_hash() != pre  # the single commit mutated real state
-    if method != "b0":
+    if method == "ours":
         # a predicted-success rollout exists in the pool (even seeds) and must be selected
         assert out.rollouts[out.selected_index].predicted.success
         assert out.record.success

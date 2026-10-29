@@ -1,0 +1,11 @@
+{
+  "regression_tests_passed": 36,
+  "diagnostic_tests_passed": 3,
+  "pytest_exit_codes": [
+    0,
+    0
+  ],
+  "source_isolation_passed": true,
+  "live_recovery_proven": false,
+  "full_benchmark_target_proven": false
+}

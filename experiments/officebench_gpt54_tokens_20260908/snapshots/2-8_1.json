@@ -1,0 +1,40 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "Collect all contact cards except Tom's, save their information in contact.xlsx",
+    "evaluation": [
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "file": "data/contact.xlsx",
+          "doc_type": "xlsx",
+          "keywords": [
+            "Bob",
+            "John"
+          ]
+        }
+      },
+      {
+        "function": "evaluate_not_contain",
+        "args": {
+          "file": "data/contact.xlsx",
+          "doc_type": "xlsx",
+          "keywords": [
+            "Tom"
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/John_card.jpg": "Name: John Doe\nPhone: (123) 458-7890\n\nEmait john.dos @example.com\n\u2018Address 1234 Elm Street Anytown, USA\n\f"
+  },
+  "initial_state": {
+    "data/contact.xlsx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/John_card.jpg"
+}

@@ -1,0 +1,10 @@
+# AWM: simulate candidates, select, replay once.
+method: ours
+N: 16
+solver:
+  agent: llm_wm
+  temperature: 1.0
+simulator:
+  kind: recursive
+  predict_all_actions: true
+  hard_cap: 6

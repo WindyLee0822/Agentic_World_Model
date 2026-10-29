@@ -4,13 +4,13 @@ A *trajectory* is a sequence of real τ² tool-calls.  Execution and scoring coh
 **official** τ²-bench implementation for **every** domain (airline, retail, telecom, mock,
 banking_knowledge):
 
-* the real agent (B0) is the official τ² LLM customer-service agent conversing with the official
+* the real agent (real-env N=1) is the official τ² LLM customer-service agent conversing with the official
   user simulator over the real environment, scored by the official
   ``evaluate_simulation(..., EvaluationType.ALL)`` — so a single rollout reproduces the official
   τ²-bench number for that domain;
 * stepping uses the official ``environment.get_response(ToolCall(...))`` (the tool execution that
   mutates the domain's Pydantic ``DB``);
-* the read-grounded world model (B1/Ours) predicts observations and candidate rewards **without
+* the read-grounded world model (AWM) predicts observations and candidate rewards **without
   touching the real env**. Clean reads execute exactly by default or are predicted under the shared
   extension; writes and dirty reads are always predicted from copied task/action/history data plus
   host-mediated, read-only evidence.
@@ -653,70 +653,7 @@ class _LLMWorldModelPredictor:
             max_tokens=max_tokens,
         )
 
-    def _complete_flat(self, prompt: str, max_tokens: int) -> str:
-        messages = []
-        if self._flat_system_prompt:
-            messages.append({"role": "system", "content": self._flat_system_prompt})
-        messages.append({"role": "user", "content": prompt})
-        return self._chat().complete(
-            messages,
-            temperature=0.0,
-            max_tokens=max_tokens,
-        )
 
-    def configure_flat_context(
-        self,
-        *,
-        task_text: str,
-        gold_actions: List[Action],
-        tool_docs: Dict[str, str],
-        facts: str,
-        evaluation_context: Dict[str, Any],
-    ) -> None:
-        """Fix the B1 simulator context before any candidate action is observed."""
-        gold_data = [_action_data(action) for action in gold_actions]
-        gold_text = "\n".join(_action_str(action) for action in gold_actions) or "(none)"
-        tool_text = "\n".join(
-            f"- {name}: {tool_docs[name]}" for name in sorted(tool_docs)
-        ) or "(none)"
-        criteria = dict(evaluation_context or {})
-        domain_rules = ""
-        if self._domain == "airline":
-            domain_rules = (
-                "Airline deterministic simulation rules:\n"
-                "- New reservation IDs follow HATHAT, HATHAU, HATHAV; timestamps are "
-                "2024-05-15T15:00:00.\n"
-                "- Payment certificate IDs follow certificate_3221322, certificate_3221323, "
-                "certificate_3221324.\n"
-                "- Flight updates use exact dated cabin prices, passenger-count multiplication, "
-                "and a signed payment-history difference while preserving every other field."
-            )
-        self._flat_context_data = {
-            "domain": self._domain,
-            "task": task_text,
-            "reference_actions": gold_data,
-            "tool_docs": dict(tool_docs),
-            "initial_records": facts,
-            "evaluation_context": criteria,
-            "simulation_rules": domain_rules,
-        }
-        self._flat_system_prompt = (
-            f"{_TAU2_SIMULATOR_SYSTEM}\n\n"
-            f"You are a fixed simulated environment for the tau2-bench {self._domain} domain. "
-            "The following simulation contract and evidence were selected before any candidate "
-            "agent action was observed. Keep this context unchanged throughout the rollout. "
-            "Use the reference trajectory as behavioral guidance, maintain causal consistency with "
-            "the running interaction, and use only the supplied tools and preselected records. "
-            "Do not request additional environment evidence or choose context based on the current "
-            "candidate action.\n\n"
-            f"TASK AND SYSTEM RULES:\n{task_text or '(not provided)'}\n\n"
-            f"AVAILABLE TOOLS:\n{tool_text}\n\n"
-            f"REFERENCE TRAJECTORY:\n{gold_text}\n\n"
-            f"EVALUATION CRITERIA:\n"
-            f"{json.dumps(criteria, ensure_ascii=True, sort_keys=True)}\n\n"
-            f"PRESELECTED INITIAL RECORDS:\n{facts}\n\n"
-            f"{domain_rules}"
-        ).strip()
 
     def _record_python_result(self, result) -> None:
         self.n_python_calls += result.python_calls
@@ -732,36 +669,9 @@ class _LLMWorldModelPredictor:
             "python_mode_misses": self.n_python_mode_misses,
         }
 
-    # -- one-shot prediction over a pre-read shadow (used by the flat/B1 path) -------------- #
+    # -- one-shot prediction over a pre-read shadow (used by offline shadow evaluators) -------------- #
     def predict_success(self, facts: str, candidate_actions: List[Action],
                         gold_actions: List[Action], tool_docs: str = "") -> bool:
-        if self._flat_system_prompt:
-            cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
-            prompt = (
-                "Evaluate the candidate trajectory using the fixed simulator context prepared "
-                "before candidate generation.\n\n"
-                f"CANDIDATE ACTIONS:\n{cand}"
-            )
-            final = "On the LAST line answer exactly 'VERDICT: SUCCESS' or 'VERDICT: FAIL'."
-            if tau2_wm_tool_mode() == "python":
-                result = run_tau2_python_prediction_loop(
-                    self._complete_flat,
-                    None,
-                    prompt,
-                    final,
-                    context={
-                        **self._flat_context_data,
-                        "candidate_actions": [
-                            _action_data(action) for action in candidate_actions
-                        ],
-                    },
-                    max_turns=self.MAX_TURNS,
-                    max_tokens=500,
-                    output_kind="verdict",
-                )
-                self._record_python_result(result)
-                return result.valid and result.output == "SUCCESS"
-            return _parse_verdict(self._complete_flat(f"{prompt}\n\n{final}", 500))
 
         gold = "\n".join(_action_str(a) for a in gold_actions) or "(none)"
         cand = "\n".join(_action_str(a) for a in candidate_actions) or "(none)"
@@ -801,45 +711,6 @@ class _LLMWorldModelPredictor:
     def predict_observation(self, facts: str, history: List[tuple], action: Action,
                             tool_doc: str = "") -> Tuple[str, bool]:
         hist = "\n".join(f"{_action_str(a)} -> {o}" for a, o in history) or "(none)"
-        if self._flat_system_prompt:
-            prompt = (
-                "Continue the simulation using the fixed context. The candidate action below is "
-                "runtime input only; it must not change the simulator context.\n\n"
-                f"CURRENT INTERACTION HISTORY:\n{hist}\n\n"
-                f"CURRENT AGENT TOOL CALL:\n{_action_str(action)}"
-            )
-            final = (
-                "Return ONLY the exact tool result in the documented schema. Begin with 'ERROR:' "
-                "only if the call would genuinely fail. Preserve consistency with earlier simulated "
-                "results and never invent an identifier that is absent from the fixed context or "
-                "logically created by prior calls."
-            )
-            if tau2_wm_tool_mode() == "python":
-                result = run_tau2_python_prediction_loop(
-                    self._complete_flat,
-                    None,
-                    prompt,
-                    final,
-                    context={
-                        **self._flat_context_data,
-                        "history": [
-                            {"action": _action_data(prior), "observation": observation}
-                            for prior, observation in history
-                        ],
-                        "action": _action_data(action),
-                    },
-                    max_turns=self.MAX_TURNS,
-                    max_tokens=1500,
-                    output_kind="text",
-                )
-                self._record_python_result(result)
-                if force_program and not result.valid:
-                    raise RuntimeError(
-                        "program-only tau2 prediction did not produce a valid Python result")
-                text = result.output
-            else:
-                text = (self._complete_flat(f"{prompt}\n\n{final}", 1500) or "").strip()
-            return text, text.upper().startswith("ERROR")
 
         ref = f"\nTool reference (what {action.name} does and RETURNS):\n{tool_doc}\n" if tool_doc else ""
         
@@ -1693,24 +1564,9 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
             lines.append(f"{btype} {bid}: {_model_to_text(row['model'])}")
         return "\n".join(lines) or "(no records read)"
 
-    def prepare_flat_context(self, shadow: Dict[tuple, Dict]) -> None:
-        """Build B1's reusable reference-conditioned prompt before candidate generation."""
-        predictor = self._predictor_or_default()
-        configure = getattr(predictor, "configure_flat_context", None)
-        if not callable(configure):
-            return
-        configure(
-            task_text=self._task_text,
-            gold_actions=self._gold,
-            tool_docs={
-                name: self._tool_docs[name] for name in sorted(self._tool_docs)
-            },
-            facts=self._facts_text(shadow),
-            evaluation_context=self._evaluation_context,
-        )
 
     def observe(self, shadow: Dict[tuple, Dict], action: Action):
-        """Predict one tool result from B1's fixed context plus runtime history (no execution)."""
+        """Predict one tool result from a supplied read-only shadow plus runtime history (no execution)."""
         facts = self._facts_text(shadow)
         content, is_error = self._predictor_or_default().predict_observation(
             facts, self._history, action, tool_doc=self._tool_docs.get(action.name, "")
@@ -1760,7 +1616,7 @@ class Tau2ShadowEvaluator(ShadowEvaluator):
         """Predict success: does the candidate reach the same final state as gold, given the facts?
 
         Pure prediction over read-grounded facts — no tool is executed and no environment (real or
-        forked) is constructed.  (One-shot; used by the flat/B1 path.)"""
+        forked) is constructed.  (One-shot; used by offline shadow evaluators.)"""
         facts = self._facts_text(shadow)
         docs = self._tool_docs_text(list(candidate_actions) + self._gold)
         predictor = self._predictor_or_default()
@@ -2246,7 +2102,7 @@ class Tau2TaskEnv(TaskEnvironment):
     def evaluate(self, trajectory: Trajectory) -> RewardInfo:
         return self._official_reward(trajectory.actions)
 
-    # -- REAL official agent (B0 / sampling) ---------------------------- #
+    # -- REAL official agent (real-env sampling) ---------------------------- #
     def run_agent_rollout(self, config, seed: int):
         """Run the **official** τ² agent loop and return ``(Trajectory, RewardInfo)``.
 
@@ -2544,7 +2400,7 @@ class Tau2TaskEnv(TaskEnvironment):
 
         from ..llm import ensure_litellm_azure_env
 
-        kind = "flat" if method == "b1" else "recursive"
+        kind = "recursive"
         prepare_tau2_python_tool()
         wm = self.world_model(replace(config.simulator, kind=kind), budget, cache)
         read_assist = set(self._read_tool_names())

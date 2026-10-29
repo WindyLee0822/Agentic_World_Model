@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Convenience wrapper around `az ml job create` for the dw jobs.
 #
-# Requires: `az login` (already done on this box) and the `az ml` CLI extension
-# (already installed). No Python SDK needed.
+# By default this uses the `az ml` CLI. Set AML_MANAGED_IDENTITY_CLIENT_ID to
+# submit through the AML Python SDK with the compute-instance identity and no
+# `az login`.
 #
 # Pick the job (env) with AML_JOB_FILE (default aml/job.yml = AppWorld):
 #   bash aml/submit.sh                                   # AppWorld
@@ -23,6 +24,12 @@ WORKSPACE="${AML_WORKSPACE:-M365Research}"
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 job_file="${AML_JOB_FILE:-$repo_root/aml/job.yml}"
 [[ "$job_file" = /* ]] || job_file="$repo_root/$job_file"
+
+if [[ -n "${AML_MANAGED_IDENTITY_CLIENT_ID:-}" ]]; then
+  echo "Submitting $job_file with compute-instance managed identity (no az login)" >&2
+  exec /opt/az/bin/python3 "$repo_root/aml/src/submit_managed_identity.py" \
+    --file "$job_file" "$@"
+fi
 
 if [[ "$(basename "$job_file")" == "job.officebench.yml" ]]; then
   if ! az ml environment show \

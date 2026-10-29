@@ -74,19 +74,14 @@ def _int_env(name: str, default: int) -> int:
         return default
 
 
-#: Per-file content budget in the verifier prompt.  Real OfficeBench files render long (docx median
-#: ~1.8k chars, pdf/xlsx tails into the 10k+), so the previous 600-char cap truncated the majority of
-#: gold/result files (48-64% of the corpus) — the judge was comparing snippets.  Default 4000 keeps
-#: the bulk intact; override with the env vars.
-_STATE_FILE_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_FILE_CHARS", 4000)
-_GOLD_FILE_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_GOLD_CHARS", 4000)
+# File and reference evidence is kept complete; only the trajectory overview is abbreviated.
 #: Per-step observation budget in the realized-trajectory dump (read observations can be whole tables).
 _TRAJ_OBS_CHARS = _int_env("TTS_OFFICEBENCH_VERIFIER_OBS_CHARS", 600)
 
 _AUDIT_LENSES = (
     "Completeness: look for any required app, output, or evaluator check the trajectory omitted.",
     "Exactness: verify names, values, paths, formulas, dates, times, and cardinalities against the gold.",
-    "Execution: look for malformed, blocked, failed, stale-read, or no-op actions that break the plan.",
+    "Execution: look for unresolved errors in final state; a failed attempt followed by recovery is not a failure.",
     "Final state: compare every predicted result artifact with every ground-truth success check.",
     "Adversarial review: actively try to prove the trajectory fails before accepting it as complete.",
 )
@@ -102,7 +97,7 @@ def _atomic_requirements(config: Optional[Dict]) -> List[Dict]:
         split_key = None
         for key in ("keywords", "matches"):
             value = args.get(key)
-            if isinstance(value, list) and 1 < len(value) <= split_cap:
+            if function != "evaluate_not_contain" and isinstance(value, list) and 1 < len(value) <= split_cap:
                 split_key = key
                 break
         if split_key is None:
@@ -148,11 +143,13 @@ def state_files_from_config(config: Dict) -> List[Dict]:
 
     for item in config.get("evaluation", []) or []:
         args = item.get("args", {}) or {}
-        doc_type = args.get("doc_type", "txt")
+        doc_type = args.get("doc_type")
         for key in ("file", "result_file", "expected_file", "input_file", "output_file"):
             if args.get(key):
-                _add(args[key], "xlsx" if str(args[key]).endswith(".xlsx") else doc_type)
-        if "username" in args and "file" not in args:
+                _add(args[key], doc_type or str(args[key]).rsplit(".", 1)[-1].lower())
+        if args.get("doc_type") == "email":
+            _add(f"emails/{args['username']}", "email")
+        elif item.get("function") == "evaluate_calendar_no_overlap":
             _add(f"./calendar/{args['username']}.ics", "ics")
     return files
 
@@ -276,18 +273,16 @@ def _deterministic_failure(
                     "content" if _content_arg(action) else "empty")
         elif app == "word" and name == "write_to_file":
             for target in targets:
-                if requires_preserving_append and target not in read_targets:
-                    return (
-                        f"append/edit target {target} was overwritten without first reading "
-                        "the existing document"
-                    )
                 if _content_arg(action):
                     resource_status[target] = "content"
         elif app == "excel" and name == "set_cell":
             text = str(action.get("text", ""))
-            if "," in text and not (
-                len(text) >= 2 and text.startswith('"') and text.endswith('"')
-            ):
+            from .officebench_semantics import cli_literal
+            try:
+                parsed = cli_literal(text)
+            except ValueError:
+                parsed = text  # unsupported shell quoting is uncertain, not a proof
+            if isinstance(parsed, (tuple, list, dict, set, bytes)):
                 return (
                     "excel.set_cell comma-containing text was not wrapped in literal "
                     "double-quote characters and will be rejected by the OfficeBench app"
@@ -322,7 +317,9 @@ def _deterministic_failure(
             content = normalized_state.get(target)
             if content is None:
                 continue  # state reconstruction was unavailable; defer unknown evidence to the LLM
-            if _state_is_missing(content):
+            if str(content).startswith("[incompatible file format:"):
+                return f"required output {path} has incompatible file format"
+            if _state_is_missing(content) and (resource_status.get(target) == "missing" or not actions):
                 return f"required output {path} is missing"
             if require_content and (
                     resource_status.get(target) == "empty" or _state_is_empty(content)):
@@ -353,11 +350,8 @@ class OfficeBenchVerifier:
 
     @property
     def uses_fixed_context(self) -> bool:
-        return self._flat_system_prompt is not None
+        return False
 
-    def configure_flat_context(self, system_prompt: str) -> None:
-        """Use the same pre-action B1 context as the observation predictor."""
-        self._flat_system_prompt = system_prompt
 
     def _system(self, default: str) -> str:
         return self._flat_system_prompt or default
@@ -401,12 +395,28 @@ class OfficeBenchVerifier:
                         final_answer: Optional[str] = None, gold_files: Optional[Dict] = None) -> float:
         """Return a success confidence in ``[0, 1]`` (success fraction over ``K`` self-consistency votes).
 
-        ``final_state`` (the actual resulting ``/testbed`` files, read read-only from the shadow
-        container), ``config`` (the ground-truth checks, with gold values) and ``gold_files`` (the
+        ``final_state`` (predicted resulting files reconstructed from pristine evidence), ``config`` (the ground-truth checks, with gold values) and ``gold_files`` (the
         gold expected-output file contents for ``exact_match`` tasks) turn this from a blind, optimistic
         log judge into a **state- and reference-grounded** one — the key precision fix.
         """
         precheck_config = config if _reference_enabled() else None
+        if (precheck_config and _percheck_enabled()
+                and os.environ.get('TTS_OFFICEBENCH_VERIFIER_TYPED', '0') == '1'):
+            from .officebench_checks import check_predicted
+            checks = precheck_config.get('evaluation', [])
+            audited = [check_predicted(c, final_state, gold_files) for c in checks]
+            if checks and all(a is not None for a in audited):
+                counts = {s: sum(a[0] == s for a in audited) for s in ('MET', 'UNMET', 'UNKNOWN')}
+                score = float(counts['MET'] == len(checks))
+                self.last_precheck_failure = None
+                self.last_percheck_breakdown = {
+                    'met': counts['MET'], 'unmet': counts['UNMET'], 'unknown': counts['UNKNOWN'],
+                    'total': len(checks), 'atomic_score': counts['MET'] / len(checks),
+                    'whole_score': score, 'typed': True,
+                    'checks': [{'function': c['function'], 'status': a[0], 'reason': a[1]}
+                               for c, a in zip(checks, audited)],
+                }
+                return score
         self.last_precheck_failure = _deterministic_failure(
             precheck_config, actions, observations, final_state)
         if self.last_precheck_failure is not None:
@@ -421,30 +431,19 @@ class OfficeBenchVerifier:
                 final_answer,
                 gold_files,
             )
-            whole_weight = min(
-                1.0,
-                max(0.0, _float_env(
-                    "TTS_OFFICEBENCH_VERIFIER_WHOLE_WEIGHT", 0.0)),
-            )
-            if whole_weight <= 0:
-                return atomic_score
+            # Coverage is useful for ranking partial solutions, not whole-task success.
+            breakdown = self.last_percheck_breakdown or {}
+            breakdown["atomic_score"] = atomic_score
+            if breakdown.get("unmet", 0):
+                breakdown["whole_score"] = 0.0
+                return 0.0
             whole_score = self._predict_whole(
-                instruction,
-                actions,
-                observations,
-                config,
-                final_state,
-                final_answer,
-                gold_files,
-                samples=1,
+                instruction, actions, observations, config, final_state,
+                final_answer, gold_files,
             )
-            if self.last_percheck_breakdown is not None:
-                self.last_percheck_breakdown.update({
-                    "atomic_score": atomic_score,
-                    "whole_score": whole_score,
-                    "whole_weight": whole_weight,
-                })
-            return (1.0 - whole_weight) * atomic_score + whole_weight * whole_score
+            breakdown["whole_score"] = whole_score
+            # Unknown requirements cannot support a positive success classification.
+            return min(whole_score, 0.49) if breakdown.get("unknown", 0) else whole_score
         self.last_percheck_breakdown = None
         return self._predict_whole(
             instruction,
@@ -476,7 +475,7 @@ class OfficeBenchVerifier:
         votes = 0
         seedable = self._sample_seed is not None and hasattr(self._chat, "seed")
         original_seed = getattr(self._chat, "seed", None)
-        query = None if self.uses_fixed_context else self._query
+        query = self._query
         try:
             for i in range(k):
                 # K==1 -> deterministic (temp 0); K>1 -> sampled, reproducible independent votes.
@@ -500,8 +499,9 @@ class OfficeBenchVerifier:
                         "VERDICT: SUCCESS  or  VERDICT: FAILURE",
                         context=python_context,
                         max_turns=self.MAX_TURNS,
-                        max_tokens=600,
+                        max_tokens=2000,
                         output_kind="verdict",
+                        force_always=os.environ.get('TTS_OFFICEBENCH_WM_PYTHON', '1') not in ('0', 'false', 'False'),
                     )
                     self._record_python_result(result)
                     verdict = result.output
@@ -563,12 +563,6 @@ class OfficeBenchVerifier:
                     gold_files,
                     status_check=check,
                 )
-                # status = self._parse_status(self._chat.chat(
-                #     self._system(_STATUS_SYSTEM),
-                #     prompt,
-                #     temperature=0.0,
-                #     max_tokens=16,
-                # ))
                 extra_body = None
                 if (
                     getattr(self._chat, "backend", "") == "openai"
@@ -580,13 +574,25 @@ class OfficeBenchVerifier:
                         }
                     }
 
-                raw_status = self._chat.chat(
-                    self._system(_STATUS_SYSTEM),
-                    prompt,
-                    temperature=0.0,
-                    max_tokens=16,
-                    extra_body=extra_body,
-                )
+                if _private_python_verifier():
+                    context = self._python_context(
+                        instruction, actions, observations, check_config,
+                        final_state, final_answer, gold_files)
+                    context['status_check'] = check
+                    result = run_python_prediction_loop(
+                        lambda text, budget: self._chat.chat(
+                            self._system(_STATUS_SYSTEM), text, temperature=0.0,
+                            max_tokens=budget, extra_body=extra_body),
+                        self._query,
+                        prompt, 'STATUS: MET, STATUS: UNMET, or STATUS: UNKNOWN',
+                        context=context, max_turns=self.MAX_TURNS,
+                        max_tokens=2000, force_always=True)
+                    self._record_python_result(result)
+                    raw_status = result.output if result.valid else 'STATUS: UNKNOWN'
+                else:
+                    raw_status = self._chat.chat(
+                        self._system(_STATUS_SYSTEM), prompt, temperature=0.0,
+                        max_tokens=16, extra_body=extra_body)
 
                 if not raw_status.strip():
                     raise ValueError(
@@ -634,6 +640,32 @@ class OfficeBenchVerifier:
                       config: Optional[Dict], final_state: Optional[Dict] = None,
                       final_answer: Optional[str] = None, gold_files: Optional[Dict] = None,
                       status_check: Optional[Dict] = None) -> str:
+        if _private_python_verifier():
+            scope = ('Classify only data["status_check"] as MET, UNMET, or UNKNOWN.'
+                     if status_check is not None else
+                     'Predict whether ALL data["config"]["evaluation"] checks pass together; return SUCCESS or FAILURE.')
+            # Public operation names guide code generation; arguments and resource contents
+            # remain exclusively in copied Python input.
+            public_operations = {
+                'evaluate_file_exist', 'evaluate_file_not_exist', 'evaluate_contain',
+                'evaluate_not_contain', 'evaluate_excel_cell_value',
+                'evaluate_excel_cell_comparator', 'evaluate_calendar_no_overlap',
+                'evaluate_exact_match', 'evaluate_diff_contain_text',
+            }
+            checks = [status_check] if status_check is not None else (
+                (config or {}).get('evaluation', []) if _reference_enabled() else [])
+            operations = sorted({c.get('function') for c in checks
+                                 if c.get('function') in public_operations})
+            if operations:
+                scope += '\nRequired evaluator operations: ' + ', '.join(operations)
+                scope += '. Implement only these operations, using copied arguments; keep the program concise.'
+            if status_check is not None and status_check.get('args', {}).get('doc_type') == 'email':
+                scope += (
+                    '\nThis is an EMAIL check, with no file/result_file argument. '
+                    'Resolve its resource as "emails/" + data["status_check"]["args"]["username"], '
+                    'then read that normalized key in data["final_state"]. '
+                    'Do not report UNKNOWN merely because args["file"] is absent.')
+            return _VERIFIER_PROGRAM_CONTRACT + '\n\n' + scope
         lines = [f"TASK INSTRUCTION:\n{instruction}\n", "REALIZED AGENT TRAJECTORY (action -> observation):"]
         for i, action in enumerate(actions):
             obs = (observations[i] if i < len(observations) else "").replace("\n", "\\n")
@@ -646,7 +678,7 @@ class OfficeBenchVerifier:
             lines.append("\nPREDICTED RESULTING FILE STATE (world-model prediction; writes were NOT "
                          "executed — reason about whether the writes achieve the task):")
             for path, content in final_state.items():
-                lines.append(f"  === {path} ===\n  {str(content)[:_STATE_FILE_CHARS]}")
+                lines.append(f"  === {path} ===\n  {content}")
 
         if final_answer is not None and _is_giveup(final_answer):
             lines.append(
@@ -665,7 +697,7 @@ class OfficeBenchVerifier:
                 lines.append("\nGOLD EXPECTED OUTPUT (applying the write actions above to the initial "
                              "content must yield a file matching this exactly):")
                 for label, content in gold_files.items():
-                    lines.append(f"  === gold {label} ===\n  {str(content)[:_GOLD_FILE_CHARS]}")
+                    lines.append(f"  === gold {label} ===\n  {content}")
         if status_check is None:
             lines.append(
                 "\nUsing the PREDICTED resulting file state (not the agent's claims), did the agent "
@@ -682,6 +714,47 @@ class OfficeBenchVerifier:
         return "\n".join(lines)
 
 
+def _private_python_verifier() -> bool:
+    return (officebench_wm_tool_mode() == 'python'
+            and os.environ.get('TTS_OFFICEBENCH_WM_PYTHON', '1') not in ('0', 'false', 'False'))
+
+
+_VERIFIER_PROGRAM_CONTRACT = """
+Inspect copied values only in Python. Task, evaluation arguments, trajectory, final state and gold
+contents are in data, not in this prompt. Do not transcribe or invent their values.
+Use if/elif to dispatch evaluator functions; calling a function through a dictionary subscript is
+not supported by the restricted Python runtime.
+SCHEMA: data['config']['evaluation'] is a list of {'function': name, 'args': {...}}.
+data['final_state'] maps file/resource paths to decoded strings. Normalize './' and '/testbed/'
+prefixes when matching paths. Email resources are 'emails/' + args['username']; other checks use
+args['file'] or args['result_file']. A missing record is unknown evidence. The exact marker
+'[file does not exist]' proves absence; '[unknown predicted content]' does not prove existence or
+absence. Empty strings may be existing empty files. 'INITIAL content ... WRITE actions ...' is a
+delta representation: reason about the ordered writes, not just the initial missing marker.
+Native evaluate_file_exist checks existence; evaluate_file_not_exist negates existence.
+Native evaluate_contain checks that EVERY keyword is
+a case-insensitive substring of decoded content (for numeric keywords, commas are removed from
+content, with the removal persisting for later keywords). evaluate_not_contain negates that entire
+predicate, including a missing file. evaluate_excel_cell_value requires each literal
+'(row, col): value' from args['matches'] to be a substring of decoded workbook text; this is the
+native substring test, not typed equality. Decoded cells are separated by tabs.
+Gold expected files are copied in data['gold_files']. Do not guess unsupported check semantics;
+classify an atomic check UNKNOWN when evidence or semantics are insufficient.
+data['trajectory'] entries contain an 'action' DICTIONARY and an 'observation' string. Action
+arguments are directly in that dictionary, not inside 'args'. Final state is AFTER the trajectory.
+An earlier failed attempt followed by successful recovery is NOT grounds for failure. Do not use
+any('failed' in observation ...) as a whole-task verdict. A finish_task answer of None/'None' is
+normal for file-changing tasks, not itself a failure. Judge the final required state.
+When config.evaluation exists, forecast those native checks; do not add unlisted filename,
+attachment, wording or perfect-action-history requirements from the natural-language task.
+Whole-task success requires every check to pass together; missing, contradictory or unknown
+required evidence cannot establish success. Do not return success merely because a write printed
+'Successfully'. If no reference checks exist, assess data['instruction'] from the available state.
+Read tools, when available, describe pristine objects; they must not override the supplied
+post-write state with pristine absence. Never execute native apps or write files during verification.
+"""
+
+
 _SYSTEM = (
     "You are a strict evaluator for an office-automation agent. The agent manipulates files, emails, "
     "calendars and spreadsheets through office apps. Judge whether the task was fully and correctly "
@@ -690,7 +763,9 @@ _SYSTEM = (
     "they did not achieve). When a file is shown as initial content + write actions, decide whether "
     "those writes truly transform it into what the task/gold requires. Be conservative: if a required "
     "change is missing, wrong, written as an uncomputed formula/string instead of a value, only "
-    "partially done, a write failed, or the agent gave up, answer FAILURE. Reply with a single word: "
+    "partially done, or a required error remains unrecovered, answer FAILURE. Earlier failed attempts "
+    "do not invalidate successful recovery. A None finish answer is normal for file tasks. When native "
+    "checks are supplied, predict their conjunction without adding unlisted requirements. Reply with a single word: "
     "SUCCESS or FAILURE."
 )
 

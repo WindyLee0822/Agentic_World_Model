@@ -17,6 +17,8 @@ import os
 import random
 import threading
 import time
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional
 
@@ -124,7 +126,23 @@ def _build_token_provider(auth_mode: str) -> Callable[[], str]:
     if mode == "gcr":
         credential = AzureCliCredential()
     elif mode in ("aml", "default", "aad"):
-        credential = DefaultAzureCredential()
+        obo_endpoint = os.environ.get("OBO_ENDPOINT")
+        if mode == "aml" and obo_endpoint:
+            from azure.core.credentials import AccessToken  # type: ignore
+
+            class _AzureMLOBOCredential:
+                """Token credential backed by AML's user-identity OBO endpoint."""
+
+                def get_token(self, scope: str, **_: Any) -> AccessToken:
+                    resource = scope.removesuffix(".default")
+                    url = obo_endpoint + "?" + urllib.parse.urlencode({"resource": resource})
+                    with urllib.request.urlopen(url, timeout=30) as response:
+                        payload = json.load(response)
+                    return AccessToken(payload["access_token"], int(payload["expires_on"]))
+
+            credential = _AzureMLOBOCredential()
+        else:
+            credential = DefaultAzureCredential()
     else:
         raise ValueError(
             f"Unsupported azure_auth_mode {auth_mode!r}; use api_key|gcr|aml|default."

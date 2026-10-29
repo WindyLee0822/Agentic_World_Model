@@ -1,0 +1,40 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-appworld-ours-r30-n4-normal-l3-20260915
+experiment_name: dw-appworld-ours-deepseek-repair
+description: R30 AppWorld Ours DeepSeek-V4-Pro. Opt-in compatible Python runtime and
+  gold-blind state reconstruction before simulator verification. Predict all actions;
+  no native candidate writes; replay selected candidate only.
+compute: azureml:GWC-NC24ads-A100-hipri
+code: ..
+environment: azureml:CliV2AnonymousEnvironment:9872fac1b843bfd01c9cdaf22251013c978c50c12d30b505334dcb04199a7be0
+identity:
+  type: user_identity
+inputs:
+  appworld_data:
+    type: uri_folder
+    path: azureml:tts_appworld_data:20260606050627
+    mode: ro_mount
+  extra_args: --predict-all-actions
+environment_variables:
+  TTS_APPWORLD_PREDICT_ALL_PROGRAM_ONLY: '1'
+  TTS_APPWORLD_PREGROUND_CLEAN_READS: '0'
+  TTS_APPWORLD_DETERMINISTIC_GROUNDED_CLEAN_READS: '0'
+  TTS_APPWORLD_AGENT_REFERENCE: '0'
+  TTS_APPWORLD_OURS_MODEL_DRIVEN_WRITES: '1'
+  TTS_APPWORLD_COMPLETION_GUARD: '0'
+  TTS_APPWORLD_INSTRUCTION_PREFLIGHTS: '0'
+  TTS_APPWORLD_VERIFIER_PYTHON: '1'
+outputs:
+  output_dir:
+    type: uri_folder
+command: export TTS_APPWORLD_OURS_DIAGNOSTICS_DIR="${{outputs.output_dir}}/wm_diagnostics"
+  && conda env create --yes --prefix /tmp/tts-appworld-ours-repair --file aml/environment/conda.appworld.yml
+  && conda run --no-capture-output --prefix /tmp/tts-appworld-ours-repair bash aml/src/run_dw.sh
+  --env appworld --appworld-data "${{inputs.appworld_data}}" --output-dir "${{outputs.output_dir}}"
+  --methods ours --n "4" --agent llm_wm --splits "test_normal" --levels "3" --workers
+  4 --max-steps 40 --temperature 1 --aoai-endpoint "https://ai-m365researchefficientaieus2212654625773.cognitiveservices.azure.com/"
+  --aoai-deployment "DeepSeek-V4-Pro" --aoai-api-version "2024-12-01-preview" --aoai-api-key
+  none --managed-identity-client-id "3cd4a6ca-c848-40dd-bb6f-e6f20c7f0755" --stall-timeout
+  129600 --extra-args "--strict-coverage --max-tasks-per-child 1 ${{inputs.extra_args}}"
+name: dw-appworld-ours-r30-n4-normal-l3-20260915

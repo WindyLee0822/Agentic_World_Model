@@ -92,7 +92,7 @@ class RolloutResult:
     predicted: RewardInfo
     #: realized, grounded official reward for this rollout (real-agent path); ``None`` otherwise.
     grounded: Optional[RewardInfo] = None
-    #: recursion telemetry (SpawnNode root; ``None`` for B0 / un-simulated rollouts).
+    #: recursion telemetry (SpawnNode root; ``None`` for real-env rollouts).
     spawn_root: Optional["object"] = None
     n_reads: int = 0
     n_spawns: int = 0

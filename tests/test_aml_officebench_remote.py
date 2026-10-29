@@ -116,7 +116,7 @@ def test_officebench_aml_job_uses_local_no_docker_backend():
     assert inputs["aoai_deployment"] == "gpt-5.4"
     assert inputs["temperature"] == 1
     assert inputs["workers"] == 8
-    assert inputs["extra_args"] == "--exact-clean-reads"
+    assert inputs["extra_args"] == "none"
     assert not any(key.startswith("docker_") for key in inputs)
     assert "--docker-host" not in command
 

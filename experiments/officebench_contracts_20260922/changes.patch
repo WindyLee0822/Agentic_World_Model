@@ -1,0 +1,297 @@
+--- previous/src/tts/env/officebench_semantics.py
++++ current/src/tts/env/officebench_semantics.py
+@@ -2,7 +2,128 @@
+ from __future__ import annotations
+ 
+ import ast
++import re
+ import shlex
++
++
++# Public application semantics only. Never interpolate task file contents into these contracts.
++_WRITE_TEMPLATES = {
++    ('excel', 'set_cell'): ('Successfully write text to {file_path}', 'Failed to write text to {file_path}', 'The file {file_path} does not exist. Failed to write to the file.'),
++    ('excel', 'delete_cell'): ('Successfully delete a cell in {file_path}', 'Failed to delete a cell in {file_path}', 'The file {file_path} does not exist. Failed to delete the cell in the file.'),
++    ('word', 'write_to_file'): ('Successfully write contents to {file_path}', 'Failed to write contents to {file_path}', 'The file {file_path} does not exist. Failed to write to the file.'),
++}
++
++
++def action_contract(action):
++    """Data-independent requirements for the generated transition/rendering program."""
++    key = (action.get('app'), action.get('action'))
++    common = (
++        "CURRENT STATE CONTRACT: data['current_state'] maps resource paths to records. "
++        "Keys use paths relative to /testbed, exactly as in data['targets'] (writes) or "
++        "data['target'] (reads), NOT absolute action paths. For a write, retrieve "
++        "record = data['current_state'].get(data['targets'][0], {}). The record fields are "
++        "status ('exact' or 'unknown'), exists (True/False/None), and content (str/None). "
++        "Presence of a record/key does NOT mean the file exists; inspect record['exists']. "
++        "An exact record's content is already AFTER applied writes; never apply writes twice. "
++        "An unknown record is NOT evidence of absence: inspect its pristine_content and ordered "
++        "transitions. Rejected transitions never change state. READ results are pristine. "
++        "Use data['observation_action'] for response arguments and data['action'] for resolved paths. "
++        "Never replace an observation with paraphrased wording or inferred file contents.\n"
++    )
++    if key in _WRITE_TEMPLATES:
++        return common + (
++            "WRITE RESPONSE CONTRACT: choose exactly one of these templates after checking current "
++            "existence, input types, and the app preconditions; interpolate action arguments in Python. "
++            "Templates (success, operation failure, missing file): " + repr(_WRITE_TEMPLATES[key])
++        )
++    if key in (('excel', 'read_file'), ('word', 'read_file')):
++        header = ('The following is the table from the excel file:\n' if key[0] == 'excel'
++                  else 'The following is the content from the word file:')
++        return common + (
++            "READ RESPONSE CONTRACT: the copied operand is decoded content, not the app response. "
++            f"Prepend the native header {header!r}. For Word append newline before each paragraph; "
++            "for Excel preserve every cell, tab, and row separator. A missing file returns "
++            "'The file {file_path} does not exist. Failed to read the file.'. Trim outer whitespace "
++            "only after constructing the complete driver-visible observation."
++        )
++    if key == ('calendar', 'list_events'):
++        return common + (
++            "CALENDAR RENDERING CONTRACT: username selects /testbed/calendar/{username}.ics; "
++            "there is no separate authenticated user ID. Parse ICS, unfold continuation lines, "
++            "Use only allowed re/datetime/string operations; dateutil and icalendar imports are "
++            "unavailable in the restricted worker. datetime.strptime and strftime are allowed. "
++            "unescape TEXT values (\\\\, \\n, \\, and \\;), and preserve VEVENT order. "
++            "Do not print raw DTSTART/DTEND strings. Native format_time calls "
++            "obj.dt.strftime('%Y-%m-%d %H:%M:%S'): convert YYYYMMDDTHHMMSS[Z] to "
++            "YYYY-MM-DD HH:MM:SS; DATE values YYYYMMDD render at 00:00:00. "
++            "TZID values retain their local wall-clock time; do not convert to UTC. "
++            "Each event renders Summary, Start Time, End Time, Description, Location, each as "
++            "'Field: value' on its own line, followed by exactly 50 hyphens. Missing properties "
++            "render None. Join event blocks with newline and trim the final result. "
++            "For nonempty events prepend 'Successfully list events for {username}:\\n'. "
++            "An empty calendar returns 'No events found for {username}.'. "
++            "A parse failure returns 'Failed to list events for {username}.'. "
++            "A missing calendar is created empty by native list_events if its parent exists; "
++            "a missing parent causes an exception, not an empty-success observation. "
++            "Generate code using data values, never literal event values."
++        )
++    return common
++
++
++def observation_contract_error(context, observation):
++    """Reject invented write wording without exposing any data in repair feedback."""
++    if not context.get('enforce_observation_contract'):
++        return None
++    action = context.get('observation_action', context.get('action', {}))
++    rendered = str(observation).split('OBSERVATION:')[-1].strip()
++    key = (action.get('app'), action.get('action'))
++    if key in (('excel', 'read_file'), ('word', 'read_file')) and context.get('kind') == 'clean_read':
++        # Compare decoded evidence to the native wrapper without making an app call or
++        # returning private contents in the repair prompt.
++        reads = context.get('reads') or []
++        if reads and reads[0].get('status') in ('ok', 'missing'):
++            content = reads[0]['result']
++            if reads[0]['status'] == 'missing':
++                expected = f"The file {action.get('file_path')} does not exist. Failed to read the file."
++            elif key[0] == 'excel':
++                expected = 'The following is the table from the excel file:\n' + content
++            else:
++                expected = 'The following is the content from the word file:' + ('\n' + content if content else '')
++            if rendered != expected.split('OBSERVATION:')[-1].strip():
++                return 'Read observation differs from the copied operand and native wrapper. Preserve all content and apply only the documented rendering.'
++        return None
++    if (action.get('app'), action.get('action')) == ('calendar', 'list_events'):
++        username = action.get('username')
++        if not isinstance(username, str):
++            return None
++        if rendered in (f'No events found for {username}.', f'Failed to list events for {username}.'):
++            return None
++        if not rendered.startswith(f'Successfully list events for {username}:\n'):
++            return 'Calendar observation must use the native success header or empty/failure template.'
++        for line in rendered.splitlines():
++            if line.startswith(('Start Time:', 'End Time:')):
++                value = line.split(': ', 1)[-1]
++                if value != 'None' and not re.fullmatch(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', value):
++                    return "Convert ICS timestamps with native strftime('%Y-%m-%d %H:%M:%S'); raw ICS timestamps are invalid."
++        return None
++    templates = _WRITE_TEMPLATES.get((action.get('app'), action.get('action')))
++    if templates is None:
++        return None
++    try:
++        allowed = [template.format(**action) for template in templates]
++    except (KeyError, ValueError):
++        return None
++    if rendered not in allowed:
++        return 'Observation violates the native response templates. Use the action contract; do not paraphrase.'
++    # Exact absence is authoritative; unknown state is deliberately not classified here.
++    target = context.get('targets', [])
++    record = context.get('current_state', {}).get(target[0], {}) if target else {}
++    if record.get('status') == 'exact':
++        if record.get('exists') is False and rendered != allowed[2]:
++            return 'Observation contradicts exact current-state absence. Use the missing-file template.'
++        if record.get('exists') is True and rendered == allowed[2]:
++            return 'Observation contradicts exact current-state existence. Do not use pristine absence as current absence.'
++    return None
+ 
+ NATIVE_SEMANTICS = """
+ OfficeBench implementation rules (not generic office-software behavior):
+@@ -15,6 +136,9 @@
+   prints 'No events found for USER.', never an empty string.
+ - In predict-all mode READ/LIST contain PRISTINE evidence, not post-write state.
+   Apply data['writes'] before judging current existence/content. A missing pristine
++  file is NOT authoritative when data['current_state'] supplies exact current state;
++  use that materialized content without applying writes a second time. Skip write
++  entries with applied=False. Unknown current state is not proof of absence. A missing pristine
+   file can have been created by an earlier predicted write. LIST returns a JSON
+   ARRAY of child entries, not an object with an 'entries' field. A valid array,
+   including [], proves the queried directory exists; the directory itself is not
+--- previous/src/tts/env/officebench_wm_predict.py
++++ current/src/tts/env/officebench_wm_predict.py
+@@ -40,7 +40,7 @@
+ from typing import Callable, Dict, List, Optional, Tuple
+ 
+ from ..simulator.transition_log import TransitionLog
+-from .officebench_semantics import NATIVE_SEMANTICS, excel_cell_text, cli_literal, read_schema
++from .officebench_semantics import NATIVE_SEMANTICS, excel_cell_text, cli_literal, read_schema, action_contract
+ from .officebench_lowlevel import normalize_answer
+ from .officebench_wm_python import (
+     officebench_wm_tool_mode,
+@@ -1950,6 +1950,14 @@
+     def _related_writes(self, target: str) -> List[Tuple[Dict, str]]:
+         target = _norm_path(target)
+         prefix = "" if not target else target.rstrip("/") + "/"
++        entries = self.transition_log.entries(applied_only=True)
++        if entries:
++            # One transition can affect several resources. Preserve global order and include
++            # it once, rather than regrouping/repeating it through the per-resource index.
++            return [(entry.action, entry.observation) for entry in entries if any(
++                resource == target or resource.startswith(prefix)
++                or (bool(resource) and target.startswith(resource.rstrip('/') + '/'))
++                for resource in entry.resources)]
+         return [
+             item for resource, items in self.applied_writes.items()
+             if (
+@@ -2071,10 +2079,44 @@
+         ]
+ 
+     def _write_history_data(self) -> List[Dict]:
++        entries = self.transition_log.entries()
++        if entries:
++            return [{'action': entry.action, 'observation': entry.observation,
++                     'applied': entry.applied, 'resources': list(entry.resources)}
++                    for entry in entries]
+         return [
+-            {"action": action, "observation": observation}
++            {"action": action, "observation": observation,
++             "applied": not _looks_like_failure(observation)}
+             for action, observation in self.write_history
+         ]
++
++    def _current_state_data(self, target: str, pristine: Optional[str] = None) -> Dict:
++        """Copied logical evidence for Python, never rendered into the model prompt.
++
++        Unsupported transitions remain explicitly unknown. This does not execute candidate
++        actions or use native post-write state.
++        """
++        target = _norm_path(target)
++        if pristine is None:
++            if self.uses_fixed_context:
++                pristine = self.fixed_pre_write_content(target)
++            elif self._query is not None:
++                pristine = self._query.read_raw(f'/testbed/{target}')
++        if pristine is None:
++            return {'status': 'unknown', 'exists': None, 'content': None}
++        schema = read_schema(target, pristine)
++        writes = self._related_writes(target)
++        exact = self._exact_overlay_content(target, pristine)
++        if exact is None and not writes and not self.global_dirty and schema['status'] != 'tool_error':
++            if not str(pristine).startswith('[not included in the fixed pre-action context]'):
++                exact = pristine
++        if exact is not None:
++            missing = exact.strip() == '[file does not exist]'
++            return {'status': 'exact', 'state_version': 'predicted_current',
++                    'exists': not missing, 'content': None if missing else exact}
++        return {'status': 'unknown', 'state_version': 'predicted_current', 'exists': None,
++                'content': None, 'pristine_content': pristine,
++                'transitions': [{'action': a, 'observation': o} for a, o in writes]}
+ 
+     def _predict_creation(self, action: Dict) -> Optional[str]:
+         """Pure creation transition from immutable inventory and the predicted overlay."""
+@@ -2174,13 +2216,19 @@
+             )
+         obs = self._predict_creation(action)
+         if obs is None:
++            current_state = {}
++            if self.program_only and app in ('excel', 'word') and act in ('set_cell', 'delete_cell', 'write_to_file'):
++                current_state = {target: self._current_state_data(target) for target in targets}
+             obs = self._predict(
+-                prompt,
++                prompt + '\n\n' + action_contract(action),
+                 "PREDICT: <the exact single-line observation returned by the write action>",
+                 max_tokens=_int_env("TTS_OFFICEBENCH_WM_WRITE_TOKENS", 2048),
+                 python_context={
+                     "kind": "write_observation",
+                     "action": recorded_action,
++                    "observation_action": dict(action),
++                    "current_state": current_state,
++                    "enforce_observation_contract": self.program_only,
+                     "inputs": inputs,
+                     "targets": targets,
+                     "history": self._agent_context_data(history),
+@@ -2434,12 +2482,16 @@
+             f"`data['history']`. {processing_instruction}"
+         )
+         out = self._predict(
+-            prompt,
++            prompt + '\n\n' + action_contract(action),
+             "PREDICT: <the exact resulting file content or read observation, with no prose>",
+             max_tokens=_READ_MAX_TOKENS,
+             python_context={
+                 "kind": "dirty_read" if dirty else "clean_read",
+                 "action": _canonical_action_paths(action, self._current_workdir()),
++                "observation_action": dict(action),
++                "enforce_observation_contract": self.program_only,
++                "current_state": ({target: self._current_state_data(target, pre_write_content)}
++                                  if dirty and target else {}),
+                 "target": target,
+                 "reads": operand_reads,
+                 "pre_write_content": pre_write_content,
+--- previous/src/tts/env/officebench_wm_python.py
++++ current/src/tts/env/officebench_wm_python.py
+@@ -9,7 +9,7 @@
+ from dataclasses import dataclass
+ from typing import Any, Callable, Dict, List, Optional, Tuple
+ 
+-from .officebench_semantics import NATIVE_SEMANTICS, read_schema, inventory_schema
++from .officebench_semantics import NATIVE_SEMANTICS, read_schema, inventory_schema, observation_contract_error
+ 
+ 
+ _PYTHON_PREFIX = "PYTHON:"
+@@ -427,6 +427,10 @@
+     if error is None and normalized is None:
+         error = f"program output is not a valid {output_kind} result"
+         stats.python_failures += 1
++    if error is None:
++        error = observation_contract_error(context, normalized)
++        if error:
++            stats.python_failures += 1
+     if error is not None:
+         stats.error = str(error)
+     if error is None:
+@@ -488,6 +492,12 @@
+         if normalized is None:
+             stats.python_failures += 1
+             repair_error = f"repaired program output is not a valid {output_kind} result"
++            failed_code = repaired_code
++            continue
++        contract_error = observation_contract_error(context, normalized)
++        if contract_error:
++            stats.python_failures += 1
++            repair_error = contract_error
+             failed_code = repaired_code
+             continue
+         stats.valid = True
+--- previous/src/tts/llm/python_tool.py
++++ current/src/tts/llm/python_tool.py
+@@ -259,6 +259,7 @@
+     "dumps",
+     "loads",
+     "strptime",
++    "strftime",
+     "zfill",
+     "ceil",
+     "floor",

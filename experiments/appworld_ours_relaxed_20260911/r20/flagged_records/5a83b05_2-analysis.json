@@ -1,0 +1,9 @@
+{
+  "task_id": "5a83b05_2",
+  "finding": "Setup metadata flag is on failed candidate 0, which exhausted its prediction budget on all three attempts and received an explicit failed-candidate placeholder.",
+  "selected_candidate": 1,
+  "selected_native_success": true,
+  "all_candidate_scores_zero": true,
+  "interpretation": "This flag does not by itself demonstrate a setup observation bypass. Failed attempts remain relevant to runtime fidelity; preserve the flag for review. R20 has a separately established operational-error exposure defect.",
+  "r21_implication": "Failure-boundary rejections may likewise produce conservative placeholder metadata. Review their failed-attempt traces instead of treating metadata defaults as evidence of actual setup behavior."
+}

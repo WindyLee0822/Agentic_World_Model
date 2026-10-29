@@ -1,0 +1,30 @@
+{
+  "config": {
+    "username": "Bob",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "extract students and their IDs, collect in excel file SIDs.xlsx, save in folder IDs",
+    "evaluation": [
+      {
+        "function": "evaluate_exact_match",
+        "args": {
+          "doc_type": "xlsx",
+          "result_file": "./data/IDs/SIDs.xlsx",
+          "expected_file": "../../../../reference/sids.xlsx"
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/students_ids.jpg": "Students\u2019 Xanes and rps\n\naiice: s1001\n\nob: $1002\n\ncarol: 1002\n\npavia: 1004\n\neva: $1005\n\nFrank: $1006\n\nerace: $1007\n\nHank: $1008\n\nyy: 5100\n\nyack: $1010\n\f"
+  },
+  "initial_state": {
+    "./data/IDs/SIDs.xlsx": "[file does not exist]",
+    "../../../../reference/sids.xlsx": "[file does not exist]"
+  },
+  "gold_files": {
+    "sids.xlsx": "(1, 1): Names\t(1, 2): IDs\t\n(2, 1): Alice\t(2, 2): s1001\t\n(3, 1): Bob\t(3, 2): s1002\t\n(4, 1): Carol\t(4, 2): s1003\t\n(5, 1): David\t(5, 2): s1004\t\n(6, 1): Eva\t(6, 2): s1005\t\n(7, 1): Frank\t(7, 2): s1006\t\n(8, 1): Grace\t(8, 2): s1007\t\n(9, 1): Hank\t(9, 2): s1008\t\n(10, 1): Ivy\t(10, 2): s1009\t\n(11, 1): Jack\t(11, 2): s1010\t\n"
+  },
+  "listing": "/testbed/data/students_ids.jpg"
+}

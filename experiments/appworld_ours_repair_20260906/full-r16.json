@@ -1,0 +1,32 @@
+{
+  "job": "dw-appworld-ours-combined-r16-full-20260907",
+  "status": "Completed",
+  "source_root": "/tmp/appworld-full-r16-submit",
+  "source_sha256": {
+    "src/tts/env/appworld_ours_wm.py": "255cb066bf9a4d8c4feae7d8f00d3efdc221f0bd947a58912a911831ff837ed3",
+    "src/tts/env/appworld_ours_chat.py": "55f450f55c101e4244dc1dec335bf4a718313ca4c26e402a8b696b4751dd75d5",
+    "src/tts/env/appworld_wm.py": "421f4d6e867766ef28f6c875c21ae9721bfa903974b6ca2959c43926b891cbfe",
+    "src/tts/env/real_appworld.py": "a88892e77f8a5fa830b40748e748b19d22b5834ae5820620a6eeafaf23d3c7e9",
+    "src/tts/env/appworld_react_agent.py": "55ca25de820e57ce417b74c10e555dfcde83b6c73ea08d17a97b7ca63216ae98"
+  },
+  "expected_tasks": 585,
+  "n_rollouts": 2,
+  "workers": 16,
+  "required_successes": 352,
+  "goal_achieved": false,
+  "root_worktree_is_r14": false,
+  "matches_validated_r16_experiment": true,
+  "partial_results": {
+    "checked_at": "2026-09-07T21:29:04.821243+00:00",
+    "observed_decisions": 585,
+    "official_successes": 367,
+    "full_coverage": true,
+    "contract_violations": []
+  },
+  "recovered_source_root": "/mnt/batch/tasks/shared/LS_root/mounts/clusters/wendili-cpu2/code/Agentic_World_Model/experiments/appworld_ours_repair_20260906/snapshots/r16",
+  "recovered_source_hashes_verified": true,
+  "source_matches_worktree": true,
+  "status_checked_at": "2026-09-07T21:31:05.582428+00:00",
+  "performance_threshold_achieved": true,
+  "full_result_gate": "full-r16-gate.json"
+}

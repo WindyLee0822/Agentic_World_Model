@@ -1,0 +1,196 @@
+{
+  "observed_at_utc": "2026-09-07T19:42:24.847921+00:00",
+  "job": "dw-appworld-ours-combined-r16-full-20260907",
+  "official_successes": 352,
+  "completed_tasks": 552,
+  "expected_tasks": 585,
+  "pending_tasks": 33,
+  "full_dataset_success_lower_bound_percent": 60.17094017094017,
+  "performance_threshold_crossed": true,
+  "goal_complete": false,
+  "remaining_requirements": [
+    "Complete and audit all 585 expected task identities in this run",
+    "Resolve exact setup API response scope for the every-observation requirement",
+    "Finalize source, simulator selection and method/dataset isolation evidence"
+  ],
+  "partial_gate": {
+    "goal": "overall AppWorld Ours BoN@2 > 60%",
+    "passed": false,
+    "full_coverage": false,
+    "expected_decisions": 585,
+    "observed_decisions": 552,
+    "official_successes": 352,
+    "required_successes": 352,
+    "success_rate": null,
+    "missing": [
+      [
+        "test_challenge/L3",
+        "143527e_2"
+      ],
+      [
+        "test_challenge/L3",
+        "143527e_3"
+      ],
+      [
+        "test_challenge/L3",
+        "18670a5_2"
+      ],
+      [
+        "test_challenge/L3",
+        "1b988ac_1"
+      ],
+      [
+        "test_challenge/L3",
+        "1b988ac_2"
+      ],
+      [
+        "test_challenge/L3",
+        "1b988ac_3"
+      ],
+      [
+        "test_challenge/L3",
+        "4441ee9_2"
+      ],
+      [
+        "test_challenge/L3",
+        "4441ee9_3"
+      ],
+      [
+        "test_challenge/L3",
+        "69ba40f_2"
+      ],
+      [
+        "test_challenge/L3",
+        "7238049_1"
+      ],
+      [
+        "test_challenge/L3",
+        "7238049_2"
+      ],
+      [
+        "test_challenge/L3",
+        "7238049_3"
+      ],
+      [
+        "test_challenge/L3",
+        "8d42650_1"
+      ],
+      [
+        "test_challenge/L3",
+        "8d42650_2"
+      ],
+      [
+        "test_challenge/L3",
+        "8d42650_3"
+      ],
+      [
+        "test_challenge/L3",
+        "988af8e_1"
+      ],
+      [
+        "test_challenge/L3",
+        "988af8e_2"
+      ],
+      [
+        "test_challenge/L3",
+        "988af8e_3"
+      ],
+      [
+        "test_challenge/L3",
+        "9a16324_1"
+      ],
+      [
+        "test_challenge/L3",
+        "9a16324_2"
+      ],
+      [
+        "test_challenge/L3",
+        "9a16324_3"
+      ],
+      [
+        "test_challenge/L3",
+        "a676f2a_1"
+      ],
+      [
+        "test_challenge/L3",
+        "a676f2a_2"
+      ],
+      [
+        "test_challenge/L3",
+        "a676f2a_3"
+      ],
+      [
+        "test_challenge/L3",
+        "adb1060_3"
+      ],
+      [
+        "test_challenge/L3",
+        "b71318e_1"
+      ],
+      [
+        "test_challenge/L3",
+        "b71318e_2"
+      ],
+      [
+        "test_challenge/L3",
+        "b71318e_3"
+      ],
+      [
+        "test_challenge/L3",
+        "f37e804_1"
+      ],
+      [
+        "test_challenge/L3",
+        "f37e804_2"
+      ],
+      [
+        "test_challenge/L3",
+        "fb05fed_1"
+      ],
+      [
+        "test_challenge/L3",
+        "fb05fed_2"
+      ],
+      [
+        "test_challenge/L3",
+        "fb05fed_3"
+      ]
+    ],
+    "extra": [],
+    "duplicates": [],
+    "contract_violations": [],
+    "by_subset": {
+      "test_normal/L1": {
+        "decisions": 57,
+        "successes": 54,
+        "expected": 57
+      },
+      "test_normal/L2": {
+        "decisions": 48,
+        "successes": 36,
+        "expected": 48
+      },
+      "test_normal/L3": {
+        "decisions": 63,
+        "successes": 39,
+        "expected": 63
+      },
+      "test_challenge/L1": {
+        "decisions": 72,
+        "successes": 63,
+        "expected": 72
+      },
+      "test_challenge/L2": {
+        "decisions": 150,
+        "successes": 89,
+        "expected": 150
+      },
+      "test_challenge/L3": {
+        "decisions": 162,
+        "successes": 71,
+        "expected": 195
+      }
+    },
+    "checked_at": "2026-09-07T19:41:39.107511+00:00"
+  }
+}

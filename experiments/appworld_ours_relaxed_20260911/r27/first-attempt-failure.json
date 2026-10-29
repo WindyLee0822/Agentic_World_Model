@@ -1,0 +1,26 @@
+{
+  "task_id": "024c982_2",
+  "seed": 34000,
+  "trace": "wm-206-76af143ab4e346d68c5b9367523e72e1.jsonl",
+  "errors": [
+    {
+      "event": "program_error",
+      "error": "invalid program: import of 'hashlib' is not allowed"
+    },
+    {
+      "event": "program_error",
+      "error": "invalid program: call to 'hash' is not allowed"
+    },
+    {
+      "event": "program_error",
+      "error": "invalid program: Pow is not allowed"
+    },
+    {
+      "event": "prediction_error",
+      "error": "program-only AppWorld prediction did not produce a valid Python result"
+    }
+  ],
+  "observed": "Write programs invent request_id and a large response object despite current endpoint documentation specifying message and payment_request_id. They fabricate an ID using disallowed operations and exhaust program repair.",
+  "next_action": "Expose the current endpoint contract directly in the opt-in write-prediction prompt, retaining structured context and generated response requirements.",
+  "limitation": "One attempt failed; the task has retries and is not yet known terminal."
+}

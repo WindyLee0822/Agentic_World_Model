@@ -86,39 +86,31 @@ class _FairFakeEnv(TaskEnvironment):
         return 0
 
 
-def test_b1_b2_ours_share_one_agent_rollout_pool():
-    """All three methods select from the identical pool of agent rollouts (same prompt + seeds)."""
-    calls: List[int] = []
-    cache: dict = {}
-    pools = {}
-    for method in ("b1", "b2", "ours"):
-        env = _FairFakeEnv(calls)  # fresh instance per method, like experiments/run.py
-        cfg = Config(method=method, env="fake", N=4, seed=0,
+def test_b2_budgets_share_one_agent_rollout_pool():
+    calls = []
+    cache = {}
+    prefixes = []
+    for n in (1, 2, 4):
+        cfg = Config(method="b2", env="fake", N=n, seed=0,
                      solver=SolverConfig(agent="llm"))
-        out = run_decision(env, cfg, rollout_cache=cache)
-        pools[method] = [r.trajectory.signature() for r in out.rollouts]
-        assert out.record.n_commits == 1 and out.record.simulator_writes == 0
-
-    # the agent was prompted exactly once per distinct seed (0..3) — the pool is shared, not re-sampled
+        out = run_decision(_FairFakeEnv(calls), cfg, rollout_cache=cache)
+        prefixes.append([r.trajectory.signature() for r in out.rollouts])
+        assert out.record.n_commits == 1
     assert sorted(calls) == [0, 1, 2, 3]
-    # and every method saw the identical agent trajectories (identical prompting strategy)
-    assert pools["b1"] == pools["b2"] == pools["ours"]
+    assert prefixes[0] == prefixes[2][:1]
+    assert prefixes[1] == prefixes[2][:2]
 
 
-def test_agent_rollout_generation_is_method_independent():
-    """Without a shared cache, each method still uses the same method-independent prompting path."""
-    sigs = {}
-    for method in ("b0", "b1", "b2", "ours"):
-        calls: List[int] = []
-        env = _FairFakeEnv(calls)
-        n = 1 if method == "b0" else 3
-        cfg = Config(method=method, env="fake", N=n, seed=0, solver=SolverConfig(agent="llm"))
-        out = run_decision(env, cfg)
-        sigs[method] = [r.trajectory.signature() for r in out.rollouts]
-        # generation depends only on the seed, never on the method
+def test_b2_rollout_prefix_is_seed_deterministic():
+    prefixes = []
+    for n in (1, 4):
+        calls = []
+        cfg = Config(method="b2", env="fake", N=n, seed=0,
+                     solver=SolverConfig(agent="llm"))
+        out = run_decision(_FairFakeEnv(calls), cfg)
         assert sorted(calls) == list(range(n))
-    # the first rollout (seed 0) is identical for every method
-    assert {sigs[m][0] for m in sigs} == {sigs["b0"][0]}
+        prefixes.append([r.trajectory.signature() for r in out.rollouts])
+    assert prefixes[0] == prefixes[1][:1]
 
 
 def test_b2_samples_real_env_and_selects_by_real_success():
@@ -144,6 +136,8 @@ def test_b2_samples_real_env_and_selects_by_real_success():
     env3 = _FairFakeEnv([])
     cfg3 = Config(method="b2", env="fake", N=1, seed=1, solver=SolverConfig(agent="llm"))  # seed 1 only
     assert run_decision(env3, cfg3).record.success is False  # only a failing rollout available
+
+
 
 
 def test_tau2_wm_agent_policy_hook_is_disabled():

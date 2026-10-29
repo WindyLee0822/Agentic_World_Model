@@ -10,7 +10,7 @@ from tts.harness import run_decision
 from conftest import make_feasible_infeasible_env
 
 
-@pytest.mark.parametrize("method", ["b0", "b1", "b2", "ours"])
+@pytest.mark.parametrize("method", ["b2", "ours"])
 def test_exactly_one_commit(method):
     env = make_feasible_infeasible_env()
     cfg = Config(method=method, env="fake", N=4, seed=1, solver=SolverConfig(p_correct=0.5))

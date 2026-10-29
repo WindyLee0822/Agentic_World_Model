@@ -1,0 +1,13 @@
+{
+  "base_stage": "/tmp/appworld-r29-stage",
+  "changed_source_files": [
+    "src/tts/env/appworld_ours_model_driven.py",
+    "src/tts/llm/python_tool.py"
+  ],
+  "runtime_compatibility_default": false,
+  "activation": "Only AppWorldOursModelDrivenPredictor passes appworld_compat=True",
+  "hashes": {
+    "src/tts/env/appworld_ours_model_driven.py": "5c78dc2d4b846d912f39e5c17bcfb1840cfbb369354410c6680a2da7e041a51a",
+    "src/tts/llm/python_tool.py": "0f2ae7c5befdc0d9ce85ae3c0cda8b74a1837de59d59a16bc363243ce5084d9b"
+  }
+}

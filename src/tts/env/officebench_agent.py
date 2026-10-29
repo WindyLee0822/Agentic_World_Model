@@ -318,7 +318,7 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
     ``system`` actions (switch_app / finish_task / got_stuck) are resolved here, where the agent's
     app + workdir state lives.  Non-system actions are dispatched two ways:
 
-    * ``predictor is None`` (B0 / real path): every action is **executed** in-container via
+    * ``predictor is None`` (real-env path): every action is **executed** in-container via
       ``session.exec_action`` — the faithful official behaviour, used for the committed rollout.
     * ``predictor`` set (``llm_wm`` sampling): the action is routed through the **world model**. Reads
       are predicted by default; ``predict_all_actions=False`` restores exact execution for untouched
@@ -387,12 +387,12 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
                 and action_string == last_action_string
                 and action.get("app") not in (None, "system")
                 and not is_write_action(action, workdir)):
-            prev_obs = history[-1][1] if history else ""
+            prev_obs = run.observations[-1] if run.observations else ""
             observation = (f"OBSERVATION: (repeated action — result unchanged) "
                            f"{str(prev_obs)[:200]}. Take a different action to make progress.")
             history.append((action, observation))
             run.actions.append(action)
-            run.observations.append(observation)
+            run.observations.append(prev_obs)
             continue
 
         run.n_steps += 1
@@ -507,6 +507,9 @@ def run_officebench_agent(session, config: Dict, chat_client, *, max_steps: int 
             observation = result.get("observation", "")
             if result.get("is_cd") and result.get("new_workdir"):
                 workdir = result["new_workdir"]
+        if predictor is not None and action.get("app") != "system":
+            from .officebench_semantics import normalize_agent_observation
+            observation = normalize_agent_observation(action, observation)
         history.append((action, observation))
         run.actions.append(action)
         run.observations.append(observation)

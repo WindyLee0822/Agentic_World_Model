@@ -1,0 +1,262 @@
+--- before/src/tts/env/officebench_wm_predict.py
++++ after/src/tts/env/officebench_wm_predict.py
+@@ -40,7 +40,7 @@
+ from typing import Callable, Dict, List, Optional, Tuple
+ 
+ from ..simulator.transition_log import TransitionLog
+-from .officebench_semantics import NATIVE_SEMANTICS, excel_cell_text, cli_literal, read_schema, action_contract
++from .officebench_semantics import NATIVE_SEMANTICS, excel_cell_text, cli_literal, read_schema, action_contract, email_cli_data
+ from .officebench_lowlevel import normalize_answer
+ from .officebench_wm_python import (
+     officebench_wm_tool_mode,
+@@ -549,7 +549,9 @@
+                 return None
+             index += 1
+ 
+-        for record in objects:
++        find_objects = (sorted(objects, key=lambda obj: obj['native_order'])
++                        if all(isinstance(obj.get('native_order'), int) for obj in objects) else objects)
++        for record in find_objects:
+             path = os.path.normpath(str(record.get("path", "")))
+             if path != root and not path.startswith(root.rstrip("/") + "/"):
+                 continue
+@@ -1055,7 +1057,7 @@
+         return [f"calendar/{user}.ics"]
+     if app == "email" and act == "send_email":
+         out = []
+-        for who in (a.get("recipient"), a.get("sender")):
++        for who in (email_cli_data(a)['recipient'], a.get("sender")):
+             if who:
+                 who = str(who).split("@")[0]
+                 out.append(f"emails/{who}")
+@@ -1798,6 +1800,7 @@
+         #: exact pre-write content read once per target (for dirty-read grounding).
+         self.pre_write_content: Dict[str, str] = {}
+         self.write_history: List[Tuple[Dict, str]] = []
++        self.conversion_sources: Dict[str, Dict] = {}
+         self.deleted_paths: set[str] = set()
+         self.recursive_deleted_paths: set[str] = set()
+         self.revived_paths: set[str] = set()
+@@ -2116,6 +2119,7 @@
+                     'exists': not missing, 'content': None if missing else exact}
+         return {'status': 'unknown', 'state_version': 'predicted_current', 'exists': None,
+                 'content': None, 'pristine_content': pristine,
++                'conversion_source': self.conversion_sources.get(target),
+                 'transitions': [{'action': a, 'observation': o} for a, o in writes]}
+ 
+     def _mailbox_state(self, target: str, limit: int = -1) -> Optional[str]:
+@@ -2149,7 +2153,10 @@
+                     return None
+                 msg = EmailMessage()
+                 msg['From'] = str(action['sender']).split('@')[0] + '@example.com'
+-                msg['To'] = str(action['recipient']).split('@')[0] + '@example.com'
++                recipient = email_cli_data(action)['recipient']
++                if not isinstance(recipient, str):
++                    return None
++                msg['To'] = recipient.split('@')[0] + '@example.com'
+                 msg['Subject'] = subject
+                 msg.set_content(content)
+                 messages[subject + '.eml'] = msg
+@@ -2261,9 +2268,9 @@
+                 f"its wording (office apps print e.g. 'OBSERVATION: Successfully create a new event to "
+                 f"Bob's calendar.'). No prose, no explanation."
+             )
++        current_state = {}
+         obs = self._predict_creation(action)
+         if obs is None:
+-            current_state = {}
+             if self.program_only and app in ('excel', 'word') and act in ('set_cell', 'delete_cell', 'write_to_file', 'convert_to_pdf'):
+                 current_state = {target: self._current_state_data(target)
+                                  for target in dict.fromkeys(targets + inputs)}
+@@ -2276,6 +2283,7 @@
+                     "action": recorded_action,
+                     "observation_action": dict(action),
+                     "current_state": current_state,
++                    "email_cli": email_cli_data(action) if app == 'email' and act == 'send_email' else None,
+                     "enforce_observation_contract": self.program_only,
+                     "inputs": inputs,
+                     "targets": targets,
+@@ -2298,12 +2306,23 @@
+             self.transition_log.record(recorded_action, obs, resources, applied=False)
+             return obs
+         for tgt in targets:
++            self.conversion_sources.pop(tgt, None)
+             self.applied_writes.setdefault(tgt, []).append((recorded_action, obs))
+             if tgt in ("<shell>", "<unknown>"):
+                 # an unresolved write target: we can no longer certify any file is untouched, so from
+                 # here every read is predicted (τ²'s global-dirty fallback for ref-less writes).
+                 self.global_dirty = True
++        if app in ('word', 'excel') and act == 'convert_to_pdf' and inputs and current_state:
++            # Freeze the source AT conversion, not when final state is later queried.
++            # This is evidence for prediction, not a claim of exact PDF layout or success.
++            import copy
++            for target in targets:
++                self.conversion_sources[target] = {
++                    'action': dict(recorded_action), 'path': inputs[0],
++                    'state': copy.deepcopy(current_state.get(inputs[0], {})),
++                }
+         if self.global_dirty:
++            self.conversion_sources.clear()
+             # An opaque transition may recreate or remove any resource, so old tombstones are no
+             # longer definitive; subsequent reads use the qualified global-dirty representation.
+             self.deleted_paths.clear()
+@@ -2609,6 +2628,18 @@
+             "content of the file. Initial content and writes are available only through "
+             "`data['initial_content']`, `data['writes']`, and `data['global_writes']`; generated Python "
+             "must perform every copy or transformation.\n\n"
++            "WRITE SCHEMA: each entry['action'] is a DICTIONARY with 'app', 'action', and argument "
++            "fields directly inside it (not an action name string and not an 'args' wrapper). "
++            "Skip entries with applied=False. A conversion may supply data['conversion_source']: "
++            "its state is the copied logical INPUT at conversion time, including prior edits. "
++            "SCHEMA: snapshot = data['conversion_source']; input_record = snapshot['state']; "
++            "input_text = input_record['content'] (a decoded STRING, not bytes or a dict). "
++            "For Word conversion this is paragraph text: preserve its characters and predict only "
++            "PDF whitespace/layout. For Excel it is the documented decoded cell representation. "
++            "Use that snapshot, not pristine output absence or later source edits. Predict decoded "
++            "PDF text from this evidence; preserve input values and distinguish unknown layout "
++            "from missing content. Never execute LibreOffice, native apps, subprocesses, file I/O "
++            "or binary encoders. Only pure computation over copied values is permitted.\n\n"
+             f"Change ONLY the cells/lines a listed write clearly determines (e.g. a set_cell write sets "
+             f"exactly that cell to that value); copy every other part of the file verbatim from the "
+             "initial content and never invent values. Return a PYTHON_FINAL program whose printed value "
+@@ -2620,8 +2651,10 @@
+             max_tokens=_STATE_MAX_TOKENS,
+             python_context={
+                 "kind": "final_file_state",
++                "enforce_observation_contract": self.program_only,
+                 "target": target,
+                 "initial_content": initial_content,
++                "conversion_source": self.conversion_sources.get(target),
+                 "writes": [
+                     {"action": write, "observation": observation}
+                     for write, observation in writes
+--- before/src/tts/env/officebench_semantics.py
++++ after/src/tts/env/officebench_semantics.py
+@@ -12,6 +12,19 @@
+     ('excel', 'delete_cell'): ('Successfully delete a cell in {file_path}', 'Failed to delete a cell in {file_path}', 'The file {file_path} does not exist. Failed to delete the cell in the file.'),
+     ('word', 'write_to_file'): ('Successfully write contents to {file_path}', 'Failed to write contents to {file_path}', 'The file {file_path} does not exist. Failed to write to the file.'),
+ }
++
++
++def email_cli_data(action):
++    """Native Fire recipient semantics, without invoking the app or a shell."""
++    try:
++        value = ('Multiple recipients' if isinstance(action.get('recipient'), list)
++                 else cli_literal(action.get('recipient', '')))
++    except (ValueError, SyntaxError):
++        return {'recipient_display': str(action.get('recipient', '')), 'recipient_kind': 'unparseable',
++                'multiple_recipients': False, 'recipient': action.get('recipient', ''), 'parse_error': True}
++    return {'recipient_display': str(value), 'recipient_kind': type(value).__name__,
++            'multiple_recipients': value == 'Multiple recipients',
++            'recipient': value}
+ 
+ 
+ def action_contract(action):
+@@ -26,7 +39,9 @@
+         "Presence of a record/key does NOT mean the file exists; inspect record['exists']. "
+         "An exact record's content is already AFTER applied writes; never apply writes twice. "
+         "An unknown record is NOT evidence of absence: inspect its pristine_content and ordered "
+-        "transitions. Rejected transitions never change state. READ results are pristine. "
++        "transitions. A conversion_source record contains the copied logical input state AT "
++        "conversion time; use it to predict decoded output text without running a converter. "
++        "Rejected transitions never change state. READ results are pristine. "
+         "Use data['observation_action'] for response arguments and data['action'] for resolved paths. "
+         "Never replace an observation with paraphrased wording or inferred file contents.\n"
+     )
+@@ -54,11 +69,15 @@
+             "A list recipient becomes 'Multiple recipients' and returns 'Failed to send email to "
+             "Multiple recipients. Only support one recipient.'. Otherwise success is 'Successfully "
+             "sent email to {recipient}.' and failure is 'Failed to send email to {recipient}.'. "
+-            "Keep the ORIGINAL recipient including @domain in the response. Strip @domain only "
++            "Use data['email_cli']['recipient_display'] for the recipient AFTER Fire parsing, "
++            "including @domain in the response. Strip @domain only "
+             "for mailbox paths. Native send creates BOTH sender and recipient directories, writes "
+             "the same {subject}.eml in both, and overwrites an existing identical subject. It strips "
+             "single/double quotes from subject/content before Fire argument parsing. It does not "
+-            "attach files or require a mailbox to exist. A comma inside a string is not a list."
++            "attach files or require a mailbox to exist. Fire parses unquoted 'Bob, Tom' as a "
++            "TUPLE: sending fails and the response displays ('Bob', 'Tom'). When recipient_kind "
++            "is tuple or list, use the failure template, never success. A literal list action "
++            "argument instead becomes the special 'Multiple recipients' rejection above."
+         )
+     if key == ('ocr', 'recognize_file'):
+         return common + (
+@@ -106,6 +125,13 @@
+     """Reject invented write wording without exposing any data in repair feedback."""
+     if not context.get('enforce_observation_contract'):
+         return None
++    if context.get('kind') == 'final_file_state' and context.get('conversion_source'):
++        state = context['conversion_source'].get('state', {})
++        if state.get('status') == 'exact' and state.get('exists') is True and str(observation).strip() == '[file does not exist]':
++            return ('Pristine output absence is not proof of absence after the predicted conversion. '
++                    "Inspect data['conversion_source']['state']['content']. If conversion output "
++                    'cannot be predicted, report [unknown predicted content] rather than inventing absence.')
++        return None
+     action = context.get('observation_action', context.get('action', {}))
+     rendered = str(observation).split('OBSERVATION:')[-1].strip()
+     key = (action.get('app'), action.get('action'))
+@@ -124,13 +150,18 @@
+                 return 'The current INPUT exists after predicted writes; pristine absence is obsolete.'
+         return None
+     if key == ('email', 'send_email'):
+-        recipient = action.get('recipient')
+-        if isinstance(recipient, list):
++        cli = email_cli_data(action)
++        if cli.get('parse_error'):
++            return None
++        recipient = cli['recipient_display']
++        if cli['multiple_recipients']:
+             allowed = ['Failed to send email to Multiple recipients. Only support one recipient.']
++        elif cli['recipient_kind'] in ('tuple', 'list'):
++            allowed = [f'Failed to send email to {recipient}.']
+         else:
+             allowed = [f'Successfully sent email to {recipient}.', f'Failed to send email to {recipient}.']
+         if rendered not in allowed:
+-            return 'Use the exact native email response template and original recipient argument.'
++            return 'Use the exact native email response template with the Fire-parsed recipient display and type; tuples/lists cannot succeed.'
+         return None
+     if key == ('ocr', 'recognize_file') and context.get('reads'):
+         operand = context['reads'][0]
+--- before/src/tts/env/officebench_driver.py
++++ after/src/tts/env/officebench_driver.py
+@@ -284,15 +284,25 @@
+                 "missing": False, "operand_type": "file"}
+     entries = []
+     if recursive:
++        # Keep the existing sorted inventory API, but retain native DFS/readdir
++        # order so a predicted `find` need not hallucinate alphabetical output.
++        native_order = {}
++        def visit(directory):
++            with os.scandir(directory) as children:
++                for child in children:
++                    native_order[child.path] = len(native_order)
++                    if child.is_dir(follow_symlinks=False):
++                        visit(child.path)
++        visit(path)
+         for root, dirs, files in os.walk(path):
+             dirs.sort()
+             files.sort()
+             for name in dirs:
+                 child = os.path.join(root, name)
+-                entries.append({"name": name, "path": child, "type": "directory"})
++                entries.append({"name": name, "path": child, "type": "directory", "native_order": native_order[child]})
+             for name in files:
+                 child = os.path.join(root, name)
+-                entries.append({"name": name, "path": child, "type": "file"})
++                entries.append({"name": name, "path": child, "type": "file", "native_order": native_order[child]})
+     else:
+         names = os.listdir(path)
+         native_order = {name: index for index, name in enumerate(names)}
+--- before/src/tts/env/real_officebench.py
++++ after/src/tts/env/real_officebench.py
+@@ -927,8 +927,8 @@
+                 out[key] = init  # untouched by the trajectory
+             elif ((spec.get("doc_type", "txt") in ("txt", "pdf") or target.lower().endswith('.pdf'))
+                   and predictor.applied_writes.get(target)
+-                  and all(a.get("app") == "word" and a.get('action') in ('create_new_file', 'write_to_file')
+-                          for a, _ in predictor.applied_writes[target])):
++                  and predictor.applied_writes[target][-1][0].get('app') == 'word'
++                  and predictor.applied_writes[target][-1][0].get('action') in ('create_new_file', 'write_to_file')):
+                 out[key] = "[incompatible file format: Word produced DOCX; required output is plain text or PDF]"
+             elif predictor.is_deleted(target):
+                 out[key] = predictor.predict_file_state(path, init)

@@ -1,0 +1,39 @@
+{
+  "task_id": "5a83b05_1",
+  "trace": "wm-203-aecfd7c7098d4d11a08ce81ed0cd1557.jsonl",
+  "trace_sha256": "6d236d27d51210d255e7d71ec4aab79b9600a43093aba22db395fa67bda8c734",
+  "trace_bytes": 596804,
+  "events": 808,
+  "program_errors": 29,
+  "error_counts": {
+    "KeyError: file_exists": 3,
+    "KeyError: read_values": 1,
+    "invalid program: attribute 'JSONDecodeError' is not allowed; use json_value(value), or catch ValueError and TypeError instead.": 3,
+    "KeyError: file_exists_result": 4,
+    "invalid program: attribute '__name__' is not allowed; use str(type(value)) or isinstance(value, dict/list) to inspect types. Do not access __name__ or any other dunder attribute.": 7,
+    "invalid program: call to 'dir' is not allowed": 3,
+    "KeyError: deleted_files": 1,
+    "KeyError: current_args": 3,
+    "AttributeError: 'list' object has no attribute 'items'": 1,
+    "invalid program: call to '__import__' is not allowed": 1,
+    "KeyError: last_write": 1,
+    "KeyError: result_summary": 1
+  },
+  "mode_counts": {
+    "write_with_rejection": 18,
+    "dirty_read": 11
+  },
+  "prediction_errors": [],
+  "interpretation": "Repeated context-key guesses and sandbox-invalid introspection consume repair calls. This trace alone does not establish final candidate failure or native observation bypass. Assess R28 direct contract diagnostic before deciding another change.",
+  "context_routing_review": {
+    "sources": {
+      "appworld_wm.py": "abbcfe53828fc650e03cf3f00207f08d59476253581a42f80a9a08829d89952a",
+      "appworld_ours_wm.py": "255cb066bf9a4d8c4feae7d8f00d3efdc221f0bd947a58912a911831ff837ed3"
+    },
+    "read_values_path": "data['reads'][i]['result']",
+    "computed_facts_path": "data['facts'][key]",
+    "evidence": "current_context() carries full reads and facts on every Python execution; Ours _record_python_facts retains computed keys inside facts. Final-turn prompt evidence preservation is enabled for the opt-in subclass.",
+    "finding": "Observed top-level accesses such as data[file_exists_result] do not match the supplied context. Evidence is available at nested paths, so these errors do not establish missing input evidence.",
+    "next_action": "Assess R28 live diagnostic before adding another revision; consider explicit nested context mapping if the same failure remains."
+  }
+}

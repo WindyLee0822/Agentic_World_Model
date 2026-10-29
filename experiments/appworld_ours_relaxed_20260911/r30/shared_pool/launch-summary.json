@@ -1,0 +1,22 @@
+{
+  "accepted_jobs": 6,
+  "tasks": 585,
+  "reported_n": [
+    1,
+    2,
+    4
+  ],
+  "generation_order": [
+    4,
+    2,
+    1
+  ],
+  "candidate_slots_before_retries": 2340,
+  "submission_statuses": {
+    "Starting": 6
+  },
+  "superseded_jobs": {
+    "Canceled": 17,
+    "Completed": 1
+  }
+}

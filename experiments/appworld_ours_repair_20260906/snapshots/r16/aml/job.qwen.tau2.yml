@@ -1,0 +1,87 @@
+# AML command job: serve Qwen locally with vLLM and run tau2 on the same GPU.
+#
+# Submit:
+#   bash aml/submit_qwen.sh --stream
+#
+# Smoke test:
+#   bash aml/submit_qwen.sh --stream --set \
+#     inputs.workers=1 inputs.extra_args="--tasks 1"
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: dw-tau2-qwen35-local
+experiment_name: dw-tau2-qwen35-local
+description: Serve post-trained Qwen3.5-35B-A3B with vLLM and run the dw tau2 harness on one AML 80GB GPU node.
+compute: azureml:NC40adsv5-EUS-hipri
+code: ..
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+  conda_file: environment/conda.qwen.yml
+inputs:
+  model: Qwen/Qwen3.5-35B-A3B
+  served_name: Qwen3.5-35B-A3B
+  port: 8000
+  tp_size: 1
+  max_model_len: 32768
+  gpu_mem_util: 0.92
+  quantization: fp8
+  tool_call_parser: qwen3_xml
+  language_model_only: 1
+  enable_thinking: 0
+  vllm_extra_args: none
+  server_timeout: 3600
+  min_cache_free_gb: 100
+  env: tau2
+  domains: airline
+  methods: ours
+  n: "1"
+  agent: llm_wm
+  llm_user: azure/gpt-5.4
+  workers: 8
+  max_steps: 50
+  rollout_retries: 2
+  cell_retries: 2
+  temperature: 0.7
+  stall_timeout: "7200"
+  extra_args: --tasks 10
+  aoai_endpoint: https://aidaihub2294673195.cognitiveservices.azure.com
+  aoai_deployment: gpt-5.4
+  aoai_api_version: 2024-12-01-preview
+  aoai_api_key: none
+  managed_identity_client_id: 258f6dab-3e80-4254-83e3-bfb24a9ae8d9
+outputs:
+  output_dir:
+    type: uri_folder
+command: >-
+  bash aml/src/run_qwen.sh
+  --model "${{inputs.model}}"
+  --served-name "${{inputs.served_name}}"
+  --port ${{inputs.port}}
+  --tp-size ${{inputs.tp_size}}
+  --max-model-len ${{inputs.max_model_len}}
+  --gpu-mem-util ${{inputs.gpu_mem_util}}
+  --quantization "${{inputs.quantization}}"
+  --tool-call-parser "${{inputs.tool_call_parser}}"
+  --language-model-only ${{inputs.language_model_only}}
+  --enable-thinking ${{inputs.enable_thinking}}
+  --vllm-extra-args "${{inputs.vllm_extra_args}}"
+  --server-timeout ${{inputs.server_timeout}}
+  --min-cache-free-gb ${{inputs.min_cache_free_gb}}
+  --env "${{inputs.env}}"
+  --output-dir "${{outputs.output_dir}}"
+  --domains "${{inputs.domains}}"
+  --methods "${{inputs.methods}}"
+  --n "${{inputs.n}}"
+  --agent "${{inputs.agent}}"
+  --llm-user "${{inputs.llm_user}}"
+  --workers ${{inputs.workers}}
+  --max-steps ${{inputs.max_steps}}
+  --rollout-retries ${{inputs.rollout_retries}}
+  --cell-retries ${{inputs.cell_retries}}
+  --temperature ${{inputs.temperature}}
+  --stall-timeout "${{inputs.stall_timeout}}"
+  --aoai-endpoint "${{inputs.aoai_endpoint}}"
+  --aoai-deployment "${{inputs.aoai_deployment}}"
+  --aoai-api-version "${{inputs.aoai_api_version}}"
+  --aoai-api-key "${{inputs.aoai_api_key}}"
+  --managed-identity-client-id "${{inputs.managed_identity_client_id}}"
+  --extra-args "${{inputs.extra_args}}"

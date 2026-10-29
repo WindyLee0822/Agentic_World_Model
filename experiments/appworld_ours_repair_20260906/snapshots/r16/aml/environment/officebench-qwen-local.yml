@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: tts-officebench-qwen-local
+version: "20260806"
+description: GPU vLLM plus OfficeBench app/evaluator runtime for AML compute without Docker.
+build:
+  path: ..
+  dockerfile_path: environment/officebench-qwen-local/Dockerfile

@@ -1,0 +1,391 @@
+{
+  "previous_same_cells": {
+    "1": {
+      "tasks": 6,
+      "successes": 2,
+      "exhausted_error_candidates": 0,
+      "candidates": 6,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 4,
+      "python_calls": 44,
+      "python_failures": 2,
+      "simulator_writes": 0,
+      "commits": 6
+    },
+    "2": {
+      "tasks": 6,
+      "successes": 3,
+      "exhausted_error_candidates": 0,
+      "candidates": 12,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 3,
+      "python_calls": 84,
+      "python_failures": 3,
+      "simulator_writes": 0,
+      "commits": 6
+    },
+    "4": {
+      "tasks": 6,
+      "successes": 2,
+      "exhausted_error_candidates": 0,
+      "candidates": 24,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 4,
+      "python_calls": 166,
+      "python_failures": 9,
+      "simulator_writes": 0,
+      "commits": 6
+    }
+  },
+  "repaired_subset": {
+    "1": {
+      "tasks": 6,
+      "successes": 3,
+      "exhausted_error_candidates": 0,
+      "candidates": 6,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 3,
+      "python_calls": 35,
+      "python_failures": 4,
+      "simulator_writes": 0,
+      "commits": 6
+    },
+    "2": {
+      "tasks": 6,
+      "successes": 3,
+      "exhausted_error_candidates": 0,
+      "candidates": 12,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 3,
+      "python_calls": 70,
+      "python_failures": 7,
+      "simulator_writes": 0,
+      "commits": 6
+    },
+    "4": {
+      "tasks": 6,
+      "successes": 3,
+      "exhausted_error_candidates": 0,
+      "candidates": 24,
+      "all_error_tasks": 0,
+      "all_zero_tasks": 5,
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 3,
+      "python_calls": 143,
+      "python_failures": 15,
+      "simulator_writes": 0,
+      "commits": 6
+    }
+  },
+  "selected_observation_fidelity": {
+    "calendar.create_event": {
+      "observations": 3,
+      "exact": 3,
+      "trimmed_exact": 3
+    },
+    "shell.command": {
+      "observations": 12,
+      "exact": 9,
+      "trimmed_exact": 9
+    },
+    "excel.read_file": {
+      "observations": 6,
+      "exact": 6,
+      "trimmed_exact": 6
+    },
+    "excel.set_cell": {
+      "observations": 39,
+      "exact": 39,
+      "trimmed_exact": 39
+    },
+    "ocr.recognize_file": {
+      "observations": 6,
+      "exact": 6,
+      "trimmed_exact": 6
+    },
+    "excel.convert_to_pdf": {
+      "observations": 3,
+      "exact": 3,
+      "trimmed_exact": 3
+    },
+    "word.create_new_file": {
+      "observations": 6,
+      "exact": 6,
+      "trimmed_exact": 6
+    },
+    "email.send_email": {
+      "observations": 6,
+      "exact": 3,
+      "trimmed_exact": 3
+    },
+    "calendar.list_events": {
+      "observations": 3,
+      "exact": 3,
+      "trimmed_exact": 3
+    },
+    "word.write_to_file": {
+      "observations": 6,
+      "exact": 6,
+      "trimmed_exact": 6
+    },
+    "excel.create_new_file": {
+      "observations": 3,
+      "exact": 3,
+      "trimmed_exact": 3
+    },
+    "word.convert_to_pdf": {
+      "observations": 6,
+      "exact": 6,
+      "trimmed_exact": 6
+    }
+  },
+  "python_error_categories": {
+    "invalid program: import from 'pathlib' is not allowed": 2
+  },
+  "task_outcomes": [
+    {
+      "subset": "1app",
+      "task_id": "1-1/0",
+      "n_rollouts": 1,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "1app",
+      "task_id": "1-5/1",
+      "n_rollouts": 1,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "1app",
+      "task_id": "1-1/0",
+      "n_rollouts": 2,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "1app",
+      "task_id": "1-1/0",
+      "n_rollouts": 4,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-1/0",
+      "n_rollouts": 1,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-1/0",
+      "n_rollouts": 1,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "1app",
+      "task_id": "1-5/1",
+      "n_rollouts": 2,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-12/0",
+      "n_rollouts": 1,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "1app",
+      "task_id": "1-5/1",
+      "n_rollouts": 4,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-1/0",
+      "n_rollouts": 2,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-15/0",
+      "n_rollouts": 1,
+      "success": true,
+      "predicted_confidence": 1.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-1/0",
+      "n_rollouts": 2,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-12/0",
+      "n_rollouts": 2,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-1/0",
+      "n_rollouts": 4,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-1/0",
+      "n_rollouts": 4,
+      "success": true,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "3app",
+      "task_id": "3-12/0",
+      "n_rollouts": 4,
+      "success": false,
+      "predicted_confidence": 0.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-15/0",
+      "n_rollouts": 2,
+      "success": true,
+      "predicted_confidence": 1.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null
+      ]
+    },
+    {
+      "subset": "2app",
+      "task_id": "2-15/0",
+      "n_rollouts": 4,
+      "success": true,
+      "predicted_confidence": 1.0,
+      "n_rollout_errors": 0,
+      "candidate_errors": [
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ]
+}

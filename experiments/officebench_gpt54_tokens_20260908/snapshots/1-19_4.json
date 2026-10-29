@@ -1,0 +1,39 @@
+{
+  "config": {
+    "username": "Alice",
+    "date": "2020-05-01",
+    "weekday": "Friday",
+    "time": "10:00 AM",
+    "task": "extract terms from agreement pdf file, with all participated parties into summary.docx",
+    "evaluation": [
+      {
+        "function": "evaluate_file_exist",
+        "args": {
+          "file": "data/summary.docx"
+        }
+      },
+      {
+        "function": "evaluate_contain",
+        "args": {
+          "doc_type": "docx",
+          "file": "./data/summary.docx",
+          "keywords": [
+            "The parties agree to the following terms and conditions:",
+            "ABC Company",
+            "XYZ Inc."
+          ]
+        }
+      }
+    ]
+  },
+  "files": {
+    "/testbed/data/contract_agreement.pdf": "Contract Agreement\nTerms and Conditions\n1. Introduction\nThis Contract Agreement (hereafter referred to as 'Agreement') is entered into by and between the\nfollowing parties:\n2. Terms\nThe parties agree to the following terms and conditions:\n- The service provider will offer the described services to the client for the specified period.\n- Payment will be made according to the agreed schedule.\n- Confidentiality of information will be maintained by both parties.\n- Termination of the agreement can be done by either party with a notice period of 30 days.\nParties Involved\nParty 1: ABC Company\nRole: Service Provider\nParty 2: XYZ Inc.\nRole: Client\nDates and Signatures\nEffective Date: 2024-05-29\nPage 1\n\nContract Agreement\nSignatures:\n_______________________\nABC Company\n_______________________\nXYZ Inc.\nPage 2\n",
+    "/testbed/data/paper.pdf": "OS-Copilot: Towards Generalist Computer Agents with Self-Improvement\nOS-COPILOT:\nTOWARDS GENERALIST COMPUTER\nAGENTS WITH SELF-IMPROVEMENT\nZhiyong Wu\u2662\u2217, Chengcheng Han\u2663\u2217, Zichen Ding\u2663, Zhenmin Weng\u2663,\nZhoumianze Liu\u2662, Shunyu Yao\u2661, Tao Yu\u2660, Lingpeng Kong\u2660\n\u2662Shanghai AI Laboratory \u2663East China Normal University\n\u2661Princeton University \u2660The University of Hong Kong\nwuzhiyong@pjlab.org.cn\nhttps://os-copilot.github.io/\nFigure 1: Running examples of FRIDAY when deployed on MacOS and tasked with (1) preparing\na focused working environment, (2) Calculating and drawing a chart in Excel, and (3) creating a\nwebsite for OS-Copilot. The text at the bottom illustrates the subtasks taken by FRIDAY. For each set\nof examples, the figure at the top represents the initial OS state, while the one at the bottom depicts\nthe final state after execution. Boxes/Ovals highlight the changes made by FRIDAY.\nABSTRACT\nAutonomous interaction with the computer has been a longstanding challenge with\ngreat potential, and the recent proliferation of large language models (LLMs) has\nmarkedly accelerated progress in building digital agents. However, most of these\nagents are designed to interact with a narrow domain, such as a specific software\nor website. This narrow focus constrains their applicability for general computer\ntasks. To this end, we introduce OS-Copilot, a framework to build generalist\nagents capable of interfacing with comprehensive elements in an operating system\n(OS), including the web, code terminals, files, multimedia, and various third-party\napplications. We use OS-Copilot to create FRIDAY, a self-improving embodied\nagent for automating general computer tasks. On GAIA, a general AI assistants\nbenchmark, FRIDAY outperforms previous methods by 35%, showcasing strong\ngeneralization to unseen applications via accumulated skills from previous tasks.\nWe also present numerical and quantitative evidence that FRIDAY learns to control\nand self-improve on Excel and Powerpoint with minimal supervision. Our OS-\nCopilot framework and empirical findings provide infrastructure and insights for\nfuture research toward more capable and general-purpose computer agents.\n\u2217Equal Contribution.\n1\narXiv:2402.07456v2  [cs.AI]  15 Feb 2024\n"
+  },
+  "initial_state": {
+    "data/summary.docx": "[file does not exist]",
+    "./data/summary.docx": "[file does not exist]"
+  },
+  "gold_files": {},
+  "listing": "/testbed/data/contract_agreement.pdf\n/testbed/data/paper.pdf"
+}

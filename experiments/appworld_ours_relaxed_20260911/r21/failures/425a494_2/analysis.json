@@ -1,0 +1,303 @@
+{
+  "task_id": "425a494_2",
+  "job": "dw-appworld-ours-relaxed-r21-n16-full-20260913",
+  "selected_index": 0,
+  "native_success": false,
+  "candidate_scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "candidate_errors": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "finding": "Selected solver counts albums by genre. Verifier prompt comments identify task as songs of which genre liked least in Spotify album library. All 16 simulator scores are 1 despite selected native failure.",
+  "verifier_evidence": "Selected seed 19000 requests invalid page_limit=50, repairs to 20, examines structures repeatedly, then emits 8915-character final program. Only first 1600 characters were logged; full scoring logic unavailable. Final prefix mentions gold answer EDM and incomplete pagination.",
+  "limits": "No exact native failed checks or full verifier inputs/program were retrieved. Do not infer why the final verifier returned success from its prefix or treat model comments as independently verified gold. No native evaluation of unselected candidates.",
+  "traces": [
+    {
+      "file": "wm-736-0fe644b220e34d499103123f55817bee.jsonl",
+      "seed": 19012,
+      "events": 27,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-1c0ab280cc324bc0b356c83073329fc8.jsonl",
+      "seed": 19005,
+      "events": 104,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-2026c542a17249619fd7101757273e06.jsonl",
+      "seed": 19010,
+      "events": 29,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-379d3e94f4f7481b8d6ab3b27295bb1a.jsonl",
+      "seed": 19006,
+      "events": 46,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-3acd5b2fda4444d69a50f55ce446f8bb.jsonl",
+      "seed": 19013,
+      "events": 25,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-4f58e4e4cbfb4a25bb804719a11d3513.jsonl",
+      "seed": 19000,
+      "events": 33,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-8ae03c874a874448af1a2e770807b86a.jsonl",
+      "seed": 19003,
+      "events": 30,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-91d1acd4443848848626b1e0d6dd69e7.jsonl",
+      "seed": 19001,
+      "events": 24,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-9231067a04c64e09a407a4ea5154679b.jsonl",
+      "seed": 19014,
+      "events": 22,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-96bc426214d743aaad0294d213e1d54c.jsonl",
+      "seed": 19008,
+      "events": 30,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-ad322e87f5484790af16d7da0153fde1.jsonl",
+      "seed": 19015,
+      "events": 28,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-c7712bcd47da4c3986c89290a8a069c4.jsonl",
+      "seed": 19004,
+      "events": 37,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-d1c48f7a2a1546b080dc3ad9fcdd7083.jsonl",
+      "seed": 19007,
+      "events": 46,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-d96749018c8f4119a24142451f24360f.jsonl",
+      "seed": 19002,
+      "events": 33,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-fa1a5b995e004b9fa4edca402e5897ea.jsonl",
+      "seed": 19009,
+      "events": 28,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    },
+    {
+      "file": "wm-736-fb1b979aeb3a4ab095a6a2403c698dec.jsonl",
+      "seed": 19011,
+      "events": 40,
+      "error_events": [],
+      "verifier_response_lengths": [
+        1066,
+        1435,
+        877,
+        2458,
+        1075,
+        1217,
+        1006,
+        8915
+      ]
+    }
+  ]
+}

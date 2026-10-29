@@ -1,0 +1,86 @@
+[
+  {
+    "name": "dw-appworld-ours-r30-n124-normal-l1-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_normal",
+    "level": 1,
+    "tasks": 57,
+    "command_verified": true
+  },
+  {
+    "name": "dw-appworld-ours-r30-n124-normal-l2-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_normal",
+    "level": 2,
+    "tasks": 48,
+    "command_verified": true
+  },
+  {
+    "name": "dw-appworld-ours-r30-n124-normal-l3-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_normal",
+    "level": 3,
+    "tasks": 63,
+    "command_verified": true
+  },
+  {
+    "name": "dw-appworld-ours-r30-n124-challenge-l1-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_challenge",
+    "level": 1,
+    "tasks": 72,
+    "command_verified": true
+  },
+  {
+    "name": "dw-appworld-ours-r30-n124-challenge-l2-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_challenge",
+    "level": 2,
+    "tasks": 150,
+    "command_verified": true
+  },
+  {
+    "name": "dw-appworld-ours-r30-n124-challenge-l3-20260915",
+    "status": "Starting",
+    "code": "/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/appworld-ours-r30-shared-20260915/versions/1",
+    "n": [
+      4,
+      2,
+      1
+    ],
+    "split": "test_challenge",
+    "level": 3,
+    "tasks": 195,
+    "command_verified": true
+  }
+]

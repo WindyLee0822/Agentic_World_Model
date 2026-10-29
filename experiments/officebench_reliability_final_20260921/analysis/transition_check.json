@@ -1,0 +1,40 @@
+{
+  "scope": "Eight-step transition validation; not a full-task success-rate comparison.",
+  "task_id": "2-15/0",
+  "n_rollouts": 1,
+  "max_steps": 8,
+  "native_actions_observed": 6,
+  "exact_observations": 1,
+  "successful_outcomes_agree": 5,
+  "creation_observations_match": true,
+  "n_python_calls": 5,
+  "n_python_failures": 0,
+  "n_rollout_errors": 0,
+  "simulator_writes": 0,
+  "n_commits": 1,
+  "predicted_confidence": 0.0,
+  "success": false,
+  "candidate_verifier_percheck": [
+    {
+      "met": 2,
+      "unmet": 2,
+      "unknown": 0,
+      "total": 4,
+      "unknown_credit": 0.25,
+      "atomic_score": 0.5,
+      "whole_score": 0.0
+    }
+  ],
+  "creation_traces": [
+    {
+      "task_id": "2-15/0",
+      "action": {
+        "app": "excel",
+        "action": "create_new_file",
+        "file_path": "/testbed/data/meeting_agenda.xlsx"
+      },
+      "predicted": "Successfully create new file /testbed/data/meeting_agenda.xlsx",
+      "actual": "Successfully create new file /testbed/data/meeting_agenda.xlsx"
+    }
+  ]
+}
