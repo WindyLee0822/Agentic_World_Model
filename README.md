@@ -1,7 +1,7 @@
 # Agentic World Modeling (AWM)
 
 Implementation of **Agentic World Modeling for Agent Test-Time Scaling Without
-Environment Replica**, accompanying [the paper](AWM__ICLR_2027_%20%2815%29.pdf).
+Environment Replica**
 
 AWM predicts the observation produced by a hypothetical agent action through
 multi-turn, read-only evidence acquisition. A simulator subagent inspects relevant
