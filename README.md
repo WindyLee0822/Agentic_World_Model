@@ -23,9 +23,6 @@ are rejected. `N=1` supplies the single-rollout comparison without a separate
 method. `--methods` remains an alias for `--method`, but accepts only one method
 per invocation; use separate output directories for the three modes.
 
-The paper also compares against SIMIA. That baseline is **not included in this
-cleaned release**: the old B1 fixed-context path was removed. B0, Terminal-Bench,
-trajectory self-aggregation, and historical tuning flags are also removed.
 
 ## Benchmarks and models
 
