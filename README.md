@@ -228,15 +228,4 @@ trajectory self-aggregation option combined complete trajectories and was not an
 implementation of that experiment. The non-adaptive and without-subagent studies
 are also not exposed as supported launch modes here.
 
-## Tests
 
-```bash
-python -m pytest tests/test_paper_cli.py tests/test_qwen_routing.py
-python -m pytest
-```
-
-Unit tests can run without model inference. Benchmark integration tests require
-the relevant installations and data. Some existing tests fail without tau2-bench;
-the integrated GPT/DeepSeek code also has pre-existing AppWorld write-predictor
-and OfficeBench verifier failures. These should not be mistaken for successful
-end-to-end reproduction. No model evaluations were run as part of the cleanup.
