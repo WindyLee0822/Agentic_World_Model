@@ -1,5 +1,0 @@
-{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "login"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "post", "url": "/amazon/auth/token", "data": {"username": "les_ball@gmail.com", "password": "VxoU[nz"}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_orders"}}

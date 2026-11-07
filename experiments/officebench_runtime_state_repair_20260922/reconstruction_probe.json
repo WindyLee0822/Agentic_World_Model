@@ -1,8 +1,0 @@
-{
-  "result": "PRIVATE_WORD_4731",
-  "programs": [
-    "PYTHON_FINAL:\nvalue = data.get(\"initial_content\", \"\")\nsnapshot = data.get(\"conversion_source\")\nif snapshot and isinstance(snapshot, dict):\n    state = snapshot.get(\"state\")\n    if isinstance(state, dict) and \"content\" in state and isinstance(state.get(\"content\"), str):\n        value = state.get(\"content\")\nprint_json({\"text\": value})"
-  ],
-  "python_failures": 0,
-  "match": true
-}

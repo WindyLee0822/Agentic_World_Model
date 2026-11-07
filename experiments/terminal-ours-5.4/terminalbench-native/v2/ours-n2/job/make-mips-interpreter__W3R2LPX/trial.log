@@ -1,5 +1,0 @@
-Trial make-mips-interpreter__W3R2LPX failed: Docker compose command failed for environment make-mips-interpreter. Command: docker compose --project-name make-mips-interpreter__w3r2lpx__env --project-directory /home/t-wendili/.cache/harbor/tasks/LeNjAXy6fbV5X852Td8iV9/make-mips-interpreter/environment -f /tmp/tmpv5b2muie/make-mips-interpreter__W3R2LPX__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpbhe3fu30/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network make-mips-interpreter__w3r2lpx__env_default Creating 
- Network make-mips-interpreter__w3r2lpx__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network make-mips-interpreter__w3r2lpx__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

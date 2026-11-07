@@ -1,193 +1,0 @@
-[?2004hroot@91ce788e1f4d:/app/dclm# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@91ce788e1f4d:/app/dclm# clear
-[?2004l[H[J[3J[?2004hroot@91ce788e1f4d:/app/dclm# pwd; __tts_rc=$?; printf '\n__TTS_c3a5bcc4889d483597b770a1c61f8d76__RC:%s\n' "$__tts_rc"; printf '__TTS_c3a5bcc4889d483597b770a1c61f8d76__PWD:'; pwd; printf '__TTS_c3a5bcc4889d483597b770a1c61f8d76__END\n'; tmux wait -S done
-[?2004l/app/dclm
-
-__TTS_c3a5bcc4889d483597b770a1c61f8d76__RC:0
-__TTS_c3a5bcc4889d483597b770a1c61f8d76__PWD:/app/dclm
-__TTS_c3a5bcc4889d483597b770a1c61f8d76__END
-[?2004hroot@91ce788e1f4d:/app/dclm# cd -- /app/dclm && python - <<'PY'
-[?2004l[?2004h> import os,re
-[?2004l[?2004h> root='.'
-[?2004l[?2004h> patterns=[
-[?2004l[?2004h>     (re.compile(r'AKIA[0-9A-Z]{16}'),' <your-aws-access-key-id> '),
-[?2004l[?2004h>     (re.compile(r'ASIA[0-9A-Z]{16}'),' <your-aws-access-key-id> '),
-[?2004l[?2004h>     (re.compile(r'ghp_[A-Za-z0-9]{36}'),' <your-github-token> '),
-[?2004l[?2004h>     (re.compile(r'github_pat_[A-Za-z0-9_]{20,}'),' <your-github-token> '),
-[?2004l[?2004h>     (re.compile(r'hf_[A-Za-z0-9]{20,}'),' <your-huggingface-token> '),
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_ACCESS_KEY_ID\s*[=:]\s*["\']?)(AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16})(["\']?)'),r'\1<your-aws-access-key-id>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_SECRET_ACCESS_KEY\s*[=:]\s*["\']?)([A-Za-z0-9/+=]{40})(["\']?)'),r'\1<your-aws-secret-access-key>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_SESSION_TOKEN\s*[=:]\s*["\']?)([A-Za-z0-9/+=]{16,})(["\']?)'),r'\1<your-aws-session-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(GITHUB_TOKEN\s*[=:]\s*["\']?)(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})(["\']?)'),r'\1<your-github-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(HF_TOKEN\s*[=:]\s*["\']?)(hf_[A-Za-z0-9]{20,})(["\']?)'),r'\1<your-huggingface-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(HUGGINGFACE(?:HUB)?_API_TOKEN\s*[=:]\s*["\']?)(hf_[A-Za-z0-9]{20,})(["\']?)'),r'\1<your-huggingface-token>\3'),
-[?2004l[?2004h> ]
-[?2004l[?2004h> text_exts={'.py','.sh','.md','.txt','.json','.yaml','.yml','.toml','.env','.cfg','.ini','.js','.ts','.tsx','.jsx','.java','.rb','.go','.rs','.c','.cpp','.h','.hpp','.ipynb','.sql','.csv'}
-[?2004l[?2004h> skip_dirs={'.git','node_modules','vendor','.venv','venv','__pycache__'}
-[?2004l[?2004h> changed=[]
-[?2004l[?2004h> for dp,dns,fns in os.walk(root):
-[?2004l[?2004h>     dns[:] = [d for d in dns if d not in skip_dirs]
-[?2004l[?2004h>     for fn in fns:
-[?2004l[?2004h>         p=os.path.join(dp,fn)
-[?2004l[?2004h>         if os.path.islink(p):
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         ext=os.path.splitext(fn)[1].lower()
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             b=open(p,'rb').read()
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         if b'\x00' in b and ext!='.ipynb':
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             s=b.decode('utf-8')
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             try:s=b.decode('latin1')
-[?2004l[?2004h>             except:continue
-[?2004l[?2004h>         orig=s
-[?2004l[?2004h>         for pat,repl in patterns:
-[?2004l[?2004h>             s=pat.sub(repl,s)
-[?2004l[?2004h>         if s!=orig:
-[?2004l[?2004h>             open(p,'w',encoding='utf-8').write(s)
-[?2004l[?2004h>             changed.append(p)
-[?2004l[?2004h> print('\n'.join(changed))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_bbc6f5720c44417c9af9fb59c6456da1__RC:%s\n' "$__tts_rc"; printf '__TTS_bbc6f5720c44417c9af9fb59c6456da1__PWD:'; pwd; printf '__TTS_bbc6f5720c44417c9af9fb59c6456da1__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/dclm && python - <<'PY'
-[?2004l[?2004h> import os,re
-[?2004l[?2004h> skip={'.git','node_modules','vendor','.venv','venv','__pycache__'}
-[?2004l[?2004h> pat=re.compile(r'AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|hf_[A-Za-z0-9]{20,}|AWS_SECRET_ACCESS_KEY\s*[=:]\s*["\']?[A-Za-z0-9/+=]{40}|AWS_SESSION_TOKEN\s*[=:]\s*["\']?[A-Za-z0-9/+=]{16,}',re.I)
-[?2004l[?2004h> hits=[]
-[?2004l[?2004h> for dp,dns,fns in os.walk('.'):
-[?2004l[?2004h>     dns[:] = [d for d in dns if d not in skip]
-[?2004l[?2004h>     for fn in fns:
-[?2004l[?2004h>         p=os.path.join(dp,fn)
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             b=open(p,'rb').read()
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         if b'\x00' in b and not fn.endswith('.ipynb'):
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             s=b.decode('utf-8')
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             try:s=b.decode('latin1')
-[?2004l[?2004h>             except:continue
-[?2004l[?2004h>         if pat.search(s):
-[?2004l[?2004h>             hits.append(p)
-[?2004l[?2004h> print('\n'.join(hits))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_6d3f3cbcd10545859ad9f4e333aa9d67__RC:%s\n' "$__tts_rc"; printf '__TTS_6d3f3cbcd10545859ad9f4e333aa9d67__PWD:'; pwd; printf '__TTS_6d3f3cbcd10545859ad9f4e333aa9d67__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/dclm && python - <<'PY'
-[?2004laws-access-key-id>'),
-    (re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),'<your-github-token>'),
-    (re.compile(r'github_pat_[A-Za-z0-9_]{20,}'),'<your-github-token>'),
-    (re.compile(r'hf_[A-Za-z0-9]{20,}'),'<your-huggingface-token>'),
-]
-changed=[]
-for dp,dns,fns in os.walk('.'):
-    dns[:] = [d for d in dns if d not in skip]
-    for fn in fns:
-        p=os.path.join(dp,fn)
-        if os.path.islink(p):
-            continue
-        try:
-            b=open(p,'rb').read()
-        except:
-            continue
-        if b'\x00' in b and not fn.endswith('.ipynb'):
-            continue
-        try:
-            s=b.decode('utf-8')
-        except:
-            try:s=b.decode('latin1')
-            except:continue
-        orig=s
-        for pat,repl in patterns:
-            s=pat.sub(repl,s)
-        if s!=orig:
-            open(p,'w',encoding='utf-8').write(s)
-            changed.append(p)
-scan=re.compile(r'AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|hf_[A-Za-z0-9]{20,}|AWS_SECRET_ACCESS_KEY\s*[=:]\s*["\']?[A-Za-z0-9/+=]{40}|AWS_SESSION_TOKEN\s*[=:]\s*["\']?[A-Za-z0-9/+=]{16,}',re.I)
-remaining=[]
-for dp,dns,fns in os.walk('.'):
-    dns[:] = [d for d in dns if d not in skip]
-    for fn in fns:
-        p=os.path.join(dp,fn)
-        try:
-            b=open(p,'rb').read()
-        except:
-            continue
-        if b'\x00' in b and not fn.endswith('.ipynb'):
-            continue
-        try:
-            s=b.decode('utf-8')
-        except:
-            try:s=b.decode('latin1')
-            except:continue
-        if scan.search(s):
-            remaining.append(p)
-print('CHANGED=' + ','.join(changed))
-print('REMAINING=' + ','.join(remaining))
-PY; __tts_rc=$?; printf '\n__TTS_4fee4c645aca4863a2542c1dfc83b441__RC:%s\n' "$__tts_rc"; printf '__TTS_4fee4c645aca4863a2542c1dfc83b441__PWD:'; pwd; printf '__TTS_4fee4c645aca4863a2542c1dfc83b441__END\n'; tmux wait -S done
-[?2004h> import os,re
-[?2004l[?2004h> skip={'.git','node_modules','vendor','.venv','venv','__pycache__'}
-[?2004l[?2004h> patterns=[
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_ACCESS_KEY_ID\s*[=:]\s*["\']?)(AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16})(["\']?)'),r'\1<your-aws-access-key-id>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_SECRET_ACCESS_KEY\s*[=:]\s*["\']?)([A-Za-z0-9/+=]{40})(["\']?)'),r'\1<your-aws-secret-access-key>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(AWS_SESSION_TOKEN\s*[=:]\s*["\']?)([A-Za-z0-9/+=]{16,})(["\']?)'),r'\1<your-aws-session-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(GITHUB_TOKEN\s*[=:]\s*["\']?)(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})(["\']?)'),r'\1<your-github-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(HF_TOKEN\s*[=:]\s*["\']?)(hf_[A-Za-z0-9]{20,})(["\']?)'),r'\1<your-huggingface-token>\3'),
-[?2004l[?2004h>     (re.compile(r'(?i)(HUGGINGFACE(?:HUB)?_API_TOKEN\s*[=:]\s*["\']?)(hf_[A-Za-z0-9]{20,})(["\']?)'),r'\1<your-huggingface-token>\3'),
-[?2004l[?2004h>     (re.compile(r'AKIA[0-9A-Z]{16}'),'<your-aws-access-key-id>'),
-[?2004l[?2004h>     (re.compile(r'ASIA[0-9A-Z]{16}'),'<your-aws-access-key-id>'),
-[?2004l[?2004h>     (re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),'<your-github-token>'),
-[?2004l[?2004h>     (re.compile(r'github_pat_[A-Za-z0-9_]{20,}'),'<your-github-token>'),
-[?2004l[?2004h>     (re.compile(r'hf_[A-Za-z0-9]{20,}'),'<your-huggingface-token>'),
-[?2004l[?2004h> ]
-[?2004l[?2004h> changed=[]
-[?2004l[?2004h> for dp,dns,fns in os.walk('.'):
-[?2004l[?2004h>     dns[:] = [d for d in dns if d not in skip]
-[?2004l[?2004h>     for fn in fns:
-[?2004l[?2004h>         p=os.path.join(dp,fn)
-[?2004l[?2004h>         if os.path.islink(p):
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             b=open(p,'rb').read()
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         if b'\x00' in b and not fn.endswith('.ipynb'):
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             s=b.decode('utf-8')
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             try:s=b.decode('latin1')
-[?2004l[?2004h>             except:continue
-[?2004l[?2004h>         orig=s
-[?2004l[?2004h>         for pat,repl in patterns:
-[?2004l[?2004h>             s=pat.sub(repl,s)
-[?2004l[?2004h>         if s!=orig:
-[?2004l[?2004h>             open(p,'w',encoding='utf-8').write(s)
-[?2004l[?2004h>             changed.append(p)
-[?2004l[?2004h> scan=re.compile(r'AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|hf_[A-Za-z0-9]{20,}|AWS_SECRET_ACCESS_KEY\s*[=:]\s*["\']?[A-Za-z0-9/+=]{40}|AWS_SESSION_TOKEN\s*[=:]\s*["\']?[A-Za-z0-9/+=]{16,}',re.I)
-[?2004l[?2004h> remaining=[]
-[?2004l[?2004h> for dp,dns,fns in os.walk('.'):
-[?2004l[?2004h>     dns[:] = [d for d in dns if d not in skip]
-[?2004l[?2004h>     for fn in fns:
-[?2004l[?2004h>         p=os.path.join(dp,fn)
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             b=open(p,'rb').read()
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         if b'\x00' in b and not fn.endswith('.ipynb'):
-[?2004l[?2004h>             continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             s=b.decode('utf-8')
-[?2004l[?2004h>         except:
-[?2004l[?2004h>             try:s=b.decode('latin1')
-[?2004l[?2004h>             except:continue
-[?2004l[?2004h>         if scan.search(s):
-[?2004l[?2004h>             remaining.append(p)
-[?2004l[?2004h> print('CHANGED=' + ','.join(changed))
-[?2004l[?2004h> print('REMAINING=' + ','.join(remaining))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_4fee4c645aca4863a2542c1dfc83b441__RC:%s\n' "$__tts_rc"; printf '__TTS_4fee4c645aca4863a2542c1dfc83b441__PWD:'; pwd; printf '__TTS_4fee4c645aca4863a2542c1dfc83b441__END\n'; tmux wait -S done
-[?2004l[?2004h> 

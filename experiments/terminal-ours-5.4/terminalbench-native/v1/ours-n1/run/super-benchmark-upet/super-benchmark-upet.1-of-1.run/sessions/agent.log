@@ -1,423 +1,0 @@
-[?2004hroot@f4683268b028:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@f4683268b028:/app# clear
-[?2004l[H[J[3J[?2004hroot@f4683268b028:/app# pwd; __tts_rc=$?; printf '\n__TTS_f24b7597b76243f29e970ce41ae6d712__RC:%s\n' "$__tts_rc"; printf '__TTS_f24b7597b76243f29e970ce41ae6d712__PWD:'; pwd; printf '__TTS_f24b7597b76243f29e970ce41ae6d712__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_f24b7597b76243f29e970ce41ae6d712__RC:0
-__TTS_f24b7597b76243f29e970ce41ae6d712__PWD:/app
-__TTS_f24b7597b76243f29e970ce41ae6d712__END
-[?2004hroot@f4683268b028:/app# cd -- /app && bash -lc 'set -euo pipefail; if [ ! -d UPET ]; then git clone https://github.com/wjn1996/UPET.git; fi; cd UPET; git fetch --all --tags --quiet; git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351; python - <<"PY"
-[?2004l[?2004h> import re, subprocess, pathlib, sys
-[?2004l[?2004h> root=pathlib.Path(".")
-[?2004l[?2004h> readme=(root/"README.md").read_text(errors="ignore")
-[?2004l[?2004h> print(readme)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_b2368fe287534d8084d400d0cde13a68__RC:%s\n' "$__tts_rc"; printf '__TTS_b2368fe287534d8084d400d0cde13a68__PWD:'; pwd; printf '__TTS_b2368fe287534d8084d400d0cde13a68__END\n'; tmux wait -S done
-[?2004lCloning into 'UPET'...
-remote: Enumerating objects: 384, done.[K
-remote: Counting objects:   5% (1/19)[Kremote: Counting objects:  10% (2/19)[Kremote: Counting objects:  15% (3/19)[Kremote: Counting objects:  21% (4/19)[Kremote: Counting objects:  26% (5/19)[Kremote: Counting objects:  31% (6/19)[Kremote: Counting objects:  36% (7/19)[Kremote: Counting objects:  42% (8/19)[Kremote: Counting objects:  47% (9/19)[Kremote: Counting objects:  52% (10/19)[Kremote: Counting objects:  57% (11/19)[Kremote: Counting objects:  63% (12/19)[Kremote: Counting objects:  68% (13/19)[Kremote: Counting objects:  73% (14/19)[Kremote: Counting objects:  78% (15/19)[Kremote: Counting objects:  84% (16/19)[Kremote: Counting objects:  89% (17/19)[Kremote: Counting objects:  94% (18/19)[Kremote: Counting objects: 100% (19/19)[Kremote: Counting objects: 100% (19/19), done.[K
-remote: Compressing objects:   5% (1/17)[Kremote: Compressing objects:  11% (2/17)[Kremote: Compressing objects:  17% (3/17)[Kremote: Compressing objects:  23% (4/17)[Kremote: Compressing objects:  29% (5/17)[Kremote: Compressing objects:  35% (6/17)[Kremote: Compressing objects:  41% (7/17)[Kremote: Compressing objects:  47% (8/17)[Kremote: Compressing objects:  52% (9/17)[Kremote: Compressing objects:  58% (10/17)[Kremote: Compressing objects:  64% (11/17)[Kremote: Compressing objects:  70% (12/17)[Kremote: Compressing objects:  76% (13/17)[Kremote: Compressing objects:  82% (14/17)[Kremote: Compressing objects:  88% (15/17)[Kremote: Compressing objects:  94% (16/17)[Kremote: Compressing objects: 100% (17/17)[Kremote: Compressing objects: 100% (17/17), done.[K
-Receiving objects:   0% (1/384)Receiving objects:   1% (4/384)Receiving objects:   2% (8/384)Receiving objects:   3% (12/384)Receiving objects:   4% (16/384)Receiving objects:   5% (20/384)Receiving objects:   6% (24/384)Receiving objects:   7% (27/384)Receiving objects:   8% (31/384)Receiving objects:   9% (35/384)Receiving objects:  10% (39/384)Receiving objects:  11% (43/384)Receiving objects:  12% (47/384)Receiving objects:  13% (50/384)Receiving objects:  14% (54/384)Receiving objects:  15% (58/384)Receiving objects:  16% (62/384)Receiving objects:  17% (66/384)Receiving objects:  18% (70/384)Receiving objects:  19% (73/384)Receiving objects:  20% (77/384)Receiving objects:  21% (81/384)Receiving objects:  22% (85/384)Receiving objects:  23% (89/384)Receiving objects:  24% (93/384)Receiving objects:  25% (96/384)Receiving objects:  26% (100/384)Receiving objects:  27% (104/384)Receiving objects:  28% (108/384)Receiving objects:  29% (112/384)Receiving objects:  30% (116/384)Receiving objects:  31% (120/384)Receiving objects:  32% (123/384)Receiving objects:  33% (127/384)Receiving objects:  34% (131/384)Receiving objects:  35% (135/384)Receiving objects:  36% (139/384)Receiving objects:  37% (143/384)Receiving objects:  38% (146/384)Receiving objects:  39% (150/384)Receiving objects:  40% (154/384)Receiving objects:  41% (158/384)Receiving objects:  42% (162/384)Receiving objects:  43% (166/384)Receiving objects:  44% (169/384)Receiving objects:  45% (173/384)Receiving objects:  46% (177/384)Receiving objects:  47% (181/384)Receiving objects:  48% (185/384)Receiving objects:  49% (189/384)Receiving objects:  50% (192/384)Receiving objects:  51% (196/384)Receiving objects:  52% (200/384)Receiving objects:  53% (204/384)Receiving objects:  54% (208/384)Receiving objects:  55% (212/384)Receiving objects:  56% (216/384)Receiving objects:  57% (219/384)Receiving objects:  58% (223/384)Receiving objects:  59% (227/384)Receiving objects:  60% (231/384)Receiving objects:  61% (235/384)Receiving objects:  62% (239/384)Receiving objects:  63% (242/384)Receiving objects:  64% (246/384)Receiving objects:  65% (250/384)Receiving objects:  66% (254/384)Receiving objects:  67% (258/384)Receiving objects:  68% (262/384)Receiving objects:  69% (265/384)Receiving objects:  70% (269/384)Receiving objects:  71% (273/384)Receiving objects:  72% (277/384)Receiving objects:  73% (281/384)Receiving objects:  74% (285/384)Receiving objects:  75% (288/384)Receiving objects:  76% (292/384)Receiving objects:  77% (296/384)Receiving objects:  78% (300/384)Receiving objects:  79% (304/384)Receiving objects:  80% (308/384)Receiving objects:  81% (312/384)Receiving objects:  82% (315/384)Receiving objects:  83% (319/384)Receiving objects:  84% (323/384)Receiving objects:  85% (327/384)Receiving objects:  86% (331/384)Receiving objects:  87% (335/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  88% (338/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  89% (342/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  90% (346/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  91% (350/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  92% (354/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  93% (358/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  94% (361/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  95% (365/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  96% (369/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  97% (373/384), 508.00 KiB | 934.00 KiB/sremote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)[K
-Receiving objects:  98% (377/384), 508.00 KiB | 934.00 KiB/sReceiving objects:  99% (381/384), 508.00 KiB | 934.00 KiB/sReceiving objects: 100% (384/384), 508.00 KiB | 934.00 KiB/sReceiving objects: 100% (384/384), 576.99 KiB | 974.00 KiB/s, done.
-Resolving deltas:   0% (0/72)Resolving deltas:   1% (1/72)Resolving deltas:   2% (2/72)Resolving deltas:   4% (3/72)Resolving deltas:   6% (5/72)Resolving deltas:   8% (6/72)Resolving deltas:   9% (7/72)Resolving deltas:  12% (9/72)Resolving deltas:  13% (10/72)Resolving deltas:  16% (12/72)Resolving deltas:  18% (13/72)Resolving deltas:  20% (15/72)Resolving deltas:  22% (16/72)Resolving deltas:  23% (17/72)Resolving deltas:  25% (18/72)Resolving deltas:  27% (20/72)Resolving deltas:  29% (21/72)Resolving deltas:  30% (22/72)Resolving deltas:  31% (23/72)Resolving deltas:  33% (24/72)Resolving deltas:  36% (26/72)Resolving deltas:  37% (27/72)Resolving deltas:  38% (28/72)Resolving deltas:  40% (29/72)Resolving deltas:  41% (30/72)Resolving deltas:  43% (31/72)Resolving deltas:  45% (33/72)Resolving deltas:  47% (34/72)Resolving deltas:  48% (35/72)Resolving deltas:  51% (37/72)Resolving deltas:  52% (38/72)Resolving deltas:  54% (39/72)Resolving deltas:  55% (40/72)Resolving deltas:  58% (42/72)Resolving deltas:  59% (43/72)Resolving deltas:  61% (44/72)Resolving deltas:  62% (45/72)Resolving deltas:  63% (46/72)Resolving deltas:  65% (47/72)Resolving deltas:  66% (48/72)Resolving deltas:  68% (49/72)Resolving deltas:  70% (51/72)Resolving deltas:  73% (53/72)Resolving deltas:  76% (55/72)Resolving deltas:  77% (56/72)Resolving deltas:  79% (57/72)Resolving deltas:  80% (58/72)Resolving deltas:  81% (59/72)Resolving deltas:  84% (61/72)Resolving deltas:  86% (62/72)Resolving deltas:  87% (63/72)Resolving deltas:  88% (64/72)Resolving deltas:  90% (65/72)Resolving deltas:  91% (66/72)Resolving deltas:  93% (67/72)Resolving deltas:  94% (68/72)Resolving deltas:  95% (69/72)Resolving deltas:  97% (70/72)Resolving deltas:  98% (71/72)Resolving deltas: 100% (72/72)Resolving deltas: 100% (72/72), done.
-Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
-
-HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
-# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-
-
-Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
-Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
-
-augment definition：
-e.g.,
---prefix -> --head-prefix or --prompt-prefix
---prompt -> --head-ptuning or --prompt-ptuning
-
-### Setup
-We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
-
-```shell
-conda create -n pt2 python=3.8.5
-conda activate pt2
-```
-
-After we setup basic conda environment, install pytorch related packages via:
-
-```shell
-conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
-```
-
-Finally, install other python packages we need:
-
-```shell
-pip install -r requirements.txt
-```
-
-### Data
-For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
-
-For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
-After downloading, unzip the packup to the project root.
-Please use at your own risk.
-
-### Training
-Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
-
-You can change the augments and run:
-```shell
-bash run_script/run_rte_roberta.sh
-```
-or
-
-```shell
-export TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --prefix
-```
-This script is run for Full-data Full-supervised Pre-fix Tuning.
-
-We provide the following kinds of settings:
-- Full-data v.s. Few-shot: The training data is full / few-shot
-- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
-- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
-- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
-
-The specific augments for different scenarios:
-
-
-#### Few-shot Head Tuning
-
-### Implemented Results
-Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
-
-Released results on BERT-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
-|--------------|-------|------|------|------|------|---------|---------------|---------|
-| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
-| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
-| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
-
-Released results on RoBERTa-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
-|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
-| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
-| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
-| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
-
-For other hyper-parameters, please refer to the training scripts. 
-If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
-
-## Citation
-
-If you find our work useful, please kindly cite our paper:
-
-
-
-
-
-
----
-
-use_prompt
-sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
-
-
-
-superglue
-BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
-glue
-CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
-
-
-
-
-__TTS_b2368fe287534d8084d400d0cde13a68__RC:0
-__TTS_b2368fe287534d8084d400d0cde13a68__PWD:/app
-__TTS_b2368fe287534d8084d400d0cde13a68__END
-[?2004hroot@f4683268b028:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'cd /app/UPET && python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path("README.md")
-[?2004l[?2004h> print(p.read_text(errors="ignore"))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_51d6a8e84245489d82a0f6d551d52171__RC:%s\n' "$__tts_rc"; printf '__TTS_51d6a8e84245489d82a0f6d551d52171__PWD:'; pwd; printf '__TTS_51d6a8e84245489d82a0f6d551d52171__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_51d6a8e84245489d82a0f6d551d52171__RC:1
-__TTS_51d6a8e84245489d82a0f6d551d52171__PWD:/app
-__TTS_51d6a8e84245489d82a0f6d551d52171__END
-[?2004hroot@f4683268b028:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> for p in [Path("README.md"), Path("run.py")]:
-[?2004l[?2004h>     print(f"===== {p} =====")
-[?2004l[?2004h>     txt=p.read_text(errors="ignore")
-[?2004l[?2004h>     if p.name=="README.md":
-[?2004l[?2004h>         for i,l in enumerate(txt.splitlines(),1):
-[?2004l[?2004h>             if "rte" in l.lower() or "upet" in l.lower() or "roberta-base" in l.lower() or "run.py" in l.lower():
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h>     else:
-[?2004l[?2004h>         for i,l in enumerate(txt.splitlines(),1):
-[?2004l[?2004h>             if "upet" in l.lower() or "parser.add_argument" in l or "few_shot_type" in l or "num_k" in l:
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_95308a81729444929d662d1678571d2e__RC:%s\n' "$__tts_rc"; printf '__TTS_95308a81729444929d662d1678571d2e__PWD:'; pwd; printf '__TTS_95308a81729444929d662d1678571d2e__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_95308a81729444929d662d1678571d2e__RC:1
-__TTS_95308a81729444929d662d1678571d2e__PWD:/app
-__TTS_95308a81729444929d662d1678571d2e__END
-[?2004hroot@f4683268b028:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; find . -maxdepth 3 \( -iname "*rte*" -o -iname "*RTE*" \) | sed -n "1,120p"'; __tts_rc=$?; printf '\n__TTS_a59a4cd663a446e4b21fac61377f4081__RC:%s\n' "$__tts_rc"; printf '__TTS_a59a4cd663a446e4b21fac61377f4081__PWD:'; pwd; printf '__TTS_a59a4cd663a446e4b21fac61377f4081__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_a59a4cd663a446e4b21fac61377f4081__RC:1
-__TTS_a59a4cd663a446e4b21fac61377f4081__PWD:/app
-__TTS_a59a4cd663a446e4b21fac61377f4081__END
-[?2004hroot@f4683268b028:/app# cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python - <<"PY"
-[?2004l[?2004h> import os, json, subprocess, shlex, pathlib, re, sys
-[?2004l[?2004h> root=pathlib.Path(".")
-[?2004l[?2004h> # discover available RTE few-shot dirs and infer UPET-related args from code/readme if possible
-[?2004l[?2004h> rte_dir=root/"data"/"k-shot"/"RTE"/"5-42"
-[?2004l[?2004h> out=root/"outputs"/"rte_upet_5_42_1epoch"
-[?2004l[?2004h> out.mkdir(parents=True, exist_ok=True)
-[?2004l[?2004h> cmd=[sys.executable, "run.py",
-[?2004l[?2004h>     "--task_name","rte",
-[?2004l[?2004h>     "--data_dir",str(rte_dir),
-[?2004l[?2004h>     "--model_name_or_path","roberta-base",
-[?2004l[?2004h>     "--few_shot_type","prompt",
-[?2004l[?2004h>     "--num_k","5",
-[?2004l[?2004h>     "--seed","42",
-[?2004l[?2004h>     "--pet_per_gpu_train_batch_size","2",
-[?2004l[?2004h>     "--pet_per_gpu_eval_batch_size","4",
-[?2004l[?2004h>     "--pet_gradient_accumulation_steps","8",
-[?2004l[?2004h>     "--learning_rate","1e-5",
-[?2004l[?2004h>     "--num_train_epochs","1",
-[?2004l[?2004h>     "--do_train","--do_eval",
-[?2004l[?2004h>     "--output_dir",str(out),
-[?2004l[?2004h>     "--overwrite_output_dir"]
-[?2004l[?2004h> # run training
-[?2004l[?2004h> proc=subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-[?2004l[?2004h> log=proc.stdout
-[?2004l[?2004h> print(log)
-[?2004l[?2004h> # parse eval accuracy from common files or stdout
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> candidates=[]
-[?2004l[?2004h> for p in out.rglob("*"):
-[?2004l[?2004h>     if p.is_file() and p.suffix in {".txt",".json",".log"}:
-[?2004l[?2004h>         candidates.append(p)
-[?2004l[?2004h> for p in sorted(candidates):
-[?2004l[?2004h>     try:
-[?2004l[?2004h>         txt=p.read_text(errors="ignore")
-[?2004l[?2004h>     except Exception:
-[?2004l[?2004h>         continue
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@f4683268b028:/app#         m=re.search(pat, txt)
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@f4683268b028:/app#         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@f4683268b028:/app#     if acc is not None:
-[?2004l[?2004h>         break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, log)
-[?2004lbash: syntax error near unexpected token `m=re.search'
-[?2004hroot@f4683268b028:/app#         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@f4683268b028:/app# if acc is None:
-[?2004l[?2004h>     raise SystemExit("Could not find eval_accuracy in outputs/logs")
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@f4683268b028:/app# print(json.dumps({"eval_accuracy": acc}))
-[?2004lbash: syntax error near unexpected token `json.dumps'
-[?2004hroot@f4683268b028:/app# PY'; __tts_rc=$?; printf '\n__TTS_7e0032e5c6cf4d119673baccf3dee40d__RC:%s\n' "$__tts_rc"; printf '__TTS_7e0032e5c6cf4d119673baccf3dee40d__PWD:'; pwd; printf '__TTS_7e0032e5c6cf4d119673baccf3dee40d__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; grep -Rni "UPET\|unified\|adapter\|prompt_encoder_type\|run.py" README.md scripts . | sed -n "1,220p"'; __tts_rc=$?; printf '\n__TTS_bbf0422f105e49c5bed309f0b2daa37e__RC:%s\n' "$__tts_rc"; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__PWD:'; pwd; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> for p in [Path("README.md"), Path("run.py")]:
-[?2004l[?2004h>     print(f"===== {p} =====")
-[?2004l[?2004h>     txt=p.read_text(errors="ignore")
-[?2004l[?2004h>     for i,l in enumerate(txt.splitlines(),1):
-[?2004l[?2004h>         if p.name=="README.md":
-[?2004l[?2004h>             if "upet" in l.lower() or "rte" in l.lower() or "roberta-base" in l.lower() or "python run.py" in l.lower():
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h>         else:
-[?2004l[?2004h>             if "add_argument" in l or "upet" in l.lower() or "adapter" in l.lower() or "prompt" in l.lower() or "output_dir" in l:
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_9e332aecc4cd42a0abb3fc65ec77f480__RC:%s\n' "$__tts_rc"; printf '__TTS_9e332aecc4cd42a0abb3fc65ec77f480__PWD:'; pwd; printf '__TTS_9e332aecc4cd42a0abb3fc65ec77f480__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> for p in [Path("README.md"), Path("run.py")]:
-[?2004l[?2004h>     print(f"===== {p} =====")
-[?2004l[?2004h>     txt=p.read_text(errors="ignore")
-[?2004l[?2004h>     for i,l in enumerate(txt.splitlines(),1):
-[?2004l[?2004h>         if p.name=="README.md":
-[?2004l[?2004h>             if any(k in l.lower() for k in ["upet","rte","roberta-base","python run.py","adapter","prompt"]):
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h>         else:
-[?2004l[?2004h>             if any(k in l.lower() for k in ["add_argument","upet","adapter","prompt","output_dir","eval_set","pattern_id"]):
-[?2004l[?2004h>                 print(f"{i}: {l}")
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_643bacd995334865a0a24e18af658e7c__RC:%s\n' "$__tts_rc"; printf '__TTS_643bacd995334865a0a24e18af658e7c__PWD:'; pwd; printf '__TTS_643bacd995334865a0a24e18af658e7c__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python - <<"PY"
-[?2004l[?2004h> import subprocess, sys, os, re, json, pathlib
-[?2004l[?2004h> root=pathlib.Path(".")
-[?2004l[?2004h> out=root/"outputs"/"rte_upet_5_42_1epoch"
-[?2004l[?2004h> out.mkdir(parents=True, exist_ok=True)
-[?2004l[?2004h> cmd=[sys.executable,"run.py","--task_name","rte","--data_dir","data/k-shot/RTE/5-42","--model_name_or_path","roberta-base","--few_shot_type","prompt","--num_k","5","--seed","42","--pet_per_gpu_train_batch_size","2","--pet_per_gpu_eval_batch_size","4","--pet_gradient_accumulation_steps","8","--learning_rate","1e-5","--num_train_epochs","1","--eval_set","test","--do_train","--do_eval","--output_dir",str(out),"--overwrite_output_dir"]
-[?2004l[?2004h> proc=subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-[?2004l[?2004h> log=proc.stdout
-[?2004l[?2004h> print(log)
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> search_texts=[log]
-[?2004l[?2004h> for p in sorted(out.rglob("*")):
-[?2004l[?2004h>     if p.is_file() and p.suffix.lower() in {".txt",".json",".log"}:
-[?2004l[?2004h>         try: search_texts.append(p.read_text(errors="ignore"))
-[?2004l[?2004h>         except: pass
-[?2004l[?2004h> for txt in search_texts:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\btest_acc(?:uracy)?\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, txt)
-[?2004l[?2004h>         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004l[?2004h>     if acc is not None: break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     raise SystemExit("eval_accuracy not found")
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc}))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_69defe46416e41bd87cb57d3695c6a4c__RC:%s\n' "$__tts_rc"; printf '__TTS_69defe46416e41bd87cb57d3695c6a4c__PWD:'; pwd; printf '__TTS_69defe46416e41bd87cb57d3695c6a4c__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'set -euo pipefail; cd /app/UPET; python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --learning_rate 1e-5 --num_train_epochs 1 --eval_set test --do_train --do_eval --output_dir outputs/rte_upet_5_42_1epoch --overwrite_output_dir > /tmp/upet_rte_train.log 2>&1; python - <<"PY"
-[?2004l[?2004h> import json,re,pathlib
-[?2004l[?2004h> texts=[]
-[?2004l[?2004h> for p in [pathlib.Path('/tmp/upet_rte_train.log'), pathlib.Path('outputs/rte_upet_5_42_1epoch')]:
-[?2004l[?2004h>     if p.is_file():
-[?2004l[?2004h>         texts.append(p.read_text(errors='ignore'))
-[?2004l[?2004h>     elif p.is_dir():
-[?2004l[?2004h>         for f in p.rglob('*'):
-[?2004l[?2004h>             if f.is_file():
-[?2004l[?2004h>                 try:texts.append(f.read_text(errors='ignore'))
-[?2004l[?2004h>                 except:pass
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> for txt in texts:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, txt)
-[?2004l[?2004h>         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004l[?2004h>     if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc if acc is not None else None}))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_9b7f68aa9e4742848e962a63ae8e3994__RC:%s\n' "$__tts_rc"; printf '__TTS_9b7f68aa9e4742848e962a63ae8e3994__PWD:'; pwd; printf '__TTS_9b7f68aa9e4742848e962a63ae8e3994__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'cd /app/UPET && if [ -f /tmp/upet_rte_train.log ] || [ -d outputs/rte_upet_5_42_1epoch ]; then python - <<"PY"
-[?2004l[?2004h> import json,re,pathlib
-[?2004l[?2004h> texts=[]
-[?2004l[?2004h> for p in [pathlib.Path('/tmp/upet_rte_train.log'), pathlib.Path('outputs/rte_upet_5_42_1epoch')]:
-[?2004l[?2004h>     if p.is_file():
-[?2004l[?2004h>         texts.append(p.read_text(errors='ignore'))
-[?2004l[?2004h>     elif p.is_dir():
-[?2004l[?2004h>         for f in p.rglob('*'):
-[?2004l[?2004h>             if f.is_file():
-[?2004l[?2004h>                 try: texts.append(f.read_text(errors='ignore'))
-[?2004l[?2004h>                 except: pass
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> for txt in texts:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, txt)
-[?2004l[?2004h>         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004l[?2004h>     if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc}))
-[?2004l[?2004h> PY
-[?2004lbash: $'PY; __tts_rc=$?; printf n__TTS_7e0032e5c6cf4d119673baccf3dee40d__RC:%sn "$__tts_rc"; printf __TTS_7e0032e5c6cf4d119673baccf3dee40d__PWD:; pwd; printf __TTS_7e0032e5c6cf4d119673baccf3dee40d__ENDn; tmux wait -S done\ncd -- ': command not found
-"'' && bash -lc 'set -euo pipefail; cd /app/UPET; grep -Rni UPET|unified|adapter|prompt_encoder_type|run.py README.md scripts . | sed -n 1,220p'; __tts_rc=127; printf '
-__TTS_bbf0422f105e49c5bed309f0b2daa37e__RC:-euo
-' 1; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__PWD:'; pwd; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__END
-'; tmux wait -S done
-cd -- ' pwd; printf '" && bash -lc set"'' && bash -lc 'set -euo pipefail; cd /app/UPET; grep -Rni UPET|unified|adapter|prompt_encoder_type|run.py README.md scripts . | sed -n 1,220p'; __tts_rc=127; printf '
-__TTS_bbf0422f105e49c5bed309f0b2daa37e__RC:pipefail
-' 1; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__PWD:'; pwd; printf '__TTS_bbf0422f105e49c5bed309f0b2daa37e__END
-'; tmux wait -S done
-cd -- ' pwd; printf '" && bash -lc set  File "<stdin>", line 12
-    PY'; __tts_rc=$?; printf '\n__TTS_9e332aecc4cd42a0abb3fc65ec77f480__RC:%s\n' "$__tts_rc"; printf '__TTS_9e332aecc4cd42a0abb3fc65ec77f480__PWD:'; pwd; printf '__TTS_9e332aecc4cd42a0abb3fc65ec77f480__END\n'; tmux wait -S done
-                               ^
-SyntaxError: unexpected character after line continuation character
-[?2004hroot@f4683268b028:/app/UPET# else
-[?2004lbash: syntax error near unexpected token `else'
-[?2004hroot@f4683268b028:/app/UPET# python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --learning_rate 1e-5 --num_train_epochs 1 --eval_set test --do_train --do_eval --output_dir outputs/rte_upet_5_42_1epoch --overwrite_output_dir > /tmp/upet_rte_train.log 2>&1 && python - <<"PY"
-[?2004l[?2004h> import json,re,pathlib
-[?2004l[?2004h> texts=[]
-[?2004l[?2004h> for p in [pathlib.Path('/tmp/upet_rte_train.log'), pathlib.Path('outputs/rte_upet_5_42_1epoch')]:
-[?2004l[?2004h>     if p.is_file():
-[?2004l[?2004h>         texts.append(p.read_text(errors='ignore'))
-[?2004l[?2004h>     elif p.is_dir():
-[?2004l[?2004h>         for f in p.rglob('*'):
-[?2004l[?2004h>             if f.is_file():
-[?2004l[?2004h>                 try: texts.append(f.read_text(errors='ignore'))
-[?2004l[?2004h>                 except: pass
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> for txt in texts:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, txt)
-[?2004l[?2004h>         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004l[?2004h>     if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc}))
-[?2004l[?2004h> PY
-[?2004l[?2004hroot@f4683268b028:/app/UPET# fi'; __tts_rc=$?; printf '\n__TTS_90a996e1f901472f856b183a33a45567__RC:%s\n' "$__tts_rc"; printf '__TTS_90a996e1f901472f856b183a33a45567__PWD:'; pwd; printf '__TTS_90a996e1f901472f856b183a33a45567__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ' pwd; printf '"'"'' && bash -lc 'cd /app/UPET && python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --pet_per_gpu_train_batch_size 2 --pet_per_gpu_eval_batch_size 4 --pet_gradient_accumulation_steps 8 --learning_rate 1e-5 --num_train_epochs 1 --eval_set test --do_train --do_eval --output_dir outputs/rte_upet_5_42_1epoch --overwrite_output_dir > /tmp/upet_rte_train.log 2>&1; python - <<"PY"
-[?2004l[?2004h> import json,re,pathlib
-[?2004l[?2004h> texts=[]
-[?2004l[?2004h> for p in [pathlib.Path('/tmp/upet_rte_train.log'), pathlib.Path('outputs/rte_upet_5_42_1epoch')]:
-[?2004l[?2004h>     if p.is_file():
-[?2004l[?2004h>         texts.append(p.read_text(errors='ignore'))
-[?2004l[?2004h>     elif p.is_dir():
-[?2004l[?2004h>         for f in p.rglob('*'):
-[?2004l[?2004h>             if f.is_file():
-[?2004l[?2004h>                 try: texts.append(f.read_text(errors='ignore'))
-[?2004l[?2004h>                 except: pass
-[?2004l[?2004h> acc=None
-[?2004l[?2004h> for txt in texts:
-[?2004l[?2004h>     for pat in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'\beval_accuracy\s*[=:]\s*([0-9.]+)', r'\bacc(?:uracy)?\s*[=:]\s*([0-9.]+)']:
-[?2004l[?2004h>         m=re.search(pat, txt)
-[?2004l[?2004h>         if m:
-[?2004l[?2004h>             acc=float(m.group(1)); break
-[?2004l[?2004h>     if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc}))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_1c06bc7b6b4d4309a4a539db21465f68__RC:%s\n' "$__tts_rc"; printf '__TTS_1c06bc7b6b4d4309a4a539db21465f68__PWD:'; pwd; printf '__TTS_1c06bc7b6b4d4309a4a539db21465f68__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: unexpected EOF while looking for matching `"'
-[?2004h> 

@@ -1,31 +1,0 @@
-[?2004hroot@25dab13329ec:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@25dab13329ec:/app# clear
-[?2004l[H[J[3J[?2004hroot@25dab13329ec:/app# pwd; __tts_rc=$?; printf '\n__TTS_b1e3078b564b461895c651fd66527c94__RC:%s\n' "$__tts_rc"; printf '__TTS_b1e3078b564b461895c651fd66527c94__PWD:'; pwd; printf '__TTS_b1e3078b564b461895c651fd66527c94__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_b1e3078b564b461895c651fd66527c94__RC:0
-__TTS_b1e3078b564b461895c651fd66527c94__PWD:/app
-__TTS_b1e3078b564b461895c651fd66527c94__END
-[?2004hroot@25dab13329ec:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> from mteb import MTEB
-[?2004l[?2004h> from sentence_transformers import SentenceTransformer
-[?2004l[?2004h> model_id='BAAI/bge-small-en-v1.5'
-[?2004l[?2004h> revision='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'
-[?2004l[?2004h> model=SentenceTransformer(model_id, revision=revision)
-[?2004l[?2004h> evaluation=MTEB(tasks=['STS12'])
-[?2004l[?2004h> evaluation.run(model, output_folder='results')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_755de65aba074e1bb2c716e9d39bb7f3__RC:%s\n' "$__tts_rc"; printf '__TTS_755de65aba074e1bb2c716e9d39bb7f3__PWD:'; pwd; printf '__TTS_755de65aba074e1bb2c716e9d39bb7f3__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os, json
-[?2004l[?2004h> p='/app/results/BAAI__bge-small-en-v1.5/5c38ec7c405ec4b44b94cc5a9bb96e735b38267a/STS12.json'
-[?2004l[?2004h> print(json.dumps({'exists': os.path.exists(p), 'path': p, 'size': os.path.getsize(p) if os.path.exists(p) else None}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_dce980867d124544a43cc9a94ec9a752__RC:%s\n' "$__tts_rc"; printf '__TTS_dce980867d124544a43cc9a94ec9a752__PWD:'; pwd; printf '__TTS_dce980867d124544a43cc9a94ec9a752__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 8
-    PY; __tts_rc=$?; printf '\n__TTS_755de65aba074e1bb2c716e9d39bb7f3__RC:%s\n' "$__tts_rc"; printf '__TTS_755de65aba074e1bb2c716e9d39bb7f3__PWD:'; pwd; printf '__TTS_755de65aba074e1bb2c716e9d39bb7f3__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@25dab13329ec:/app# 

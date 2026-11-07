@@ -1,8 +1,0 @@
-{
-  "task_id": "425a494_2",
-  "r22_selected_seed": 19000,
-  "native_success": true,
-  "finding": "Selected R22 trajectory initially counts liked albums, then revisits the task, obtains album details and liked songs, counts liked songs in the album library by genre, and completes with EDM. Selected R21 trajectory instead ended after counting album-library albums by genre.",
-  "selection": "R22 scores are mixed; selected index0 has score1. Native evaluation ran only on the selected candidate.",
-  "limits": "Record action summaries truncate some cells. Different sampled trajectories prevent attributing the success solely to the R22 boundary correction. No claim that all unselected candidates would fail or succeed natively."
-}

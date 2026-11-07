@@ -1,5 +1,0 @@
-Trial train-fasttext__eoeeeD5 failed: Docker compose command failed for environment train-fasttext. Command: docker compose --project-name train-fasttext__eoeeed5__env --project-directory /home/t-wendili/.cache/harbor/tasks/QUdXqzZFwRrgRZ7SPHyxto/train-fasttext/environment -f /tmp/tmpuboljk1q/train-fasttext__eoeeeD5__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmppq6hsecx/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network train-fasttext__eoeeed5__env_default Creating 
- Network train-fasttext__eoeeed5__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network train-fasttext__eoeeed5__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

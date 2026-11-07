@@ -1,5 +1,0 @@
-Trial compile-compcert__saLxrYa failed: Docker compose command failed for environment compile-compcert. Command: docker compose --project-name compile-compcert__salxrya__env --project-directory /home/t-wendili/.cache/harbor/tasks/QDMuuRtnbx7cWNzKkXsGhM/compile-compcert/environment -f /tmp/tmpqwv1njym/compile-compcert__saLxrYa__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpdb7xpal0/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network compile-compcert__salxrya__env_default Creating 
- Network compile-compcert__salxrya__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network compile-compcert__salxrya__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

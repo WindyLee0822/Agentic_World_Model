@@ -1,124 +1,0 @@
-[?2004hroot@de25e2618d08:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@de25e2618d08:/app# clear
-[?2004l[H[J[3J[?2004hroot@de25e2618d08:/app# pwd; __tts_rc=$?; printf '\n__TTS_2a23f8aa245b49d3845f4d35578be67b__RC:%s\n' "$__tts_rc"; printf '__TTS_2a23f8aa245b49d3845f4d35578be67b__PWD:'; pwd; printf '__TTS_2a23f8aa245b49d3845f4d35578be67b__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_2a23f8aa245b49d3845f4d35578be67b__RC:0
-__TTS_2a23f8aa245b49d3845f4d35578be67b__PWD:/app
-__TTS_2a23f8aa245b49d3845f4d35578be67b__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && python -c "import pandas as pd; pd.read_csv('/app/data.csv').to_parquet('/app/data.parquet', index=False)"; __tts_rc=$?; printf '\n__TTS_fd965cd244be45c19f62b27e780ffa00__RC:%s\n' "$__tts_rc"; printf '__TTS_fd965cd244be45c19f62b27e780ffa00__PWD:'; pwd; printf '__TTS_fd965cd244be45c19f62b27e780ffa00__END\n'; tmux wait -S done
-[?2004lbash: python: command not found
-
-__TTS_fd965cd244be45c19f62b27e780ffa00__RC:127
-__TTS_fd965cd244be45c19f62b27e780ffa00__PWD:/app
-__TTS_fd965cd244be45c19f62b27e780ffa00__END
-[?2004hroot@de25e2618d08:/app# cd -- __TTS_fd965cd244be45c19f62b27e780ffa00__PWD:/app && python3 -c "import pandas as pd; pd.read_csv('/app/data.csv').to_parquet('/app/data.parquet', index=False)"; __tts_rc=$?; printf '\n__TTS_340c5aec3bf341a2854268e873229a9f__RC:%s\n' "$__tts_rc"; printf '__TTS_340c5aec3bf341a2854268e873229a9f__PWD:'; pwd; printf '__TTS_340c5aec3bf341a2854268e873229a9f__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_fd965cd244be45c19f62b27e780ffa00__PWD:/app: No such file or directory
-
-__TTS_340c5aec3bf341a2854268e873229a9f__RC:1
-__TTS_340c5aec3bf341a2854268e873229a9f__PWD:/app
-__TTS_340c5aec3bf341a2854268e873229a9f__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && python3 -c "import pyarrow as pa, pyarrow.csv as csv, pyarrow.parquet as pq; pq.write_table(csv.read_csv('/app/data.csv'), '/app/data.parquet')"; __tts_rc=$?; printf '\n__TTS_afe300090d084abeaf75bdf903b394b3__RC:%s\n' "$__tts_rc"; printf '__TTS_afe300090d084abeaf75bdf903b394b3__PWD:'; pwd; printf '__TTS_afe300090d084abeaf75bdf903b394b3__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File "<string>", line 1, in <module>
-ModuleNotFoundError: No module named 'pyarrow'
-
-__TTS_afe300090d084abeaf75bdf903b394b3__RC:1
-__TTS_afe300090d084abeaf75bdf903b394b3__PWD:/app
-__TTS_afe300090d084abeaf75bdf903b394b3__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import duckdb; duckdb.sql(\"COPY (SELECT * FROM read_csv_auto('/app/data.csv', header=True)) TO '/app/data.parquet' (FORMAT PARQUET)\")"; __tts_rc=$?; printf '\n__TTS_0e13eaf1128446e88448a54ebe3799a3__RC:%s\n' "$__tts_rc"; printf '__TTS_0e13eaf1128446e88448a54ebe3799a3__PWD:'; pwd; printf '__TTS_0e13eaf1128446e88448a54ebe3799a3__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File "<string>", line 1, in <module>
-ModuleNotFoundError: No module named 'duckdb'
-
-__TTS_0e13eaf1128446e88448a54ebe3799a3__RC:1
-__TTS_0e13eaf1128446e88448a54ebe3799a3__PWD:/app
-__TTS_0e13eaf1128446e88448a54ebe3799a3__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import importlib.util as u;print('pandas',u.find_spec('pandas'));print('fastparquet',u.find_spec('fastparquet'));print('polars',u.find_spec('polars'))"; __tts_rc=$?; printf '\n__TTS_98abb6fbd49741629e89b7436d516c1a__RC:%s\n' "$__tts_rc"; printf '__TTS_98abb6fbd49741629e89b7436d516c1a__PWD:'; pwd; printf '__TTS_98abb6fbd49741629e89b7436d516c1a__END\n'; tmux wait -S done
-[?2004lpandas None
-fastparquet None
-polars None
-
-__TTS_98abb6fbd49741629e89b7436d516c1a__RC:0
-__TTS_98abb6fbd49741629e89b7436d516c1a__PWD:/app
-__TTS_98abb6fbd49741629e89b7436d516c1a__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import importlib.util as u;mods=['sqlite3','csv','gzip','bz2'];print({m:bool(u.find_spec(m)) for m in mods})"; __tts_rc=$?; printf '\n__TTS_35719e7f4a864509be2e2bcb8116b3a0__RC:%s\n' "$__tts_rc"; printf '__TTS_35719e7f4a864509be2e2bcb8116b3a0__PWD:'; pwd; printf '__TTS_35719e7f4a864509be2e2bcb8116b3a0__END\n'; tmux wait -S done
-[?2004l{'sqlite3': True, 'csv': True, 'gzip': True, 'bz2': True}
-
-__TTS_35719e7f4a864509be2e2bcb8116b3a0__RC:0
-__TTS_35719e7f4a864509be2e2bcb8116b3a0__PWD:/app
-__TTS_35719e7f4a864509be2e2bcb8116b3a0__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import csv,sqlite3; con=sqlite3.connect(':memory:'); cur=con.cursor(); r=csv.reader(open('/app/data.csv',newline='')); h=next(r); q=lambda s:'\"'+s.replace('\\','\\\\').replace('"','""')+'\"'; cols=','.join(q(c)+' TEXT' for c in h); cur.execute('CREATE TABLE t(%s)'%cols); ph=','.join('?'*len(h)); cur.executemany('INSERT INTO t VALUES (%s)'%ph,r); cur.execute(\"SELECT load_extension('mod_spatialite')\")"; __tts_rc=$?; printf '\n__TTS_75e4bcefcb0048f8b69fdb5885d76828__RC:%s\n' "$__tts_rc"; printf '__TTS_75e4bcefcb0048f8b69fdb5885d76828__PWD:'; pwd; printf '__TTS_75e4bcefcb0048f8b69fdb5885d76828__END\n'; tmux wait -S done
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && find / -maxdepth 3 \( -name 'sqlite3' -o -name 'csv2parquet*' -o -name 'parquet*' \) 2>/dev/null | head -200; __tts_rc=$?; printf '\n__TTS_9dc8187bdf974ba49895aa50a0364a24__RC:%s\n' "$__tts_rc"; printf '__TTS_9dc8187bdf974ba49895aa50a0364a24__PWD:'; pwd; printf '__TTS_9dc8187bdf974ba49895aa50a0364a24__END\n'; tmux wait -S done
-[?2004l
-__TTS_9dc8187bdf974ba49895aa50a0364a24__RC:0
-__TTS_9dc8187bdf974ba49895aa50a0364a24__PWD:/app
-__TTS_9dc8187bdf974ba49895aa50a0364a24__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import sys,glob;print(glob.glob('/usr/bin/*parquet*')+glob.glob('/bin/*parquet*')+glob.glob('/usr/local/bin/*parquet*'));import importlib.metadata as m;print([d.metadata['Name'] for d in m.distributions() if 'parquet' in (d.metadata['Name'] or '').lower() or 'arrow' in (d.metadata['Name'] or '').lower()][:50])"; __tts_rc=$?; printf '\n__TTS_5c503c1cf0c64ddbb5d6fdca89808361__RC:%s\n' "$__tts_rc"; printf '__TTS_5c503c1cf0c64ddbb5d6fdca89808361__PWD:'; pwd; printf '__TTS_5c503c1cf0c64ddbb5d6fdca89808361__END\n'; tmux wait -S done
-[?2004l[]
-<string>:1: DeprecationWarning: Implicit None on return values is deprecated and will raise KeyErrors.
-[]
-
-__TTS_5c503c1cf0c64ddbb5d6fdca89808361__RC:0
-__TTS_5c503c1cf0c64ddbb5d6fdca89808361__PWD:/app
-__TTS_5c503c1cf0c64ddbb5d6fdca89808361__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && ls -l /app/data.parquet && file /app/data.parquet; __tts_rc=$?; printf '\n__TTS_0f0abd1ce9b143e099e009507f00f4e5__RC:%s\n' "$__tts_rc"; printf '__TTS_0f0abd1ce9b143e099e009507f00f4e5__PWD:'; pwd; printf '__TTS_0f0abd1ce9b143e099e009507f00f4e5__END\n'; tmux wait -S done
-[?2004lls: cannot access '/app/data.parquet': No such file or directory
-
-__TTS_0f0abd1ce9b143e099e009507f00f4e5__RC:2
-__TTS_0f0abd1ce9b143e099e009507f00f4e5__PWD:/app
-__TTS_0f0abd1ce9b143e099e009507f00f4e5__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -m pip install -q pyarrow && python3 -c "import pyarrow.csv as c, pyarrow.parquet as p; p.write_table(c.read_csv('data.csv'),'data.parquet')"; __tts_rc=$?; printf '\n__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__RC:%s\n' "$__tts_rc"; printf '__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__PWD:'; pwd; printf '__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__END\n'; tmux wait -S done
-[?2004l/usr/bin/python3: No module named pip
-
-__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__RC:1
-__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__PWD:/app
-__TTS_e2c372d948f84d6fb5bc76ef0e7b5821__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import os;print('rows',sum(1 for _ in open('data.csv')));print('sqlite',__import__('sqlite3').sqlite_version)"; __tts_rc=$?; printf '\n__TTS_52ec1d7e7ebd428dba10179abcb7236c__RC:%s\n' "$__tts_rc"; printf '__TTS_52ec1d7e7ebd428dba10179abcb7236c__PWD:'; pwd; printf '__TTS_52ec1d7e7ebd428dba10179abcb7236c__END\n'; tmux wait -S done
-[?2004lrows 6
-sqlite 3.45.1
-
-__TTS_52ec1d7e7ebd428dba10179abcb7236c__RC:0
-__TTS_52ec1d7e7ebd428dba10179abcb7236c__PWD:/app
-__TTS_52ec1d7e7ebd428dba10179abcb7236c__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import sqlite3;print([r for r in sqlite3.connect(':memory:').execute('pragma compile_options') if 'PARQUET' in r[0] or 'EXTENSION' in r[0]])"; __tts_rc=$?; printf '\n__TTS_4035af96a4f04d9f855c6ae91c34c47d__RC:%s\n' "$__tts_rc"; printf '__TTS_4035af96a4f04d9f855c6ae91c34c47d__PWD:'; pwd; printf '__TTS_4035af96a4f04d9f855c6ae91c34c47d__END\n'; tmux wait -S done
-[?2004l[('ENABLE_LOAD_EXTENSION',)]
-
-__TTS_4035af96a4f04d9f855c6ae91c34c47d__RC:0
-__TTS_4035af96a4f04d9f855c6ae91c34c47d__PWD:/app
-__TTS_4035af96a4f04d9f855c6ae91c34c47d__END
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && python3 -c "import csv,struct;rows=list(csv.reader(open('data.csv',newline='')));h=rows[0];d=rows[1:];enc=lambda s:(b'' if s is None else str(s).encode());
-[?2004l[?2004h> wr=lambda n:(-n-1 if n<0 else n).to_bytes(((-n-1 if n<0 else n).bit_length()+7)//8 or 1,'little'); zz=lambda n:(n<<1)^(n>>63); out=bytearray(b'PAR1');
-[?2004l[?2004h> vals=[enc(c) for r in d for c in r];
-[?2004l[?2004h> # data page
-[?2004l[?2004h> body=bytearray(); [body.extend(struct.pack('<I',len(v))+v) for v in vals];
-[?2004l[?2004h> uph=bytearray([0x15,0x00,0x15,0x00,0x15,0x00,0x15,0x00,0x1c,0x15,0x00,0x15,0x00]);
-[?2004l[?2004h> page=bytearray([0x15,0x00,0x15,0x00,0x15,0x00,0x15,0x00,0x1c,0x36])+uph+bytearray([0x00])+body; out.extend(page);
-[?2004l[?2004h> mdat=len(out)-4;
-[?2004l[?2004h> # footer helpers
-[?2004l[?2004h> fb=lambda i: bytes([i]); fi=lambda i,n: bytes([i])+wr(zz(n)); fs=lambda i,b: bytes([i])+wr(len(b))+b; fl=lambda i,parts: bytes([i])+wr(len(parts))+b''.join(parts); fst=lambda i,b: bytes([i])+b;
-[?2004l[?2004h> cols=[]; off=4
-[?2004l[?2004h> for j,name in enumerate(h):
-[?2004l[?2004h>  p=[fst(0x15,b'\x06'),fi(0x20,len(d)),fi(0x30,mdat),fi(0x40,mdat),fi(0x50,sum(4+len(enc(r[j])) for r in d)),fi(0x60,off),fs(0x70,name.encode()),fl(0x90,[fs(0x0a,b'STRING')]),fst(0x0d,b'\x00')];
-[?2004l[?2004h>  cols.append(bytes([0x19])+wr(len(p))+b''.join(p)); off+=sum(4+len(enc(r[j])) for r in d)
-[?2004l[?2004h> rg=fi(0x10,sum(4+len(v) for v in vals))+fi(0x20,len(d))+fl(0x30,cols); sch=[fs(0x0b,b'schema')+fi(0x15,len(h)), fs(0x0b,h[0].encode())+fst(0x15,b'\x06')+fl(0x19,[fs(0x0a,b'STRING')])+fi(0x1d,1), fs(0x0b,h[1].encode())+fst(0x15,b'\x06')+fl(0x19,[fs(0x0a,b'STRING')])+fi(0x1d,1)] if len(h)==2 else [fs(0x0b,b'schema')+fi(0x15,len(h))]+[fs(0x0b,n.encode())+fst(0x15,b'\x06')+fl(0x19,[fs(0x0a,b'STRING')])+fi(0x1d,1) for n in h];
-[?2004l[?2004h> foot=fi(0x10,1)+fl(0x20,sch)+fi(0x30,len(d))+fl(0x40,[rg])+fs(0x50,b'parquet-cpp-arrow version 0.0.0'); out.extend(foot); out.extend(struct.pack('<I',len(foot))); out.extend(b'PAR1'); open('data.parquet','wb').write(out)"; __tts_rc=$?; printf '\n__TTS_0c91b09041864d55b11d5b6280f84060__RC:%s\n' "$__tts_rc"; printf '__TTS_0c91b09041864d55b11d5b6280f84060__PWD:'; pwd; printf '__TTS_0c91b09041864d55b11d5b6280f84060__END\n'; tmux wait -S done
-[?2004l
-__TTS_0c91b09041864d55b11d5b6280f84060__RC:0
-__TTS_0c91b09041864d55b11d5b6280f84060__PWD:/app
-__TTS_0c91b09041864d55b11d5b6280f84060__END
-[?2004hroot@de25e2618d08:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@de25e2618d08:/app# cd -- /app && cd /app && ls -l data.parquet && file data.parquet; __tts_rc=$?; printf '\n__TTS_67501d987c9544168de58330b851ac8a__RC:%s\n'' "$__tts_rc"; printf '__TTS_67501d987c9544168de58330b851ac8a__PWD:'; pwd; printf '__TTS_67501d987c9544168de58330b851ac8a__END\n'; tmux wait -S done
-[?2004l-rw-r--r-- 1 root root 387 Jul 18 00:56 data.parquet
--bash: file: command not found
-
-__TTS_67501d987c9544168de58330b851ac8a__RC:127
-__TTS_67501d987c9544168de58330b851ac8a__PWD:/app
-__TTS_67501d987c9544168de58330b851ac8a__END
-[?2004hroot@de25e2618d08:/app# 

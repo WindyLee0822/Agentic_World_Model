@@ -1,4 +1,0 @@
-decisions,env,mean_cache_hits,mean_cost,mean_max_depth,mean_reads,mean_rollout_errors,mean_spawns,mean_tokens,mean_wall_clock_s,method,n_rollouts,prediction_accuracy,reward,simulator_writes,single_commit_rate,subset,success_rate
-6,appworld,0.0,0.0,0.0,0.0,0.0,0.0,0.0,128.61985096599287,ours,1,0.8333333333333334,0.8333333333333334,0,1.0,test_normal/L3,0.8333333333333334
-6,appworld,0.0,0.0,0.0,0.0,0.0,0.0,0.0,90.53909159568138,ours,2,0.8333333333333334,1.0,0,1.0,test_normal/L3,1.0
-6,appworld,0.0,0.0,0.0,0.0,0.0,0.0,0.0,155.29163926812666,ours,4,0.8333333333333334,1.0,0,1.0,test_normal/L3,1.0

@@ -1,5 +1,0 @@
-Trial count-dataset-tokens__VWCG3N9 failed: Docker compose command failed for environment count-dataset-tokens. Command: docker compose --project-name count-dataset-tokens__vwcg3n9__env --project-directory /home/t-wendili/.cache/harbor/tasks/V8M9GUmT67TmSKo9FQTdoC/count-dataset-tokens/environment -f /tmp/tmpfksyw_ge/count-dataset-tokens__VWCG3N9__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp7ehxdm99/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network count-dataset-tokens__vwcg3n9__env_default Creating 
- Network count-dataset-tokens__vwcg3n9__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network count-dataset-tokens__vwcg3n9__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

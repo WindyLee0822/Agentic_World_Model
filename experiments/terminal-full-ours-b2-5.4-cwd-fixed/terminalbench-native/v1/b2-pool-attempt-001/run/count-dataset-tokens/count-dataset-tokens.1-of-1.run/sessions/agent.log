@@ -1,51 +1,0 @@
-[?2004hroot@20f1fbbdb392:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@20f1fbbdb392:/app# clear
-[?2004l[H[J[3J[?2004hroot@20f1fbbdb392:/app# pwd; __tts_rc=$?; printf '\n__TTS_fc6b26b7ed434f4397698d8a366869c0__RC:%s\n' "$__tts_rc"; printf '__TTS_fc6b26b7ed434f4397698d8a366869c0__PWD:'; pwd; printf '__TTS_fc6b26b7ed434f4397698d8a366869c0__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_fc6b26b7ed434f4397698d8a366869c0__RC:0
-__TTS_fc6b26b7ed434f4397698d8a366869c0__PWD:/app
-__TTS_fc6b26b7ed434f4397698d8a366869c0__END
-[?2004hroot@20f1fbbdb392:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> from datasets import load_dataset
-[?2004l[?2004h> from transformers import AutoTokenizer
-[?2004l[?2004h> 
-[?2004l[?2004h> tok = AutoTokenizer.from_pretrained('Qwen/Qwen2.5-1.5B-Instruct', trust_remote_code=True)
-[?2004l[?2004h> ds = load_dataset('open-thoughts/OpenThoughts-114k', split='train')
-[?2004l[?2004h> print(ds)
-[?2004l[?2004h> print(ds.column_names)
-[?2004l[?2004h> print(ds[0])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_cb729486cfa445189fa95031169fad8c__RC:%s\n' "$__tts_rc"; printf '__TTS_cb729486cfa445189fa95031169fad8c__PWD:'; pwd; printf '__TTS_cb729486cfa445189fa95031169fad8c__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> from datasets import load_dataset
-[?2004l[?2004h> for split in ['train','default']:
-[?2004l[?2004h>     try:
-[?2004l[?2004h>         ds=load_dataset('open-thoughts/OpenThoughts-114k', split='train', streaming=True)
-[?2004l[?2004h>         print(next(iter(ds)).keys())
-[?2004l[?2004h>         break
-[?2004l[?2004h>     except Exception as e:
-[?2004l[?2004h>         print(type(e).__name__, e)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f8ecd0ddff044262902cebdf62c16a1c__RC:%s\n' "$__tts_rc"; printf '__TTS_f8ecd0ddff044262902cebdf62c16a1c__PWD:'; pwd; printf '__TTS_f8ecd0ddff044262902cebdf62c16a1c__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "from huggingface_hub import hf_hub_download; print(hf_hub_download('open-thoughts/OpenThoughts-114k','README.md'))"; __tts_rc=$?; printf '\n__TTS_6aee4dd31e464779a0c20b754305a2d9__RC:%s\n' "$__tts_rc"; printf '__TTS_6aee4dd31e464779a0c20b754305a2d9__PWD:'; pwd; printf '__TTS_6aee4dd31e464779a0c20b754305a2d9__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m9[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_cb729486cfa445189fa95031169fad8c__RC:%s\n' "$__tts_rc"; printf '__TTS_cb729486cfa445189fa95031169fad8c__PWD:'; pwd; printf '__TTS_cb729486cfa445189fa95031169fad8c__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@20f1fbbdb392:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_6aee4dd31e464779a' && python -c "from pathlib import Path; p=Path('/root/.cache/huggingface/hub/datasets--open-thoughts--OpenThoughts-114k/snapshots'); print(next(p.iterdir())/'README.md') ; print((next(p.iterdir())/'README.md').read_text()[:12000])"; __tts_rc=$?; printf '\n__TTS_ea13c0f97ba049c780ee4dea803defd0__RC:%s\n' "$__tts_rc"; printf '__TTS_ea13c0f97ba049c780ee4dea803defd0__PWD:'; pwd; printf '__TTS_ea13c0f97ba049c780ee4dea803defd0__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_6aee4dd31e464779a: No such file or directory
-
-__TTS_ea13c0f97ba049c780ee4dea803defd0__RC:1
-__TTS_ea13c0f97ba049c780ee4dea803defd0__PWD:/app
-__TTS_ea13c0f97ba049c780ee4dea803defd0__END
-[?2004hroot@20f1fbbdb392:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> from huggingface_hub import hf_hub_download
-[?2004l[?2004h> import yaml, json, os
-[?2004l[?2004h> p=hf_hub_download('open-thoughts/OpenThoughts-114k','README.md')
-[?2004l[?2004h> text=open(p).read()
-[?2004l[?2004h> print(text[:20000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_8c40c2af7fe2408d9ef9183bedbc07a1__RC:%s\n' "$__tts_rc"; printf '__TTS_8c40c2af7fe2408d9ef9183bedbc07a1__PWD:'; pwd; printf '__TTS_8c40c2af7fe2408d9ef9183bedbc07a1__END\n'; tmux wait -S done
-[?2004l[?2004h> 

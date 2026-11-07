@@ -1,28 +1,0 @@
-[?2004hroot@b57dc9705661:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@b57dc9705661:/app# clear
-[?2004l[H[J[3J[?2004hroot@b57dc9705661:/app# pwd; __tts_rc=$?; printf '\n__TTS_1487db00ede64900aca94a8047cf9cb7__RC:%s\n' "$__tts_rc"; printf '__TTS_1487db00ede64900aca94a8047cf9cb7__PWD:'; pwd; printf '__TTS_1487db00ede64900aca94a8047cf9cb7__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_1487db00ede64900aca94a8047cf9cb7__RC:0
-__TTS_1487db00ede64900aca94a8047cf9cb7__PWD:/app
-__TTS_1487db00ede64900aca94a8047cf9cb7__END
-[?2004hroot@b57dc9705661:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import importlib.util,sys
-[?2004l[?2004h> mods=['yt_dlp','whisper','ffmpeg']
-[?2004l[?2004h> print({m:importlib.util.find_spec(m) is not None for m in mods})
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d570477f0d874e29884315f57783e54e__RC:%s\n' "$__tts_rc"; printf '__TTS_d570477f0d874e29884315f57783e54e__PWD:'; pwd; printf '__TTS_d570477f0d874e29884315f57783e54e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import urllib.request; print('ok')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_1259be9fba544f249b0e6d6c6db92221__RC:%s\n' "$__tts_rc"; printf '__TTS_1259be9fba544f249b0e6d6c6db92221__PWD:'; pwd; printf '__TTS_1259be9fba544f249b0e6d6c6db92221__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import urllib.request, re, json
-[?2004l[?2004h> url='https://www.youtube.com/watch?v=ZCbvyPbhRfA'
-[?2004l[?2004h> html=urllib.request.urlopen(url, timeout=20).read().decode('utf-8','ignore')
-[?2004l[?2004h> print(html[:2000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f8aec7f0e5e14c44a08fde0b0ddb49b3__RC:%s\n' "$__tts_rc"; printf '__TTS_f8aec7f0e5e14c44a08fde0b0ddb49b3__PWD:'; pwd; printf '__TTS_f8aec7f0e5e14c44a08fde0b0ddb49b3__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-bash: python: command not found
-[?2004hroot@b57dc9705661:/app# 

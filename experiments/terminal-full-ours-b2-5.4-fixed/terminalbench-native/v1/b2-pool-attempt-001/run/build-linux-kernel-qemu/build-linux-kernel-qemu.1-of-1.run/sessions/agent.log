@@ -1,108 +1,0 @@
-[?2004hroot@d9f2141a4708:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@d9f2141a4708:/app# clear
-[?2004l[H[J[3J[?2004hroot@d9f2141a4708:/app# pwd; __tts_rc=$?; printf '\n__TTS_cf2bace8e8db4ee08124af8a4ab77e65__RC:%s\n' "$__tts_rc"; printf '__TTS_cf2bace8e8db4ee08124af8a4ab77e65__PWD:'; pwd; printf '__TTS_cf2bace8e8db4ee08124af8a4ab77e65__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_cf2bace8e8db4ee08124af8a4ab77e65__RC:0
-__TTS_cf2bace8e8db4ee08124af8a4ab77e65__PWD:/app
-__TTS_cf2bace8e8db4ee08124af8a4ab77e65__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_67364c236c344d90ac4fcb5ed0855a63__RC:%s\n' "$__tts_rc"; printf '__TTS_67364c236c344d90ac4fcb5ed0855a63__PWD:'; pwd; printf '__TTS_67364c236c344d90ac4fcb5ed0855a63__END\n'; tmux wait -S done
-[?2004ltotal 8
-drwxr-xr-x 2 root root 4096 May 28  2025 [0m[01;34m.[0m
-drwxr-xr-x 1 root root 4096 Jul 18 01:23 [01;34m..[0m
-
-__TTS_67364c236c344d90ac4fcb5ed0855a63__RC:0
-__TTS_67364c236c344d90ac4fcb5ed0855a63__PWD:/app
-__TTS_67364c236c344d90ac4fcb5ed0855a63__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && find / -maxdepth 2 -type d -name 'linux-6.9' -o -path '/app/*' 2>/dev/null; __tts_rc=$?; printf '\n__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__RC:%s\n' "$__tts_rc"; printf '__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__PWD:'; pwd; printf '__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__END\n'; tmux wait -S done
-[?2004l
-__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__RC:0
-__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__PWD:/app
-__TTS_b60ca3f1e55c4d45a3861d5a1bc57f2f__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && find / -maxdepth 3 \( -name 'linux-6.9*' -o -name 'ramfs' -o -name 'initramfs.cpio.gz' \) 2>/dev/null; __tts_rc=$?; printf '\n__TTS_152c1217af4a4ee08f7ec4b30618ac13__RC:%s\n' "$__tts_rc"; printf '__TTS_152c1217af4a4ee08f7ec4b30618ac13__PWD:'; pwd; printf '__TTS_152c1217af4a4ee08f7ec4b30618ac13__END\n'; tmux wait -S done
-[?2004l
-__TTS_152c1217af4a4ee08f7ec4b30618ac13__RC:0
-__TTS_152c1217af4a4ee08f7ec4b30618ac13__PWD:/app
-__TTS_152c1217af4a4ee08f7ec4b30618ac13__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_152c1217af4a4ee08f7ec4b30618ac13__PWD:/app && cd /app && wget -q https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.tar.xz && tar -xf linux-6.9.tar.xz && grep -n 'start_kernel' -n linux-6.9/init/main.c | head; __tts_rc=$?; printf '\n__TTS_6c88d89d896041dbaf966cb0924388ab__RC:%s\n' "$__tts_rc"; printf '__TTS_6c88d89d896041dbaf966cb0924388ab__PWD:'; pwd; printf '__TTS_6c88d89d896041dbaf966cb0924388ab__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_152c1217af4a4ee08f7ec4b30618ac13__PWD:/app: No such file or directory
-
-__TTS_6c88d89d896041dbaf966cb0924388ab__RC:1
-__TTS_6c88d89d896041dbaf966cb0924388ab__PWD:/app
-__TTS_6c88d89d896041dbaf966cb0924388ab__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && pwd && ls -la /app; __tts_rc=$?; printf '\n__TTS_2d178aec2c2c4a17acd3dfb649c86261__RC:%s\n' "$__tts_rc"; printf '__TTS_2d178aec2c2c4a17acd3dfb649c86261__PWD:'; pwd; printf '__TTS_2d178aec2c2c4a17acd3dfb649c86261__END\n'; tmux wait -S done
-[?2004l/app
-total 8
-drwxr-xr-x 2 root root 4096 May 28  2025 [0m[01;34m.[0m
-drwxr-xr-x 1 root root 4096 Jul 18 01:23 [01;34m..[0m
-
-__TTS_2d178aec2c2c4a17acd3dfb649c86261__RC:0
-__TTS_2d178aec2c2c4a17acd3dfb649c86261__PWD:/app
-__TTS_2d178aec2c2c4a17acd3dfb649c86261__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && cd /app && wget -q https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.tar.xz && tar -xf linux-6.9.tar.xz && grep -n 'start_kernel' linux-6.9/init/main.c | head; __tts_rc=$?; printf '\n__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__RC:%s\n' "$__tts_rc"; printf '__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__PWD:'; pwd; printf '__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__END\n'; tmux wait -S done
-[?2004lbash: wget: command not found
-
-__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__RC:127
-__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__PWD:/app
-__TTS_d52fb0a3dabc4202ba2dab1a18b1df0f__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && cd /app && command -v curl && command -v tar && command -v make && command -v gcc && command -v xz; __tts_rc=$?; printf '\n__TTS_2439c47911364d1eba2f2ba2c867a20b__RC:%s\n' "$__tts_rc"; printf '__TTS_2439c47911364d1eba2f2ba2c867a20b__PWD:'; pwd; printf '__TTS_2439c47911364d1eba2f2ba2c867a20b__END\n'; tmux wait -S done
-[?2004l
-__TTS_2439c47911364d1eba2f2ba2c867a20b__RC:1
-__TTS_2439c47911364d1eba2f2ba2c867a20b__PWD:/app
-__TTS_2439c47911364d1eba2f2ba2c867a20b__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_2439c47911364d1eba2f2ba2c867a20b__PWD:/app && cd /app && command -v curl tar make gcc xz sed grep patch perl bison flex bc qemu-system-x86_64; __tts_rc=$?; printf '\n__TTS_de33819610cb4f568240c12690352863__RC:%s\n' "$__tts_rc"; printf '__TTS_de33819610cb4f568240c12690352863__PWD:'; pwd; printf '__TTS_de33819610cb4f568240c12690352863__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_2439c47911364d1eba2f2ba2c867a20b__PWD:/app: No such file or directory
-
-__TTS_de33819610cb4f568240c12690352863__RC:1
-__TTS_de33819610cb4f568240c12690352863__PWD:/app
-__TTS_de33819610cb4f568240c12690352863__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && cd /app && for x in curl tar make gcc xz sed grep patch perl bison flex bc qemu-system-x86_64 git; do command -v "$x" && echo OK:$x; done; __tts_rc=$?; printf '\n__TTS_bc4b3b78d00e41019468b70e89bfcec2__RC:%s\n' "$__tts_rc"; printf '__TTS_bc4b3b78d00e41019468b70e89bfcec2__PWD:'; pwd; printf '__TTS_bc4b3b78d00e41019468b70e89bfcec2__END\n'; tmux wait -S done
-[?2004l/usr/bin/tar
-OK:tar
-/usr/bin/sed
-OK:sed
-alias grep='grep --color=auto'
-OK:grep
-/usr/bin/perl
-OK:perl
-
-__TTS_bc4b3b78d00e41019468b70e89bfcec2__RC:1
-__TTS_bc4b3b78d00e41019468b70e89bfcec2__PWD:/app
-__TTS_bc4b3b78d00e41019468b70e89bfcec2__END
-[?2004hroot@d9f2141a4708:/app# cd -- /app && cd /app && ls /bin /usr/bin | grep -E '^(curl|make|gcc|cc|clang|xz|bison|flex|bc|git|qemu-system-x86_64|unxz)$' | sort -u; __tts_rc=$?; printf '\n__TTS_afa2421137784b3a83d38aeccf175038__RC:%s\n' "$__tts_rc"; printf '__TTS_afa2421137784b3a83d38aeccf175038__PWD:'; pwd; printf '__TTS_afa2421137784b3a83d38aeccf175038__END\n'; tmux wait -S done
-[?2004l
-__TTS_afa2421137784b3a83d38aeccf175038__RC:0
-__TTS_afa2421137784b3a83d38aeccf175038__PWD:/app
-__TTS_afa2421137784b3a83d38aeccf175038__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_afa2421137784b3a83d38aeccf175038__PWD:/app && cd /app && find /usr /bin /sbin -maxdepth 2 -type f \( -name 'curl' -o -name 'wget' -o -name 'busybox' -o -name 'make' -o -name 'gcc' -o -name 'cc' -o -name 'clang' -o -name 'qemu-system-x86_64' \) 2>/dev/null | sort; __tts_rc=$?; printf '\n__TTS_235225a534b54fefb54b378b0b38eabb__RC:%s\n' "$__tts_rc"; printf '__TTS_235225a534b54fefb54b378b0b38eabb__PWD:'; pwd; printf '__TTS_235225a534b54fefb54b378b0b38eabb__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_afa2421137784b3a83d38aeccf175038__PWD:/app: No such file or directory
-
-__TTS_235225a534b54fefb54b378b0b38eabb__RC:1
-__TTS_235225a534b54fefb54b378b0b38eabb__PWD:/app
-__TTS_235225a534b54fefb54b378b0b38eabb__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_235225a534b54fefb54b378b0b38eabb__PWD:/app && find /usr /bin /sbin -maxdepth 2 -type f \( -name 'curl' -o -name 'wget' -o -name 'busybox' -o -name 'make' -o -name 'gcc' -o -name 'cc' -o -name 'clang' -o -name 'qemu-system-x86_64' \) 2>/dev/null | sort; __tts_rc=$?; printf '\n__TTS_d7acc4c48b564229b4caae7dbebe5307__RC:%s\n' "$__tts_rc"; printf '__TTS_d7acc4c48b564229b4caae7dbebe5307__PWD:'; pwd; printf '__TTS_d7acc4c48b564229b4caae7dbebe5307__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_235225a534b54fefb54b378b0b38eabb__PWD:/app: No such file or directory
-
-__TTS_d7acc4c48b564229b4caae7dbebe5307__RC:1
-__TTS_d7acc4c48b564229b4caae7dbebe5307__PWD:/app
-__TTS_d7acc4c48b564229b4caae7dbebe5307__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_d7acc4c48b564229b4caae7dbebe5307__PWD:/app && cd /app && env | sort | grep -E '^(PATH|PWD|HOME|SHELL)='; __tts_rc=$?; printf '\n__TTS_4f465d4e92f949c7815c201527d71934__RC:%s\n' "$__tts_rc"; printf '__TTS_4f465d4e92f949c7815c201527d71934__PWD:'; pwd; printf '__TTS_4f465d4e92f949c7815c201527d71934__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_d7acc4c48b564229b4caae7dbebe5307__PWD:/app: No such file or directory
-
-__TTS_4f465d4e92f949c7815c201527d71934__RC:1
-__TTS_4f465d4e92f949c7815c201527d71934__PWD:/app
-__TTS_4f465d4e92f949c7815c201527d71934__END
-[?2004hroot@d9f2141a4708:/app# cd -- __TTS_4f465d4e92f949c7815c201527d71934__PWD:/app && cd /app && export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin && python3 - <<'PY'
-[?2004l[?2004h> import shutil,sys
-[?2004l[?2004h> print(' '.join(f'{x}={shutil.which(x)}' for x in ['python3','curl','wget','git','make','gcc','cc','clang','xz','unxz','bison','flex','bc','qemu-system-x86_64']))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b2dd31e778d84ee5b137243e06a128fe__RC:%s\n' "$__tts_rc"; printf '__TTS_b2dd31e778d84ee5b137243e06a128fe__PWD:'; pwd; printf '__TTS_b2dd31e778d84ee5b137243e06a128fe__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_4f465d4e92f949c7815c201527d71934__PWD:/app && cd /app && PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; for x in python3 curl wget git make gcc cc clang xz unxz bison flex bc qemu-system-x86_64; do printf '%s=%s
-[?2004l[?2004h> ' "$x" "$(command -v "$x" 2>/dev/null || echo)"; done; __tts_rc=$?; printf '\n__TTS_2f673324732047efbbc5bc647c6e622e__RC:%s\n' "$__tts_rc"; printf '__TTS_2f673324732047efbbc5bc647c6e622e__PWD:'; pwd; printf '__TTS_2f673324732047efbbc5bc647c6e622e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_4f465d4e92f949c7815c201527d71934__PWD:/app && cd /app && PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; /bin/echo ok; __tts_rc=$?; printf '\n__TTS_40c7f6cd0d544cf8b3137ac719b6c708__RC:%s\n' "$__tts_rc"; printf '__TTS_40c7f6cd0d544cf8b3137ac719b6c708__PWD:'; pwd; printf '__TTS_40c7f6cd0d544cf8b3137ac719b6c708__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_4f465d4e92f949c7815c201527d71934__PWD:/app && true; __tts_rc=$?; printf '\n__TTS_684566cf87ab450195f155980b638693__RC:%s\n' "$__tts_rc"; printf '__TTS_684566cf87ab450195f155980b638693__PWD:'; pwd; printf '__TTS_684566cf87ab450195f155980b638693__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 16 delimited by end-of-file (wanted `PY')
-bash: cd: __TTS_4f465d4e92f949c7815c201527d71934__PWD:/app: No such file or directory
-[?2004hroot@d9f2141a4708:/app# 

@@ -1,60 +1,0 @@
-[?2004hroot@f585e54e2bf2:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@f585e54e2bf2:/app# clear
-[?2004l[H[J[3J[?2004hroot@f585e54e2bf2:/app# pwd; __tts_rc=$?; printf '\n__TTS_9fc8a082e9e2478bb3458cf89503bd65__RC:%s\n' "$__tts_rc"; printf '__TTS_9fc8a082e9e2478bb3458cf89503bd65__PWD:'; pwd; printf '__TTS_9fc8a082e9e2478bb3458cf89503bd65__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_9fc8a082e9e2478bb3458cf89503bd65__RC:0
-__TTS_9fc8a082e9e2478bb3458cf89503bd65__PWD:/app
-__TTS_9fc8a082e9e2478bb3458cf89503bd65__END
-[?2004hroot@f585e54e2bf2:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import shutil
-[?2004l[?2004h> print('yt-dlp' if shutil.which('yt-dlp') else 'youtube-dl' if shutil.which('youtube-dl') else 'none')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_2c0fed56666c488793e8d548624d9dea__RC:%s\n' "$__tts_rc"; printf '__TTS_2c0fed56666c488793e8d548624d9dea__PWD:'; pwd; printf '__TTS_2c0fed56666c488793e8d548624d9dea__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && which yt-dlp youtube-dl ffmpeg || true; __tts_rc=$?; printf '\n__TTS_27fa0f8f3e264fbaa30438af74fec1d6__RC:%s\n' "$__tts_rc"; printf '__TTS_27fa0f8f3e264fbaa30438af74fec1d6__PWD:'; pwd; printf '__TTS_27fa0f8f3e264fbaa30438af74fec1d6__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import shutil;print(' '.join([p for p in ['yt-dlp','youtube-dl','ffmpeg','python3'] if shutil.which(p)]))"; __tts_rc=$?; printf '\n__TTS_6c5e349ca6f0410db3cee861367cf89f__RC:%s\n' "$__tts_rc"; printf '__TTS_6c5e349ca6f0410db3cee861367cf89f__PWD:'; pwd; printf '__TTS_6c5e349ca6f0410db3cee861367cf89f__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m3[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_2c0fed56666c488793e8d548624d9dea__RC:%s\n' "$__tts_rc"; printf '__TTS_2c0fed56666c488793e8d548624d9dea__PWD:'; pwd; printf '__TTS_2c0fed56666c488793e8d548624d9dea__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@f585e54e2bf2:/app# cd -- /app && python3 -c "import shutil,subprocess,os; y='https://www.youtube.com/watch?v=jNQXAC9IVRw'; dl='yt-dlp' if shutil.which('yt-dlp') else 'youtube-dl'; subprocess.run([dl,'-f','mp4','-o','source.%(ext)s',y],check=True); subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1','source.mp4'],check=True)"; __tts_rc=$?; printf '\n__TTS_45661d50c6da405da3e7a757d11998cd__RC:%s\n' "$__tts_rc"; printf '__TTS_45661d50c6da405da3e7a757d11998cd__PWD:'; pwd; printf '__TTS_45661d50c6da405da3e7a757d11998cd__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    import shutil,subprocess,os; y='https://www.youtube.com/watch?v=jNQXAC9IVRw'; dl='yt-dlp' if shutil.which('yt-dlp') else 'youtube-dl'; [31msubprocess.run[0m[1;31m([dl,'-f','mp4','-o','source.%(ext)s',y],check=True)[0m; subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1','source.mp4'],check=True)
-                                                                                                                                           [31m~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-  File [35m"/usr/local/lib/python3.13/subprocess.py"[0m, line [35m554[0m, in [35mrun[0m
-    with [31mPopen[0m[1;31m(*popenargs, **kwargs)[0m as process:
-         [31m~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-  File [35m"/usr/local/lib/python3.13/subprocess.py"[0m, line [35m1036[0m, in [35m__init__[0m
-    [31mself._execute_child[0m[1;31m(args, executable, preexec_fn, close_fds,[0m
-    [31m~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-                        [1;31mpass_fds, cwd, env,[0m
-                        [1;31m^^^^^^^^^^^^^^^^^^^[0m
-    ...<5 lines>...
-                        [1;31mgid, gids, uid, umask,[0m
-                        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-                        [1;31mstart_new_session, process_group)[0m
-                        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-  File [35m"/usr/local/lib/python3.13/subprocess.py"[0m, line [35m1966[0m, in [35m_execute_child[0m
-    raise child_exception_type(errno_num, err_msg, err_filename)
-[1;35mFileNotFoundError[0m: [35m[Errno 2] No such file or directory: 'youtube-dl'[0m
-
-__TTS_45661d50c6da405da3e7a757d11998cd__RC:1
-__TTS_45661d50c6da405da3e7a757d11998cd__PWD:/app
-__TTS_45661d50c6da405da3e7a757d11998cd__END
-[?2004hroot@f585e54e2bf2:/app# cd -- /app && python3 -c "import shutil,subprocess; print({k:shutil.which(k) for k in ['yt-dlp','youtube-dl','ffmpeg','ffprobe','python3']})"; __tts_rc=$?; printf '\n__TTS_18bb270cbf134526bdc88a27026e29ff__RC:%s\n' "$__tts_rc"; printf '__TTS_18bb270cbf134526bdc88a27026e29ff__PWD:'; pwd; printf '__TTS_18bb270cbf134526bdc88a27026e29ff__END\n'; tmux wait -S done
-[?2004l{'yt-dlp': None, 'youtube-dl': None, 'ffmpeg': None, 'ffprobe': None, 'python3': '/usr/local/bin/python3'}
-
-__TTS_18bb270cbf134526bdc88a27026e29ff__RC:0
-__TTS_18bb270cbf134526bdc88a27026e29ff__PWD:/app
-__TTS_18bb270cbf134526bdc88a27026e29ff__END
-[?2004hroot@f585e54e2bf2:/app# cd -- /app && python3 -c "import urllib.request; print(urllib.request.urlopen('https://www.youtube.com/watch?v=jNQXAC9IVRw',timeout=20).status)"; __tts_rc=$?; printf '\n__TTS_0f887880b3a04f0693a4d8e5524de3f9__RC:%s\n' "$__tts_rc"; printf '__TTS_0f887880b3a04f0693a4d8e5524de3f9__PWD:'; pwd; printf '__TTS_0f887880b3a04f0693a4d8e5524de3f9__END\n'; tmux wait -S done
-[?2004l200
-
-__TTS_0f887880b3a04f0693a4d8e5524de3f9__RC:0
-__TTS_0f887880b3a04f0693a4d8e5524de3f9__PWD:/app
-__TTS_0f887880b3a04f0693a4d8e5524de3f9__END
-[?2004hroot@f585e54e2bf2:/app# 

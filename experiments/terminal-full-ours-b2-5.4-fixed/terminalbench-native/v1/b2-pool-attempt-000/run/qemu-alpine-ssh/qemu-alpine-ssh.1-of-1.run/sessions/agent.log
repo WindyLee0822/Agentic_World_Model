@@ -1,85 +1,0 @@
-[?2004hroot@c526ab1af3be:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@c526ab1af3be:/app# clear
-[?2004l[H[J[?2004hroot@c526ab1af3be:/app# pwd; __tts_rc=$?; printf '\n__TTS_66945682db194010a8ee0682e20d1fa2__RC:%s\n' "$__tts_rc"; printf '__TTS_66945682db194010a8ee0682e20d1fa2__PWD:'; pwd; printf '__TTS_66945682db194010a8ee0682e20d1fa2__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_66945682db194010a8ee0682e20d1fa2__RC:0
-__TTS_66945682db194010a8ee0682e20d1fa2__PWD:/app
-__TTS_66945682db194010a8ee0682e20d1fa2__END
-[?2004hroot@c526ab1af3be:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/##' | head -200; __tts_rc=$?; printf '\n__TTS_fdd2c08623064558be53208ccfa3bd86__RC:%s\n' "$__tts_rc"; printf '__TTS_fdd2c08623064558be53208ccfa3bd86__PWD:'; pwd; printf '__TTS_fdd2c08623064558be53208ccfa3bd86__END\n'; tmux wait -S done
-[?2004ltotal 980176
-drwxr-xr-x 1 root root       4096 Jul 17 21:13 .
-drwxr-xr-x 1 root root       4096 Jul 17 21:14 ..
--rw-r--r-- 1 root root     197120 Jul 17 21:13 alpine-disk.qcow2
--rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
-//app/alpine-disk.qcow2
-//app/alpine.iso
-
-__TTS_fdd2c08623064558be53208ccfa3bd86__RC:0
-__TTS_fdd2c08623064558be53208ccfa3bd86__PWD:/app
-__TTS_fdd2c08623064558be53208ccfa3bd86__END
-[?2004hroot@c526ab1af3be:/app# cd -- /app && ls -lh /app/alpine.iso /app/alpine-disk.qcow2 && which qemu-system-x86_64 && qemu-system-x86_64 --version | head -1; __tts_rc=$?; printf '\n__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__RC:%s\n' "$__tts_rc"; printf '__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__PWD:'; pwd; printf '__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__END\n'; tmux wait -S done
-[?2004l-rw-r--r-- 1 root root 193K Jul 17 21:13 /app/alpine-disk.qcow2
--rw-r--r-- 1 root root 957M Dec  7  2023 /app/alpine.iso
-/usr/bin/qemu-system-x86_64
-QEMU emulator version 5.2.0 (Debian 1:5.2+dfsg-11+deb11u5)
-
-__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__RC:0
-__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__PWD:/app
-__TTS_de80f5c20d0b4ef7b4b9156b45e811ce__END
-[?2004hroot@c526ab1af3be:/app# cd -- __TTS_de80f5c20d0b4ef7b4b9156b45e811ce__PWD:/app && cd /app && command -v expect || command -v python3 || command -v socat; __tts_rc=$?; printf '\n__TTS_a689e616d9e445d6aa03384e01207516__RC:%s\n' "$__tts_rc"; printf '__TTS_a689e616d9e445d6aa03384e01207516__PWD:'; pwd; printf '__TTS_a689e616d9e445d6aa03384e01207516__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_de80f5c20d0b4ef7b4b9156b45e811ce__PWD:/app: No such file or directory
-/usr/bin/python3
-
-__TTS_a689e616d9e445d6aa03384e01207516__RC:0
-__TTS_a689e616d9e445d6aa03384e01207516__PWD:/app
-__TTS_a689e616d9e445d6aa03384e01207516__END
-[?2004hroot@c526ab1af3be:/app# cd -- __TTS_a689e616d9e445d6aa03384e01207516__PWD:/app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import os,pty,subprocess,select,time,sys,re,signal
-[?2004l[?2004h> sock='/tmp/alpine-mon.sock'
-[?2004l[?2004h> for p in ['qemu.pid','qemu.log']:
-[?2004l[?2004h>     try: os.remove('/app/'+p)
-[?2004l[?2004h>     except FileNotFoundError: pass
-[?2004l[?2004h> try: os.remove(sock)
-[?2004l[?2004h> except FileNotFoundError: pass
-[?2004l[?2004h> q=subprocess.Popen(['qemu-system-x86_64','-m','1024','-smp','2','-drive','file=/app/alpine-disk.qcow2,if=virtio','-cdrom','/app/alpine.iso','-boot','d','-nic','user,hostfwd=tcp::2222-:22','-nographic','-monitor','unix:'+sock+',server,nowait'],stdin=subprocess.DEVNULL,stdout=open('/app/qemu.log','wb'),stderr=subprocess.STDOUT,preexec_fn=os.setsid)
-[?2004l[?2004h> open('/app/qemu.pid','w').write(str(q.pid))
-[?2004l[?2004h> master,slave=pty.openpty()
-[?2004l[?2004h> ser=subprocess.Popen(['socat','-','unix-connect:'+sock],stdin=slave,stdout=slave,stderr=slave,text=True)
-[?2004l[?2004h> os.close(slave)
-[?2004l[?2004h> fd=master
-[?2004l[?2004h> buf=''
-[?2004l[?2004h> end=time.time()+900
-[?2004l[?2004h> sent=[]
-[?2004l[?2004h> state=0
-[?2004l[?2004h> while time.time()<end:
-[?2004l[?2004h>     r,_,_=select.select([fd],[],[],1)
-[?2004l[?2004h>     if r:
-[?2004l[?2004h>         try: data=os.read(fd,4096).decode(errors='ignore')
-[?2004l[?2004h>         except OSError: break
-[?2004l[?2004h>         buf+=data
-[?2004l[?2004h>     low=buf.lower()
-[?2004l[?2004h>     if state==0 and ('login:' in low or 'localhost login:' in low):
-[?2004l[?2004h>         os.write(fd,b'root\n'); state=1; buf=''; continue
-[?2004l[?2004h>     if state==1 and (re.search(r'~ #\s*$',buf,re.M) or 'welcome to alpine linux' in low or '/ # ' in buf):
-[?2004l[?2004h>         cmd="mount -t devtmpfs dev /dev 2>/dev/null; mount -t proc proc /proc 2>/dev/null; mount -t sysfs sys /sys 2>/dev/null; setup-interfaces -a >/dev/null 2>&1 <<'EOF'\nauto lo\niface lo inet loopback\nauto eth0\niface eth0 inet dhcp\nEOF\nrc-service networking restart >/dev/null 2>&1 || /etc/init.d/networking restart >/dev/null 2>&1 || ifup eth0 >/dev/null 2>&1; printf 'root:password123\\n' | chpasswd; rc-update add sshd default >/dev/null 2>&1; rc-service sshd start >/dev/null 2>&1 || /etc/init.d/sshd start >/dev/null 2>&1; ip a show eth0; ss -lntp | grep ':22 '; echo __DONE__\n"
-[?2004l[?2004h>         os.write(fd,cmd.encode()); state=2; buf=''; continue
-[?2004l[?2004h>     if state==2 and '__DONE__' in buf:
-[?2004l[?2004h>         print('configured')
-[?2004l[?2004h>         sys.exit(0)
-[?2004l[?2004h>     if state==0 and time.time()-os.path.getmtime('/app/qemu.pid')>30 and not sent:
-[?2004l[?2004h>         pass
-[?2004l[?2004h>     if state==0 and ('boot:' in low or 'isolinux' in low or 'welcome to alpine linux' in low or 'mounting boot media' in low) and 'enter' not in sent:
-[?2004l[?2004h>         os.write(fd,b'\n'); sent.append('enter')
-[?2004l[?2004h> try: os.killpg(os.getpgid(q.pid),signal.SIGTERM)
-[?2004l[?2004h> except: pass
-[?2004l[?2004h> sys.exit(1)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_7c45be24078241dca97793560776c841__RC:%s\n' "$__tts_rc"; printf '__TTS_7c45be24078241dca97793560776c841__PWD:'; pwd; printf '__TTS_7c45be24078241dca97793560776c841__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_a689e616d9e445d6aa03384e01207516__PWD:/app && cd /app && ls -l qemu.pid qemu.log /tmp/alpine-mon.sock 2>/dev/null && tail -n 80 qemu.log | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_074de362111d4934b1d006942652c861__RC:%s\n' "$__tts_rc"; printf '__TTS_074de362111d4934b1d006942652c861__PWD:'; pwd; printf '__TTS_074de362111d4934b1d006942652c861__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_a689e616d9e445d6aa03384e01207516__PWD:/app && pkill -f 'qemu-system-x86_64.*alpine' || true; pkill -f 'socat.*alpine-mon.sock' || true; ls -l /app/qemu.pid /app/qemu.log /tmp/alpine-mon.sock 2>/dev/null; tail -n 120 /app/qemu.log 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_948bd61277284ec6a31db46828ff6a00__RC:%s\n' "$__tts_rc"; printf '__TTS_948bd61277284ec6a31db46828ff6a00__PWD:'; pwd; printf '__TTS_948bd61277284ec6a31db46828ff6a00__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-bash: cd: __TTS_a689e616d9e445d6aa03384e01207516__PWD:/app: No such file or directory
-[?2004hroot@c526ab1af3be:/app# 

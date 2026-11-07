@@ -1,55 +1,0 @@
-[?2004hroot@253cd7319d59:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@253cd7319d59:/app# clear
-[?2004l[H[J[3J[?2004hroot@253cd7319d59:/app# pwd; __tts_rc=$?; printf '\n__TTS_60a347e1e79644b1a88e7fefd7137c91__RC:%s\n' "$__tts_rc"; printf '__TTS_60a347e1e79644b1a88e7fefd7137c91__PWD:'; pwd; printf '__TTS_60a347e1e79644b1a88e7fefd7137c91__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_60a347e1e79644b1a88e7fefd7137c91__RC:0
-__TTS_60a347e1e79644b1a88e7fefd7137c91__PWD:/app
-__TTS_60a347e1e79644b1a88e7fefd7137c91__END
-[?2004hroot@253cd7319d59:/app# cd -- /app && cat > /app/main.c.py <<'EOF'
-[?2004l[?2004h> #!/usr/bin/env python3
-[?2004l[?2004h> """/*
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> 
-[?2004l[?2004h> static unsigned long long fib(unsigned long long n){
-[?2004l[?2004h>     unsigned long long a=0,b=1,t;
-[?2004l[?2004h>     while(n--){ t=a+b; a=b; b=t; }
-[?2004l[?2004h>     return a;
-[?2004l[?2004h> }
-[?2004l[?2004h> 
-[?2004l[?2004h> int main(int argc, char **argv){
-[?2004l[?2004h>     if(argc<2) return 1;
-[?2004l[?2004h>     unsigned long long n=strtoull(argv[1],NULL,10);
-[?2004l[?2004h>     printf("%llu\n", fib(n));
-[?2004l[?2004h>     return 0;
-[?2004l[?2004h> }
-[?2004l[?2004h> */
-[?2004l[?2004h> import sys
-[?2004l[?2004h> 
-[?2004l[?2004h> def fib(n):
-[?2004l[?2004h>     a,b=0,1
-[?2004l[?2004h>     for _ in range(n):
-[?2004l[?2004h>         a,b=b,a+b
-[?2004l[?2004h>     return a
-[?2004l[?2004h> 
-[?2004l[?2004h> print(fib(int(sys.argv[1])))
-[?2004l[?2004h> #"""
-[?2004l[?2004h> EOF; __tts_rc=$?; printf '\n__TTS_2bb120a821ff4e2298b97be0ea1b8808__RC:%s\n' "$__tts_rc"; printf '__TTS_2bb120a821ff4e2298b97be0ea1b8808__PWD:'; pwd; printf '__TTS_2bb120a821ff4e2298b97be0ea1b8808__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> open('/app/main.c.py','w').write('#include <stdio.h>\n#include <stdlib.h>\n#define PY(s) /*\n#!/usr/bin/env python3\nimport sys\ndef fib(n):\n a,b=0,1\n for _ in range(n): a,b=b,a+b\n return a\nprint(fib(int(sys.argv[1])))\nraise SystemExit\n*/\nstatic unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1,t;while(n--){t=a+b;a=b;b=t;}return a;}\nint main(int argc,char**argv){if(argc<2)return 1;printf("%llu\\n",fib(strtoull(argv[1],0,10)));return 0;}\n')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_46f15e60bf544e50bf80d95544d6b037__RC:%s\n' "$__tts_rc"; printf '__TTS_46f15e60bf544e50bf80d95544d6b037__PWD:'; pwd; printf '__TTS_46f15e60bf544e50bf80d95544d6b037__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c 'open("/app/main.c.py","w").write("#!/bin/sh\n\"\"\":\nexec python3 \"$0\" \"$@\"\n\"\"\"\n#include <stdio.h>\n#include <stdlib.h>\n#if 0\n\"\"\"\nimport sys\ndef fib(n):\n    a,b=0,1\n    for _ in range(n):\n        a,b=b,a+b\n    return a\nprint(fib(int(sys.argv[1])))\nsys.exit()\n\"\"\"\n#endif\nunsigned long long fib(unsigned long long n){unsigned long long a=0,b=1,t;while(n--){t=a+b;a=b;b=t;}return a;}\nint main(int argc,char**argv){if(argc<2)return 1;printf(\"%llu\\n\",fib(strtoull(argv[1],0,10)));return 0;}\n")'; __tts_rc=$?; printf '\n__TTS_51d6b19922e1438989b2aade1be008e1__RC:%s\n' "$__tts_rc"; printf '__TTS_51d6b19922e1438989b2aade1be008e1__PWD:'; pwd; printf '__TTS_51d6b19922e1438989b2aade1be008e1__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `EOF')
-[?2004hroot@253cd7319d59:/app# cd -- ''"'"'; pwd; printf '"'"'' && python3 - <<'PY'
-[?2004l[?2004h> import subprocess, os
-[?2004l[?2004h> p='/app/main.c.py'
-[?2004l[?2004h> print(open(p).read())
-[?2004l[?2004h> for cmd in (["python3",p,"10"],["gcc",p,"-x","c","-o","/tmp/fib"],["/tmp/fib","10"]):
-[?2004l[?2004h>     r=subprocess.run(cmd,capture_output=True,text=True)
-[?2004l[?2004h>     print('CMD',cmd,'RC',r.returncode,'OUT',r.stdout,'ERR',r.stderr,sep='\n')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_c501112575f043c093444c4dfc2db1cc__RC:%s\n' "$__tts_rc"; printf '__TTS_c501112575f043c093444c4dfc2db1cc__PWD:'; pwd; printf '__TTS_c501112575f043c093444c4dfc2db1cc__END\n'; tmux wait -S done
-[?2004l[?2004h> 

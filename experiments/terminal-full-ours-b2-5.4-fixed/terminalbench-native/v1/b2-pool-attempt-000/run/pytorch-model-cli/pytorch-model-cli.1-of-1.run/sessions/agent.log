@@ -1,534 +1,0 @@
-[?2004hroot@8e0ceba55699:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@8e0ceba55699:/app# clear
-[?2004l[H[J[3J[?2004hroot@8e0ceba55699:/app# pwd; __tts_rc=$?; printf '\n__TTS_69fde69a017b43b9af1af6b888da204d__RC:%s\n' "$__tts_rc"; printf '__TTS_69fde69a017b43b9af1af6b888da204d__PWD:'; pwd; printf '__TTS_69fde69a017b43b9af1af6b888da204d__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_69fde69a017b43b9af1af6b888da204d__RC:0
-__TTS_69fde69a017b43b9af1af6b888da204d__PWD:/app
-__TTS_69fde69a017b43b9af1af6b888da204d__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'ls -la && find . -maxdepth 2 -type f | sort'; __tts_rc=$?; printf '\n__TTS_4993561c627244ecafb0e79f973492e8__RC:%s\n' "$__tts_rc"; printf '__TTS_4993561c627244ecafb0e79f973492e8__PWD:'; pwd; printf '__TTS_4993561c627244ecafb0e79f973492e8__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 17 21:32 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-./cJSON.c
-./cJSON.h
-./image.png
-./lodepng.cpp
-./lodepng.h
-./model.pth
-./model.py
-
-__TTS_4993561c627244ecafb0e79f973492e8__RC:0
-__TTS_4993561c627244ecafb0e79f973492e8__PWD:/app
-__TTS_4993561c627244ecafb0e79f973492e8__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'sed -n "1,220p" model.py'; __tts_rc=$?; printf '\n__TTS_cb87d6940525466fa90b89930ff1d6c1__RC:%s\n' "$__tts_rc"; printf '__TTS_cb87d6940525466fa90b89930ff1d6c1__PWD:'; pwd; printf '__TTS_cb87d6940525466fa90b89930ff1d6c1__END\n'; tmux wait -S done
-[?2004limport torch
-import torch.nn as nn
-
-
-class MnistModel(nn.Module):
-    def __init__(
-        self,
-        input_dim: int,
-        hidden_dim: int,
-        num_classes: int,
-    ) -> torch.nn.Module:
-        super().__init__()
-
-        self.input_layer = nn.Linear(input_dim, hidden_dim)
-        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, num_classes)
-        self.activation = nn.ReLU()
-
-    def forward(self, x):
-        x = self.input_layer(x)
-        x = self.activation(x)
-
-        x = self.hidden_layer(x)
-        x = self.activation(x)
-
-        x = self.output_layer(x)
-        return x
-
-__TTS_cb87d6940525466fa90b89930ff1d6c1__RC:0
-__TTS_cb87d6940525466fa90b89930ff1d6c1__PWD:/app
-__TTS_cb87d6940525466fa90b89930ff1d6c1__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import torch
-[?2004l[?2004h> sd=torch.load("model.pth",map_location="cpu")
-[?2004l[?2004h> print(type(sd))
-[?2004l[?2004h> for k,v in sd.items():
-[?2004l[?2004h>     print(k, tuple(v.shape), v.flatten()[:3].tolist())
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_c938a29a68fc4bd085ea4dbaca66b42c__RC:%s\n' "$__tts_rc"; printf '__TTS_c938a29a68fc4bd085ea4dbaca66b42c__PWD:'; pwd; printf '__TTS_c938a29a68fc4bd085ea4dbaca66b42c__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<stdin>"[0m, line [35m1[0m, in [35m<module>[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'torch'[0m
-
-__TTS_c938a29a68fc4bd085ea4dbaca66b42c__RC:1
-__TTS_c938a29a68fc4bd085ea4dbaca66b42c__PWD:/app
-__TTS_c938a29a68fc4bd085ea4dbaca66b42c__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import pickle,pprint
-[?2004l[?2004h> with open("model.pth","rb") as f:
-[?2004l[?2004h>     obj=pickle.load(f)
-[?2004l[?2004h> print(type(obj))
-[?2004l[?2004h> print(obj.keys() if hasattr(obj,"keys") else obj)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_a989db871d82422c8310f19be7ed5322__RC:%s\n' "$__tts_rc"; printf '__TTS_a989db871d82422c8310f19be7ed5322__PWD:'; pwd; printf '__TTS_a989db871d82422c8310f19be7ed5322__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<stdin>"[0m, line [35m3[0m, in [35m<module>[0m
-[1;35m_pickle.UnpicklingError[0m: [35mpersistent IDs in protocol 0 must be ASCII strings[0m
-
-__TTS_a989db871d82422c8310f19be7ed5322__RC:1
-__TTS_a989db871d82422c8310f19be7ed5322__PWD:/app
-__TTS_a989db871d82422c8310f19be7ed5322__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import zipfile
-[?2004l[?2004h> z=zipfile.ZipFile("model.pth")
-[?2004l[?2004h> print("\n".join(z.namelist()))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_058e42828ea84dffaff3ba684ffbb06e__RC:%s\n' "$__tts_rc"; printf '__TTS_058e42828ea84dffaff3ba684ffbb06e__PWD:'; pwd; printf '__TTS_058e42828ea84dffaff3ba684ffbb06e__END\n'; tmux wait -S done
-[?2004lsimple_mnist/data.pkl
-simple_mnist/byteorder
-simple_mnist/data/0
-simple_mnist/data/1
-simple_mnist/data/2
-simple_mnist/data/3
-simple_mnist/data/4
-simple_mnist/data/5
-simple_mnist/version
-simple_mnist/.data/serialization_id
-
-__TTS_058e42828ea84dffaff3ba684ffbb06e__RC:0
-__TTS_058e42828ea84dffaff3ba684ffbb06e__PWD:/app
-__TTS_058e42828ea84dffaff3ba684ffbb06e__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import zipfile,pickle,struct,json
-[?2004l[?2004h> class U:
-[?2004l[?2004h>     def __init__(self,*a): self.a=a
-[?2004l[?2004h>     def append(self,x): self.a+= (x,)
-[?2004l[?2004h>     def __reduce__(self): return (U,self.a)
-[?2004l[?2004h> 
-[?2004l[?2004h> def pl(fid): return ("storage", fid)
-[?2004l[?2004h> with zipfile.ZipFile("model.pth") as z:
-[?2004l[?2004h>     data=pickle.loads(z.read("simple_mnist/data.pkl"), fix_imports=True, encoding="bytes", errors="strict", buffers=None)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_53d4d376f8534565992d7f106c122c97__RC:%s\n' "$__tts_rc"; printf '__TTS_53d4d376f8534565992d7f106c122c97__PWD:'; pwd; printf '__TTS_53d4d376f8534565992d7f106c122c97__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<stdin>"[0m, line [35m9[0m, in [35m<module>[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'torch'[0m
-
-__TTS_53d4d376f8534565992d7f106c122c97__RC:1
-__TTS_53d4d376f8534565992d7f106c122c97__PWD:/app
-__TTS_53d4d376f8534565992d7f106c122c97__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import zipfile,pickle,pprint
-[?2004l[?2004h> class Dummy:
-[?2004l[?2004h>     def __init__(self,*a,**k): self.args=a; self.kw=k
-[?2004l[?2004h>     def __call__(self,*a,**k): return Dummy(*a,**k)
-[?2004l[?2004h>     def __getattr__(self,n): return Dummy
-[?2004l[?2004h> class U(pickle.Unpickler):
-[?2004l[?2004h>     def find_class(self,m,n): return Dummy
-[?2004l[?2004h>     def persistent_load(self,p): return ("PERSIST",p)
-[?2004l[?2004h> with zipfile.ZipFile("model.pth") as z:
-[?2004l[?2004h>     obj=U(__import__("io").BytesIO(z.read("simple_mnist/data.pkl"))).load()
-[?2004l[?2004h>     pprint.pp(obj)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_124cb9c7e64349d6b16d91a91be9af90__RC:%s\n' "$__tts_rc"; printf '__TTS_124cb9c7e64349d6b16d91a91be9af90__PWD:'; pwd; printf '__TTS_124cb9c7e64349d6b16d91a91be9af90__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<stdin>"[0m, line [35m10[0m, in [35m<module>[0m
-[1;35mTypeError[0m: [35m'Dummy' object does not support item assignment[0m
-
-__TTS_124cb9c7e64349d6b16d91a91be9af90__RC:1
-__TTS_124cb9c7e64349d6b16d91a91be9af90__PWD:/app
-__TTS_124cb9c7e64349d6b16d91a91be9af90__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import zipfile,pickle,io,pprint
-[?2004l[?2004h> class StorageRef:
-[?2004l[?2004h>     def __init__(self,p): self.p=p
-[?2004l[?2004h> class Rebuild:
-[?2004l[?2004h>     def __call__(self,storage,off,size,stride,req=None,hooks=None): return {"storage":storage,"off":off,"size":size,"stride":stride}
-[?2004l[?2004h> class Unpick(pickle.Unpickler):
-[?2004l[?2004h>     def find_class(self,m,n):
-[?2004l[?2004h>         if n=="_rebuild_tensor_v2": return Rebuild()
-[?2004l[?2004h>         if n=="OrderedDict":
-[?2004l[?2004h>             from collections import OrderedDict
-[?2004l[?2004h>             return OrderedDict
-[?2004l[?2004h>         class X:
-[?2004l[?2004h>             def __init__(self,*a,**k): pass
-[?2004l[?2004h>         return X
-[?2004l[?2004h>     def persistent_load(self,p): return StorageRef(p)
-[?2004l[?2004h> with zipfile.ZipFile("model.pth") as z:
-[?2004l[?2004h>     obj=Unpick(io.BytesIO(z.read("simple_mnist/data.pkl"))).load()
-[?2004l[?2004h>     pprint.pp(obj)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_f34a1e823d044a548c1a09d3963845aa__RC:%s\n' "$__tts_rc"; printf '__TTS_f34a1e823d044a548c1a09d3963845aa__PWD:'; pwd; printf '__TTS_f34a1e823d044a548c1a09d3963845aa__END\n'; tmux wait -S done
-[?2004lOrderedDict([('input_layer.weight',
-              {'storage': <__main__.StorageRef object at 0x7d46ed74e3c0>,
-               'off': 0,
-               'size': (16, 784),
-               'stride': (784, 1)}),
-             ('input_layer.bias',
-              {'storage': <__main__.StorageRef object at 0x7d46ed8ead50>,
-               'off': 0,
-               'size': (16,),
-               'stride': (1,)}),
-             ('hidden_layer.weight',
-              {'storage': <__main__.StorageRef object at 0x7d46ed774b90>,
-               'off': 0,
-               'size': (16, 16),
-               'stride': (16, 1)}),
-             ('hidden_layer.bias',
-              {'storage': <__main__.StorageRef object at 0x7d46ed731350>,
-               'off': 0,
-               'size': (16,),
-               'stride': (1,)}),
-             ('output_layer.weight',
-              {'storage': <__main__.StorageRef object at 0x7d46ed7310f0>,
-               'off': 0,
-               'size': (10, 16),
-               'stride': (16, 1)}),
-             ('output_layer.bias',
-              {'storage': <__main__.StorageRef object at 0x7d46ed6dad50>,
-               'off': 0,
-               'size': (10,),
-               'stride': (1,)})])
-
-__TTS_f34a1e823d044a548c1a09d3963845aa__RC:0
-__TTS_f34a1e823d044a548c1a09d3963845aa__PWD:/app
-__TTS_f34a1e823d044a548c1a09d3963845aa__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'python3 - <<"PY"
-[?2004l[?2004h> import zipfile,pickle,io,struct,json
-[?2004l[?2004h> class S: 
-[?2004l[?2004h>     def __init__(self,p): self.p=p
-[?2004l[?2004h> class R:
-[?2004l[?2004h>     def __call__(self,storage,off,size,stride,req=None,hooks=None): return {"storage":storage,"off":off,"size":tuple(size),"stride":tuple(stride)}
-[?2004l[?2004h> class U(pickle.Unpickler):
-[?2004l[?2004h>     def find_class(self,m,n):
-[?2004l[?2004h>         if n=="_rebuild_tensor_v2": return R()
-[?2004l[?2004h>         if n=="OrderedDict":
-[?2004l[?2004h>             from collections import OrderedDict
-[?2004l[?2004h>             return OrderedDict
-[?2004l[?2004h>         class X: pass
-[?2004l[?2004h>         return X
-[?2004l[?2004h>     def persistent_load(self,p): return S(p)
-[?2004l[?2004h> with zipfile.ZipFile("model.pth") as z:
-[?2004l[?2004h>     obj=U(io.BytesIO(z.read("simple_mnist/data.pkl"))).load()
-[?2004l[?2004h>     out={}
-[?2004l[?2004h>     for k,v in obj.items():
-[?2004l[?2004h>         _,storage_type,key,loc,numel=v["storage"].p
-[?2004l[?2004h>         raw=z.read(f"simple_mnist/data/{key}")
-[?2004l[?2004h>         vals=list(struct.unpack("<%df"%numel, raw[:4*numel]))
-[?2004l[?2004h>         out[k]={"shape":list(v["size"]),"values":vals}
-[?2004l[?2004h>     open("weights.json","w").write(json.dumps(out))
-[?2004l[?2004h>     print("wrote",len(out),"tensors")
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_b082a192146f4a5187d9ab0c4459b9e9__RC:%s\n' "$__tts_rc"; printf '__TTS_b082a192146f4a5187d9ab0c4459b9e9__PWD:'; pwd; printf '__TTS_b082a192146f4a5187d9ab0c4459b9e9__END\n'; tmux wait -S done
-[?2004lwrote 6 tensors
-
-__TTS_b082a192146f4a5187d9ab0c4459b9e9__RC:0
-__TTS_b082a192146f4a5187d9ab0c4459b9e9__PWD:/app
-__TTS_b082a192146f4a5187d9ab0c4459b9e9__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'cat > cli_tool.c <<"EOF"
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> #include <string.h>
-[?2004l[?2004h> #include <math.h>
-[?2004l[?2004h> #include "cJSON.h"
-[?2004l[?2004h> #include "lodepng.h"
-[?2004l[?2004h> 
-[?2004l[?2004h> typedef struct { int rows, cols, len; float *v; } Tensor;
-[?2004l[?2004h> 
-[?2004l[?2004h> static int load_tensor(cJSON *root, const char *name, Tensor *t){
-[?2004l[?2004h>     cJSON *obj=cJSON_GetObjectItemCaseSensitive(root,name); if(!cJSON_IsObject(obj)) return 0;
-[?2004l[?2004h>     cJSON *shape=cJSON_GetObjectItemCaseSensitive(obj,"shape");
-[?2004l[?2004h>     cJSON *vals=cJSON_GetObjectItemCaseSensitive(obj,"values");
-[?2004l[?2004h>     if(!cJSON_IsArray(shape)||!cJSON_IsArray(vals)) return 0;
-[?2004l[?2004h>     int dims=cJSON_GetArraySize(shape); if(dims<1||dims>2) return 0;
-[?2004l[?2004h>     t->rows=(int)cJSON_GetArrayItem(shape,0)->valuedouble;
-[?2004l[?2004h>     t->cols=dims==2?(int)cJSON_GetArrayItem(shape,1)->valuedouble:1;
-[?2004l[?2004h>     t->len=t->rows*t->cols; if(cJSON_GetArraySize(vals)!=t->len) return 0;
-[?2004l[?2004h>     t->v=(float*)malloc(sizeof(float)*t->len); if(!t->v) return 0;
-[?2004l[?2004h>     for(int i=0;i<t->len;i++) t->v[i]=(float)cJSON_GetArrayItem(vals,i)->valuedouble;
-[?2004l[?2004h>     return 1;
-[?2004l[?2004h> }
-[?2004l[?2004h> 
-[?2004l[?2004h> static void linear_relu(const float *in, int in_n, const Tensor *w, const Tensor *b, float *out, int relu){
-[?2004l[?2004h>     for(int r=0;r<w->rows;r++){
-[?2004l[?2004h>         float s=b->v[r];
-[?2004l[?2004h>         for(int c=0;c<in_n;c++) s += w->v[r*w->cols+c]*in[c];
-[?2004l[?2004h>         out[r]= (relu && s<0.0f) ? 0.0f : s;
-[?2004l[?2004h>     }
-[?2004l[?2004h> }
-[?2004l[?2004h> 
-[?2004l[?2004h> int main(int argc,char **argv){
-[?2004l[?2004h>     if(argc!=3) return 1;
-[?2004l[?2004h>     FILE *f=fopen(argv[1],"rb"); if(!f) return 1;
-[?2004l[?2004h>     fseek(f,0,SEEK_END); long n=ftell(f); fseek(f,0,SEEK_SET);
-[?2004l[?2004h>     char *json=(char*)malloc(n+1); if(!json){ fclose(f); return 1; }
-[?2004l[?2004h>     if(fread(json,1,n,f)!=(size_t)n){ fclose(f); free(json); return 1; }
-[?2004l[?2004h>     fclose(f); json[n]=0;
-[?2004l[?2004h>     cJSON *root=cJSON_Parse(json); free(json); if(!root) return 1;
-[?2004l[?2004h>     Tensor iw,ib,hw,hb,ow,ob;
-[?2004l[?2004h>     if(!load_tensor(root,"input_layer.weight",&iw)||!load_tensor(root,"input_layer.bias",&ib)||!load_tensor(root,"hidden_layer.weight",&hw)||!load_tensor(root,"hidden_layer.bias",&hb)||!load_tensor(root,"output_layer.weight",&ow)||!load_tensor(root,"output_layer.bias",&ob)){ cJSON_Delete(root); return 1; }
-[?2004l[?2004h>     unsigned char *img=0; unsigned w,h; unsigned err=lodepng_decode32_file(&img,&w,&h,argv[2]);
-[?2004l[?2004h>     if(err||w!=28||h!=28){ cJSON_Delete(root); return 1; }
-[?2004l[?2004h>     float input[784], h1[16], h2[16], out[10];
-[?2004l[?2004h>     for(unsigned i=0;i<784;i++) input[i]=img[4*i]/255.0f;
-[?2004l[?2004h>     free(img);
-[?2004l[?2004h>     linear_relu(input,784,&iw,&ib,h1,1);
-[?2004l[?2004h>     linear_relu(h1,16,&hw,&hb,h2,1);
-[?2004l[?2004h>     linear_relu(h2,16,&ow,&ob,out,0);
-[?2004l[?2004h>     int best=0; for(int i=1;i<10;i++) if(out[i]>out[best]) best=i;
-[?2004l[?2004h>     printf("%d\n",best);
-[?2004l[?2004h>     free(iw.v); free(ib.v); free(hw.v); free(hb.v); free(ow.v); free(ob.v); cJSON_Delete(root);
-[?2004l[?2004h>     return 0;
-[?2004l[?2004h> }
-[?2004l[?2004h> EOF
-[?2004l[?2004h> cc -O2 -std=c11 cli_tool.c cJSON.c lodepng.cpp -lstdc++ -lm -o cli_tool && ./cli_tool weights.json image.png > prediction.txt && cat prediction.txt'; __tts_rc=$?; printf '\n__TTS_7bce6922fc9b4635a7415cc975fde51c__RC:%s\n' "$__tts_rc"; printf '__TTS_7bce6922fc9b4635a7415cc975fde51c__PWD:'; pwd; printf '__TTS_7bce6922fc9b4635a7415cc975fde51c__END\n'; tmux wait -S done
-[?2004lsh: 57: cc: not found
-
-__TTS_7bce6922fc9b4635a7415cc975fde51c__RC:127
-__TTS_7bce6922fc9b4635a7415cc975fde51c__PWD:/app
-__TTS_7bce6922fc9b4635a7415cc975fde51c__END
-[?2004hroot@8e0ceba55699:/app# cd -- __TTS_7bce6922fc9b4635a7415cc975fde51c__PWD:/app && sh -lc 'g++ -x c++ -O2 -std=c++11 cli_tool.c cJSON.c lodepng.cpp -lm -o cli_tool && ./cli_tool weights.json image.png > prediction.txt && cat prediction.txt'; __tts_rc=$?; printf '\n__TTS_1f83ead99bdc4635a11fec08107437c1__RC:%s\n' "$__tts_rc"; printf '__TTS_1f83ead99bdc4635a11fec08107437c1__PWD:'; pwd; printf '__TTS_1f83ead99bdc4635a11fec08107437c1__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_7bce6922fc9b4635a7415cc975fde51c__PWD:/app: No such file or directory
-
-__TTS_1f83ead99bdc4635a11fec08107437c1__RC:1
-__TTS_1f83ead99bdc4635a11fec08107437c1__PWD:/app
-__TTS_1f83ead99bdc4635a11fec08107437c1__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'cd /app && g++ -x c++ -O2 -std=c++11 cli_tool.c cJSON.c lodepng.cpp -lm -o cli_tool && ./cli_tool weights.json image.png > prediction.txt && cat prediction.txt'; __tts_rc=$?; printf '\n__TTS_7465b185dfef42aab04543365baf6a90__RC:%s\n' "$__tts_rc"; printf '__TTS_7465b185dfef42aab04543365baf6a90__PWD:'; pwd; printf '__TTS_7465b185dfef42aab04543365baf6a90__END\n'; tmux wait -S done
-[?2004lsh: 1: g++: not found
-
-__TTS_7465b185dfef42aab04543365baf6a90__RC:127
-__TTS_7465b185dfef42aab04543365baf6a90__PWD:/app
-__TTS_7465b185dfef42aab04543365baf6a90__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'cd /app && ls /usr/bin | grep -E "^(gcc|g\+\+|clang|clang\+\+|cc|tcc|zig|musl-gcc)$|^x86_64-linux-gnu-(gcc|g\+\+)$" | sort'; __tts_rc=$?; printf '\n__TTS_4b958089f3fb4d59b2bd5f9599775573__RC:%s\n' "$__tts_rc"; printf '__TTS_4b958089f3fb4d59b2bd5f9599775573__PWD:'; pwd; printf '__TTS_4b958089f3fb4d59b2bd5f9599775573__END\n'; tmux wait -S done
-[?2004l
-__TTS_4b958089f3fb4d59b2bd5f9599775573__RC:0
-__TTS_4b958089f3fb4d59b2bd5f9599775573__PWD:/app
-__TTS_4b958089f3fb4d59b2bd5f9599775573__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'cd /app && ls -1 /usr/local/bin /bin 2>/dev/null | grep -E "^(gcc|g\+\+|clang|clang\+\+|cc|zig|tcc|make|cmake|python3)$" | sort -u'; __tts_rc=$?; printf '\n__TTS_650710645d2a4b45b344b254ec28a4cd__RC:%s\n' "$__tts_rc"; printf '__TTS_650710645d2a4b45b344b254ec28a4cd__PWD:'; pwd; printf '__TTS_650710645d2a4b45b344b254ec28a4cd__END\n'; tmux wait -S done
-[?2004lpython3
-
-__TTS_650710645d2a4b45b344b254ec28a4cd__RC:0
-__TTS_650710645d2a4b45b344b254ec28a4cd__PWD:/app
-__TTS_650710645d2a4b45b344b254ec28a4cd__END
-[?2004hroot@8e0ceba55699:/app# cd -- /app && sh -lc 'cd /app && python3 - <<"PY"
-[?2004l[?2004h> from PIL import Image
-[?2004l[?2004h> import json, math
-[?2004l[?2004h> w=json.load(open("weights.json"))
-[?2004l[?2004h> img=Image.open("image.png").convert("L")
-[?2004l[?2004h> x=[p/255.0 for p in img.getdata()]
-[?2004l[?2004h> def lin(inp, W, B):
-[?2004l[?2004h>     rows, cols = W["shape"]
-[?2004l[?2004h>     vals=W["values"]; b=B["values"]
-[?2004l[?2004h>     out=[]
-[?2004l[?2004h>     for r in range(rows):
-[?2004l[?2004h>         s=b[r]
-[?2004l[?2004h>         base=r*cols
-[?2004l[?2004h>         for c in range(cols): s += vals[base+c]*inp[c]
-[?2004l[?2004h>         out.append(s)
-[?2004l[?2004h>     return out
-[?2004l[?2004h> h1=[max(0.0,v) for v in lin(x,w["input_layer.weight"],w["input_layer.bias"])]
-[?2004l[?2004h> h2=[max(0.0,v) for v in lin(h1,w["hidden_layer.weight"],w["hidden_layer.bias"])]
-[?2004l[?2004h> out=lin(h2,w["output_layer.weight"],w["output_layer.bias"])
-[?2004l[?2004h> pred=max(range(10), key=lambda i: out[i])
-[?2004l[?2004h> open("prediction.txt","w").write(str(pred))
-[?2004l[?2004h> open("cli_tool","w").write("#!/bin/sh\nexec python3 /app/cli_tool.py \"$@\"\n")
-[?2004l[?2004h> open("cli_tool.py","w").write(r'''#!/usr/bin/env python3
-[?2004lbash: !/usr/bin/env: event not found
-[?2004h> import sys, json, struct, zlib
-[?2004l[?2004h> 
-[?2004l[?2004h> def read_png_gray(path):
-[?2004l[?2004h>     data=open(path,'rb').read()
-[?2004l[?2004h>     if data[:8]!=b'\x89PNG\r\n\x1a\n': raise SystemExit(1)
-[?2004l[?2004h>     pos=8; w=h=ct=bd=None; idat=b''
-[?2004l[?2004h>     while pos < len(data):
-[?2004l[?2004h>         ln=int.from_bytes(data[pos:pos+4],'big'); pos+=4
-[?2004l[?2004h>         typ=data[pos:pos+4]; pos+=4
-[?2004l[?2004h>         chunk=data[pos:pos+ln]; pos+=ln; pos+=4
-[?2004l[?2004h>         if typ==b'IHDR':
-[?2004l[?2004h>             w=int.from_bytes(chunk[0:4],'big'); h=int.from_bytes(chunk[4:8],'big'); bd=chunk[8]; ct=chunk[9]
-[?2004l[?2004h>         elif typ==b'IDAT': idat += chunk
-[?2004l[?2004h>         elif typ==b'IEND': break
-[?2004l[?2004h>     if bd!=8 or ct not in (0,4,2,6) or w!=28 or h!=28: raise SystemExit(1)
-[?2004l[?2004h>     raw=zlib.decompress(idat)
-[?2004l[?2004h>     channels={0:1,4:2,2:3,6:4}[ct]; stride=w*channels
-[?2004l[?2004h>     rows=[]; i=0; prev=[0]*stride
-[?2004l[?2004h>     for _ in range(h):
-[?2004l[?2004h>         f=raw[i]; i+=1; cur=list(raw[i:i+stride]); i+=stride
-[?2004l[?2004h>         if f==1:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+(cur[x-channels] if x>=channels else 0))&255
-[?2004l[?2004h>         elif f==2:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+prev[x])&255
-[?2004l[?2004h>         elif f==3:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+((prev[x]+(cur[x-channels] if x>=channels else 0))>>1))&255
-[?2004l[?2004h>         elif f==4:
-[?2004l[?2004h>             def pa(a,b,c):
-[?2004l[?2004h>                 p=a+b-c; pa=abs(p-a); pb=abs(p-b); pc=abs(p-c)
-[?2004l[?2004h>                 return a if pa<=pb and pa<=pc else (b if pb<=pc else c)
-[?2004l[?2004h>             for x in range(stride):
-[?2004l[?2004h>                 a=cur[x-channels] if x>=channels else 0; b=prev[x]; c=prev[x-channels] if x>=channels else 0
-[?2004l[?2004h>                 cur[x]=(cur[x]+pa(a,b,c))&255
-[?2004l[?2004h>         elif f!=0: raise SystemExit(1)
-[?2004l[?2004h>         rows.extend(cur); prev=cur
-[?2004l[?2004h>     if ct==0: return [v/255.0 for v in rows]
-[?2004l[?2004h>     return [rows[i]/255.0 for i in range(0,len(rows),channels)]
-[?2004l[?2004h> 
-[?2004l[?2004h> def lin(inp,W,B):
-[?2004l[?2004h>     rows, cols = W['shape']; vals=W['values']; b=B['values']; out=[]
-[?2004l[?2004h>     for r in range(rows):
-[?2004l[?2004h>         s=b[r]; base=r*cols
-[?2004l[?2004h>         for c in range(cols): s += vals[base+c]*inp[c]
-[?2004l[?2004h>         out.append(s)
-[?2004l[?2004h>     return out
-[?2004l[?2004h> 
-[?2004l[?2004h> def main():
-[?2004l[?2004h>     if len(sys.argv)!=3: raise SystemExit(1)
-[?2004l[?2004h>     w=json.load(open(sys.argv[1]))
-[?2004l[?2004h>     x=read_png_gray(sys.argv[2])
-[?2004l[?2004h>     h1=[v if v>0 else 0.0 for v in lin(x,w['input_layer.weight'],w['input_layer.bias'])]
-[?2004l[?2004h>     h2=[v if v>0 else 0.0 for v in lin(h1,w['hidden_layer.weight'],w['hidden_layer.bias'])]
-[?2004l[?2004h>     out=lin(h2,w['output_layer.weight'],w['output_layer.bias'])
-[?2004l[?2004h>     print(max(range(10), key=lambda i: out[i]))
-[?2004l[?2004h> if __name__=='__main__': main()
-[?2004l[?2004h> ''')
-[?2004lbash: syntax error near unexpected token `)'
-[?2004hroot@8e0ceba55699:/app# import os
-[?2004lbash: import: command not found
-[?2004hroot@8e0ceba55699:/app# os.chmod("cli_tool",0o755); os.chmod("cli_tool.py",0o755)
-[?2004lbash: syntax error near unexpected token `"cli_tool",0o755'
-[?2004hroot@8e0ceba55699:/app# PY
-[?2004lbash: PY: command not found
-[?2004hroot@8e0ceba55699:/app# ./cli_tool weights.json image.png > prediction.txt && cat prediction.txt'; __tts_rc=$?; printf '\n__TTS_7a1d4eb017bd4aebb1503ec371660984__RC:%s\n' "$__tts_rc"; printf '__TTS_7a1d4eb017bd4aebb1503ec371660984__PWD:'; pwd; printf '__TTS_7a1d4eb017bd4aebb1503ec371660984__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && sh -lc 'cd /app && python3 - <<"PY"
-[?2004le): cur[xx]=(cur[xx]+(cur[xx-ch] if xx>=ch else 0))&255
-    elif f==2:
-        for xx in range(stride): cur[xx]=(cur[xx]+prev[xx])&255
-    elif f==3:
-        for xx in range(stride): cur[xx]=(cur[xx]+(((cur[xx-ch] if xx>=ch else 0)+prev[xx])>>1))&255
-    elif f==4:
-        for xx in range(stride):
-            a=cur[xx-ch] if xx>=ch else 0; b=prev[xx]; c=prev[xx-ch] if xx>=ch else 0
-            p0=a+b-c; pa=abs(p0-a); pb=abs(p0-b); pc=abs(p0-c); pr=a if pa<=pb and pa<=pc else (b if pb<=pc else c)
-            cur[xx]=(cur[xx]+pr)&255
-    x.extend(cur[::ch]); prev=cur
-x=[v/255.0 for v in x]
-def lin(inp,W,B):
-    rows,cols=W["shape"]; vals=W["values"]; bias=B["values"]; res=[]
-    for r in range(rows):
-        base=r*cols; s=bias[r]
-        for c in range(cols): s+=vals[base+c]*inp[c]
-        res.append(s)
-    return res
-h1=[max(0.0,v) for v in lin(x,w["input_layer.weight"],w["input_layer.bias"])]
-h2=[max(0.0,v) for v in lin(h1,w["hidden_layer.weight"],w["hidden_layer.bias"])]
-o=lin(h2,w["output_layer.weight"],w["output_layer.bias"])
-open("prediction.txt","w").[?2004h> import json,zlib,os,sys
-[?2004l0),[?2004h> w=json.load(open("weights.json"))
-[?2004l[?2004h> script=r'''#!/usr/bin/env python3
-[?2004l[?2004h> import sys, json, zlib
-[?2004l[?2004h> 
-[?2004lC[?2004h> def read_png_gray(path):
-[?2004l[?2004h>     data=open(path,"rb").read()
-[?2004l1[?2004h>     if data[:8]!=b"\x89PNG\r\n\x1a\n": raise SystemExit(1)
-[?2004l[?2004h>     p=8; w=h=bd=ct=None; idat=[]
-[?2004l[?2004h>     while p<len(data):
-[?2004l[?2004h>         n=int.from_bytes(data[p:p+4],"big"); p+=4
-[?2004l[?2004h>         t=data[p:p+4]; p+=4
-[?2004l[?2004h>         c=data[p:p+n]; p+=n; p+=4
-[?2004l[?2004h>         if t==b"IHDR":
-[?2004l[?2004h>             w=int.from_bytes(c[:4],"big"); h=int.from_bytes(c[4:8],"big"); bd=c[8]; ct=c[9]
-[?2004l[?2004h>         elif t==b"IDAT": idat.append(c)
-[?2004l[?2004h>         elif t==b"IEND": break
-[?2004l[?2004h>     if (w,h,bd)!=(28,28,8) or ct not in (0,2,4,6): raise SystemExit(1)
-[?2004l[?2004h>     raw=zlib.decompress(b"".join(idat))
-[?2004l[?2004h>     ch={0:1,2:3,4:2,6:4}[ct]; stride=w*ch; out=[]; i=0; prev=[0]*stride
-[?2004l[?2004h>     for _ in range(h):
-[?2004l[?2004h>         f=raw[i]; i+=1; cur=list(raw[i:i+stride]); i+=stride
-[?2004l[?2004h>         if f==1:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+(cur[x-ch] if x>=ch else 0))&255
-[?2004l[?2004h>         elif f==2:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+prev[x])&255
-[?2004l[?2004h>         elif f==3:
-[?2004l[?2004h>             for x in range(stride): cur[x]=(cur[x]+(((cur[x-ch] if x>=ch else 0)+prev[x])>>1))&255
-[?2004l[?2004h>         elif f==4:
-[?2004l[?2004h>             for x in range(stride):
-[?2004l[?2004h>                 a=cur[x-ch] if x>=ch else 0; b=prev[x]; c=prev[x-ch] if x>=ch else 0
-[?2004l[?2004h>                 p0=a+b-c; pa=abs(p0-a); pb=abs(p0-b); pc=abs(p0-c)
-[?2004l[?2004h>                 pr=a if pa<=pb and pa<=pc else (b if pb<=pc else c)
-[?2004l[?2004h>                 cur[x]=(cur[x]+pr)&255
-[?2004l[?2004h>         elif f!=0: raise SystemExit(1)
-[?2004l[?2004h>         out.extend(cur[::ch]); prev=cur
-[?2004l[?2004h>     return [v/255.0 for v in out]
-[?2004l[?2004h> 
-[?2004l[?2004h> def lin(inp,W,B):
-[?2004l[?2004h>     rows,cols=W["shape"]; vals=W["values"]; bias=B["values"]; res=[]
-[?2004l[?2004h>     for r in range(rows):
-[?2004l[?2004h>         base=r*cols; s=bias[r]
-[?2004l[?2004h>         for c in range(cols): s+=vals[base+c]*inp[c]
-[?2004l[?2004h>         res.append(s)
-[?2004l[?2004h>     return res
-[?2004l[?2004h> 
-[?2004l[?2004h> if __name__=="__main__":
-[?2004l[?2004h>     if len(sys.argv)!=3: raise SystemExit(1)
-[?2004l[?2004h>     w=json.load(open(sys.argv[1]))
-[?2004l[?2004h>     x=read_png_gray(sys.argv[2])
-[?2004l[?2004h>     h1=[v if v>0 else 0.0 for v in lin(x,w["input_layer.weight"],w["input_layer.bias"])]
-[?2004l[?2004h>     h2=[v if v>0 else 0.0 for v in lin(h1,w["hidden_layer.weight"],w["hidden_layer.bias"])]
-[?2004l[?2004h>     o=lin(h2,w["output_layer.weight"],w["output_layer.bias"])
-[?2004l[?2004h>     print(max(range(10), key=o.__getitem__))
-[?2004l[?2004h> '''
-[?2004l[?2004h> open("cli_tool.py","w").write(script)
-[?2004l[?2004h> open("cli_tool","w").write("#!/bin/sh\nexec python3 /app/cli_tool.py \"$@\"\n")
-[?2004l[?2004h> os.chmod("cli_tool.py",0o755); os.chmod("cli_tool",0o755)
-[?2004l[?2004h> # compute prediction without external deps
-[?2004l[?2004h> png=open("image.png","rb").read()
-[?2004l[?2004h> p=8; idat=[]; W=H=BD=CT=None
-[?2004l[?2004h> while p<len(png):
-[?2004l[?2004h>     n=int.from_bytes(png[p:p+4],"big"); p+=4; t=png[p:p+4]; p+=4; c=png[p:p+n]; p+=n; p+=4
-[?2004l[?2004h>     if t==b"IHDR": W=int.from_bytes(c[:4],"big"); H=int.from_bytes(c[4:8],"big"); BD=c[8]; CT=c[9]
-[?2004l[?2004h>     elif t==b"IDAT": idat.append(c)
-[?2004l[?2004h>     elif t==b"IEND": break
-[?2004l[?2004h> raw=zlib.decompress(b"".join(idat)); ch={0:1,2:3,4:2,6:4}[CT]; stride=W*ch; i=0; prev=[0]*stride; x=[]
-[?2004l[?2004h> for _ in range(H):
-[?2004l[?2004h>     f=raw[i]; i+=1; cur=list(raw[i:i+stride]); i+=stride
-[?2004l[?2004h>     if f==1:
-[?2004l[?2004h>         for xx in range(stride): cur[xx]=(cur[xx]+(cur[xx-ch] if xx>=ch else 0))&255
-[?2004l[?2004h>     elif f==2:
-[?2004l[?2004h>         for xx in range(stride): cur[xx]=(cur[xx]+prev[xx])&255
-[?2004l[?2004h>     elif f==3:
-[?2004l[?2004h>         for xx in range(stride): cur[xx]=(cur[xx]+(((cur[xx-ch] if xx>=ch else 0)+prev[xx])>>1))&255
-[?2004l[?2004h>     elif f==4:
-[?2004l[?2004h>         for xx in range(stride):
-[?2004l[?2004h>             a=cur[xx-ch] if xx>=ch else 0; b=prev[xx]; c=prev[xx-ch] if xx>=ch else 0
-[?2004l[?2004h>             p0=a+b-c; pa=abs(p0-a); pb=abs(p0-b); pc=abs(p0-c); pr=a if pa<=pb and pa<=pc else (b if pb<=pc else c)
-[?2004l[?2004h>             cur[xx]=(cur[xx]+pr)&255
-[?2004l[?2004h>     x.extend(cur[::ch]); prev=cur
-[?2004l[?2004h> x=[v/255.0 for v in x]
-[?2004l[?2004h> def lin(inp,W,B):
-[?2004l[?2004h>     rows,cols=W["shape"]; vals=W["values"]; bias=B["values"]; res=[]
-[?2004l[?2004h>     for r in range(rows):
-[?2004l[?2004h>         base=r*cols; s=bias[r]
-[?2004l[?2004h>         for c in range(cols): s+=vals[base+c]*inp[c]
-[?2004l[?2004h>         res.append(s)
-[?2004l[?2004h>     return res
-[?2004l[?2004h> h1=[max(0.0,v) for v in lin(x,w["input_layer.weight"],w["input_layer.bias"])]
-[?2004l[?2004h> h2=[max(0.0,v) for v in lin(h1,w["hidden_layer.weight"],w["hidden_layer.bias"])]
-[?2004l[?2004h> o=lin(h2,w["output_layer.weight"],w["output_layer.bias"])
-[?2004l[?2004h> open("prediction.txt","w").write(str(max(range(10), key=o.__getitem__)))
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_609fa1f209d64185968cfc1ec1f78788__RC:%s\n' "$__tts_rc"; printf '__TTS_609fa1f209d64185968cfc1ec1f78788__PWD:'; pwd; printf '__TTS_609fa1f209d64185968cfc1ec1f78788__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 237 delimited by end-of-file (wanted `PY')
-bash: ./cli_tool: No such file or directory
-[?2004hroot@8e0ceba55699:/app# cd -- ''"'"'; pwd; printf '"'"'' && sh -lc 'cd /app && ls -l cli_tool cli_tool.py prediction.txt weights.json && cat prediction.txt && ./cli_tool weights.json image.png'; __tts_rc=$?; printf '\n__TTS_34198ea120f742098097fa6df954b934__RC:%s\n' "$__tts_rc"; printf '__TTS_34198ea120f742098097fa6df954b934__PWD:'; pwd; printf '__TTS_34198ea120f742098097fa6df954b934__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_34198ea120f742098097fa6df954b934__RC:1
-__TTS_34198ea120f742098097fa6df954b934__PWD:/app
-__TTS_34198ea120f742098097fa6df954b934__END
-[?2004hroot@8e0ceba55699:/app# 

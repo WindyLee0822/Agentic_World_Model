@@ -1,160 +1,0 @@
-[?2004hroot@88c32dfa4ac8:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@88c32dfa4ac8:/app# clear
-[?2004l[H[J[?2004hroot@88c32dfa4ac8:/app# pwd; __tts_rc=$?; printf '\n__TTS_59022a1b64584f45b942ef92009839d9__RC:%s\n' "$__tts_rc"; printf '__TTS_59022a1b64584f45b942ef92009839d9__PWD:'; pwd; printf '__TTS_59022a1b64584f45b942ef92009839d9__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_59022a1b64584f45b942ef92009839d9__RC:0
-__TTS_59022a1b64584f45b942ef92009839d9__PWD:/app
-__TTS_59022a1b64584f45b942ef92009839d9__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/app:#' | sort | head -200; __tts_rc=$?; printf '\n__TTS_2d06168803244b1abdc1dedd447894d8__RC:%s\n' "$__tts_rc"; printf '__TTS_2d06168803244b1abdc1dedd447894d8__PWD:'; pwd; printf '__TTS_2d06168803244b1abdc1dedd447894d8__END\n'; tmux wait -S done
-[?2004ltotal 980176
-drwxr-xr-x 1 root root       4096 Jul 18 12:18 .
-drwxr-xr-x 1 root root       4096 Jul 18 17:37 ..
--rw-r--r-- 1 root root     197120 Jul 18 12:18 alpine-disk.qcow2
--rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
-/app:/app/alpine-disk.qcow2
-/app:/app/alpine.iso
-
-__TTS_2d06168803244b1abdc1dedd447894d8__RC:0
-__TTS_2d06168803244b1abdc1dedd447894d8__PWD:/app
-__TTS_2d06168803244b1abdc1dedd447894d8__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && ps -ef | grep -E 'qemu|sshd' | grep -v grep || true; __tts_rc=$?; printf '\n__TTS_a4727b1e533b44b196805f1dc57bcee2__RC:%s\n' "$__tts_rc"; printf '__TTS_a4727b1e533b44b196805f1dc57bcee2__PWD:'; pwd; printf '__TTS_a4727b1e533b44b196805f1dc57bcee2__END\n'; tmux wait -S done
-[?2004lbash: ps: command not found
-
-__TTS_a4727b1e533b44b196805f1dc57bcee2__RC:0
-__TTS_a4727b1e533b44b196805f1dc57bcee2__PWD:/app
-__TTS_a4727b1e533b44b196805f1dc57bcee2__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && which qemu-system-x86_64 ssh sshpass socat nc telnet expect busybox; __tts_rc=$?; printf '\n__TTS_3876d5fd152f42f99e7e462b461f1306__RC:%s\n' "$__tts_rc"; printf '__TTS_3876d5fd152f42f99e7e462b461f1306__PWD:'; pwd; printf '__TTS_3876d5fd152f42f99e7e462b461f1306__END\n'; tmux wait -S done
-[?2004l/usr/bin/qemu-system-x86_64
-/usr/bin/ssh
-/bin/nc
-/usr/bin/telnet
-/usr/bin/expect
-
-__TTS_3876d5fd152f42f99e7e462b461f1306__RC:1
-__TTS_3876d5fd152f42f99e7e462b461f1306__PWD:/app
-__TTS_3876d5fd152f42f99e7e462b461f1306__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && ls /usr/share/qemu /usr/bin | grep -E 'qemu-system-x86_64|qemu-img|ovmf|OVMF|seabios|bios|sgabios' | sort | head -200; __tts_rc=$?; printf '\n__TTS_d6f411ea6e28452cbf4997632af7e180__RC:%s\n' "$__tts_rc"; printf '__TTS_d6f411ea6e28452cbf4997632af7e180__PWD:'; pwd; printf '__TTS_d6f411ea6e28452cbf4997632af7e180__END\n'; tmux wait -S done
-[?2004lOVMF.fd
-bios-microvm.bin
-openbios-ppc
-openbios-sparc32
-openbios-sparc64
-qemu-img
-qemu-system-x86_64
-qemu-system-x86_64-microvm
-sgabios.bin
-
-__TTS_d6f411ea6e28452cbf4997632af7e180__RC:0
-__TTS_d6f411ea6e28452cbf4997632af7e180__PWD:/app
-__TTS_d6f411ea6e28452cbf4997632af7e180__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && ls /usr/bin | grep -E '^screen$|^tmux$|^setsid$|^nohup$|^script$' | sort; __tts_rc=$?; printf '\n__TTS_30c2983c44a5451b86daf666bbe7b6ca__RC:%s\n' "$__tts_rc"; printf '__TTS_30c2983c44a5451b86daf666bbe7b6ca__PWD:'; pwd; printf '__TTS_30c2983c44a5451b86daf666bbe7b6ca__END\n'; tmux wait -S done
-[?2004lnohup
-script
-setsid
-tmux
-
-__TTS_30c2983c44a5451b86daf666bbe7b6ca__RC:0
-__TTS_30c2983c44a5451b86daf666bbe7b6ca__PWD:/app
-__TTS_30c2983c44a5451b86daf666bbe7b6ca__END
-[?2004hroot@88c32dfa4ac8:/app# cd -- /app && expect -c 'set timeout 240;spawn qemu-system-x86_64 -m 1024 -smp 1 -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic;expect "login:";send "root\r";expect -re {localhost:~#|~ #};send "setup-alpine\r";expect "Enter system hostname";send "\r";expect "Available interfaces are:";send "\r";expect "Ip address for eth0?";send "dhcp\r";expect "Do you want to do any manual network configuration?";send "n\r";expect "New password:";send "password123\r";expect "Retype password:";send "password123\r";expect "Which timezone";send "UTC\r";expect "HTTP/FTP proxy URL";send "none\r";expect "Enter mirror number";send "1\r";expect "Which SSH server";send "openssh\r";expect "Allow root ssh login?";send "prohibit-password\r";expect "Which disk";send "vda\r";expect "How would you like to use it?";send "sys\r";expect "WARNING: The following disk(s) will be erased:";send "y\r";expect "Installation is complete";send "reboot\r";expect eof'; __tts_rc=$?; printf '\n__TTS_0dbdaedd91384300bfdd6f1c7bc9040f__RC:%s\n' "$__tts_rc"; printf '__TTS_0dbdaedd91384300bfdd6f1c7bc9040f__PWD:'; pwd; printf '__TTS_0dbdaedd91384300bfdd6f1c7bc9040f__END\n'; tmux wait -S done
-[?2004lspawn qemu-system-x86_64 -m 1024 -smp 1 -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic
-c[?7l[2J[0mSeaBIOS (version 1.14.0-2)
-
-
-iPXE (http://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+3FF8F470+3FECF470 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from DVD/CD...
-
-ISOLINUX 6.04 6.04-pre1 ETCD Copyright (C) 1994-2015 H. Peter Anvin et al
-boot: 
-c[?7l[2J
-Welcome to Alpine Linux 3.19
-Kernel 6.6.4-1-lts on an x86_64 (/dev/ttyS0)
-
-localhost login: root
-Welcome to Alpine!
-
-The Alpine Wiki contains a large amount of how-to guides and general
-information about administrating Alpine systems.
-See <https://wiki.alpinelinux.org/>.
-
-You can setup the system with the command: setup-alpine
-
-You may change this message by editing /etc/motd.
-
-localhost:~# [6n^[[16;14Rsetup-alpine
-
-
-[36m ALPINE LINUX INSTALL[0m
-[36m----------------------[0m
-
-[97m Hostname[0m
-[97m----------[0m
-Enter system hostname (fully qualified form, e.g. 'foo.example.org') [localhost] 
-7  0%                                             8[0K
-[97m Interface[0m
-[97m-----------[0m
-Available interfaces are: eth0.
-Enter '?' for help on bridges, bonding and vlans.
-
-Which one do you want to initialize? (or '?' or 'done') [eth0] Ip address for eth0? (or 'dhcp', 'none', '?') [dhcp] dhcp
-Do you want to do any manual network configuration? (y/n) [n] n
-udhcpc: started, v1.36.1
-udhcpc: broadcasting discover
-udhcpc: broadcasting select for 10.0.2.15, server 10.0.2.2
-udhcpc: lease of 10.0.2.15 obtained from 10.0.2.2, lease time 86400
-
-[97m Root Password[0m
-[97m---------------[0m
-Changing password for root
-New password: password123
-
-Retype password: 
-passwd: password for root changed by root
-
-[97m Timezone[0m
-[97m----------[0m
-Africa/            Egypt              Iran               Poland
-America/           Eire               Israel             Portugal
-Antarctica/        Etc/               Jamaica            ROC
-Arctic/            Europe/            Japan              ROK
-Asia/              Factory            Kwajalein          Singapore
-Atlantic/          GB                 Libya              Turkey
-Australia/         GB-Eire            MET                UCT
-Brazil/            GMT                MST                US/
-CET                GMT+0              MST7MDT            UTC
-CST6CDT            GMT-0              Mexico/            Universal
-Canada/            GMT0               NZ                 W-SU
-Chile/             Greenwich          NZ-CHAT            WET
-Cuba               HST                Navajo             Zulu
-EET                Hongkong           PRC                leap-seconds.list
-EST                Iceland            PST8PDT            posixrules
-EST5EDT            Indian/            Pacific/           right/
-
-Which timezone are you in? [UTC] UTC
-
- [1m[32m*[m Seeding random number generator[K ...
- [1m[32m*[m Saving 256 bits of non-creditable seed for next boot[K
- [ ok ]
- [1m[32m*[m Starting busybox acpid[K ...
- [ ok ]
- [1m[32m*[m Starting busybox crond[K ...
- [ ok ]
-
-[97m Proxy[0m
-[97m-------[0m
-HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none') [none] none
-
-[97m Network Time Protocol[0m
-[97m-----------------------[0m
-Which NTP client to run? ('busybox', 'openntpd', 'chrony' or 'none') [chrony] cd -- /app && expect -c 'set timeout 900;spawn qemu-system-x86_64 -m 1024 -smp 1 -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot c -nic user,hostfwd=tcp::2222-:22 -nographic;expect {"localhost login:" {send "root\r"} timeout {send "\r"; exp_continue}};expect -re {localhost:~#|~ #};send "mount /dev/cdrom /mnt || mount /dev/sr0 /mnt\r";expect -re {# $};send "setup-interfaces -a\r";expect -re {# $};send "rc-service networking restart\r";expect -re {# $};send "echo root:password123 | chpasswd\r";expect -re {# $};send "setup-sshd openssh\r";expect -re {# $};send "sed -i \"s/^#\\?PermitRootLogin.*/PermitRootLogin yes/;s/^#\\?PasswordAuthentication.*/PasswordAuthentication yes/\" /etc/ssh/sshd_config\r";expect -re {# $};send "ssh-keygen -A\r";expect -re {# $};send "rc-update add sshd default\r";expect -re {# $};send "rc-service sshd start\r";expect -re {# $};send "tail -f /dev/null\r";expect eof'; __tts_rc=$?; printf '\n__TTS_04c2d916aeb2498bad34790c8c5b2c1e__RC:%s\n' "$__tts_rc"; printf '__TTS_04c2d916aeb2498bad34790c8c5b2c1e__PWD:'; pwd; printf '__TTS_04c2d916aeb2498bad34790c8c5b2c1e__END\n'; tmux wait -S done
-1
-Which NTP client to run? ('busybox', 'openntpd', 'chrony' or 'none') [chrony] openssh
-Which NTP client to run? ('busybox', 'openntpd', 'chrony' or 'none') [chrony] cd -- /app && expect -c 'set timeout 180;spawn qemu-system-x86_64 -m 1024 -smp 1 -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot c -nic user,hostfwd=tcp::2222-:22 -nographic;expect {"localhost login:" {send "root\r"} timeout {send "\r";exp_continue}};expect -re {# $};send "echo root:password123 | chpasswd; setup-sshd openssh; sed -i 's/^#\\?PermitRootLogin.*/PermitRootLogin yes/;s/^#\\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config; ssh-keygen -A; rc-service sshd start; poweroff\r";expect eof'; __tts_rc=$?; printf '\n__TTS_869a6a20c9d04013982c39c626475d94__RC:%s\n' "$__tts_rc"; printf '__TTS_869a6a20c9d04013982c39c626475d94__PWD:'; pwd; printf '__TTS_869a6a20c9d04013982c39c626475d94__END\n'; tmux wait -S done
-prohibit-password
-Which NTP client to run? ('busybox', 'openntpd', 'chrony' or 'none') [chrony] cd -- /app && nohup qemu-system-x86_64 -m 1024 -smp 1 -drive file=/app/alpine-disk.qcow2,if=virtio,format=qcow2 -cdrom /app/alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic >/app/qemu.log 2>&1 &; __tts_rc=$?; printf '\n__TTS_7066a17c679e43508bc79a0c1f4da46b__RC:%s\n' "$__tts_rc"; printf '__TTS_7066a17c679e43508bc79a0c1f4da46b__PWD:'; pwd; printf '__TTS_7066a17c679e43508bc79a0c1f4da46b__END\n'; tmux wait -S done

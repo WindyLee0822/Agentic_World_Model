@@ -1,2 +1,0 @@
-decisions,env,mean_cache_hits,mean_cost,mean_max_depth,mean_reads,mean_rollout_errors,mean_spawns,mean_tokens,mean_wall_clock_s,method,n_rollouts,prediction_accuracy,reward,simulator_writes,single_commit_rate,subset,success_rate
-114,tau2_retail,4.87719298245614,0.0006815789473684211,0.07017543859649122,1.6228070175438596,0.0,0.2807017543859649,681.578947368421,225.2086600601722,ours,4,0.7894736842105263,0.8771929824561403,0,1.0,retail,0.8771929824561403

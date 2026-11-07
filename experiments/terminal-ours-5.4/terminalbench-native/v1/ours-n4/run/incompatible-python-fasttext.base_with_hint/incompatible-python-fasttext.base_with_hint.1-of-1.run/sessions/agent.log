@@ -1,95 +1,0 @@
-[?2004hroot@9d3dc957ad84:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@9d3dc957ad84:/app# clear
-[?2004l[H[J[3J[?2004hroot@9d3dc957ad84:/app# pwd; __tts_rc=$?; printf '\n__TTS_d5e825fa5d924eebb65c7c64f89eed40__RC:%s\n' "$__tts_rc"; printf '__TTS_d5e825fa5d924eebb65c7c64f89eed40__PWD:'; pwd; printf '__TTS_d5e825fa5d924eebb65c7c64f89eed40__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_d5e825fa5d924eebb65c7c64f89eed40__RC:0
-__TTS_d5e825fa5d924eebb65c7c64f89eed40__PWD:/app
-__TTS_d5e825fa5d924eebb65c7c64f89eed40__END
-[?2004hroot@9d3dc957ad84:/app# cd -- /app && bash -lc 'pwd; python --version; python - <<"PY"
-[?2004l[?2004h> import sys, importlib.util
-[?2004l[?2004h> print("fasttext spec:", importlib.util.find_spec("fasttext"))
-[?2004l[?2004h> PY
-[?2004l[?2004h> ls -la; find . -maxdepth 3 -type f | sed "s#^./##" | sort | head -200'; __tts_rc=$?; printf '\n__TTS_6fecb4e40081427c920249cb4e49e2b5__RC:%s\n' "$__tts_rc"; printf '__TTS_6fecb4e40081427c920249cb4e49e2b5__PWD:'; pwd; printf '__TTS_6fecb4e40081427c920249cb4e49e2b5__END\n'; tmux wait -S done
-[?2004l/app
-Python 3.13.1
-fasttext spec: ModuleSpec(name='fasttext', loader=<_frozen_importlib_external.SourceFileLoader object at 0x74c97febb050>, origin='/usr/local/lib/python3.13/site-packages/fasttext/__init__.py', submodule_search_locations=['/usr/local/lib/python3.13/site-packages/fasttext'])
-total 104292
-drwxr-xr-x 1 root root      4096 Jul 16 23:41 .
-drwxr-xr-x 1 root root      4096 Jul 17 00:02 ..
--rw-r--r-- 1 root root 106785163 Jul 16 23:41 model.bin
-model.bin
-
-__TTS_6fecb4e40081427c920249cb4e49e2b5__RC:0
-__TTS_6fecb4e40081427c920249cb4e49e2b5__PWD:/app
-__TTS_6fecb4e40081427c920249cb4e49e2b5__END
-[?2004hroot@9d3dc957ad84:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
-[?2004l[?2004h> import traceback, fasttext
-[?2004l[?2004h> print("fasttext module:", fasttext.__file__)
-[?2004l[?2004h> print("attrs:", [a for a in dir(fasttext) if not a.startswith("_")][:50])
-[?2004l[?2004h> try:
-[?2004l[?2004h>     m = fasttext.load_model("model.bin")
-[?2004l[?2004h>     print("loaded", type(m))
-[?2004l[?2004h>     print(m.predict("hello world"))
-[?2004l[?2004h> except Exception:
-[?2004l[?2004h>     traceback.print_exc()
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_98bc66f96549402aa68442b57edd398e__RC:%s\n' "$__tts_rc"; printf '__TTS_98bc66f96549402aa68442b57edd398e__PWD:'; pwd; printf '__TTS_98bc66f96549402aa68442b57edd398e__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_98bc66f96549402aa68442b57edd398e__RC:1
-__TTS_98bc66f96549402aa68442b57edd398e__PWD:/app
-__TTS_98bc66f96549402aa68442b57edd398e__END
-[?2004hroot@9d3dc957ad84:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'sed -n "1,220p" fasttext/__init__.py fasttext/FastText.py fasttext/util.py; printf "\n--- site packages candidates ---\n"; python - <<"PY"
-[?2004l[?2004h> import sys,glob,os
-[?2004l[?2004h> for p in sys.path:
-[?2004l[?2004h>     if p and os.path.isdir(p):
-[?2004l[?2004h>         for f in sorted(glob.glob(os.path.join(p,"*fasttext*")))[:50]:
-[?2004l[?2004h>             print(f)
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__RC:%s\n' "$__tts_rc"; printf '__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__PWD:'; pwd; printf '__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__RC:1
-__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__PWD:/app
-__TTS_06852e6a60a548f4a5c8d8f59ef8e2d4__END
-[?2004hroot@9d3dc957ad84:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> print(Path("fasttext/FastText.py").read_text())
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_d05c2d19e7a443e79ab9353c082871e1__RC:%s\n' "$__tts_rc"; printf '__TTS_d05c2d19e7a443e79ab9353c082871e1__PWD:'; pwd; printf '__TTS_d05c2d19e7a443e79ab9353c082871e1__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_d05c2d19e7a443e79ab9353c082871e1__RC:1
-__TTS_d05c2d19e7a443e79ab9353c082871e1__PWD:/app
-__TTS_d05c2d19e7a443e79ab9353c082871e1__END
-[?2004hroot@9d3dc957ad84:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'find /app -maxdepth 4 \( -name "*fasttext_pybind*" -o -name "*.so" -o -name "*.cpython-*.so" \) -type f | sort; python - <<"PY"
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path("fasttext/FastText.py")
-[?2004l[?2004h> text=p.read_text()
-[?2004l[?2004h> old="""try:\n    from . import fasttext_pybind as fasttext\nexcept ImportError:\n    import fasttext_pybind as fasttext\n\nloss_name = {\n    \"ns\": fasttext.loss_name.ns,\n    \"hs\": fasttext.loss_name.hs,\n    \"softmax\": fasttext.loss_name.softmax,\n    \"ova\": fasttext.loss_name.ova,\n}\n\nmodel_name = {\n    \"cbow\": fasttext.model_name.cbow,\n    \"skipgram\": fasttext.model_name.skipgram,\n    \"supervised\": fasttext.model_name.supervised,\n}\n"""
-[?2004l[?2004h> new="""try:\n    from . import fasttext_pybind as fasttext\nexcept ImportError:\n    try:\n        import fasttext_pybind as fasttext\n    except ImportError as e:\n        raise ImportError(\n            \"fasttext_pybind extension module is missing; this package only contains the Python wrapper and cannot load models without the compiled extension\"\n        ) from e\n\nloss_name = {\n    \"ns\": fasttext.loss_name.ns,\n    \"hs\": fasttext.loss_name.hs,\n    \"softmax\": fasttext.loss_name.softmax,\n    \"ova\": fasttext.loss_name.ova,\n}\n\nmodel_name = {\n    \"cbow\": fasttext.model_name.cbow,\n    \"skipgram\": fasttext.model_name.skipgram,\n    \"supervised\": fasttext.model_name.supervised,\n}\n"""
-[?2004l[?2004h> if old in text:
-[?2004l[?2004h>     p.write_text(text.replace(old,new))
-[?2004l[?2004h> print("patched", p)
-[?2004l[?2004h> PY
-[?2004l[?2004h> python - <<"PY"
-[?2004l[?2004h> import traceback
-[?2004l[?2004h> try:
-[?2004l[?2004h>     import fasttext
-[?2004l[?2004h>     print("fasttext imported from", fasttext.__file__)
-[?2004l[?2004h>     m = fasttext.load_model("model.bin")
-[?2004l[?2004h>     print("loaded", type(m))
-[?2004l[?2004h>     print(m.predict("hello world"))
-[?2004l[?2004h> except Exception:
-[?2004l[?2004h>     traceback.print_exc()
-[?2004l[?2004h> PY'; __tts_rc=$?; printf '\n__TTS_b76727da811c4720b8db109bad1f14b9__RC:%s\n' "$__tts_rc"; printf '__TTS_b76727da811c4720b8db109bad1f14b9__PWD:'; pwd; printf '__TTS_b76727da811c4720b8db109bad1f14b9__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_b76727da811c4720b8db109bad1f14b9__RC:1
-__TTS_b76727da811c4720b8db109bad1f14b9__PWD:/app
-__TTS_b76727da811c4720b8db109bad1f14b9__END
-[?2004hroot@9d3dc957ad84:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@9d3dc957ad84:/app# 

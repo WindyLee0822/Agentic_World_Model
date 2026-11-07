@@ -1,5 +1,0 @@
-Trial train-fasttext__c2fZb6L failed: Docker compose command failed for environment train-fasttext. Command: docker compose --project-name train-fasttext__c2fzb6l__env --project-directory /home/t-wendili/.cache/harbor/tasks/QUdXqzZFwRrgRZ7SPHyxto/train-fasttext/environment -f /tmp/tmpxdq_7eok/train-fasttext__c2fZb6L__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpwp4k_i31/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network train-fasttext__c2fzb6l__env_default Creating 
- Network train-fasttext__c2fzb6l__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network train-fasttext__c2fzb6l__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

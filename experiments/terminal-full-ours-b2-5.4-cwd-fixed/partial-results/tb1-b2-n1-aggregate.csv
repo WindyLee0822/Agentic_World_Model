@@ -1,2 +1,0 @@
-env,subset,method,n_rollouts,decisions,successes,success_rate,reward,mean_tokens,mean_wall_clock_s,single_commit_rate
-terminalbench,v1,b2,1,80,11,0.1375,0.1375,6999.6,753.7577347624999,1.0

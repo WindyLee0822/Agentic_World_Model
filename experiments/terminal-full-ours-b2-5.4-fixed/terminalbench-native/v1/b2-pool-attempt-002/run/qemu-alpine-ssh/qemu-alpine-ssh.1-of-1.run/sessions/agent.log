@@ -1,79 +1,0 @@
-[?2004hroot@4875d3578fac:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@4875d3578fac:/app# clear
-[?2004l[H[J[?2004hroot@4875d3578fac:/app# pwd; __tts_rc=$?; printf '\n__TTS_61a5300aa60d451b9e9f6d0cca21ed76__RC:%s\n' "$__tts_rc"; printf '__TTS_61a5300aa60d451b9e9f6d0cca21ed76__PWD:'; pwd; printf '__TTS_61a5300aa60d451b9e9f6d0cca21ed76__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_61a5300aa60d451b9e9f6d0cca21ed76__RC:0
-__TTS_61a5300aa60d451b9e9f6d0cca21ed76__PWD:/app
-__TTS_61a5300aa60d451b9e9f6d0cca21ed76__END
-[?2004hroot@4875d3578fac:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/##' | head -200; __tts_rc=$?; printf '\n__TTS_6849e8c274fd40aeafa53406b0701fe1__RC:%s\n' "$__tts_rc"; printf '__TTS_6849e8c274fd40aeafa53406b0701fe1__PWD:'; pwd; printf '__TTS_6849e8c274fd40aeafa53406b0701fe1__END\n'; tmux wait -S done
-[?2004ltotal 980176
-drwxr-xr-x 1 root root       4096 Jul 18 12:18 .
-drwxr-xr-x 1 root root       4096 Jul 18 12:18 ..
--rw-r--r-- 1 root root     197120 Jul 18 12:18 alpine-disk.qcow2
--rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
-//app/alpine-disk.qcow2
-//app/alpine.iso
-
-__TTS_6849e8c274fd40aeafa53406b0701fe1__RC:0
-__TTS_6849e8c274fd40aeafa53406b0701fe1__PWD:/app
-__TTS_6849e8c274fd40aeafa53406b0701fe1__END
-[?2004hroot@4875d3578fac:/app# cd -- /app && ps -ef | grep -E 'qemu|sshd' | grep -v grep; ls -l /app/alpine-*; qemu-system-x86_64 --version | head -1; __tts_rc=$?; printf '\n__TTS_105e3254151748cd9deb097de06a538f__RC:%s\n' "$__tts_rc"; printf '__TTS_105e3254151748cd9deb097de06a538f__PWD:'; pwd; printf '__TTS_105e3254151748cd9deb097de06a538f__END\n'; tmux wait -S done
-[?2004lbash: ps: command not found
--rw-r--r-- 1 root root 197120 Jul 18 12:18 /app/alpine-disk.qcow2
-QEMU emulator version 5.2.0 (Debian 1:5.2+dfsg-11+deb11u5)
-
-__TTS_105e3254151748cd9deb097de06a538f__RC:0
-__TTS_105e3254151748cd9deb097de06a538f__PWD:/app
-__TTS_105e3254151748cd9deb097de06a538f__END
-[?2004hroot@4875d3578fac:/app# cd -- __TTS_105e3254151748cd9deb097de06a538f__PWD:/app && cd /app && qemu-system-x86_64 -m 512 -smp 1 -drive file=alpine-disk.qcow2,if=virtio -cdrom alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic >qemu.log 2>&1 &; __tts_rc=$?; printf '\n__TTS_b74a3c41dc674684a6a47faebc7f3696__RC:%s\n' "$__tts_rc"; printf '__TTS_b74a3c41dc674684a6a47faebc7f3696__PWD:'; pwd; printf '__TTS_b74a3c41dc674684a6a47faebc7f3696__END\n'; tmux wait -S done
-[?2004lbash: syntax error near unexpected token `;'
-[?2004hroot@4875d3578fac:/app# cd -- __TTS_105e3254151748cd9deb097de06a538f__PWD:/app && cd /app && (nohup qemu-system-x86_64 -m 512 -smp 1 -drive file=alpine-disk.qcow2,if=virtio -cdrom alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic >qemu.log 2>&1 </dev/null &); sleep 3; tail -n 80 qemu.log; __tts_rc=$?; printf '\n__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__RC:%s\n' "$__tts_rc"; printf '__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__PWD:'; pwd; printf '__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_105e3254151748cd9deb097de06a538f__PWD:/app: No such file or directory
-tail: cannot open 'qemu.log' for reading: No such file or directory
-
-__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__RC:1
-__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__PWD:/app
-__TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__END
-[?2004hroot@4875d3578fac:/app# cd -- __TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__PWD:/app && cd /app && nohup sh -c 'printf "root\n" | qemu-system-x86_64 -m 512 -smp 1 -drive file=alpine-disk.qcow2,if=virtio -cdrom alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic' >qemu.log 2>&1 </dev/null & sleep 20; tail -n 120 qemu.log; __tts_rc=$?; printf '\n__TTS_695fda45591f411083ae47d421e0f128__RC:%s\n' "$__tts_rc"; printf '__TTS_695fda45591f411083ae47d421e0f128__PWD:'; pwd; printf '__TTS_695fda45591f411083ae47d421e0f128__END\n'; tmux wait -S done
-[?2004l[1] 184
-/bin/bash: line 7: cd: __TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__PWD:/app: No such file or directory
-[1]+  Exit 1                  cd -- __TTS_8d0e11ed0b7d4210ac434a6fc7655bf5__PWD:/app && cd /app && nohup sh -c 'printf "root\n" | qemu-system-x86_64 -m 512 -smp 1 -drive file=alpine-disk.qcow2,if=virtio -cdrom alpine.iso -boot d -nic user,hostfwd=tcp::2222-:22 -nographic' > qemu.log 2>&1 < /dev/null
-tail: cannot open 'qemu.log' for reading: No such file or directory
-
-__TTS_695fda45591f411083ae47d421e0f128__RC:1
-__TTS_695fda45591f411083ae47d421e0f128__PWD:/app
-__TTS_695fda45591f411083ae47d421e0f128__END
-[?2004hroot@4875d3578fac:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import os,socket,subprocess,time
-[?2004l[?2004h> q='qemu-system-x86_64'
-[?2004l[?2004h> log=open('qemu.log','ab',buffering=0)
-[?2004l[?2004h> subprocess.Popen([q,'-m','512','-smp','1','-drive','file=alpine-disk.qcow2,if=virtio','-cdrom','alpine.iso','-boot','d','-nic','user,hostfwd=tcp::2222-:22','-nographic'],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
-[?2004l[?2004h> for _ in range(20):
-[?2004l[?2004h>     time.sleep(1)
-[?2004l[?2004h>     s=socket.socket()
-[?2004l[?2004h>     s.settimeout(0.5)
-[?2004l[?2004h>     try:
-[?2004l[?2004h>         s.connect(('127.0.0.1',2222)); print('port-open'); break
-[?2004l[?2004h>     except Exception:
-[?2004l[?2004h>         pass
-[?2004l[?2004h>     finally:
-[?2004l[?2004h>         s.close()
-[?2004l[?2004h> print(open('qemu.log','rb').read()[-4000:].decode('utf-8','ignore'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f2f283edc204495c959ee14ac903dd92__RC:%s\n' "$__tts_rc"; printf '__TTS_f2f283edc204495c959ee14ac903dd92__PWD:'; pwd; printf '__TTS_f2f283edc204495c959ee14ac903dd92__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && tail -n 120 qemu.log 2>/dev/null || ls -l /app; __tts_rc=$?; printf '\n__TTS_61f99777febf4dbcb7e80fdc408d17a8__RC:%s\n' "$__tts_rc"; printf '__TTS_61f99777febf4dbcb7e80fdc408d17a8__PWD:'; pwd; printf '__TTS_61f99777febf4dbcb7e80fdc408d17a8__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 8 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 16
-    PY; __tts_rc=$?; printf '\n__TTS_f2f283edc204495c959ee14ac903dd92__RC:%s\n' "$__tts_rc"; printf '__TTS_f2f283edc204495c959ee14ac903dd92__PWD:'; pwd; printf '__TTS_f2f283edc204495c959ee14ac903dd92__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@4875d3578fac:/app# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && python3 - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('qemu.log')
-[?2004l[?2004h> print(p.exists(), p.stat().st_size if p.exists() else 0)
-[?2004l[?2004h> print(p.read_text('utf-8','ignore')[-3000:] if p.exists() else '')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_0880e7b840ef4543b43b428431558a14__RC:%s\n' "$__tts_rc"; printf '__TTS_0880e7b840ef4543b43b428431558a14__PWD:'; pwd; printf '__TTS_0880e7b840ef4543b43b428431558a14__END\n'; tmux wait -S done
-[?2004l[?2004h> 

@@ -1,73 +1,0 @@
-[?2004hroot@42d8f6e5729f:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@42d8f6e5729f:/app# clear
-[?2004l[H[J[3J[?2004hroot@42d8f6e5729f:/app# pwd; __tts_rc=$?; printf '\n__TTS_f1273ea5e99c47b8a3199d7b82af8dab__RC:%s\n' "$__tts_rc"; printf '__TTS_f1273ea5e99c47b8a3199d7b82af8dab__PWD:'; pwd; printf '__TTS_f1273ea5e99c47b8a3199d7b82af8dab__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_f1273ea5e99c47b8a3199d7b82af8dab__RC:0
-__TTS_f1273ea5e99c47b8a3199d7b82af8dab__PWD:/app
-__TTS_f1273ea5e99c47b8a3199d7b82af8dab__END
-[?2004hroot@42d8f6e5729f:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import sys,importlib.util
-[?2004l[?2004h> print(sys.version)
-[?2004l[?2004h> print(importlib.util.find_spec('fasttext'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_07ef639cfd4945d2b3c7cfd0a8d5fcd4__RC:%s\n' "$__tts_rc"; printf '__TTS_07ef639cfd4945d2b3c7cfd0a8d5fcd4__PWD:'; pwd; printf '__TTS_07ef639cfd4945d2b3c7cfd0a8d5fcd4__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -V && python -c "import sys,importlib.util; print(importlib.util.find_spec('fasttext'))"; __tts_rc=$?; printf '\n__TTS_b504e1eb3954408cb08b73df1da3d239__RC:%s\n' "$__tts_rc"; printf '__TTS_b504e1eb3954408cb08b73df1da3d239__PWD:'; pwd; printf '__TTS_b504e1eb3954408cb08b73df1da3d239__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && timeout 10s python -V; __tts_rc=$?; printf '\n__TTS_839e6ce02e0141b08c1b4d7fb46038c9__RC:%s\n' "$__tts_rc"; printf '__TTS_839e6ce02e0141b08c1b4d7fb46038c9__PWD:'; pwd; printf '__TTS_839e6ce02e0141b08c1b4d7fb46038c9__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m6[0m
-    cd -- /app && timeout 1[1;31m0[0ms python -V; __tts_rc=$?; printf '\n__TTS_839e6ce02e0141b08c1b4d7fb46038c9__RC:%s\n' "$__tts_rc"; printf '__TTS_839e6ce02e0141b08c1b4d7fb46038c9__PWD:'; pwd; printf '__TTS_839e6ce02e0141b08c1b4d7fb46038c9__END\n'; tmux wait -S done
-                           [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid decimal literal[0m
-[?2004hroot@42d8f6e5729f:/app# cd -- /app && timeout 20s python -c "import sys; print(sys.version); import fasttext; print(fasttext.__file__)"; __tts_rc=$?; printf '\n__TTS_ae8de260674d43f3a12b56b7f09eab83__RC:%s\n' "$__tts_rc"; printf '__TTS_ae8de260674d43f3a12b56b7f09eab83__PWD:'; pwd; printf '__TTS_ae8de260674d43f3a12b56b7f09eab83__END\n'; tmux wait -S done
-[?2004l3.13.1 (main, Jan 14 2025, 02:51:49) [GCC 12.2.0]
-/usr/local/lib/python3.13/site-packages/fasttext/__init__.py
-
-__TTS_ae8de260674d43f3a12b56b7f09eab83__RC:0
-__TTS_ae8de260674d43f3a12b56b7f09eab83__PWD:/app
-__TTS_ae8de260674d43f3a12b56b7f09eab83__END
-[?2004hroot@42d8f6e5729f:/app# cd -- /app && timeout 20s python -c "import fasttext,inspect; print(fasttext.__version__ if hasattr(fasttext,'__version__') else 'no_version'); print(dir(fasttext)); print(inspect.getsource(fasttext))"; __tts_rc=$?; printf '\n__TTS_a8976bd1538a4a609aa732037890fe43__RC:%s\n' "$__tts_rc"; printf '__TTS_a8976bd1538a4a609aa732037890fe43__PWD:'; pwd; printf '__TTS_a8976bd1538a4a609aa732037890fe43__END\n'; tmux wait -S done
-[?2004lno_version
-['BOW', 'EOS', 'EOW', 'FastText', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'absolute_import', 'cbow', 'division', 'load_model', 'print_function', 'skipgram', 'supervised', 'tokenize', 'train_supervised', 'train_unsupervised', 'unicode_literals']
-# Copyright (c) 2017-present, Facebook, Inc.
-# All rights reserved.
-#
-# This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
-from .FastText import train_supervised
-from .FastText import train_unsupervised
-from .FastText import load_model
-from .FastText import tokenize
-from .FastText import EOS
-from .FastText import BOW
-from .FastText import EOW
-
-from .FastText import cbow
-from .FastText import skipgram
-from .FastText import supervised
-
-
-__TTS_a8976bd1538a4a609aa732037890fe43__RC:0
-__TTS_a8976bd1538a4a609aa732037890fe43__PWD:/app
-__TTS_a8976bd1538a4a609aa732037890fe43__END
-[?2004hroot@42d8f6e5729f:/app# cd -- /app && timeout 20s python -c "import fasttext; from fasttext import FastText; import fasttext.FastText as F; print(F.__file__); print(F.fasttext.__file__ if hasattr(F,'fasttext') else 'no_ext'); m=fasttext.train_unsupervised('/etc/hosts', model='skipgram', epoch=1, minn=0, maxn=0, dim=10, thread=1); print(type(m).__name__)"; __tts_rc=$?; printf '\n__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__RC:%s\n' "$__tts_rc"; printf '__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__PWD:'; pwd; printf '__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__END\n'; tmux wait -S done
-[?2004l/usr/local/lib/python3.13/site-packages/fasttext/FastText.py
-/usr/local/lib/python3.13/site-packages/fasttext_pybind.cpython-313-x86_64-linux-gnu.so
-Read 0M words
-Number of words:  1
-Number of labels: 0
-Progress: 100.0% words/sec/thread:  235472 lr:  0.000000 avg.loss:      -nan ETA:   0h 0m 0s
-_FastText
-
-__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__RC:0
-__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__PWD:/app
-__TTS_768ac9bb2a824eb2acf8bcb798c1af2d__END
-[?2004hroot@42d8f6e5729f:/app# 

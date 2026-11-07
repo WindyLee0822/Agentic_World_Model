@@ -1,23 +1,0 @@
-[?2004hroot@cc35f1c93968:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@cc35f1c93968:/app# clear
-[?2004l[H[J[3J[?2004hroot@cc35f1c93968:/app# pwd; __tts_rc=$?; printf '\n__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__RC:%s\n' "$__tts_rc"; printf '__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__PWD:'; pwd; printf '__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__RC:0
-__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__PWD:/app
-__TTS_fb6d8bd9159543ada73caaaa06a7f6a3__END
-[?2004hroot@cc35f1c93968:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> from PIL import Image
-[?2004l[?2004h> img=Image.open('chess_bard.png'); print(img.size)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_49e7152ab9dd4947b9d257968683e667__RC:%s\n' "$__tts_rc"; printf '__TTS_49e7152ab9dd4947b9d257968683e667__PWD:'; pwd; printf '__TTS_49e7152ab9dd4947b9d257968683e667__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "from PIL import Image; img=Image.open('chess_bard.png'); print(img.size)"; __tts_rc=$?; printf '\n__TTS_0904001f0ac14ecdaace57aa003c8f5d__RC:%s\n' "$__tts_rc"; printf '__TTS_0904001f0ac14ecdaace57aa003c8f5d__PWD:'; pwd; printf '__TTS_0904001f0ac14ecdaace57aa003c8f5d__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && file chess_bard.png && ls -lh chess_bard.png; __tts_rc=$?; printf '\n__TTS_52c8ab9abfb743e7917fa86270a5dd58__RC:%s\n' "$__tts_rc"; printf '__TTS_52c8ab9abfb743e7917fa86270a5dd58__PWD:'; pwd; printf '__TTS_52c8ab9abfb743e7917fa86270a5dd58__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 3
-    PY; __tts_rc=$?; printf '\n__TTS_49e7152ab9dd4947b9d257968683e667__RC:%s\n' "$__tts_rc"; printf '__TTS_49e7152ab9dd4947b9d257968683e667__PWD:'; pwd; printf '__TTS_49e7152ab9dd4947b9d257968683e667__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@cc35f1c93968:/app# 

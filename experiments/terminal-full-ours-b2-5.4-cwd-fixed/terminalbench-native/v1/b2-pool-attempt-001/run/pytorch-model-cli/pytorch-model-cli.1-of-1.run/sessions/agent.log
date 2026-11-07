@@ -1,40 +1,0 @@
-[?2004hroot@a44ab94541dc:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@a44ab94541dc:/app# clear
-[?2004l[H[J[3J[?2004hroot@a44ab94541dc:/app# pwd; __tts_rc=$?; printf '\n__TTS_4424e6db20774add8da9763a8c08e0cf__RC:%s\n' "$__tts_rc"; printf '__TTS_4424e6db20774add8da9763a8c08e0cf__PWD:'; pwd; printf '__TTS_4424e6db20774add8da9763a8c08e0cf__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_4424e6db20774add8da9763a8c08e0cf__RC:0
-__TTS_4424e6db20774add8da9763a8c08e0cf__PWD:/app
-__TTS_4424e6db20774add8da9763a8c08e0cf__END
-[?2004hroot@a44ab94541dc:/app# cd -- /app && ls -la && find . -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_47a0f51e8a594935aeb3300ed9789e49__RC:%s\n' "$__tts_rc"; printf '__TTS_47a0f51e8a594935aeb3300ed9789e49__PWD:'; pwd; printf '__TTS_47a0f51e8a594935aeb3300ed9789e49__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 19 02:02 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-./cJSON.c
-./cJSON.h
-./image.png
-./lodepng.cpp
-./lodepng.h
-./model.pth
-./model.py
-
-__TTS_47a0f51e8a594935aeb3300ed9789e49__RC:0
-__TTS_47a0f51e8a594935aeb3300ed9789e49__PWD:/app
-__TTS_47a0f51e8a594935aeb3300ed9789e49__END
-[?2004hroot@a44ab94541dc:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import torch, json
-[?2004l[?2004h> sd=torch.load('model.pth', map_location='cpu')
-[?2004l[?2004h> print(type(sd), list(sd.keys()))
-[?2004l[?2004h> for k,v in sd.items():
-[?2004l[?2004h>     print(k, tuple(v.shape), v.dtype)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_da0a7c920d2843e6914a29fb1336c283__RC:%s\n' "$__tts_rc"; printf '__TTS_da0a7c920d2843e6914a29fb1336c283__PWD:'; pwd; printf '__TTS_da0a7c920d2843e6914a29fb1336c283__END\n'; tmux wait -S done
-[?2004l[?2004h> 

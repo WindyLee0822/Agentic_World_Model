@@ -1,9 +1,0 @@
-{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "login"}}
-{"method": "post", "url": "/amazon/auth/token", "data": {"username": "va-blac@gmail.com", "password": "G1ql({i"}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_cart"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "post", "url": "/amazon/auth/token", "data": {"username": "va-blac@gmail.com", "password": "G1ql({i"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "post", "url": "/amazon/auth/token", "data": {"username": "va-blac@gmail.com", "password": "G1ql({i"}}

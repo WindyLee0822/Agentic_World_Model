@@ -1,40 +1,0 @@
-[?2004hroot@c7870ae2384a:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@c7870ae2384a:/app# clear
-[?2004l[H[J[3J[?2004hroot@c7870ae2384a:/app# pwd; __tts_rc=$?; printf '\n__TTS_f03e176329c34dd99863d7d40de92232__RC:%s\n' "$__tts_rc"; printf '__TTS_f03e176329c34dd99863d7d40de92232__PWD:'; pwd; printf '__TTS_f03e176329c34dd99863d7d40de92232__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_f03e176329c34dd99863d7d40de92232__RC:0
-__TTS_f03e176329c34dd99863d7d40de92232__PWD:/app
-__TTS_f03e176329c34dd99863d7d40de92232__END
-[?2004hroot@c7870ae2384a:/app# cd -- /app && cat > /app/main.c.rs <<'EOF'
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0u64,1u64);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
-[?2004l[?2004h> fn main(){let n:u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
-[?2004l[?2004h> #else
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> static unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
-[?2004l[?2004h> int main(int argc,char**argv){unsigned long long n=strtoull(argv[1],0,10);printf("%llu\n",fib(n));return 0;}
-[?2004l[?2004h> #endif
-[?2004l[?2004h> EOF; __tts_rc=$?; printf '\n__TTS_84e5d6147d9f4bbea811c6b3e11f4eb4__RC:%s\n' "$__tts_rc"; printf '__TTS_84e5d6147d9f4bbea811c6b3e11f4eb4__PWD:'; pwd; printf '__TTS_84e5d6147d9f4bbea811c6b3e11f4eb4__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && python3 - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> Path('/app/main.c.rs').write_text(r'''#if 0
-[?2004l[?2004h> /*
-[?2004l[?2004h> #endif
-[?2004l[?2004h> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0u64,1u64);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
-[?2004l[?2004h> fn main(){let n:u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> */
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> static unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
-[?2004l[?2004h> int main(int argc,char**argv){unsigned long long n=strtoull(argv[1],0,10);printf("%llu\n",fib(n));return 0;}
-[?2004l[?2004h> #endif
-[?2004l[?2004h> ''')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_4183e267cb0e461ca0436b87b0be35c8__RC:%s\n' "$__tts_rc"; printf '__TTS_4183e267cb0e461ca0436b87b0be35c8__PWD:'; pwd; printf '__TTS_4183e267cb0e461ca0436b87b0be35c8__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `EOF')
-[?2004hroot@c7870ae2384a:/app# 

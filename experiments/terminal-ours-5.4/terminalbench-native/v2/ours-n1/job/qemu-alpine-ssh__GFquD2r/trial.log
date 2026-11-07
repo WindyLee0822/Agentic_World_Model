@@ -1,5 +1,0 @@
-Trial qemu-alpine-ssh__GFquD2r failed: Docker compose command failed for environment qemu-alpine-ssh. Command: docker compose --project-name qemu-alpine-ssh__gfqud2r__env --project-directory /home/t-wendili/.cache/harbor/tasks/YiQMoSRPZzKeHRDhZkwmyd/qemu-alpine-ssh/environment -f /tmp/tmpsr7k58sk/qemu-alpine-ssh__GFquD2r__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpv5xkjjkn/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network qemu-alpine-ssh__gfqud2r__env_default Creating 
- Network qemu-alpine-ssh__gfqud2r__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network qemu-alpine-ssh__gfqud2r__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

@@ -1,85 +1,0 @@
-[?2004hroot@63e991374090:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@63e991374090:/app# clear
-[?2004l[H[J[3J[?2004hroot@63e991374090:/app# pwd; __tts_rc=$?; printf '\n__TTS_39d32935cf6942358020137f3a7686f0__RC:%s\n' "$__tts_rc"; printf '__TTS_39d32935cf6942358020137f3a7686f0__PWD:'; pwd; printf '__TTS_39d32935cf6942358020137f3a7686f0__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_39d32935cf6942358020137f3a7686f0__RC:0
-__TTS_39d32935cf6942358020137f3a7686f0__PWD:/app
-__TTS_39d32935cf6942358020137f3a7686f0__END
-[?2004hroot@63e991374090:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/ #'; __tts_rc=$?; printf '\n__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__RC:%s\n' "$__tts_rc"; printf '__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__PWD:'; pwd; printf '__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 18 18:14 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-/ /app/lodepng.h
-/ /app/model.pth
-/ /app/cJSON.c
-/ /app/lodepng.cpp
-/ /app/cJSON.h
-/ /app/model.py
-/ /app/image.png
-
-__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__RC:0
-__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__PWD:/app
-__TTS_6db5e7be9f9749c6bdf4ccbe437890a2__END
-[?2004hroot@63e991374090:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import torch, json
-[?2004l[?2004h> ck=torch.load('/app/model.pth', map_location='cpu')
-[?2004l[?2004h> print(type(ck))
-[?2004l[?2004h> print(ck.keys() if hasattr(ck,'keys') else None)
-[?2004l[?2004h> for k,v in (ck.items() if hasattr(ck,'items') else []):
-[?2004l[?2004h>     print(k, getattr(v,'shape',None), getattr(v,'dtype',None))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_23a8c4fb75514358863bfa3d62839dee__RC:%s\n' "$__tts_rc"; printf '__TTS_23a8c4fb75514358863bfa3d62839dee__PWD:'; pwd; printf '__TTS_23a8c4fb75514358863bfa3d62839dee__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && sed -n '1,220p' /app/model.py; __tts_rc=$?; printf '\n__TTS_9c32abce25b74e139963cf8ab3d8b1a6__RC:%s\n' "$__tts_rc"; printf '__TTS_9c32abce25b74e139963cf8ab3d8b1a6__PWD:'; pwd; printf '__TTS_9c32abce25b74e139963cf8ab3d8b1a6__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "print(open('/app/model.py').read())"; __tts_rc=$?; printf '\n__TTS_a862e5981e3348148dc504e1d4a6e3a9__RC:%s\n' "$__tts_rc"; printf '__TTS_a862e5981e3348148dc504e1d4a6e3a9__PWD:'; pwd; printf '__TTS_a862e5981e3348148dc504e1d4a6e3a9__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m7[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_23a8c4fb75514358863bfa3d62839dee__RC:%s\n' "$__tts_rc"; printf '__TTS_23a8c4fb75514358863bfa3d62839dee__PWD:'; pwd; printf '__TTS_23a8c4fb75514358863bfa3d62839dee__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@63e991374090:/app# cd -- /app && python3 -c "print(open('/app/model.py').read()); import struct; d=open('/app/model.pth','rb').read(); print('SIZE',len(d)); print('PK',d[:4]); print(d[:200])"; __tts_rc=$?; printf '\n__TTS_3a222104bb3b4fe29e261851e20235f2__RC:%s\n' "$__tts_rc"; printf '__TTS_3a222104bb3b4fe29e261851e20235f2__PWD:'; pwd; printf '__TTS_3a222104bb3b4fe29e261851e20235f2__END\n'; tmux wait -S done
-[?2004limport torch
-import torch.nn as nn
-
-
-class MnistModel(nn.Module):
-    def __init__(
-        self,
-        input_dim: int,
-        hidden_dim: int,
-        num_classes: int,
-    ) -> torch.nn.Module:
-        super().__init__()
-
-        self.input_layer = nn.Linear(input_dim, hidden_dim)
-        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, num_classes)
-        self.activation = nn.ReLU()
-
-    def forward(self, x):
-        x = self.input_layer(x)
-        x = self.activation(x)
-
-        x = self.hidden_layer(x)
-        x = self.activation(x)
-
-        x = self.output_layer(x)
-        return x
-
-SIZE 54714
-PK b'PK\x03\x04'
-b'PK\x03\x04\x00\x00\x08\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15\x00\r\x00simple_mnist/data.pklFB\t\x00ZZZZZZZZZ\x80\x02ccollections\nOrderedDict\nq\x00)Rq\x01(X\x12\x00\x00\x00input_layer.weightq\x02ctorch._utils\n_rebuild_tensor_v2\nq\x03((X\x07\x00\x00\x00storageq\x04ctorch\nFloatStorage\nq\x05X\x01\x00\x00'
-
-__TTS_3a222104bb3b4fe29e261851e20235f2__RC:0
-__TTS_3a222104bb3b4fe29e261851e20235f2__PWD:/app
-__TTS_3a222104bb3b4fe29e261851e20235f2__END
-[?2004hroot@63e991374090:/app# 

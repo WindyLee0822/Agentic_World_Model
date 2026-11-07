@@ -1,380 +1,0 @@
-[?2004hroot@73eedf9e5712:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@73eedf9e5712:/app# clear
-[?2004l[H[J[3J[?2004hroot@73eedf9e5712:/app# pwd; __tts_rc=$?; printf '\n__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__RC:%s\n' "$__tts_rc"; printf '__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__PWD:'; pwd; printf '__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__RC:0
-__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__PWD:/app
-__TTS_8365871c1fc14dbc9037e3e9b1b80e6e__END
-[?2004hroot@73eedf9e5712:/app# cd -- /app && pwd && ls -la && python3 --version; __tts_rc=$?; printf '\n__TTS_850e8d3da139494794e808f7ca060c86__RC:%s\n' "$__tts_rc"; printf '__TTS_850e8d3da139494794e808f7ca060c86__PWD:'; pwd; printf '__TTS_850e8d3da139494794e808f7ca060c86__END\n'; tmux wait -S done
-[?2004l/app
-total 8
-drwxr-xr-x 2 root root 4096 Jul 18 06:34 .
-drwxr-xr-x 1 root root 4096 Jul 18 06:34 ..
-Python 3.13.14
-
-__TTS_850e8d3da139494794e808f7ca060c86__RC:0
-__TTS_850e8d3da139494794e808f7ca060c86__PWD:/app
-__TTS_850e8d3da139494794e808f7ca060c86__END
-[?2004hroot@73eedf9e5712:/app# cd -- /app && cd /app && python3 -m pip install --no-input notebook jupyter_server matplotlib; __tts_rc=$?; printf '\n__TTS_ee13540908d849c3b6d188f9009cf104__RC:%s\n' "$__tts_rc"; printf '__TTS_ee13540908d849c3b6d188f9009cf104__PWD:'; pwd; printf '__TTS_ee13540908d849c3b6d188f9009cf104__END\n'; tmux wait -S done
-[?2004lCollecting notebook
-  Downloading notebook-7.6.0-py3-none-any.whl.metadata (10 kB)
-Collecting jupyter_server
-  Downloading jupyter_server-2.20.0-py3-none-any.whl.metadata (8.5 kB)
-Collecting matplotlib
-  Downloading matplotlib-3.11.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
-Collecting jupyter-builder<2,>=1.0.2 (from notebook)
-  Downloading jupyter_builder-1.1.1-py3-none-any.whl.metadata (7.7 kB)
-Collecting jupyterlab-server<3,>=2.28.0 (from notebook)
-  Downloading jupyterlab_server-2.28.0-py3-none-any.whl.metadata (5.9 kB)
-Collecting jupyterlab<4.7,>=4.6.0 (from notebook)
-  Downloading jupyterlab-4.6.1-py3-none-any.whl.metadata (16 kB)
-Collecting notebook-shim<0.3,>=0.2 (from notebook)
-  Downloading notebook_shim-0.2.4-py3-none-any.whl.metadata (4.0 kB)
-Collecting tornado>=6.2.0 (from notebook)
-  Downloading tornado-6.5.7-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (2.8 kB)
-Collecting anyio>=3.1.0 (from jupyter_server)
-  Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
-Collecting argon2-cffi>=21.1 (from jupyter_server)
-  Downloading argon2_cffi-25.1.0-py3-none-any.whl.metadata (4.1 kB)
-Collecting jinja2>=3.0.3 (from jupyter_server)
-  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
-Collecting jupyter-client>=7.4.4 (from jupyter_server)
-  Downloading jupyter_client-8.9.1-py3-none-any.whl.metadata (8.5 kB)
-Collecting jupyter-core!=5.0.*,>=4.12 (from jupyter_server)
-  Downloading jupyter_core-5.9.1-py3-none-any.whl.metadata (1.5 kB)
-Collecting jupyter-events>=0.11.0 (from jupyter_server)
-  Downloading jupyter_events-0.12.1-py3-none-any.whl.metadata (5.8 kB)
-Collecting jupyter-server-terminals>=0.4.4 (from jupyter_server)
-  Downloading jupyter_server_terminals-0.5.4-py3-none-any.whl.metadata (5.9 kB)
-Collecting nbconvert>=6.4.4 (from jupyter_server)
-  Downloading nbconvert-7.17.1-py3-none-any.whl.metadata (8.4 kB)
-Collecting nbformat>=5.3.0 (from jupyter_server)
-  Downloading nbformat-5.10.4-py3-none-any.whl.metadata (3.6 kB)
-Collecting packaging>=22.0 (from jupyter_server)
-  Downloading packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
-Collecting prometheus-client>=0.9 (from jupyter_server)
-  Downloading prometheus_client-0.25.0-py3-none-any.whl.metadata (2.1 kB)
-Collecting pyzmq>=24 (from jupyter_server)
-  Downloading pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (6.0 kB)
-Collecting send2trash>=1.8.2 (from jupyter_server)
-  Downloading send2trash-2.1.0-py3-none-any.whl.metadata (4.1 kB)
-Collecting terminado>=0.8.3 (from jupyter_server)
-  Downloading terminado-0.18.1-py3-none-any.whl.metadata (5.8 kB)
-Collecting traitlets>=5.6.0 (from jupyter_server)
-  Downloading traitlets-5.15.1-py3-none-any.whl.metadata (10 kB)
-Collecting websocket-client>=1.7 (from jupyter_server)
-  Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
-Collecting async-lru>=1.0.0 (from jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading async_lru-2.3.0-py3-none-any.whl.metadata (7.6 kB)
-Collecting httpx<1,>=0.25.0 (from jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
-Collecting ipykernel!=6.30.0,>=6.5.0 (from jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading ipykernel-7.3.0-py3-none-any.whl.metadata (4.5 kB)
-Collecting jupyter-lsp>=2.0.0 (from jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading jupyter_lsp-2.3.1-py3-none-any.whl.metadata (1.8 kB)
-Collecting certifi (from httpx<1,>=0.25.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading certifi-2026.6.17-py3-none-any.whl.metadata (2.5 kB)
-Collecting httpcore==1.* (from httpx<1,>=0.25.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
-Collecting idna (from httpx<1,>=0.25.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
-Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.25.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
-Collecting babel>=2.10 (from jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading babel-2.18.0-py3-none-any.whl.metadata (2.2 kB)
-Collecting json5>=0.9.0 (from jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading json5-0.15.0-py3-none-any.whl.metadata (37 kB)
-Collecting jsonschema>=4.18.0 (from jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
-Collecting requests>=2.31 (from jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
-Collecting contourpy>=1.0.1 (from matplotlib)
-  Downloading contourpy-1.3.3-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
-Collecting cycler>=0.10 (from matplotlib)
-  Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
-Collecting fonttools>=4.28.2 (from matplotlib)
-  Downloading fonttools-4.63.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (118 kB)
-Collecting kiwisolver>=1.3.1 (from matplotlib)
-  Downloading kiwisolver-1.5.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
-Collecting numpy>=1.25 (from matplotlib)
-  Downloading numpy-2.5.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
-Collecting pillow>=9 (from matplotlib)
-  Downloading pillow-12.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
-Collecting pyparsing>=3 (from matplotlib)
-  Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
-Collecting python-dateutil>=2.7 (from matplotlib)
-  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
-Collecting argon2-cffi-bindings (from argon2-cffi>=21.1->jupyter_server)
-  Downloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (7.4 kB)
-Collecting comm>=0.1.1 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading comm-0.2.3-py3-none-any.whl.metadata (3.7 kB)
-Collecting debugpy>=1.6.5 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading debugpy-1.8.21-cp313-cp313-manylinux_2_34_x86_64.whl.metadata (1.4 kB)
-Collecting ipython>=7.23.1 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading ipython-9.15.0-py3-none-any.whl.metadata (4.7 kB)
-Collecting matplotlib-inline>=0.1 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading matplotlib_inline-0.2.2-py3-none-any.whl.metadata (2.4 kB)
-Collecting nest-asyncio2>=1.7.0 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading nest_asyncio2-1.7.2-py3-none-any.whl.metadata (6.3 kB)
-Collecting psutil>=5.7 (from ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
-Collecting decorator>=5.1.0 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading decorator-5.3.1-py3-none-any.whl.metadata (3.9 kB)
-Collecting ipython-pygments-lexers>=1.0.0 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading ipython_pygments_lexers-1.1.1-py3-none-any.whl.metadata (1.1 kB)
-Collecting jedi>=0.18.2 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading jedi-0.20.0-py2.py3-none-any.whl.metadata (23 kB)
-Collecting pexpect>4.6 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading pexpect-4.9.0-py2.py3-none-any.whl.metadata (2.5 kB)
-Collecting prompt_toolkit<3.1.0,>=3.0.41 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading prompt_toolkit-3.0.52-py3-none-any.whl.metadata (6.4 kB)
-Collecting pygments>=2.14.0 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
-Collecting stack_data>=0.6.0 (from ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading stack_data-0.6.3-py3-none-any.whl.metadata (18 kB)
-Collecting wcwidth (from prompt_toolkit<3.1.0,>=3.0.41->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading wcwidth-0.8.2-py3-none-any.whl.metadata (43 kB)
-Collecting parso<0.9.0,>=0.8.6 (from jedi>=0.18.2->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading parso-0.8.7-py2.py3-none-any.whl.metadata (8.2 kB)
-Collecting MarkupSafe>=2.0 (from jinja2>=3.0.3->jupyter_server)
-  Downloading markupsafe-3.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
-Collecting attrs>=22.2.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
-Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
-Collecting referencing>=0.28.4 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
-Collecting rpds-py>=0.25.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
-Collecting typing-extensions>=4.13.0 (from jupyter-client>=7.4.4->jupyter_server)
-  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
-Collecting platformdirs>=2.5 (from jupyter-core!=5.0.*,>=4.12->jupyter_server)
-  Downloading platformdirs-4.10.1-py3-none-any.whl.metadata (5.5 kB)
-Collecting python-json-logger>=2.0.4 (from jupyter-events>=0.11.0->jupyter_server)
-  Downloading python_json_logger-4.1.0-py3-none-any.whl.metadata (3.7 kB)
-Collecting pyyaml>=5.3 (from jupyter-events>=0.11.0->jupyter_server)
-  Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
-Collecting rfc3339-validator (from jupyter-events>=0.11.0->jupyter_server)
-  Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl.metadata (1.5 kB)
-Collecting rfc3986-validator>=0.1.1 (from jupyter-events>=0.11.0->jupyter_server)
-  Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl.metadata (1.7 kB)
-Collecting fqdn (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading fqdn-1.5.1-py3-none-any.whl.metadata (1.4 kB)
-Collecting isoduration (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading isoduration-20.11.0-py3-none-any.whl.metadata (5.7 kB)
-Collecting jsonpointer>1.13 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading jsonpointer-3.1.1-py3-none-any.whl.metadata (2.4 kB)
-Collecting rfc3987-syntax>=1.1.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading rfc3987_syntax-1.1.0-py3-none-any.whl.metadata (7.7 kB)
-Collecting uri-template (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading uri_template-1.3.0-py3-none-any.whl.metadata (8.8 kB)
-Collecting webcolors>=24.6.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading webcolors-25.10.0-py3-none-any.whl.metadata (2.2 kB)
-Collecting beautifulsoup4 (from nbconvert>=6.4.4->jupyter_server)
-  Downloading beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)
-Collecting bleach!=5.0.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter_server)
-  Downloading bleach-6.4.0-py3-none-any.whl.metadata (32 kB)
-Collecting defusedxml (from nbconvert>=6.4.4->jupyter_server)
-  Downloading defusedxml-0.7.1-py2.py3-none-any.whl.metadata (32 kB)
-Collecting jupyterlab-pygments (from nbconvert>=6.4.4->jupyter_server)
-  Downloading jupyterlab_pygments-0.3.0-py3-none-any.whl.metadata (4.4 kB)
-Collecting mistune<4,>=2.0.3 (from nbconvert>=6.4.4->jupyter_server)
-  Downloading mistune-3.3.3-py3-none-any.whl.metadata (1.9 kB)
-Collecting nbclient>=0.5.0 (from nbconvert>=6.4.4->jupyter_server)
-  Downloading nbclient-0.11.0-py3-none-any.whl.metadata (7.3 kB)
-Collecting pandocfilters>=1.4.1 (from nbconvert>=6.4.4->jupyter_server)
-  Downloading pandocfilters-1.5.1-py2.py3-none-any.whl.metadata (9.0 kB)
-Collecting webencodings (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter_server)
-  Downloading webencodings-0.5.1-py2.py3-none-any.whl.metadata (2.1 kB)
-Collecting tinycss2>=1.1.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter_server)
-  Downloading tinycss2-1.5.1-py3-none-any.whl.metadata (3.0 kB)
-Collecting fastjsonschema>=2.15 (from nbformat>=5.3.0->jupyter_server)
-  Downloading fastjsonschema-2.21.2-py3-none-any.whl.metadata (2.3 kB)
-Collecting ptyprocess>=0.5 (from pexpect>4.6->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading ptyprocess-0.7.0-py2.py3-none-any.whl.metadata (1.3 kB)
-Collecting six>=1.5 (from python-dateutil>=2.7->matplotlib)
-  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
-Collecting charset_normalizer<4,>=2 (from requests>=2.31->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading charset_normalizer-3.4.9-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (41 kB)
-Collecting urllib3<3,>=1.26 (from requests>=2.31->jupyterlab-server<3,>=2.28.0->notebook)
-  Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
-Collecting lark>=1.2.2 (from rfc3987-syntax>=1.1.0->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading lark-1.3.1-py3-none-any.whl.metadata (1.8 kB)
-Collecting executing>=1.2.0 (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading executing-2.2.1-py2.py3-none-any.whl.metadata (8.9 kB)
-Collecting asttokens>=2.1.0 (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading asttokens-3.0.2-py3-none-any.whl.metadata (5.7 kB)
-Collecting pure-eval (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel!=6.30.0,>=6.5.0->jupyterlab<4.7,>=4.6.0->notebook)
-  Downloading pure_eval-0.2.3-py3-none-any.whl.metadata (6.3 kB)
-Collecting cffi>=1.0.1 (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter_server)
-  Downloading cffi-2.1.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
-Collecting pycparser (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter_server)
-  Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
-Collecting soupsieve>=1.6.1 (from beautifulsoup4->nbconvert>=6.4.4->jupyter_server)
-  Downloading soupsieve-2.8.4-py3-none-any.whl.metadata (4.6 kB)
-Collecting arrow>=0.15.0 (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading arrow-1.4.0-py3-none-any.whl.metadata (7.7 kB)
-Collecting tzdata (from arrow>=0.15.0->isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter_server)
-  Downloading tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)
-Downloading notebook-7.6.0-py3-none-any.whl (5.5 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/5.5 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━[0m [32m3.1/5.5 MB[0m [31m17.4 MB/s[0m eta [36m0:00:01[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m5.5/5.5 MB[0m [31m21.6 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading jupyter_server-2.20.0-py3-none-any.whl (393 kB)
-Downloading jupyter_builder-1.1.1-py3-none-any.whl (913 kB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/913.3 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m913.3/913.3 kB[0m [31m34.9 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading jupyterlab-4.6.1-py3-none-any.whl (17.2 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/17.2 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m [32m17.0/17.2 MB[0m [31m90.1 MB/s[0m eta [36m0:00:01[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m17.2/17.2 MB[0m [31m78.5 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading httpx-0.28.1-py3-none-any.whl (73 kB)
-Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
-Downloading jupyterlab_server-2.28.0-py3-none-any.whl (59 kB)
-Downloading notebook_shim-0.2.4-py3-none-any.whl (13 kB)
-Downloading matplotlib-3.11.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/10.0 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m10.0/10.0 MB[0m [31m140.5 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading anyio-4.14.2-py3-none-any.whl (125 kB)
-Downloading argon2_cffi-25.1.0-py3-none-any.whl (14 kB)
-Downloading async_lru-2.3.0-py3-none-any.whl (8.4 kB)
-Downloading babel-2.18.0-py3-none-any.whl (10.2 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/10.2 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m10.2/10.2 MB[0m [31m175.9 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading contourpy-1.3.3-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (362 kB)
-Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
-Downloading fonttools-4.63.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.0 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/5.0 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m5.0/5.0 MB[0m [31m192.1 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading h11-0.16.0-py3-none-any.whl (37 kB)
-Downloading idna-3.18-py3-none-any.whl (65 kB)
-Downloading ipykernel-7.3.0-py3-none-any.whl (120 kB)
-Downloading comm-0.2.3-py3-none-any.whl (7.3 kB)
-Downloading debugpy-1.8.21-cp313-cp313-manylinux_2_34_x86_64.whl (4.0 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/4.0 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m4.0/4.0 MB[0m [31m217.1 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading ipython-9.15.0-py3-none-any.whl (630 kB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/630.9 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m630.9/630.9 kB[0m [31m121.1 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading prompt_toolkit-3.0.52-py3-none-any.whl (391 kB)
-Downloading decorator-5.3.1-py3-none-any.whl (10 kB)
-Downloading ipython_pygments_lexers-1.1.1-py3-none-any.whl (8.1 kB)
-Downloading jedi-0.20.0-py2.py3-none-any.whl (4.9 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/4.9 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m4.9/4.9 MB[0m [31m233.2 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading parso-0.8.7-py2.py3-none-any.whl (107 kB)
-Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
-Downloading json5-0.15.0-py3-none-any.whl (36 kB)
-Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
-Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
-Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
-Downloading jupyter_client-8.9.1-py3-none-any.whl (109 kB)
-Downloading jupyter_core-5.9.1-py3-none-any.whl (29 kB)
-Downloading jupyter_events-0.12.1-py3-none-any.whl (19 kB)
-Downloading jsonpointer-3.1.1-py3-none-any.whl (7.7 kB)
-Downloading jupyter_lsp-2.3.1-py3-none-any.whl (77 kB)
-Downloading jupyter_server_terminals-0.5.4-py3-none-any.whl (13 kB)
-Downloading kiwisolver-1.5.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/1.5 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.5/1.5 MB[0m [31m252.1 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading markupsafe-3.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
-Downloading matplotlib_inline-0.2.2-py3-none-any.whl (9.5 kB)
-Downloading nbconvert-7.17.1-py3-none-any.whl (261 kB)
-Downloading mistune-3.3.3-py3-none-any.whl (63 kB)
-Downloading bleach-6.4.0-py3-none-any.whl (165 kB)
-Downloading nbclient-0.11.0-py3-none-any.whl (25 kB)
-Downloading nbformat-5.10.4-py3-none-any.whl (78 kB)
-Downloading fastjsonschema-2.21.2-py3-none-any.whl (24 kB)
-Downloading nest_asyncio2-1.7.2-py3-none-any.whl (7.8 kB)
-Downloading numpy-2.5.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/16.7 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m16.7/16.7 MB[0m [31m245.3 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading packaging-26.2-py3-none-any.whl (100 kB)
-Downloading pandocfilters-1.5.1-py2.py3-none-any.whl (8.7 kB)
-Downloading pexpect-4.9.0-py2.py3-none-any.whl (63 kB)
-Downloading pillow-12.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/6.9 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m6.9/6.9 MB[0m [31m280.2 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading platformdirs-4.10.1-py3-none-any.whl (22 kB)
-Downloading prometheus_client-0.25.0-py3-none-any.whl (64 kB)
-Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
-Downloading ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
-Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/1.2 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.2/1.2 MB[0m [31m217.6 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
-Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
-Downloading python_json_logger-4.1.0-py3-none-any.whl (15 kB)
-Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/801.6 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m801.6/801.6 kB[0m [31m174.6 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (840 kB)
-[?25l   [38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/841.0 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m841.0/841.0 kB[0m [31m169.9 MB/s[0m  [33m0:00:00[0m
-[?25hDownloading referencing-0.37.0-py3-none-any.whl (26 kB)
-Downloading requests-2.34.2-py3-none-any.whl (73 kB)
-Downloading charset_normalizer-3.4.9-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (223 kB)
-Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
-Downloading certifi-2026.6.17-py3-none-any.whl (133 kB)
-Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl (4.2 kB)
-Downloading rfc3987_syntax-1.1.0-py3-none-any.whl (8.0 kB)
-Downloading lark-1.3.1-py3-none-any.whl (113 kB)
-Downloading rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (365 kB)
-Downloading send2trash-2.1.0-py3-none-any.whl (17 kB)
-Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
-Downloading stack_data-0.6.3-py3-none-any.whl (24 kB)
-Downloading asttokens-3.0.2-py3-none-any.whl (28 kB)
-Downloading executing-2.2.1-py2.py3-none-any.whl (28 kB)
-Downloading terminado-0.18.1-py3-none-any.whl (14 kB)
-Downloading tinycss2-1.5.1-py3-none-any.whl (28 kB)
-Downloading tornado-6.5.7-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (449 kB)
-Downloading traitlets-5.15.1-py3-none-any.whl (85 kB)
-Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
-Downloading webcolors-25.10.0-py3-none-any.whl (14 kB)
-Downloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
-Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
-Downloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (87 kB)
-Downloading cffi-2.1.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
-Downloading beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)
-Downloading soupsieve-2.8.4-py3-none-any.whl (37 kB)
-Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
-Downloading fqdn-1.5.1-py3-none-any.whl (9.1 kB)
-Downloading isoduration-20.11.0-py3-none-any.whl (11 kB)
-Downloading arrow-1.4.0-py3-none-any.whl (68 kB)
-Downloading jupyterlab_pygments-0.3.0-py3-none-any.whl (15 kB)
-Downloading pure_eval-0.2.3-py3-none-any.whl (11 kB)
-Downloading pycparser-3.0-py3-none-any.whl (48 kB)
-Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl (3.5 kB)
-Downloading tzdata-2026.3-py2.py3-none-any.whl (348 kB)
-Downloading uri_template-1.3.0-py3-none-any.whl (11 kB)
-Downloading wcwidth-0.8.2-py3-none-any.whl (323 kB)
-Installing collected packages: webencodings, pure-eval, ptyprocess, fastjsonschema, websocket-client, webcolors, wcwidth, urllib3, uri-template, tzdata, typing-extensions, traitlets, tornado, tinycss2, soupsieve, six, send2trash, rpds-py, rfc3986-validator, pyzmq, pyyaml, python-json-logger, pyparsing, pygments, pycparser, psutil, prometheus-client, platformdirs, pillow, pexpect, parso, pandocfilters, packaging, numpy, nest-asyncio2, mistune, MarkupSafe, lark, kiwisolver, jupyterlab-pygments, jsonpointer, json5, idna, h11, fqdn, fonttools, executing, defusedxml, decorator, debugpy, cycler, comm, charset_normalizer, certifi, bleach, babel, attrs, async-lru, asttokens, terminado, stack_data, rfc3987-syntax, rfc3339-validator, requests, referencing, python-dateutil, prompt_toolkit, matplotlib-inline, jupyter-core, jinja2, jedi, ipython-pygments-lexers, httpcore, contourpy, cffi, beautifulsoup4, anyio, matplotlib, jupyter-server-terminals, jupyter-client, jupyter-builder, jsonschema-specifications, ipython, httpx, arrow, argon2-cffi-bindings, jsonschema, isoduration, ipykernel, argon2-cffi, nbformat, nbclient, jupyter-events, nbconvert, jupyter_server, notebook-shim, jupyterlab-server, jupyter-lsp, jupyterlab, notebook
-[?25l[2K   [38;5;197m━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m  6/100[0m [wcwidth][2K   [38;5;197m━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m  6/100[0m [wcwidth][2K   [38;5;197m━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m  9/100[0m [tzdata][2K   [38;5;197m━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 12/100[0m [tornado][2K   [38;5;197m━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 12/100[0m [tornado][2K   [38;5;197m━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 18/100[0m [rfc3986-validator][2K   [38;5;197m━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 21/100[0m [python-json-logger][2K   [38;5;197m━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 23/100[0m [pygments][2K   [38;5;197m━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 23/100[0m [pygments][2K   [38;5;197m━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 23/100[0m [pygments][2K   [38;5;197m━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 23/100[0m [pygments][2K   [38;5;197m━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 25/100[0m [psutil][2K   [38;5;197m━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 28/100[0m [pillow][2K   [38;5;197m━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 28/100[0m [pillow][2K   [38;5;197m━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 31/100[0m [pandocfilters][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 33/100[0m [numpy][2K   [38;5;197m━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 35/100[0m [mistune][2K   [38;5;197m━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━[0m [32m 41/100[0m [json5][2K   [38;5;197m━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━[0m [32m 45/100[0m [fonttools][2K   [38;5;197m━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━[0m [32m 45/100[0m [fonttools][2K   [38;5;197m━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━[0m [32m 45/100[0m [fonttools][2K   [38;5;197m━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━[0m [32m 45/100[0m [fonttools][2K   [38;5;197m━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━━[0m [32m 45/100[0m [fonttools][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━[0m [32m 49/100[0m [debugpy][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━[0m [32m 49/100[0m [debugpy][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━[0m [32m 49/100[0m [debugpy][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━━━[0m [32m 49/100[0m [debugpy][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━━━[0m [32m 50/100[0m [cycler][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━━━━━━━[0m [32m 54/100[0m [bleach][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━[0m [32m 55/100[0m [babel][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━━━━[0m [32m 55/100[0m [babel][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━━[0m [32m 63/100[0m [requests][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━[0m [32m 66/100[0m [prompt_toolkit][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━━━[0m [32m 66/100[0m [prompt_toolkit][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━━━[0m [32m 69/100[0m [jinja2][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 70/100[0m [jedi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━━━━━━[0m [32m 71/100[0m [ipython-pygments-lexers][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━━[0m [32m 74/100[0m [cffi][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━━━[0m [32m 77/100[0m [matplotlib][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━[0m [32m 82/100[0m [ipython][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━━━━━━[0m [32m 82/100[0m [ipython][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━━[0m [32m 83/100[0m [httpx][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━━━[0m [32m 86/100[0m [jsonschema][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m[38;5;237m━━━[0m [32m 91/100[0m [nbclient][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━━[0m [32m 94/100[0m [jupyter_server][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m[38;5;237m━[0m [32m 97/100[0m [jupyter-lsp][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m [32m 98/100[0m [jupyterlab][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;237m╺[0m [32m 98/100[0m [jupyterlab][2K   [38;5;197m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[38;5;197m╸[0m [32m 99/100[0m [notebook][2K   [38;5;70m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m100/100[0m [notebook]
-[?25h[1A[2KSuccessfully installed MarkupSafe-3.0.3 anyio-4.14.2 argon2-cffi-25.1.0 argon2-cffi-bindings-25.1.0 arrow-1.4.0 asttokens-3.0.2 async-lru-2.3.0 attrs-26.1.0 babel-2.18.0 beautifulsoup4-4.15.0 bleach-6.4.0 certifi-2026.6.17 cffi-2.1.0 charset_normalizer-3.4.9 comm-0.2.3 contourpy-1.3.3 cycler-0.12.1 debugpy-1.8.21 decorator-5.3.1 defusedxml-0.7.1 executing-2.2.1 fastjsonschema-2.21.2 fonttools-4.63.0 fqdn-1.5.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.18 ipykernel-7.3.0 ipython-9.15.0 ipython-pygments-lexers-1.1.1 isoduration-20.11.0 jedi-0.20.0 jinja2-3.1.6 json5-0.15.0 jsonpointer-3.1.1 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 jupyter-builder-1.1.1 jupyter-client-8.9.1 jupyter-core-5.9.1 jupyter-events-0.12.1 jupyter-lsp-2.3.1 jupyter-server-terminals-0.5.4 jupyter_server-2.20.0 jupyterlab-4.6.1 jupyterlab-pygments-0.3.0 jupyterlab-server-2.28.0 kiwisolver-1.5.0 lark-1.3.1 matplotlib-3.11.1 matplotlib-inline-0.2.2 mistune-3.3.3 nbclient-0.11.0 nbconvert-7.17.1 nbformat-5.10.4 nest-asyncio2-1.7.2 notebook-7.6.0 notebook-shim-0.2.4 numpy-2.5.1 packaging-26.2 pandocfilters-1.5.1 parso-0.8.7 pexpect-4.9.0 pillow-12.3.0 platformdirs-4.10.1 prometheus-client-0.25.0 prompt_toolkit-3.0.52 psutil-7.2.2 ptyprocess-0.7.0 pure-eval-0.2.3 pycparser-3.0 pygments-2.20.0 pyparsing-3.3.2 python-dateutil-2.9.0.post0 python-json-logger-4.1.0 pyyaml-6.0.3 pyzmq-27.1.0 referencing-0.37.0 requests-2.34.2 rfc3339-validator-0.1.4 rfc3986-validator-0.1.1 rfc3987-syntax-1.1.0 rpds-py-2026.6.3 send2trash-2.1.0 six-1.17.0 soupsieve-2.8.4 stack_data-0.6.3 terminado-0.18.1 tinycss2-1.5.1 tornado-6.5.7 traitlets-5.15.1 typing-extensions-4.16.0 tzdata-2026.3 uri-template-1.3.0 urllib3-2.7.0 wcwidth-0.8.2 webcolors-25.10.0 webencodings-0.5.1 websocket-client-1.9.0
-[33mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.[0m[33m
-[0m
-__TTS_ee13540908d849c3b6d188f9009cf104__RC:0
-__TTS_ee13540908d849c3b6d188f9009cf104__PWD:/app
-__TTS_ee13540908d849c3b6d188f9009cf104__END
-[?2004hroot@73eedf9e5712:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> from notebook.auth import passwd
-[?2004l[?2004h> import json, pathlib, subprocess
-[?2004l[?2004h> pathlib.Path('jupyter_cert').mkdir(exist_ok=True)
-[?2004l[?2004h> subprocess.run("openssl req -x509 -nodes -newkey rsa:2048 -keyout jupyter_cert/jupyter.key -out jupyter_cert/jupyter.crt -days 365 -subj '/CN=localhost'",shell=True,check=True)
-[?2004l[?2004h> pathlib.Path('jupyter_server_config.py').write_text("c.ServerApp.ip='0.0.0.0'\nc.ServerApp.port=8888\nc.ServerApp.open_browser=False\nc.ServerApp.password='"+passwd('benchmarkpass')+"'\nc.ServerApp.certfile='/app/jupyter_cert/jupyter.crt'\nc.ServerApp.keyfile='/app/jupyter_cert/jupyter.key'\nc.ServerApp.allow_root=True\n")
-[?2004l[?2004h> nb={"cells":[{"cell_type":"markdown","metadata":{},"source":["# Jupyter Notebook\n","Jupyter Notebook is an interactive web-based environment for creating and sharing documents that contain live code, equations, visualizations, and narrative text.\n"]},{"cell_type":"code","execution_count":None,"metadata":{},"outputs":[],"source":["import numpy as np\n","import matplotlib.pyplot as plt\n","x = np.linspace(0, 2*np.pi, 200)\n","y = np.sin(x)\n","plt.plot(x, y)\n","plt.title('Sine Wave')\n","plt.xlabel('x')\n","plt.ylabel('sin(x)')\n","plt.show()\n"]}],"metadata":{"kernelspec":{"display_name":"Python 3","language":"python","name":"python3"},"language_info":{"name":"python","version":"3.13"}},"nbformat":4,"nbformat_minor":5}
-[?2004l[?2004h> pathlib.Path('test_notebook.ipynb').write_text(json.dumps(nb))
-[?2004l[?2004h> PY
-[?2004lTraceback (most recent call last):
-  File [35m"<stdin>"[0m, line [35m1[0m, in [35m<module>[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'notebook.auth'[0m
-[?2004hroot@73eedf9e5712:/app# nohup jupyter notebook --allow-root --config=/app/jupyter_server_config.py >/app/jupyter.log 2>&1 &; __tts_rc=$?; printf '\n__TTS_2fce333f92b946d8a76ea88a9c72a756__RC:%s\n' "$__tts_rc"; printf '__TTS_2fce333f92b946d8a76ea88a9c72a756__PWD:'; pwd; printf '__TTS_2fce333f92b946d8a76ea88a9c72a756__END\n'; tmux wait -S done
-[?2004lbash: syntax error near unexpected token `;'
-[?2004hroot@73eedf9e5712:/app# cd -- /app && cd /app && ls -l jupyter_server_config.py test_notebook.ipynb jupyter_cert && tail -n 80 jupyter.log || true; __tts_rc=$?; printf '\n__TTS_a93b61edc561446c83046f0d6fd9ff91__RC:%s\n' "$__tts_rc"; printf '__TTS_a93b61edc561446c83046f0d6fd9ff91__PWD:'; pwd; printf '__TTS_a93b61edc561446c83046f0d6fd9ff91__END\n'; tmux wait -S done
-[?2004lls: cannot access 'jupyter_server_config.py': No such file or directory
-ls: cannot access 'test_notebook.ipynb': No such file or directory
-ls: cannot access 'jupyter_cert': No such file or directory
-
-__TTS_a93b61edc561446c83046f0d6fd9ff91__RC:0
-__TTS_a93b61edc561446c83046f0d6fd9ff91__PWD:/app
-__TTS_a93b61edc561446c83046f0d6fd9ff91__END
-[?2004hroot@73eedf9e5712:/app# cd -- /app && cd /app && ps -ef | grep -E 'jupyter-(lab|server)|jupyter notebook' | grep -v grep && (ss -ltnp 2>/dev/null || netstat -ltnp 2>/dev/null) | grep :8888 || true && python3 - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> for p in ['jupyter_server_config.py','test_notebook.ipynb','jupyter.log','jupyter_cert/jupyter.crt','jupyter_cert/jupyter.key']:
-[?2004l[?2004h>  f=Path(p); print(p, f.exists(), f.stat().st_size if f.exists() else -1)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_bdc496b2cdce40fea1ebc2923567e97c__RC:%s\n' "$__tts_rc"; printf '__TTS_bdc496b2cdce40fea1ebc2923567e97c__PWD:'; pwd; printf '__TTS_bdc496b2cdce40fea1ebc2923567e97c__END\n'; tmux wait -S done
-[?2004l[?2004h> bash /tests/run-tests.sh; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 16 delimited by end-of-file (wanted `PY')
-bash: ps: command not found
-  File [35m"<stdin>"[0m, line [35m4[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_bdc496b2cdce40fea1ebc2923567e97c__RC:%s\n' "$__tts_rc"; printf '__TTS_bdc496b2cdce40fea1ebc2923567e97c__PWD:'; pwd; printf '__TTS_bdc496b2cdce40fea1ebc2923567e97c__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@73eedf9e5712:/app# 

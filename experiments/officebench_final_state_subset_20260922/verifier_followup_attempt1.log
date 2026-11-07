@@ -1,8 +1,0 @@
-{"case": "recovered_success", "confidence": 0.49, "breakdown": {"met": 3, "unmet": 0, "unknown": 2, "total": 5, "unknown_credit": 0.25, "atomic_score": 0.7, "whole_score": 1.0}, "precheck": null, "python_calls": 12, "python_failures": 2, "chat_calls": 12, "private_prompt_checks_passed": true}
-{"case": "wrong_recipient_content", "confidence": 0.0, "breakdown": {"met": 3, "unmet": 2, "unknown": 0, "total": 5, "unknown_credit": 0.25, "atomic_score": 0.6, "whole_score": 0.0}, "precheck": null, "python_calls": 5, "python_failures": 0, "chat_calls": 5, "private_prompt_checks_passed": true}
-{"case": "unknown_recipient_state", "confidence": 0.0, "breakdown": {"met": 3, "unmet": 0, "unknown": 2, "total": 5, "unknown_credit": 0.25, "atomic_score": 0.7, "whole_score": 0.0}, "precheck": null, "python_calls": 11, "python_failures": 1, "chat_calls": 11, "private_prompt_checks_passed": true}
-Traceback (most recent call last):
-  File "/mnt/batch/tasks/shared/LS_root/mounts/clusters/wendili-cpu2/code/Agentic_World_Model/experiments/officebench_final_state_subset_20260922/verifier_followup.py", line 85, in <module>
-    print(json.dumps(result), flush=True)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError

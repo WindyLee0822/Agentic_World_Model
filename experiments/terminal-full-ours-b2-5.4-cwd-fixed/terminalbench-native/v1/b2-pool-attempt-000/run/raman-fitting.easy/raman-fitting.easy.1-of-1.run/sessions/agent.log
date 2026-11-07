@@ -1,49 +1,0 @@
-[?2004hroot@29e642a28ddc:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@29e642a28ddc:/app# clear
-[?2004l[H[J[3J[?2004hroot@29e642a28ddc:/app# pwd; __tts_rc=$?; printf '\n__TTS_03ac75d84cc54090b3d46327a1f9d788__RC:%s\n' "$__tts_rc"; printf '__TTS_03ac75d84cc54090b3d46327a1f9d788__PWD:'; pwd; printf '__TTS_03ac75d84cc54090b3d46327a1f9d788__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_03ac75d84cc54090b3d46327a1f9d788__RC:0
-__TTS_03ac75d84cc54090b3d46327a1f9d788__PWD:/app
-__TTS_03ac75d84cc54090b3d46327a1f9d788__END
-[?2004hroot@29e642a28ddc:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^#/##' | sort; __tts_rc=$?; printf '\n__TTS_f85489ceefe94dc09d09650bc2f0b951__RC:%s\n' "$__tts_rc"; printf '__TTS_f85489ceefe94dc09d09650bc2f0b951__PWD:'; pwd; printf '__TTS_f85489ceefe94dc09d09650bc2f0b951__END\n'; tmux wait -S done
-[?2004ltotal 96
-drwxr-xr-x 1 root root  4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root  4096 Jul 18 21:13 ..
--rw-r--r-- 1 root root 88805 Jul 16 19:53 graphene.dat
-//app/graphene.dat
-
-__TTS_f85489ceefe94dc09d09650bc2f0b951__RC:0
-__TTS_f85489ceefe94dc09d09650bc2f0b951__PWD:/app
-__TTS_f85489ceefe94dc09d09650bc2f0b951__END
-[?2004hroot@29e642a28ddc:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('/app/graphene.dat')
-[?2004l[?2004h> print(p.read_text(errors='ignore')[:2000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_1620f642d4fb452f83562207a0b27ff6__RC:%s\n' "$__tts_rc"; printf '__TTS_1620f642d4fb452f83562207a0b27ff6__PWD:'; pwd; printf '__TTS_1620f642d4fb452f83562207a0b27ff6__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -m pip install --quiet numpy scipy && python3 -c "from pathlib import Path; p=Path('/app/graphene.dat'); b=p.read_bytes(); print(b[:1500].decode('latin1','ignore'))"; __tts_rc=$?; printf '\n__TTS_b8e24fe7fdbc463dadbba463319e21dc__RC:%s\n' "$__tts_rc"; printf '__TTS_b8e24fe7fdbc463dadbba463319e21dc__PWD:'; pwd; printf '__TTS_b8e24fe7fdbc463dadbba463319e21dc__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import os
-[?2004l[?2004h> p='/app/graphene.dat'
-[?2004l[?2004h> print(os.path.getsize(p))
-[?2004l[?2004h> with open(p,'rb') as f:
-[?2004l[?2004h>     print(f.read(512))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_95538eb836cc4b868c5165891cf83ef9__RC:%s\n' "$__tts_rc"; printf '__TTS_95538eb836cc4b868c5165891cf83ef9__PWD:'; pwd; printf '__TTS_95538eb836cc4b868c5165891cf83ef9__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m4[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_1620f642d4fb452f83562207a0b27ff6__RC:%s\n' "$__tts_rc"; printf '__TTS_1620f642d4fb452f83562207a0b27ff6__PWD:'; pwd; printf '__TTS_1620f642d4fb452f83562207a0b27ff6__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@29e642a28ddc:/app# cd -- ''"'"'; pwd; printf '"'"'_' && python3 -c "import os;print(os.path.getsize('/app/graphene.dat'));f=open('/app/graphene.dat','rb');print(f.read(256));f.close()"; __tts_rc=$?; printf '\n__TTS_1d9451edf53c4b49b48b8e841358844d__RC:%s\n' "$__tts_rc"; printf '__TTS_1d9451edf53c4b49b48b8e841358844d__PWD:'; pwd; printf '__TTS_1d9451edf53c4b49b48b8e841358844d__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '_: No such file or directory
-
-__TTS_1d9451edf53c4b49b48b8e841358844d__RC:1
-__TTS_1d9451edf53c4b49b48b8e841358844d__PWD:/app
-__TTS_1d9451edf53c4b49b48b8e841358844d__END
-[?2004hroot@29e642a28ddc:/app# cd -- /app && python3 -c "import subprocess,sys; subprocess.check_call([sys.executable,'-m','pip','install','--quiet','numpy','scipy']); import numpy as np, json, re; from scipy.optimize import curve_fit; p='/app/graphene.dat'; raw=open(p,'rb').read().decode('latin1','ignore').replace(',', '.'); lines=[re.findall(r'[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', ln)[:2] for ln in raw.splitlines()]; data=np.array([[float(a),float(b)] for a,b in lines if len((a,b))==2]); x,y=data[:,0],data[:,1]; lor=lambda x,x0,gamma,amplitude,offset: offset + amplitude*(0.5*gamma)**2/((x-x0)**2 + (0.5*gamma)**2); out={}; import math; 
-[?2004l[?2004h> for name,c in [('G',1580.0),('2D',2700.0)]:
-[?2004l[?2004h>  m=(x>c-120)&(x<c+120); xs,ys=x[m],y[m]; p0=[xs[np.argmax(ys)],30.0,float(ys.max()-ys.min()),float(np.median(ys[:max(3,len(ys)//10)]))]; bounds=([c-80,1,0,-np.inf],[c+80,200,np.inf,np.inf]); popt,_=curve_fit(lor,xs,ys,p0=p0,bounds=bounds,maxfev=20000); out[name]={'x0':float(popt[0]),'gamma':float(popt[1]),'amplitude':float(popt[2]),'offset':float(popt[3])}; open('/app/results.json','w').write(json.dumps(out,indent=2))"; __tts_rc=$?; printf '\n__TTS_14bd5c7f675e4f11882edf3283559f3d__RC:%s\n' "$__tts_rc"; printf '__TTS_14bd5c7f675e4f11882edf3283559f3d__PWD:'; pwd; printf '__TTS_14bd5c7f675e4f11882edf3283559f3d__END\n'; tmux wait -S done
-[?2004l

@@ -1,4 +1,0 @@
-# B0: single solver, no TTS, acts directly on the real env.
-method: b0
-N: 1
-simulator: {kind: none}

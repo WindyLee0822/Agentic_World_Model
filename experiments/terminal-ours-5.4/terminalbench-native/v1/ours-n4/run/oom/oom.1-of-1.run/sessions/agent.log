@@ -1,120 +1,0 @@
-[?2004hroot@670987f32ab4:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@670987f32ab4:/app# clear
-[?2004l[H[J[3J[?2004hroot@670987f32ab4:/app# pwd; __tts_rc=$?; printf '\n__TTS_69ac2f2de769494b97555f708cc67043__RC:%s\n' "$__tts_rc"; printf '__TTS_69ac2f2de769494b97555f708cc67043__PWD:'; pwd; printf '__TTS_69ac2f2de769494b97555f708cc67043__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_69ac2f2de769494b97555f708cc67043__RC:0
-__TTS_69ac2f2de769494b97555f708cc67043__PWD:/app
-__TTS_69ac2f2de769494b97555f708cc67043__END
-[?2004hroot@670987f32ab4:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_6c8e30f766fd44d99f7b670b5082f5a4__RC:%s\n' "$__tts_rc"; printf '__TTS_6c8e30f766fd44d99f7b670b5082f5a4__PWD:'; pwd; printf '__TTS_6c8e30f766fd44d99f7b670b5082f5a4__END\n'; tmux wait -S done
-[?2004l
-__TTS_6c8e30f766fd44d99f7b670b5082f5a4__RC:0
-__TTS_6c8e30f766fd44d99f7b670b5082f5a4__PWD:/app
-__TTS_6c8e30f766fd44d99f7b670b5082f5a4__END
-[?2004hroot@670987f32ab4:/app# cd -- /app && python -c "from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m); AutoModel.from_pretrained(m); print('cached', m)"; __tts_rc=$?; printf '\n__TTS_23c49b2d91044440a9d40c89b2b80731__RC:%s\n' "$__tts_rc"; printf '__TTS_23c49b2d91044440a9d40c89b2b80731__PWD:'; pwd; printf '__TTS_23c49b2d91044440a9d40c89b2b80731__END\n'; tmux wait -S done
-[?2004lWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-config.json:   0%|                                                                                                                   | 0.00/684 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 684/684 [00:00<00:00, 3.98MB/s]
-tokenizer_config.json:   0%|                                                                                                        | 0.00/25.0 [00:00<?, ?B/s]tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 121kB/s]
-spiece.model:   0%|                                                                                                                 | 0.00/760k [00:00<?, ?B/s]spiece.model: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 760k/760k [00:00<00:00, 57.2MB/s]
-tokenizer.json:   0%|                                                                                                              | 0.00/1.31M [00:00<?, ?B/s]tokenizer.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 1.31M/1.31M [00:00<00:00, 123MB/s]
-/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py:744: UserWarning: Not enough free disk space to download the file. The expected file size is: 47.37 MB. The target location /root/.cache/huggingface/hub/models--albert--albert-base-v2/blobs only has 24.11 MB free disk space.
-  warnings.warn(
-
-model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes: ██▌                                                                                                  | 1.20MB            model.safetensors: downloading bytes: ███████████████████████████████████████████████████████████████████▉                                 | 31.9MB,  118kB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 31.9MB, 3.14MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 31.9MB, 3.14MB/s  
-model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            
-Traceback (most recent call last):
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m695[0m, in [35m_get_resolved_checkpoint_files[0m
-    resolved_archive_file = cached_file(pretrained_model_name_or_path, filename, **cached_file_kwargs)
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m293[0m, in [35mcached_file[0m
-    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m527[0m, in [35mcached_files[0m
-    raise e
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/utils/hub.py"[0m, line [35m437[0m, in [35mcached_files[0m
-    [31mhf_hub_download[0m[1;31m([0m
-    [31m~~~~~~~~~~~~~~~[0m[1;31m^[0m
-        [1;31mpath_or_repo_id,[0m
-        [1;31m^^^^^^^^^^^^^^^^[0m
-    ...<10 lines>...
-        [1;31mtqdm_class=tqdm_class,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m
-    [1;31m^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py"[0m, line [35m88[0m, in [35m_inner_fn[0m
-    return fn(*args, **kwargs)
-  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1013[0m, in [35mhf_hub_download[0m
-    return _hf_hub_download_to_cache_dir(
-        # Destination
-    ...<15 lines>...
-        dry_run=dry_run,
-    )
-  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1236[0m, in [35m_hf_hub_download_to_cache_dir[0m
-    [31m_download_to_tmp_and_move[0m[1;31m([0m
-    [31m~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
-        [1;31mincomplete_path=Path(blob_path + ".incomplete"),[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    ...<8 lines>...
-        [1;31mtqdm_class=tqdm_class,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m
-    [1;31m^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m1920[0m, in [35m_download_to_tmp_and_move[0m
-    [31mxet_get[0m[1;31m([0m
-    [31m~~~~~~~[0m[1;31m^[0m
-        [1;31mincomplete_path=tmp_path,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    ...<4 lines>...
-        [1;31mtqdm_class=tqdm_class,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m
-    [1;31m^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/huggingface_hub/file_download.py"[0m, line [35m563[0m, in [35mxet_get[0m
-    with [31msession.new_file_download_group[0m[1;31m([0m
-         [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
-        [1;31mtoken_refresh_url=xet_file_data.refresh_route,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    ...<2 lines>...
-        [1;31mprogress_callback=progress.update_progress,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m as group:
-    [1;31m^[0m
-[1;35mRuntimeError[0m: [35mTask error: File reconstruction error: IO Error: No space left on device (os error 28)[0m
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m); [31mAutoModel.from_pretrained[0m[1;31m(m)[0m; print('cached', m)
-                                                                                                                    [31m~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/models/auto/auto_factory.py"[0m, line [35m402[0m, in [35mfrom_pretrained[0m
-    return [31mmodel_class.from_pretrained[0m[1;31m([0m
-           [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
-        [1;31mpretrained_model_name_or_path, *model_args, config=config, **hub_kwargs, **kwargs[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m
-    [1;31m^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m4355[0m, in [35mfrom_pretrained[0m
-    checkpoint_files, sharded_metadata = [31m_get_resolved_checkpoint_files[0m[1;31m([0m
-                                         [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m
-        [1;31mpretrained_model_name_or_path=pretrained_model_name_or_path,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-    ...<7 lines>...
-        [1;31mtqdm_class=tqdm_class,[0m
-        [1;31m^^^^^^^^^^^^^^^^^^^^^^[0m
-    [1;31m)[0m
-    [1;31m^[0m
-  File [35m"/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py"[0m, line [35m775[0m, in [35m_get_resolved_checkpoint_files[0m
-    raise OSError(
-    ...<4 lines>...
-    ) from e
-[1;35mOSError[0m: [35mCan't load the model for 'albert/albert-base-v2'. If you were trying to load it from 'https://huggingface.co/models', make sure you don't have a local directory with the same name. Otherwise, make sure 'albert/albert-base-v2' is the correct path to a directory containing a file named pytorch_model.bin.[0m
-
-__TTS_23c49b2d91044440a9d40c89b2b80731__RC:1
-__TTS_23c49b2d91044440a9d40c89b2b80731__PWD:/app
-__TTS_23c49b2d91044440a9d40c89b2b80731__END
-[?2004hroot@670987f32ab4:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@670987f32ab4:/app# 

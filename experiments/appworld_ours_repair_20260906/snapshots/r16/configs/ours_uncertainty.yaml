@@ -1,4 +1,0 @@
-# Ours: recursive, read-grounded, partitioned — adaptive (uncertainty) depth.
-method: ours
-N: 8
-simulator: {kind: recursive, predict_all_actions: true, recursion_mode: uncertainty, tau: 0.9, branching: 2, node_read_limit: 1, hard_cap: 6}

@@ -1,4 +1,0 @@
-['asciinema rec --stdin /logs/agent.cast', 'Enter']
-['clear', 'Enter']
-['pwd; __tts_rc=$?; printf \'\\n__TTS_5644461af20741348c6abcfe6a03da6f__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_5644461af20741348c6abcfe6a03da6f__PWD:\'; pwd; printf \'__TTS_5644461af20741348c6abcfe6a03da6f__END\\n\'', 'Enter']
-['cd -- /app/langcodes && python - <<\'PY\'\nfrom pathlib import Path\np=Path(\'langcodes/__init__.py\')\ns=p.read_text()\nold=\'    def __hash__(self):\\n        return id(self)\\n\'\nnew=\'    def __hash__(self):\\n        return hash(self._str_tag)\\n\'\nif old not in s: raise SystemExit(\'target not found\')\np.write_text(s.replace(old,new,1))\nPY; __tts_rc=$?; printf \'\\n__TTS_9fcb6cf1859f489ca3b67e161258f8ff__RC:%s\\n\' "$__tts_rc"; printf \'__TTS_9fcb6cf1859f489ca3b67e161258f8ff__PWD:\'; pwd; printf \'__TTS_9fcb6cf1859f489ca3b67e161258f8ff__END\\n\'', 'Enter']

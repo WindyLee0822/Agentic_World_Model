@@ -1,21 +1,0 @@
-[?2004hroot@ebe6c774286f:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@ebe6c774286f:/app# clear
-[?2004l[H[J[3J[?2004hroot@ebe6c774286f:/app# pwd; __tts_rc=$?; printf '\n__TTS_292071cfb5394083885d9fe56ae016b9__RC:%s\n' "$__tts_rc"; printf '__TTS_292071cfb5394083885d9fe56ae016b9__PWD:'; pwd; printf '__TTS_292071cfb5394083885d9fe56ae016b9__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_292071cfb5394083885d9fe56ae016b9__RC:0
-__TTS_292071cfb5394083885d9fe56ae016b9__PWD:/app
-__TTS_292071cfb5394083885d9fe56ae016b9__END
-[?2004hroot@ebe6c774286f:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_63ca260aaab344a988e2b9c4b070559e__RC:%s\n' "$__tts_rc"; printf '__TTS_63ca260aaab344a988e2b9c4b070559e__PWD:'; pwd; printf '__TTS_63ca260aaab344a988e2b9c4b070559e__END\n'; tmux wait -S done
-[?2004lf /app/model.bin
-
-__TTS_63ca260aaab344a988e2b9c4b070559e__RC:0
-__TTS_63ca260aaab344a988e2b9c4b070559e__PWD:/app
-__TTS_63ca260aaab344a988e2b9c4b070559e__END
-[?2004hroot@ebe6c774286f:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@ebe6c774286f:/app# 

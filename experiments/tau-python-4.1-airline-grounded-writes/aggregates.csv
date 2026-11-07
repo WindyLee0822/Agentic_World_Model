@@ -1,2 +1,0 @@
-decisions,env,mean_cache_hits,mean_cost,mean_max_depth,mean_reads,mean_rollout_errors,mean_spawns,mean_tokens,mean_wall_clock_s,method,n_rollouts,prediction_accuracy,reward,simulator_writes,single_commit_rate,subset,success_rate
-3,tau2_airline,22.0,0.0011666666666666665,0.0,8.333333333333334,0.0,0.0,1166.6666666666667,206.53474724230668,ours,4,0.6666666666666666,0.6666666666666666,0,1.0,airline,0.6666666666666666

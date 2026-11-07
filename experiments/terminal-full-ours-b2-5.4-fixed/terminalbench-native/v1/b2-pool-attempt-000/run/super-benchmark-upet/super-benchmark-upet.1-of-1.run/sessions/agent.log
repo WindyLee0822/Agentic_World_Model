@@ -1,1015 +1,0 @@
-[?2004hroot@f348cf209ae9:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@f348cf209ae9:/app# clear
-[?2004l[H[J[3J[?2004hroot@f348cf209ae9:/app# pwd; __tts_rc=$?; printf '\n__TTS_eed3dd5c2c61455ba1976f48533731c9__RC:%s\n' "$__tts_rc"; printf '__TTS_eed3dd5c2c61455ba1976f48533731c9__PWD:'; pwd; printf '__TTS_eed3dd5c2c61455ba1976f48533731c9__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_eed3dd5c2c61455ba1976f48533731c9__RC:0
-__TTS_eed3dd5c2c61455ba1976f48533731c9__PWD:/app
-__TTS_eed3dd5c2c61455ba1976f48533731c9__END
-[?2004hroot@f348cf209ae9:/app# cd -- /app && ls -la /app && git -C /app rev-parse HEAD && grep -Rni "RTE\|run.py\|UPET\|roberta-base\|num_train_epochs\|5 examples per label\|seed=42" /app/README* /app -m 3 | head -n 80; __tts_rc=$?; printf '\n__TTS_68e7cf65063f40e0ada34394bf2799aa__RC:%s\n' "$__tts_rc"; printf '__TTS_68e7cf65063f40e0ada34394bf2799aa__PWD:'; pwd; printf '__TTS_68e7cf65063f40e0ada34394bf2799aa__END\n'; tmux wait -S done
-[?2004ltotal 12
-drwxr-xr-x 1 root root 4096 Jul 17 01:38 .
-drwxr-xr-x 1 root root 4096 Jul 17 17:53 ..
--rw-r--r-- 1 root root  764 Jul 16 19:53 requirements.txt
-fatal: not a git repository (or any of the parent directories): .git
-
-__TTS_68e7cf65063f40e0ada34394bf2799aa__RC:128
-__TTS_68e7cf65063f40e0ada34394bf2799aa__PWD:/app
-__TTS_68e7cf65063f40e0ada34394bf2799aa__END
-[?2004hroot@f348cf209ae9:/app# cd -- /app && git clone https://github.com/wjn1996/UPET /app/UPET && git -C /app/UPET checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && sed -n '1,240p' /app/UPET/README.md; __tts_rc=$?; printf '\n__TTS_fc610fe60bc4403ba5672522e24dd51f__RC:%s\n' "$__tts_rc"; printf '__TTS_fc610fe60bc4403ba5672522e24dd51f__PWD:'; pwd; printf '__TTS_fc610fe60bc4403ba5672522e24dd51f__END\n'; tmux wait -S done
-[?2004lCloning into '/app/UPET'...
-remote: Enumerating objects: 384, done.[K
-remote: Counting objects:   5% (1/19)[Kremote: Counting objects:  10% (2/19)[Kremote: Counting objects:  15% (3/19)[Kremote: Counting objects:  21% (4/19)[Kremote: Counting objects:  26% (5/19)[Kremote: Counting objects:  31% (6/19)[Kremote: Counting objects:  36% (7/19)[Kremote: Counting objects:  42% (8/19)[Kremote: Counting objects:  47% (9/19)[Kremote: Counting objects:  52% (10/19)[Kremote: Counting objects:  57% (11/19)[Kremote: Counting objects:  63% (12/19)[Kremote: Counting objects:  68% (13/19)[Kremote: Counting objects:  73% (14/19)[Kremote: Counting objects:  78% (15/19)[Kremote: Counting objects:  84% (16/19)[Kremote: Counting objects:  89% (17/19)[Kremote: Counting objects:  94% (18/19)[Kremote: Counting objects: 100% (19/19)[Kremote: Counting objects: 100% (19/19), done.[K
-remote: Compressing objects:   5% (1/17)[Kremote: Compressing objects:  11% (2/17)[Kremote: Compressing objects:  17% (3/17)[Kremote: Compressing objects:  23% (4/17)[Kremote: Compressing objects:  29% (5/17)[Kremote: Compressing objects:  35% (6/17)[Kremote: Compressing objects:  41% (7/17)[Kremote: Compressing objects:  47% (8/17)[Kremote: Compressing objects:  52% (9/17)[Kremote: Compressing objects:  58% (10/17)[Kremote: Compressing objects:  64% (11/17)[Kremote: Compressing objects:  70% (12/17)[Kremote: Compressing objects:  76% (13/17)[Kremote: Compressing objects:  82% (14/17)[Kremote: Compressing objects:  88% (15/17)[Kremote: Compressing objects:  94% (16/17)[Kremote: Compressing objects: 100% (17/17)[Kremote: Compressing objects: 100% (17/17), done.[K
-Receiving objects:   0% (1/384)Receiving objects:   1% (4/384)Receiving objects:   2% (8/384)Receiving objects:   3% (12/384)Receiving objects:   4% (16/384)Receiving objects:   5% (20/384)Receiving objects:   6% (24/384)Receiving objects:   7% (27/384)Receiving objects:   8% (31/384)Receiving objects:   9% (35/384)Receiving objects:  10% (39/384)Receiving objects:  11% (43/384)Receiving objects:  12% (47/384)Receiving objects:  13% (50/384)Receiving objects:  14% (54/384)Receiving objects:  15% (58/384)Receiving objects:  16% (62/384)Receiving objects:  17% (66/384)Receiving objects:  18% (70/384)Receiving objects:  19% (73/384)Receiving objects:  20% (77/384)Receiving objects:  21% (81/384)Receiving objects:  22% (85/384)Receiving objects:  23% (89/384)Receiving objects:  24% (93/384)Receiving objects:  25% (96/384)Receiving objects:  26% (100/384)Receiving objects:  27% (104/384)Receiving objects:  28% (108/384)Receiving objects:  29% (112/384)Receiving objects:  30% (116/384)Receiving objects:  31% (120/384)Receiving objects:  32% (123/384)Receiving objects:  33% (127/384)Receiving objects:  34% (131/384)Receiving objects:  35% (135/384)Receiving objects:  36% (139/384)Receiving objects:  37% (143/384)Receiving objects:  38% (146/384)Receiving objects:  39% (150/384)Receiving objects:  40% (154/384)Receiving objects:  41% (158/384)Receiving objects:  42% (162/384)Receiving objects:  43% (166/384)Receiving objects:  44% (169/384)Receiving objects:  45% (173/384)Receiving objects:  46% (177/384)Receiving objects:  47% (181/384)Receiving objects:  48% (185/384)Receiving objects:  49% (189/384)Receiving objects:  50% (192/384)Receiving objects:  51% (196/384)Receiving objects:  52% (200/384)Receiving objects:  53% (204/384)Receiving objects:  54% (208/384)Receiving objects:  55% (212/384)Receiving objects:  56% (216/384)Receiving objects:  57% (219/384)Receiving objects:  58% (223/384)Receiving objects:  59% (227/384)Receiving objects:  60% (231/384)Receiving objects:  61% (235/384)Receiving objects:  62% (239/384)Receiving objects:  63% (242/384)Receiving objects:  64% (246/384)Receiving objects:  65% (250/384)Receiving objects:  66% (254/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  67% (258/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  68% (262/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  69% (265/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  70% (269/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  71% (273/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  72% (277/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  73% (281/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  74% (285/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  75% (288/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  76% (292/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  77% (296/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  78% (300/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  79% (304/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  80% (308/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  81% (312/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  82% (315/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  83% (319/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  84% (323/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  85% (327/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  86% (331/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  87% (335/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  88% (338/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  89% (342/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  90% (346/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  91% (350/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  92% (354/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  93% (358/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  94% (361/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  95% (365/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  96% (369/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  97% (373/384), 428.00 KiB | 840.00 KiB/sReceiving objects:  98% (377/384), 428.00 KiB | 840.00 KiB/sremote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)[K
-Receiving objects:  99% (381/384), 428.00 KiB | 840.00 KiB/sReceiving objects: 100% (384/384), 428.00 KiB | 840.00 KiB/sReceiving objects: 100% (384/384), 576.99 KiB | 943.00 KiB/s, done.
-Resolving deltas:   0% (0/72)Resolving deltas:   1% (1/72)Resolving deltas:   2% (2/72)Resolving deltas:   4% (3/72)Resolving deltas:   5% (4/72)Resolving deltas:   8% (6/72)Resolving deltas:   9% (7/72)Resolving deltas:  12% (9/72)Resolving deltas:  15% (11/72)Resolving deltas:  18% (13/72)Resolving deltas:  19% (14/72)Resolving deltas:  20% (15/72)Resolving deltas:  22% (16/72)Resolving deltas:  23% (17/72)Resolving deltas:  25% (18/72)Resolving deltas:  26% (19/72)Resolving deltas:  27% (20/72)Resolving deltas:  30% (22/72)Resolving deltas:  31% (23/72)Resolving deltas:  33% (24/72)Resolving deltas:  34% (25/72)Resolving deltas:  36% (26/72)Resolving deltas:  37% (27/72)Resolving deltas:  38% (28/72)Resolving deltas:  40% (29/72)Resolving deltas:  41% (30/72)Resolving deltas:  43% (31/72)Resolving deltas:  45% (33/72)Resolving deltas:  48% (35/72)Resolving deltas:  50% (36/72)Resolving deltas:  54% (39/72)Resolving deltas:  55% (40/72)Resolving deltas:  56% (41/72)Resolving deltas:  58% (42/72)Resolving deltas:  59% (43/72)Resolving deltas:  62% (45/72)Resolving deltas:  63% (46/72)Resolving deltas:  65% (47/72)Resolving deltas:  68% (49/72)Resolving deltas:  69% (50/72)Resolving deltas:  70% (51/72)Resolving deltas:  72% (52/72)Resolving deltas:  75% (54/72)Resolving deltas:  77% (56/72)Resolving deltas:  80% (58/72)Resolving deltas:  81% (59/72)Resolving deltas:  83% (60/72)Resolving deltas:  84% (61/72)Resolving deltas:  86% (62/72)Resolving deltas:  88% (64/72)Resolving deltas:  90% (65/72)Resolving deltas:  91% (66/72)Resolving deltas:  93% (67/72)Resolving deltas:  94% (68/72)Resolving deltas:  95% (69/72)Resolving deltas:  97% (70/72)Resolving deltas:  98% (71/72)Resolving deltas: 100% (72/72)Resolving deltas: 100% (72/72), done.
-Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
-
-HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
-# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-
-
-Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
-Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
-
-augment definition：
-e.g.,
---prefix -> --head-prefix or --prompt-prefix
---prompt -> --head-ptuning or --prompt-ptuning
-
-### Setup
-We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
-
-```shell
-conda create -n pt2 python=3.8.5
-conda activate pt2
-```
-
-After we setup basic conda environment, install pytorch related packages via:
-
-```shell
-conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
-```
-
-Finally, install other python packages we need:
-
-```shell
-pip install -r requirements.txt
-```
-
-### Data
-For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
-
-For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
-After downloading, unzip the packup to the project root.
-Please use at your own risk.
-
-### Training
-Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
-
-You can change the augments and run:
-```shell
-bash run_script/run_rte_roberta.sh
-```
-or
-
-```shell
-export TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --prefix
-```
-This script is run for Full-data Full-supervised Pre-fix Tuning.
-
-We provide the following kinds of settings:
-- Full-data v.s. Few-shot: The training data is full / few-shot
-- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
-- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
-- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
-
-The specific augments for different scenarios:
-
-
-#### Few-shot Head Tuning
-
-### Implemented Results
-Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
-
-Released results on BERT-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
-|--------------|-------|------|------|------|------|---------|---------------|---------|
-| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
-| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
-| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
-
-Released results on RoBERTa-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
-|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
-| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
-| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
-| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
-
-For other hyper-parameters, please refer to the training scripts. 
-If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
-
-## Citation
-
-If you find our work useful, please kindly cite our paper:
-
-
-
-
-
-
----
-
-use_prompt
-sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
-
-
-
-superglue
-BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
-glue
-CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
-
-
-
-__TTS_fc610fe60bc4403ba5672522e24dd51f__RC:0
-__TTS_fc610fe60bc4403ba5672522e24dd51f__PWD:/app
-__TTS_fc610fe60bc4403ba5672522e24dd51f__END
-[?2004hroot@f348cf209ae9:/app# cd -- /app && cd /app/UPET && find run_script -maxdepth 2 -type f | sort | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__RC:%s\n' "$__tts_rc"; printf '__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__PWD:'; pwd; printf '__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__END\n'; tmux wait -S done
-[?2004lrun_script/run_boolq_bert.sh
-run_script/run_boolq_roberta.sh
-run_script/run_conll03_roberta.sh
-run_script/run_conll04_bert.sh
-run_script/run_conll04_roberta.sh
-run_script/run_conll05_roberta.sh
-run_script/run_conll12_bert.sh
-run_script/run_conll12_roberta.sh
-run_script/run_copa_bert.sh
-run_script/run_copa_roberta.sh
-run_script/run_ontonotes_bert.sh
-run_script/run_ontonotes_roberta.sh
-run_script/run_rte_bert.sh
-run_script/run_rte_roberta.sh
-run_script/run_squad_roberta.sh
-run_script/run_squad_v2_roberta.sh
-run_script/run_wic_bert.sh
-run_script/run_wic_roberta.sh
-run_script/run_wsc_bert.sh
-run_script/run_wsc_roberta.sh
-
-__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__RC:0
-__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__PWD:/app/UPET
-__TTS_0b9b5afa4ff74ce888ad4a7f9c7b715b__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && sed -n '1,220p' run_script/run_rte_roberta.sh; __tts_rc=$?; printf '\n__TTS_e4863016e1fd41a79229fd63fbd32a69__RC:%s\n' "$__tts_rc"; printf '__TTS_e4863016e1fd41a79229fd63fbd32a69__PWD:'; pwd; printf '__TTS_e4863016e1fd41a79229fd63fbd32a69__END\n'; tmux wait -S done
-[?2004lexport TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=7
-
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --pre_seq_len $psl \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --head_prefix \
-
-__TTS_e4863016e1fd41a79229fd63fbd32a69__RC:0
-__TTS_e4863016e1fd41a79229fd63fbd32a69__PWD:/app/UPET
-__TTS_e4863016e1fd41a79229fd63fbd32a69__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && grep -RniE "few[- ]shot|num_examples_per_label|examples_per_label|self[- ]training|UPET|semi-supervised|unlabeled|pseudo|head_prefix|head_ptuning|teacher|student|seed" . | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__RC:%s\n' "$__tts_rc"; printf '__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__PWD:'; pwd; printf '__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__END\n'; tmux wait -S done
-[?2004l./run_script_fewshot/run_sst2_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_sst2_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_agnews_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_agnews_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_trec_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_trec_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_mr_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_mr_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_qqp_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_qqp_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_qqp_roberta.sh:34:  # --head_prefix \
-./run_script_fewshot/run_boolq_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_boolq_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_boolq_roberta.sh:34:  # --head_prefix \
-./run_script_fewshot/run_rte_bert.sh:25:  --seed 11 \
-./run_script_fewshot/run_copa_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_copa_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_copa_roberta.sh:31:  --head_prefix \
-./run_script_fewshot/run_copa_roberta.sh:34:  # --head_prefix \
-./run_script_fewshot/run_mnli_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_mnli_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_mnli_roberta.sh:34:  # --head_prefix \
-./run_script_fewshot/run_mrpc_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_mrpc_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_mrpc_roberta.sh:34:  # --head_prefix \
-./run_script_fewshot/run_yelp_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_yelp_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_rte_roberta.sh:29:  --seed 42 \
-./run_script_fewshot/run_rte_roberta.sh:32:  --num_examples_per_label 16 \
-./run_script_fewshot/run_rte_roberta.sh:36:  # --head_prefix \
-./run_script_fewshot/run_cb_roberta.sh:29:  --seed 42 \
-./run_script_fewshot/run_cb_roberta.sh:32:  --num_examples_per_label 16 \
-./run_script_fewshot/run_cb_roberta.sh:36:  # --head_prefix \
-./run_script_fewshot/run_qnli_roberta.sh:27:  --seed 42 \
-./run_script_fewshot/run_qnli_roberta.sh:30:  --num_examples_per_label 16 \
-./run_script_fewshot/run_qnli_roberta.sh:34:  # --head_prefix \
-./run.py:9:from transformers import set_seed, Trainer
-./run.py:126:    set_seed(training_args.seed)
-./metrics/frugalscore/README.md:76:| FrugalScore                                        | Student     | Teacher        | Method     |
-./metrics/mauve/README.md:48:`seed`: random seed to initialize k-means cluster assignments, randomly assigned by default.
-./metrics/mauve/mauve.py:67:    seed: random seed to initialize k-means cluster assignments.
-./metrics/mauve/mauve.py:127:        seed=25,
-./metrics/mauve/mauve.py:147:            seed=seed,
-./tasks/other_cls/dataset.py:18:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16, label_set: list=None):
-./tasks/other_cls/dataset.py:36:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./tasks/other_cls/dataset.py:122:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/other_cls/dataset.py:128:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/other_cls/dataset.py:203:        self.unlabeled_dataset = None
-./tasks/other_cls/dataset.py:205:            assert data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1
-./tasks/other_cls/dataset.py:207:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/other_cls/dataset.py:208:        if data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1:
-./tasks/other_cls/dataset.py:212:                num_examples_per_label=data_args.num_examples_per_label,
-./tasks/other_cls/dataset.py:218:                data_args.num_examples_per_label, 
-./tasks/other_cls/dataset.py:223:                self.unlabeled_dataset = self.all_train_dataset.select(un_selected_idx_list)
-./tasks/other_cls/dataset.py:224:                print("The number of unlabeled data is {}".format(len(self.unlabeled_dataset)))
-./tasks/other_cls/get_trainer.py:64:        model_args.pre_seq_len = semi_training_args.student_pre_seq_len
-./tasks/other_cls/get_trainer.py:65:        student_model = get_model(data_args, model_args, TaskType.SEQUENCE_CLASSIFICATION, config)
-./tasks/other_cls/get_trainer.py:67:            teacher_base_model=model,
-./tasks/other_cls/get_trainer.py:68:            student_base_model=student_model,
-./tasks/other_cls/get_trainer.py:72:            unlabeled_dataset=dataset.unlabeled_dataset,
-./tasks/other_cls/get_trainer.py:76:            teacher_data_collator=dataset.data_collator,
-./tasks/other_cls/get_trainer.py:77:            student_data_collator=dataset.data_collator,
-./tasks/srl/dataset.py:12:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16):
-./tasks/srl/dataset.py:26:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./tasks/srl/dataset.py:96:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/srl/dataset.py:97:        if data_args.num_examples_per_label is not None:
-./tasks/srl/dataset.py:101:                num_examples_per_label=data_args.num_examples_per_label
-./tasks/srl/dataset.py:105:                data_args.num_examples_per_label, 
-./tasks/glue/dataset.py:18:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16):
-./tasks/glue/dataset.py:32:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./tasks/glue/dataset.py:122:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/glue/dataset.py:128:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/glue/dataset.py:201:        self.unlabeled_dataset = None
-./tasks/glue/dataset.py:203:            assert data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1
-./tasks/glue/dataset.py:205:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/glue/dataset.py:206:        if data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1:
-./tasks/glue/dataset.py:210:                num_examples_per_label=data_args.num_examples_per_label
-./tasks/glue/dataset.py:215:                data_args.num_examples_per_label, 
-./tasks/glue/dataset.py:220:                self.unlabeled_dataset = self.all_train_dataset.select(un_selected_idx_list)
-./tasks/glue/dataset.py:221:                print("The number of unlabeled data is {}".format(len(self.unlabeled_dataset)))
-./tasks/glue/get_trainer.py:64:        model_args.pre_seq_len = semi_training_args.student_pre_seq_len
-./tasks/glue/get_trainer.py:65:        student_model = get_model(data_args, model_args, TaskType.SEQUENCE_CLASSIFICATION, config)
-./tasks/glue/get_trainer.py:67:            teacher_base_model=model,
-./tasks/glue/get_trainer.py:68:            student_base_model=student_model,
-./tasks/glue/get_trainer.py:72:            unlabeled_dataset=dataset.unlabeled_dataset,
-./tasks/glue/get_trainer.py:76:            teacher_data_collator=dataset.data_collator,
-./tasks/glue/get_trainer.py:77:            student_data_collator=dataset.data_collator,
-./tasks/superglue/dataset.py:14:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16):
-./tasks/superglue/dataset.py:28:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./tasks/superglue/dataset.py:115:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/superglue/dataset.py:121:                    'pseudo_token': tokenizer.unk_token_id
-./tasks/superglue/dataset.py:207:        self.unlabeled_dataset = None
-./tasks/superglue/dataset.py:209:            assert data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1
-./tasks/superglue/dataset.py:211:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/superglue/dataset.py:212:        if data_args.num_examples_per_label is not None and data_args.num_examples_per_label != -1:
-./tasks/superglue/dataset.py:216:                num_examples_per_label=data_args.num_examples_per_label
-./tasks/superglue/dataset.py:221:                data_args.num_examples_per_label, 
-./tasks/superglue/dataset.py:226:                self.unlabeled_dataset = self.all_train_dataset.select(un_selected_idx_list)
-./tasks/superglue/dataset.py:227:                print("The number of unlabeled data is {}".format(len(self.unlabeled_dataset)))
-./tasks/superglue/get_trainer.py:72:        model_args.pre_seq_len = semi_training_args.student_pre_seq_len
-./tasks/superglue/get_trainer.py:73:        student_model = get_model(data_args, model_args, TaskType.SEQUENCE_CLASSIFICATION, config)
-./tasks/superglue/get_trainer.py:75:            teacher_base_model=model,
-./tasks/superglue/get_trainer.py:76:            student_base_model=student_model,
-./tasks/superglue/get_trainer.py:80:            unlabeled_dataset=dataset.unlabeled_dataset,
-./tasks/superglue/get_trainer.py:84:            teacher_data_collator=dataset.data_collator,
-./tasks/superglue/get_trainer.py:85:            student_data_collator=dataset.data_collator,
-./tasks/qa/dataset.py:14:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16):
-./tasks/qa/dataset.py:19:    few_example_ids = np.random.choice(len(example_id_list), size=num_examples_per_label, replace=False)
-./tasks/qa/dataset.py:70:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/qa/dataset.py:71:        if data_args.num_examples_per_label is not None:
-./tasks/qa/dataset.py:75:                num_examples_per_label=data_args.num_examples_per_label
-./tasks/qa/dataset.py:79:                data_args.num_examples_per_label, 
-./tasks/ner/dataset.py:10:def random_sampling(raw_datasets: load_dataset, data_type: str="train", num_examples_per_label: Optional[int]=16):
-./tasks/ner/dataset.py:24:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./tasks/ner/dataset.py:80:        # 随机采样few-shot training / dev data（传入label_list，对每个label进行采样，最后得到索引列表）
-./tasks/ner/dataset.py:81:        if data_args.num_examples_per_label is not None:
-./tasks/ner/dataset.py:85:                num_examples_per_label=data_args.num_examples_per_label
-./tasks/ner/dataset.py:89:                data_args.num_examples_per_label, 
-./run_script/run_conll04_bert.sh:26:  --seed 11 \
-./run_script/run_conll04_roberta.sh:26:  --seed 11 \
-./run_script/run_ontonotes_roberta.sh:26:  --seed 14 \
-./run_script/run_wsc_bert.sh:25:  --seed 44 \
-./run_script/run_squad_roberta.sh:24:  --seed 11 \
-./run_script/run_squad_v2_roberta.sh:24:  --seed 11 \
-./run_script/run_boolq_bert.sh:25:  --seed 11 \
-./run_script/run_wic_roberta.sh:25:  --seed 11 \
-./run_script/run_boolq_roberta.sh:25:  --seed 11 \
-./run_script/run_conll12_bert.sh:26:  --seed 11 \
-./run_script/run_conll03_roberta.sh:26:  --seed 11 \
-./run_script/run_conll12_roberta.sh:26:  --seed 11 \
-./run_script/run_rte_bert.sh:25:  --seed 11 \
-./run_script/run_wsc_roberta.sh:25:  --seed 44 \
-./run_script/run_copa_roberta.sh:25:  --seed 11 \
-./run_script/run_copa_bert.sh:25:  --seed 44 \
-./run_script/run_conll05_roberta.sh:26:  --seed 11 \
-./run_script/run_wic_bert.sh:25:  --seed 44 \
-./run_script/run_rte_roberta.sh:25:  --seed 11 \
-./run_script/run_rte_roberta.sh:28:  --head_prefix \
-./run_script/run_ontonotes_bert.sh:26:  --seed 11 \
-./README.md:1:# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-./README.md:70:  --seed 11 \
-./README.md:78:- Full-data v.s. Few-shot: The training data is full / few-shot
-./README.md:79:- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-./README.md:87:#### Few-shot Head Tuning
-./arguments.py:34:    num_examples_per_label: Optional[int] = field(
-./arguments.py:139:    head_prefix: bool = field(
-./arguments.py:163:    head_ptuning: bool = field(
-./arguments.py:224:        default=False, metadata={"help": "If true, the training process will be transformed into self-training framework."}
-./arguments.py:226:    unlabeled_data_num: int = field(
-./arguments.py:229:            "help": "The total number of unlabeled data. If set -1 means all the training data (expect of few-shot labeled data)"
-./arguments.py:232:    unlabeled_data_batch_size: int = field(
-./arguments.py:235:            "help": "The number of unlabeled data in one batch."
-./arguments.py:238:    pseudo_sample_num_or_ratio: float = field(
-./arguments.py:241:            "help": "The number / ratio of pseudo-labeled data sampling. For example, if have 1000 unlabeled data, 0.1 / 100 means sampling 100 pseduo-labeled data."
-./arguments.py:244:    teacher_training_epoch: int = field(
-./arguments.py:247:            "help": "The epoch number of teacher training at the beginning of self-training."
-./arguments.py:250:    teacher_tuning_epoch: int = field(
-./arguments.py:253:            "help": "The epoch number of teacher tuning in each self-training iteration."
-./arguments.py:256:    student_training_epoch: int = field(
-./arguments.py:259:            "help": "The epoch number of student training in each self-training iteration."
-./arguments.py:262:    student_learning_rate: float = field(
-./arguments.py:265:            "help": "The learning rate of student training in each self-training iteration."
-./arguments.py:271:            "help": "The number of teacher-student iteration ."
-./arguments.py:274:    # self-training过程中，unlabeled data会先采样一个子集，因此student模型学习的样本数量只有不到1024个
-./arguments.py:275:    # post_student_train设置后，即允许在self-training后，选择最佳的teacher模型，并在全部的unlabeled data上打标和mc dropout
-./arguments.py:276:    # 此时student模型将会在更多的样本上训练（样本数量不超过20k）
-./arguments.py:277:    post_student_train: bool = field(
-./arguments.py:280:            "help": "Whether to train a student model on large pseudo-labeled data after self-training iteration"
-./arguments.py:283:    student_pre_seq_len: int = field(
-./training/self_trainer_copy.py:31:logger = logging.get_logger('Self-training')
-./training/self_trainer_copy.py:62:def random_sampling(raw_datasets, num_examples_per_label: Optional[int]=16):
-./training/self_trainer_copy.py:75:        idxs = np.random.choice(len(eid_list), size=num_examples_per_label, replace=False)
-./training/self_trainer_copy.py:80:class TeacherTrainer(BaseTrainer):
-./training/self_trainer_copy.py:95:        super(TeacherTrainer, self).__init__(model, args, data_collator, train_dataset, eval_dataset, tokenizer, model_init, compute_metrics, callbacks, optimizers)
-./training/self_trainer_copy.py:111:        unlabeled_dataset: Optional[Dataset] = None,
-./training/self_trainer_copy.py:112:        unlabeled_data_num: int = -1,
-./training/self_trainer_copy.py:113:        description: str = "Evaluate on Unlabeled Data via MC Dropout Uncertainty Estimation",
-./training/self_trainer_copy.py:129:        if unlabeled_data_num == -1 or unlabeled_data_num >= len(unlabeled_dataset):
-./training/self_trainer_copy.py:130:            unlabeled_data_num = len(unlabeled_dataset)
-./training/self_trainer_copy.py:135:                raw_datasets=unlabeled_dataset, 
-./training/self_trainer_copy.py:136:                num_examples_per_label=unlabeled_data_num // num_classes
-./training/self_trainer_copy.py:138:            unlabeled_dataset = unlabeled_dataset.select(recalled_examples_idx_list)
-./training/self_trainer_copy.py:139:            unlabeled_data_num = len(unlabeled_dataset)
-./training/self_trainer_copy.py:141:        unlabeled_dataloader = self.get_eval_dataloader(unlabeled_dataset)
-./training/self_trainer_copy.py:142:        model = self._wrap_model(self.model, training=True, dataloader=unlabeled_dataloader) # reset training to True
-./training/self_trainer_copy.py:144:        batch_size = unlabeled_dataloader.batch_size
-./training/self_trainer_copy.py:145:        # unlabeled_data_num = self.num_examples(unlabeled_dataloader)
-./training/self_trainer_copy.py:147:        logger.info(f"  Num examples = {unlabeled_data_num}")
-./training/self_trainer_copy.py:156:        #     if hasattr(unlabeled_dataloader, "sampler") and isinstance(unlabeled_dataloader.sampler, SequentialDistributedSampler):
-./training/self_trainer_copy.py:157:        #         make_multiple_of = unlabeled_dataloader.sampler.batch_size
-./training/self_trainer_copy.py:164:        self.callback_handler.eval_dataloader = unlabeled_dataloader
-./training/self_trainer_copy.py:166:        # y_T = np.zeros((T, unlabeled_data_num, num_classes))
-./training/self_trainer_copy.py:172:            for step, inputs in enumerate(unlabeled_dataloader):
-./training/self_trainer_copy.py:185:        # print("(unlabeled_data_num, num_classes)=", (unlabeled_data_num, num_classes))
-./training/self_trainer_copy.py:186:        assert y_mean.shape == (unlabeled_data_num, num_classes)
-./training/self_trainer_copy.py:190:        assert y_pred.shape == (unlabeled_data_num,)
-./training/self_trainer_copy.py:194:        assert y_var.shape == (unlabeled_data_num, num_classes)
-./training/self_trainer_copy.py:196:        return unlabeled_dataset, y_mean, y_var, y_pred, y_T
-./training/self_trainer_copy.py:200:class RobustTrainer(TeacherTrainer):
-./training/self_trainer_copy.py:240:        unlabeled_dataset: Optional[Dataset]=None,
-./training/self_trainer_copy.py:244:        teacher_data_collator=None,
-./training/self_trainer_copy.py:245:        student_data_collator=None,
-./training/self_trainer_copy.py:257:        self.unlabeled_dataset = unlabeled_dataset
-./training/self_trainer_copy.py:261:        self.teacher_data_collator = teacher_data_collator
-./training/self_trainer_copy.py:262:        self.student_data_collator = student_data_collator
-./training/self_trainer_copy.py:267:        # self.set_teacher_trainer()
-./training/self_trainer_copy.py:268:        # self.set_student_trainer()
-./training/self_trainer_copy.py:269:        self.training_args.per_device_train_batch_size = self.semi_training_args.unlabeled_data_batch_size
-./training/self_trainer_copy.py:270:        self.teacher_training_epoch = self.semi_training_args.teacher_training_epoch # 最初teacher模型在labeled data上训练的epoch数
-./training/self_trainer_copy.py:271:        self.teacher_tuning_epoch = self.semi_training_args.teacher_tuning_epoch # 每一轮Self-training时，teacher模型继续在labeled data上tune的epoch数
-./training/self_trainer_copy.py:272:        self.student_training_epoch = self.semi_training_args.student_training_epoch # 每一轮Self-training时，student模型在pseudo-labeled data上训练的epoch数
-./training/self_trainer_copy.py:273:        self.self_training_epoch = self.semi_training_args.self_training_epoch # Self-training迭代数
-./training/self_trainer_copy.py:274:        self.unlabeled_data_num = self.semi_training_args.unlabeled_data_num # self-training每轮迭代时，首先挑选一部分用于计算MC dropout uncertainty。-1表示全部计算uncertainty
-./training/self_trainer_copy.py:275:        self.pseudo_sample_num_or_ratio = self.semi_training_args.pseudo_sample_num_or_ratio # MC dropout后，从所有计算过uncertainty的unlabeled data上采样的样本比例/数量
-./training/self_trainer_copy.py:276:        self.student_learning_rate = self.semi_training_args.student_learning_rate
-./training/self_trainer_copy.py:279:    def get_teacher_trainer(
-./training/self_trainer_copy.py:289:        # 初始化Teacher训练器
-./training/self_trainer_copy.py:290:        teacher_trainer = TeacherTrainer(
-./training/self_trainer_copy.py:297:            data_collator=self.teacher_data_collator,
-./training/self_trainer_copy.py:300:        return teacher_trainer
-grep: ./model/__pycache__/model_adaptation.cpython-39.pyc: binary file matches
-
-__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__RC:0
-__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__PWD:/app/UPET
-__TTS_c728ea54a31e4c6ca0a8d12a2510eecd__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && sed -n '1,220p' run_script_fewshot/run_rte_roberta.sh && grep -RniE "semi|self_training|teacher_training_epoch|student_training_epoch|student_pre_seq_len|post_student_train|pseudo" arguments*.py tasks/superglue get_trainer.py run.py | sed -n '1,260p'; __tts_rc=$?; printf '\n__TTS_d597492e5c8f44d589cf6e28fb63abea__RC:%s\n' "$__tts_rc"; printf '__TTS_d597492e5c8f44d589cf6e28fb63abea__PWD:'; pwd; printf '__TTS_d597492e5c8f44d589cf6e28fb63abea__END\n'; tmux wait -S done
-[?2004lexport TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-# export CUDA_VISIBLE_DEVICES=2
-# export CUDA_VISIBLE_DEVICES=5
-
-bs=4
-lr=1e-2
-dropout=0.1
-psl=20
-epoch=100
-
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --overwrite_cache \
-  --do_train \
-  --do_eval \
-  --do_predict \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --pre_seq_len $psl \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 42 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --num_examples_per_label 16 \
-  --prompt_ptuning \
-  --use_pe
- 
-  # --head_prefix \
-  # --use_pe
-  # --adapter \
-  # --adapter_dim 256 \
-  # --adapter_choice list \
-
-grep: get_trainer.py: No such file or directoryarguments.py:222:class SemiSupervisedArguments:
-
-arguments.py:223:    use_semi: bool = field(
-arguments.py:238:    pseudo_sample_num_or_ratio: float = field(
-arguments.py:241:            "help": "The number / ratio of pseudo-labeled data sampling. For example, if have 1000 unlabeled data, 0.1 / 100 means sampling 100 pseduo-labeled data."
-arguments.py:244:    teacher_training_epoch: int = field(
-arguments.py:256:    student_training_epoch: int = field(
-arguments.py:268:    self_training_epoch: int = field(
-arguments.py:275:    # post_student_train设置后，即允许在self-training后，选择最佳的teacher模型，并在全部的unlabeled data上打标和mc dropout
-arguments.py:277:    post_student_train: bool = field(
-arguments.py:280:            "help": "Whether to train a student model on large pseudo-labeled data after self-training iteration"
-arguments.py:283:    student_pre_seq_len: int = field(
-arguments.py:324:    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments, SemiSupervisedArguments, QuestionAnwseringArguments))
-tasks/superglue/dataset.py:86:        semi_training_args=None,
-tasks/superglue/dataset.py:115:                    'pseudo_token': tokenizer.unk_token_id
-tasks/superglue/dataset.py:121:                    'pseudo_token': tokenizer.unk_token_id
-tasks/superglue/dataset.py:208:        if semi_training_args.use_semi is True:
-tasks/superglue/dataset.py:225:            if semi_training_args.use_semi is True:
-tasks/superglue/get_trainer.py:20:    model_args, data_args, training_args, semi_training_args, _ = args
-tasks/superglue/get_trainer.py:36:    dataset = SuperGlueDataset(tokenizer, data_args, training_args, semi_training_args=semi_training_args, use_prompt=use_prompt)
-tasks/superglue/get_trainer.py:71:    if semi_training_args.use_semi:
-tasks/superglue/get_trainer.py:72:        model_args.pre_seq_len = semi_training_args.student_pre_seq_len
-tasks/superglue/get_trainer.py:78:            semi_training_args=semi_training_args,
-run.py:73:    _, data_args, training_args, semi_training_args, _ = args
-
-__TTS_d597492e5c8f44d589cf6e28fb63abea__RC:0
-__TTS_d597492e5c8f44d589cf6e28fb63abea__PWD:/app/UPET
-__TTS_d597492e5c8f44d589cf6e28fb63abea__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- __TTS_d597492e5c8f44d589cf6e28fb63abea__PWD:/app/UPET && cd /app/UPET && sed -n '220,320p' arguments.py && sed -n '1,220p' tasks/superglue/get_trainer.py; __tts_rc=$?; printf '\n__TTS_9de4cb1da9e14f51a70c79e09060f356__RC:%s\n' "$__tts_rc"; printf '__TTS_9de4cb1da9e14f51a70c79e09060f356__PWD:'; pwd; printf '__TTS_9de4cb1da9e14f51a70c79e09060f356__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_d597492e5c8f44d589cf6e28fb63abea__PWD:/app/UPET: No such file or directory
-
-__TTS_9de4cb1da9e14f51a70c79e09060f356__RC:1
-__TTS_9de4cb1da9e14f51a70c79e09060f356__PWD:/app/UPET
-__TTS_9de4cb1da9e14f51a70c79e09060f356__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && sed -n '220,320p' arguments.py && printf '\n---\n' && sed -n '1,220p' tasks/superglue/get_trainer.py; __tts_rc=$?; printf '\n__TTS_63206687da4d43d0aa9ea23368bac841__RC:%s\n' "$__tts_rc"; printf '__TTS_63206687da4d43d0aa9ea23368bac841__PWD:'; pwd; printf '__TTS_63206687da4d43d0aa9ea23368bac841__END\n'; tmux wait -S done
-[?2004l
-@dataclass
-class SemiSupervisedArguments:
-    use_semi: bool = field(
-        default=False, metadata={"help": "If true, the training process will be transformed into self-training framework."}
-    )
-    unlabeled_data_num: int = field(
-        default=-1,
-        metadata={
-            "help": "The total number of unlabeled data. If set -1 means all the training data (expect of few-shot labeled data)"
-        }
-    )
-    unlabeled_data_batch_size: int = field(
-        default=16,
-        metadata={
-            "help": "The number of unlabeled data in one batch."
-        }
-    )
-    pseudo_sample_num_or_ratio: float = field(
-        default=0.1,
-        metadata={
-            "help": "The number / ratio of pseudo-labeled data sampling. For example, if have 1000 unlabeled data, 0.1 / 100 means sampling 100 pseduo-labeled data."
-        }
-    )
-    teacher_training_epoch: int = field(
-        default=10,
-        metadata={
-            "help": "The epoch number of teacher training at the beginning of self-training."
-        }
-    )
-    teacher_tuning_epoch: int = field(
-        default=10,
-        metadata={
-            "help": "The epoch number of teacher tuning in each self-training iteration."
-        }
-    )
-    student_training_epoch: int = field(
-        default=16,
-        metadata={
-            "help": "The epoch number of student training in each self-training iteration."
-        }
-    )
-    student_learning_rate: float = field(
-        default=1e-5,
-        metadata={
-            "help": "The learning rate of student training in each self-training iteration."
-        }
-    )
-    self_training_epoch: int = field(
-        default=30,
-        metadata={
-            "help": "The number of teacher-student iteration ."
-        }
-    )
-    # self-training过程中，unlabeled data会先采样一个子集，因此student模型学习的样本数量只有不到1024个
-    # post_student_train设置后，即允许在self-training后，选择最佳的teacher模型，并在全部的unlabeled data上打标和mc dropout
-    # 此时student模型将会在更多的样本上训练（样本数量不超过20k）
-    post_student_train: bool = field(
-        default=False,
-        metadata={
-            "help": "Whether to train a student model on large pseudo-labeled data after self-training iteration"
-        }
-    )
-    student_pre_seq_len: int = field(
-        default=4,
-        metadata={
-            "help": "The length of prompt"
-        }
-    )
-
-
-
-
-
-@dataclass
-class QuestionAnwseringArguments:
-    n_best_size: int = field(
-        default=20,
-        metadata={"help": "The total number of n-best predictions to generate when looking for an answer."},
-    )
-    max_answer_length: int = field(
-        default=30,
-        metadata={
-            "help": "The maximum length of an answer that can be generated. This is needed because the start "
-            "and end predictions are not conditioned on one another."
-        },
-    )
-    version_2_with_negative: bool = field(
-        default=False, metadata={"help": "If true, some of the examples do not have an answer."}
-    )
-    null_score_diff_threshold: float = field(
-        default=0.0,
-        metadata={
-            "help": "The threshold used to select the null answer: if the best answer has a score that is less than "
-            "the score of the null answer minus this threshold, the null answer is selected for this example. "
-            "Only useful when `version_2_with_negative=True`."
-        },
-    )
-
-
-
-
----
-import logging
-import os
-import random
-import sys
-
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-)
-
-from model.utils import get_model, TaskType
-from tasks.superglue.dataset import SuperGlueDataset
-from training.trainer_base import BaseTrainer
-from training.trainer_exp import ExponentialTrainer
-from training.self_trainer import SelfTrainer
-
-logger = logging.getLogger(__name__)
-
-def get_trainer(args):
-    model_args, data_args, training_args, semi_training_args, _ = args
-
-    log_level = training_args.get_process_log_level()
-    logger.setLevel(log_level)
-
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_args.model_name_or_path,
-        use_fast=model_args.use_fast_tokenizer,
-        revision=model_args.model_revision,
-    )
-
-    # add by wjn check if use prompt template
-    use_prompt = False
-    if model_args.prompt_prefix or model_args.prompt_ptuning or model_args.prompt_adapter or model_args.prompt_only:
-        use_prompt = True
-
-    dataset = SuperGlueDataset(tokenizer, data_args, training_args, semi_training_args=semi_training_args, use_prompt=use_prompt)
-
-    data_args.label_word_list = None # add by wjn
-    if use_prompt:
-        data_args.label_word_list = dataset.label_word_list # add by wjn
-
-    if training_args.do_train:
-        for index in random.sample(range(len(dataset.train_dataset)), 3):
-            logger.info(f"Sample {index} of the training set: {dataset.train_dataset[index]}.")
-
-    if not dataset.multiple_choice:
-        config = AutoConfig.from_pretrained(
-            model_args.model_name_or_path,
-            num_labels=dataset.num_labels,
-            label2id=dataset.label2id,
-            id2label=dataset.id2label,
-            finetuning_task=data_args.dataset_name,
-            revision=model_args.model_revision,
-        )
-    else:
-        config = AutoConfig.from_pretrained(
-            model_args.model_name_or_path,
-            num_labels=dataset.num_labels,
-            finetuning_task=data_args.dataset_name,
-            revision=model_args.model_revision,
-        )
-
-    if not dataset.multiple_choice:
-        model = get_model(data_args, model_args, TaskType.SEQUENCE_CLASSIFICATION, config)
-    else:
-        model = get_model(data_args, model_args, TaskType.MULTIPLE_CHOICE, config)
-
-
-    # Initialize our Trainer
-
-    if semi_training_args.use_semi:
-        model_args.pre_seq_len = semi_training_args.student_pre_seq_len
-        student_model = get_model(data_args, model_args, TaskType.SEQUENCE_CLASSIFICATION, config)
-        trainer = SelfTrainer(
-            teacher_base_model=model,
-            student_base_model=student_model,
-            training_args=training_args,
-            semi_training_args=semi_training_args,
-            train_dataset=dataset.train_dataset if training_args.do_train else None,
-            unlabeled_dataset=dataset.unlabeled_dataset,
-            eval_dataset=dataset.eval_dataset if training_args.do_eval else None,
-            compute_metrics=dataset.compute_metrics,
-            tokenizer=tokenizer,
-            teacher_data_collator=dataset.data_collator,
-            student_data_collator=dataset.data_collator,
-            test_key=dataset.test_key,
-            task_type="cls",
-            num_classes=len(dataset.label2id),
-        )
-
-        return trainer, None
-
-    trainer = BaseTrainer(
-        model=model,
-        args=training_args,
-        train_dataset=dataset.train_dataset if training_args.do_train else None,
-        eval_dataset=dataset.eval_dataset if training_args.do_eval else None,
-        compute_metrics=dataset.compute_metrics,
-        tokenizer=tokenizer,
-        data_collator=dataset.data_collator,
-        test_key=dataset.test_key
-    )
-
-    return trainer, None
-
-__TTS_63206687da4d43d0aa9ea23368bac841__RC:0
-__TTS_63206687da4d43d0aa9ea23368bac841__PWD:/app/UPET
-__TTS_63206687da4d43d0aa9ea23368bac841__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- __TTS_63206687da4d43d0aa9ea23368bac841__PWD:/app/UPET && cd /app/UPET && python -u run.py --model_name_or_path roberta-base --task_name superglue --dataset_name rte --overwrite_cache --do_train --do_eval --max_seq_length 128 --per_device_train_batch_size 4 --learning_rate 1e-2 --num_train_epochs 1 --pre_seq_len 20 --output_dir checkpoints/rte-roberta-base-5shot --overwrite_output_dir --hidden_dropout_prob 0.1 --seed 42 --save_strategy no --evaluation_strategy epoch --num_examples_per_label 5 --prompt_ptuning --use_pe 2>&1 | tee /tmp/upet_rte_train.log; __tts_rc=$?; printf '\n__TTS_d68ccaeb44134eddadd6f916b7a51bc2__RC:%s\n' "$__tts_rc"; printf '__TTS_d68ccaeb44134eddadd6f916b7a51bc2__PWD:'; pwd; printf '__TTS_d68ccaeb44134eddadd6f916b7a51bc2__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_63206687da4d43d0aa9ea23368bac841__PWD:/app/UPET: No such file or directory
-
-__TTS_d68ccaeb44134eddadd6f916b7a51bc2__RC:1
-__TTS_d68ccaeb44134eddadd6f916b7a51bc2__PWD:/app/UPET
-__TTS_d68ccaeb44134eddadd6f916b7a51bc2__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && python -u run.py --model_name_or_path roberta-base --task_name superglue --dataset_name rte --overwrite_cache --do_train --do_eval --max_seq_length 128 --per_device_train_batch_size 4 --learning_rate 1e-2 --num_train_epochs 1 --pre_seq_len 20 --output_dir checkpoints/rte-roberta-base-5shot --overwrite_output_dir --hidden_dropout_prob 0.1 --seed 42 --save_strategy no --evaluation_strategy epoch --num_examples_per_label 5 --prompt_ptuning --use_pe 2>&1 | tee /tmp/upet_rte_train.log; __tts_rc=$?; printf '\n__TTS_d7e25adc7d494a7eaa284004ece73189__RC:%s\n' "$__tts_rc"; printf '__TTS_d7e25adc7d494a7eaa284004ece73189__PWD:'; pwd; printf '__TTS_d7e25adc7d494a7eaa284004ece73189__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File "/app/UPET/run.py", line 7, in <module>
-    import datasets
-ModuleNotFoundError: No module named 'datasets'
-
-__TTS_d7e25adc7d494a7eaa284004ece73189__RC:0
-__TTS_d7e25adc7d494a7eaa284004ece73189__PWD:/app/UPET
-__TTS_d7e25adc7d494a7eaa284004ece73189__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && ls && sed -n '1,220p' README.md | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_6da619be4bd843f88aa777a550846021__RC:%s\n' "$__tts_rc"; printf '__TTS_6da619be4bd843f88aa777a550846021__PWD:'; pwd; printf '__TTS_6da619be4bd843f88aa777a550846021__END\n'; tmux wait -S done
-[?2004lLICENSE       README.md     metrics  requirements.txt  run_script	   run_script_semi  search_script  training
-PT-Retrieval  arguments.py  model    run.py	       run_script_fewshot  search.py	    tasks
-# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-
-
-Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
-Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
-
-augment definition：
-e.g.,
---prefix -> --head-prefix or --prompt-prefix
---prompt -> --head-ptuning or --prompt-ptuning
-
-### Setup
-We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
-
-```shell
-conda create -n pt2 python=3.8.5
-conda activate pt2
-```
-
-After we setup basic conda environment, install pytorch related packages via:
-
-```shell
-conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
-```
-
-Finally, install other python packages we need:
-
-```shell
-pip install -r requirements.txt
-```
-
-### Data
-For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
-
-For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
-After downloading, unzip the packup to the project root.
-Please use at your own risk.
-
-### Training
-Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
-
-You can change the augments and run:
-```shell
-bash run_script/run_rte_roberta.sh
-```
-or
-
-```shell
-export TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --prefix
-```
-This script is run for Full-data Full-supervised Pre-fix Tuning.
-
-We provide the following kinds of settings:
-- Full-data v.s. Few-shot: The training data is full / few-shot
-- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
-- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
-- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
-
-The specific augments for different scenarios:
-
-
-#### Few-shot Head Tuning
-
-### Implemented Results
-Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
-
-Released results on BERT-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
-|--------------|-------|------|------|------|------|---------|---------------|---------|
-| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
-| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
-| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
-
-Released results on RoBERTa-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
-|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
-| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
-| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
-| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
-
-For other hyper-parameters, please refer to the training scripts. 
-If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
-
-## Citation
-
-If you find our work useful, please kindly cite our paper:
-
-
-
-
-
-
----
-
-use_prompt
-sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
-
-
-
-superglue
-BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
-glue
-CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
-
-
-
-__TTS_6da619be4bd843f88aa777a550846021__RC:0
-__TTS_6da619be4bd843f88aa777a550846021__PWD:/app/UPET
-__TTS_6da619be4bd843f88aa777a550846021__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && pip install -q -r requirements.txt; __tts_rc=$?; printf '\n__TTS_2b68d3fd0783495a999e73d436cd0175__RC:%s\n' "$__tts_rc"; printf '__TTS_2b68d3fd0783495a999e73d436cd0175__PWD:'; pwd; printf '__TTS_2b68d3fd0783495a999e73d436cd0175__END\n'; tmux wait -S done
-[?2004l  [1;31merror[0m: [1msubprocess-exited-with-error[0m
-  
-  [31m×[0m [32mPreparing metadata [0m[1;32m([0m[32mpyproject.toml[0m[1;32m)[0m did not run successfully.
-  [31m│[0m exit code: [1;36m1[0m
-  [31m╰─>[0m [31m[53 lines of output][0m
-  [31m   [0m Running from numpy source directory.
-  [31m   [0m setup.py:470: UserWarning: Unrecognized setuptools command, proceeding with generating Cython sources and expanding templates
-  [31m   [0m   run_build = parse_setuppy_commands()
-  [31m   [0m 
-  [31m   [0m Error compiling Cython file:
-  [31m   [0m ------------------------------------------------------------
-  [31m   [0m ...
-  [31m   [0m     def __init__(self, seed=None):
-  [31m   [0m         BitGenerator.__init__(self, seed)
-  [31m   [0m         self.rng_state.pcg_state = &self.pcg64_random_state
-  [31m   [0m 
-  [31m   [0m         self._bitgen.state = <void *>&self.rng_state
-  [31m   [0m         self._bitgen.next_uint64 = &pcg64_uint64
-  [31m   [0m                                    ^
-  [31m   [0m ------------------------------------------------------------
-  [31m   [0m _pcg64.pyx:113:35: Cannot assign type 'uint64_t (*)(void *) except? -1LL nogil' to 'uint64_t (*)(void *) noexcept nogil'. Exception values are incompatible. Suggest adding 'noexcept' to the type of the value being assigned.
-  [31m   [0m Processing numpy/random/_bounded_integers.pxd.in
-  [31m   [0m Processing numpy/random/_pcg64.pyx
-  [31m   [0m Traceback (most recent call last):
-  [31m   [0m   File "/tmp/pip-install-5345mxzs/numpy_830fecf4370d4b45bf0b768471f26bd7/tools/cythonize.py", line 235, in <module>
-  [31m   [0m     main()
-  [31m   [0m   File "/tmp/pip-install-5345mxzs/numpy_830fecf4370d4b45bf0b768471f26bd7/tools/cythonize.py", line 231, in main
-  [31m   [0m     find_process_files(root_dir)
-  [31m   [0m   File "/tmp/pip-install-5345mxzs/numpy_830fecf4370d4b45bf0b768471f26bd7/tools/cythonize.py", line 222, in find_process_files
-  [31m   [0m     process(root_dir, fromfile, tofile, function, hash_db)
-  [31m   [0m   File "/tmp/pip-install-5345mxzs/numpy_830fecf4370d4b45bf0b768471f26bd7/tools/cythonize.py", line 188, in process
-  [31m   [0m     processor_function(fromfile, tofile)
-  [31m   [0m   File "/tmp/pip-install-5345mxzs/numpy_830fecf4370d4b45bf0b768471f26bd7/tools/cythonize.py", line 77, in process_pyx
-  [31m   [0m     subprocess.check_call(
-  [31m   [0m   File "/usr/local/lib/python3.10/subprocess.py", line 369, in check_call
-  [31m   [0m     raise CalledProcessError(retcode, cmd)
-  [31m   [0m subprocess.CalledProcessError: Command '['/usr/local/bin/python3.10', '-m', 'cython', '-3', '--fast-fail', '-o', '_pcg64.c', '_pcg64.pyx']' returned non-zero exit status 1.
-  [31m   [0m Cythonizing sources
-  [31m   [0m Traceback (most recent call last):
-  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 353, in <module>
-  [31m   [0m     main()
-  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 335, in main
-  [31m   [0m     json_out['return_val'] = hook(**hook_input['kwargs'])
-  [31m   [0m   File "/usr/local/lib/python3.10/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 149, in prepare_metadata_for_build_wheel
-  [31m   [0m     return hook(metadata_directory, config_settings)
-  [31m   [0m   File "/tmp/pip-build-env-6pk2__cs/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 157, in prepare_metadata_for_build_wheel
-  [31m   [0m     self.run_setup()
-  [31m   [0m   File "/tmp/pip-build-env-6pk2__cs/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 248, in run_setup
-  [31m   [0m     super(_BuildMetaLegacyBackend,
-  [31m   [0m   File "/tmp/pip-build-env-6pk2__cs/overlay/lib/python3.10/site-packages/setuptools/build_meta.py", line 142, in run_setup
-  [31m   [0m     exec(compile(code, __file__, 'exec'), locals())
-  [31m   [0m   File "setup.py", line 499, in <module>
-  [31m   [0m     setup_package()
-  [31m   [0m   File "setup.py", line 479, in setup_package
-  [31m   [0m     generate_cython()
-  [31m   [0m   File "setup.py", line 274, in generate_cython
-  [31m   [0m     raise RuntimeError("Running cythonize failed!")
-  [31m   [0m RuntimeError: Running cythonize failed!
-  [31m   [0m [31m[end of output][0m
-  
-  [1;35mnote[0m: This error originates from a subprocess, and is likely not a problem with pip.
-[1;31merror[0m: [1mmetadata-generation-failed[0m
-
-[31m×[0m Encountered error while generating package metadata.
-[31m╰─>[0m See above for output.
-
-[1;35mnote[0m: This is an issue with the package mentioned above, not pip.
-[1;36mhint[0m: See above for details.
-
-[1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m A new release of pip is available: [0m[31;49m23.0.1[0m[39;49m -> [0m[32;49m26.1.2[0m
-[1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m To update, run: [0m[32;49mpip install --upgrade pip[0m
-
-__TTS_2b68d3fd0783495a999e73d436cd0175__RC:1
-__TTS_2b68d3fd0783495a999e73d436cd0175__PWD:/app/UPET
-__TTS_2b68d3fd0783495a999e73d436cd0175__END
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- /app/UPET && cd /app/UPET && cat requirements.txt && python - <<'PY'
-[?2004l[?2004h> import pkgutil
-[?2004l[?2004h> mods=['torch','transformers','datasets','sklearn','scipy','seqeval']
-[?2004l[?2004h> print({m:pkgutil.find_loader(m) is not None for m in mods})
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_8b74c6767800431d9ead2b21bb875aae__RC:%s\n' "$__tts_rc"; printf '__TTS_8b74c6767800431d9ead2b21bb875aae__PWD:'; pwd; printf '__TTS_8b74c6767800431d9ead2b21bb875aae__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && python -c "import pkgutil,sys;print(open('requirements.txt').read());print({m:(pkgutil.find_loader(m) is not None) for m in ['torch','transformers','datasets','sklearn','scipy','seqeval','numpy']})"; __tts_rc=$?; printf '\n__TTS_0feb9fc7a0c44512a5e348d35718b043__RC:%s\n' "$__tts_rc"; printf '__TTS_0feb9fc7a0c44512a5e348d35718b043__PWD:'; pwd; printf '__TTS_0feb9fc7a0c44512a5e348d35718b043__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && sed -n '1,200p' requirements.txt; __tts_rc=$?; printf '\n__TTS_4a5a14b1cc4a49dda1a99ac48add67d8__RC:%s\n' "$__tts_rc"; printf '__TTS_4a5a14b1cc4a49dda1a99ac48add67d8__PWD:'; pwd; printf '__TTS_4a5a14b1cc4a49dda1a99ac48add67d8__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && timeout 30 python -c "import pkgutil;print({m:(pkgutil.find_loader(m) is not None) for m in ['torch','transformers','datasets','sklearn','scipy','seqeval','numpy']})"; __tts_rc=$?; printf '\n__TTS_416b5fda8abd41e49cf17f50d2147987__RC:%s\n' "$__tts_rc"; printf '__TTS_416b5fda8abd41e49cf17f50d2147987__PWD:'; pwd; printf '__TTS_416b5fda8abd41e49cf17f50d2147987__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && python -u -m pip install -q datasets==2.10.1 seqeval scikit-learn scipy; __tts_rc=$?; printf '\n__TTS_f6625f1651a94f639f240d21311ac2ca__RC:%s\n' "$__tts_rc"; printf '__TTS_f6625f1651a94f639f240d21311ac2ca__PWD:'; pwd; printf '__TTS_f6625f1651a94f639f240d21311ac2ca__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && timeout 1800 python -u -m pip install datasets==2.10.1 seqeval scikit-learn scipy; __tts_rc=$?; printf '\n__TTS_f6b82847857c4cb89bd85b230d225b61__RC:%s\n' "$__tts_rc"; printf '__TTS_f6b82847857c4cb89bd85b230d225b61__PWD:'; pwd; printf '__TTS_f6b82847857c4cb89bd85b230d225b61__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && sed -n '1,260p' requirements.txt; __tts_rc=$?; printf '\n__TTS_017b6061119945998913d125ccc2e328__RC:%s\n' "$__tts_rc"; printf '__TTS_017b6061119945998913d125ccc2e328__PWD:'; pwd; printf '__TTS_017b6061119945998913d125ccc2e328__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && python -c "import pathlib;print(pathlib.Path('requirements.txt').read_text()[:2000])"; __tts_rc=$?; printf '\n__TTS_7b15f6fbad454bbcb17e9f4ef2dac372__RC:%s\n' "$__tts_rc"; printf '__TTS_7b15f6fbad454bbcb17e9f4ef2dac372__PWD:'; pwd; printf '__TTS_7b15f6fbad454bbcb17e9f4ef2dac372__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/UPET && cd /app/UPET && python -c "print(open('requirements.txt','rb').read().decode('utf-8','ignore'))"; __tts_rc=$?; printf '\n__TTS_cd47ce7e2f284206bfd0cd565fd37a05__RC:%s\n' "$__tts_rc"; printf '__TTS_cd47ce7e2f284206bfd0cd565fd37a05__PWD:'; pwd; printf '__TTS_cd47ce7e2f284206bfd0cd565fd37a05__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 15 delimited by end-of-file (wanted `PY')
-datasets==1.15.1
-numpy==1.19.2
-tqdm==4.62.3
-transformers==4.11.3
-seqeval==1.2.2
-  File "<stdin>", line 4
-    PY; __tts_rc=$?; printf '\n__TTS_8b74c6767800431d9ead2b21bb875aae__RC:%s\n' "$__tts_rc"; printf '__TTS_8b74c6767800431d9ead2b21bb875aae__PWD:'; pwd; printf '__TTS_8b74c6767800431d9ead2b21bb875aae__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@f348cf209ae9:/app/UPET# cd -- ''"'"'; pwd; printf '"'"'' && cd /app/UPET && python -u -m pip install --only-binary=:all: datasets==2.10.1 seqeval scikit-learn scipy; __tts_rc=$?; printf '\n__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__RC:%s\n' "$__tts_rc"; printf '__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__PWD:'; pwd; printf '__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__RC:1
-__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__PWD:/app/UPET
-__TTS_c5aa4750cef447bc9ed4df9f56dcb85e__END
-[?2004hroot@f348cf209ae9:/app/UPET# 

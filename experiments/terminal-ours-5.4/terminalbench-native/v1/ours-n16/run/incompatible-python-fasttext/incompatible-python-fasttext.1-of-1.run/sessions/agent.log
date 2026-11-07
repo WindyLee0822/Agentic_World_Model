@@ -1,42 +1,0 @@
-[?2004hroot@ce03130cf252:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@ce03130cf252:/app# clear
-[?2004l[H[J[3J[?2004hroot@ce03130cf252:/app# pwd; __tts_rc=$?; printf '\n__TTS_6e2f0ad7bb68479aa23791f41d3333ef__RC:%s\n' "$__tts_rc"; printf '__TTS_6e2f0ad7bb68479aa23791f41d3333ef__PWD:'; pwd; printf '__TTS_6e2f0ad7bb68479aa23791f41d3333ef__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_6e2f0ad7bb68479aa23791f41d3333ef__RC:0
-__TTS_6e2f0ad7bb68479aa23791f41d3333ef__PWD:/app
-__TTS_6e2f0ad7bb68479aa23791f41d3333ef__END
-[?2004hroot@ce03130cf252:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import sys, subprocess
-[?2004l[?2004h> print('python', sys.version)
-[?2004l[?2004h> try:
-[?2004l[?2004h>  import fasttext
-[?2004l[?2004h>  print('fasttext ok', fasttext.__file__)
-[?2004l[?2004h> except Exception as e:
-[?2004l[?2004h>  print('fasttext import error:', repr(e))
-[?2004l[?2004h>  try:
-[?2004l[?2004h>   import importlib.util
-[?2004l[?2004h>   print('spec', importlib.util.find_spec('fasttext'))
-[?2004l[?2004h>  except Exception as e2:
-[?2004l[?2004h>   print('spec error', repr(e2))
-[?2004l[?2004h> print('pip show:')
-[?2004l[?2004h> subprocess.run([sys.executable,'-m','pip','show','fasttext'], check=False)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_7270eb3b969f4d7caa2cbd909d007eed__RC:%s\n' "$__tts_rc"; printf '__TTS_7270eb3b969f4d7caa2cbd909d007eed__PWD:'; pwd; printf '__TTS_7270eb3b969f4d7caa2cbd909d007eed__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && find /app -maxdepth 2 -type f \( -name 'fasttext.py' -o -name 'fasttext.*' \) -printf '%p\n' && python - <<'PY'
-[?2004l[?2004h> import os,sys,importlib.util
-[?2004l[?2004h> print('cwd',os.getcwd())
-[?2004l[?2004h> print('exists',os.path.exists('/app/fasttext.py'))
-[?2004l[?2004h> if os.path.exists('/app/fasttext.py'):
-[?2004l[?2004h>     print(open('/app/fasttext.py','r',encoding='utf-8',errors='replace').read()[:4000])
-[?2004l[?2004h> print('sys.path[0]',sys.path[0])
-[?2004l[?2004h> print('site fasttext spec', importlib.util.find_spec('fasttext'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_aa537f43373e42b68190ad22ceb60662__RC:%s\n' "$__tts_rc"; printf '__TTS_aa537f43373e42b68190ad22ceb60662__PWD:'; pwd; printf '__TTS_aa537f43373e42b68190ad22ceb60662__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m15[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_7270eb3b969f4d7caa2cbd909d007eed__RC:%s\n' "$__tts_rc"; printf '__TTS_7270eb3b969f4d7caa2cbd909d007eed__PWD:'; pwd; printf '__TTS_7270eb3b969f4d7caa2cbd909d007eed__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@ce03130cf252:/app# 

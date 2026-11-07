@@ -1,94 +1,0 @@
-[?2004hroot@ab3546f97b9d:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@ab3546f97b9d:/app# clear
-[?2004l[H[J[3J[?2004hroot@ab3546f97b9d:/app# pwd; __tts_rc=$?; printf '\n__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__RC:%s\n' "$__tts_rc"; printf '__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__PWD:'; pwd; printf '__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__RC:0
-__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__PWD:/app
-__TTS_efb3e00c34254a9ba32bb4bb5eb8a44a__END
-[?2004hroot@ab3546f97b9d:/app# cd -- /app && sqlite3 trunc.db ".recover" | head -n 40; __tts_rc=$?; printf '\n__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__RC:%s\n' "$__tts_rc"; printf '__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__PWD:'; pwd; printf '__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__END\n'; tmux wait -S done
-[?2004lbash: sqlite3: command not found
-
-__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__RC:0
-__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__PWD:/app
-__TTS_1c7ff7977cd743cd8baeaa96054c5ec2__END
-[?2004hroot@ab3546f97b9d:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import sqlite3, json, os, re
-[?2004l[?2004h> src='/app/trunc.db'; out='/app/recover.json'
-[?2004l[?2004h> con=sqlite3.connect(src)
-[?2004l[?2004h> cur=con.cursor()
-[?2004l[?2004h> rows=[]
-[?2004l[?2004h> try:
-[?2004l[?2004h>     tabs=[r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table'")]
-[?2004l[?2004h> except Exception:
-[?2004l[?2004h>     tabs=[]
-[?2004l[?2004h> for t in tabs:
-[?2004l[?2004h>     try:
-[?2004l[?2004h>         cols=[r[1] for r in cur.execute(f'PRAGMA table_info("{t}")')]
-[?2004l[?2004h>         if 'word' in cols and 'value' in cols:
-[?2004l[?2004h>             for w,v in cur.execute(f'SELECT word,value FROM "{t}"'):
-[?2004l[?2004h>                 rows.append({'word':w,'value':v})
-[?2004l[?2004h>     except Exception:
-[?2004l[?2004h>         pass
-[?2004l[?2004h> if not rows:
-[?2004l[?2004h>     data=open(src,'rb').read()
-[?2004l[?2004h>     txt=''.join(chr(b) if 32<=b<127 else ' ' for b in data)
-[?2004l[?2004h>     words=re.findall(r'testword[A-Za-z0-9]+', txt)
-[?2004l[?2004h>     vals=[int(x) for x in re.findall(r'(?<!\d)(\d{1,10})(?!\d)', txt)]
-[?2004l[?2004h>     seen=set()
-[?2004l[?2004h>     for i,w in enumerate(words):
-[?2004l[?2004h>         if w in seen: continue
-[?2004l[?2004h>         seen.add(w)
-[?2004l[?2004h>         v=vals[i] if i < len(vals) else None
-[?2004l[?2004h>         rows.append({'word':w,'value':v})
-[?2004l[?2004h> with open(out,'w') as f:
-[?2004l[?2004h>     json.dump(rows,f)
-[?2004l[?2004h> print(len(rows))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_5689efdcb4594d229f6ad9daabe3b213__RC:%s\n' "$__tts_rc"; printf '__TTS_5689efdcb4594d229f6ad9daabe3b213__PWD:'; pwd; printf '__TTS_5689efdcb4594d229f6ad9daabe3b213__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import struct,re,json,os;data=open('/app/trunc.db','rb').read();ps=struct.unpack('>H',data[16:18])[0] or 65536;pc=struct.unpack('>I',data[28:32])[0];rx=re.compile(b'testword[0-9A-Za-z]+');rows=[];seen=set();
-[?2004l[?2004h> for p in range(1,pc+1):
-[?2004l[?2004h>  o=(p-1)*ps
-[?2004l[?2004h>  if o+8>len(data) or data[o]!=13: continue
-[?2004l[?2004h>  n=struct.unpack('>H',data[o+3:o+5])[0]
-[?2004l[?2004h>  for i in range(n):
-[?2004l[?2004h>   co=o+8+2*i
-[?2004l[?2004h>   if co+2>len(data): break
-[?2004l[?2004h>   cell=o+struct.unpack('>H',data[co:co+2])[0]
-[?2004l[?2004h>   if cell>=len(data): continue
-[?2004l[?2004h>   j=cell
-[?2004l[?2004h>   for _ in range(2):
-[?2004l[?2004h>    while j<len(data) and data[j]&128: j+=1
-[?2004l[?2004h>    j+=1
-[?2004l[?2004h>   if j>=len(data): continue
-[?2004l[?2004h>   k=j
-[?2004l[?2004h>   while k<len(data) and data[k]&128: k+=1
-[?2004l[?2004h>   if k>=len(data): continue
-[?2004l[?2004h>   hsz=0
-[?2004l[?2004h>   for b in data[j:k+1]: hsz=(hsz<<7)|(b&127)
-[?2004l[?2004h>   hdr=data[k+1:k+hsz]
-[?2004l[?2004h>   m=rx.search(data[cell:cell+200])
-[?2004l[?2004h>   if not m: continue
-[?2004l[?2004h>   w=m.group().decode()
-[?2004l[?2004h>   nums=[int(x) for x in re.findall(rb'(?<!\d)\d{1,10}(?!\d)',data[cell:cell+200])]
-[?2004l[?2004h>   v=next((x for x in nums if x!=13), nums[-1] if nums else None)
-[?2004l[?2004h>   if w not in seen: seen.add(w); rows.append({'word':w,'value':v})
-[?2004l[?2004h> open('/app/recover.json','w').write(json.dumps(rows))"; __tts_rc=$?; printf '\n__TTS_b89dc2174e054734b3738ccc6674825e__RC:%s\n' "$__tts_rc"; printf '__TTS_b89dc2174e054734b3738ccc6674825e__PWD:'; pwd; printf '__TTS_b89dc2174e054734b3738ccc6674825e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import json,mmap,re; f=open('/app/trunc.db','rb'); mm=mmap.mmap(f.fileno(),0,access=mmap.ACCESS_READ); rx=re.compile(rb'testword[0-9A-Za-z]+'); out=[]; seen=set(); pos=0
-[?2004l[?2004h> while True:
-[?2004l[?2004h>  m=rx.search(mm,pos)
-[?2004l[?2004h>  if not m: break
-[?2004l[?2004h>  w=m.group().decode(); pos=m.end()
-[?2004l[?2004h>  if w in seen: continue
-[?2004l[?2004h>  seen.add(w)
-[?2004l[?2004h>  s=max(0,m.start()-64); e=min(len(mm),m.end()+64); nums=[int(x) for x in re.findall(rb'(?<!\d)\d{1,10}(?!\d)', mm[s:e]) if x not in (b'13',)]
-[?2004l[?2004h>  out.append({'word':w,'value':(nums[-1] if nums else None)})
-[?2004l[?2004h> open('/app/recover.json','w').write(json.dumps(out))"; __tts_rc=$?; printf '\n__TTS_b4362fc3dba94434a8302aaceee869db__RC:%s\n' "$__tts_rc"; printf '__TTS_b4362fc3dba94434a8302aaceee869db__PWD:'; pwd; printf '__TTS_b4362fc3dba94434a8302aaceee869db__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 33
-    cd -- /app && python3 -c "import struct,re,json,os;data=open('/app/trunc.db','rb').read();ps=struct.unpack('>H',data[16:18])[0] or 65536;pc=struct.unpack('>I',data[28:32])[0];rx=re.compile(b'testword[0-9A-Za-z]+');rows=[];seen=set();
-                             ^
-SyntaxError: unterminated string literal (detected at line 33)
-[?2004hroot@ab3546f97b9d:/app# 

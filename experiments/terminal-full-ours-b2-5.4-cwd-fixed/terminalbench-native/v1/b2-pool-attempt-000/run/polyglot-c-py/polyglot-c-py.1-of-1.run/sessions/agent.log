@@ -1,53 +1,0 @@
-[?2004hroot@06d556bdd747:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@06d556bdd747:/app# clear
-[?2004l[H[J[3J[?2004hroot@06d556bdd747:/app# pwd; __tts_rc=$?; printf '\n__TTS_94b2c662c5e648b2bc97fb853f475f21__RC:%s\n' "$__tts_rc"; printf '__TTS_94b2c662c5e648b2bc97fb853f475f21__PWD:'; pwd; printf '__TTS_94b2c662c5e648b2bc97fb853f475f21__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_94b2c662c5e648b2bc97fb853f475f21__RC:0
-__TTS_94b2c662c5e648b2bc97fb853f475f21__PWD:/app
-__TTS_94b2c662c5e648b2bc97fb853f475f21__END
-[?2004hroot@06d556bdd747:/app# cd -- /app && cat > /app/main.c.py <<'EOF'
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> """
-[?2004l[?2004h> import sys
-[?2004l[?2004h> 
-[?2004l[?2004h> def fib(n):
-[?2004l[?2004h>     a,b=0,1
-[?2004l[?2004h>     for _ in range(n):
-[?2004l[?2004h>         a,b=b,a+b
-[?2004l[?2004h>     return a
-[?2004l[?2004h> 
-[?2004l[?2004h> if __name__ == '__main__':
-[?2004l[?2004h>     n=int(sys.argv[1])
-[?2004l[?2004h>     print(fib(n))
-[?2004l[?2004h>     sys.exit()
-[?2004l[?2004h> """
-[?2004l[?2004h> #endif
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> 
-[?2004l[?2004h> unsigned long long fib(unsigned long long n){
-[?2004l[?2004h>     unsigned long long a=0,b=1,t;
-[?2004l[?2004h>     while(n--){ t=a+b; a=b; b=t; }
-[?2004l[?2004h>     return a;
-[?2004l[?2004h> }
-[?2004l[?2004h> 
-[?2004l[?2004h> int main(int argc,char**argv){
-[?2004l[?2004h>     if(argc<2) return 1;
-[?2004l[?2004h>     unsigned long long n=strtoull(argv[1],0,10);
-[?2004l[?2004h>     printf("%llu\n", fib(n));
-[?2004l[?2004h>     return 0;
-[?2004l[?2004h> }
-[?2004l[?2004h> EOF; __tts_rc=$?; printf '\n__TTS_9de7f491e8a14b8bb153a36dfd007fea__RC:%s\n' "$__tts_rc"; printf '__TTS_9de7f491e8a14b8bb153a36dfd007fea__PWD:'; pwd; printf '__TTS_9de7f491e8a14b8bb153a36dfd007fea__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && sed -n '1,220p' /app/main.c.py; __tts_rc=$?; printf '\n__TTS_fe72550a8daf4564bbd765fa5c1fd8a0__RC:%s\n' "$__tts_rc"; printf '__TTS_fe72550a8daf4564bbd765fa5c1fd8a0__PWD:'; pwd; printf '__TTS_fe72550a8daf4564bbd765fa5c1fd8a0__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> open('/app/main.c.py','w').write('#if 0\n"""\nimport sys\n\ndef fib(n):\n    a,b=0,1\n    for _ in range(n):\n        a,b=b,a+b\n    return a\n\nif __name__ == "__main__":\n    print(fib(int(sys.argv[1])))\n    raise SystemExit\n#*/\n#endif\n#include <stdio.h>\n#include <stdlib.h>\nunsigned long long fib(unsigned long long n){unsigned long long a=0,b=1,t;while(n--){t=a+b;a=b;b=t;}return a;}\nint main(int argc,char**argv){if(argc<2)return 1;printf("%llu\\n",fib(strtoull(argv[1],0,10)));return 0;}\n')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_a9dc5daa997246c3bc615411fc7a502e__RC:%s\n' "$__tts_rc"; printf '__TTS_a9dc5daa997246c3bc615411fc7a502e__PWD:'; pwd; printf '__TTS_a9dc5daa997246c3bc615411fc7a502e__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `EOF')
-[?2004hroot@06d556bdd747:/app# cd -- ''"'"'; pwd; printf '"'"'_' && python3 - <<'PY'
-[?2004l[?2004h> print(open('/app/main.c.py').read())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d632e00cddd846cf911eb97f08095a44__RC:%s\n' "$__tts_rc"; printf '__TTS_d632e00cddd846cf911eb97f08095a44__PWD:'; pwd; printf '__TTS_d632e00cddd846cf911eb97f08095a44__END\n'; tmux wait -S done
-[?2004l[?2004h> 

@@ -1,926 +1,0 @@
-[?2004hroot@593e78469879:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@593e78469879:/app# clear
-[?2004l[H[J[3J[?2004hroot@593e78469879:/app# pwd; __tts_rc=$?; printf '\n__TTS_66d71e4412034564860dbeb06c9dfb8d__RC:%s\n' "$__tts_rc"; printf '__TTS_66d71e4412034564860dbeb06c9dfb8d__PWD:'; pwd; printf '__TTS_66d71e4412034564860dbeb06c9dfb8d__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_66d71e4412034564860dbeb06c9dfb8d__RC:0
-__TTS_66d71e4412034564860dbeb06c9dfb8d__PWD:/app
-__TTS_66d71e4412034564860dbeb06c9dfb8d__END
-[?2004hroot@593e78469879:/app# cd -- /app && ls -la /app && find /app/sqlite -maxdepth 2 -type f | sed 's#^#/ #' | head -n 80; __tts_rc=$?; printf '\n__TTS_480255422704494ca55398a9494ab07a__RC:%s\n' "$__tts_rc"; printf '__TTS_480255422704494ca55398a9494ab07a__PWD:'; pwd; printf '__TTS_480255422704494ca55398a9494ab07a__END\n'; tmux wait -S done
-[?2004ltotal 8
-drwxr-xr-x 2 root root 4096 May 28  2025 [0m[01;34m.[0m
-drwxr-xr-x 1 root root 4096 Jul 18 00:42 [01;34m..[0m
-find: ‘/app/sqlite’: No such file or directory
-
-__TTS_480255422704494ca55398a9494ab07a__RC:0
-__TTS_480255422704494ca55398a9494ab07a__PWD:/app
-__TTS_480255422704494ca55398a9494ab07a__END
-[?2004hroot@593e78469879:/app# cd -- /app && find / -maxdepth 3 -type d -name sqlite 2>/dev/null | sed -n '1,20p'; __tts_rc=$?; printf '\n__TTS_515d038f586e496e84956b67a9debb88__RC:%s\n' "$__tts_rc"; printf '__TTS_515d038f586e496e84956b67a9debb88__PWD:'; pwd; printf '__TTS_515d038f586e496e84956b67a9debb88__END\n'; tmux wait -S done
-[?2004l
-__TTS_515d038f586e496e84956b67a9debb88__RC:0
-__TTS_515d038f586e496e84956b67a9debb88__PWD:/app
-__TTS_515d038f586e496e84956b67a9debb88__END
-[?2004hroot@593e78469879:/app# cd -- /app && find / -maxdepth 3 \( -iname 'sqlite*' -o -iname 'sqlite-src*' \) 2>/dev/null | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__RC:%s\n' "$__tts_rc"; printf '__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__PWD:'; pwd; printf '__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__END\n'; tmux wait -S done
-[?2004l
-__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__RC:0
-__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__PWD:/app
-__TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__END
-[?2004hroot@593e78469879:/app# cd -- __TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__PWD:/app && find / -maxdepth 3 \( -type f -iname 'sqlite3.c' -o -type f -iname 'configure' -o -type f -iname 'Makefile.in' \) 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__RC:%s\n' "$__tts_rc"; printf '__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__PWD:'; pwd; printf '__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_9b186ed1eafe4cf7bd4d3bd1faa3439d__PWD:/app: No such file or directory
-
-__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__RC:1
-__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__PWD:/app
-__TTS_364a3a8381a14fbc997f2ba7ce52b8b8__END
-[?2004hroot@593e78469879:/app# cd -- /app && find / -maxdepth 4 \( -type f -iname 'sqlite3.c' -o -type f -iname 'configure' -o -type f -iname 'Makefile.in' -o -type f -iname 'sqlite3' \) 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_de04a4dd76f54c7888f4e7ef45228cd5__RC:%s\n' "$__tts_rc"; printf '__TTS_de04a4dd76f54c7888f4e7ef45228cd5__PWD:'; pwd; printf '__TTS_de04a4dd76f54c7888f4e7ef45228cd5__END\n'; tmux wait -S done
-[?2004l
-__TTS_de04a4dd76f54c7888f4e7ef45228cd5__RC:0
-__TTS_de04a4dd76f54c7888f4e7ef45228cd5__PWD:/app
-__TTS_de04a4dd76f54c7888f4e7ef45228cd5__END
-[?2004hroot@593e78469879:/app# cd -- /app && find / -maxdepth 5 \( -type f -iname 'sqlite3.c' -o -type f -iname 'sqlite3' -o -type f -iname 'configure' -o -type f -iname 'Makefile.in' -o -type f -iname 'sqlite-autoconf*tar*' -o -type f -iname 'sqlite-src*tar*' -o -type f -iname '*.zip' \) 2>/dev/null | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_5074e94de6e2429d811d6143ee846d3a__RC:%s\n' "$__tts_rc"; printf '__TTS_5074e94de6e2429d811d6143ee846d3a__PWD:'; pwd; printf '__TTS_5074e94de6e2429d811d6143ee846d3a__END\n'; tmux wait -S done
-[?2004l
-__TTS_5074e94de6e2429d811d6143ee846d3a__RC:0
-__TTS_5074e94de6e2429d811d6143ee846d3a__PWD:/app
-__TTS_5074e94de6e2429d811d6143ee846d3a__END
-[?2004hroot@593e78469879:/app# cd -- __TTS_5074e94de6e2429d811d6143ee846d3a__PWD:/app && cd /app && git clone --depth 1 https://github.com/sqlite/sqlite.git; __tts_rc=$?; printf '\n__TTS_01fe4ff05cc145ee9efc0d04633120af__RC:%s\n' "$__tts_rc"; printf '__TTS_01fe4ff05cc145ee9efc0d04633120af__PWD:'; pwd; printf '__TTS_01fe4ff05cc145ee9efc0d04633120af__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_5074e94de6e2429d811d6143ee846d3a__PWD:/app: No such file or directory
-
-__TTS_01fe4ff05cc145ee9efc0d04633120af__RC:1
-__TTS_01fe4ff05cc145ee9efc0d04633120af__PWD:/app
-__TTS_01fe4ff05cc145ee9efc0d04633120af__END
-[?2004hroot@593e78469879:/app# cd -- __TTS_01fe4ff05cc145ee9efc0d04633120af__PWD:/app && cd /app && git clone --depth 1 https://github.com/sqlite/sqlite.git; __tts_rc=$?; printf '\n__TTS_4b75dcee3f484adea4305ac32b75f0e8__RC:%s\n' "$__tts_rc"; printf '__TTS_4b75dcee3f484adea4305ac32b75f0e8__PWD:'; pwd; printf '__TTS_4b75dcee3f484adea4305ac32b75f0e8__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_01fe4ff05cc145ee9efc0d04633120af__PWD:/app: No such file or directory
-
-__TTS_4b75dcee3f484adea4305ac32b75f0e8__RC:1
-__TTS_4b75dcee3f484adea4305ac32b75f0e8__PWD:/app
-__TTS_4b75dcee3f484adea4305ac32b75f0e8__END
-[?2004hroot@593e78469879:/app# cd -- __TTS_4b75dcee3f484adea4305ac32b75f0e8__PWD:/app && pwd && ls -la /app && command -v gcc make git curl wget unzip tar && env | grep '^PATH='; __tts_rc=$?; printf '\n__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__RC:%s\n' "$__tts_rc"; printf '__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__PWD:'; pwd; printf '__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_4b75dcee3f484adea4305ac32b75f0e8__PWD:/app: No such file or directory
-
-__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__RC:1
-__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__PWD:/app
-__TTS_b739ecba9d5a4537a48ddb1d9b2fbb4a__END
-[?2004hroot@593e78469879:/app# cd -- /app && cd /app && pwd && ls -la && command -v gcc make git curl wget unzip tar && printf '%s
-[?2004l[?2004h> ' "$PATH"; __tts_rc=$?; printf '\n__TTS_a1227dcab9724a37a64521154d8eade2__RC:%s\n' "$__tts_rc"; printf '__TTS_a1227dcab9724a37a64521154d8eade2__PWD:'; pwd; printf '__TTS_a1227dcab9724a37a64521154d8eade2__END\n'; tmux wait -S done
-[?2004l/app
-total 8
-drwxr-xr-x 2 root root 4096 May 28  2025 [0m[01;34m.[0m
-drwxr-xr-x 1 root root 4096 Jul 18 00:42 [01;34m..[0m
-/usr/bin/tar
-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-__TTS_a1227dcab9724a37a64521154d8eade2__RC:0
-__TTS_a1227dcab9724a37a64521154d8eade2__PWD:/app
-__TTS_a1227dcab9724a37a64521154d8eade2__END
-[?2004hroot@593e78469879:/app# cd -- /app && cd /app && find / -maxdepth 4 \( -type f -name 'sqlite*.tar*' -o -type f -name 'sqlite*.zip' -o -type d -name '.git' \) 2>/dev/null | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__RC:%s\n' "$__tts_rc"; printf '__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__PWD:'; pwd; printf '__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__END\n'; tmux wait -S done
-[?2004l
-__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__RC:0
-__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__PWD:/app
-__TTS_c5f4e9a3d7cb44eaa91b2689539d312b__END
-[?2004hroot@593e78469879:/app# cd -- /app && cd /app && apt-get update && apt-get install -y gcc make git && git clone --depth 1 https://github.com/sqlite/sqlite.git; __tts_rc=$?; printf '\n__TTS_b99b2f6069bd4c1ba7706e670565d7c0__RC:%s\n' "$__tts_rc"; printf '__TTS_b99b2f6069bd4c1ba7706e670565d7c0__PWD:'; pwd; printf '__TTS_b99b2f6069bd4c1ba7706e670565d7c0__END\n'; tmux wait -S done
-[?2004l0% [Working]            Get:1 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
-0% [1 InRelease 14.0 kB/256 kB 5%] [Connecting to security.ubuntu.com (185.125.190.82)]                                                                                       Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
-                                                                                       0% [1 InRelease 54.0 kB/256 kB 21%] [2 InRelease 14.0 kB/126 kB 11%]                                                                    0% [2 InRelease 35.4 kB/126 kB 28%]0% [Waiting for headers] [2 InRelease 42.5 kB/126 kB 34%]                                                         Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
-0% [3 InRelease 12.5 kB/126 kB 10%] [2 InRelease 42.5 kB/126 kB 34%]                                                                    0% [Waiting for headers] [2 InRelease 62.5 kB/126 kB 50%]0% [Waiting for headers] [2 InRelease 81.1 kB/126 kB 64%]                                                         Get:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
-0% [4 InRelease 3976 B/126 kB 3%] [2 InRelease 83.9 kB/126 kB 67%]                                                                  0% [2 InRelease 92.5 kB/126 kB 73%]0% [Waiting for headers] [2 InRelease 120 kB/126 kB 95%]                                                        Get:5 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
-0% [5 Packages 4045 B/331 kB 1%] [2 InRelease 124 kB/126 kB 98%]                                                                0% [5 Packages 42.6 kB/331 kB 13%]14% [5 Packages 221 kB/331 kB 67%]14% [Waiting for headers] [Waiting for headers]                                               Get:6 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
-14% [6 Packages 37.8 kB/19.3 MB 0%] [Waiting for headers]14% [5 Packages store 0 B] [6 Packages 37.8 kB/19.3 MB 0%] [Waiting for headers]                                                                                15% [6 Packages 97.8 kB/19.3 MB 1%] [Waiting for headers]                                                         Get:7 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1456 kB]
-16% [6 Packages 582 kB/19.3 MB 3%] [7 Packages 2615 B/1456 kB 0%]63% [6 Packages 18.4 MB/19.3 MB 95%] [7 Packages 617 kB/1456 kB 42%]                                                                    65% [Waiting for headers] [7 Packages 617 kB/1456 kB 42%]                                                         Get:8 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
-66% [8 Packages 68.4 kB/117 kB 58%] [7 Packages 617 kB/1456 kB 42%]66% [6 Packages store 0 B] [8 Packages 68.4 kB/117 kB 58%] [7 Packages 617 kB/1456 kB 42%]                                                                                          66% [6 Packages store 0 B] [Waiting for headers] [7 Packages 617 kB/1456 kB 42%]                                                                                Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
-66% [6 Packages store 0 B] [9 Packages 42.0 kB/1808 kB 2%] [7 Packages 617 kB/1456 kB 42%]                                                                                          70% [6 Packages store 0 B] [Waiting for headers] [7 Packages 645 kB/1456 kB 44%]                                                                                Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1385 kB]
-70% [6 Packages store 0 B] [10 Packages 28.7 kB/1385 kB 2%] [7 Packages 645 kB/1456 kB 44%]                                                                                           74% [6 Packages store 0 B] [Waiting for headers] [7 Packages 812 kB/1456 kB 56%]                                                                                Get:11 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1563 kB]
-74% [6 Packages store 0 B] [11 Packages 59.0 kB/1563 kB 4%] [7 Packages 812 kB/1456 kB 56%]                                                                                           78% [6 Packages store 0 B] [Waiting for headers] [7 Packages 877 kB/1456 kB 60%]                                                                                Get:12 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [49.5 kB]
-79% [6 Packages store 0 B] [12 Packages 49.5 kB/49.5 kB 100%] [7 Packages 877 kB/1456 kB 60%]                                                                                             79% [6 Packages store 0 B] [Waiting for headers] [7 Packages 881 kB/1456 kB 61%]                                                                                Get:13 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2114 kB]
-79% [6 Packages store 0 B] [13 Packages 28.1 kB/2114 kB 1%] [7 Packages 881 kB/1456 kB 61%]                                                                                           84% [6 Packages store 0 B] [Waiting for headers] [7 Packages 979 kB/1456 kB 67%]                                                                                Get:14 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [35.9 kB]
-84% [6 Packages store 0 B] [14 Packages 28.7 kB/35.9 kB 80%] [7 Packages 979 kB/1456 kB 67%]                                                                                            84% [6 Packages store 0 B] [Waiting for headers] [7 Packages 979 kB/1456 kB 67%]                                                                                Get:15 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [671 B]
-84% [6 Packages store 0 B] [15 Packages 671 B/671 B 100%] [7 Packages 979 kB/1456 kB 67%]                                                                                         84% [6 Packages store 0 B] [Waiting for headers] [7 Packages 979 kB/1456 kB 67%]                                                                                Get:16 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [48.9 kB]
-84% [6 Packages store 0 B] [16 Packages 29.9 kB/48.9 kB 61%] [7 Packages 979 kB/1456 kB 67%]                                                                                            84% [6 Packages store 0 B] [7 Packages 984 kB/1456 kB 68%]                                                          86% [6 Packages store 0 B]                          Get:17 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1497 kB]
-86% [6 Packages store 0 B] [17 Packages 6899 B/1497 kB 0%]                                                          90% [17 Packages 1424 kB/1497 kB 95%]90% [8 Packages store 0 B] [17 Packages 1424 kB/1497 kB 95%]                                                            90% [17 Packages 1467 kB/1497 kB 98%]90% [9 Packages store 0 B] [17 Packages 1467 kB/1497 kB 98%]                                                            91% [9 Packages store 0 B] [Waiting for headers]                                                Get:18 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [43.8 kB]
-91% [9 Packages store 0 B] [18 Packages 8568 B/43.8 kB 20%]                                                           91% [9 Packages store 0 B] [Waiting for headers]                                                Get:19 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1055 kB]
-91% [9 Packages store 0 B] [19 Packages 7375 B/1055 kB 1%]                                                          91% [19 Packages 98.9 kB/1055 kB 9%]91% [10 Packages store 0 B] [19 Packages 98.9 kB/1055 kB 9%]                                                            94% [19 Packages 853 kB/1055 kB 81%]94% [11 Packages store 0 B] [19 Packages 853 kB/1055 kB 81%]                                                            94% [11 Packages store 0 B]                           95% [Working]95% [12 Packages store 0 B]                           96% [Working]96% [13 Packages store 0 B]                           96% [Working]96% [14 Packages store 0 B]                           97% [Working]97% [15 Packages store 0 B]                           97% [Working]97% [16 Packages store 0 B]                           98% [Working]98% [7 Packages store 0 B]                          98% [Working]98% [17 Packages store 0 B]                           99% [Working]99% [18 Packages store 0 B]                           99% [Working]99% [19 Packages store 0 B]                           100% [Working]              Fetched 31.5 MB in 2s (12.7 MB/s)
-Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 63%Reading package lists... 63%Reading package lists... 64%Reading package lists... 64%Reading package lists... 65%Reading package lists... 65%Reading package lists... 69%Reading package lists... 69%Reading package lists... 77%Reading package lists... 77%Reading package lists... 83%Reading package lists... 83%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 88%Reading package lists... 88%Reading package lists... 94%Reading package lists... 94%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
-Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 5%Reading package lists... 5%Reading package lists... 63%Reading package lists... 63%Reading package lists... 64%Reading package lists... 64%Reading package lists... 65%Reading package lists... 65%Reading package lists... 69%Reading package lists... 69%Reading package lists... 77%Reading package lists... 77%Reading package lists... 83%Reading package lists... 83%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 84%Reading package lists... 88%Reading package lists... 88%Reading package lists... 94%Reading package lists... 94%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
-Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 34%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
-Reading state information... 0% Reading state information... 4%Reading state information... Done
-The following additional packages will be installed:
-  adduser binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-13 cpp-13-x86-64-linux-gnu cpp-x86-64-linux-gnu fontconfig-config fonts-dejavu-core
-  fonts-dejavu-mono gcc-13 gcc-13-base gcc-13-x86-64-linux-gnu gcc-14-base gcc-x86-64-linux-gnu git-man krb5-locales less libaom3 libasan8 libatomic1
-  libbinutils libbrotli1 libbsd0 libc-bin libc-dev-bin libc-devtools libc6 libc6-dev libcbor0.10 libcc1-0 libcrypt-dev libctf-nobfd0 libctf0
-  libcurl3t64-gnutls libdeflate0 libedit2 liberror-perl libfido2-1 libfontconfig1 libfreetype6 libgcc-13-dev libgcc-s1 libgd3 libgdbm-compat4t64 libgdbm6t64
-  libgomp1 libgprofng0 libgssapi-krb5-2 libheif-plugin-aomdec libheif-plugin-aomenc libheif1 libhwasan0 libisl23 libitm1 libjansson4 libjbig0 libjpeg-turbo8
-  libjpeg8 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-common libldap2 liblerc4 liblsan0 libmpc3 libmpfr6 libnghttp2-14 libperl5.38t64
-  libpng16-16t64 libpsl5t64 libquadmath0 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libsframe1 libsharpyuv0 libssh-4 libstdc++6 libtiff6
-  libtsan2 libubsan1 libwebp7 libx11-6 libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxmuu1 libxpm4 linux-libc-dev manpages manpages-dev openssh-client
-  patch perl perl-base perl-modules-5.38 publicsuffix rpcsvc-proto xauth
-Suggested packages:
-  liblocale-gettext-perl cron quota ecryptfs-utils binutils-doc gprofng-gui cpp-doc gcc-13-locales cpp-13-doc gcc-multilib autoconf automake libtool flex
-  bison gdb gcc-doc gcc-13-multilib gcc-13-doc gdb-x86-64-linux-gnu gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui gitk gitweb
-  git-cvs git-mediawiki git-svn glibc-doc locales libnss-nis libnss-nisplus libgd-tools gdbm-l10n krb5-doc krb5-user libheif-plugin-libde265
-  libheif-plugin-x265 libheif-plugin-ffmpegdec libheif-plugin-jpegdec libheif-plugin-jpegenc libheif-plugin-j2kdec libheif-plugin-j2kenc libheif-plugin-rav1e
-  libheif-plugin-svtenc libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql make-doc
-  man-browser keychain libpam-ssh monkeysphere ssh-askpass ed diffutils-doc perl-doc libterm-readline-gnu-perl | libterm-readline-perl-perl
-  libtap-harness-archive-perl
-The following NEW packages will be installed:
-  adduser binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-13 cpp-13-x86-64-linux-gnu cpp-x86-64-linux-gnu fontconfig-config fonts-dejavu-core
-  fonts-dejavu-mono gcc gcc-13 gcc-13-base gcc-13-x86-64-linux-gnu gcc-x86-64-linux-gnu git git-man krb5-locales less libaom3 libasan8 libatomic1 libbinutils
-  libbrotli1 libbsd0 libc-dev-bin libc-devtools libc6-dev libcbor0.10 libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl3t64-gnutls libdeflate0 libedit2
-  liberror-perl libfido2-1 libfontconfig1 libfreetype6 libgcc-13-dev libgd3 libgdbm-compat4t64 libgdbm6t64 libgomp1 libgprofng0 libgssapi-krb5-2
-  libheif-plugin-aomdec libheif-plugin-aomenc libheif1 libhwasan0 libisl23 libitm1 libjansson4 libjbig0 libjpeg-turbo8 libjpeg8 libk5crypto3 libkeyutils1
-  libkrb5-3 libkrb5support0 libldap-common libldap2 liblerc4 liblsan0 libmpc3 libmpfr6 libnghttp2-14 libperl5.38t64 libpng16-16t64 libpsl5t64 libquadmath0
-  librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libsframe1 libsharpyuv0 libssh-4 libtiff6 libtsan2 libubsan1 libwebp7 libx11-6 libx11-data libxau6
-  libxcb1 libxdmcp6 libxext6 libxmuu1 libxpm4 linux-libc-dev make manpages manpages-dev openssh-client patch perl perl-modules-5.38 publicsuffix rpcsvc-proto
-  xauth
-The following packages will be upgraded:
-  gcc-14-base libc-bin libc6 libgcc-s1 libstdc++6 perl-base
-6 upgraded, 103 newly installed, 0 to remove and 45 not upgraded.
-Need to get 88.1 MB of archives.
-After this operation, 301 MB of additional disk space will be used.
-0% [Working]            Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 perl-base amd64 5.38.2-3.2ubuntu0.3 [1827 kB]
-0% [1 perl-base 14.0 kB/1827 kB 1%]1% [1 perl-base 780 kB/1827 kB 43%]                                   2% [Working]            Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gcc-14-base amd64 14.2.0-4ubuntu2~24.04.1 [51.0 kB]
-2% [2 gcc-14-base 6850 B/51.0 kB 13%]                                     2% [Waiting for headers]                        Get:3 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgcc-s1 amd64 14.2.0-4ubuntu2~24.04.1 [78.4 kB]
-2% [3 libgcc-s1 11.2 kB/78.4 kB 14%]                                    2% [Waiting for headers]                        Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libstdc++6 amd64 14.2.0-4ubuntu2~24.04.1 [792 kB]
-2% [4 libstdc++6 16.2 kB/792 kB 2%]                                   3% [Waiting for headers]                        Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libc6 amd64 2.39-0ubuntu8.7 [3263 kB]
-3% [5 libc6 4096 B/3263 kB 0%]                              6% [Waiting for headers]                        Get:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libc-bin amd64 2.39-0ubuntu8.7 [682 kB]
-6% [6 libc-bin 12.3 kB/682 kB 2%]                                 7% [Waiting for headers]                        Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 perl-modules-5.38 all 5.38.2-3.2ubuntu0.3 [3110 kB]
-7% [7 perl-modules-5.38 32.8 kB/3110 kB 1%]                                           10% [Waiting for headers]                         Get:8 http://archive.ubuntu.com/ubuntu noble/main amd64 libgdbm6t64 amd64 1.23-5.1build1 [34.4 kB]
-10% [8 libgdbm6t64 24.1 kB/34.4 kB 70%]                                       10% [Working]             Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 libgdbm-compat4t64 amd64 1.23-5.1build1 [6710 B]
-10% [9 libgdbm-compat4t64 6710 B/6710 B 100%]                                             11% [Waiting for headers]                         Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libperl5.38t64 amd64 5.38.2-3.2ubuntu0.3 [4876 kB]
-11% [10 libperl5.38t64 47.9 kB/4876 kB 1%]                                          15% [Waiting for headers]                         Get:11 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 perl amd64 5.38.2-3.2ubuntu0.3 [231 kB]
-15% [11 perl 24.7 kB/231 kB 11%]                                16% [Waiting for headers]                         Get:12 http://archive.ubuntu.com/ubuntu noble/main amd64 adduser all 3.137ubuntu1 [101 kB]
-16% [12 adduser 52.1 kB/101 kB 52%]                                   16% [Working]             Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 krb5-locales all 1.20.1-6ubuntu2.6 [14.8 kB]
-16% [13 krb5-locales 14.8 kB/14.8 kB 100%]                                          16% [Working]             Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 less amd64 590-2ubuntu2.1 [142 kB]
-16% [14 less 65.2 kB/142 kB 46%]                                16% [Waiting for headers]                         Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libbsd0 amd64 0.12.1-1build1.1 [41.2 kB]
-16% [15 libbsd0 41.2 kB/41.2 kB 100%]                                     17% [Working]             Get:16 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libkrb5support0 amd64 1.20.1-6ubuntu2.6 [34.4 kB]
-17% [16 libkrb5support0 14.6 kB/34.4 kB 43%]                                            17% [Working]             Get:17 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libk5crypto3 amd64 1.20.1-6ubuntu2.6 [82.0 kB]
-17% [17 libk5crypto3 6849 B/82.0 kB 8%]                                       17% [Waiting for headers]                         Get:18 http://archive.ubuntu.com/ubuntu noble/main amd64 libkeyutils1 amd64 1.6.3-3build1 [9490 B]
-17% [18 libkeyutils1 9490 B/9490 B 100%]                                        17% [Working]             Get:19 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libkrb5-3 amd64 1.20.1-6ubuntu2.6 [348 kB]
-17% [19 libkrb5-3 19.0 kB/348 kB 5%]                                    18% [Waiting for headers]                         Get:20 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgssapi-krb5-2 amd64 1.20.1-6ubuntu2.6 [143 kB]
-18% [20 libgssapi-krb5-2 64.3 kB/143 kB 45%]                                            18% [Waiting for headers]                         Get:21 http://archive.ubuntu.com/ubuntu noble/main amd64 libcbor0.10 amd64 0.10.2-1.2ubuntu2 [25.8 kB]
-18% [21 libcbor0.10 25.8 kB/25.8 kB 100%]                                         18% [Working]             Get:22 http://archive.ubuntu.com/ubuntu noble/main amd64 libedit2 amd64 3.1-20230828-1build1 [97.6 kB]
-18% [22 libedit2 26.0 kB/97.6 kB 27%]                                     19% [Working]             Get:23 http://archive.ubuntu.com/ubuntu noble/main amd64 libfido2-1 amd64 1.14.0-1build3 [83.5 kB]
-19% [23 libfido2-1 32.9 kB/83.5 kB 39%]                                       19% [Working]             Get:24 http://archive.ubuntu.com/ubuntu noble/main amd64 libjansson4 amd64 2.14-2build2 [32.8 kB]
-19% [24 libjansson4 14.6 kB/32.8 kB 45%]                                        19% [Working]             Get:25 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libnghttp2-14 amd64 1.59.0-1ubuntu0.4 [74.6 kB]
-19% [25 libnghttp2-14 7795 B/74.6 kB 10%]                                         19% [Working]             Get:26 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpng16-16t64 amd64 1.6.43-5ubuntu0.6 [189 kB]
-19% [26 libpng16-16t64 37.7 kB/189 kB 20%]                                          20% [Waiting for headers]                         Get:27 http://archive.ubuntu.com/ubuntu noble/main amd64 libpsl5t64 amd64 0.21.2-1.1build1 [57.1 kB]
-20% [27 libpsl5t64 48.3 kB/57.1 kB 85%]                                       20% [Waiting for headers]                         Get:28 http://archive.ubuntu.com/ubuntu noble/main amd64 libxau6 amd64 1:1.0.9-1build6 [7160 B]
-                         Get:29 http://archive.ubuntu.com/ubuntu noble/main amd64 libxdmcp6 amd64 1:1.1.3-0ubuntu6 [10.3 kB]
-20% [29 libxdmcp6 10.3 kB/10.3 kB 100%]                                       20% [Waiting for headers]                         Get:30 http://archive.ubuntu.com/ubuntu noble/main amd64 libxcb1 amd64 1.15-1ubuntu2 [47.7 kB]
-20% [30 libxcb1 47.7 kB/47.7 kB 100%]                                     20% [Waiting for headers]                         Get:31 http://archive.ubuntu.com/ubuntu noble/main amd64 libx11-data all 2:1.8.7-1build1 [115 kB]
-20% [31 libx11-data 13.7 kB/115 kB 12%]                                       21% [Working]             Get:32 http://archive.ubuntu.com/ubuntu noble/main amd64 libx11-6 amd64 2:1.8.7-1build1 [650 kB]
-21% [32 libx11-6 15.0 kB/650 kB 2%]                                   22% [Waiting for headers]                         Get:33 http://archive.ubuntu.com/ubuntu noble/main amd64 libxext6 amd64 2:1.3.4-1build2 [30.4 kB]
-22% [33 libxext6 20.3 kB/30.4 kB 67%]                                     22% [Working]             Get:34 http://archive.ubuntu.com/ubuntu noble/main amd64 libxmuu1 amd64 2:1.1.3-3build2 [8958 B]
-22% [34 libxmuu1 3615 B/8958 B 40%]                                   22% [Waiting for headers]                         Get:35 http://archive.ubuntu.com/ubuntu noble/main amd64 manpages all 6.7-2 [1384 kB]
-22% [35 manpages 49.2 kB/1384 kB 4%]                                    23% [Waiting for headers]                         Get:36 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 openssh-client amd64 1:9.6p1-3ubuntu13.18 [908 kB]
-23% [36 openssh-client 51.9 kB/908 kB 6%]                                         24% [Waiting for headers]                         Get:37 http://archive.ubuntu.com/ubuntu noble/main amd64 publicsuffix all 20231001.0357-0.1 [129 kB]
-24% [37 publicsuffix 48.3 kB/129 kB 37%]                                        25% [Waiting for headers]                         Get:38 http://archive.ubuntu.com/ubuntu noble/main amd64 xauth amd64 1:1.1.2-1build1 [25.6 kB]
-25% [38 xauth 25.6 kB/25.6 kB 100%]                                   25% [Working]             Get:39 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 binutils-common amd64 2.42-4ubuntu2.10 [240 kB]
-25% [39 binutils-common 37.2 kB/240 kB 15%]                                           25% [Waiting for headers]                         Get:40 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsframe1 amd64 2.42-4ubuntu2.10 [15.7 kB]
-25% [40 libsframe1 15.7 kB/15.7 kB 100%]                                        26% [Waiting for headers]                         Get:41 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libbinutils amd64 2.42-4ubuntu2.10 [577 kB]
-26% [41 libbinutils 42.8 kB/577 kB 7%]                                      26% [Waiting for headers]                         Get:42 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libctf-nobfd0 amd64 2.42-4ubuntu2.10 [98.0 kB]
-26% [42 libctf-nobfd0 12.3 kB/98.0 kB 13%]                                          26% [Working]             Get:43 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libctf0 amd64 2.42-4ubuntu2.10 [94.5 kB]
-27% [43 libctf0 22.7 kB/94.5 kB 24%]                                    27% [Working]             Get:44 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgprofng0 amd64 2.42-4ubuntu2.10 [849 kB]
-27% [44 libgprofng0 15.9 kB/849 kB 2%]                                      28% [Waiting for headers]                         Get:45 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 binutils-x86-64-linux-gnu amd64 2.42-4ubuntu2.10 [2463 kB]
-28% [45 binutils-x86-64-linux-gnu 18.9 kB/2463 kB 1%]                                                     30% [Waiting for headers]                         Get:46 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 binutils amd64 2.42-4ubuntu2.10 [18.2 kB]
-30% [46 binutils 18.2 kB/18.2 kB 100%]                                      30% [Working]             Get:47 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gcc-13-base amd64 13.3.0-6ubuntu2~24.04.1 [51.6 kB]
-30% [47 gcc-13-base 4096 B/51.6 kB 8%]                                      31% [Working]             Get:48 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libisl23 amd64 0.26-3build1.1 [680 kB]
-31% [48 libisl23 65.2 kB/680 kB 10%]                                    31% [Waiting for headers]                         Get:49 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libmpfr6 amd64 4.2.1-1build1.1 [353 kB]
-31% [49 libmpfr6 40.5 kB/353 kB 11%]                                    32% [Waiting for headers]                         Get:50 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libmpc3 amd64 1.3.1-1build1.1 [54.6 kB]
-32% [50 libmpc3 34.2 kB/54.6 kB 63%]                                    32% [Waiting for headers]                         Get:51 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 cpp-13-x86-64-linux-gnu amd64 13.3.0-6ubuntu2~24.04.1 [10.7 MB]
-32% [51 cpp-13-x86-64-linux-gnu 44.8 kB/10.7 MB 0%]                                                   42% [Waiting for headers]                         Get:52 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 cpp-13 amd64 13.3.0-6ubuntu2~24.04.1 [1042 B]
-42% [Waiting for headers]                         Get:53 http://archive.ubuntu.com/ubuntu noble/main amd64 cpp-x86-64-linux-gnu amd64 4:13.2.0-7ubuntu1 [5326 B]
-42% [Waiting for headers]                         Get:54 http://archive.ubuntu.com/ubuntu noble/main amd64 cpp amd64 4:13.2.0-7ubuntu1 [22.4 kB]
-42% [54 cpp 22.4 kB/22.4 kB 100%]                                 43% [Waiting for headers]                         Get:55 http://archive.ubuntu.com/ubuntu noble/main amd64 fonts-dejavu-mono all 2.37-8 [502 kB]
-43% [55 fonts-dejavu-mono 48.2 kB/502 kB 10%]                                             43% [Waiting for headers]                         Get:56 http://archive.ubuntu.com/ubuntu noble/main amd64 fonts-dejavu-core all 2.37-8 [835 kB]
-43% [56 fonts-dejavu-core 21.5 kB/835 kB 3%]                                            44% [Waiting for headers]                         Get:57 http://archive.ubuntu.com/ubuntu noble/main amd64 fontconfig-config amd64 2.15.0-1.1ubuntu2 [37.3 kB]
-44% [57 fontconfig-config 37.3 kB/37.3 kB 100%]                                               44% [Working]             Get:58 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcc1-0 amd64 14.2.0-4ubuntu2~24.04.1 [48.0 kB]
-44% [58 libcc1-0 0 B/48.0 kB 0%]                                45% [Waiting for headers]                         Get:59 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgomp1 amd64 14.2.0-4ubuntu2~24.04.1 [148 kB]
-45% [59 libgomp1 47.9 kB/148 kB 32%]                                    45% [Waiting for headers]                         Get:60 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libitm1 amd64 14.2.0-4ubuntu2~24.04.1 [29.7 kB]
-45% [60 libitm1 29.7 kB/29.7 kB 100%]                                     45% [Working]             Get:61 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libatomic1 amd64 14.2.0-4ubuntu2~24.04.1 [10.5 kB]
-45% [61 libatomic1 10.5 kB/10.5 kB 100%]                                        45% [Waiting for headers]                         Get:62 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libasan8 amd64 14.2.0-4ubuntu2~24.04.1 [3027 kB]
-45% [62 libasan8 8192 B/3027 kB 0%]                                   48% [Waiting for headers]                         Get:63 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 liblsan0 amd64 14.2.0-4ubuntu2~24.04.1 [1322 kB]
-48% [63 liblsan0 32.8 kB/1322 kB 2%]                                    50% [Waiting for headers]                         Get:64 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libtsan2 amd64 14.2.0-4ubuntu2~24.04.1 [2772 kB]
-50% [64 libtsan2 32.8 kB/2772 kB 1%]                                    52% [Waiting for headers]                         Get:65 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libubsan1 amd64 14.2.0-4ubuntu2~24.04.1 [1184 kB]
-52% [65 libubsan1 16.8 kB/1184 kB 1%]                                     54% [Waiting for headers]                         Get:66 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libhwasan0 amd64 14.2.0-4ubuntu2~24.04.1 [1641 kB]
-54% [66 libhwasan0 25.9 kB/1641 kB 2%]                                      55% [Waiting for headers]                         Get:67 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libquadmath0 amd64 14.2.0-4ubuntu2~24.04.1 [153 kB]
-55% [67 libquadmath0 24.6 kB/153 kB 16%]                                        56% [Waiting for headers]                         Get:68 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgcc-13-dev amd64 13.3.0-6ubuntu2~24.04.1 [2681 kB]
-56% [68 libgcc-13-dev 22.0 kB/2681 kB 1%]                                         58% [Waiting for headers]                         Get:69 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gcc-13-x86-64-linux-gnu amd64 13.3.0-6ubuntu2~24.04.1 [21.1 MB]
-58% [69 gcc-13-x86-64-linux-gnu 15.1 kB/21.1 MB 0%]                                                   78% [Waiting for headers]                         Get:70 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gcc-13 amd64 13.3.0-6ubuntu2~24.04.1 [494 kB]
-78% [70 gcc-13 4624 B/494 kB 1%]                                78% [Waiting for headers]                         Get:71 http://archive.ubuntu.com/ubuntu noble/main amd64 gcc-x86-64-linux-gnu amd64 4:13.2.0-7ubuntu1 [1212 B]
-78% [Waiting for headers]                         Get:72 http://archive.ubuntu.com/ubuntu noble/main amd64 gcc amd64 4:13.2.0-7ubuntu1 [5018 B]
-78% [72 gcc 4096 B/5018 B 82%]                              79% [Waiting for headers]                         Get:73 http://archive.ubuntu.com/ubuntu noble/main amd64 libbrotli1 amd64 1.1.0-2build2 [331 kB]
-79% [73 libbrotli1 47.5 kB/331 kB 14%]                                      79% [Waiting for headers]                         Get:74 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-5ubuntu3.1 [20.4 kB]
-79% [74 libsasl2-modules-db 20.4 kB/20.4 kB 100%]                                                 79% [Working]             Get:75 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-5ubuntu3.1 [53.2 kB]
-79% [75 libsasl2-2 23.5 kB/53.2 kB 44%]                                       79% [Waiting for headers]                         Get:76 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libldap2 amd64 2.6.10+dfsg-0ubuntu0.24.04.1 [198 kB]
-80% [76 libldap2 35.4 kB/198 kB 18%]                                    80% [Waiting for headers]                         Get:77 http://archive.ubuntu.com/ubuntu noble/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2build7 [56.3 kB]
-80% [77 librtmp1 17.8 kB/56.3 kB 32%]                                     80% [Waiting for headers]                         Get:78 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libssh-4 amd64 0.10.6-2ubuntu0.4 [190 kB]
-80% [78 libssh-4 24.6 kB/190 kB 13%]                                    80% [Waiting for headers]                         Get:79 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl3t64-gnutls amd64 8.5.0-2ubuntu10.11 [334 kB]
-80% [79 libcurl3t64-gnutls 15.4 kB/334 kB 5%]                                             81% [Waiting for headers]                         Get:80 http://archive.ubuntu.com/ubuntu noble/main amd64 liberror-perl all 0.17029-2 [25.6 kB]
-81% [80 liberror-perl 25.6 kB/25.6 kB 100%]                                           81% [Waiting for headers]                         Get:81 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 git-man all 1:2.43.0-1ubuntu7.3 [1100 kB]
-81% [81 git-man 16.3 kB/1100 kB 1%]                                   82% [Waiting for headers]                         Get:82 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 git amd64 1:2.43.0-1ubuntu7.3 [3680 kB]
-82% [82 git 24.6 kB/3680 kB 1%]                               86% [Waiting for headers]                         Get:83 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libaom3 amd64 3.8.2-2ubuntu0.1 [1941 kB]
-86% [83 libaom3 19.9 kB/1941 kB 1%]                                   88% [Waiting for headers]                         Get:84 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libc-dev-bin amd64 2.39-0ubuntu8.7 [20.4 kB]
-88% [84 libc-dev-bin 20.4 kB/20.4 kB 100%]                                          88% [Working]             Get:85 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libfreetype6 amd64 2.13.2+dfsg-1ubuntu0.1 [402 kB]
-88% [85 libfreetype6 16.4 kB/402 kB 4%]                                       89% [Waiting for headers]                         Get:86 http://archive.ubuntu.com/ubuntu noble/main amd64 libfontconfig1 amd64 2.15.0-1.1ubuntu2 [139 kB]
-89% [86 libfontconfig1 14.7 kB/139 kB 11%]                                          89% [Waiting for headers]                         Get:87 http://archive.ubuntu.com/ubuntu noble/main amd64 libsharpyuv0 amd64 1.3.2-0.4build3 [15.8 kB]
-89% [87 libsharpyuv0 15.8 kB/15.8 kB 100%]                                          89% [Working]             Get:88 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libheif-plugin-aomdec amd64 1.17.6-1ubuntu4.6 [11.3 kB]
-89% [88 libheif-plugin-aomdec 11.3 kB/11.3 kB 100%]                                                   89% [Waiting for headers]                         Get:89 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libheif1 amd64 1.17.6-1ubuntu4.6 [276 kB]
-89% [89 libheif1 44.8 kB/276 kB 16%]                                    90% [Waiting for headers]                         Get:90 http://archive.ubuntu.com/ubuntu noble/main amd64 libjpeg-turbo8 amd64 2.1.5-2ubuntu2 [150 kB]
-90% [90 libjpeg-turbo8 0 B/150 kB 0%]                                     90% [Waiting for headers]                         Get:91 http://archive.ubuntu.com/ubuntu noble/main amd64 libjpeg8 amd64 8c-2ubuntu11 [2148 B]
-                         90% [Working]             Get:92 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libdeflate0 amd64 1.19-1build1.1 [43.9 kB]
-90% [92 libdeflate0 9086 B/43.9 kB 21%]                                       90% [Waiting for headers]                         Get:93 http://archive.ubuntu.com/ubuntu noble/main amd64 libjbig0 amd64 2.1-6.1ubuntu2 [29.7 kB]
-90% [93 libjbig0 29.7 kB/29.7 kB 100%]                                      91% [Working]             Get:94 http://archive.ubuntu.com/ubuntu noble/main amd64 liblerc4 amd64 4.0.0+ds-4ubuntu2 [179 kB]
-91% [94 liblerc4 0 B/179 kB 0%]                               91% [Waiting for headers]                         Get:95 http://archive.ubuntu.com/ubuntu noble/main amd64 libwebp7 amd64 1.3.2-0.4build3 [230 kB]
-91% [95 libwebp7 61.4 kB/230 kB 27%]                                    91% [Waiting for headers]                         Get:96 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libtiff6 amd64 4.5.1+git230720-4ubuntu2.5 [200 kB]
-91% [96 libtiff6 20.5 kB/200 kB 10%]                                    92% [Waiting for headers]                         Get:97 http://archive.ubuntu.com/ubuntu noble/main amd64 libxpm4 amd64 1:3.5.17-1build2 [36.5 kB]
-92% [97 libxpm4 12.3 kB/36.5 kB 34%]                                    92% [Waiting for headers]                         Get:98 http://archive.ubuntu.com/ubuntu noble/main amd64 libgd3 amd64 2.3.3-9ubuntu5 [128 kB]
-92% [98 libgd3 8980 B/128 kB 7%]                                92% [Waiting for headers]                         Get:99 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libc-devtools amd64 2.39-0ubuntu8.7 [29.3 kB]
-92% [99 libc-devtools 29.3 kB/29.3 kB 100%]                                           92% [Working]             Get:100 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 linux-libc-dev amd64 6.8.0-136.136 [1575 kB]
-92% [100 linux-libc-dev 22.6 kB/1575 kB 1%]                                           94% [Waiting for headers]                         Get:101 http://archive.ubuntu.com/ubuntu noble/main amd64 libcrypt-dev amd64 1:4.4.36-4build1 [112 kB]
-94% [101 libcrypt-dev 45.2 kB/112 kB 40%]                                         94% [Working]             Get:102 http://archive.ubuntu.com/ubuntu noble/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu7 [67.4 kB]
-94% [102 rpcsvc-proto 14.0 kB/67.4 kB 21%]                                          95% [Working]             Get:103 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libc6-dev amd64 2.39-0ubuntu8.7 [2124 kB]
-95% [103 libc6-dev 2562 B/2124 kB 0%]96% [103 libc6-dev 1744 kB/2124 kB 82%]                                       97% [Waiting for headers]                         Get:104 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libheif-plugin-aomenc amd64 1.17.6-1ubuntu4.6 [14.7 kB]
-97% [104 libheif-plugin-aomenc 2386 B/14.7 kB 16%]                                                  97% [Waiting for headers]                         Get:105 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libldap-common all 2.6.10+dfsg-0ubuntu0.24.04.1 [32.9 kB]
-97% [105 libldap-common 7430 B/32.9 kB 23%]                                           97% [Waiting for headers]                         Get:106 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsasl2-modules amd64 2.1.28+dfsg1-5ubuntu3.1 [69.9 kB]
-97% [106 libsasl2-modules 11.3 kB/69.9 kB 16%]                                              97% [Waiting for headers]                         Get:107 http://archive.ubuntu.com/ubuntu noble/main amd64 make amd64 4.3-4.1build2 [180 kB]
-97% [107 make 1103 B/180 kB 1%]                               98% [Waiting for headers]                         Get:108 http://archive.ubuntu.com/ubuntu noble/main amd64 manpages-dev all 6.7-2 [2013 kB]
-98% [108 manpages-dev 4654 B/2013 kB 0%]                                        100% [Waiting for headers]                          Get:109 http://archive.ubuntu.com/ubuntu noble/main amd64 patch amd64 2.7.6-7build3 [104 kB]
-100% [109 patch 32.5 kB/104 kB 31%]                                   100% [Working]              Fetched 88.1 MB in 4s (22.6 MB/s)
-debconf: delaying package configuration, since apt-utils is not installed
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../perl-base_5.38.2-3.2ubuntu0.3_amd64.deb ...
-Unpacking perl-base (5.38.2-3.2ubuntu0.3) over (5.38.2-3.2build2.1) ...
-Setting up perl-base (5.38.2-3.2ubuntu0.3) ...
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../gcc-14-base_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking gcc-14-base:amd64 (14.2.0-4ubuntu2~24.04.1) over (14.2.0-4ubuntu2~24.04) ...
-Setting up gcc-14-base:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../libgcc-s1_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libgcc-s1:amd64 (14.2.0-4ubuntu2~24.04.1) over (14.2.0-4ubuntu2~24.04) ...
-Setting up libgcc-s1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../libstdc++6_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libstdc++6:amd64 (14.2.0-4ubuntu2~24.04.1) over (14.2.0-4ubuntu2~24.04) ...
-Setting up libstdc++6:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../libc6_2.39-0ubuntu8.7_amd64.deb ...
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 79.)
-debconf: falling back to frontend: Readline
-debconf: unable to initialize frontend: Readline
-debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
-debconf: falling back to frontend: Teletype
-Unpacking libc6:amd64 (2.39-0ubuntu8.7) over (2.39-0ubuntu8.4) ...
-Setting up libc6:amd64 (2.39-0ubuntu8.7) ...
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 79.)
-debconf: falling back to frontend: Readline
-debconf: unable to initialize frontend: Readline
-debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
-debconf: falling back to frontend: Teletype
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../libc-bin_2.39-0ubuntu8.7_amd64.deb ...
-Unpacking libc-bin (2.39-0ubuntu8.7) over (2.39-0ubuntu8.4) ...
-Setting up libc-bin (2.39-0ubuntu8.7) ...
-Selecting previously unselected package perl-modules-5.38.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6337 files and directories currently installed.)
-Preparing to unpack .../0-perl-modules-5.38_5.38.2-3.2ubuntu0.3_all.deb ...
-Unpacking perl-modules-5.38 (5.38.2-3.2ubuntu0.3) ...
-Selecting previously unselected package libgdbm6t64:amd64.
-Preparing to unpack .../1-libgdbm6t64_1.23-5.1build1_amd64.deb ...
-Unpacking libgdbm6t64:amd64 (1.23-5.1build1) ...
-Selecting previously unselected package libgdbm-compat4t64:amd64.
-Preparing to unpack .../2-libgdbm-compat4t64_1.23-5.1build1_amd64.deb ...
-Unpacking libgdbm-compat4t64:amd64 (1.23-5.1build1) ...
-Selecting previously unselected package libperl5.38t64:amd64.
-Preparing to unpack .../3-libperl5.38t64_5.38.2-3.2ubuntu0.3_amd64.deb ...
-Unpacking libperl5.38t64:amd64 (5.38.2-3.2ubuntu0.3) ...
-Selecting previously unselected package perl.
-Preparing to unpack .../4-perl_5.38.2-3.2ubuntu0.3_amd64.deb ...
-Unpacking perl (5.38.2-3.2ubuntu0.3) ...
-Selecting previously unselected package adduser.
-Preparing to unpack .../5-adduser_3.137ubuntu1_all.deb ...
-Unpacking adduser (3.137ubuntu1) ...
-Setting up adduser (3.137ubuntu1) ...
-Selecting previously unselected package krb5-locales.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 8397 files and directories currently installed.)
-Preparing to unpack .../00-krb5-locales_1.20.1-6ubuntu2.6_all.deb ...
-Unpacking krb5-locales (1.20.1-6ubuntu2.6) ...
-Selecting previously unselected package less.
-Preparing to unpack .../01-less_590-2ubuntu2.1_amd64.deb ...
-Unpacking less (590-2ubuntu2.1) ...
-Selecting previously unselected package libbsd0:amd64.
-Preparing to unpack .../02-libbsd0_0.12.1-1build1.1_amd64.deb ...
-Unpacking libbsd0:amd64 (0.12.1-1build1.1) ...
-Selecting previously unselected package libkrb5support0:amd64.
-Preparing to unpack .../03-libkrb5support0_1.20.1-6ubuntu2.6_amd64.deb ...
-Unpacking libkrb5support0:amd64 (1.20.1-6ubuntu2.6) ...
-Selecting previously unselected package libk5crypto3:amd64.
-Preparing to unpack .../04-libk5crypto3_1.20.1-6ubuntu2.6_amd64.deb ...
-Unpacking libk5crypto3:amd64 (1.20.1-6ubuntu2.6) ...
-Selecting previously unselected package libkeyutils1:amd64.
-Preparing to unpack .../05-libkeyutils1_1.6.3-3build1_amd64.deb ...
-Unpacking libkeyutils1:amd64 (1.6.3-3build1) ...
-Selecting previously unselected package libkrb5-3:amd64.
-Preparing to unpack .../06-libkrb5-3_1.20.1-6ubuntu2.6_amd64.deb ...
-Unpacking libkrb5-3:amd64 (1.20.1-6ubuntu2.6) ...
-Selecting previously unselected package libgssapi-krb5-2:amd64.
-Preparing to unpack .../07-libgssapi-krb5-2_1.20.1-6ubuntu2.6_amd64.deb ...
-Unpacking libgssapi-krb5-2:amd64 (1.20.1-6ubuntu2.6) ...
-Selecting previously unselected package libcbor0.10:amd64.
-Preparing to unpack .../08-libcbor0.10_0.10.2-1.2ubuntu2_amd64.deb ...
-Unpacking libcbor0.10:amd64 (0.10.2-1.2ubuntu2) ...
-Selecting previously unselected package libedit2:amd64.
-Preparing to unpack .../09-libedit2_3.1-20230828-1build1_amd64.deb ...
-Unpacking libedit2:amd64 (3.1-20230828-1build1) ...
-Selecting previously unselected package libfido2-1:amd64.
-Preparing to unpack .../10-libfido2-1_1.14.0-1build3_amd64.deb ...
-Unpacking libfido2-1:amd64 (1.14.0-1build3) ...
-Selecting previously unselected package libjansson4:amd64.
-Preparing to unpack .../11-libjansson4_2.14-2build2_amd64.deb ...
-Unpacking libjansson4:amd64 (2.14-2build2) ...
-Selecting previously unselected package libnghttp2-14:amd64.
-Preparing to unpack .../12-libnghttp2-14_1.59.0-1ubuntu0.4_amd64.deb ...
-Unpacking libnghttp2-14:amd64 (1.59.0-1ubuntu0.4) ...
-Selecting previously unselected package libpng16-16t64:amd64.
-Preparing to unpack .../13-libpng16-16t64_1.6.43-5ubuntu0.6_amd64.deb ...
-Unpacking libpng16-16t64:amd64 (1.6.43-5ubuntu0.6) ...
-Selecting previously unselected package libpsl5t64:amd64.
-Preparing to unpack .../14-libpsl5t64_0.21.2-1.1build1_amd64.deb ...
-Unpacking libpsl5t64:amd64 (0.21.2-1.1build1) ...
-Selecting previously unselected package libxau6:amd64.
-Preparing to unpack .../15-libxau6_1%3a1.0.9-1build6_amd64.deb ...
-Unpacking libxau6:amd64 (1:1.0.9-1build6) ...
-Selecting previously unselected package libxdmcp6:amd64.
-Preparing to unpack .../16-libxdmcp6_1%3a1.1.3-0ubuntu6_amd64.deb ...
-Unpacking libxdmcp6:amd64 (1:1.1.3-0ubuntu6) ...
-Selecting previously unselected package libxcb1:amd64.
-Preparing to unpack .../17-libxcb1_1.15-1ubuntu2_amd64.deb ...
-Unpacking libxcb1:amd64 (1.15-1ubuntu2) ...
-Selecting previously unselected package libx11-data.
-Preparing to unpack .../18-libx11-data_2%3a1.8.7-1build1_all.deb ...
-Unpacking libx11-data (2:1.8.7-1build1) ...
-Selecting previously unselected package libx11-6:amd64.
-Preparing to unpack .../19-libx11-6_2%3a1.8.7-1build1_amd64.deb ...
-Unpacking libx11-6:amd64 (2:1.8.7-1build1) ...
-Selecting previously unselected package libxext6:amd64.
-Preparing to unpack .../20-libxext6_2%3a1.3.4-1build2_amd64.deb ...
-Unpacking libxext6:amd64 (2:1.3.4-1build2) ...
-Selecting previously unselected package libxmuu1:amd64.
-Preparing to unpack .../21-libxmuu1_2%3a1.1.3-3build2_amd64.deb ...
-Unpacking libxmuu1:amd64 (2:1.1.3-3build2) ...
-Selecting previously unselected package manpages.
-Preparing to unpack .../22-manpages_6.7-2_all.deb ...
-Unpacking manpages (6.7-2) ...
-Selecting previously unselected package openssh-client.
-Preparing to unpack .../23-openssh-client_1%3a9.6p1-3ubuntu13.18_amd64.deb ...
-Unpacking openssh-client (1:9.6p1-3ubuntu13.18) ...
-Selecting previously unselected package publicsuffix.
-Preparing to unpack .../24-publicsuffix_20231001.0357-0.1_all.deb ...
-Unpacking publicsuffix (20231001.0357-0.1) ...
-Selecting previously unselected package xauth.
-Preparing to unpack .../25-xauth_1%3a1.1.2-1build1_amd64.deb ...
-Unpacking xauth (1:1.1.2-1build1) ...
-Selecting previously unselected package binutils-common:amd64.
-Preparing to unpack .../26-binutils-common_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking binutils-common:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package libsframe1:amd64.
-Preparing to unpack .../27-libsframe1_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking libsframe1:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package libbinutils:amd64.
-Preparing to unpack .../28-libbinutils_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking libbinutils:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package libctf-nobfd0:amd64.
-Preparing to unpack .../29-libctf-nobfd0_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking libctf-nobfd0:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package libctf0:amd64.
-Preparing to unpack .../30-libctf0_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking libctf0:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package libgprofng0:amd64.
-Preparing to unpack .../31-libgprofng0_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking libgprofng0:amd64 (2.42-4ubuntu2.10) ...
-Selecting previously unselected package binutils-x86-64-linux-gnu.
-Preparing to unpack .../32-binutils-x86-64-linux-gnu_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking binutils-x86-64-linux-gnu (2.42-4ubuntu2.10) ...
-Selecting previously unselected package binutils.
-Preparing to unpack .../33-binutils_2.42-4ubuntu2.10_amd64.deb ...
-Unpacking binutils (2.42-4ubuntu2.10) ...
-Selecting previously unselected package gcc-13-base:amd64.
-Preparing to unpack .../34-gcc-13-base_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking gcc-13-base:amd64 (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package libisl23:amd64.
-Preparing to unpack .../35-libisl23_0.26-3build1.1_amd64.deb ...
-Unpacking libisl23:amd64 (0.26-3build1.1) ...
-Selecting previously unselected package libmpfr6:amd64.
-Preparing to unpack .../36-libmpfr6_4.2.1-1build1.1_amd64.deb ...
-Unpacking libmpfr6:amd64 (4.2.1-1build1.1) ...
-Selecting previously unselected package libmpc3:amd64.
-Preparing to unpack .../37-libmpc3_1.3.1-1build1.1_amd64.deb ...
-Unpacking libmpc3:amd64 (1.3.1-1build1.1) ...
-Selecting previously unselected package cpp-13-x86-64-linux-gnu.
-Preparing to unpack .../38-cpp-13-x86-64-linux-gnu_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking cpp-13-x86-64-linux-gnu (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package cpp-13.
-Preparing to unpack .../39-cpp-13_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking cpp-13 (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package cpp-x86-64-linux-gnu.
-Preparing to unpack .../40-cpp-x86-64-linux-gnu_4%3a13.2.0-7ubuntu1_amd64.deb ...
-Unpacking cpp-x86-64-linux-gnu (4:13.2.0-7ubuntu1) ...
-Selecting previously unselected package cpp.
-Preparing to unpack .../41-cpp_4%3a13.2.0-7ubuntu1_amd64.deb ...
-Unpacking cpp (4:13.2.0-7ubuntu1) ...
-Selecting previously unselected package fonts-dejavu-mono.
-Preparing to unpack .../42-fonts-dejavu-mono_2.37-8_all.deb ...
-Unpacking fonts-dejavu-mono (2.37-8) ...
-Selecting previously unselected package fonts-dejavu-core.
-Preparing to unpack .../43-fonts-dejavu-core_2.37-8_all.deb ...
-Unpacking fonts-dejavu-core (2.37-8) ...
-Selecting previously unselected package fontconfig-config.
-Preparing to unpack .../44-fontconfig-config_2.15.0-1.1ubuntu2_amd64.deb ...
-Unpacking fontconfig-config (2.15.0-1.1ubuntu2) ...
-Selecting previously unselected package libcc1-0:amd64.
-Preparing to unpack .../45-libcc1-0_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libcc1-0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libgomp1:amd64.
-Preparing to unpack .../46-libgomp1_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libgomp1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libitm1:amd64.
-Preparing to unpack .../47-libitm1_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libitm1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libatomic1:amd64.
-Preparing to unpack .../48-libatomic1_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libatomic1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libasan8:amd64.
-Preparing to unpack .../49-libasan8_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libasan8:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package liblsan0:amd64.
-Preparing to unpack .../50-liblsan0_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking liblsan0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libtsan2:amd64.
-Preparing to unpack .../51-libtsan2_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libtsan2:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libubsan1:amd64.
-Preparing to unpack .../52-libubsan1_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libubsan1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libhwasan0:amd64.
-Preparing to unpack .../53-libhwasan0_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libhwasan0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libquadmath0:amd64.
-Preparing to unpack .../54-libquadmath0_14.2.0-4ubuntu2~24.04.1_amd64.deb ...
-Unpacking libquadmath0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Selecting previously unselected package libgcc-13-dev:amd64.
-Preparing to unpack .../55-libgcc-13-dev_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking libgcc-13-dev:amd64 (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package gcc-13-x86-64-linux-gnu.
-Preparing to unpack .../56-gcc-13-x86-64-linux-gnu_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking gcc-13-x86-64-linux-gnu (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package gcc-13.
-Preparing to unpack .../57-gcc-13_13.3.0-6ubuntu2~24.04.1_amd64.deb ...
-Unpacking gcc-13 (13.3.0-6ubuntu2~24.04.1) ...
-Selecting previously unselected package gcc-x86-64-linux-gnu.
-Preparing to unpack .../58-gcc-x86-64-linux-gnu_4%3a13.2.0-7ubuntu1_amd64.deb ...
-Unpacking gcc-x86-64-linux-gnu (4:13.2.0-7ubuntu1) ...
-Selecting previously unselected package gcc.
-Preparing to unpack .../59-gcc_4%3a13.2.0-7ubuntu1_amd64.deb ...
-Unpacking gcc (4:13.2.0-7ubuntu1) ...
-Selecting previously unselected package libbrotli1:amd64.
-Preparing to unpack .../60-libbrotli1_1.1.0-2build2_amd64.deb ...
-Unpacking libbrotli1:amd64 (1.1.0-2build2) ...
-Selecting previously unselected package libsasl2-modules-db:amd64.
-Preparing to unpack .../61-libsasl2-modules-db_2.1.28+dfsg1-5ubuntu3.1_amd64.deb ...
-Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Selecting previously unselected package libsasl2-2:amd64.
-Preparing to unpack .../62-libsasl2-2_2.1.28+dfsg1-5ubuntu3.1_amd64.deb ...
-Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Selecting previously unselected package libldap2:amd64.
-Preparing to unpack .../63-libldap2_2.6.10+dfsg-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking libldap2:amd64 (2.6.10+dfsg-0ubuntu0.24.04.1) ...
-Selecting previously unselected package librtmp1:amd64.
-Preparing to unpack .../64-librtmp1_2.4+20151223.gitfa8646d.1-2build7_amd64.deb ...
-Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build7) ...
-Selecting previously unselected package libssh-4:amd64.
-Preparing to unpack .../65-libssh-4_0.10.6-2ubuntu0.4_amd64.deb ...
-Unpacking libssh-4:amd64 (0.10.6-2ubuntu0.4) ...
-Selecting previously unselected package libcurl3t64-gnutls:amd64.
-Preparing to unpack .../66-libcurl3t64-gnutls_8.5.0-2ubuntu10.11_amd64.deb ...
-Unpacking libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.11) ...
-Selecting previously unselected package liberror-perl.
-Preparing to unpack .../67-liberror-perl_0.17029-2_all.deb ...
-Unpacking liberror-perl (0.17029-2) ...
-Selecting previously unselected package git-man.
-Preparing to unpack .../68-git-man_1%3a2.43.0-1ubuntu7.3_all.deb ...
-Unpacking git-man (1:2.43.0-1ubuntu7.3) ...
-Selecting previously unselected package git.
-Preparing to unpack .../69-git_1%3a2.43.0-1ubuntu7.3_amd64.deb ...
-Unpacking git (1:2.43.0-1ubuntu7.3) ...
-Selecting previously unselected package libaom3:amd64.
-Preparing to unpack .../70-libaom3_3.8.2-2ubuntu0.1_amd64.deb ...
-Unpacking libaom3:amd64 (3.8.2-2ubuntu0.1) ...
-Selecting previously unselected package libc-dev-bin.
-Preparing to unpack .../71-libc-dev-bin_2.39-0ubuntu8.7_amd64.deb ...
-Unpacking libc-dev-bin (2.39-0ubuntu8.7) ...
-Selecting previously unselected package libfreetype6:amd64.
-Preparing to unpack .../72-libfreetype6_2.13.2+dfsg-1ubuntu0.1_amd64.deb ...
-Unpacking libfreetype6:amd64 (2.13.2+dfsg-1ubuntu0.1) ...
-Selecting previously unselected package libfontconfig1:amd64.
-Preparing to unpack .../73-libfontconfig1_2.15.0-1.1ubuntu2_amd64.deb ...
-Unpacking libfontconfig1:amd64 (2.15.0-1.1ubuntu2) ...
-Selecting previously unselected package libsharpyuv0:amd64.
-Preparing to unpack .../74-libsharpyuv0_1.3.2-0.4build3_amd64.deb ...
-Unpacking libsharpyuv0:amd64 (1.3.2-0.4build3) ...
-Selecting previously unselected package libheif-plugin-aomdec:amd64.
-Preparing to unpack .../75-libheif-plugin-aomdec_1.17.6-1ubuntu4.6_amd64.deb ...
-Unpacking libheif-plugin-aomdec:amd64 (1.17.6-1ubuntu4.6) ...
-Selecting previously unselected package libheif1:amd64.
-Preparing to unpack .../76-libheif1_1.17.6-1ubuntu4.6_amd64.deb ...
-Unpacking libheif1:amd64 (1.17.6-1ubuntu4.6) ...
-Selecting previously unselected package libjpeg-turbo8:amd64.
-Preparing to unpack .../77-libjpeg-turbo8_2.1.5-2ubuntu2_amd64.deb ...
-Unpacking libjpeg-turbo8:amd64 (2.1.5-2ubuntu2) ...
-Selecting previously unselected package libjpeg8:amd64.
-Preparing to unpack .../78-libjpeg8_8c-2ubuntu11_amd64.deb ...
-Unpacking libjpeg8:amd64 (8c-2ubuntu11) ...
-Selecting previously unselected package libdeflate0:amd64.
-Preparing to unpack .../79-libdeflate0_1.19-1build1.1_amd64.deb ...
-Unpacking libdeflate0:amd64 (1.19-1build1.1) ...
-Selecting previously unselected package libjbig0:amd64.
-Preparing to unpack .../80-libjbig0_2.1-6.1ubuntu2_amd64.deb ...
-Unpacking libjbig0:amd64 (2.1-6.1ubuntu2) ...
-Selecting previously unselected package liblerc4:amd64.
-Preparing to unpack .../81-liblerc4_4.0.0+ds-4ubuntu2_amd64.deb ...
-Unpacking liblerc4:amd64 (4.0.0+ds-4ubuntu2) ...
-Selecting previously unselected package libwebp7:amd64.
-Preparing to unpack .../82-libwebp7_1.3.2-0.4build3_amd64.deb ...
-Unpacking libwebp7:amd64 (1.3.2-0.4build3) ...
-Selecting previously unselected package libtiff6:amd64.
-Preparing to unpack .../83-libtiff6_4.5.1+git230720-4ubuntu2.5_amd64.deb ...
-Unpacking libtiff6:amd64 (4.5.1+git230720-4ubuntu2.5) ...
-Selecting previously unselected package libxpm4:amd64.
-Preparing to unpack .../84-libxpm4_1%3a3.5.17-1build2_amd64.deb ...
-Unpacking libxpm4:amd64 (1:3.5.17-1build2) ...
-Selecting previously unselected package libgd3:amd64.
-Preparing to unpack .../85-libgd3_2.3.3-9ubuntu5_amd64.deb ...
-Unpacking libgd3:amd64 (2.3.3-9ubuntu5) ...
-Selecting previously unselected package libc-devtools.
-Preparing to unpack .../86-libc-devtools_2.39-0ubuntu8.7_amd64.deb ...
-Unpacking libc-devtools (2.39-0ubuntu8.7) ...
-Selecting previously unselected package linux-libc-dev:amd64.
-Preparing to unpack .../87-linux-libc-dev_6.8.0-136.136_amd64.deb ...
-Unpacking linux-libc-dev:amd64 (6.8.0-136.136) ...
-Selecting previously unselected package libcrypt-dev:amd64.
-Preparing to unpack .../88-libcrypt-dev_1%3a4.4.36-4build1_amd64.deb ...
-Unpacking libcrypt-dev:amd64 (1:4.4.36-4build1) ...
-Selecting previously unselected package rpcsvc-proto.
-Preparing to unpack .../89-rpcsvc-proto_1.4.2-0ubuntu7_amd64.deb ...
-Unpacking rpcsvc-proto (1.4.2-0ubuntu7) ...
-Selecting previously unselected package libc6-dev:amd64.
-Preparing to unpack .../90-libc6-dev_2.39-0ubuntu8.7_amd64.deb ...
-Unpacking libc6-dev:amd64 (2.39-0ubuntu8.7) ...
-Selecting previously unselected package libheif-plugin-aomenc:amd64.
-Preparing to unpack .../91-libheif-plugin-aomenc_1.17.6-1ubuntu4.6_amd64.deb ...
-Unpacking libheif-plugin-aomenc:amd64 (1.17.6-1ubuntu4.6) ...
-Selecting previously unselected package libldap-common.
-Preparing to unpack .../92-libldap-common_2.6.10+dfsg-0ubuntu0.24.04.1_all.deb ...
-Unpacking libldap-common (2.6.10+dfsg-0ubuntu0.24.04.1) ...
-Selecting previously unselected package libsasl2-modules:amd64.
-Preparing to unpack .../93-libsasl2-modules_2.1.28+dfsg1-5ubuntu3.1_amd64.deb ...
-Unpacking libsasl2-modules:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Selecting previously unselected package make.
-Preparing to unpack .../94-make_4.3-4.1build2_amd64.deb ...
-Unpacking make (4.3-4.1build2) ...
-Selecting previously unselected package manpages-dev.
-Preparing to unpack .../95-manpages-dev_6.7-2_all.deb ...
-Unpacking manpages-dev (6.7-2) ...
-Selecting previously unselected package patch.
-Preparing to unpack .../96-patch_2.7.6-7build3_amd64.deb ...
-Unpacking patch (2.7.6-7build3) ...
-Setting up libsharpyuv0:amd64 (1.3.2-0.4build3) ...
-Setting up libaom3:amd64 (3.8.2-2ubuntu0.1) ...
-Setting up libxau6:amd64 (1:1.0.9-1build6) ...
-Setting up libkeyutils1:amd64 (1.6.3-3build1) ...
-Setting up liblerc4:amd64 (4.0.0+ds-4ubuntu2) ...
-Setting up libgdbm6t64:amd64 (1.23-5.1build1) ...
-Setting up libgdbm-compat4t64:amd64 (1.23-5.1build1) ...
-Setting up libcbor0.10:amd64 (0.10.2-1.2ubuntu2) ...
-Setting up manpages (6.7-2) ...
-Setting up libbrotli1:amd64 (1.1.0-2build2) ...
-Setting up libsasl2-modules:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Setting up binutils-common:amd64 (2.42-4ubuntu2.10) ...
-Setting up libpsl5t64:amd64 (0.21.2-1.1build1) ...
-Setting up libnghttp2-14:amd64 (1.59.0-1ubuntu0.4) ...
-Setting up libdeflate0:amd64 (1.19-1build1.1) ...
-Setting up less (590-2ubuntu2.1) ...
-Setting up linux-libc-dev:amd64 (6.8.0-136.136) ...
-Setting up libctf-nobfd0:amd64 (2.42-4ubuntu2.10) ...
-Setting up krb5-locales (1.20.1-6ubuntu2.6) ...
-Setting up libgomp1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libldap-common (2.6.10+dfsg-0ubuntu0.24.04.1) ...
-Setting up libjbig0:amd64 (2.1-6.1ubuntu2) ...
-Setting up libsframe1:amd64 (2.42-4ubuntu2.10) ...
-Setting up libjansson4:amd64 (2.14-2build2) ...
-Setting up libkrb5support0:amd64 (1.20.1-6ubuntu2.6) ...
-Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Setting up rpcsvc-proto (1.4.2-0ubuntu7) ...
-Setting up gcc-13-base:amd64 (13.3.0-6ubuntu2~24.04.1) ...
-Setting up libx11-data (2:1.8.7-1build1) ...
-Setting up make (4.3-4.1build2) ...
-Setting up libmpfr6:amd64 (4.2.1-1build1.1) ...
-Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build7) ...
-Setting up perl-modules-5.38 (5.38.2-3.2ubuntu0.3) ...
-Setting up libquadmath0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up fonts-dejavu-mono (2.37-8) ...
-Setting up libpng16-16t64:amd64 (1.6.43-5ubuntu0.6) ...
-Setting up libmpc3:amd64 (1.3.1-1build1.1) ...
-Setting up libatomic1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up patch (2.7.6-7build3) ...
-Setting up fonts-dejavu-core (2.37-8) ...
-Setting up libk5crypto3:amd64 (1.20.1-6ubuntu2.6) ...
-Setting up libjpeg-turbo8:amd64 (2.1.5-2ubuntu2) ...
-Setting up libsasl2-2:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
-Setting up libwebp7:amd64 (1.3.2-0.4build3) ...
-Setting up libubsan1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libhwasan0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libcrypt-dev:amd64 (1:4.4.36-4build1) ...
-Setting up libasan8:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up git-man (1:2.43.0-1ubuntu7.3) ...
-Setting up libkrb5-3:amd64 (1.20.1-6ubuntu2.6) ...
-Setting up libperl5.38t64:amd64 (5.38.2-3.2ubuntu0.3) ...
-Setting up libtsan2:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libbinutils:amd64 (2.42-4ubuntu2.10) ...
-Setting up libfido2-1:amd64 (1.14.0-1build3) ...
-Setting up libisl23:amd64 (0.26-3build1.1) ...
-Setting up libc-dev-bin (2.39-0ubuntu8.7) ...
-Setting up libbsd0:amd64 (0.12.1-1build1.1) ...
-Setting up publicsuffix (20231001.0357-0.1) ...
-Setting up libcc1-0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libldap2:amd64 (2.6.10+dfsg-0ubuntu0.24.04.1) ...
-Setting up liblsan0:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libitm1:amd64 (14.2.0-4ubuntu2~24.04.1) ...
-Setting up libctf0:amd64 (2.42-4ubuntu2.10) ...
-Setting up libjpeg8:amd64 (8c-2ubuntu11) ...
-Setting up manpages-dev (6.7-2) ...
-Setting up libxdmcp6:amd64 (1:1.1.3-0ubuntu6) ...
-Setting up libxcb1:amd64 (1.15-1ubuntu2) ...
-Setting up cpp-13-x86-64-linux-gnu (13.3.0-6ubuntu2~24.04.1) ...
-Setting up fontconfig-config (2.15.0-1.1ubuntu2) ...
-Setting up libedit2:amd64 (3.1-20230828-1build1) ...
-Setting up perl (5.38.2-3.2ubuntu0.3) ...
-Setting up libgprofng0:amd64 (2.42-4ubuntu2.10) ...
-Setting up libfreetype6:amd64 (2.13.2+dfsg-1ubuntu0.1) ...
-Setting up libgssapi-krb5-2:amd64 (1.20.1-6ubuntu2.6) ...
-Setting up libssh-4:amd64 (0.10.6-2ubuntu0.4) ...
-Setting up libgcc-13-dev:amd64 (13.3.0-6ubuntu2~24.04.1) ...
-Setting up libtiff6:amd64 (4.5.1+git230720-4ubuntu2.5) ...
-Setting up libc6-dev:amd64 (2.39-0ubuntu8.7) ...
-Setting up libx11-6:amd64 (2:1.8.7-1build1) ...
-Setting up libfontconfig1:amd64 (2.15.0-1.1ubuntu2) ...
-Setting up libxmuu1:amd64 (2:1.1.3-3build2) ...
-Setting up binutils-x86-64-linux-gnu (2.42-4ubuntu2.10) ...
-Setting up cpp-x86-64-linux-gnu (4:13.2.0-7ubuntu1) ...
-Setting up libxpm4:amd64 (1:3.5.17-1build2) ...
-Setting up cpp-13 (13.3.0-6ubuntu2~24.04.1) ...
-Setting up openssh-client (1:9.6p1-3ubuntu13.18) ...
-Setting up gcc-13-x86-64-linux-gnu (13.3.0-6ubuntu2~24.04.1) ...
-Setting up libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.11) ...
-Setting up libxext6:amd64 (2:1.3.4-1build2) ...
-Setting up binutils (2.42-4ubuntu2.10) ...
-Setting up liberror-perl (0.17029-2) ...
-Setting up gcc-13 (13.3.0-6ubuntu2~24.04.1) ...
-Setting up git (1:2.43.0-1ubuntu7.3) ...
-Setting up xauth (1:1.1.2-1build1) ...
-Setting up cpp (4:13.2.0-7ubuntu1) ...
-Setting up gcc-x86-64-linux-gnu (4:13.2.0-7ubuntu1) ...
-Setting up gcc (4:13.2.0-7ubuntu1) ...
-Setting up libheif-plugin-aomdec:amd64 (1.17.6-1ubuntu4.6) ...
-Setting up libheif1:amd64 (1.17.6-1ubuntu4.6) ...
-Setting up libgd3:amd64 (2.3.3-9ubuntu5) ...
-Setting up libc-devtools (2.39-0ubuntu8.7) ...
-Setting up libheif-plugin-aomenc:amd64 (1.17.6-1ubuntu4.6) ...
-Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
-Cloning into 'sqlite'...
-remote: Enumerating objects: 2274, done.[K
-remote: Counting objects:   0% (1/2274)[Kremote: Counting objects:   1% (23/2274)[Kremote: Counting objects:   2% (46/2274)[Kremote: Counting objects:   3% (69/2274)[Kremote: Counting objects:   4% (91/2274)[Kremote: Counting objects:   5% (114/2274)[Kremote: Counting objects:   6% (137/2274)[Kremote: Counting objects:   7% (160/2274)[Kremote: Counting objects:   8% (182/2274)[Kremote: Counting objects:   9% (205/2274)[Kremote: Counting objects:  10% (228/2274)[Kremote: Counting objects:  11% (251/2274)[Kremote: Counting objects:  12% (273/2274)[Kremote: Counting objects:  13% (296/2274)[Kremote: Counting objects:  14% (319/2274)[Kremote: Counting objects:  15% (342/2274)[Kremote: Counting objects:  16% (364/2274)[Kremote: Counting objects:  17% (387/2274)[Kremote: Counting objects:  18% (410/2274)[Kremote: Counting objects:  19% (433/2274)[Kremote: Counting objects:  20% (455/2274)[Kremote: Counting objects:  21% (478/2274)[Kremote: Counting objects:  22% (501/2274)[Kremote: Counting objects:  23% (524/2274)[Kremote: Counting objects:  24% (546/2274)[Kremote: Counting objects:  25% (569/2274)[Kremote: Counting objects:  26% (592/2274)[Kremote: Counting objects:  27% (614/2274)[Kremote: Counting objects:  28% (637/2274)[Kremote: Counting objects:  29% (660/2274)[Kremote: Counting objects:  30% (683/2274)[Kremote: Counting objects:  31% (705/2274)[Kremote: Counting objects:  32% (728/2274)[Kremote: Counting objects:  33% (751/2274)[Kremote: Counting objects:  34% (774/2274)[Kremote: Counting objects:  35% (796/2274)[Kremote: Counting objects:  36% (819/2274)[Kremote: Counting objects:  37% (842/2274)[Kremote: Counting objects:  38% (865/2274)[Kremote: Counting objects:  39% (887/2274)[Kremote: Counting objects:  40% (910/2274)[Kremote: Counting objects:  41% (933/2274)[Kremote: Counting objects:  42% (956/2274)[Kremote: Counting objects:  43% (978/2274)[Kremote: Counting objects:  44% (1001/2274)[Kremote: Counting objects:  45% (1024/2274)[Kremote: Counting objects:  46% (1047/2274)[Kremote: Counting objects:  47% (1069/2274)[Kremote: Counting objects:  48% (1092/2274)[Kremote: Counting objects:  49% (1115/2274)[Kremote: Counting objects:  50% (1137/2274)[Kremote: Counting objects:  51% (1160/2274)[Kremote: Counting objects:  52% (1183/2274)[Kremote: Counting objects:  53% (1206/2274)[Kremote: Counting objects:  54% (1228/2274)[Kremote: Counting objects:  55% (1251/2274)[Kremote: Counting objects:  56% (1274/2274)[Kremote: Counting objects:  57% (1297/2274)[Kremote: Counting objects:  58% (1319/2274)[Kremote: Counting objects:  59% (1342/2274)[Kremote: Counting objects:  60% (1365/2274)[Kremote: Counting objects:  61% (1388/2274)[Kremote: Counting objects:  62% (1410/2274)[Kremote: Counting objects:  63% (1433/2274)[Kremote: Counting objects:  64% (1456/2274)[Kremote: Counting objects:  65% (1479/2274)[Kremote: Counting objects:  66% (1501/2274)[Kremote: Counting objects:  67% (1524/2274)[Kremote: Counting objects:  68% (1547/2274)[Kremote: Counting objects:  69% (1570/2274)[Kremote: Counting objects:  70% (1592/2274)[Kremote: Counting objects:  71% (1615/2274)[Kremote: Counting objects:  72% (1638/2274)[Kremote: Counting objects:  73% (1661/2274)[Kremote: Counting objects:  74% (1683/2274)[Kremote: Counting objects:  75% (1706/2274)[Kremote: Counting objects:  76% (1729/2274)[Kremote: Counting objects:  77% (1751/2274)[Kremote: Counting objects:  78% (1774/2274)[Kremote: Counting objects:  79% (1797/2274)[Kremote: Counting objects:  80% (1820/2274)[Kremote: Counting objects:  81% (1842/2274)[Kremote: Counting objects:  82% (1865/2274)[Kremote: Counting objects:  83% (1888/2274)[Kremote: Counting objects:  84% (1911/2274)[Kremote: Counting objects:  85% (1933/2274)[Kremote: Counting objects:  86% (1956/2274)[Kremote: Counting objects:  87% (1979/2274)[Kremote: Counting objects:  88% (2002/2274)[Kremote: Counting objects:  89% (2024/2274)[Kremote: Counting objects:  90% (2047/2274)[Kremote: Counting objects:  91% (2070/2274)[Kremote: Counting objects:  92% (2093/2274)[Kremote: Counting objects:  93% (2115/2274)[Kremote: Counting objects:  94% (2138/2274)[Kremote: Counting objects:  95% (2161/2274)[Kremote: Counting objects:  96% (2184/2274)[Kremote: Counting objects:  97% (2206/2274)[Kremote: Counting objects:  98% (2229/2274)[Kremote: Counting objects:  99% (2252/2274)[Kremote: Counting objects: 100% (2274/2274)[Kremote: Counting objects: 100% (2274/2274), done.[K
-remote: Compressing objects:   0% (1/1896)[Kremote: Compressing objects:   1% (19/1896)[Kremote: Compressing objects:   2% (38/1896)[Kremote: Compressing objects:   3% (57/1896)[Kremote: Compressing objects:   4% (76/1896)[Kremote: Compressing objects:   5% (95/1896)[Kremote: Compressing objects:   6% (114/1896)[Kremote: Compressing objects:   7% (133/1896)[Kremote: Compressing objects:   8% (152/1896)[Kremote: Compressing objects:   9% (171/1896)[Kremote: Compressing objects:  10% (190/1896)[Kremote: Compressing objects:  11% (209/1896)[Kremote: Compressing objects:  12% (228/1896)[Kremote: Compressing objects:  13% (247/1896)[Kremote: Compressing objects:  14% (266/1896)[Kremote: Compressing objects:  15% (285/1896)[Kremote: Compressing objects:  16% (304/1896)[Kremote: Compressing objects:  17% (323/1896)[Kremote: Compressing objects:  18% (342/1896)[Kremote: Compressing objects:  19% (361/1896)[Kremote: Compressing objects:  20% (380/1896)[Kremote: Compressing objects:  21% (399/1896)[Kremote: Compressing objects:  22% (418/1896)[Kremote: Compressing objects:  23% (437/1896)[Kremote: Compressing objects:  24% (456/1896)[Kremote: Compressing objects:  25% (474/1896)[Kremote: Compressing objects:  26% (493/1896)[Kremote: Compressing objects:  27% (512/1896)[Kremote: Compressing objects:  28% (531/1896)[Kremote: Compressing objects:  29% (550/1896)[Kremote: Compressing objects:  30% (569/1896)[Kremote: Compressing objects:  31% (588/1896)[Kremote: Compressing objects:  32% (607/1896)[Kremote: Compressing objects:  33% (626/1896)[Kremote: Compressing objects:  34% (645/1896)[Kremote: Compressing objects:  35% (664/1896)[Kremote: Compressing objects:  36% (683/1896)[Kremote: Compressing objects:  37% (702/1896)[Kremote: Compressing objects:  38% (721/1896)[Kremote: Compressing objects:  39% (740/1896)[Kremote: Compressing objects:  40% (759/1896)[Kremote: Compressing objects:  41% (778/1896)[Kremote: Compressing objects:  42% (797/1896)[Kremote: Compressing objects:  43% (816/1896)[Kremote: Compressing objects:  44% (835/1896)[Kremote: Compressing objects:  45% (854/1896)[Kremote: Compressing objects:  46% (873/1896)[Kremote: Compressing objects:  47% (892/1896)[Kremote: Compressing objects:  48% (911/1896)[Kremote: Compressing objects:  49% (930/1896)[Kremote: Compressing objects:  50% (948/1896)[Kremote: Compressing objects:  51% (967/1896)[Kremote: Compressing objects:  52% (986/1896)[Kremote: Compressing objects:  53% (1005/1896)[Kremote: Compressing objects:  54% (1024/1896)[Kremote: Compressing objects:  55% (1043/1896)[Kremote: Compressing objects:  56% (1062/1896)[Kremote: Compressing objects:  57% (1081/1896)[Kremote: Compressing objects:  58% (1100/1896)[Kremote: Compressing objects:  59% (1119/1896)[Kremote: Compressing objects:  60% (1138/1896)[Kremote: Compressing objects:  61% (1157/1896)[Kremote: Compressing objects:  62% (1176/1896)[Kremote: Compressing objects:  63% (1195/1896)[Kremote: Compressing objects:  64% (1214/1896)[Kremote: Compressing objects:  65% (1233/1896)[Kremote: Compressing objects:  66% (1252/1896)[Kremote: Compressing objects:  67% (1271/1896)[Kremote: Compressing objects:  68% (1290/1896)[Kremote: Compressing objects:  69% (1309/1896)[Kremote: Compressing objects:  70% (1328/1896)[Kremote: Compressing objects:  71% (1347/1896)[Kremote: Compressing objects:  72% (1366/1896)[Kremote: Compressing objects:  73% (1385/1896)[Kremote: Compressing objects:  74% (1404/1896)[Kremote: Compressing objects:  75% (1422/1896)[Kremote: Compressing objects:  76% (1441/1896)[Kremote: Compressing objects:  77% (1460/1896)[Kremote: Compressing objects:  78% (1479/1896)[Kremote: Compressing objects:  79% (1498/1896)[Kremote: Compressing objects:  80% (1517/1896)[Kremote: Compressing objects:  80% (1532/1896)[Kremote: Compressing objects:  81% (1536/1896)[Kremote: Compressing objects:  82% (1555/1896)[Kremote: Compressing objects:  83% (1574/1896)[Kremote: Compressing objects:  84% (1593/1896)[Kremote: Compressing objects:  85% (1612/1896)[Kremote: Compressing objects:  86% (1631/1896)[Kremote: Compressing objects:  87% (1650/1896)[Kremote: Compressing objects:  88% (1669/1896)[Kremote: Compressing objects:  89% (1688/1896)[Kremote: Compressing objects:  89% (1705/1896)[Kremote: Compressing objects:  90% (1707/1896)[Kremote: Compressing objects:  91% (1726/1896)[Kremote: Compressing objects:  92% (1745/1896)[Kremote: Compressing objects:  93% (1764/1896)[Kremote: Compressing objects:  94% (1783/1896)[Kremote: Compressing objects:  95% (1802/1896)[Kremote: Compressing objects:  96% (1821/1896)[Kremote: Compressing objects:  97% (1840/1896)[Kremote: Compressing objects:  98% (1859/1896)[Kremote: Compressing objects:  99% (1878/1896)[Kremote: Compressing objects: 100% (1896/1896)[Kremote: Compressing objects: 100% (1896/1896), done.[K
-Receiving objects:   0% (1/2274)Receiving objects:   1% (23/2274)Receiving objects:   2% (46/2274)Receiving objects:   3% (69/2274)Receiving objects:   4% (91/2274)Receiving objects:   5% (114/2274)Receiving objects:   6% (137/2274)Receiving objects:   7% (160/2274)Receiving objects:   8% (182/2274)Receiving objects:   9% (205/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  10% (228/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  11% (251/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  12% (273/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  13% (296/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  14% (319/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  15% (342/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  16% (364/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  17% (387/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  18% (410/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  19% (433/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  20% (455/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  21% (478/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  22% (501/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  23% (524/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  24% (546/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  25% (569/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  26% (592/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  27% (614/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  27% (621/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  28% (637/2274), 1.39 MiB | 2.55 MiB/sReceiving objects:  29% (660/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  30% (683/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  31% (705/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  32% (728/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  33% (751/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  34% (774/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  35% (796/2274), 3.08 MiB | 2.85 MiB/sReceiving objects:  36% (819/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  37% (842/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  38% (865/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  39% (887/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  40% (910/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  41% (933/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  42% (956/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  43% (978/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  44% (1001/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  45% (1024/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  46% (1047/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  47% (1069/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  48% (1092/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  49% (1115/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  50% (1137/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  51% (1160/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  52% (1183/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  53% (1206/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  54% (1228/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  55% (1251/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  56% (1274/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  57% (1297/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  58% (1319/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  58% (1331/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  59% (1342/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  60% (1365/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  61% (1388/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  62% (1410/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  63% (1433/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  64% (1456/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  65% (1479/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  66% (1501/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  67% (1524/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  68% (1547/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  69% (1570/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  70% (1592/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  71% (1615/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  72% (1638/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  73% (1661/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  74% (1683/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  75% (1706/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  76% (1729/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  77% (1751/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  78% (1774/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  79% (1797/2274), 5.01 MiB | 3.09 MiB/sReceiving objects:  80% (1820/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  81% (1842/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  82% (1865/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  83% (1888/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  84% (1911/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  85% (1933/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  86% (1956/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  87% (1979/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  88% (2002/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  89% (2024/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  90% (2047/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  91% (2070/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  92% (2093/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  93% (2115/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  94% (2138/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  95% (2161/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  96% (2184/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  97% (2206/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  98% (2229/2274), 12.15 MiB | 5.73 MiB/sReceiving objects:  99% (2252/2274), 12.15 MiB | 5.73 MiB/sremote: Total 2274 (delta 446), reused 926 (delta 366), pack-reused 0 (from 0)[K
-Receiving objects: 100% (2274/2274), 12.15 MiB | 5.73 MiB/sReceiving objects: 100% (2274/2274), 13.47 MiB | 5.89 MiB/s, done.
-Resolving deltas:   0% (0/446)Resolving deltas:   1% (5/446)Resolving deltas:   2% (9/446)Resolving deltas:   3% (14/446)Resolving deltas:   4% (19/446)Resolving deltas:   5% (23/446)Resolving deltas:   6% (27/446)Resolving deltas:   7% (32/446)Resolving deltas:   8% (37/446)Resolving deltas:   9% (41/446)Resolving deltas:  10% (45/446)Resolving deltas:  11% (50/446)Resolving deltas:  12% (54/446)Resolving deltas:  13% (59/446)Resolving deltas:  14% (63/446)Resolving deltas:  15% (67/446)Resolving deltas:  16% (73/446)Resolving deltas:  17% (76/446)Resolving deltas:  18% (83/446)Resolving deltas:  19% (85/446)Resolving deltas:  20% (90/446)Resolving deltas:  21% (94/446)Resolving deltas:  22% (99/446)Resolving deltas:  23% (103/446)Resolving deltas:  24% (108/446)Resolving deltas:  25% (113/446)Resolving deltas:  26% (117/446)Resolving deltas:  27% (121/446)Resolving deltas:  28% (125/446)Resolving deltas:  29% (131/446)Resolving deltas:  30% (134/446)Resolving deltas:  31% (139/446)Resolving deltas:  32% (144/446)Resolving deltas:  33% (148/446)Resolving deltas:  34% (152/446)Resolving deltas:  35% (159/446)Resolving deltas:  36% (161/446)Resolving deltas:  37% (167/446)Resolving deltas:  38% (170/446)Resolving deltas:  39% (174/446)Resolving deltas:  40% (179/446)Resolving deltas:  41% (183/446)Resolving deltas:  42% (188/446)Resolving deltas:  43% (193/446)Resolving deltas:  44% (197/446)Resolving deltas:  45% (201/446)Resolving deltas:  46% (208/446)Resolving deltas:  47% (210/446)Resolving deltas:  48% (215/446)Resolving deltas:  49% (219/446)Resolving deltas:  50% (224/446)Resolving deltas:  51% (228/446)Resolving deltas:  52% (233/446)Resolving deltas:  53% (237/446)Resolving deltas:  54% (242/446)Resolving deltas:  55% (246/446)Resolving deltas:  56% (250/446)Resolving deltas:  57% (255/446)Resolving deltas:  58% (259/446)Resolving deltas:  59% (264/446)Resolving deltas:  60% (270/446)Resolving deltas:  61% (273/446)Resolving deltas:  62% (277/446)Resolving deltas:  63% (281/446)Resolving deltas:  64% (286/446)Resolving deltas:  65% (290/446)Resolving deltas:  66% (295/446)Resolving deltas:  67% (300/446)Resolving deltas:  68% (304/446)Resolving deltas:  69% (309/446)Resolving deltas:  70% (314/446)Resolving deltas:  71% (317/446)Resolving deltas:  72% (322/446)Resolving deltas:  73% (326/446)Resolving deltas:  74% (331/446)Resolving deltas:  75% (335/446)Resolving deltas:  76% (339/446)Resolving deltas:  77% (345/446)Resolving deltas:  78% (348/446)Resolving deltas:  79% (354/446)Resolving deltas:  80% (357/446)Resolving deltas:  81% (362/446)Resolving deltas:  82% (367/446)Resolving deltas:  83% (371/446)Resolving deltas:  84% (375/446)Resolving deltas:  85% (380/446)Resolving deltas:  86% (384/446)Resolving deltas:  87% (389/446)Resolving deltas:  88% (393/446)Resolving deltas:  89% (399/446)Resolving deltas:  90% (403/446)Resolving deltas:  91% (406/446)Resolving deltas:  92% (411/446)Resolving deltas:  93% (415/446)Resolving deltas:  94% (420/446)Resolving deltas:  95% (424/446)Resolving deltas:  96% (429/446)Resolving deltas:  97% (433/446)Resolving deltas:  98% (438/446)Resolving deltas:  99% (442/446)Resolving deltas: 100% (446/446)Resolving deltas: 100% (446/446), done.
-
-__TTS_b99b2f6069bd4c1ba7706e670565d7c0__RC:0
-__TTS_b99b2f6069bd4c1ba7706e670565d7c0__PWD:/app
-__TTS_b99b2f6069bd4c1ba7706e670565d7c0__END
-[?2004hroot@593e78469879:/app# cd -- __TTS_b99b2f6069bd4c1ba7706e670565d7c0__PWD:/app && cd /app/sqlite && ls -la | sed -n '1,80p' && find . -maxdepth 2 \( -name configure -o -name autoconf -o -name Makefile.in -o -name main.mk \) | sed -n '1,40p'; __tts_rc=$?; printf '\n__TTS_164958347d004d9fad47eb8fa5d6ae7b__RC:%s\n' "$__tts_rc"; printf '__TTS_164958347d004d9fad47eb8fa5d6ae7b__PWD:'; pwd; printf '__TTS_164958347d004d9fad47eb8fa5d6ae7b__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_b99b2f6069bd4c1ba7706e670565d7c0__PWD:/app: No such file or directory
-
-__TTS_164958347d004d9fad47eb8fa5d6ae7b__RC:1
-__TTS_164958347d004d9fad47eb8fa5d6ae7b__PWD:/app
-__TTS_164958347d004d9fad47eb8fa5d6ae7b__END
-[?2004hroot@593e78469879:/app# cd -- /app && cd /app && ls -la sqlite | sed -n '1,80p' && find sqlite -maxdepth 2 \( -name configure -o -name autoconf -o -name Makefile.in -o -name main.mk -o -name Makefile.linux-gcc \) | sed -n '1,60p'; __tts_rc=$?; printf '\n__TTS_9d5944dff8224d07a5b096be8f8e8acf__RC:%s\n' "$__tts_rc"; printf '__TTS_9d5944dff8224d07a5b096be8f8e8acf__PWD:'; pwd; printf '__TTS_9d5944dff8224d07a5b096be8f8e8acf__END\n'; tmux wait -S done
-[?2004ltotal 548
-drwxr-xr-x 14 root root   4096 Jul 18 00:43 .
-drwxr-xr-x  1 root root   4096 Jul 18 00:43 ..
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 .fossil-settings
-drwxr-xr-x  8 root root   4096 Jul 18 00:43 .git
--rw-r--r--  1 root root   5126 Jul 18 00:43 AGENTS.md
--rw-r--r--  1 root root   3850 Jul 18 00:43 LICENSE.md
--rw-r--r--  1 root root  11324 Jul 18 00:43 Makefile.in
--rw-r--r--  1 root root   2016 Jul 18 00:43 Makefile.linux-generic
--rw-r--r--  1 root root  93441 Jul 18 00:43 Makefile.msc
--rw-r--r--  1 root root  21168 Jul 18 00:43 README.md
--rw-r--r--  1 root root      7 Jul 18 00:43 VERSION
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 art
--rw-r--r--  1 root root   2622 Jul 18 00:43 auto.def
-drwxr-xr-x  3 root root   4096 Jul 18 00:43 autoconf
-drwxr-xr-x  3 root root   4096 Jul 18 00:43 autosetup
--rwxr-xr-x  1 root root    146 Jul 18 00:43 configure
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 contrib
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 doc
-drwxr-xr-x 15 root root   4096 Jul 18 00:43 ext
--rw-r--r--  1 root root   1562 Jul 18 00:43 magic.txt
--rw-r--r--  1 root root  83708 Jul 18 00:43 main.mk
--rw-r--r--  1 root root     35 Jul 18 00:43 make.bat
--rw-r--r--  1 root root 185658 Jul 18 00:43 manifest
--rw-r--r--  1 root root     23 Jul 18 00:43 manifest.tags
--rw-r--r--  1 root root     65 Jul 18 00:43 manifest.uuid
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 mptest
--rw-r--r--  1 root root    258 Jul 18 00:43 sqlite.pc.in
--rw-r--r--  1 root root   5315 Jul 18 00:43 sqlite3.1
--rw-r--r--  1 root root    339 Jul 18 00:43 sqlite3.pc.in
-drwxr-xr-x  2 root root   4096 Jul 18 00:43 src
-drwxr-xr-x  4 root root  40960 Jul 18 00:43 test
-drwxr-xr-x  3 root root   4096 Jul 18 00:43 tool
-sqlite/configure
-sqlite/main.mk
-sqlite/Makefile.in
-sqlite/autoconf
-sqlite/autoconf/Makefile.in
-
-__TTS_9d5944dff8224d07a5b096be8f8e8acf__RC:0
-__TTS_9d5944dff8224d07a5b096be8f8e8acf__PWD:/app
-__TTS_9d5944dff8224d07a5b096be8f8e8acf__END
-[?2004hroot@593e78469879:/app# cd -- /app && cd /app/sqlite && ./configure CFLAGS='-O0 --coverage' LDFLAGS='--coverage' && make -j$(nproc) sqlite3 && install -m 755 sqlite3 /usr/local/bin/sqlite3; __tts_rc=$?; printf '\n__TTS_96562849c093450f8b3b2fa995e27d1a__RC:%s\n' "$__tts_rc"; printf '__TTS_96562849c093450f8b3b2fa995e27d1a__PWD:'; pwd; printf '__TTS_96562849c093450f8b3b2fa995e27d1a__END\n'; tmux wait -S done
-[?2004lNo installed jimsh or tclsh, building local bootstrap jimsh0
-Configuring SQLite version 3.54.0
-Host System...x86_64-pc-linux-gnu
-Build System...x86_64-pc-linux-gnu
-Source dir = /app/sqlite
-Build dir  = /app/sqlite
-C compiler... cc -O0 --coverage 
-C++ compiler...  -O0 --coverage 
-Build C compiler...cc
-Checking for stdlib.h...ok
-Checking for sys/types.h...ok
-Checking if -D_FILE_OFFSET_BITS=64 is needed...no
-SQLITE_DEBUG build? no
-Looking for install ... /usr/bin/install
-Checking for int8_t...ok
-Checking for int16_t...ok
-Checking for int32_t...ok
-Checking for int64_t...ok
-Checking for intptr_t...ok
-Checking for uint8_t...ok
-Checking for uint16_t...ok
-Checking for uint32_t...ok
-Checking for uint64_t...ok
-Checking for uintptr_t...ok
-Checking for gmtime_r...ok
-Checking for isnan...ok
-Checking for localtime_r...ok
-Checking for localtime_s...not found
-Checking for usleep...ok
-Checking for utime...ok
-Checking for pread...ok
-Checking for pread64...ok
-Checking for pwrite...ok
-Checking for pwrite64...ok
-Checking libs for fdatasync...none needed
-Checking libs for nanosleep...none needed
-Checking for sys/types.h...(cached) ok
-Checking for sys/stat.h...ok
-Checking for dlfcn.h...ok
-Checking for unistd.h...ok
-Checking for stdlib.h...(cached) ok
-Checking for malloc.h...ok
-Checking for memory.h...ok
-Checking for string.h...ok
-Checking for strings.h...ok
-Checking for inttypes.h...ok
-Checking for zlib.h...not found
-Use amalgamation for builds? yes
-Use gcov? no
-test-runner flags: no
-Use #line macros in the amalgamation: no
-Checking whether the C compiler accepts -fsanitize=address...yes
-Checking whether the C compiler accepts -fsanitize=bounds-strict...yes
-Checking for a suitable tcl... 
-Checking for tclsh9.1...no
-Checking for tclsh9.0...no
-Checking for tclsh8.6...no
-Checking for tclsh...no
-WARNING: [ sqlite-check-tcl ]: Cannot determine TCLLIBDIR.
-
-    WARNING: Cannot find a usable tclConfig.sh file.  Use
-    --with-tcl=DIR to specify a directory where tclConfig.sh can be
-    found.  SQLite does not use TCL internally, but some optional
-    components require TCL, including tests and sqlite3_analyzer.
-
-Checking for TCL to use for code generation... 
-Checking for dirent.h...ok
-Checking for sys/time.h...ok
-Checking for realpath...ok
-TCL for code generation: jimsh
-Emscripten SDK? not found
-Statically link tclsqlite3? no
-Statically link CLI shell? no
-Checking whether the C compiler accepts -rpath /usr/local/lib...no
-Checking whether the C compiler accepts -Wl,-rpath,/usr/local/lib...yes
-Support threadsafe operation? Checking for libs...
-Checking libs for pthread_create...none needed
-Checking libs for pthread_mutexattr_init...none needed
-Checking libs for dlopen...none needed
-Loadable extension support enabled. 
-Checking libs for ceil...-lm
-Enabling math SQL functions
-ICU support is disabled.
-Checking for line-editing capability...
-Line-editing support for the sqlite3 shell: none
-Build shared library? yes
-Build static library? yes
-Feature flags...
-  - fts3
-  - fts4
-  - fts5
-  - geopoly
-  - rtree
-  - session
-  - update-limit
-  - memsys5
-  - memsys3
-  - scanstatus
-  - column-metadata
-  - dbpage
-  - dbstat
-  - carray
-  + json
-Library feature flags: -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_ENABLE_PERCENTILE -DSQLITE_THREADSAFE=1
-Shell options: -DSQLITE_DQS=0 -DSQLITE_ENABLE_BYTECODE_VTAB -DSQLITE_ENABLE_DBPAGE_VTAB -DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_EXPLAIN_COMMENTS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_OFFSET_SQL_FUNC -DSQLITE_ENABLE_PERCENTILE -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_STMTVTAB -DSQLITE_ENABLE_UNKNOWN_SQL_FUNCTION -DSQLITE_STRICT_SUBTYPE=1
-Created Makefile from Makefile.in
-Created sqlite3.pc from sqlite3.pc.in
-Created sqlite_cfg.h
-cc -g -o jimsh -O1 -DHAVE_REALPATH /app/sqlite/autosetup/jimsh0.c
-cc -g -o mkkeywordhash -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_ENABLE_PERCENTILE -DSQLITE_THREADSAFE=1   /app/sqlite/tool/mkkeywordhash.c
-cc -g -o src-verify /app/sqlite/tool/src-verify.c
-touch .main.mk.checks
-cc -g -o lemon /app/sqlite/tool/lemon.c
-cc -g -o mksourceid /app/sqlite/tool/mksourceid.c
-./mkkeywordhash > keywordhash.h
-cp /app/sqlite/tool/lempar.c .
-cp /app/sqlite/src/parse.y .
-cp /app/sqlite/ext/fts5/fts5parse.y .
-./lemon -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_ENABLE_PERCENTILE -DSQLITE_THREADSAFE=1   -S parse.y
-rm -f fts5parse.h
-./lemon  -S fts5parse.y
-./jimsh /app/sqlite/tool/mkshellc.tcl shell.c
-./jimsh /app/sqlite/tool/mkctimec.tcl
-./jimsh /app/sqlite/tool/mkpragmatab.tcl
-./jimsh /app/sqlite/tool/mkcombo.tcl /app/sqlite/ext/qrf/qrf.h /app/sqlite/ext/qrf/qrf.c /app/sqlite/src/tclsqlite.c -o tclsqlite-ex.c
-cat parse.h /app/sqlite/src/vdbe.c | ./jimsh /app/sqlite/tool/mkopcodeh.tcl >opcodes.h
-./jimsh /app/sqlite/tool/mksqlite3h.tcl /app/sqlite -o sqlite3.h
-Overwriting pragma.h with new pragma table...
-./jimsh /app/sqlite/ext/fts5/tool/mkfts5c.tcl
-Overwriting ctime.c...
-./jimsh /app/sqlite/tool/mkopcodec.tcl opcodes.h >opcodes.c
-cp /app/sqlite/ext/fts5/fts5.h .
-rm -rf tsrc
-mkdir tsrc
-cp -f /app/sqlite/src/alter.c /app/sqlite/src/analyze.c /app/sqlite/src/attach.c /app/sqlite/src/auth.c /app/sqlite/src/backup.c /app/sqlite/src/bitvec.c /app/sqlite/src/btmutex.c /app/sqlite/src/btree.c /app/sqlite/src/btree.h /app/sqlite/src/btreeInt.h /app/sqlite/src/build.c /app/sqlite/src/callback.c /app/sqlite/src/carray.c /app/sqlite/src/complete.c ctime.c /app/sqlite/src/date.c /app/sqlite/src/dbpage.c /app/sqlite/src/dbstat.c /app/sqlite/src/delete.c /app/sqlite/src/expr.c /app/sqlite/src/fault.c /app/sqlite/src/fkey.c /app/sqlite/src/func.c /app/sqlite/src/global.c /app/sqlite/src/hash.c /app/sqlite/src/hash.h /app/sqlite/src/hwtime.h /app/sqlite/src/insert.c /app/sqlite/src/json.c /app/sqlite/src/legacy.c /app/sqlite/src/loadext.c /app/sqlite/src/main.c /app/sqlite/src/malloc.c /app/sqlite/src/mem0.c /app/sqlite/src/mem1.c /app/sqlite/src/mem2.c /app/sqlite/src/mem3.c /app/sqlite/src/mem5.c /app/sqlite/src/memdb.c /app/sqlite/src/memjournal.c /app/sqlite/src/msvc.h /app/sqlite/src/mutex.c /app/sqlite/src/mutex.h /app/sqlite/src/mutex_noop.c /app/sqlite/src/mutex_unix.c /app/sqlite/src/mutex_w32.c /app/sqlite/src/notify.c /app/sqlite/src/os.c /app/sqlite/src/os.h /app/sqlite/src/os_common.h /app/sqlite/src/os_setup.h /app/sqlite/src/os_kv.c /app/sqlite/src/os_unix.c /app/sqlite/src/os_win.c /app/sqlite/src/os_win.h /app/sqlite/src/pager.c /app/sqlite/src/pager.h /app/sqlite/src/parse.y /app/sqlite/src/pcache.c /app/sqlite/src/pcache.h /app/sqlite/src/pcache1.c /app/sqlite/src/pragma.c pragma.h /app/sqlite/src/prepare.c /app/sqlite/src/printf.c /app/sqlite/src/random.c /app/sqlite/src/resolve.c /app/sqlite/src/rowset.c /app/sqlite/src/select.c /app/sqlite/src/status.c /app/sqlite/src/shell.c.in /app/sqlite/src/sqlite.h.in /app/sqlite/src/sqlite3ext.h /app/sqlite/src/sqliteInt.h /app/sqlite/src/sqliteLimit.h /app/sqlite/src/table.c tclsqlite-ex.c /app/sqlite/src/threads.c /app/sqlite/src/tokenize.c /app/sqlite/src/treeview.c /app/sqlite/src/trigger.c /app/sqlite/src/utf.c /app/sqlite/src/update.c /app/sqlite/src/upsert.c /app/sqlite/src/util.c /app/sqlite/src/vacuum.c /app/sqlite/src/vdbe.c /app/sqlite/src/vdbe.h /app/sqlite/src/vdbeapi.c /app/sqlite/src/vdbeaux.c /app/sqlite/src/vdbeblob.c /app/sqlite/src/vdbemem.c /app/sqlite/src/vdbesort.c /app/sqlite/src/vdbetrace.c /app/sqlite/src/vdbevtab.c /app/sqlite/src/vdbeInt.h /app/sqlite/src/vtab.c /app/sqlite/src/vxworks.h /app/sqlite/src/wal.c /app/sqlite/src/wal.h /app/sqlite/src/walker.c /app/sqlite/src/where.c /app/sqlite/src/wherecode.c /app/sqlite/src/whereexpr.c /app/sqlite/src/whereInt.h /app/sqlite/src/window.c /app/sqlite/ext/fts3/fts3.c /app/sqlite/ext/fts3/fts3.h /app/sqlite/ext/fts3/fts3Int.h /app/sqlite/ext/fts3/fts3_aux.c /app/sqlite/ext/fts3/fts3_expr.c /app/sqlite/ext/fts3/fts3_hash.c /app/sqlite/ext/fts3/fts3_hash.h /app/sqlite/ext/fts3/fts3_icu.c /app/sqlite/ext/fts3/fts3_porter.c /app/sqlite/ext/fts3/fts3_snippet.c /app/sqlite/ext/fts3/fts3_tokenizer.h /app/sqlite/ext/fts3/fts3_tokenizer.c /app/sqlite/ext/fts3/fts3_tokenizer1.c /app/sqlite/ext/fts3/fts3_tokenize_vtab.c /app/sqlite/ext/fts3/fts3_unicode.c /app/sqlite/ext/fts3/fts3_unicode2.c /app/sqlite/ext/fts3/fts3_write.c /app/sqlite/ext/icu/sqliteicu.h /app/sqlite/ext/icu/icu.c /app/sqlite/ext/rtree/rtree.h /app/sqlite/ext/rtree/rtree.c /app/sqlite/ext/rtree/geopoly.c /app/sqlite/ext/session/sqlite3session.c /app/sqlite/ext/session/sqlite3session.h /app/sqlite/ext/rbu/sqlite3rbu.h /app/sqlite/ext/rbu/sqlite3rbu.c /app/sqlite/ext/misc/stmt.c keywordhash.h opcodes.c opcodes.h parse.c parse.h sqlite_cfg.h shell.c sqlite3.h tsrc
-rm -f tsrc/sqlite.h.in tsrc/parse.y
-./jimsh /app/sqlite/tool/vdbe-compress.tcl  <tsrc/vdbe.c >vdbe.new
-mv -f vdbe.new tsrc/vdbe.c
-cp fts5.c fts5.h tsrc
-touch .target_source
-./jimsh /app/sqlite/tool/mksqlite3c.tcl --linemacros=0 
-cp tsrc/sqlite3ext.h .
-cp /app/sqlite/ext/session/sqlite3session.h .
-cc -DNDEBUG -fPIC -O0 --coverage  -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_ENABLE_PERCENTILE -DSQLITE_THREADSAFE=1    -D_HAVE_SQLITE_CONFIG_H -DBUILD_sqlite -I. -I/app/sqlite/src -I/app/sqlite/ext/rtree -I/app/sqlite/ext/icu -I/app/sqlite/ext/fts3 -I/app/sqlite/ext/session -I/app/sqlite/ext/misc  -o sqlite3 \
-	shell.c sqlite3.c \
-	 \
-	 -DSQLITE_DQS=0 -DSQLITE_ENABLE_BYTECODE_VTAB -DSQLITE_ENABLE_DBPAGE_VTAB -DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_EXPLAIN_COMMENTS -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_OFFSET_SQL_FUNC -DSQLITE_ENABLE_PERCENTILE -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_STMTVTAB -DSQLITE_ENABLE_UNKNOWN_SQL_FUNCTION -DSQLITE_STRICT_SUBTYPE=1  \
-	-Wl,-rpath,/usr/local/lib  -lm     --coverage 
-
-__TTS_96562849c093450f8b3b2fa995e27d1a__RC:0
-__TTS_96562849c093450f8b3b2fa995e27d1a__PWD:/app/sqlite
-__TTS_96562849c093450f8b3b2fa995e27d1a__END
-[?2004hroot@593e78469879:/app/sqlite# cd -- /app/sqlite && cd /app/sqlite && /usr/local/bin/sqlite3 -version && command -v sqlite3 && ls -1 sqlite3 sqlite3.gcno 2>/dev/null | sed -n '1,5p'; __tts_rc=$?; printf '\n__TTS_a98ded1e00ce44b794f020f31eb9ea51__RC:%s\n' "$__tts_rc"; printf '__TTS_a98ded1e00ce44b794f020f31eb9ea51__PWD:'; pwd; printf '__TTS_a98ded1e00ce44b794f020f31eb9ea51__END\n'; tmux wait -S done
-[?2004l3.54.0 2026-07-17 23:29:22 433edc4626854edef1f0fcb59215f662fa48fc2a7a94b47f63143ac42c958ad8 (64-bit)
-/usr/local/bin/sqlite3
-sqlite3
-
-__TTS_a98ded1e00ce44b794f020f31eb9ea51__RC:0
-__TTS_a98ded1e00ce44b794f020f31eb9ea51__PWD:/app/sqlite
-__TTS_a98ded1e00ce44b794f020f31eb9ea51__END
-[?2004hroot@593e78469879:/app/sqlite# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@593e78469879:/app# 

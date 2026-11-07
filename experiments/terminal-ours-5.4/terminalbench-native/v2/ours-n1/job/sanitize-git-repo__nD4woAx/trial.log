@@ -1,5 +1,0 @@
-Trial sanitize-git-repo__nD4woAx failed: Docker compose command failed for environment sanitize-git-repo. Command: docker compose --project-name sanitize-git-repo__nd4woax__env --project-directory /home/t-wendili/.cache/harbor/tasks/WNjEws4zKtRNWJABpoU892/sanitize-git-repo/environment -f /tmp/tmpfvfb3ud_/sanitize-git-repo__nD4woAx__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpnow9_3n2/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network sanitize-git-repo__nd4woax__env_default Creating 
- Network sanitize-git-repo__nd4woax__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network sanitize-git-repo__nd4woax__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

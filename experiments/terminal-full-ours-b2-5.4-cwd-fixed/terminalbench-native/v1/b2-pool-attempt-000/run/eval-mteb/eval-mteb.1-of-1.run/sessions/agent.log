@@ -1,81 +1,0 @@
-[?2004hroot@48f4d3277e66:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@48f4d3277e66:/app# clear
-[?2004l[H[J[3J[?2004hroot@48f4d3277e66:/app# pwd; __tts_rc=$?; printf '\n__TTS_6767fbd682624428bb6680f75527a37c__RC:%s\n' "$__tts_rc"; printf '__TTS_6767fbd682624428bb6680f75527a37c__PWD:'; pwd; printf '__TTS_6767fbd682624428bb6680f75527a37c__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_6767fbd682624428bb6680f75527a37c__RC:0
-__TTS_6767fbd682624428bb6680f75527a37c__PWD:/app
-__TTS_6767fbd682624428bb6680f75527a37c__END
-[?2004hroot@48f4d3277e66:/app# cd -- /app && python -c "import inspect,mteb; import mteb.models.huggingface_models as hm; print(inspect.getsource(hm.HuggingFaceModel))"; __tts_rc=$?; printf '\n__TTS_db4bb727122741fc98262ec04c44b444__RC:%s\n' "$__tts_rc"; printf '__TTS_db4bb727122741fc98262ec04c44b444__PWD:'; pwd; printf '__TTS_db4bb727122741fc98262ec04c44b444__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File "<string>", line 1, in <module>
-  File "/usr/local/lib/python3.10/site-packages/mteb/__init__.py", line 5, in <module>
-    from mteb.benchmarks.benchmarks import (
-  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/__init__.py", line 3, in <module>
-    from mteb.benchmarks.benchmark import Benchmark
-  File "/usr/local/lib/python3.10/site-packages/mteb/benchmarks/benchmark.py", line 9, in <module>
-    from mteb.load_results.load_results import load_results
-  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/__init__.py", line 3, in <module>
-    from .benchmark_results import BenchmarkResults, ModelResult
-  File "/usr/local/lib/python3.10/site-packages/mteb/load_results/benchmark_results.py", line 15, in <module>
-    from mteb.abstasks.AbsTask import AbsTask, ScoresDict
-  File "/usr/local/lib/python3.10/site-packages/mteb/abstasks/__init__.py", line 3, in <module>
-    from ..evaluation.LangMapping import *
-  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/__init__.py", line 3, in <module>
-    from .MTEB import *
-  File "/usr/local/lib/python3.10/site-packages/mteb/evaluation/MTEB.py", line 23, in <module>
-    from mteb.models import model_meta_from_sentence_transformers
-  File "/usr/local/lib/python3.10/site-packages/mteb/models/__init__.py", line 5, in <module>
-    from mteb.models.overview import (
-  File "/usr/local/lib/python3.10/site-packages/mteb/models/overview.py", line 14, in <module>
-    from mteb.models import (
-  File "/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py", line 13, in <module>
-    from transformers import AutoModelForVision2Seq, AutoProcessor
-ImportError: cannot import name 'AutoModelForVision2Seq' from 'transformers' (/usr/local/lib/python3.10/site-packages/transformers/__init__.py)
-
-__TTS_db4bb727122741fc98262ec04c44b444__RC:1
-__TTS_db4bb727122741fc98262ec04c44b444__PWD:/app
-__TTS_db4bb727122741fc98262ec04c44b444__END
-[?2004hroot@48f4d3277e66:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os,inspect,mteb,transformers
-[?2004l[?2004h> print(transformers.__version__)
-[?2004l[?2004h> print(os.path.dirname(inspect.getfile(mteb)))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__RC:%s\n' "$__tts_rc"; printf '__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__PWD:'; pwd; printf '__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os,site,glob
-[?2004l[?2004h> for d in site.getsitepackages():
-[?2004l[?2004h>  p=glob.glob(os.path.join(d,'mteb','models','gme_v_models.py'))
-[?2004l[?2004h>  if p:
-[?2004l[?2004h>   f=p[0]
-[?2004l[?2004h>   s=open(f).read().replace('from transformers import AutoModelForVision2Seq, AutoProcessor','try:\n    from transformers import AutoModelForVision2Seq, AutoProcessor\nexcept ImportError:\n    AutoModelForVision2Seq = AutoProcessor = None')
-[?2004l[?2004h>   open(f,'w').write(s)
-[?2004l[?2004h>   print(f)
-[?2004l[?2004h>   break
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d8f73ab3b0c44508b459f48457795eb4__RC:%s\n' "$__tts_rc"; printf '__TTS_d8f73ab3b0c44508b459f48457795eb4__PWD:'; pwd; printf '__TTS_d8f73ab3b0c44508b459f48457795eb4__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "import site,glob,os;print(next((p for d in site.getsitepackages() for p in glob.glob(os.path.join(d,'mteb','models','gme_v_models.py'))),''))"; __tts_rc=$?; printf '\n__TTS_cf56d602371f48dd9817e6ac1c629ae0__RC:%s\n' "$__tts_rc"; printf '__TTS_cf56d602371f48dd9817e6ac1c629ae0__PWD:'; pwd; printf '__TTS_cf56d602371f48dd9817e6ac1c629ae0__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "import site,glob,os; print(next((p for d in site.getsitepackages() for p in glob.glob(os.path.join(d,'mteb','models','gme_v_models.py'))), ''))"; __tts_rc=$?; printf '\n__TTS_91ab7f014e164c47bc0ee777c10a7dca__RC:%s\n' "$__tts_rc"; printf '__TTS_91ab7f014e164c47bc0ee777c10a7dca__PWD:'; pwd; printf '__TTS_91ab7f014e164c47bc0ee777c10a7dca__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && find /usr/local/lib/python3.10/site-packages/mteb/models -maxdepth 1 -name 'gme_v_models.py' -print; __tts_rc=$?; printf '\n__TTS_3a096929583a4671998a1a34a34e2613__RC:%s\n' "$__tts_rc"; printf '__TTS_3a096929583a4671998a1a34a34e2613__PWD:'; pwd; printf '__TTS_3a096929583a4671998a1a34a34e2613__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && ls -l /usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py; __tts_rc=$?; printf '\n__TTS_3db37e561f6c46edbdca06d154e1218e__RC:%s\n' "$__tts_rc"; printf '__TTS_3db37e561f6c46edbdca06d154e1218e__PWD:'; pwd; printf '__TTS_3db37e561f6c46edbdca06d154e1218e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && ps -eo pid,cmd --sort=pid | tail -n +1 | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_7e043083a1824b61aa0667824c31e364__RC:%s\n' "$__tts_rc"; printf '__TTS_7e043083a1824b61aa0667824c31e364__PWD:'; pwd; printf '__TTS_7e043083a1824b61aa0667824c31e364__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 4
-    PY; __tts_rc=$?; printf '\n__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__RC:%s\n' "$__tts_rc"; printf '__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__PWD:'; pwd; printf '__TTS_9f5be161b3fd48ae9ce28507ee6d0f5b__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@48f4d3277e66:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_7e043083a1824b61aa0667824c31e364__END\n'"'"'; tmux wait -S done' && pkill -f "python - <<'PY'|python -c \"import site,glob,os|find /usr/local/lib/python3.10/site-packages/mteb/models|ls -l /usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py"; __tts_rc=$?; printf '\n__TTS_ddf276870b724a68b68ebb99031ba1da__RC:%s\n' "$__tts_rc"; printf '__TTS_ddf276870b724a68b68ebb99031ba1da__PWD:'; pwd; printf '__TTS_ddf276870b724a68b68ebb99031ba1da__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_7e043083a1824b61aa0667824c31e364__END\n'; tmux wait -S done: No such file or directory
-
-__TTS_ddf276870b724a68b68ebb99031ba1da__RC:1
-__TTS_ddf276870b724a68b68ebb99031ba1da__PWD:/app
-__TTS_ddf276870b724a68b68ebb99031ba1da__END
-[?2004hroot@48f4d3277e66:/app# cd -- /app && python -c "import pathlib; p=pathlib.Path('/usr/local/lib/python3.10/site-packages/mteb/models/gme_v_models.py'); s=p.read_text(); old='from transformers import AutoModelForVision2Seq, AutoProcessor'; new='try:\n    from transformers import AutoModelForVision2Seq, AutoProcessor\nexcept ImportError:\n    AutoModelForVision2Seq = AutoProcessor = None'; print('patched' if old in s else 'already'); p.write_text(s.replace(old,new))"; __tts_rc=$?; printf '\n__TTS_bcff45c92687413c803ad9d2217ebab6__RC:%s\n' "$__tts_rc"; printf '__TTS_bcff45c92687413c803ad9d2217ebab6__PWD:'; pwd; printf '__TTS_bcff45c92687413c803ad9d2217ebab6__END\n'; tmux wait -S done
-[?2004lpatched
-
-__TTS_bcff45c92687413c803ad9d2217ebab6__RC:0
-__TTS_bcff45c92687413c803ad9d2217ebab6__PWD:/app
-__TTS_bcff45c92687413c803ad9d2217ebab6__END
-[?2004hroot@48f4d3277e66:/app# cd -- /app && python -c "import mteb,inspect; from mteb.models.huggingface_models import HuggingFaceModel; print('ok'); print(inspect.signature(HuggingFaceModel))"; __tts_rc=$?; printf '\n__TTS_112a0a3e41f249b18532165c8f102d79__RC:%s\n' "$__tts_rc"; printf '__TTS_112a0a3e41f249b18532165c8f102d79__PWD:'; pwd; printf '__TTS_112a0a3e41f249b18532165c8f102d79__END\n'; tmux wait -S done
-[?2004l

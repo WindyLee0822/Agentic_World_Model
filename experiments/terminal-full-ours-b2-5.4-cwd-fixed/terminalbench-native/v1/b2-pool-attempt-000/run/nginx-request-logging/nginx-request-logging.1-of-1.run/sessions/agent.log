@@ -1,15 +1,0 @@
-[?2004hroot@23bc219aedc2:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@23bc219aedc2:/app# clear
-[?2004l[H[J[3J[?2004hroot@23bc219aedc2:/app# pwd; __tts_rc=$?; printf '\n__TTS_b201f9dba6c84ba6b095f3a51522c1cd__RC:%s\n' "$__tts_rc"; printf '__TTS_b201f9dba6c84ba6b095f3a51522c1cd__PWD:'; pwd; printf '__TTS_b201f9dba6c84ba6b095f3a51522c1cd__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_b201f9dba6c84ba6b095f3a51522c1cd__RC:0
-__TTS_b201f9dba6c84ba6b095f3a51522c1cd__PWD:/app
-__TTS_b201f9dba6c84ba6b095f3a51522c1cd__END
-[?2004hroot@23bc219aedc2:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@23bc219aedc2:/app# 

@@ -1,125 +1,0 @@
-[?2004hroot@9bec123aa640:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@9bec123aa640:/app# clear
-[?2004l[H[J[3J[?2004hroot@9bec123aa640:/app# pwd; __tts_rc=$?; printf '\n__TTS_58ef5b7978184339bdf7e3497d138049__RC:%s\n' "$__tts_rc"; printf '__TTS_58ef5b7978184339bdf7e3497d138049__PWD:'; pwd; printf '__TTS_58ef5b7978184339bdf7e3497d138049__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_58ef5b7978184339bdf7e3497d138049__RC:0
-__TTS_58ef5b7978184339bdf7e3497d138049__PWD:/app
-__TTS_58ef5b7978184339bdf7e3497d138049__END
-[?2004hroot@9bec123aa640:/app# cd -- /app && ls -la && find . -maxdepth 2 -type f | sed 's#^./##' | sort | head -200; __tts_rc=$?; printf '\n__TTS_b85986772167467b8cc618ea823fcc59__RC:%s\n' "$__tts_rc"; printf '__TTS_b85986772167467b8cc618ea823fcc59__PWD:'; pwd; printf '__TTS_b85986772167467b8cc618ea823fcc59__END\n'; tmux wait -S done
-[?2004ltotal 8
-drwxr-xr-x 2 root root 4096 Jul 18 09:56 .
-drwxr-xr-x 1 root root 4096 Jul 18 09:58 ..
-
-__TTS_b85986772167467b8cc618ea823fcc59__RC:0
-__TTS_b85986772167467b8cc618ea823fcc59__PWD:/app
-__TTS_b85986772167467b8cc618ea823fcc59__END
-[?2004hroot@9bec123aa640:/app# cd -- /app && cd /app && python - <<'PY'
-[?2004l[?2004h> import importlib.util as u
-[?2004l[?2004h> mods=['mteb','sentence_transformers','transformers','torch']
-[?2004l[?2004h> for m in mods:
-[?2004l[?2004h>  print(m, bool(u.find_spec(m)))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d70b8fc63f3d4243a1ee3feba7c17d85__RC:%s\n' "$__tts_rc"; printf '__TTS_d70b8fc63f3d4243a1ee3feba7c17d85__PWD:'; pwd; printf '__TTS_d70b8fc63f3d4243a1ee3feba7c17d85__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && python -c "import importlib.util as u;mods=['mteb','sentence_transformers','transformers','torch'];print({m:bool(u.find_spec(m)) for m in mods})"; __tts_rc=$?; printf '\n__TTS_ee81f1679aef4522b15b52e91ca2d0a0__RC:%s\n' "$__tts_rc"; printf '__TTS_ee81f1679aef4522b15b52e91ca2d0a0__PWD:'; pwd; printf '__TTS_ee81f1679aef4522b15b52e91ca2d0a0__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && python -V; __tts_rc=$?; printf '\n__TTS_3f444193b09043d4b11fd78993a6ca83__RC:%s\n' "$__tts_rc"; printf '__TTS_3f444193b09043d4b11fd78993a6ca83__PWD:'; pwd; printf '__TTS_3f444193b09043d4b11fd78993a6ca83__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && which python python3 && ls -l /usr/bin/python* /usr/local/bin/python* 2>/dev/null | sed -n '1,20p'; __tts_rc=$?; printf '\n__TTS_98c593c521754ee8a0d975a81868c098__RC:%s\n' "$__tts_rc"; printf '__TTS_98c593c521754ee8a0d975a81868c098__PWD:'; pwd; printf '__TTS_98c593c521754ee8a0d975a81868c098__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && command -v python3 && python3 -V; __tts_rc=$?; printf '\n__TTS_15f0b8906a7c40af8f6c59c7e51b9c15__RC:%s\n' "$__tts_rc"; printf '__TTS_15f0b8906a7c40af8f6c59c7e51b9c15__PWD:'; pwd; printf '__TTS_15f0b8906a7c40af8f6c59c7e51b9c15__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && command -v timeout && timeout 10s sh -lc 'command -v python3; python3 -V; command -v pip3'; __tts_rc=$?; printf '\n__TTS_edc40cd785f2401aa10e110c44927b6f__RC:%s\n' "$__tts_rc"; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__PWD:'; pwd; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && ps -ef | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_f603d9befd594299b12567b261b6bcb7__RC:%s\n' "$__tts_rc"; printf '__TTS_f603d9befd594299b12567b261b6bcb7__PWD:'; pwd; printf '__TTS_f603d9befd594299b12567b261b6bcb7__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 10
-    cd -- /app && cd /app && command -v timeout && timeout 10s sh -lc 'command -v python3; python3 -V; command -v pip3'; __tts_rc=$?; printf '\n__TTS_edc40cd785f2401aa10e110c44927b6f__RC:%s\n' "$__tts_rc"; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__PWD:'; pwd; printf '__TTS_edc40cd785f2401aa10e110c44927b6f__END\n'; tmux wait -S done
-                                                            ^
-SyntaxError: invalid decimal literal
-[?2004hroot@9bec123aa640:/app# cd -- /app && cd /app && command -v uv python3 python sh timeout mteb huggingface-cli git | tr '
-[?2004l[?2004h> ' ' ' && echo && ls -l /usr/local/bin /usr/bin 2>/dev/null | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_0d1d4cf35aff49a69cd124c5ead132ac__RC:%s\n' "$__tts_rc"; printf '__TTS_0d1d4cf35aff49a69cd124c5ead132ac__PWD:'; pwd; printf '__TTS_0d1d4cf35aff49a69cd124c5ead132ac__END\n'; tmux wait -S done
-[?2004l/usr/local/bin/python3 /usr/local/bin/python /usr/bin/sh /usr/bin/timeout /usr/local/bin/mteb /usr/local/bin/huggingface-cli 
-/usr/bin:
-total 81296
--rwxr-xr-x 1 root root      68496 Sep 20  2022 [
--rwxr-xr-x 1 root root      31040 Nov 21  2024 addpart
-lrwxrwxrwx 1 root root         26 Jan 14  2023 addr2line -> x86_64-linux-gnu-addr2line
--rwxr-xr-x 1 root root      18752 May 25  2023 apt
--rwxr-xr-x 1 root root      88456 May 25  2023 apt-cache
--rwxr-xr-x 1 root root      22920 May 25  2023 apt-cdrom
--rwxr-xr-x 1 root root      26944 May 25  2023 apt-config
--rwxr-xr-x 1 root root      51592 May 25  2023 apt-get
--rwxr-xr-x 1 root root      27972 May 25  2023 apt-key
--rwxr-xr-x 1 root root      59784 May 25  2023 apt-mark
-lrwxrwxrwx 1 root root         19 Jan 14  2023 ar -> x86_64-linux-gnu-ar
--rwxr-xr-x 1 root root      43888 Sep 20  2022 arch
-lrwxrwxrwx 1 root root         19 Jan 14  2023 as -> x86_64-linux-gnu-as
--rwxr-xr-x 1 root root        217 May 19  2022 asciinema
-lrwxrwxrwx 1 root root         21 Jun 17  2022 awk -> /etc/alternatives/awk
--rwxr-xr-x 1 root root      60400 Sep 20  2022 b2sum
--rwxr-xr-x 1 root root      48016 Sep 20  2022 base32
--rwxr-xr-x 1 root root      48016 Sep 20  2022 base64
--rwxr-xr-x 1 root root      43856 Sep 20  2022 basename
--rwxr-xr-x 1 root root      56208 Sep 20  2022 basenc
--rwxr-xr-x 1 root root    1265648 May  7 20:33 bash
--rwxr-xr-x 1 root root       6865 May  7 20:33 bashbug
-lrwxrwxrwx 1 root root         21 Jan  8  2023 c++ -> /etc/alternatives/c++
-lrwxrwxrwx 1 root root         24 Jan 14  2023 c++filt -> x86_64-linux-gnu-c++filt
-lrwxrwxrwx 1 root root         21 Nov 17  2020 c89 -> /etc/alternatives/c89
--rwxr-xr-x 1 root root        428 Nov 17  2020 c89-gcc
-lrwxrwxrwx 1 root root         21 Nov 17  2020 c99 -> /etc/alternatives/c99
--rwxr-xr-x 1 root root        454 Nov 17  2020 c99-gcc
--rwxr-xr-x 1 root root       6925 Jun  6 19:56 c_rehash
-lrwxrwxrwx 1 root root          3 May  7  2023 captoinfo -> tic
--rwxr-xr-x 1 root root      44016 Sep 20  2022 cat
-lrwxrwxrwx 1 root root         20 Jan  8  2023 cc -> /etc/alternatives/cc
--rwxr-sr-x 1 root shadow    80376 Dec 14  2025 chage
--rwxr-xr-x 1 root root      14584 Jun  6  2025 chattr
--rwxr-xr-x 1 root root      68720 Sep 20  2022 chcon
--rwsr-xr-x 1 root root      62672 Dec 14  2025 chfn
--rwxr-xr-x 1 root root      68656 Sep 20  2022 chgrp
--rwxr-xr-x 1 root root      64496 Sep 20  2022 chmod
--rwxr-xr-x 1 root root      55616 Nov 21  2024 choom
--rwxr-xr-x 1 root root      72752 Sep 20  2022 chown
--rwxr-xr-x 1 root root      67904 Nov 21  2024 chrt
--rwsr-xr-x 1 root root      52880 Dec 14  2025 chsh
--rwxr-xr-x 1 root root     142384 Sep 20  2022 cksum
--rwxr-xr-x 1 root root      14584 May  7  2023 clear
--rwxr-xr-x 1 root root      14488 May  7 20:33 clear_console
--rwxr-xr-x 1 root root      52176 Feb  3  2023 cmp
--rwxr-xr-x 1 root root      48048 Sep 20  2022 comm
--rwxr-xr-x 1 root root     151152 Sep 20  2022 cp
-lrwxrwxrwx 1 root root          6 Jan  8  2023 cpp -> cpp-12
-lrwxrwxrwx 1 root root         23 Apr  7  2025 cpp-12 -> x86_64-linux-gnu-cpp-12
--rwxr-xr-x 1 root root     122032 Sep 20  2022 csplit
--rwxr-xr-x 1 root root     280800 May  8 14:16 curl
--rwxr-xr-x 1 root root      48112 Sep 20  2022 cut
--rwxr-xr-x 1 root root     125640 Jan  5  2023 dash
--rwxr-xr-x 1 root root     121904 Sep 20  2022 date
--rwxr-xr-x 1 root root      89240 Sep 20  2022 dd
--rwxr-xr-x 1 root root      24358 Jul 13  2022 deb-systemd-helper
--rwxr-xr-x 1 root root       6241 Aug 20  2025 deb-systemd-invoke
--rwxr-xr-x 1 root root       2859 Jan  8  2023 debconf
--rwxr-xr-x 1 root root      11541 Jan  8  2023 debconf-apt-progress
--rwxr-xr-x 1 root root        608 Jan  8  2023 debconf-communicate
--rwxr-xr-x 1 root root       1719 Jan  8  2023 debconf-copydb
--rwxr-xr-x 1 root root        647 Jan  8  2023 debconf-escape
--rwxr-xr-x 1 root root       2995 Jan  8  2023 debconf-set-selections
--rwxr-xr-x 1 root root       1827 Jan  8  2023 debconf-show
--rwxr-xr-x 1 root root      31040 Nov 21  2024 delpart
--rwxr-xr-x 1 root root     102200 Sep 20  2022 df
--rwxr-xr-x 1 root root     155216 Feb  3  2023 diff
--rwxr-xr-x 1 root root      68752 Feb  3  2023 diff3
--rwxr-xr-x 1 root root     151344 Sep 20  2022 dir
--rwxr-xr-x 1 root root      52144 Sep 20  2022 dircolors
--rwxr-xr-x 1 root root      39760 Sep 20  2022 dirname
--rwxr-xr-x 1 root root      88656 Nov 21  2024 dmesg
-lrwxrwxrwx 1 root root          8 Dec 19  2022 dnsdomainname -> hostname
-lrwxrwxrwx 1 root root          8 Dec 19  2022 domainname -> hostname
--rwxr-xr-x 1 root root     318096 Mar  7 12:15 dpkg
--rwxr-xr-x 1 root root     170512 Mar  7 12:15 dpkg-deb
--rwxr-xr-x 1 root root     158264 Mar  7 12:15 dpkg-divert
-
-__TTS_0d1d4cf35aff49a69cd124c5ead132ac__RC:0
-__TTS_0d1d4cf35aff49a69cd124c5ead132ac__PWD:/app
-__TTS_0d1d4cf35aff49a69cd124c5ead132ac__END
-[?2004hroot@9bec123aa640:/app# cd -- /app && cd /app && timeout 20s python3 -c 'import sys;print(sys.version);import mteb,torch,sentence_transformers,transformers;print("ok")'; __tts_rc=$?; printf '\n__TTS_cfe80b01a7c14df69cb74a9b06431856__RC:%s\n' "$__tts_rc"; printf '__TTS_cfe80b01a7c14df69cb74a9b06431856__PWD:'; pwd; printf '__TTS_cfe80b01a7c14df69cb74a9b06431856__END\n'; tmux wait -S done
-[?2004l3.10.20 (main, Jul 14 2026, 02:12:22) [GCC 12.2.0]

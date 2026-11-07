@@ -1,6 +1,0 @@
-{
-  "code": "azureml:/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourceGroups/external-collaborations/providers/Microsoft.MachineLearningServices/workspaces/M365Research-External-EUS/codes/5796831f-6491-4767-9b27-bc6c85003e81/versions/1",
-  "name": "dw-officebench-gpt54-reliability-v2-smoke-n124-20260921",
-  "status": "Starting",
-  "url": "https://ml.azure.com/runs/dw-officebench-gpt54-reliability-v2-smoke-n124-20260921?wsid=/subscriptions/acc09744-1ee3-4242-b375-93421c63af0c/resourcegroups/external-collaborations/workspaces/M365Research-External-EUS&tid=72f988bf-86f1-41af-91ab-2d7cd011db47"
-}

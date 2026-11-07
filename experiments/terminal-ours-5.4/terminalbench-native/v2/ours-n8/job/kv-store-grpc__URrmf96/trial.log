@@ -1,5 +1,0 @@
-Trial kv-store-grpc__URrmf96 failed: Docker compose command failed for environment kv-store-grpc. Command: docker compose --project-name kv-store-grpc__urrmf96__env --project-directory /home/t-wendili/.cache/harbor/tasks/JGX6wXigbfSgX6m298mcKW/kv-store-grpc/environment -f /tmp/tmpsny8sfmu/kv-store-grpc__URrmf96__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpqjdiizwo/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network kv-store-grpc__urrmf96__env_default Creating 
- Network kv-store-grpc__urrmf96__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network kv-store-grpc__urrmf96__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

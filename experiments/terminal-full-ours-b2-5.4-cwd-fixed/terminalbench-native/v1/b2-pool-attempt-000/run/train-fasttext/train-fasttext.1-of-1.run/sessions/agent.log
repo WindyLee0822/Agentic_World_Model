@@ -1,78 +1,0 @@
-[?2004hroot@0663bb5eda18:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@0663bb5eda18:/app# clear
-[?2004l[H[J[3J[?2004hroot@0663bb5eda18:/app# pwd; __tts_rc=$?; printf '\n__TTS_5c930034fba941aa8b254f226a9502b3__RC:%s\n' "$__tts_rc"; printf '__TTS_5c930034fba941aa8b254f226a9502b3__PWD:'; pwd; printf '__TTS_5c930034fba941aa8b254f226a9502b3__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_5c930034fba941aa8b254f226a9502b3__RC:0
-__TTS_5c930034fba941aa8b254f226a9502b3__PWD:/app
-__TTS_5c930034fba941aa8b254f226a9502b3__END
-[?2004hroot@0663bb5eda18:/app# cd -- /app && find data -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__RC:%s\n' "$__tts_rc"; printf '__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__PWD:'; pwd; printf '__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__END\n'; tmux wait -S done
-[?2004ldata/test-00000-of-00001.parquet
-data/train-00000-of-00001.parquet
-
-__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__RC:0
-__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__PWD:/app
-__TTS_42e9daef3b9e4cdaa3fafd91bbab72c9__END
-[?2004hroot@0663bb5eda18:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os, pandas as pd
-[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
-[?2004l[?2004h>     df=pd.read_parquet(f)
-[?2004l[?2004h>     print(f, df.head().to_dict(orient='records')[:2])
-[?2004l[?2004h>     print(df.columns.tolist(), df.shape)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e855abd1adec477fb04e92d526501093__RC:%s\n' "$__tts_rc"; printf '__TTS_e855abd1adec477fb04e92d526501093__PWD:'; pwd; printf '__TTS_e855abd1adec477fb04e92d526501093__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import pandas as pd
-[?2004l[?2004h> for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
-[?2004l[?2004h>  df=pd.read_parquet(f, columns=None)
-[?2004l[?2004h>  print(f)
-[?2004l[?2004h>  print('cols', df.columns.tolist(), 'shape', df.shape)
-[?2004l[?2004h>  print(df.head(2).to_dict(orient='records'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_2d0e65c194b74843a79fd005e5f84b15__RC:%s\n' "$__tts_rc"; printf '__TTS_2d0e65c194b74843a79fd005e5f84b15__PWD:'; pwd; printf '__TTS_2d0e65c194b74843a79fd005e5f84b15__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os
-[?2004l[?2004h> for p in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']:
-[?2004l[?2004h>  print(p, os.path.getsize(p))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_59d63fabd1ef463da0b3e2fa635f079a__RC:%s\n' "$__tts_rc"; printf '__TTS_59d63fabd1ef463da0b3e2fa635f079a__PWD:'; pwd; printf '__TTS_59d63fabd1ef463da0b3e2fa635f079a__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m6[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_e855abd1adec477fb04e92d526501093__RC:%s\n' "$__tts_rc"; printf '__TTS_e855abd1adec477fb04e92d526501093__PWD:'; pwd; printf '__TTS_e855abd1adec477fb04e92d526501093__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@0663bb5eda18:/app# cd -- /app && ls -lh data && python -c "import os; [print(f, os.path.getsize('data/'+f)) for f in os.listdir('data')]"; __tts_rc=$?; printf '\n__TTS_265709c02d874b6b9a9464c5c8ef5cf0__RC:%s\n' "$__tts_rc"; printf '__TTS_265709c02d874b6b9a9464c5c8ef5cf0__PWD:'; pwd; printf '__TTS_265709c02d874b6b9a9464c5c8ef5cf0__END\n'; tmux wait -S done
-[?2004ltotal 291M
--rw-r--r-- 1 root root 4.6M Jul 18 11:43 test-00000-of-00001.parquet
--rw-r--r-- 1 root root 286M Jul 18 11:43 train-00000-of-00001.parquet
-test-00000-of-00001.parquet 4776961
-train-00000-of-00001.parquet 299436850
-
-__TTS_265709c02d874b6b9a9464c5c8ef5cf0__RC:0
-__TTS_265709c02d874b6b9a9464c5c8ef5cf0__PWD:/app
-__TTS_265709c02d874b6b9a9464c5c8ef5cf0__END
-[?2004hroot@0663bb5eda18:/app# cd -- /app && python -c "import pyarrow.parquet as pq; [print(f, pq.ParquetFile(f).schema_arrow, pq.ParquetFile(f).metadata.num_rows) for f in ['data/train-00000-of-00001.parquet','data/test-00000-of-00001.parquet']]"; __tts_rc=$?; printf '\n__TTS_095a7761e89e485dab94a39e4731e3f8__RC:%s\n' "$__tts_rc"; printf '__TTS_095a7761e89e485dab94a39e4731e3f8__PWD:'; pwd; printf '__TTS_095a7761e89e485dab94a39e4731e3f8__END\n'; tmux wait -S done
-[?2004ldata/train-00000-of-00001.parquet label: int64
-text: string
--- schema metadata --
-huggingface: '{"info": {"features": {"label": {"names": ["1 star", "2 sta' + 110 650000
-data/test-00000-of-00001.parquet label: int64
-text: large_string
-__index_level_0__: int64
--- schema metadata --
-pandas: '{"index_columns": ["__index_level_0__"], "column_indexes": [{"na' + 555 10000
-
-__TTS_095a7761e89e485dab94a39e4731e3f8__RC:0
-__TTS_095a7761e89e485dab94a39e4731e3f8__PWD:/app
-__TTS_095a7761e89e485dab94a39e4731e3f8__END
-[?2004hroot@0663bb5eda18:/app# cd -- /app && python -c "import fasttext; print(fasttext.__file__)"; __tts_rc=$?; printf '\n__TTS_28d8caf1d9144fdabf48453beaae4078__RC:%s\n' "$__tts_rc"; printf '__TTS_28d8caf1d9144fdabf48453beaae4078__PWD:'; pwd; printf '__TTS_28d8caf1d9144fdabf48453beaae4078__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    [1;31mimport fasttext[0m; print(fasttext.__file__)
-    [1;31m^^^^^^^^^^^^^^^[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'fasttext'[0m
-
-__TTS_28d8caf1d9144fdabf48453beaae4078__RC:1
-__TTS_28d8caf1d9144fdabf48453beaae4078__PWD:/app
-__TTS_28d8caf1d9144fdabf48453beaae4078__END
-[?2004hroot@0663bb5eda18:/app# 

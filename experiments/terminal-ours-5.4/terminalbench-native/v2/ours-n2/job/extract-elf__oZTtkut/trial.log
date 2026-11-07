@@ -1,5 +1,0 @@
-Trial extract-elf__oZTtkut failed: Docker compose command failed for environment extract-elf. Command: docker compose --project-name extract-elf__ozttkut__env --project-directory /home/t-wendili/.cache/harbor/tasks/3HV9wmSrWRW9TuYurepoFx/extract-elf/environment -f /tmp/tmpk45dbdsc/extract-elf__oZTtkut__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmp4x6vabns/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network extract-elf__ozttkut__env_default Creating 
- Network extract-elf__ozttkut__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network extract-elf__ozttkut__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

@@ -1,252 +1,0 @@
-[?2004hroot@c441c18e3e3b:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@c441c18e3e3b:/app# clear
-[?2004l[H[J[3J[?2004hroot@c441c18e3e3b:/app# pwd; __tts_rc=$?; printf '\n__TTS_20b44a134b16432eaf6e01d10c259876__RC:%s\n' "$__tts_rc"; printf '__TTS_20b44a134b16432eaf6e01d10c259876__PWD:'; pwd; printf '__TTS_20b44a134b16432eaf6e01d10c259876__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_20b44a134b16432eaf6e01d10c259876__RC:0
-__TTS_20b44a134b16432eaf6e01d10c259876__PWD:/app
-__TTS_20b44a134b16432eaf6e01d10c259876__END
-[?2004hroot@c441c18e3e3b:/app# cd -- /app && find /app/c4_sample -maxdepth 3 -type f -printf '%P\t%s\n' | sort | head -200; __tts_rc=$?; printf '\n__TTS_5875ce131e7846589ce51917adac618a__RC:%s\n' "$__tts_rc"; printf '__TTS_5875ce131e7846589ce51917adac618a__PWD:'; pwd; printf '__TTS_5875ce131e7846589ce51917adac618a__END\n'; tmux wait -S done
-[?2004lc4-mini-00000-of-10000.jsonl	70534
-c4-mini-00001-of-10000.jsonl	76424
-c4-mini-00002-of-10000.jsonl	82593
-c4-mini-00003-of-10000.jsonl	85007
-c4-mini-00004-of-10000.jsonl	67509
-c4-mini-00005-of-10000.jsonl	82415
-c4-mini-00006-of-10000.jsonl	97058
-c4-mini-00007-of-10000.jsonl	60766
-c4-mini-00008-of-10000.jsonl	104157
-c4-mini-00009-of-10000.jsonl	96807
-c4-mini-00010-of-10000.jsonl	73666
-c4-mini-00011-of-10000.jsonl	142647
-c4-mini-00012-of-10000.jsonl	80248
-c4-mini-00013-of-10000.jsonl	87956
-c4-mini-00014-of-10000.jsonl	93134
-c4-mini-00015-of-10000.jsonl	96808
-c4-mini-00016-of-10000.jsonl	76054
-c4-mini-00017-of-10000.jsonl	105985
-c4-mini-00018-of-10000.jsonl	77537
-c4-mini-00019-of-10000.jsonl	110127
-c4-mini-00020-of-10000.jsonl	75730
-c4-mini-00021-of-10000.jsonl	67210
-c4-mini-00022-of-10000.jsonl	85856
-c4-mini-00023-of-10000.jsonl	55698
-c4-mini-00024-of-10000.jsonl	80180
-c4-mini-00025-of-10000.jsonl	60364
-c4-mini-00026-of-10000.jsonl	61897
-c4-mini-00027-of-10000.jsonl	77423
-c4-mini-00028-of-10000.jsonl	82091
-c4-mini-00029-of-10000.jsonl	100075
-c4-mini-00030-of-10000.jsonl	87558
-c4-mini-00031-of-10000.jsonl	93213
-c4-mini-00032-of-10000.jsonl	88881
-c4-mini-00033-of-10000.jsonl	93511
-c4-mini-00034-of-10000.jsonl	89976
-c4-mini-00035-of-10000.jsonl	112220
-c4-mini-00036-of-10000.jsonl	106719
-c4-mini-00037-of-10000.jsonl	50255
-c4-mini-00038-of-10000.jsonl	70736
-c4-mini-00039-of-10000.jsonl	119293
-c4-mini-00040-of-10000.jsonl	57745
-c4-mini-00041-of-10000.jsonl	64232
-c4-mini-00042-of-10000.jsonl	86338
-c4-mini-00043-of-10000.jsonl	79570
-c4-mini-00044-of-10000.jsonl	93109
-c4-mini-00045-of-10000.jsonl	84454
-c4-mini-00046-of-10000.jsonl	83957
-c4-mini-00047-of-10000.jsonl	139582
-c4-mini-00048-of-10000.jsonl	115128
-c4-mini-00049-of-10000.jsonl	50919
-c4-mini-00050-of-10000.jsonl	113662
-c4-mini-00051-of-10000.jsonl	60195
-c4-mini-00052-of-10000.jsonl	69887
-c4-mini-00053-of-10000.jsonl	78947
-c4-mini-00054-of-10000.jsonl	69146
-c4-mini-00055-of-10000.jsonl	90434
-c4-mini-00056-of-10000.jsonl	88076
-c4-mini-00057-of-10000.jsonl	87001
-c4-mini-00058-of-10000.jsonl	50604
-c4-mini-00059-of-10000.jsonl	83561
-c4-mini-00060-of-10000.jsonl	63860
-c4-mini-00061-of-10000.jsonl	144425
-c4-mini-00062-of-10000.jsonl	79269
-c4-mini-00063-of-10000.jsonl	80382
-c4-mini-00064-of-10000.jsonl	146380
-c4-mini-00065-of-10000.jsonl	71227
-c4-mini-00066-of-10000.jsonl	106730
-c4-mini-00067-of-10000.jsonl	67237
-c4-mini-00068-of-10000.jsonl	65216
-c4-mini-00069-of-10000.jsonl	79270
-c4-mini-00070-of-10000.jsonl	64530
-c4-mini-00071-of-10000.jsonl	75178
-c4-mini-00072-of-10000.jsonl	110621
-c4-mini-00073-of-10000.jsonl	61441
-c4-mini-00074-of-10000.jsonl	111501
-c4-mini-00075-of-10000.jsonl	62184
-c4-mini-00076-of-10000.jsonl	70290
-c4-mini-00077-of-10000.jsonl	124919
-c4-mini-00078-of-10000.jsonl	64021
-c4-mini-00079-of-10000.jsonl	82679
-c4-mini-00080-of-10000.jsonl	71750
-c4-mini-00081-of-10000.jsonl	81171
-c4-mini-00082-of-10000.jsonl	67325
-c4-mini-00083-of-10000.jsonl	78979
-c4-mini-00084-of-10000.jsonl	54141
-c4-mini-00085-of-10000.jsonl	67123
-c4-mini-00086-of-10000.jsonl	106550
-c4-mini-00087-of-10000.jsonl	63919
-c4-mini-00088-of-10000.jsonl	81296
-c4-mini-00089-of-10000.jsonl	76824
-c4-mini-00090-of-10000.jsonl	67256
-c4-mini-00091-of-10000.jsonl	92787
-c4-mini-00092-of-10000.jsonl	86678
-c4-mini-00093-of-10000.jsonl	125791
-c4-mini-00094-of-10000.jsonl	69821
-c4-mini-00095-of-10000.jsonl	77044
-c4-mini-00096-of-10000.jsonl	78813
-c4-mini-00097-of-10000.jsonl	98820
-c4-mini-00098-of-10000.jsonl	55031
-c4-mini-00099-of-10000.jsonl	70716
-c4-mini-00100-of-10000.jsonl	76000
-c4-mini-00101-of-10000.jsonl	66235
-c4-mini-00102-of-10000.jsonl	104315
-c4-mini-00103-of-10000.jsonl	66864
-c4-mini-00104-of-10000.jsonl	108996
-c4-mini-00105-of-10000.jsonl	94978
-c4-mini-00106-of-10000.jsonl	127378
-c4-mini-00107-of-10000.jsonl	75882
-c4-mini-00108-of-10000.jsonl	85356
-c4-mini-00109-of-10000.jsonl	136556
-c4-mini-00110-of-10000.jsonl	106399
-c4-mini-00111-of-10000.jsonl	83761
-c4-mini-00112-of-10000.jsonl	128109
-c4-mini-00113-of-10000.jsonl	80335
-c4-mini-00114-of-10000.jsonl	83361
-c4-mini-00115-of-10000.jsonl	64700
-c4-mini-00116-of-10000.jsonl	79836
-c4-mini-00117-of-10000.jsonl	77916
-c4-mini-00118-of-10000.jsonl	120207
-c4-mini-00119-of-10000.jsonl	68904
-c4-mini-00120-of-10000.jsonl	51889
-c4-mini-00121-of-10000.jsonl	39130
-c4-mini-00122-of-10000.jsonl	96230
-c4-mini-00123-of-10000.jsonl	148453
-c4-mini-00124-of-10000.jsonl	62905
-c4-mini-00125-of-10000.jsonl	84961
-c4-mini-00126-of-10000.jsonl	94398
-c4-mini-00127-of-10000.jsonl	67663
-c4-mini-00128-of-10000.jsonl	78426
-c4-mini-00129-of-10000.jsonl	106685
-c4-mini-00130-of-10000.jsonl	105194
-c4-mini-00131-of-10000.jsonl	67215
-c4-mini-00132-of-10000.jsonl	83919
-c4-mini-00133-of-10000.jsonl	89875
-c4-mini-00134-of-10000.jsonl	78681
-c4-mini-00135-of-10000.jsonl	62203
-c4-mini-00136-of-10000.jsonl	71452
-c4-mini-00137-of-10000.jsonl	86727
-c4-mini-00138-of-10000.jsonl	70908
-c4-mini-00139-of-10000.jsonl	55527
-c4-mini-00140-of-10000.jsonl	116442
-c4-mini-00141-of-10000.jsonl	78676
-c4-mini-00142-of-10000.jsonl	82649
-c4-mini-00143-of-10000.jsonl	84333
-c4-mini-00144-of-10000.jsonl	86283
-c4-mini-00145-of-10000.jsonl	94166
-c4-mini-00146-of-10000.jsonl	64082
-c4-mini-00147-of-10000.jsonl	66657
-c4-mini-00148-of-10000.jsonl	55214
-c4-mini-00149-of-10000.jsonl	52364
-c4-mini-00150-of-10000.jsonl	91924
-c4-mini-00151-of-10000.jsonl	94508
-c4-mini-00152-of-10000.jsonl	115333
-c4-mini-00153-of-10000.jsonl	136807
-c4-mini-00154-of-10000.jsonl	55946
-c4-mini-00155-of-10000.jsonl	51727
-c4-mini-00156-of-10000.jsonl	112412
-c4-mini-00157-of-10000.jsonl	73627
-c4-mini-00158-of-10000.jsonl	65819
-c4-mini-00159-of-10000.jsonl	96154
-c4-mini-00160-of-10000.jsonl	113340
-c4-mini-00161-of-10000.jsonl	61811
-c4-mini-00162-of-10000.jsonl	80057
-c4-mini-00163-of-10000.jsonl	69954
-c4-mini-00164-of-10000.jsonl	67324
-c4-mini-00165-of-10000.jsonl	94893
-c4-mini-00166-of-10000.jsonl	78394
-c4-mini-00167-of-10000.jsonl	84180
-c4-mini-00168-of-10000.jsonl	108578
-c4-mini-00169-of-10000.jsonl	69406
-c4-mini-00170-of-10000.jsonl	99035
-c4-mini-00171-of-10000.jsonl	76222
-c4-mini-00172-of-10000.jsonl	48552
-c4-mini-00173-of-10000.jsonl	57316
-c4-mini-00174-of-10000.jsonl	52944
-c4-mini-00175-of-10000.jsonl	79404
-c4-mini-00176-of-10000.jsonl	56922
-c4-mini-00177-of-10000.jsonl	49994
-c4-mini-00178-of-10000.jsonl	89420
-c4-mini-00179-of-10000.jsonl	89918
-c4-mini-00180-of-10000.jsonl	79653
-c4-mini-00181-of-10000.jsonl	60712
-c4-mini-00182-of-10000.jsonl	68562
-c4-mini-00183-of-10000.jsonl	94006
-c4-mini-00184-of-10000.jsonl	134231
-c4-mini-00185-of-10000.jsonl	75180
-c4-mini-00186-of-10000.jsonl	72351
-c4-mini-00187-of-10000.jsonl	62426
-c4-mini-00188-of-10000.jsonl	63115
-c4-mini-00189-of-10000.jsonl	80819
-c4-mini-00190-of-10000.jsonl	63162
-c4-mini-00191-of-10000.jsonl	62730
-c4-mini-00192-of-10000.jsonl	69931
-c4-mini-00193-of-10000.jsonl	65053
-c4-mini-00194-of-10000.jsonl	91974
-c4-mini-00195-of-10000.jsonl	57629
-c4-mini-00196-of-10000.jsonl	66602
-c4-mini-00197-of-10000.jsonl	56116
-c4-mini-00198-of-10000.jsonl	68096
-c4-mini-00199-of-10000.jsonl	58094
-
-__TTS_5875ce131e7846589ce51917adac618a__RC:0
-__TTS_5875ce131e7846589ce51917adac618a__PWD:/app
-__TTS_5875ce131e7846589ce51917adac618a__END
-[?2004hroot@c441c18e3e3b:/app# cd -- /app && cd /app && find c4_sample -maxdepth 1 -type f | wc -l && du -sh c4_sample && find c4_sample -maxdepth 1 -type f -printf '%s
-[?2004l[?2004h> ' | sort -nr | head -1; __tts_rc=$?; printf '\n__TTS_44daf9eea36a404886eef1c943ce0d9b__RC:%s\n' "$__tts_rc"; printf '__TTS_44daf9eea36a404886eef1c943ce0d9b__PWD:'; pwd; printf '__TTS_44daf9eea36a404886eef1c943ce0d9b__END\n'; tmux wait -S done
-[?2004l9898
-800M	c4_sample
-307834
-
-__TTS_44daf9eea36a404886eef1c943ce0d9b__RC:0
-__TTS_44daf9eea36a404886eef1c943ce0d9b__PWD:/app
-__TTS_44daf9eea36a404886eef1c943ce0d9b__END
-[?2004hroot@c441c18e3e3b:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> import shutil, json
-[?2004l[?2004h> src=Path('c4_sample')
-[?2004l[?2004h> dst=Path('c4_reshard')
-[?2004l[?2004h> if dst.exists(): shutil.rmtree(dst)
-[?2004l[?2004h> dst.mkdir()
-[?2004l[?2004h> files=sorted([p for p in src.iterdir() if p.is_file()])
-[?2004l[?2004h> for i in range(0,len(files),30):
-[?2004l[?2004h>     sub=dst/f'part_{i//30:04d}'
-[?2004l[?2004h>     sub.mkdir()
-[?2004l[?2004h>     for p in files[i:i+30]:
-[?2004l[?2004h>         shutil.copy2(p, sub/p.name)
-[?2004l[?2004h> script=Path('revert.py')
-[?2004l[?2004h> script.write_text('''from pathlib import Path\nimport shutil\nbase=Path(__file__).resolve().parent\nsrc=base/"c4_reshard"\ndst=base/"c4_sample"\nif dst.exists(): shutil.rmtree(dst)\ndst.mkdir()\nfor p in sorted(src.rglob("*")):\n    if p.is_file() and p.name!="manifest.json":\n        shutil.copy2(p,dst/p.name)\n''') M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K)
-[?2004l[?2004h> manifest={"source":"c4_sample","reshard":"c4_reshard","max_files_per_folder":30,"max_filesize":15728640,"total_files":len(files),"layout":{f.name:str(Path(f'part_{i//30:04d}')/f.name) for i,f in enumerate(files)}}
-[?2004l[?2004h> (dst/'manifest.json').write_text(json.dumps(manifest,indent=2))
-[?2004l[?2004h> PY && find /app/c4_reshard -maxdepth 2 -type f | awk -F/ 'NF==4{c[$3]++} END{for(k in c) print c[k],k}' | sort -n | tail -1 && find /app/c4_reshard -type f -printf '%s
-[?2004l[?2004h> ' | sort -nr | head -1; __tts_rc=$?; printf '\n__TTS_f284d6b785634acaa54730e6f70e43ad__RC:%s\n' "$__tts_rc"; printf '__TTS_f284d6b785634acaa54730e6f70e43ad__PWD:'; pwd; printf '__TTS_f284d6b785634acaa54730e6f70e43ad__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && find c4_reshard -maxdepth 2 -type f | head; __tts_rc=$?; printf '\n__TTS_3443ef946ff74cd482c48ac5865cb79e__RC:%s\n' "$__tts_rc"; printf '__TTS_3443ef946ff74cd482c48ac5865cb79e__PWD:'; pwd; printf '__TTS_3443ef946ff74cd482c48ac5865cb79e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && python3 -c "from pathlib import Path; import os; p=Path('c4_reshard'); print('exists',p.exists()); print('parts', sum(1 for x in p.iterdir() if x.is_dir()) if p.exists() else 0); print('revert', Path('revert.py').exists())"; __tts_rc=$?; printf '\n__TTS_7c732679779344f18b89c39caeaee149__RC:%s\n' "$__tts_rc"; printf '__TTS_7c732679779344f18b89c39caeaee149__PWD:'; pwd; printf '__TTS_7c732679779344f18b89c39caeaee149__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m17[0m
-    PY && find /app/c4_reshard -maxdepth 2 -type f | awk -F/ 'NF==4{c[$3]++} END{for(k in c) print c[k],k}' | sort -n | tail -1 && find /app/c4_reshard -type f -printf [1;31m'[0m%s
-                                                                                                                                                                        [1;31m^[0m
-[1;35mSyntaxError[0m: [35munterminated string literal (detected at line 17)[0m
-[?2004hroot@c441c18e3e3b:/app# 

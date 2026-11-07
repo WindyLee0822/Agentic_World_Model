@@ -1,118 +1,0 @@
-[?2004hroot@c5bf7a23405e:/app/astropy# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@c5bf7a23405e:/app/astropy# clear
-[?2004l[H[J[3J[?2004hroot@c5bf7a23405e:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_aab6cab94bed4565813ff180ad7d6fa1__RC:%s\n' "$__tts_rc"; printf '__TTS_aab6cab94bed4565813ff180ad7d6fa1__PWD:'; pwd; printf '__TTS_aab6cab94bed4565813ff180ad7d6fa1__END\n'; tmux wait -S done
-[?2004l/app/astropy
-
-__TTS_aab6cab94bed4565813ff180ad7d6fa1__RC:0
-__TTS_aab6cab94bed4565813ff180ad7d6fa1__PWD:/app/astropy
-__TTS_aab6cab94bed4565813ff180ad7d6fa1__END
-[?2004hroot@c5bf7a23405e:/app/astropy# cd -- /app/astropy && grep -Rni "Unrecognized QDP line\|READ SERR\|ascii.qdp\|class QDP\|def .*qdp" astropy/io/ascii; __tts_rc=$?; printf '\n__TTS_e17f395eca494df8a0bfff227507b73d__RC:%s\n' "$__tts_rc"; printf '__TTS_e17f395eca494df8a0bfff227507b73d__PWD:'; pwd; printf '__TTS_e17f395eca494df8a0bfff227507b73d__END\n'; tmux wait -S done
-[?2004lastropy/io/ascii/tests/test_qdp.py:5:from astropy.io.ascii.qdp import _get_lines_from_file, _read_table_qdp, _write_table_qdp
-astropy/io/ascii/tests/test_qdp.py:10:def test_get_tables_from_qdp_file(tmp_path):
-astropy/io/ascii/tests/test_qdp.py:15:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:51:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:117:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:130:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:147:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:161:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:175:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:189:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"], sep=","
-astropy/io/ascii/tests/test_qdp.py:208:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:210:        t2 = Table.read(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:231:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:232:    t2 = Table.read(test_file, table_id=0, format="ascii.qdp", names=["a"])
-astropy/io/ascii/tests/test_qdp.py:236:def test_get_lines_from_qdp(tmp_path):
-astropy/io/ascii/qdp.py:35:    >>> _line_type("READ SERR 3")
-astropy/io/ascii/qdp.py:56:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:60:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:78:        raise ValueError(f"Unrecognized QDP line: {line}")
-astropy/io/ascii/qdp.py:135:def _get_lines_from_file(qdp_file):
-astropy/io/ascii/qdp.py:150:    """Give list of column names from the READ SERR and TERR commands.
-astropy/io/ascii/qdp.py:237:def _get_tables_from_qdp_file(qdp_file, input_colnames=None, delimiter=None):
-astropy/io/ascii/qdp.py:385:def _read_table_qdp(qdp_file, names=None, table_id=None, delimiter=None):
-astropy/io/ascii/qdp.py:425:def _write_table_qdp(table, filename=None, err_specs=None):
-astropy/io/ascii/qdp.py:460:        print(f"READ SERR {col_string}", file=fobj)
-astropy/io/ascii/qdp.py:494:class QDPSplitter(core.DefaultSplitter):
-astropy/io/ascii/qdp.py:502:class QDPHeader(basic.CommentedHeaderHeader):
-astropy/io/ascii/qdp.py:512:class QDPData(basic.BasicData):
-astropy/io/ascii/qdp.py:523:class QDP(basic.Basic):
-astropy/io/ascii/qdp.py:531:        READ SERR 3
-astropy/io/ascii/qdp.py:551:        READ SERR 3
-astropy/io/ascii/qdp.py:572:    a symmetric error (just like the ``READ SERR`` and ``READ TERR`` commands
-astropy/io/ascii/qdp.py:597:        t = Table.read(example_qdp, format='ascii.qdp', table_id=1, names=['a', 'b', 'c', 'd'])
-astropy/io/ascii/qdp.py:601:    Because the ``READ SERR`` and ``READ TERR`` commands say that there are
-
-__TTS_e17f395eca494df8a0bfff227507b73d__RC:0
-__TTS_e17f395eca494df8a0bfff227507b73d__PWD:/app/astropy
-__TTS_e17f395eca494df8a0bfff227507b73d__END
-[?2004hroot@c5bf7a23405e:/app/astropy# cd -- /app/astropy && grep -Rni "Unrecognized QDP line\|READ SERR\|ascii.qdp\|class QDP\|def .*qdp" astropy/io/ascii; __tts_rc=$?; printf '\n__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__RC:%s\n' "$__tts_rc"; printf '__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:'; pwd; printf '__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__END\n'; tmux wait -S done
-[?2004lastropy/io/ascii/tests/test_qdp.py:5:from astropy.io.ascii.qdp import _get_lines_from_file, _read_table_qdp, _write_table_qdp
-astropy/io/ascii/tests/test_qdp.py:10:def test_get_tables_from_qdp_file(tmp_path):
-astropy/io/ascii/tests/test_qdp.py:15:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:51:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:117:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:130:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:147:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:161:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:175:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:189:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"], sep=","
-astropy/io/ascii/tests/test_qdp.py:208:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:210:        t2 = Table.read(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:231:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:232:    t2 = Table.read(test_file, table_id=0, format="ascii.qdp", names=["a"])
-astropy/io/ascii/tests/test_qdp.py:236:def test_get_lines_from_qdp(tmp_path):
-astropy/io/ascii/qdp.py:35:    >>> _line_type("READ SERR 3")
-astropy/io/ascii/qdp.py:56:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:60:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:78:        raise ValueError(f"Unrecognized QDP line: {line}")
-astropy/io/ascii/qdp.py:135:def _get_lines_from_file(qdp_file):
-astropy/io/ascii/qdp.py:150:    """Give list of column names from the READ SERR and TERR commands.
-astropy/io/ascii/qdp.py:237:def _get_tables_from_qdp_file(qdp_file, input_colnames=None, delimiter=None):
-astropy/io/ascii/qdp.py:385:def _read_table_qdp(qdp_file, names=None, table_id=None, delimiter=None):
-astropy/io/ascii/qdp.py:425:def _write_table_qdp(table, filename=None, err_specs=None):
-astropy/io/ascii/qdp.py:460:        print(f"READ SERR {col_string}", file=fobj)
-astropy/io/ascii/qdp.py:494:class QDPSplitter(core.DefaultSplitter):
-astropy/io/ascii/qdp.py:502:class QDPHeader(basic.CommentedHeaderHeader):
-astropy/io/ascii/qdp.py:512:class QDPData(basic.BasicData):
-astropy/io/ascii/qdp.py:523:class QDP(basic.Basic):
-astropy/io/ascii/qdp.py:531:        READ SERR 3
-astropy/io/ascii/qdp.py:551:        READ SERR 3
-astropy/io/ascii/qdp.py:572:    a symmetric error (just like the ``READ SERR`` and ``READ TERR`` commands
-astropy/io/ascii/qdp.py:597:        t = Table.read(example_qdp, format='ascii.qdp', table_id=1, names=['a', 'b', 'c', 'd'])
-astropy/io/ascii/qdp.py:601:    Because the ``READ SERR`` and ``READ TERR`` commands say that there are
-
-__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__RC:0
-__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:/app/astropy
-__TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__END
-[?2004hroot@c5bf7a23405e:/app/astropy# cd -- __TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:/app/astropy && cd /app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('astropy/io/ascii/qdp.py')
-[?2004l[?2004h> text=p.read_text()
-[?2004l[?2004h> print(text)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e10b62162cbf4670b93763a58a357b80__RC:%s\n' "$__tts_rc"; printf '__TTS_e10b62162cbf4670b93763a58a357b80__PWD:'; pwd; printf '__TTS_e10b62162cbf4670b93763a58a357b80__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:/app/astropy && cd /app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p = Path('astropy/io/ascii/qdp.py')
-[?2004l[?2004h> text = p.read_text()
-[?2004l[?2004h> old = """_command_re = re.compile(r\"\\s*(READ [TS]ERR(\\s+\\d+)+)\\s*(!.*)?\")\n"""
-[?2004l[?2004h> new = """_command_re = re.compile(r\"\\s*(READ [TS]ERR(\\s+\\d+)+)\\s*(!.*)?\", re.IGNORECASE)\n"""
-[?2004l[?2004h> if old not in text:
-[?2004l[?2004h>     raise SystemExit('pattern not found')
-[?2004l[?2004h> text = text.replace(old, new, 1)
-[?2004l[?2004h> p.write_text(text)
-[?2004l[?2004h> print('patched')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_3516e81e02bd4c96b68e19fbfe0ca7de__RC:%s\n' "$__tts_rc"; printf '__TTS_3516e81e02bd4c96b68e19fbfe0ca7de__PWD:'; pwd; printf '__TTS_3516e81e02bd4c96b68e19fbfe0ca7de__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:/app/astropy && cd /app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p = Path('astropy/io/ascii/qdp.py')
-[?2004l[?2004h> text = p.read_text()
-[?2004l[?2004h> for i,line in enumerate(text.splitlines(),1):
-[?2004l[?2004h>     if '_command_re' in line or 'Unrecognized QDP line' in line:
-[?2004l[?2004h>         print(i, line)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b184e29f0831473c88c6a75884125c2e__RC:%s\n' "$__tts_rc"; printf '__TTS_b184e29f0831473c88c6a75884125c2e__PWD:'; pwd; printf '__TTS_b184e29f0831473c88c6a75884125c2e__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
-bash: cd: __TTS_afa9a2ce96bf40f1b9aaaf9c800d1ee6__PWD:/app/astropy: No such file or directory
-[?2004hroot@c5bf7a23405e:/app/astropy# 

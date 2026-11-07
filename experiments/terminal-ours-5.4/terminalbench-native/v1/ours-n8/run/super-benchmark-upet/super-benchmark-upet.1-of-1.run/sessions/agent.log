@@ -1,845 +1,0 @@
-[?2004hroot@07095afa7490:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@07095afa7490:/app# clear
-[?2004l[H[J[3J[?2004hroot@07095afa7490:/app# pwd; __tts_rc=$?; printf '\n__TTS_4ceca63ca60042c8992e3f17e69b90a2__RC:%s\n' "$__tts_rc"; printf '__TTS_4ceca63ca60042c8992e3f17e69b90a2__PWD:'; pwd; printf '__TTS_4ceca63ca60042c8992e3f17e69b90a2__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_4ceca63ca60042c8992e3f17e69b90a2__RC:0
-__TTS_4ceca63ca60042c8992e3f17e69b90a2__PWD:/app
-__TTS_4ceca63ca60042c8992e3f17e69b90a2__END
-[?2004hroot@07095afa7490:/app# cd -- /app && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && (sed -n '1,220p' README.md || true) && (grep -R "run.py" -n . | head -50) && (find . -maxdepth 2 -type f | sed -n '1,200p'); __tts_rc=$?; printf '\n__TTS_4f0a4402dc68416e9b0de33954534ab7__RC:%s\n' "$__tts_rc"; printf '__TTS_4f0a4402dc68416e9b0de33954534ab7__PWD:'; pwd; printf '__TTS_4f0a4402dc68416e9b0de33954534ab7__END\n'; tmux wait -S done
-[?2004lCloning into 'repo'...
-remote: Enumerating objects: 384, done.[K
-remote: Counting objects:   5% (1/19)[Kremote: Counting objects:  10% (2/19)[Kremote: Counting objects:  15% (3/19)[Kremote: Counting objects:  21% (4/19)[Kremote: Counting objects:  26% (5/19)[Kremote: Counting objects:  31% (6/19)[Kremote: Counting objects:  36% (7/19)[Kremote: Counting objects:  42% (8/19)[Kremote: Counting objects:  47% (9/19)[Kremote: Counting objects:  52% (10/19)[Kremote: Counting objects:  57% (11/19)[Kremote: Counting objects:  63% (12/19)[Kremote: Counting objects:  68% (13/19)[Kremote: Counting objects:  73% (14/19)[Kremote: Counting objects:  78% (15/19)[Kremote: Counting objects:  84% (16/19)[Kremote: Counting objects:  89% (17/19)[Kremote: Counting objects:  94% (18/19)[Kremote: Counting objects: 100% (19/19)[Kremote: Counting objects: 100% (19/19), done.[K
-remote: Compressing objects:   5% (1/17)[Kremote: Compressing objects:  11% (2/17)[Kremote: Compressing objects:  17% (3/17)[Kremote: Compressing objects:  23% (4/17)[Kremote: Compressing objects:  29% (5/17)[Kremote: Compressing objects:  35% (6/17)[Kremote: Compressing objects:  41% (7/17)[Kremote: Compressing objects:  47% (8/17)[Kremote: Compressing objects:  52% (9/17)[Kremote: Compressing objects:  58% (10/17)[Kremote: Compressing objects:  64% (11/17)[Kremote: Compressing objects:  70% (12/17)[Kremote: Compressing objects:  76% (13/17)[Kremote: Compressing objects:  82% (14/17)[Kremote: Compressing objects:  88% (15/17)[Kremote: Compressing objects:  94% (16/17)[Kremote: Compressing objects: 100% (17/17)[Kremote: Compressing objects: 100% (17/17), done.[K
-Receiving objects:   0% (1/384)Receiving objects:   1% (4/384)Receiving objects:   2% (8/384)Receiving objects:   3% (12/384)Receiving objects:   4% (16/384)Receiving objects:   5% (20/384)Receiving objects:   6% (24/384)Receiving objects:   7% (27/384)Receiving objects:   8% (31/384)Receiving objects:   9% (35/384)Receiving objects:  10% (39/384)Receiving objects:  11% (43/384)Receiving objects:  12% (47/384)Receiving objects:  13% (50/384)Receiving objects:  14% (54/384)Receiving objects:  15% (58/384)Receiving objects:  16% (62/384)Receiving objects:  17% (66/384)Receiving objects:  18% (70/384)Receiving objects:  19% (73/384)Receiving objects:  20% (77/384)Receiving objects:  21% (81/384)Receiving objects:  22% (85/384)Receiving objects:  23% (89/384)Receiving objects:  24% (93/384)Receiving objects:  25% (96/384)Receiving objects:  26% (100/384)Receiving objects:  27% (104/384)Receiving objects:  28% (108/384)Receiving objects:  29% (112/384)Receiving objects:  30% (116/384)Receiving objects:  31% (120/384)Receiving objects:  32% (123/384)Receiving objects:  33% (127/384)Receiving objects:  34% (131/384)Receiving objects:  35% (135/384)Receiving objects:  36% (139/384)Receiving objects:  37% (143/384)Receiving objects:  38% (146/384)Receiving objects:  39% (150/384)Receiving objects:  40% (154/384)Receiving objects:  41% (158/384)Receiving objects:  42% (162/384)Receiving objects:  43% (166/384)Receiving objects:  44% (169/384)Receiving objects:  45% (173/384)Receiving objects:  46% (177/384)Receiving objects:  47% (181/384)Receiving objects:  48% (185/384)Receiving objects:  49% (189/384)Receiving objects:  50% (192/384)Receiving objects:  51% (196/384)Receiving objects:  52% (200/384)Receiving objects:  53% (204/384)Receiving objects:  54% (208/384)Receiving objects:  55% (212/384)Receiving objects:  56% (216/384)Receiving objects:  57% (219/384)Receiving objects:  58% (223/384)Receiving objects:  59% (227/384)Receiving objects:  60% (231/384)Receiving objects:  61% (235/384)Receiving objects:  62% (239/384)Receiving objects:  63% (242/384)Receiving objects:  64% (246/384)Receiving objects:  65% (250/384)Receiving objects:  66% (254/384)Receiving objects:  67% (258/384)Receiving objects:  68% (262/384)Receiving objects:  69% (265/384)Receiving objects:  70% (269/384)Receiving objects:  71% (273/384)Receiving objects:  72% (277/384)Receiving objects:  73% (281/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  74% (285/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  75% (288/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  76% (292/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  77% (296/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  78% (300/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  79% (304/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  80% (308/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  81% (312/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  82% (315/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  83% (319/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  84% (323/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  85% (327/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  86% (331/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  87% (335/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  88% (338/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  89% (342/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  90% (346/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  91% (350/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  92% (354/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  93% (358/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  94% (361/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  95% (365/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  96% (369/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  97% (373/384), 468.00 KiB | 851.00 KiB/sReceiving objects:  98% (377/384), 468.00 KiB | 851.00 KiB/sremote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)[K
-Receiving objects:  99% (381/384), 468.00 KiB | 851.00 KiB/sReceiving objects: 100% (384/384), 468.00 KiB | 851.00 KiB/sReceiving objects: 100% (384/384), 576.99 KiB | 979.00 KiB/s, done.
-Resolving deltas:   0% (0/72)Resolving deltas:   1% (1/72)Resolving deltas:   2% (2/72)Resolving deltas:   4% (3/72)Resolving deltas:   5% (4/72)Resolving deltas:   6% (5/72)Resolving deltas:   8% (6/72)Resolving deltas:   9% (7/72)Resolving deltas:  12% (9/72)Resolving deltas:  13% (10/72)Resolving deltas:  15% (11/72)Resolving deltas:  18% (13/72)Resolving deltas:  19% (14/72)Resolving deltas:  20% (15/72)Resolving deltas:  22% (16/72)Resolving deltas:  23% (17/72)Resolving deltas:  25% (18/72)Resolving deltas:  27% (20/72)Resolving deltas:  29% (21/72)Resolving deltas:  30% (22/72)Resolving deltas:  31% (23/72)Resolving deltas:  33% (24/72)Resolving deltas:  36% (26/72)Resolving deltas:  37% (27/72)Resolving deltas:  38% (28/72)Resolving deltas:  40% (29/72)Resolving deltas:  41% (30/72)Resolving deltas:  43% (31/72)Resolving deltas:  44% (32/72)Resolving deltas:  48% (35/72)Resolving deltas:  50% (36/72)Resolving deltas:  51% (37/72)Resolving deltas:  52% (38/72)Resolving deltas:  55% (40/72)Resolving deltas:  56% (41/72)Resolving deltas:  61% (44/72)Resolving deltas:  62% (45/72)Resolving deltas:  63% (46/72)Resolving deltas:  65% (47/72)Resolving deltas:  66% (48/72)Resolving deltas:  69% (50/72)Resolving deltas:  70% (51/72)Resolving deltas:  72% (52/72)Resolving deltas:  73% (53/72)Resolving deltas:  75% (54/72)Resolving deltas:  76% (55/72)Resolving deltas:  77% (56/72)Resolving deltas:  79% (57/72)Resolving deltas:  80% (58/72)Resolving deltas:  83% (60/72)Resolving deltas:  87% (63/72)Resolving deltas:  88% (64/72)Resolving deltas:  91% (66/72)Resolving deltas:  93% (67/72)Resolving deltas:  94% (68/72)Resolving deltas:  95% (69/72)Resolving deltas:  97% (70/72)Resolving deltas:  98% (71/72)Resolving deltas: 100% (72/72)Resolving deltas: 100% (72/72), done.
-Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
-
-HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
-# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-
-
-Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
-Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
-
-augment definition：
-e.g.,
---prefix -> --head-prefix or --prompt-prefix
---prompt -> --head-ptuning or --prompt-ptuning
-
-### Setup
-We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
-
-```shell
-conda create -n pt2 python=3.8.5
-conda activate pt2
-```
-
-After we setup basic conda environment, install pytorch related packages via:
-
-```shell
-conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
-```
-
-Finally, install other python packages we need:
-
-```shell
-pip install -r requirements.txt
-```
-
-### Data
-For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
-
-For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
-After downloading, unzip the packup to the project root.
-Please use at your own risk.
-
-### Training
-Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
-
-You can change the augments and run:
-```shell
-bash run_script/run_rte_roberta.sh
-```
-or
-
-```shell
-export TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --prefix
-```
-This script is run for Full-data Full-supervised Pre-fix Tuning.
-
-We provide the following kinds of settings:
-- Full-data v.s. Few-shot: The training data is full / few-shot
-- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
-- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
-- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
-
-The specific augments for different scenarios:
-
-
-#### Few-shot Head Tuning
-
-### Implemented Results
-Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
-
-Released results on BERT-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
-|--------------|-------|------|------|------|------|---------|---------------|---------|
-| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
-| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
-| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
-
-Released results on RoBERTa-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
-|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
-| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
-| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
-| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
-
-For other hyper-parameters, please refer to the training scripts. 
-If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
-
-## Citation
-
-If you find our work useful, please kindly cite our paper:
-
-
-
-
-
-
----
-
-use_prompt
-sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
-
-
-
-superglue
-BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
-glue
-CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
-
-
-grep: ./.git/index: binary file matches
-./run_script_fewshot/run_sst2_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_agnews_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_trec_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mr_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_qqp_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_boolq_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_rte_bert.sh:11:python3 run.py \
-./run_script_fewshot/run_copa_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mnli_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mrpc_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_yelp_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_rte_roberta.sh:13:python3 run.py \
-./run_script_fewshot/run_cb_roberta.sh:13:python3 run.py \
-./run_script_fewshot/run_qnli_roberta.sh:11:python3 run.py \
-./run_script/run_conll04_bert.sh:11:python3 run.py \
-./run_script/run_conll04_roberta.sh:11:python3 run.py \
-./run_script/run_ontonotes_roberta.sh:11:python3 run.py \
-./run_script/run_wsc_bert.sh:11:python3 run.py \
-./run_script/run_squad_roberta.sh:11:python3 run.py \
-./run_script/run_squad_v2_roberta.sh:11:python3 run.py \
-./run_script/run_boolq_bert.sh:11:python3 run.py \
-./run_script/run_wic_roberta.sh:11:python3 run.py \
-./run_script/run_boolq_roberta.sh:11:python3 run.py \
-./run_script/run_conll12_bert.sh:11:python3 run.py \
-./run_script/run_conll03_roberta.sh:11:python3 run.py \
-./run_script/run_conll12_roberta.sh:11:python3 run.py \
-./run_script/run_rte_bert.sh:11:python3 run.py \
-./run_script/run_wsc_roberta.sh:11:python3 run.py \
-./run_script/run_copa_roberta.sh:11:python3 run.py \
-./run_script/run_copa_bert.sh:11:python3 run.py \
-./run_script/run_conll05_roberta.sh:11:python3 run.py \
-./run_script/run_wic_bert.sh:11:python3 run.py \
-./run_script/run_rte_roberta.sh:11:python3 run.py \
-./run_script/run_ontonotes_bert.sh:11:python3 run.py \
-./README.md:57:python3 run.py \
-./search_script/search_roberta.sh:68:      python3 run.py \
-./search_script/search_copa_roberta.sh:12:     python3 run.py \
-./run_script_semi/run_sst2_roberta.sh:22:python3 run.py \
-./run_script_semi/run_qqp_roberta.sh:22:python3 run.py \
-./run_script_semi/run_boolq_roberta.sh:22:python3 run.py \
-./run_script_semi/run_mnli_roberta.sh:22:python3 run.py \
-./run_script_semi/run_mrpc_roberta.sh:22:python3 run.py \
-./run_script_semi/run_rte_roberta.sh:22:python3 run.py \
-./run_script_semi/run_cb_roberta.sh:22:python3 run.py \
-./run_script_semi/run_qnli_roberta.sh:22:python3 run.py \
-./run_script_fewshot/run_sst2_roberta.sh
-./run_script_fewshot/run_agnews_roberta.sh
-./run_script_fewshot/run_trec_roberta.sh
-./run_script_fewshot/run_mr_roberta.sh
-./run_script_fewshot/run_qqp_roberta.sh
-./run_script_fewshot/run_boolq_roberta.sh
-./run_script_fewshot/run_rte_bert.sh
-./run_script_fewshot/run_copa_roberta.sh
-./run_script_fewshot/run_mnli_roberta.sh
-./run_script_fewshot/run_mrpc_roberta.sh
-./run_script_fewshot/run_yelp_roberta.sh
-./run_script_fewshot/run_rte_roberta.sh
-./run_script_fewshot/run_cb_roberta.sh
-./run_script_fewshot/run_qnli_roberta.sh
-./run.py
-./tasks/utils.py
-./tasks/.DS_Store
-./run_script/run_conll04_bert.sh
-./run_script/run_conll04_roberta.sh
-./run_script/run_ontonotes_roberta.sh
-./run_script/run_wsc_bert.sh
-./run_script/run_squad_roberta.sh
-./run_script/run_squad_v2_roberta.sh
-./run_script/run_boolq_bert.sh
-./run_script/run_wic_roberta.sh
-./run_script/run_boolq_roberta.sh
-./run_script/run_conll12_bert.sh
-./run_script/run_conll03_roberta.sh
-./run_script/run_conll12_roberta.sh
-./run_script/run_rte_bert.sh
-./run_script/run_wsc_roberta.sh
-./run_script/run_copa_roberta.sh
-./run_script/run_copa_bert.sh
-./run_script/run_conll05_roberta.sh
-./run_script/run_wic_bert.sh
-./run_script/run_rte_roberta.sh
-./run_script/run_ontonotes_bert.sh
-./README.md
-./arguments.py
-./training/self_trainer_copy.py
-./training/trainer_base.py
-./training/trainer_exp.py
-./training/self_trainer.py
-./training/trainer_qa.py
-./training/sampler.py
-./search_script/search_roberta.sh
-./search_script/search_copa_roberta.sh
-./model/utils.py
-./model/prefix_encoder.py
-./model/debertaV2.py
-./model/head_for_question_answering.py
-./model/prompt_for_sequence_classification.py
-./model/parameter_freeze.py
-./model/head_for_token_classification.py
-./model/head_for_sequence_classification.py
-./model/multiple_choice.py
-./model/model_adaptation.py
-./model/deberta.py
-./model/loss.py
-./PT-Retrieval/download_data.py
-./PT-Retrieval/README.md
-./PT-Retrieval/generate_dense_embeddings.py
-./PT-Retrieval/dense_retriever.py
-./PT-Retrieval/requirements.txt
-./PT-Retrieval/LICENSE
-./PT-Retrieval/.gitignore
-./PT-Retrieval/convert_openqa_data.py
-./PT-Retrieval/train_dense_encoder.py
-./requirements.txt
-./LICENSE
-./.git/config
-./.git/description
-./.git/HEAD
-./.git/index
-./.git/packed-refs
-./run_script_semi/run_sst2_roberta.sh
-./run_script_semi/run_qqp_roberta.sh
-./run_script_semi/run_boolq_roberta.sh
-./run_script_semi/run_mnli_roberta.sh
-./run_script_semi/run_mrpc_roberta.sh
-./run_script_semi/run_rte_roberta.sh
-./run_script_semi/run_cb_roberta.sh
-./run_script_semi/run_qnli_roberta.sh
-./search.py
-
-__TTS_4f0a4402dc68416e9b0de33954534ab7__RC:0
-__TTS_4f0a4402dc68416e9b0de33954534ab7__PWD:/app/repo
-__TTS_4f0a4402dc68416e9b0de33954534ab7__END
-[?2004hroot@07095afa7490:/app/repo# cd -- ''"'"'; pwd; printf '"'"'' && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && sed -n '1,260p' README.md && printf '\n--- run.py refs ---\n' && grep -R "run.py" -n . | head -50 && printf '\n--- files ---\n' && find . -maxdepth 2 -type f | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__RC:%s\n' "$__tts_rc"; printf '__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__PWD:'; pwd; printf '__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__RC:1
-__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__PWD:/app/repo
-__TTS_5ba7f7aee4604c5db4fe05c1a5d77cef__END
-[?2004hroot@07095afa7490:/app/repo# cd -- /app/repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && sed -n '1,260p' README.md && printf '\n--- run.py refs ---\n' && grep -R "run.py" -n . | head -50 && printf '\n--- files ---\n' && find . -maxdepth 2 -type f | sed -n '1,220p'; __tts_rc=$?; printf '\n__TTS_4f4809000b1e42e29a256607f719759c__RC:%s\n' "$__tts_rc"; printf '__TTS_4f4809000b1e42e29a256607f719759c__PWD:'; pwd; printf '__TTS_4f4809000b1e42e29a256607f719759c__END\n'; tmux wait -S done
-[?2004lCloning into 'repo'...
-remote: Enumerating objects: 384, done.[K
-remote: Counting objects:   5% (1/19)[Kremote: Counting objects:  10% (2/19)[Kremote: Counting objects:  15% (3/19)[Kremote: Counting objects:  21% (4/19)[Kremote: Counting objects:  26% (5/19)[Kremote: Counting objects:  31% (6/19)[Kremote: Counting objects:  36% (7/19)[Kremote: Counting objects:  42% (8/19)[Kremote: Counting objects:  47% (9/19)[Kremote: Counting objects:  52% (10/19)[Kremote: Counting objects:  57% (11/19)[Kremote: Counting objects:  63% (12/19)[Kremote: Counting objects:  68% (13/19)[Kremote: Counting objects:  73% (14/19)[Kremote: Counting objects:  78% (15/19)[Kremote: Counting objects:  84% (16/19)[Kremote: Counting objects:  89% (17/19)[Kremote: Counting objects:  94% (18/19)[Kremote: Counting objects: 100% (19/19)[Kremote: Counting objects: 100% (19/19), done.[K
-remote: Compressing objects:   5% (1/17)[Kremote: Compressing objects:  11% (2/17)[Kremote: Compressing objects:  17% (3/17)[Kremote: Compressing objects:  23% (4/17)[Kremote: Compressing objects:  29% (5/17)[Kremote: Compressing objects:  35% (6/17)[Kremote: Compressing objects:  41% (7/17)[Kremote: Compressing objects:  47% (8/17)[Kremote: Compressing objects:  52% (9/17)[Kremote: Compressing objects:  58% (10/17)[Kremote: Compressing objects:  64% (11/17)[Kremote: Compressing objects:  70% (12/17)[Kremote: Compressing objects:  76% (13/17)[Kremote: Compressing objects:  82% (14/17)[Kremote: Compressing objects:  88% (15/17)[Kremote: Compressing objects:  94% (16/17)[Kremote: Compressing objects: 100% (17/17)[Kremote: Compressing objects: 100% (17/17), done.[K
-Receiving objects:   0% (1/384)Receiving objects:   1% (4/384)Receiving objects:   2% (8/384)Receiving objects:   3% (12/384)Receiving objects:   4% (16/384)Receiving objects:   5% (20/384)Receiving objects:   6% (24/384)Receiving objects:   7% (27/384)Receiving objects:   8% (31/384)Receiving objects:   9% (35/384)Receiving objects:  10% (39/384)Receiving objects:  11% (43/384)Receiving objects:  12% (47/384)Receiving objects:  13% (50/384)Receiving objects:  14% (54/384)Receiving objects:  15% (58/384)Receiving objects:  16% (62/384)Receiving objects:  17% (66/384)Receiving objects:  18% (70/384)Receiving objects:  19% (73/384)Receiving objects:  20% (77/384)Receiving objects:  21% (81/384)Receiving objects:  22% (85/384)Receiving objects:  23% (89/384)Receiving objects:  24% (93/384)Receiving objects:  25% (96/384)Receiving objects:  26% (100/384)Receiving objects:  27% (104/384)Receiving objects:  28% (108/384)Receiving objects:  29% (112/384)Receiving objects:  30% (116/384)Receiving objects:  31% (120/384)Receiving objects:  32% (123/384)Receiving objects:  33% (127/384)Receiving objects:  34% (131/384)Receiving objects:  35% (135/384)Receiving objects:  36% (139/384)Receiving objects:  37% (143/384)Receiving objects:  38% (146/384)Receiving objects:  39% (150/384)Receiving objects:  40% (154/384)Receiving objects:  41% (158/384)Receiving objects:  42% (162/384)Receiving objects:  43% (166/384)Receiving objects:  44% (169/384)Receiving objects:  45% (173/384)Receiving objects:  46% (177/384)Receiving objects:  47% (181/384)Receiving objects:  48% (185/384)Receiving objects:  49% (189/384)Receiving objects:  50% (192/384)Receiving objects:  51% (196/384)Receiving objects:  52% (200/384)Receiving objects:  53% (204/384)Receiving objects:  54% (208/384)Receiving objects:  55% (212/384)Receiving objects:  56% (216/384)Receiving objects:  57% (219/384)Receiving objects:  58% (223/384)Receiving objects:  59% (227/384)Receiving objects:  60% (231/384)Receiving objects:  61% (235/384)Receiving objects:  62% (239/384)Receiving objects:  63% (242/384)Receiving objects:  64% (246/384)Receiving objects:  65% (250/384)Receiving objects:  66% (254/384)Receiving objects:  67% (258/384)Receiving objects:  68% (262/384)Receiving objects:  69% (265/384)Receiving objects:  70% (269/384)Receiving objects:  71% (273/384)Receiving objects:  72% (277/384)Receiving objects:  73% (281/384)Receiving objects:  74% (285/384)Receiving objects:  75% (288/384)Receiving objects:  76% (292/384)Receiving objects:  77% (296/384)Receiving objects:  78% (300/384)Receiving objects:  79% (304/384)Receiving objects:  80% (308/384)Receiving objects:  81% (312/384)Receiving objects:  82% (315/384)Receiving objects:  83% (319/384)Receiving objects:  84% (323/384)Receiving objects:  85% (327/384)Receiving objects:  86% (331/384)Receiving objects:  87% (335/384)Receiving objects:  88% (338/384)Receiving objects:  89% (342/384)Receiving objects:  90% (346/384)Receiving objects:  91% (350/384)Receiving objects:  92% (354/384)Receiving objects:  93% (358/384)Receiving objects:  94% (361/384)Receiving objects:  95% (365/384)remote: Total 384 (delta 5), reused 2 (delta 2), pack-reused 365 (from 1)[K
-Receiving objects:  96% (369/384)Receiving objects:  97% (373/384)Receiving objects:  98% (377/384)Receiving objects:  99% (381/384)Receiving objects: 100% (384/384)Receiving objects: 100% (384/384), 576.99 KiB | 1.63 MiB/s, done.
-Resolving deltas:   0% (0/72)Resolving deltas:   1% (1/72)Resolving deltas:   2% (2/72)Resolving deltas:   4% (3/72)Resolving deltas:   5% (4/72)Resolving deltas:   8% (6/72)Resolving deltas:   9% (7/72)Resolving deltas:  11% (8/72)Resolving deltas:  12% (9/72)Resolving deltas:  13% (10/72)Resolving deltas:  15% (11/72)Resolving deltas:  16% (12/72)Resolving deltas:  18% (13/72)Resolving deltas:  19% (14/72)Resolving deltas:  20% (15/72)Resolving deltas:  22% (16/72)Resolving deltas:  23% (17/72)Resolving deltas:  25% (18/72)Resolving deltas:  26% (19/72)Resolving deltas:  27% (20/72)Resolving deltas:  29% (21/72)Resolving deltas:  31% (23/72)Resolving deltas:  33% (24/72)Resolving deltas:  34% (25/72)Resolving deltas:  36% (26/72)Resolving deltas:  37% (27/72)Resolving deltas:  40% (29/72)Resolving deltas:  41% (30/72)Resolving deltas:  43% (31/72)Resolving deltas:  45% (33/72)Resolving deltas:  47% (34/72)Resolving deltas:  48% (35/72)Resolving deltas:  50% (36/72)Resolving deltas:  54% (39/72)Resolving deltas:  55% (40/72)Resolving deltas:  62% (45/72)Resolving deltas:  63% (46/72)Resolving deltas:  65% (47/72)Resolving deltas:  68% (49/72)Resolving deltas:  69% (50/72)Resolving deltas:  70% (51/72)Resolving deltas:  72% (52/72)Resolving deltas:  73% (53/72)Resolving deltas:  75% (54/72)Resolving deltas:  76% (55/72)Resolving deltas:  77% (56/72)Resolving deltas:  79% (57/72)Resolving deltas:  80% (58/72)Resolving deltas:  81% (59/72)Resolving deltas:  83% (60/72)Resolving deltas:  84% (61/72)Resolving deltas:  86% (62/72)Resolving deltas:  87% (63/72)Resolving deltas:  88% (64/72)Resolving deltas:  90% (65/72)Resolving deltas:  91% (66/72)Resolving deltas:  93% (67/72)Resolving deltas:  94% (68/72)Resolving deltas:  95% (69/72)Resolving deltas:  97% (70/72)Resolving deltas:  98% (71/72)Resolving deltas: 100% (72/72)Resolving deltas: 100% (72/72), done.
-Note: switching to '4701c3c62441077cc44a6553bf6ae909d99b8351'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
-
-HEAD is now at 4701c3c Merge pull request #1 from wjn1996/wjn-pr
-# UPET: Uncertainty-aware Parameter-Efficient Tuning for Semi-supervised Language Understanding
-
-
-Head Tuning: Training the model with CLS head, whith or whitout prefix / adapter
-Prompt Tuning: Training the model with prompt and verbalizer (MLM head), whith or whitout prefix / adapter
-
-augment definition：
-e.g.,
---prefix -> --head-prefix or --prompt-prefix
---prompt -> --head-ptuning or --prompt-ptuning
-
-### Setup
-We conduct our experiment with Anaconda3. If you have installed Anaconda3, then create the environment for P-tuning v2:
-
-```shell
-conda create -n pt2 python=3.8.5
-conda activate pt2
-```
-
-After we setup basic conda environment, install pytorch related packages via:
-
-```shell
-conda install -n pt2 pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
-```
-
-Finally, install other python packages we need:
-
-```shell
-pip install -r requirements.txt
-```
-
-### Data
-For SuperGLUE and SQuAD datasets, we download them from the Huggingface Datasets APIs (embedded in our codes).
-
-For sequence tagging (NER, SRL) datasets, we prepare a non-official packup [here](https://zenodo.org/record/6318701/files/P-tuning-v2_data.tar.gz?download=1). 
-After downloading, unzip the packup to the project root.
-Please use at your own risk.
-
-### Training
-Run training scripts in [run_script](run_script) (e.g., RoBERTa for RTE):
-
-You can change the augments and run:
-```shell
-bash run_script/run_rte_roberta.sh
-```
-or
-
-```shell
-export TASK_NAME=superglue
-export DATASET_NAME=rte
-export CUDA_VISIBLE_DEVICES=0
-bs=32
-lr=5e-3
-dropout=0.1
-psl=128
-epoch=100
-python3 run.py \
-  --model_name_or_path /wjn/pre-trained-lm/roberta-large \
-  --task_name $TASK_NAME \
-  --dataset_name $DATASET_NAME \
-  --do_train \
-  --do_eval \
-  --max_seq_length 128 \
-  --per_device_train_batch_size $bs \
-  --learning_rate $lr \
-  --num_train_epochs $epoch \
-  --output_dir checkpoints/$DATASET_NAME-roberta/ \
-  --overwrite_output_dir \
-  --hidden_dropout_prob $dropout \
-  --seed 11 \
-  --save_strategy no \
-  --evaluation_strategy epoch \
-  --prefix
-```
-This script is run for Full-data Full-supervised Pre-fix Tuning.
-
-We provide the following kinds of settings:
-- Full-data v.s. Few-shot: The training data is full / few-shot
-- Full-supervised v.s. Semi-supervised: We use full-supervised / self-training
-- Full-Tuning v.s. Patameter-efficient Tuning: Only tuning the full parameters / Tuning the few parameters
-- One-stage v.s. Two-stage: directly tuning / tuning the few paraemters and then tuning the full
-- Head-Tuning v.s. Prompt-Tuning: Prefix/Adapter + CLS head / Prefix/Adapter + Prompt + Vaberlizer
-
-The specific augments for different scenarios:
-
-
-#### Few-shot Head Tuning
-
-### Implemented Results
-Currently we have released our reimplementation on following tasks and datasets. More implementation will be released soon.
-
-Released results on BERT-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL04 | OntoNotes 5.0 | CoNLL12 |
-|--------------|-------|------|------|------|------|---------|---------------|---------|
-| Result       | 74.3  | 77.0 | 80.1 | 75.1 | 68.3 | 84.5    | 86.4          | 85.3    |
-| Total Epochs | 100   | 80   | 60   | 80   | 80   | 40      | 30            | 45      |
-| Best Epoch   | 58    | 12   | 30   | 56   | 17   | 33      | 24            | 43      |
-
-Released results on RoBERTa-large
-
-|              | BoolQ | COPA | RTE  | WiC  | WSC  | CoNLL03 | CoNLL04 | OntoNotes 5.0 | CoNLL12 | CoNLL05 WSJ | CoNLL05 Brown | SQuAD 1.1 | SQuAD 2.0 |
-|--------------|-------|------|------|------|------|---------|---------|---------------|---------|-------------|---------------|-----------|-----------|
-| Results      | 84.0  | 92.0 | 86.6 | 73.7 | 64.4 | 91.8    | 88.4    | 90.1          | 84.7    | 89.4        | 83.9          | 88.1/94.2 | 81.3/84.7 |
-| Total Epochs | 100   | 120  | 100  | 50   | 10   | 30      | 80      | 60            | 45      | 15          | -             | 30        | 10        |
-| Best Epoch   | 86    | 78   | 65   | 31   | 3    | 28      | 45      | 59            | 37      | 13          | -             | 24        | 9         |
-
-For other hyper-parameters, please refer to the training scripts. 
-If you can not achieve the reported results at the best epoch, there is probably an environmental mismatch and hyper-parameter search is needed.
-
-## Citation
-
-If you find our work useful, please kindly cite our paper:
-
-
-
-
-
-
----
-
-use_prompt
-sst-2,mr,cr,mnli,snli,qnli,rte,mrpc,qqp,cola,trec
-
-
-
-superglue
-BoolQ	CB	COPA	MultiRC	ReCoRD	RTE	WiC	WSC	AX-b	AX-g
-glue
-CoLA	SST-2	MRPC	STS-B	QQP	MNLI-m	MNLI-mm	QNLI	RTE	WNLI	AX
-
-
-
---- run.py refs ---
-grep: ./.git/index: binary file matches
-./run_script_fewshot/run_sst2_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_agnews_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_trec_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mr_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_qqp_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_boolq_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_rte_bert.sh:11:python3 run.py \
-./run_script_fewshot/run_copa_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mnli_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_mrpc_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_yelp_roberta.sh:11:python3 run.py \
-./run_script_fewshot/run_rte_roberta.sh:13:python3 run.py \
-./run_script_fewshot/run_cb_roberta.sh:13:python3 run.py \
-./run_script_fewshot/run_qnli_roberta.sh:11:python3 run.py \
-./run_script/run_conll04_bert.sh:11:python3 run.py \
-./run_script/run_conll04_roberta.sh:11:python3 run.py \
-./run_script/run_ontonotes_roberta.sh:11:python3 run.py \
-./run_script/run_wsc_bert.sh:11:python3 run.py \
-./run_script/run_squad_roberta.sh:11:python3 run.py \
-./run_script/run_squad_v2_roberta.sh:11:python3 run.py \
-./run_script/run_boolq_bert.sh:11:python3 run.py \
-./run_script/run_wic_roberta.sh:11:python3 run.py \
-./run_script/run_boolq_roberta.sh:11:python3 run.py \
-./run_script/run_conll12_bert.sh:11:python3 run.py \
-./run_script/run_conll03_roberta.sh:11:python3 run.py \
-./run_script/run_conll12_roberta.sh:11:python3 run.py \
-./run_script/run_rte_bert.sh:11:python3 run.py \
-./run_script/run_wsc_roberta.sh:11:python3 run.py \
-./run_script/run_copa_roberta.sh:11:python3 run.py \
-./run_script/run_copa_bert.sh:11:python3 run.py \
-./run_script/run_conll05_roberta.sh:11:python3 run.py \
-./run_script/run_wic_bert.sh:11:python3 run.py \
-./run_script/run_rte_roberta.sh:11:python3 run.py \
-./run_script/run_ontonotes_bert.sh:11:python3 run.py \
-./README.md:57:python3 run.py \
-./search_script/search_roberta.sh:68:      python3 run.py \
-./search_script/search_copa_roberta.sh:12:     python3 run.py \
-./run_script_semi/run_sst2_roberta.sh:22:python3 run.py \
-./run_script_semi/run_qqp_roberta.sh:22:python3 run.py \
-./run_script_semi/run_boolq_roberta.sh:22:python3 run.py \
-./run_script_semi/run_mnli_roberta.sh:22:python3 run.py \
-./run_script_semi/run_mrpc_roberta.sh:22:python3 run.py \
-./run_script_semi/run_rte_roberta.sh:22:python3 run.py \
-./run_script_semi/run_cb_roberta.sh:22:python3 run.py \
-./run_script_semi/run_qnli_roberta.sh:22:python3 run.py \
-
---- files ---
-./run_script_fewshot/run_sst2_roberta.sh
-./run_script_fewshot/run_agnews_roberta.sh
-./run_script_fewshot/run_trec_roberta.sh
-./run_script_fewshot/run_mr_roberta.sh
-./run_script_fewshot/run_qqp_roberta.sh
-./run_script_fewshot/run_boolq_roberta.sh
-./run_script_fewshot/run_rte_bert.sh
-./run_script_fewshot/run_copa_roberta.sh
-./run_script_fewshot/run_mnli_roberta.sh
-./run_script_fewshot/run_mrpc_roberta.sh
-./run_script_fewshot/run_yelp_roberta.sh
-./run_script_fewshot/run_rte_roberta.sh
-./run_script_fewshot/run_cb_roberta.sh
-./run_script_fewshot/run_qnli_roberta.sh
-./run.py
-./tasks/utils.py
-./tasks/.DS_Store
-./run_script/run_conll04_bert.sh
-./run_script/run_conll04_roberta.sh
-./run_script/run_ontonotes_roberta.sh
-./run_script/run_wsc_bert.sh
-./run_script/run_squad_roberta.sh
-./run_script/run_squad_v2_roberta.sh
-./run_script/run_boolq_bert.sh
-./run_script/run_wic_roberta.sh
-./run_script/run_boolq_roberta.sh
-./run_script/run_conll12_bert.sh
-./run_script/run_conll03_roberta.sh
-./run_script/run_conll12_roberta.sh
-./run_script/run_rte_bert.sh
-./run_script/run_wsc_roberta.sh
-./run_script/run_copa_roberta.sh
-./run_script/run_copa_bert.sh
-./run_script/run_conll05_roberta.sh
-./run_script/run_wic_bert.sh
-./run_script/run_rte_roberta.sh
-./run_script/run_ontonotes_bert.sh
-./README.md
-./arguments.py
-./training/self_trainer_copy.py
-./training/trainer_base.py
-./training/trainer_exp.py
-./training/self_trainer.py
-./training/trainer_qa.py
-./training/sampler.py
-./search_script/search_roberta.sh
-./search_script/search_copa_roberta.sh
-./model/utils.py
-./model/prefix_encoder.py
-./model/debertaV2.py
-./model/head_for_question_answering.py
-./model/prompt_for_sequence_classification.py
-./model/parameter_freeze.py
-./model/head_for_token_classification.py
-./model/head_for_sequence_classification.py
-./model/multiple_choice.py
-./model/model_adaptation.py
-./model/deberta.py
-./model/loss.py
-./PT-Retrieval/download_data.py
-./PT-Retrieval/README.md
-./PT-Retrieval/generate_dense_embeddings.py
-./PT-Retrieval/dense_retriever.py
-./PT-Retrieval/requirements.txt
-./PT-Retrieval/LICENSE
-./PT-Retrieval/.gitignore
-./PT-Retrieval/convert_openqa_data.py
-./PT-Retrieval/train_dense_encoder.py
-./requirements.txt
-./LICENSE
-./.git/config
-./.git/description
-./.git/HEAD
-./.git/index
-./.git/packed-refs
-./run_script_semi/run_sst2_roberta.sh
-./run_script_semi/run_qqp_roberta.sh
-./run_script_semi/run_boolq_roberta.sh
-./run_script_semi/run_mnli_roberta.sh
-./run_script_semi/run_mrpc_roberta.sh
-./run_script_semi/run_rte_roberta.sh
-./run_script_semi/run_cb_roberta.sh
-./run_script_semi/run_qnli_roberta.sh
-./search.py
-
-__TTS_4f4809000b1e42e29a256607f719759c__RC:0
-__TTS_4f4809000b1e42e29a256607f719759c__PWD:/app/repo/repo
-__TTS_4f4809000b1e42e29a256607f719759c__END
-[?2004hroot@07095afa7490:/app/repo/repo# cd -- ''"'"'; pwd; printf '"'"'' && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('README.md')
-[?2004l[?2004h> text=p.read_text(errors='ignore')
-[?2004l[?2004h> print(text[:12000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_079bf7c376f84cbb87b5aa79fc0366e1__RC:%s\n' "$__tts_rc"; printf '__TTS_079bf7c376f84cbb87b5aa79fc0366e1__PWD:'; pwd; printf '__TTS_079bf7c376f84cbb87b5aa79fc0366e1__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> text=Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> print(text[:40000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_1f57ea108cda49d0abb38bfd480abf16__RC:%s\n' "$__tts_rc"; printf '__TTS_1f57ea108cda49d0abb38bfd480abf16__PWD:'; pwd; printf '__TTS_1f57ea108cda49d0abb38bfd480abf16__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> text=Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> print(text[:30000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_129ed87b3637412c9fe84add732b290c__RC:%s\n' "$__tts_rc"; printf '__TTS_129ed87b3637412c9fe84add732b290c__PWD:'; pwd; printf '__TTS_129ed87b3637412c9fe84add732b290c__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> text=Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> print(text[:50000])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_af1797bbcdea4ee7974775f74f545b70__RC:%s\n' "$__tts_rc"; printf '__TTS_af1797bbcdea4ee7974775f74f545b70__PWD:'; pwd; printf '__TTS_af1797bbcdea4ee7974775f74f545b70__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> import os, re, json, subprocess, sys
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> readme = Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> print(readme[:20000])
-[?2004l[?2004h> cmds = re.findall(r'python\s+run\.py[^\n`]*', readme)
-[?2004l[?2004h> example = next((c for c in cmds if 'rte' in c.lower() or 'RTE' in c), cmds[0] if cmds else '')
-[?2004l[?2004h> print('\nEXAMPLE_CMD:', example)
-[?2004l[?2004h> base = example if example else 'python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --overwrite_output_dir --do_train --do_eval --eval_set test --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --max_seq_length 256 --per_device_train_batch_size 2 --per_device_eval_batch_size 8 --gradient_accumulation_steps 1 --learning_rate 1e-5 --num_train_epochs 3 --seed 42 --template_id 0 --pet_per_gpu_eval_batch_size 4'
-[?2004l[?2004h> base = re.sub(r'--num_train_epochs\s+\S+', '--num_train_epochs 1', base)
-[?2004l[?2004h> base = re.sub(r'--seed\s+\S+', '--seed 42', base)
-[?2004l[?2004h> base = re.sub(r'--model_name_or_path\s+\S+', '--model_name_or_path roberta-base', base)
-[?2004l[?2004h> if '--task_name' in base:
-[?2004l[?2004h>     base = re.sub(r'--task_name\s+\S+', '--task_name rte', base)
-[?2004l[?2004h> else:
-[?2004l[?2004h>     base += ' --task_name rte'
-[?2004l[?2004h> if '--num_k' in base:
-[?2004l[?2004h>     base = re.sub(r'--num_k\s+\S+', '--num_k 5', base)
-[?2004l[?2004h> else:
-[?2004l[?2004h>     base += ' --num_k 5'
-[?2004l[?2004h> if '--data_dir' in base:
-[?2004l[?2004h>     base = re.sub(r'--data_dir\s+\S+', '--data_dir data/k-shot/RTE/5-42', base)
-[?2004l[?2004h> else:
-[?2004l[?2004h>     base += ' --data_dir data/k-shot/RTE/5-42'
-[?2004l[?2004h> for flag in ['--do_train','--do_eval','--overwrite_output_dir']:
-[?2004l[?2004h>     if flag not in base: base += ' ' + flag
-[?2004l[?2004h> if '--output_dir' not in base: base += ' --output_dir /app/repo/output-rte'
-[?2004l[?2004h> print('\nFINAL_CMD:', base)
-[?2004l[?2004h> res = subprocess.run(base, shell=True, text=True, capture_output=True)
-[?2004l[?2004h> print(res.stdout)
-[?2004l[?2004h> print(res.stderr, file=sys.stderr)
-[?2004l[?2004h> text = res.stdout + '\n' + res.stderr
-[?2004l[?2004h> acc = None
-[?2004l[?2004h> patterns = [r'"eval_accuracy"\s*:\s*([0-9.]+)', r"'eval_accuracy'\s*:\s*([0-9.]+)", r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_acc(?:uracy)?\s*=\s*([0-9.]+)']
-[?2004l[?2004h> for p in patterns:
-[?2004l[?2004h>     m = re.findall(p, text)
-[?2004l[?2004h>     if m:
-[?2004l[?2004h>         acc = float(m[-1]); break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     for fp in Path('/app/repo').rglob('*'):
-[?2004l[?2004h>         if fp.is_file() and fp.suffix in {'.txt','.json','.log'}:
-[?2004l[?2004h>             try:
-[?2004l[?2004h>                 t = fp.read_text(errors='ignore')
-[?2004l[?2004h>             except:
-[?2004l[?2004h>                 continue
-[?2004l[?2004h>             for p in patterns:
-[?2004l[?2004h>                 m = re.findall(p, t)
-[?2004l[?2004h>                 if m:
-[?2004l[?2004h>                     acc = float(m[-1]); break
-[?2004l[?2004h>             if acc is not None: break
-[?2004l[?2004h> print(json.dumps({'eval_accuracy': acc if acc is not None else None}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_8477a79e84444d2491613b7ce821196b__RC:%s\n' "$__tts_rc"; printf '__TTS_8477a79e84444d2491613b7ce821196b__PWD:'; pwd; printf '__TTS_8477a79e84444d2491613b7ce821196b__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> import re, json, subprocess, sys, shlex, os
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> readme = Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> cmds = re.findall(r'python\s+run\.py[^\n`]*', readme)
-[?2004l[?2004h> example = ''
-[?2004l[?2004h> for c in cmds:
-[?2004l[?2004h>     if 'rte' in c.lower() and ('upet' in c.lower() or '--lm_training' in c or '--consistency_training' in c):
-[?2004l[?2004h>         example = c; break
-[?2004l[?2004h> if not example:
-[?2004l[?2004h>     for c in cmds:
-[?2004l[?2004h>         if 'rte' in c.lower():
-[?2004l[?2004h>             example = c; break
-[?2004l[?2004h> if not example and cmds:
-[?2004l[?2004h>     example = cmds[0]
-[?2004l[?2004h> base = example.strip() if example else 'python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --do_train --do_eval --overwrite_output_dir --output_dir output/rte'
-[?2004l[?2004h> base = re.sub(r'\\\n', ' ', base)
-[?2004l[?2004h> base = re.sub(r'\s+', ' ', base)
-[?2004l[?2004h> repls = {
-[?2004l[?2004h>     r'--num_train_epochs\s+\S+':'--num_train_epochs 1',
-[?2004l[?2004h>     r'--seed\s+\S+':'--seed 42',
-[?2004l[?2004h>     r'--model_name_or_path\s+\S+':'--model_name_or_path roberta-base',
-[?2004l[?2004h>     r'--task_name\s+\S+':'--task_name rte',
-[?2004l[?2004h>     r'--data_dir\s+\S+':'--data_dir data/k-shot/RTE/5-42',
-[?2004l[?2004h>     r'--output_dir\s+\S+':'--output_dir /app/repo/out-rte',
-[?2004l[?2004h>     r'--num_k\s+\S+':'--num_k 5',
-[?2004l[?2004h> }
-[?2004l[?2004h> for p,r in repls.items():
-[?2004l[?2004h>     if re.search(p, base):
-[?2004l[?2004h>         base = re.sub(p,r,base)
-[?2004l[?2004h> need = ['--task_name rte','--data_dir data/k-shot/RTE/5-42','--model_name_or_path roberta-base','--num_train_epochs 1','--num_k 5','--seed 42','--output_dir /app/repo/out-rte','--do_train','--do_eval','--overwrite_output_dir']
-[?2004l[?2004h> for n in need:
-[?2004l[?2004h>     if n.split()[0] not in base:
-[?2004l[?2004h>         base += ' ' + n
-[?2004l[?2004h> print(base)
-[?2004l[?2004h> res = subprocess.run(base, shell=True, text=True, capture_output=True)
-[?2004l[?2004h> print(res.stdout)
-[?2004l[?2004h> print(res.stderr, file=sys.stderr)
-[?2004l[?2004h> text = res.stdout + '\n' + res.stderr
-[?2004l[?2004h> acc = None
-[?2004l[?2004h> for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']:
-[?2004l[?2004h>     m = re.findall(p, text)
-[?2004l[?2004h>     if m:
-[?2004l[?2004h>         acc = float(m[-1]); break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     for fp in Path('/app/repo/out-rte').rglob('*'):
-[?2004l[?2004h>         if fp.is_file() and fp.suffix in {'.txt','.log','.json'}:
-[?2004l[?2004h>             try:t=fp.read_text(errors='ignore')
-[?2004l[?2004h>             except: continue
-[?2004l[?2004h>             for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']: M[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K:
-[?2004l[?2004h>                 m = re.findall(p, t)
-[?2004l[?2004h>                 if m:
-[?2004l[?2004h>                     acc = float(m[-1]); break
-[?2004l[?2004h>             if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc if acc is not None else None}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_8ed8c5c8a0504b1b87b33c10ec75092a__RC:%s\n' "$__tts_rc"; printf '__TTS_8ed8c5c8a0504b1b87b33c10ec75092a__PWD:'; pwd; printf '__TTS_8ed8c5c8a0504b1b87b33c10ec75092a__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- ''"'"'; pwd; printf '"'"'' && cd /app && rm -rf repo && git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351 && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> import re, json, subprocess, sys
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> readme = Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> cmds = re.findall(r'python\s+run\.py[^\n`]*', readme)
-[?2004l[?2004h> example = ''
-[?2004l[?2004h> for c in cmds:
-[?2004l[?2004h>     lc = c.lower()
-[?2004l[?2004h>     if 'rte' in lc and ('upet' in lc or '--lm_training' in c or '--consistency_training' in c):
-[?2004l[?2004h>         example = c; break
-[?2004l[?2004h> if not example:
-[?2004l[?2004h>     for c in cmds:
-[?2004l[?2004h>         if 'rte' in c.lower():
-[?2004l[?2004h>             example = c; break
-[?2004l[?2004h> base = example.strip() if example else 'python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --do_train --do_eval --overwrite_output_dir --output_dir /app/repo/out-rte'
-[?2004l[?2004h> base = re.sub(r'\\\n', ' ', base)
-[?2004l[?2004h> base = re.sub(r'\s+', ' ', base)
-[?2004l[?2004h> repls = {
-[?2004l[?2004h>     r'--num_train_epochs\s+\S+':'--num_train_epochs 1',
-[?2004l[?2004h>     r'--seed\s+\S+':'--seed 42',
-[?2004l[?2004h>     r'--model_name_or_path\s+\S+':'--model_name_or_path roberta-base',
-[?2004l[?2004h>     r'--task_name\s+\S+':'--task_name rte',
-[?2004l[?2004h>     r'--data_dir\s+\S+':'--data_dir data/k-shot/RTE/5-42',
-[?2004l[?2004h>     r'--output_dir\s+\S+':'--output_dir /app/repo/out-rte',
-[?2004l[?2004h>     r'--num_k\s+\S+':'--num_k 5',
-[?2004l[?2004h> }
-[?2004l[?2004h> for p,r in repls.items():
-[?2004l[?2004h>     if re.search(p, base):
-[?2004l[?2004h>         base = re.sub(p,r,base)
-[?2004l[?2004h> for n in ['--task_name rte','--data_dir data/k-shot/RTE/5-42','--model_name_or_path roberta-base','--num_train_epochs 1','--num_k 5','--seed 42','--output_dir /app/repo/out-rte','--do_train','--do_eval','--overwrite_output_dir']:
-[?2004l[?2004h>     if n.split()[0] not in base:
-[?2004l[?2004h>         base += ' ' + n
-[?2004l[?2004h> res = subprocess.run(base, shell=True, text=True, capture_output=True)
-[?2004l[?2004h> text = res.stdout + '\n' + res.stderr
-[?2004l[?2004h> acc = None
-[?2004l[?2004h> for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']:
-[?2004l[?2004h>     m = re.findall(p, text)
-[?2004l[?2004h>     if m:
-[?2004l[?2004h>         acc = float(m[-1]); break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     for root in [Path('/app/repo/out-rte'), Path('/app/repo')]:
-[?2004l[?2004h>         if root.exists():
-[?2004l[?2004h>             for fp in root.rglob('*'):
-[?2004l[?2004h>                 if fp.is_file() and fp.suffix in {'.txt','.log','.json'}:
-[?2004l[?2004h>                     try: t = fp.read_text(errors='ignore')
-[?2004l[?2004h>                     except: continue
-[?2004l[?2004h>                     for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']:
-[?2004l[?2004h>                         m = re.findall(p, t)
-[?2004l[?2004h>                         if m:
-[?2004l[?2004h>                             acc = float(m[-1]); break
-[?2004l[?2004h>                     if acc is not None: break
-[?2004l[?2004h>         if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc if acc is not None else None}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_683dd50b888249af81c4d0d5254b1110__RC:%s\n' "$__tts_rc"; printf '__TTS_683dd50b888249af81c4d0d5254b1110__PWD:'; pwd; printf '__TTS_683dd50b888249af81c4d0d5254b1110__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-bash: cd: '; pwd; printf ': No such file or directory
-[?2004hroot@07095afa7490:/app/repo/repo# cd -- ''"'"'; pwd; printf '"'"'' && cd /app && [ -d repo ] && cd repo || { git clone https://github.com/wjn1996/UPET repo && cd repo && git checkout 4701c3c62441077cc44a6553bf6ae909d99b8351; } && python -m pip install -q -r requirements.txt && python - <<'PY'
-[?2004l[?2004h> import re, json, subprocess, sys
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> readme = Path('README.md').read_text(errors='ignore')
-[?2004l[?2004h> cmds = re.findall(r'python\s+run\.py[^\n`]*', readme)
-[?2004l[?2004h> example = ''
-[?2004l[?2004h> for c in cmds:
-[?2004l[?2004h>     lc = c.lower()
-[?2004l[?2004h>     if 'rte' in lc and ('upet' in lc or '--lm_training' in c or '--consistency_training' in c):
-[?2004l[?2004h>         example = c; break
-[?2004l[?2004h> if not example:
-[?2004l[?2004h>     for c in cmds:
-[?2004l[?2004h>         if 'rte' in c.lower():
-[?2004l[?2004h>             example = c; break
-[?2004l[?2004h> base = example.strip() if example else 'python run.py --task_name rte --data_dir data/k-shot/RTE/5-42 --model_name_or_path roberta-base --few_shot_type prompt --num_k 5 --seed 42 --do_train --do_eval --overwrite_output_dir --output_dir /app/repo/out-rte'
-[?2004l[?2004h> base = re.sub(r'\\\n', ' ', base)
-[?2004l[?2004h> base = re.sub(r'\s+', ' ', base)
-[?2004l[?2004h> repls = {
-[?2004l[?2004h>     r'--num_train_epochs\s+\S+':'--num_train_epochs 1',
-[?2004l[?2004h>     r'--seed\s+\S+':'--seed 42',
-[?2004l[?2004h>     r'--model_name_or_path\s+\S+':'--model_name_or_path roberta-base',
-[?2004l[?2004h>     r'--task_name\s+\S+':'--task_name rte',
-[?2004l[?2004h>     r'--data_dir\s+\S+':'--data_dir data/k-shot/RTE/5-42',
-[?2004l[?2004h>     r'--output_dir\s+\S+':'--output_dir /app/repo/out-rte',
-[?2004l[?2004h>     r'--num_k\s+\S+':'--num_k 5',
-[?2004l[?2004h> }
-[?2004l[?2004h> for p,r in repls.items():
-[?2004l[?2004h>     if re.search(p, base):
-[?2004l[?2004h>         base = re.sub(p,r,base)
-[?2004l[?2004h> for n in ['--task_name rte','--data_dir data/k-shot/RTE/5-42','--model_name_or_path roberta-base','--num_train_epochs 1','--num_k 5','--seed 42','--output_dir /app/repo/out-rte','--do_train','--do_eval','--overwrite_output_dir']:
-[?2004l[?2004h>     if n.split()[0] not in base:
-[?2004l[?2004h>         base += ' ' + n
-[?2004l[?2004h> res = subprocess.run(base, shell=True, text=True, capture_output=True)
-[?2004l[?2004h> text = res.stdout + '\n' + res.stderr
-[?2004l[?2004h> acc = None
-[?2004l[?2004h> for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']:
-[?2004l[?2004h>     m = re.findall(p, text)
-[?2004l[?2004h>     if m:
-[?2004l[?2004h>         acc = float(m[-1]); break
-[?2004l[?2004h> if acc is None:
-[?2004l[?2004h>     for root in [Path('/app/repo/out-rte'), Path('/app/repo')]:
-[?2004l[?2004h>         if root.exists():
-[?2004l[?2004h>             for fp in root.rglob('*'):
-[?2004l[?2004h>                 if fp.is_file() and fp.suffix in {'.txt','.log','.json'}:
-[?2004l[?2004h>                     try: t = fp.read_text(errors='ignore')
-[?2004l[?2004h>                     except: continue
-[?2004l[?2004h>                     for p in [r'"eval_accuracy"\s*:\s*([0-9.]+)', r'eval_accuracy\s*=\s*([0-9.]+)', r'eval_accuracy\s+([0-9.]+)', r'best eval score[:=]\s*([0-9.]+)']:
-[?2004l[?2004h>                         m = re.findall(p, t)
-[?2004l[?2004h>                         if m:
-[?2004l[?2004h>                             acc = float(m[-1]); break
-[?2004l[?2004h>                     if acc is not None: break
-[?2004l[?2004h>         if acc is not None: break
-[?2004l[?2004h> print(json.dumps({"eval_accuracy": acc if acc is not None else None}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_63e2338a78864ff1be2ec4eaa967a92d__RC:%s\n' "$__tts_rc"; printf '__TTS_63e2338a78864ff1be2ec4eaa967a92d__PWD:'; pwd; printf '__TTS_63e2338a78864ff1be2ec4eaa967a92d__END\n'; tmux wait -S done
-[?2004l[?2004h> 

@@ -1,5 +1,0 @@
-Trial gcode-to-text__sAHooqY failed: Docker compose command failed for environment gcode-to-text. Command: docker compose --project-name gcode-to-text__sahooqy__env --project-directory /home/t-wendili/.cache/harbor/tasks/JK5CeLoen6gxrbEkrjQ94D/gcode-to-text/environment -f /tmp/tmpy3l96cjq/gcode-to-text__sAHooqY__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmplhi2_jp1/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network gcode-to-text__sahooqy__env_default Creating 
- Network gcode-to-text__sahooqy__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network gcode-to-text__sahooqy__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

@@ -1,197 +1,0 @@
-[?2004hroot@4528edddc60f:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@4528edddc60f:/app# clear
-[?2004l[H[J[?2004hroot@4528edddc60f:/app# pwd; __tts_rc=$?; printf '\n__TTS_8f50f1c2b8fa4923894e80cdc092ba98__RC:%s\n' "$__tts_rc"; printf '__TTS_8f50f1c2b8fa4923894e80cdc092ba98__PWD:'; pwd; printf '__TTS_8f50f1c2b8fa4923894e80cdc092ba98__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_8f50f1c2b8fa4923894e80cdc092ba98__RC:0
-__TTS_8f50f1c2b8fa4923894e80cdc092ba98__PWD:/app
-__TTS_8f50f1c2b8fa4923894e80cdc092ba98__END
-[?2004hroot@4528edddc60f:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_88656c1c81e848649f0ef1990620e45a__RC:%s\n' "$__tts_rc"; printf '__TTS_88656c1c81e848649f0ef1990620e45a__PWD:'; pwd; printf '__TTS_88656c1c81e848649f0ef1990620e45a__END\n'; tmux wait -S done
-[?2004lf /app/alpine-disk.qcow2
-f /app/alpine.iso
-
-__TTS_88656c1c81e848649f0ef1990620e45a__RC:0
-__TTS_88656c1c81e848649f0ef1990620e45a__PWD:/app
-__TTS_88656c1c81e848649f0ef1990620e45a__END
-[?2004hroot@4528edddc60f:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_265c2c7923a4439abbaf2f30b4d83c40__RC:%s\n' "$__tts_rc"; printf '__TTS_265c2c7923a4439abbaf2f30b4d83c40__PWD:'; pwd; printf '__TTS_265c2c7923a4439abbaf2f30b4d83c40__END\n'; tmux wait -S done
-[?2004lf /app/alpine-disk.qcow2
-f /app/alpine.iso
-
-__TTS_265c2c7923a4439abbaf2f30b4d83c40__RC:0
-__TTS_265c2c7923a4439abbaf2f30b4d83c40__PWD:/app
-__TTS_265c2c7923a4439abbaf2f30b4d83c40__END
-[?2004hroot@4528edddc60f:/app# cd -- /app && bash -lc 'ls -la /app && find /app -maxdepth 2 -type f | sed -n "1,200p"'; __tts_rc=$?; printf '\n__TTS_35b704d82f36466cb897b110c13dec7b__RC:%s\n' "$__tts_rc"; printf '__TTS_35b704d82f36466cb897b110c13dec7b__PWD:'; pwd; printf '__TTS_35b704d82f36466cb897b110c13dec7b__END\n'; tmux wait -S done
-[?2004ltotal 980176
-drwxr-xr-x 1 root root       4096 Jul 16 22:55 .
-drwxr-xr-x 1 root root       4096 Jul 16 22:55 ..
--rw-r--r-- 1 root root     197120 Jul 16 22:55 alpine-disk.qcow2
--rw-r--r-- 1 root root 1003487232 Dec  7  2023 alpine.iso
-/app/alpine-disk.qcow2
-/app/alpine.iso
-
-__TTS_35b704d82f36466cb897b110c13dec7b__RC:0
-__TTS_35b704d82f36466cb897b110c13dec7b__PWD:/app
-__TTS_35b704d82f36466cb897b110c13dec7b__END
-[?2004hroot@4528edddc60f:/app# cd -- ''"'"'; pwd; printf '"'"'' && bash -lc 'qemu-img info /app/alpine-disk.qcow2 && file /app/alpine-disk.qcow2 /app/alpine.iso && ps -ef | grep -i "[q]emu-system"'; __tts_rc=$?; printf '\n__TTS_0416dee512f24584a6d05b912ba1dd1a__RC:%s\n' "$__tts_rc"; printf '__TTS_0416dee512f24584a6d05b912ba1dd1a__PWD:'; pwd; printf '__TTS_0416dee512f24584a6d05b912ba1dd1a__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_0416dee512f24584a6d05b912ba1dd1a__RC:1
-__TTS_0416dee512f24584a6d05b912ba1dd1a__PWD:/app
-__TTS_0416dee512f24584a6d05b912ba1dd1a__END
-[?2004hroot@4528edddc60f:/app# cd -- /app && bash -lc 'python3 - <<"PY"
-[?2004l')
-child.expect('Installation is complete', timeout=600)
-child.sendline('reboot')
-try:
-    child.expect(pexpect.EOF, timeout=120)
-except Exception:
-    pass
-child.close(force=True)
-# boot installed system in background detached
-proc=subprocess.Popen(['/bin/bash','-lc','exec qemu-system-x86_64 -m 1024 -smp 2 -drive file=/app/alpine-disk.qcow2,if=virtio -nic user,hostfwd=tcp::2222-:22 -nographic >/app/qemu-runtime.log 2>&1'], start_new_session=True)
-open(pidfile,'w').write(str(proc.pid))
-# wait for ssh
-for _ in range(60):
-    r=subprocess.run("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=5 -p 2222 root@localhost 'echo ok'", shell=True, text=True, input='password123\n', capture_output=True)
-    if r.returncode==0 and 'ok' in r.stdout:
-        print('READY')
-        raise SystemExit(0)
-    time.sleep(5)
-raise SystemExit('ssh not ready')
-PY'; __tts_rc=$?; printf '\n__TTS_374b0430e19342859f52f42835e657c8__RC:%s\n' "$__tts_rc"; printf '__TTS_374b0430e19342859f52f42835e657c8__PWD:'; pwd; printf '__TTS_374b0430e19342859f52f42835e657c8__END\n'; tmux wait -S done
-[?2004h> import pexpect, subprocess, time, os, signal
-[?2004l[?2004h> log="/app/qemu-install.log"
-[?2004l[?2004h> pidfile="/app/qemu.pid"
-[?2004l[?2004h> # stop old qemu if any
-[?2004l[?2004h> try:
-[?2004l[?2004h>     pid=int(open(pidfile).read().strip())
-[?2004l[?2004h>     os.kill(pid, signal.SIGTERM)
-[?2004l[?2004h>     time.sleep(1)
-[?2004l[?2004h> except Exception:
-[?2004l[?2004h>     pass
-[?2004l[?2004h> # recreate disk to a usable size
-[?2004l[?2004h> subprocess.run("rm -f /app/alpine-disk.qcow2 && qemu-img create -f qcow2 /app/alpine-disk.qcow2 2G", shell=True, check=True)
-[?2004l[?2004h> qemu_cmd="qemu-system-x86_64 -m 1024 -smp 2 -boot d -cdrom /app/alpine.iso -drive file=/app/alpine-disk.qcow2,if=virtio -nic user,hostfwd=tcp::2222-:22 -nographic"
-[?2004l[?2004h> child=pexpect.spawn('/bin/bash', ['-lc', qemu_cmd], encoding='utf-8', timeout=180)
-[?2004l[?2004h> child.logfile=open(log,'w')
-[?2004l[?2004h> for pat in ['login:','localhost login:','# ','~ # ']:
-[?2004llogin:,#: line 17: warning: here-document at line 1 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 14
-    child=pexpect.spawn(/bin/bash, [-lc, qemu_cmd], encoding=utf-8, timeout=180)
-                        ^
-SyntaxError: invalid syntax
-[?2004hroot@4528edddc60f:/app#     try:
-[?2004lbash: try:: command not found
-[?2004hroot@4528edddc60f:/app#         child.expect(pat, timeout=180)
-[?2004lbash: syntax error near unexpected token `pat,'
-[?2004hroot@4528edddc60f:/app#         break
-[?2004lbash: break: only meaningful in a `for', `while', or `until' loop
-[?2004hroot@4528edddc60f:/app#     except Exception:
-[?2004lbash: except: command not found
-[?2004hroot@4528edddc60f:/app#         pass
-[?2004lbash: pass: command not found
-[?2004hroot@4528edddc60f:/app# else:
-[?2004lbash: else:: command not found
-[?2004hroot@4528edddc60f:/app#     raise SystemExit('no login prompt')
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app# child.sendline('root')
-[?2004lbash: syntax error near unexpected token `'root''
-[?2004hroot@4528edddc60f:/app# child.expect(['# ','~ # '], timeout=60)
-[?2004lbash: syntax error near unexpected token `['# ','~ # '],'
-[?2004hroot@4528edddc60f:/app# child.sendline('setup-alpine -q')
-[?2004lbash: syntax error near unexpected token `'setup-alpine -q''
-[?2004hroot@4528edddc60f:/app# child.expect('Enter system hostname', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Enter system hostname','
-[?2004hroot@4528edddc60f:/app# child.sendline('alpine')
-[?2004lbash: syntax error near unexpected token `'alpine''
-[?2004hroot@4528edddc60f:/app# child.expect('Available interfaces are', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Available interfaces are','
-[?2004hroot@4528edddc60f:/app# child.expect('Which one do you want to initialize', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Which one do you want to initialize','
-[?2004hroot@4528edddc60f:/app# child.sendline('eth0')
-[?2004lbash: syntax error near unexpected token `'eth0''
-[?2004hroot@4528edddc60f:/app# child.expect('Ip address for eth0', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Ip address for eth0','
-[?2004hroot@4528edddc60f:/app# child.sendline('dhcp')
-[?2004lbash: syntax error near unexpected token `'dhcp''
-[?2004hroot@4528edddc60f:/app# child.expect('Do you want to do any manual network configuration', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Do you want to do any manual network configuration','
-[?2004hroot@4528edddc60f:/app# child.sendline('n')
-[?2004lbash: syntax error near unexpected token `'n''
-[?2004hroot@4528edddc60f:/app# child.expect('New password', timeout=120)
-[?2004lbash: syntax error near unexpected token `'New password','
-[?2004hroot@4528edddc60f:/app# child.sendline('password123')
-[?2004lbash: syntax error near unexpected token `'password123''
-[?2004hroot@4528edddc60f:/app# child.expect('Retype password', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Retype password','
-[?2004hroot@4528edddc60f:/app# child.sendline('password123')
-[?2004lbash: syntax error near unexpected token `'password123''
-[?2004hroot@4528edddc60f:/app# child.expect('Which timezone are you in', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Which timezone are you in','
-[?2004hroot@4528edddc60f:/app# child.sendline('UTC')
-[?2004lbash: syntax error near unexpected token `'UTC''
-[?2004hroot@4528edddc60f:/app# child.expect('HTTP/FTP proxy URL', timeout=120)
-[?2004lbash: syntax error near unexpected token `'HTTP/FTP proxy URL','
-[?2004hroot@4528edddc60f:/app# child.sendline('none')
-[?2004lbash: syntax error near unexpected token `'none''
-[?2004hroot@4528edddc60f:/app# child.expect('Enter mirror number', timeout=240)
-[?2004lbash: syntax error near unexpected token `'Enter mirror number','
-[?2004hroot@4528edddc60f:/app# child.sendline('1')
-[?2004lbash: syntax error near unexpected token `'1''
-[?2004hroot@4528edddc60f:/app# child.expect('Which SSH server', timeout=240)
-[?2004lbash: syntax error near unexpected token `'Which SSH server','
-[?2004hroot@4528edddc60f:/app# child.sendline('openssh')
-[?2004lbash: syntax error near unexpected token `'openssh''
-[?2004hroot@4528edddc60f:/app# child.expect('Which disk', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Which disk','
-[?2004hroot@4528edddc60f:/app# child.sendline('vda')
-[?2004lbash: syntax error near unexpected token `'vda''
-[?2004hroot@4528edddc60f:/app# child.expect('How would you like to use it', timeout=120)
-[?2004lbash: syntax error near unexpected token `'How would you like to use it','
-[?2004hroot@4528edddc60f:/app# child.sendline('sys')
-[?2004lbash: syntax error near unexpected token `'sys''
-[?2004hroot@4528edddc60f:/app# child.expect('Erase the above disk', timeout=120)
-[?2004lbash: syntax error near unexpected token `'Erase the above disk','
-[?2004hroot@4528edddc60f:/app# child.sendline('y')
-[?2004lbash: syntax error near unexpected token `'y''
-[?2004hroot@4528edddc60f:/app# child.expect('Installation is complete', timeout=600)
-[?2004lbash: syntax error near unexpected token `'Installation is complete','
-[?2004hroot@4528edddc60f:/app# child.sendline('reboot')
-[?2004lbash: syntax error near unexpected token `'reboot''
-[?2004hroot@4528edddc60f:/app# try:
-[?2004lbash: try:: command not found
-[?2004hroot@4528edddc60f:/app#     child.expect(pexpect.EOF, timeout=120)
-[?2004lbash: syntax error near unexpected token `pexpect.EOF,'
-[?2004hroot@4528edddc60f:/app# except Exception:
-[?2004lbash: except: command not found
-[?2004hroot@4528edddc60f:/app#     pass
-[?2004lbash: pass: command not found
-[?2004hroot@4528edddc60f:/app# child.close(force=True)
-[?2004lbash: syntax error near unexpected token `force=True'
-[?2004hroot@4528edddc60f:/app# # boot installed system in background detached
-[?2004l[?2004hroot@4528edddc60f:/app# proc=subprocess.Popen(['/bin/bash','-lc','exec qemu-system-x86_64 -m 1024 -smp 2 -drive file=/app/alpine-disk.qcow2,if=virtio -nic user,hostfwd=tcp::2222-:22 -nographic >/app/qemu-runtime.log 2>&1'], start_new_session=True)
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app# open(pidfile,'w').write(str(proc.pid))
-[?2004lbash: syntax error near unexpected token `pidfile,'w''
-[?2004hroot@4528edddc60f:/app# # wait for ssh
-[?2004l[?2004hroot@4528edddc60f:/app# for _ in range(60):
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app#     r=subprocess.run("ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=5 -p 2222 root@localhost 'echo ok'", shell=True, text=True, input='password123\n', capture_output=True)
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app#     if r.returncode==0 and 'ok' in r.stdout:
-[?2004l[?2004h>         print('READY')
-[?2004lbash: syntax error near unexpected token `'READY''
-[?2004hroot@4528edddc60f:/app#         raise SystemExit(0)
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app#     time.sleep(5)
-[?2004lbash: syntax error near unexpected token `5'
-[?2004hroot@4528edddc60f:/app# raise SystemExit('ssh not ready')
-[?2004lbash: syntax error near unexpected token `('
-[?2004hroot@4528edddc60f:/app# PY'; __tts_rc=$?; printf '\n__TTS_374b0430e19342859f52f42835e657c8__RC:%s\n' "$__tts_rc"; printf '__TTS_374b0430e19342859f52f42835e657c8__PWD:'; pwd; printf '__TTS_374b0430e19342859f52f42835e657c8__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && bash -lc 'ls -l /app && sed -n "1,240p" /app/qemu-install.log 2>/dev/null || true && ps -ef | grep -i "[q]emu-system" || true && file /app/alpine-disk.qcow2 && qemu-img info /app/alpine-disk.qcow2'; __tts_rc=$?; printf '\n__TTS_3e17489a0b564711916469dcdddad955__RC:%s\n' "$__tts_rc"; printf '__TTS_3e17489a0b564711916469dcdddad955__PWD:'; pwd; printf '__TTS_3e17489a0b564711916469dcdddad955__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: unexpected EOF while looking for matching `''
-bash: syntax error: unexpected end of file
-[?2004hroot@4528edddc60f:/app# 

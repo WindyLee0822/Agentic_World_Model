@@ -1,3 +1,0 @@
-{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "post", "url": "/amazon/auth/token", "data": {"username": "corwils@gmail.com", "password": "&F{fOKq"}}

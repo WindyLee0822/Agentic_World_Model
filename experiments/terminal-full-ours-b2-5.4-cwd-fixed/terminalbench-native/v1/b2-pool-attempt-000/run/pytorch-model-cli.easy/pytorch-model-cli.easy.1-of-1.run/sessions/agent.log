@@ -1,105 +1,0 @@
-[?2004hroot@bb850adebab7:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@bb850adebab7:/app# clear
-[?2004l[H[J[3J[?2004hroot@bb850adebab7:/app# pwd; __tts_rc=$?; printf '\n__TTS_4ec43d7e00a4444bb88bba7cb9127feb__RC:%s\n' "$__tts_rc"; printf '__TTS_4ec43d7e00a4444bb88bba7cb9127feb__PWD:'; pwd; printf '__TTS_4ec43d7e00a4444bb88bba7cb9127feb__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_4ec43d7e00a4444bb88bba7cb9127feb__RC:0
-__TTS_4ec43d7e00a4444bb88bba7cb9127feb__PWD:/app
-__TTS_4ec43d7e00a4444bb88bba7cb9127feb__END
-[?2004hroot@bb850adebab7:/app# cd -- /app && ls -la /app && find /app -maxdepth 2 -type f | sed 's#^/app/##' | sort; __tts_rc=$?; printf '\n__TTS_867fb05cd4ac456187429a3a65593c1c__RC:%s\n' "$__tts_rc"; printf '__TTS_867fb05cd4ac456187429a3a65593c1c__PWD:'; pwd; printf '__TTS_867fb05cd4ac456187429a3a65593c1c__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 18 18:08 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-cJSON.c
-cJSON.h
-image.png
-lodepng.cpp
-lodepng.h
-model.pth
-model.py
-
-__TTS_867fb05cd4ac456187429a3a65593c1c__RC:0
-__TTS_867fb05cd4ac456187429a3a65593c1c__PWD:/app
-__TTS_867fb05cd4ac456187429a3a65593c1c__END
-[?2004hroot@bb850adebab7:/app# cd -- /app && cd /app && sed -n '1,220p' model.py; __tts_rc=$?; printf '\n__TTS_4695a02e09c24289a792f894c492e406__RC:%s\n' "$__tts_rc"; printf '__TTS_4695a02e09c24289a792f894c492e406__PWD:'; pwd; printf '__TTS_4695a02e09c24289a792f894c492e406__END\n'; tmux wait -S done
-[?2004limport torch
-import torch.nn as nn
-
-
-class MnistModel(nn.Module):
-    def __init__(
-        self,
-        input_dim: int,
-        hidden_dim: int,
-        num_classes: int,
-    ) -> torch.nn.Module:
-        super().__init__()
-
-        self.input_layer = nn.Linear(input_dim, hidden_dim)
-        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, num_classes)
-        self.activation = nn.ReLU()
-
-    def forward(self, x):
-        x = self.input_layer(x)
-        x = self.activation(x)
-
-        x = self.hidden_layer(x)
-        x = self.activation(x)
-
-        x = self.output_layer(x)
-        return x
-
-__TTS_4695a02e09c24289a792f894c492e406__RC:0
-__TTS_4695a02e09c24289a792f894c492e406__PWD:/app
-__TTS_4695a02e09c24289a792f894c492e406__END
-[?2004hroot@bb850adebab7:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import torch
-[?2004l[?2004h> sd=torch.load('model.pth',map_location='cpu')
-[?2004l[?2004h> print(type(sd))
-[?2004l[?2004h> print(list(sd.keys()))
-[?2004l[?2004h> for k,v in sd.items(): print(k, tuple(v.shape)); break
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_2ac84025c84444eebf4b2767e0223c63__RC:%s\n' "$__tts_rc"; printf '__TTS_2ac84025c84444eebf4b2767e0223c63__PWD:'; pwd; printf '__TTS_2ac84025c84444eebf4b2767e0223c63__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && apt-get update >/dev/null && apt-get install -y build-essential python3 python3-pip >/dev/null && mv lodepng.cpp lodepng.c && python3 -c "import torch,json; sd=torch.load('model.pth',map_location='cpu'); json.dump({k:v.tolist() for k,v in sd.items()}, open('weights.json','w'))"; __tts_rc=$?; printf '\n__TTS_6fa1eb948f9248a2be64ba5f62eeb559__RC:%s\n' "$__tts_rc"; printf '__TTS_6fa1eb948f9248a2be64ba5f62eeb559__PWD:'; pwd; printf '__TTS_6fa1eb948f9248a2be64ba5f62eeb559__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && ls -l weights.json lodepng.c cli_tool prediction.txt 2>/dev/null || true && python3 - <<'PY'
-[?2004l[?2004h> import os
-[?2004l[?2004h> print('torch', os.path.exists('/usr/local/lib/python3.11/site-packages/torch') or os.path.exists('/usr/lib/python3/dist-packages/torch'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e0aa5578749a4b82bb4195081c84c917__RC:%s\n' "$__tts_rc"; printf '__TTS_e0aa5578749a4b82bb4195081c84c917__PWD:'; pwd; printf '__TTS_e0aa5578749a4b82bb4195081c84c917__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m6[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_2ac84025c84444eebf4b2767e0223c63__RC:%s\n' "$__tts_rc"; printf '__TTS_2ac84025c84444eebf4b2767e0223c63__PWD:'; pwd; printf '__TTS_2ac84025c84444eebf4b2767e0223c63__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@bb850adebab7:/app# cd -- ''"'"'; pwd; printf '"'"'_' && cd /app && python3 -c "import torch; sd=torch.load('model.pth',map_location='cpu'); print(list(sd.keys())); print({k:tuple(v.shape) for k,v in sd.items()})"; __tts_rc=$?; printf '\n__TTS_62dbf4290e4249a89c8c263dce766728__RC:%s\n' "$__tts_rc"; printf '__TTS_62dbf4290e4249a89c8c263dce766728__PWD:'; pwd; printf '__TTS_62dbf4290e4249a89c8c263dce766728__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '_: No such file or directory
-
-__TTS_62dbf4290e4249a89c8c263dce766728__RC:1
-__TTS_62dbf4290e4249a89c8c263dce766728__PWD:/app
-__TTS_62dbf4290e4249a89c8c263dce766728__END
-[?2004hroot@bb850adebab7:/app# cd -- /app && cd /app && python3 -c "import zipfile; z=zipfile.ZipFile('model.pth'); print(z.namelist())"; __tts_rc=$?; printf '\n__TTS_16a6893a169944f29bcac34f36698320__RC:%s\n' "$__tts_rc"; printf '__TTS_16a6893a169944f29bcac34f36698320__PWD:'; pwd; printf '__TTS_16a6893a169944f29bcac34f36698320__END\n'; tmux wait -S done
-[?2004l['simple_mnist/data.pkl', 'simple_mnist/byteorder', 'simple_mnist/data/0', 'simple_mnist/data/1', 'simple_mnist/data/2', 'simple_mnist/data/3', 'simple_mnist/data/4', 'simple_mnist/data/5', 'simple_mnist/version', 'simple_mnist/.data/serialization_id']
-
-__TTS_16a6893a169944f29bcac34f36698320__RC:0
-__TTS_16a6893a169944f29bcac34f36698320__PWD:/app
-__TTS_16a6893a169944f29bcac34f36698320__END
-[?2004hroot@bb850adebab7:/app# cd -- /app && cd /app && python3 -c "import zipfile,pickle,pprint; z=zipfile.ZipFile('model.pth'); print(pickle.loads(z.read('simple_mnist/data.pkl')).keys())"; __tts_rc=$?; printf '\n__TTS_32dd80a00518404ba32091e9fcae6cc4__RC:%s\n' "$__tts_rc"; printf '__TTS_32dd80a00518404ba32091e9fcae6cc4__PWD:'; pwd; printf '__TTS_32dd80a00518404ba32091e9fcae6cc4__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    import zipfile,pickle,pprint; z=zipfile.ZipFile('model.pth'); print([31mpickle.loads[0m[1;31m(z.read('simple_mnist/data.pkl'))[0m.keys())
-                                                                        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-[1;35m_pickle.UnpicklingError[0m: [35mA load persistent id instruction was encountered, but no persistent_load function was specified.[0m
-
-__TTS_32dd80a00518404ba32091e9fcae6cc4__RC:1
-__TTS_32dd80a00518404ba32091e9fcae6cc4__PWD:/app
-__TTS_32dd80a00518404ba32091e9fcae6cc4__END
-[?2004hroot@bb850adebab7:/app# 

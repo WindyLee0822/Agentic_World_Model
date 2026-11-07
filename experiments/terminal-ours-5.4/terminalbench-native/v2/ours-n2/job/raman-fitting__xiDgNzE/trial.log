@@ -1,5 +1,0 @@
-Trial raman-fitting__xiDgNzE failed: Docker compose command failed for environment raman-fitting. Command: docker compose --project-name raman-fitting__xidgnze__env --project-directory /home/t-wendili/.cache/harbor/tasks/kWbDWup9MzjJLPn6gz9P6H/raman-fitting/environment -f /tmp/tmpp_73bv9b/raman-fitting__xiDgNzE__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpommmn9nd/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network raman-fitting__xidgnze__env_default Creating 
- Network raman-fitting__xidgnze__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network raman-fitting__xidgnze__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

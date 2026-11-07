@@ -1,79 +1,0 @@
-[?2004hroot@64751800697a:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@64751800697a:/app# clear
-[?2004l[H[J[3J[?2004hroot@64751800697a:/app# pwd; __tts_rc=$?; printf '\n__TTS_20cb68f0d6624294a69353409c37d349__RC:%s\n' "$__tts_rc"; printf '__TTS_20cb68f0d6624294a69353409c37d349__PWD:'; pwd; printf '__TTS_20cb68f0d6624294a69353409c37d349__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_20cb68f0d6624294a69353409c37d349__RC:0
-__TTS_20cb68f0d6624294a69353409c37d349__PWD:/app
-__TTS_20cb68f0d6624294a69353409c37d349__END
-[?2004hroot@64751800697a:/app# cd -- /app && sh -lc 'cat > /app/server.js <<"EOF"
-[?2004l[?2004h> const http = require("http");
-[?2004l[?2004h> const { URL } = require("url");
-[?2004l[?2004h> 
-[?2004l[?2004h> function fib(n) {
-[?2004l[?2004h>   let a = 0n, b = 1n;
-[?2004l[?2004h>   for (let i = 0; i < n; i++) {
-[?2004l[?2004h>     [a, b] = [b, a + b];
-[?2004l[?2004h>   }
-[?2004l[?2004h>   return a;
-[?2004l[?2004h> }
-[?2004l[?2004h> 
-[?2004l[?2004h> const server = http.createServer((req, res) => {
-[?2004l[?2004h>   const url = new URL(req.url, "http://localhost:3000");
-[?2004l[?2004h> 
-[?2004l[?2004h>   if (req.method !== "GET" || url.pathname !== "/fib") {
-[?2004l[?2004h>     res.statusCode = 404;
-[?2004l[?2004h>     res.setHeader("Content-Type", "application/json");
-[?2004l[?2004h>     res.end(JSON.stringify({ error: "Not Found" }));
-[?2004l[?2004h>     return;
-[?2004l[?2004h>   }
-[?2004l[?2004h> 
-[?2004l[?2004h>   const nParam = url.searchParams.get("n");
-[?2004l[?2004h>   if (nParam === null) {
-[?2004l[?2004h>     res.statusCode = 400;
-[?2004l[?2004h>     res.setHeader("Content-Type", "application/json");
-[?2004l[?2004h>     res.end(JSON.stringify({ error: "Missing query parameter n" }));
-[?2004l[?2004h>     return;
-[?2004l[?2004h>   }
-[?2004l[?2004h> 
-[?2004l[?2004h>   if (!/^-?\d+$/.test(nParam)) {
-[?2004l[?2004h>     res.statusCode = 400;
-[?2004l[?2004h>     res.setHeader("Content-Type", "application/json");
-[?2004l[?2004h>     res.end(JSON.stringify({ error: "Query parameter n must be an integer" }));
-[?2004l[?2004h>     return;
-[?2004l[?2004h>   }
-[?2004l[?2004h> 
-[?2004l[?2004h>   const n = Number(nParam);
-[?2004l[?2004h>   if (!Number.isSafeInteger(n) || n < 0) {
-[?2004l[?2004h>     res.statusCode = 400;
-[?2004l[?2004h>     res.setHeader("Content-Type", "application/json");
-[?2004l[?2004h>     res.end(JSON.stringify({ error: "Query parameter n must be a non-negative safe integer" }));
-[?2004l[?2004h>     return;
-[?2004l[?2004h>   }
-[?2004l[?2004h> 
-[?2004l[?2004h>   const result = fib(n).toString();
-[?2004l[?2004h>   res.statusCode = 200;
-[?2004l[?2004h>   res.setHeader("Content-Type", "application/json");
-[?2004l[?2004h>   res.end(JSON.stringify({ result }));
-[?2004l[?2004h> });
-[?2004l[?2004h> 
-[?2004l[?2004h> server.listen(3000, "0.0.0.0");
-[?2004l[?2004h> EOF
-[?2004l[?2004h> nohup node /app/server.js >/app/server.log 2>&1 &'; __tts_rc=$?; printf '\n__TTS_49793fa9851044debe891c0aa2c5e7e3__RC:%s\n' "$__tts_rc"; printf '__TTS_49793fa9851044debe891c0aa2c5e7e3__PWD:'; pwd; printf '__TTS_49793fa9851044debe891c0aa2c5e7e3__END\n'; tmux wait -S done
-[?2004l
-__TTS_49793fa9851044debe891c0aa2c5e7e3__RC:0
-__TTS_49793fa9851044debe891c0aa2c5e7e3__PWD:/app
-__TTS_49793fa9851044debe891c0aa2c5e7e3__END
-[?2004hroot@64751800697a:/app# cd -- /app && sh -lc 'curl -s -i http://127.0.0.1:3000/fib?n=10 && printf "\n---\n" && curl -s -i http://127.0.0.1:3000/fib && printf "\n---\n" && curl -s -i "http://127.0.0.1:3000/fib?n=abc"'; __tts_rc=$?; printf '\n__TTS_c8e76ddfe3ae4915adda454cc887b82c__RC:%s\n' "$__tts_rc"; printf '__TTS_c8e76ddfe3ae4915adda454cc887b82c__PWD:'; pwd; printf '__TTS_c8e76ddfe3ae4915adda454cc887b82c__END\n'; tmux wait -S done
-[?2004lsh: 1: curl: not found
-
-__TTS_c8e76ddfe3ae4915adda454cc887b82c__RC:127
-__TTS_c8e76ddfe3ae4915adda454cc887b82c__PWD:/app
-__TTS_c8e76ddfe3ae4915adda454cc887b82c__END
-[?2004hroot@64751800697a:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@64751800697a:/app# 

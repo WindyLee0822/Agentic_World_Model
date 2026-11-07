@@ -1,41 +1,0 @@
-[?2004hroot@07062d377fd0:/app/astropy# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@07062d377fd0:/app/astropy# clear
-[?2004l[H[J[3J[?2004hroot@07062d377fd0:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_aff1f0f900d44f038b3a07340f756045__RC:%s\n' "$__tts_rc"; printf '__TTS_aff1f0f900d44f038b3a07340f756045__PWD:'; pwd; printf '__TTS_aff1f0f900d44f038b3a07340f756045__END\n'; tmux wait -S done
-[?2004l/app/astropy
-
-__TTS_aff1f0f900d44f038b3a07340f756045__RC:0
-__TTS_aff1f0f900d44f038b3a07340f756045__PWD:/app/astropy
-__TTS_aff1f0f900d44f038b3a07340f756045__END
-[?2004hroot@07062d377fd0:/app/astropy# cd -- /app/astropy && python - <<'PY'
-[?2004l[?2004h> from astropy.modeling import models as m
-[?2004l[?2004h> from astropy.modeling.separable import separability_matrix
-[?2004l[?2004h> cm = m.Linear1D(10) & m.Linear1D(5)
-[?2004l[?2004h> print(separability_matrix(cm))
-[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5)))
-[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & cm))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_7587cdad6f2c449f828ac987c76635c5__RC:%s\n' "$__tts_rc"; printf '__TTS_7587cdad6f2c449f828ac987c76635c5__PWD:'; pwd; printf '__TTS_7587cdad6f2c449f828ac987c76635c5__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && python -c "from astropy.modeling import models as m; from astropy.modeling.separable import separability_matrix; cm=m.Linear1D(10)&m.Linear1D(5); print(separability_matrix(cm)); print(separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5))); print(separability_matrix(m.Pix2Sky_TAN() & cm))"; __tts_rc=$?; printf '\n__TTS_920fccb23905445b86c8b92adf9fa268__RC:%s\n' "$__tts_rc"; printf '__TTS_920fccb23905445b86c8b92adf9fa268__PWD:'; pwd; printf '__TTS_920fccb23905445b86c8b92adf9fa268__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && grep -R "def separability_matrix\|_separable\|CompoundModel" -n astropy/modeling | head -80; __tts_rc=$?; printf '\n__TTS_2473336e48874badafa70259220e476f__RC:%s\n' "$__tts_rc"; printf '__TTS_2473336e48874badafa70259220e476f__PWD:'; pwd; printf '__TTS_2473336e48874badafa70259220e476f__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && sed -n '1,260p' astropy/modeling/separable.py; __tts_rc=$?; printf '\n__TTS_dc88d749d21644008638e8378662d520__RC:%s\n' "$__tts_rc"; printf '__TTS_dc88d749d21644008638e8378662d520__PWD:'; pwd; printf '__TTS_dc88d749d21644008638e8378662d520__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && python - <<'PY'
-[?2004l[?2004h> from itertools import islice
-[?2004l[?2004h> p='astropy/modeling/separable.py'
-[?2004l[?2004h> with open(p) as f:
-[?2004l[?2004h>     for i,l in enumerate(islice(f,260),1):
-[?2004l[?2004h>         print(f'{i}:{l}', end='')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_a4ba1a56530140c3b59c012522b820ac__RC:%s\n' "$__tts_rc"; printf '__TTS_a4ba1a56530140c3b59c012522b820ac__PWD:'; pwd; printf '__TTS_a4ba1a56530140c3b59c012522b820ac__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 7
-    PY; __tts_rc=$?; printf '\n__TTS_7587cdad6f2c449f828ac987c76635c5__RC:%s\n' "$__tts_rc"; printf '__TTS_7587cdad6f2c449f828ac987c76635c5__PWD:'; pwd; printf '__TTS_7587cdad6f2c449f828ac987c76635c5__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@07062d377fd0:/app/astropy# cd -- ''"'"'; pwd; printf '"'"'_' && python -c "from pathlib import Path; p=Path('astropy/modeling/separable.py'); print(''.join(f'{i+1}:{l}' for i,l in enumerate(p.read_text().splitlines(True)[:260])))"; __tts_rc=$?; printf '\n__TTS_b368ce9b90454501ad7bc2acda1e4d9a__RC:%s\n' "$__tts_rc"; printf '__TTS_b368ce9b90454501ad7bc2acda1e4d9a__PWD:'; pwd; printf '__TTS_b368ce9b90454501ad7bc2acda1e4d9a__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '_: No such file or directory
-
-__TTS_b368ce9b90454501ad7bc2acda1e4d9a__RC:1
-__TTS_b368ce9b90454501ad7bc2acda1e4d9a__PWD:/app/astropy
-__TTS_b368ce9b90454501ad7bc2acda1e4d9a__END
-[?2004hroot@07062d377fd0:/app/astropy# 

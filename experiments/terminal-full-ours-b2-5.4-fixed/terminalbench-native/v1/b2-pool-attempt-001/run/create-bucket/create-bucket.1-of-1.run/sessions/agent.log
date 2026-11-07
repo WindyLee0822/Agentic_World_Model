@@ -1,23 +1,0 @@
-[?2004hroot@65a3ea08ab73:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@65a3ea08ab73:/app# clear
-[?2004l[H[J[3J[?2004hroot@65a3ea08ab73:/app# pwd; __tts_rc=$?; printf '\n__TTS_bfb3334114514107897869419379c5bd__RC:%s\n' "$__tts_rc"; printf '__TTS_bfb3334114514107897869419379c5bd__PWD:'; pwd; printf '__TTS_bfb3334114514107897869419379c5bd__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_bfb3334114514107897869419379c5bd__RC:0
-__TTS_bfb3334114514107897869419379c5bd__PWD:/app
-__TTS_bfb3334114514107897869419379c5bd__END
-[?2004hroot@65a3ea08ab73:/app# cd -- /app && aws s3api create-bucket --bucket sample-bucket && aws s3api put-public-access-block --bucket sample-bucket --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false && aws s3api put-bucket-acl --bucket sample-bucket --acl public-read; __tts_rc=$?; printf '\n__TTS_78e91eb0dcdd4f5984218436d5b7653d__RC:%s\n' "$__tts_rc"; printf '__TTS_78e91eb0dcdd4f5984218436d5b7653d__PWD:'; pwd; printf '__TTS_78e91eb0dcdd4f5984218436d5b7653d__END\n'; tmux wait -S done
-[?2004l{
-    "Location": "/sample-bucket"
-}
-
-__TTS_78e91eb0dcdd4f5984218436d5b7653d__RC:0
-__TTS_78e91eb0dcdd4f5984218436d5b7653d__PWD:/app
-__TTS_78e91eb0dcdd4f5984218436d5b7653d__END
-[?2004hroot@65a3ea08ab73:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@65a3ea08ab73:/app# 

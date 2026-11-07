@@ -1,68 +1,0 @@
-[?2004hroot@fc20c99cf498:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@fc20c99cf498:/app# clear
-[?2004l[H[J[3J[?2004hroot@fc20c99cf498:/app# pwd; __tts_rc=$?; printf '\n__TTS_ebe91f8f81c44852b3e07803168f794c__RC:%s\n' "$__tts_rc"; printf '__TTS_ebe91f8f81c44852b3e07803168f794c__PWD:'; pwd; printf '__TTS_ebe91f8f81c44852b3e07803168f794c__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_ebe91f8f81c44852b3e07803168f794c__RC:0
-__TTS_ebe91f8f81c44852b3e07803168f794c__PWD:/app
-__TTS_ebe91f8f81c44852b3e07803168f794c__END
-[?2004hroot@fc20c99cf498:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> from datasets import load_dataset
-[?2004l[?2004h> from transformers import AutoTokenizer
-[?2004l[?2004h> 
-[?2004l[?2004h> tok = AutoTokenizer.from_pretrained('Qwen/Qwen2.5-1.5B-Instruct', trust_remote_code=True)
-[?2004l[?2004h> ds = load_dataset('open-thoughts/OpenThoughts-114k', split='train')
-[?2004l[?2004h> print(ds)
-[?2004l[?2004h> print(ds.column_names)
-[?2004l[?2004h> print(ds[0])
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_699f8c3a6ecd42e8ac489f57355426df__RC:%s\n' "$__tts_rc"; printf '__TTS_699f8c3a6ecd42e8ac489f57355426df__PWD:'; pwd; printf '__TTS_699f8c3a6ecd42e8ac489f57355426df__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> from datasets import load_dataset
-[?2004l[?2004h> from transformers import AutoTokenizer
-[?2004l[?2004h> 
-[?2004l[?2004h> ds = load_dataset('open-thoughts/OpenThoughts-114k','default',split='train',streaming=True)
-[?2004l[?2004h> print(next(iter(ds)))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b6d2cf6bf245454097769a8ceded93ca__RC:%s\n' "$__tts_rc"; printf '__TTS_b6d2cf6bf245454097769a8ceded93ca__PWD:'; pwd; printf '__TTS_b6d2cf6bf245454097769a8ceded93ca__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> from huggingface_hub import hf_hub_download
-[?2004l[?2004h> print(hf_hub_download('open-thoughts/OpenThoughts-114k','README.md',repo_type='dataset'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_972aadcfd51b4f64908c24a7303754fa__RC:%s\n' "$__tts_rc"; printf '__TTS_972aadcfd51b4f64908c24a7303754fa__PWD:'; pwd; printf '__TTS_972aadcfd51b4f64908c24a7303754fa__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m9[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_699f8c3a6ecd42e8ac489f57355426df__RC:%s\n' "$__tts_rc"; printf '__TTS_699f8c3a6ecd42e8ac489f57355426df__PWD:'; pwd; printf '__TTS_699f8c3a6ecd42e8ac489f57355426df__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@fc20c99cf498:/app# cd -- /app && python -c "from pathlib import Path; print(Path('/root/.cache/huggingface/hub/datasets--open-thoughts--OpenThoughts-114k/snapshots').glob('*').__iter__().__next__()/ 'README.md')"; __tts_rc=$?; printf '\n__TTS_69295a56a7e84f28a18350aaee118b5f__RC:%s\n' "$__tts_rc"; printf '__TTS_69295a56a7e84f28a18350aaee118b5f__PWD:'; pwd; printf '__TTS_69295a56a7e84f28a18350aaee118b5f__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    from pathlib import Path; print([31mPath('/root/.cache/huggingface/hub/datasets--open-thoughts--OpenThoughts-114k/snapshots').glob('*').__iter__().__next__[0m[1;31m()[0m/ 'README.md')
-                                    [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^^[0m
-[1;35mStopIteration[0m
-
-__TTS_69295a56a7e84f28a18350aaee118b5f__RC:1
-__TTS_69295a56a7e84f28a18350aaee118b5f__PWD:/app
-__TTS_69295a56a7e84f28a18350aaee118b5f__END
-[?2004hroot@fc20c99cf498:/app# cd -- /app && python -c "from huggingface_hub import hf_hub_download; print(open(hf_hub_download('open-thoughts/OpenThoughts-114k','README.md',repo_type='dataset')).read()[:20000])"; __tts_rc=$?; printf '\n__TTS_3eb8400b82174fdba022980680aad870__RC:%s\n' "$__tts_rc"; printf '__TTS_3eb8400b82174fdba022980680aad870__PWD:'; pwd; printf '__TTS_3eb8400b82174fdba022980680aad870__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    [1;31mfrom huggingface_hub import hf_hub_download[0m; print(open(hf_hub_download('open-thoughts/OpenThoughts-114k','README.md',repo_type='dataset')).read()[:20000])
-    [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'huggingface_hub'[0m
-
-__TTS_3eb8400b82174fdba022980680aad870__RC:1
-__TTS_3eb8400b82174fdba022980680aad870__PWD:/app
-__TTS_3eb8400b82174fdba022980680aad870__END
-[?2004hroot@fc20c99cf498:/app# cd -- /app && python -c "import requests; print(requests.get('https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k/raw/main/README.md',timeout=30).text[:20000])"; __tts_rc=$?; printf '\n__TTS_8741cd475d954820ac460cfbe69a6a3d__RC:%s\n' "$__tts_rc"; printf '__TTS_8741cd475d954820ac460cfbe69a6a3d__PWD:'; pwd; printf '__TTS_8741cd475d954820ac460cfbe69a6a3d__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<module>[0m
-    [1;31mimport requests[0m; print(requests.get('https://huggingface.co/datasets/open-thoughts/OpenThoughts-114k/raw/main/README.md',timeout=30).text[:20000])
-    [1;31m^^^^^^^^^^^^^^^[0m
-[1;35mModuleNotFoundError[0m: [35mNo module named 'requests'[0m
-
-__TTS_8741cd475d954820ac460cfbe69a6a3d__RC:1
-__TTS_8741cd475d954820ac460cfbe69a6a3d__PWD:/app
-__TTS_8741cd475d954820ac460cfbe69a6a3d__END
-[?2004hroot@fc20c99cf498:/app# 

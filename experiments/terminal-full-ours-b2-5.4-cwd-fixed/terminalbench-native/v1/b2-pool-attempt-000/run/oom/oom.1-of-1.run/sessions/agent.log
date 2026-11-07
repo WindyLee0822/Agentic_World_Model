@@ -1,43 +1,0 @@
-[?2004hroot@3d020b4cc09a:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@3d020b4cc09a:/app# clear
-[?2004l[H[J[3J[?2004hroot@3d020b4cc09a:/app# pwd; __tts_rc=$?; printf '\n__TTS_b09539f96a8b48bfa6c91971dbd0c4df__RC:%s\n' "$__tts_rc"; printf '__TTS_b09539f96a8b48bfa6c91971dbd0c4df__PWD:'; pwd; printf '__TTS_b09539f96a8b48bfa6c91971dbd0c4df__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_b09539f96a8b48bfa6c91971dbd0c4df__RC:0
-__TTS_b09539f96a8b48bfa6c91971dbd0c4df__PWD:/app
-__TTS_b09539f96a8b48bfa6c91971dbd0c4df__END
-[?2004hroot@3d020b4cc09a:/app# cd -- /app && python -c "from transformers import AutoTokenizer, AutoModel; m='albert/albert-base-v2'; AutoTokenizer.from_pretrained(m, cache_dir='/app/hf-cache'); AutoModel.from_pretrained(m, cache_dir='/app/hf-cache'); print('cached', m, 'in /app/hf-cache')"; __tts_rc=$?; printf '\n__TTS_2584a832759943f49824c4d22be3e780__RC:%s\n' "$__tts_rc"; printf '__TTS_2584a832759943f49824c4d22be3e780__PWD:'; pwd; printf '__TTS_2584a832759943f49824c4d22be3e780__END\n'; tmux wait -S done
-[?2004lconfig.json:   0%|                                                                                                                   | 0.00/684 [00:00<?, ?B/s]config.json: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 684/684 [00:00<00:00, 4.29MB/s]
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-tokenizer_config.json:   0%|                                                                                                        | 0.00/25.0 [00:00<?, ?B/s]tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 25.0/25.0 [00:00<00:00, 186kB/s]
-spiece.model:   0%|                                                                                                                 | 0.00/760k [00:00<?, ?B/s]spiece.model: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 760k/760k [00:00<00:00, 53.5MB/s]
-tokenizer.json:   0%|                                                                                                              | 0.00/1.31M [00:00<?, ?B/s]tokenizer.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 1.31M/1.31M [00:00<00:00, 135MB/s]
-
-model.safetensors: reconstructing file:   0%|                                                                                     |  0.00B / 47.4MB            [Amodel.safetensors: downloading bytes:                                                                                                      |  0.00B            model.safetensors: downloading bytes:                                                                                                      | 16.4kB            model.safetensors: downloading bytes: ▎                                                                                                    |  172kB, 1.61kB/s  model.safetensors: downloading bytes: █▏                                                                                                   |  565kB, 16.9kB/s  model.safetensors: downloading bytes: ███▍                                                                                                 | 1.61MB, 55.2kB/s  model.safetensors: downloading bytes: █████████▍                                                                                           | 4.42MB,  157kB/s  model.safetensors: downloading bytes: █████████████████████████▍                                                                           | 11.9MB,  428kB/s  model.safetensors: downloading bytes: ████████████████████████████████████████████████████▍                                                | 24.6MB, 1.15MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████▎                       | 36.2MB, 2.37MB/s  
-model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████| 47.4MB / 47.4MB            [Amodel.safetensors: downloading bytes: ███████████████████████████████████████████████████████████████████████████████████████████████▌     | 44.8MB, 3.47MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.8MB, 4.26MB/s  model.safetensors: downloading bytes: █████████████████████████████████████████████████████████████████████████████████████████████████████| 44.8MB, 4.26MB/s  
-model.safetensors: reconstructing file: 100%|█████████████████████████████████████████████████████████████████████████████████████| 47.4MB / 47.4MB, 4.56MB/s  
-Loading weights:   0%|                                                                                                                  | 0/25 [00:00<?, ?it/s]Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 8082.76it/s]
-[transformers] [1mAlbertModel LOAD REPORT[0m from: albert/albert-base-v2
-Key                          | Status     |  | 
------------------------------+------------+--+-
-predictions.LayerNorm.weight | [38;5;208mUNEXPECTED[0m |  | 
-predictions.LayerNorm.bias   | [38;5;208mUNEXPECTED[0m |  | 
-predictions.dense.weight     | [38;5;208mUNEXPECTED[0m |  | 
-predictions.bias             | [38;5;208mUNEXPECTED[0m |  | 
-predictions.decoder.bias     | [38;5;208mUNEXPECTED[0m |  | 
-predictions.dense.bias       | [38;5;208mUNEXPECTED[0m |  | 
-
-Notes:
-- [38;5;208mUNEXPECTED:[0m	[3mcan be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
-cached albert/albert-base-v2 in /app/hf-cache
-
-__TTS_2584a832759943f49824c4d22be3e780__RC:0
-__TTS_2584a832759943f49824c4d22be3e780__PWD:/app
-__TTS_2584a832759943f49824c4d22be3e780__END
-[?2004hroot@3d020b4cc09a:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@3d020b4cc09a:/app# 

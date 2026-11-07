@@ -1,75 +1,0 @@
-[?2004hroot@65a8c2d54c90:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@65a8c2d54c90:/app# clear
-[?2004l[H[J[3J[?2004hroot@65a8c2d54c90:/app# pwd; __tts_rc=$?; printf '\n__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__RC:%s\n' "$__tts_rc"; printf '__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__PWD:'; pwd; printf '__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__RC:0
-__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__PWD:/app
-__TTS_37bdd97ae71f4e11ad0cc33d46298d8c__END
-[?2004hroot@65a8c2d54c90:/app# cd -- /app && ls -la /app && ls -la /app/john/run | head; __tts_rc=$?; printf '\n__TTS_38888ddbbfb84f919f30f3b57795efc4__RC:%s\n' "$__tts_rc"; printf '__TTS_38888ddbbfb84f919f30f3b57795efc4__PWD:'; pwd; printf '__TTS_38888ddbbfb84f919f30f3b57795efc4__END\n'; tmux wait -S done
-[?2004ltotal 20
-drwxr-xr-x 1 root root 4096 Jul 16 19:53 [0m[01;34m.[0m
-drwxr-xr-x 1 root root 4096 Jul 18 19:14 [01;34m..[0m
-drwxr-xr-x 1 root root 4096 Jul 16 21:18 [01;34mjohn[0m
--rwxr-xr-x 1 root root  215 Jul 16 19:53 [01;32msecrets.7z[0m
-total 82716
-drwxr-xr-x 1 root root     4096 Jul 16 21:22 .
-drwxr-xr-x 1 root root     4096 Jul 16 21:18 ..
--rwxr-xr-x 1 root root    11545 Jul 16 21:18 1password2john.py
--rwxr-xr-x 1 root root    97726 Jul 16 21:18 7z2john.pl
--rwxr-xr-x 1 root root    26197 Jul 16 21:18 DPAPImk2john.py
--rwxr-xr-x 1 root root     3800 Jul 16 21:18 adxcsouf2john.py
--rwxr-xr-x 1 root root     2729 Jul 16 21:18 aem2john.py
--rwxr-xr-x 1 root root      894 Jul 16 21:18 aix2john.pl
--rwxr-xr-x 1 root root     1958 Jul 16 21:18 aix2john.py
-
-__TTS_38888ddbbfb84f919f30f3b57795efc4__RC:0
-__TTS_38888ddbbfb84f919f30f3b57795efc4__PWD:/app
-__TTS_38888ddbbfb84f919f30f3b57795efc4__END
-[?2004hroot@65a8c2d54c90:/app# cd -- /app && cd /app && /app/john/run/7z2john.pl secrets.7z > hash.txt && /app/john/run/john --wordlist=<(printf '%04d
-[?2004l[?2004h> ' {0..9999}) hash.txt; __tts_rc=$?; printf '\n__TTS_bb3bb96a884b40a9a7a30a109a52c741__RC:%s\n' "$__tts_rc"; printf '__TTS_bb3bb96a884b40a9a7a30a109a52c741__PWD:'; pwd; printf '__TTS_bb3bb96a884b40a9a7a30a109a52c741__END\n'; tmux wait -S done
-[?2004lCan't locate Compress/Raw/Lzma.pm in @INC (you may need to install the Compress::Raw::Lzma module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /app/john/run/7z2john.pl line 6.
-BEGIN failed--compilation aborted at /app/john/run/7z2john.pl line 6.
-
-__TTS_bb3bb96a884b40a9a7a30a109a52c741__RC:2
-__TTS_bb3bb96a884b40a9a7a30a109a52c741__PWD:/app
-__TTS_bb3bb96a884b40a9a7a30a109a52c741__END
-[?2004hroot@65a8c2d54c90:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import py7zr
-[?2004l[?2004h> for i in range(10000):
-[?2004l[?2004h>  p=f'{i:04d}'
-[?2004l[?2004h>  try:
-[?2004l[?2004h>   with py7zr.SevenZipFile('secrets.7z',mode='r',password=p) as z:
-[?2004l[?2004h>    data=z.read(['secrete_file.txt'])['secrete_file.txt'].read().decode().strip()
-[?2004l[?2004h>   open('/app/solution.txt','w').write(data)
-[?2004l[?2004h>   print(p)
-[?2004l[?2004h>   break
-[?2004l[?2004h>  except Exception:
-[?2004l[?2004h>   pass
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_35678a4fecc04556a0995d1d04dcf8a3__RC:%s\n' "$__tts_rc"; printf '__TTS_35678a4fecc04556a0995d1d04dcf8a3__PWD:'; pwd; printf '__TTS_35678a4fecc04556a0995d1d04dcf8a3__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && 7z l -slt -p0000 secrets.7z | head -40; __tts_rc=$?; printf '\n__TTS_55cef22c58d649028389ccea8e3fdb3e__RC:%s\n' "$__tts_rc"; printf '__TTS_55cef22c58d649028389ccea8e3fdb3e__PWD:'; pwd; printf '__TTS_55cef22c58d649028389ccea8e3fdb3e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && ls /app/john/run | grep -E '7z|john$|zip2john|7zr|7za' | sort; __tts_rc=$?; printf '\n__TTS_3db4763d242645f6920b54764b5f134d__RC:%s\n' "$__tts_rc"; printf '__TTS_3db4763d242645f6920b54764b5f134d__PWD:'; pwd; printf '__TTS_3db4763d242645f6920b54764b5f134d__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 13
-    cd -- /app && cd /app && 7z l -slt -p0000 secrets.7z | head -40; __tts_rc=$?; printf '\n__TTS_55cef22c58d649028389ccea8e3fdb3e__RC:%s\n' "$__tts_rc"; printf '__TTS_55cef22c58d649028389ccea8e3fdb3e__PWD:'; pwd; printf '__TTS_55cef22c58d649028389ccea8e3fdb3e__END\n'; tmux wait -S done
-                             ^
-SyntaxError: invalid decimal literal
-[?2004hroot@65a8c2d54c90:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_3db4763d242645f6920b54764b5f134d__END\n'"'"'; tmux wait -S done' && cd /app && python3 -c "import struct,binascii,sys;d=open('secrets.7z','rb').read();assert d[:6]==b'7z\xbc\xaf\x27\x1c';vmaj,vmin=d[6],d[7];start_crc,next_off,next_size,next_crc=struct.unpack('<QQQI',d[12:40]);n=32+next_off;hdr=d[n:n+next_size];print('ver',vmaj,vmin,'next',next_size);print(binascii.hexlify(hdr).decode())"; __tts_rc=$?; printf '\n__TTS_cdc2a16af637408c9a2b38b29bee5f88__RC:%s\n' "$__tts_rc"; printf '__TTS_cdc2a16af637408c9a2b38b29bee5f88__PWD:'; pwd; printf '__TTS_cdc2a16af637408c9a2b38b29bee5f88__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_3db4763d242645f6920b54764b5f134d__END\n'; tmux wait -S done: No such file or directory
-
-__TTS_cdc2a16af637408c9a2b38b29bee5f88__RC:1
-__TTS_cdc2a16af637408c9a2b38b29bee5f88__PWD:/app
-__TTS_cdc2a16af637408c9a2b38b29bee5f88__END
-[?2004hroot@65a8c2d54c90:/app# cd -- /app && cd /app && python3 -c "import py7zr,os,itertools;pw=next((p for p in map('{:04d}'.format,range(10000)) if (lambda q: (lambda z: [z.getnames(),z.testzip()])[0])(py7zr.SevenZipFile('secrets.7z','r',password=p)) is not None),None)"; __tts_rc=$?; printf '\n__TTS_c0217aecde63472fad51b2ed076a8100__RC:%s\n' "$__tts_rc"; printf '__TTS_c0217aecde63472fad51b2ed076a8100__PWD:'; pwd; printf '__TTS_c0217aecde63472fad51b2ed076a8100__END\n'; tmux wait -S done
-[?2004l<string>:1: SyntaxWarning: 'function' object is not subscriptable; perhaps you missed a comma?
-Traceback (most recent call last):
-  File "<string>", line 1, in <module>
-ModuleNotFoundError: No module named 'py7zr'
-
-__TTS_c0217aecde63472fad51b2ed076a8100__RC:1
-__TTS_c0217aecde63472fad51b2ed076a8100__PWD:/app
-__TTS_c0217aecde63472fad51b2ed076a8100__END
-[?2004hroot@65a8c2d54c90:/app# 

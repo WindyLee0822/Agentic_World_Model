@@ -1,36 +1,0 @@
-[?2004hroot@fb188ad4ab19:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@fb188ad4ab19:/app# clear
-[?2004l[H[J[3J[?2004hroot@fb188ad4ab19:/app# pwd; __tts_rc=$?; printf '\n__TTS_951208087f714de7bbd05b384d61051a__RC:%s\n' "$__tts_rc"; printf '__TTS_951208087f714de7bbd05b384d61051a__PWD:'; pwd; printf '__TTS_951208087f714de7bbd05b384d61051a__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_951208087f714de7bbd05b384d61051a__RC:0
-__TTS_951208087f714de7bbd05b384d61051a__PWD:/app
-__TTS_951208087f714de7bbd05b384d61051a__END
-[?2004hroot@fb188ad4ab19:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_00a7acdb310e4e2095d0948db93462ee__RC:%s\n' "$__tts_rc"; printf '__TTS_00a7acdb310e4e2095d0948db93462ee__PWD:'; pwd; printf '__TTS_00a7acdb310e4e2095d0948db93462ee__END\n'; tmux wait -S done
-[?2004l/app/graphene.dat
-
-__TTS_00a7acdb310e4e2095d0948db93462ee__RC:0
-__TTS_00a7acdb310e4e2095d0948db93462ee__PWD:/app
-__TTS_00a7acdb310e4e2095d0948db93462ee__END
-[?2004hroot@fb188ad4ab19:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import numpy as np, json
-[?2004l[?2004h> x,y=np.loadtxt('/app/graphene.dat',unpack=True)
-[?2004l[?2004h> print(json.dumps({'n':len(x),'xmin':float(x.min()),'xmax':float(x.max()),'ymin':float(y.min()),'ymax':float(y.max()),'argmax_x':float(x[y.argmax()])}))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_69308b33160d4efd9dd56faa4b7117e7__RC:%s\n' "$__tts_rc"; printf '__TTS_69308b33160d4efd9dd56faa4b7117e7__PWD:'; pwd; printf '__TTS_69308b33160d4efd9dd56faa4b7117e7__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import numpy as np, json; x,y=np.loadtxt('/app/graphene.dat',unpack=True); print(json.dumps({'n':len(x),'xmin':float(x.min()),'xmax':float(x.max()),'ymin':float(y.min()),'ymax':float(y.max()),'argmax_x':float(x[y.argmax()])}))"; __tts_rc=$?; printf '\n__TTS_ecd80c635f9940889c383e5f0abe6ede__RC:%s\n' "$__tts_rc"; printf '__TTS_ecd80c635f9940889c383e5f0abe6ede__PWD:'; pwd; printf '__TTS_ecd80c635f9940889c383e5f0abe6ede__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import itertools; f=open('/app/graphene.dat'); print(''.join(itertools.islice(f,5)))"; __tts_rc=$?; printf '\n__TTS_d5ca23e05fea44efbc9a47c41b5869d3__RC:%s\n' "$__tts_rc"; printf '__TTS_d5ca23e05fea44efbc9a47c41b5869d3__PWD:'; pwd; printf '__TTS_d5ca23e05fea44efbc9a47c41b5869d3__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m4[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_69308b33160d4efd9dd56faa4b7117e7__RC:%s\n' "$__tts_rc"; printf '__TTS_69308b33160d4efd9dd56faa4b7117e7__PWD:'; pwd; printf '__TTS_69308b33160d4efd9dd56faa4b7117e7__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@fb188ad4ab19:/app# cd -- ''"'"'; pwd; printf '"'"'' && python3 -c "import os; print(os.path.getsize('/app/graphene.dat'))"; __tts_rc=$?; printf '\n__TTS_cc22f60efff14d3ead250e388ac062af__RC:%s\n' "$__tts_rc"; printf '__TTS_cc22f60efff14d3ead250e388ac062af__PWD:'; pwd; printf '__TTS_cc22f60efff14d3ead250e388ac062af__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_cc22f60efff14d3ead250e388ac062af__RC:1
-__TTS_cc22f60efff14d3ead250e388ac062af__PWD:/app
-__TTS_cc22f60efff14d3ead250e388ac062af__END
-[?2004hroot@fb188ad4ab19:/app# 

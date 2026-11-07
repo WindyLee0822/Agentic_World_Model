@@ -1,4 +1,0 @@
-{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "todoist"}}
-{"method": "get", "url": "/supervisor/account_passwords", "data": {}}
-{"method": "post", "url": "/todoist/auth/token", "data": {"username": "paul_mill@gmail.com", "password": "bvzNTM3"}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "todoist", "api_name": "show_tasks"}}

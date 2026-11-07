@@ -1,81 +1,0 @@
-[?2004hroot@78799024f594:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@78799024f594:/app# clear
-[?2004l[H[J[3J[?2004hroot@78799024f594:/app# pwd; __tts_rc=$?; printf '\n__TTS_33aa123b99644c52b39f0cd3fe9131f6__RC:%s\n' "$__tts_rc"; printf '__TTS_33aa123b99644c52b39f0cd3fe9131f6__PWD:'; pwd; printf '__TTS_33aa123b99644c52b39f0cd3fe9131f6__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_33aa123b99644c52b39f0cd3fe9131f6__RC:0
-__TTS_33aa123b99644c52b39f0cd3fe9131f6__PWD:/app
-__TTS_33aa123b99644c52b39f0cd3fe9131f6__END
-[?2004hroot@78799024f594:/app# cd -- /app && sqlite3 trunc.db ".recover" | head -n 80; __tts_rc=$?; printf '\n__TTS_863e226326b341f4b7e28ebe5a894a16__RC:%s\n' "$__tts_rc"; printf '__TTS_863e226326b341f4b7e28ebe5a894a16__PWD:'; pwd; printf '__TTS_863e226326b341f4b7e28ebe5a894a16__END\n'; tmux wait -S done
-[?2004lbash: sqlite3: command not found
-
-__TTS_863e226326b341f4b7e28ebe5a894a16__RC:0
-__TTS_863e226326b341f4b7e28ebe5a894a16__PWD:/app
-__TTS_863e226326b341f4b7e28ebe5a894a16__END
-[?2004hroot@78799024f594:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import sqlite3, json, os, re, struct
-[?2004l[?2004h> path='trunc.db'
-[?2004l[?2004h> out='recover.json'
-[?2004l[?2004h> rows=[]
-[?2004l[?2004h> seen=set()
-[?2004l[?2004h> # Try normal sqlite access first
-[?2004l[?2004h> try:
-[?2004l[?2004h>     con=sqlite3.connect(f'file:{path}?mode=ro', uri=True)
-[?2004l[?2004h>     cur=con.cursor()
-[?2004l[?2004h>     tables=[r[0] for r in cur.execute("select name from sqlite_master where type='table'")]
-[?2004l[?2004h>     for t in tables:
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             cols=[c[1] for c in cur.execute(f'pragma table_info({t})')]
-[?2004l[?2004h>             if 'word' in cols and 'value' in cols:
-[?2004l[?2004h>                 for w,v in cur.execute(f'select word,value from {t}'):
-[?2004l[?2004h>                     if isinstance(w,str) and isinstance(v,int) and (w,v) not in seen:
-[?2004l[?2004h>                         seen.add((w,v)); rows.append({'word':w,'value':v})
-[?2004l[?2004h>         except: pass
-[?2004l[?2004h>     con.close()
-[?2004l[?2004h> except: pass
-[?2004l[?2004h> # Carve likely rows from file bytes
-[?2004l[?2004h> b=open(path,'rb').read()
-[?2004l[?2004h> pat=re.compile(rb'testword[0-9A-Za-z]+')
-[?2004l[?2004h> for m in pat.finditer(b):
-[?2004l[?2004h>     w=m.group().decode('ascii','ignore')
-[?2004l[?2004h>     s=max(0,m.start()-24); e=min(len(b),m.end()+24); chunk=b[s:e]
-[?2004l[?2004h>     vals=[]
-[?2004l[?2004h>     for i in range(len(chunk)-8):
-[?2004l[?2004h>         x=struct.unpack('>q',chunk[i:i+8])[0]
-[?2004l[?2004h>         if 0<=x<=10**12: vals.append(x)
-[?2004l[?2004h>     for i in range(len(chunk)-4):
-[?2004l[?2004h>         x=struct.unpack('>i',chunk[i:i+4])[0]
-[?2004l[?2004h>         if 0<=x<=10**9: vals.append(x)
-[?2004l[?2004h>     if vals:
-[?2004l[?2004h>         # prefer small nearby nonzero values
-[?2004l[?2004h>         vals_sorted=sorted(vals, key=lambda x:(x==0, abs(x), x))
-[?2004l[?2004h>         v=vals_sorted[0]
-[?2004l[?2004h>         if (w,v) not in seen:
-[?2004l[?2004h>             seen.add((w,v)); rows.append({'word':w,'value':int(v)})
-[?2004l[?2004h> rows.sort(key=lambda r:r['word'])
-[?2004l[?2004h> json.dump(rows, open(out,'w'), separators=(',',':'))
-[?2004l[?2004h> print(len(rows))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_e4fd4057cdbd40369ce665585855bc89__RC:%s\n' "$__tts_rc"; printf '__TTS_e4fd4057cdbd40369ce665585855bc89__PWD:'; pwd; printf '__TTS_e4fd4057cdbd40369ce665585855bc89__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import mmap,re,json,os; b=open('trunc.db','rb').read(); rows=[{'word':m.group().decode(),'value':0} for m in re.finditer(rb'testword[0-9A-Za-z]+', b)]; d={r['word']:r for r in rows}; json.dump(sorted(d.values(), key=lambda x:x['word']), open('recover.json','w')); print(len(d), os.path.getsize('recover.json'))"; __tts_rc=$?; printf '\n__TTS_ebd7843016f64bdc8b3a00cc536b73a0__RC:%s\n' "$__tts_rc"; printf '__TTS_ebd7843016f64bdc8b3a00cc536b73a0__PWD:'; pwd; printf '__TTS_ebd7843016f64bdc8b3a00cc536b73a0__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import os;print(os.path.getsize('trunc.db'))"; __tts_rc=$?; printf '\n__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__RC:%s\n' "$__tts_rc"; printf '__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__PWD:'; pwd; printf '__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 43
-    PY; __tts_rc=$?; printf '\n__TTS_e4fd4057cdbd40369ce665585855bc89__RC:%s\n' "$__tts_rc"; printf '__TTS_e4fd4057cdbd40369ce665585855bc89__PWD:'; pwd; printf '__TTS_e4fd4057cdbd40369ce665585855bc89__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@78799024f594:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__END\n'"'"'; tmux wait -S done' && python3 -c "import os;print(os.path.getsize('/app/trunc.db'))"; __tts_rc=$?; printf '\n__TTS_81d6d73ce80a49eb970c7e638e53605f__RC:%s\n' "$__tts_rc"; printf '__TTS_81d6d73ce80a49eb970c7e638e53605f__PWD:'; pwd; printf '__TTS_81d6d73ce80a49eb970c7e638e53605f__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_e2b5c804a4384a4c8ae05f85d8fdd8c4__END\n'; tmux wait -S done: No such file or directory
-
-__TTS_81d6d73ce80a49eb970c7e638e53605f__RC:1
-__TTS_81d6d73ce80a49eb970c7e638e53605f__PWD:/app
-__TTS_81d6d73ce80a49eb970c7e638e53605f__END
-[?2004hroot@78799024f594:/app# cd -- /app && python3 -c "import os; print(os.path.getsize('trunc.db'))"; __tts_rc=$?; printf '\n__TTS_a5b3678d3c42436b819a87d5ca639be5__RC:%s\n' "$__tts_rc"; printf '__TTS_a5b3678d3c42436b819a87d5ca639be5__PWD:'; pwd; printf '__TTS_a5b3678d3c42436b819a87d5ca639be5__END\n'; tmux wait -S done
-[?2004l4096
-
-__TTS_a5b3678d3c42436b819a87d5ca639be5__RC:0
-__TTS_a5b3678d3c42436b819a87d5ca639be5__PWD:/app
-__TTS_a5b3678d3c42436b819a87d5ca639be5__END
-[?2004hroot@78799024f594:/app# 

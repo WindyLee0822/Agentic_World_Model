@@ -1,8 +1,0 @@
-{
-  "superseded_job": "dw-appworld-ours-strict-r17-full-20260907",
-  "superseded_observed_status": "Canceled",
-  "replacement_job": "dw-appworld-ours-strict-r18-full-20260907",
-  "replacement_observed_status": "Running",
-  "reason": "Reachable native setup stdout with show=True; R18 suppresses native output and prints generated result only",
-  "r17_results_not_combined": true
-}

@@ -1,4 +1,0 @@
-decisions,env,imputed_failures,mean_cache_hits,mean_cost,mean_max_depth,mean_reads,mean_rollout_errors,mean_spawns,mean_tokens,mean_wall_clock_s,method,n_rollouts,prediction_accuracy,recorded_decisions,reward,simulator_writes,single_commit_rate,subset,success_rate
-6,officebench,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,402.9218190248357,ours,1,1.0,6,0.3333333333333333,0,1.0,2app,0.3333333333333333
-6,officebench,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,524.345556111463,ours,2,0.8333333333333334,6,0.5,0,1.0,2app,0.5
-6,officebench,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,361.5151026910559,ours,4,0.8333333333333334,6,0.8333333333333334,0,1.0,2app,0.8333333333333334

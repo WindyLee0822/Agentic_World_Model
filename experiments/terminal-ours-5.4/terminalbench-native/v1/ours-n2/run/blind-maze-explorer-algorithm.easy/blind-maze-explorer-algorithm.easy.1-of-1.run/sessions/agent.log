@@ -1,31 +1,0 @@
-[?2004hroot@abdd21c38177:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@abdd21c38177:/app# clear
-[?2004l[H[J[3J[?2004hroot@abdd21c38177:/app# pwd; __tts_rc=$?; printf '\n__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__RC:%s\n' "$__tts_rc"; printf '__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__PWD:'; pwd; printf '__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__RC:0
-__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__PWD:/app
-__TTS_882e42c751eb41cc8c82c9fa4e6b7c92__END
-[?2004hroot@abdd21c38177:/app# cd -- /app && find /app -maxdepth 2 -type f | sort; __tts_rc=$?; printf '\n__TTS_9b640f0b18f64449be3bdb502c67f61e__RC:%s\n' "$__tts_rc"; printf '__TTS_9b640f0b18f64449be3bdb502c67f61e__PWD:'; pwd; printf '__TTS_9b640f0b18f64449be3bdb502c67f61e__END\n'; tmux wait -S done
-[?2004l/app/maze_1.txt
-/app/maze_game.sh
-/app/tests/run-uv-pytest.sh
-/app/tests/setup-uv-pytest.sh
-/app/tests/test_outputs.py
-
-__TTS_9b640f0b18f64449be3bdb502c67f61e__RC:0
-__TTS_9b640f0b18f64449be3bdb502c67f61e__PWD:/app
-__TTS_9b640f0b18f64449be3bdb502c67f61e__END
-[?2004hroot@abdd21c38177:/app# cd -- ''"'"'; pwd; printf '"'"'' && sed -n '1,240p' -- /app/maze_1.txt; __tts_rc=$?; printf '\n__TTS_459d72cab64b4457919dda87e12666c5__RC:%s\n' "$__tts_rc"; printf '__TTS_459d72cab64b4457919dda87e12666c5__PWD:'; pwd; printf '__TTS_459d72cab64b4457919dda87e12666c5__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_459d72cab64b4457919dda87e12666c5__RC:1
-__TTS_459d72cab64b4457919dda87e12666c5__PWD:/app
-__TTS_459d72cab64b4457919dda87e12666c5__END
-[?2004hroot@abdd21c38177:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@abdd21c38177:/app# 

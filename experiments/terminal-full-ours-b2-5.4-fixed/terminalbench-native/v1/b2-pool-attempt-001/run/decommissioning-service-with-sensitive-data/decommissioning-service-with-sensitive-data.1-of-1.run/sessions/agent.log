@@ -1,32 +1,0 @@
-[?2004hroot@9f8f196979d4:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@9f8f196979d4:/app# clear
-[?2004l[H[J[3J[?2004hroot@9f8f196979d4:/app# pwd; __tts_rc=$?; printf '\n__TTS_f03de2bfb015407da615c5440e2ee448__RC:%s\n' "$__tts_rc"; printf '__TTS_f03de2bfb015407da615c5440e2ee448__PWD:'; pwd; printf '__TTS_f03de2bfb015407da615c5440e2ee448__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_f03de2bfb015407da615c5440e2ee448__RC:0
-__TTS_f03de2bfb015407da615c5440e2ee448__PWD:/app
-__TTS_f03de2bfb015407da615c5440e2ee448__END
-[?2004hroot@9f8f196979d4:/app# cd -- /app && tar -czf /app/sensitive_files.tar.gz -C /opt sensitive_service_data; __tts_rc=$?; printf '\n__TTS_1d1e0f91f2f34e41a756b2c17823b90d__RC:%s\n' "$__tts_rc"; printf '__TTS_1d1e0f91f2f34e41a756b2c17823b90d__PWD:'; pwd; printf '__TTS_1d1e0f91f2f34e41a756b2c17823b90d__END\n'; tmux wait -S done
-[?2004l
-__TTS_1d1e0f91f2f34e41a756b2c17823b90d__RC:0
-__TTS_1d1e0f91f2f34e41a756b2c17823b90d__PWD:/app
-__TTS_1d1e0f91f2f34e41a756b2c17823b90d__END
-[?2004hroot@9f8f196979d4:/app# cd -- /app && gpg --batch --yes --pinentry-mode loopback --passphrase 't-bench-passphrase' --symmetric --cipher-algo AES256 -o /app/service_archive.gpg /app/sensitive_files.tar.gz; __tts_rc=$?; printf '\n__TTS_0a0c6915b16843adbd46e6df76791b3f__RC:%s\n' "$__tts_rc"; printf '__TTS_0a0c6915b16843adbd46e6df76791b3f__PWD:'; pwd; printf '__TTS_0a0c6915b16843adbd46e6df76791b3f__END\n'; tmux wait -S done
-[?2004lgpg: directory '/root/.gnupg' created
-gpg: keybox '/root/.gnupg/pubring.kbx' created
-
-__TTS_0a0c6915b16843adbd46e6df76791b3f__RC:0
-__TTS_0a0c6915b16843adbd46e6df76791b3f__PWD:/app
-__TTS_0a0c6915b16843adbd46e6df76791b3f__END
-[?2004hroot@9f8f196979d4:/app# cd -- /app && find /opt/sensitive_service_data -type f -exec shred -u -n 3 {} + && find /opt/sensitive_service_data -depth -type d -empty -delete && rm -f /etc/service_config.ini /tmp/service.pid /app/sensitive_files.tar.gz; __tts_rc=$?; printf '\n__TTS_9188bddccf124fd1b0a3728d011c4428__RC:%s\n' "$__tts_rc"; printf '__TTS_9188bddccf124fd1b0a3728d011c4428__PWD:'; pwd; printf '__TTS_9188bddccf124fd1b0a3728d011c4428__END\n'; tmux wait -S done
-[?2004l
-__TTS_9188bddccf124fd1b0a3728d011c4428__RC:0
-__TTS_9188bddccf124fd1b0a3728d011c4428__PWD:/app
-__TTS_9188bddccf124fd1b0a3728d011c4428__END
-[?2004hroot@9f8f196979d4:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@9f8f196979d4:/app# 

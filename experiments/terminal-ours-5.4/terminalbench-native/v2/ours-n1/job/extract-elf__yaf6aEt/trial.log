@@ -1,5 +1,0 @@
-Trial extract-elf__yaf6aEt failed: Docker compose command failed for environment extract-elf. Command: docker compose --project-name extract-elf__yaf6aet__env --project-directory /home/t-wendili/.cache/harbor/tasks/3HV9wmSrWRW9TuYurepoFx/extract-elf/environment -f /tmp/tmp0ox43mhp/extract-elf__yaf6aEt__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpmvxmojfv/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network extract-elf__yaf6aet__env_default Creating 
- Network extract-elf__yaf6aet__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network extract-elf__yaf6aet__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

@@ -1,5 +1,0 @@
-Trial git-multibranch__itbsSdy failed: Docker compose command failed for environment git-multibranch. Command: docker compose --project-name git-multibranch__itbssdy__env --project-directory /home/t-wendili/.cache/harbor/tasks/kLfrAkLDVW7LCezLUHt4oB/git-multibranch/environment -f /tmp/tmpy1ubd57z/git-multibranch__itbsSdy__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpur424krj/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network git-multibranch__itbssdy__env_default Creating 
- Network git-multibranch__itbssdy__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network git-multibranch__itbssdy__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

@@ -1,8 +1,0 @@
-{
-  "checked_at": "2026-09-13T03:06:12.519944+00:00",
-  "source": "bounded 30-second AzureML jobs.stream capture; timeout stops observer only",
-  "benchmark_command": "Running: python experiments/run.py --env appworld --methods ours --N 16 --agent llm_wm --appworld-wm-tool-mode python --workers 16 --max-steps 40 --rollout-retries 2 --cell-retries 2 --temperature 1 --aggregation-max-tokens 2048 --aggregation-strategy flat --aggregation-group-size 4 --out /mnt/azureml/cr/j/5dd61cfac2454c6d94dee81e9a526da9/cap/data-capability/wd/output_dir --splits test_normal,test_challenge --levels 1,2,3 --strict-coverage --max-tasks-per-child 1 --predict-all-actions",
-  "full585_progress_present": true,
-  "traceback_headers": 0,
-  "limits": "Partial live log; does not prove candidate completion or model-response correctness."
-}

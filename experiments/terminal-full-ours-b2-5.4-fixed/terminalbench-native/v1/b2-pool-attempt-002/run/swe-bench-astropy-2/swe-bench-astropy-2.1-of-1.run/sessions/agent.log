@@ -1,121 +1,0 @@
-[?2004hroot@f696c00df930:/app/astropy# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@f696c00df930:/app/astropy# clear
-[?2004l[H[J[3J[?2004hroot@f696c00df930:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_37cad0d77fa041638712e78b701cc349__RC:%s\n' "$__tts_rc"; printf '__TTS_37cad0d77fa041638712e78b701cc349__PWD:'; pwd; printf '__TTS_37cad0d77fa041638712e78b701cc349__END\n'; tmux wait -S done
-[?2004l/app/astropy
-
-__TTS_37cad0d77fa041638712e78b701cc349__RC:0
-__TTS_37cad0d77fa041638712e78b701cc349__PWD:/app/astropy
-__TTS_37cad0d77fa041638712e78b701cc349__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- /app/astropy && grep -Rni "Unrecognized QDP line\|READ SERR\|ascii.qdp\|class QDP" astropy/io/ascii; __tts_rc=$?; printf '\n__TTS_49302f9c28a84638b90c7e301a8150c3__RC:%s\n' "$__tts_rc"; printf '__TTS_49302f9c28a84638b90c7e301a8150c3__PWD:'; pwd; printf '__TTS_49302f9c28a84638b90c7e301a8150c3__END\n'; tmux wait -S done
-[?2004lastropy/io/ascii/tests/test_qdp.py:5:from astropy.io.ascii.qdp import _get_lines_from_file, _read_table_qdp, _write_table_qdp
-astropy/io/ascii/tests/test_qdp.py:15:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:51:    READ SERR 2
-astropy/io/ascii/tests/test_qdp.py:117:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:130:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:147:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:161:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"]
-astropy/io/ascii/tests/test_qdp.py:175:        READ SERR 3
-astropy/io/ascii/tests/test_qdp.py:189:        example_qdp, format="ascii.qdp", table_id=1, names=["a", "b", "c", "d"], sep=","
-astropy/io/ascii/tests/test_qdp.py:208:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:210:        t2 = Table.read(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:231:    t1.write(test_file, format="ascii.qdp")
-astropy/io/ascii/tests/test_qdp.py:232:    t2 = Table.read(test_file, table_id=0, format="ascii.qdp", names=["a"])
-astropy/io/ascii/qdp.py:35:    >>> _line_type("READ SERR 3")
-astropy/io/ascii/qdp.py:56:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:60:    ValueError: Unrecognized QDP line...
-astropy/io/ascii/qdp.py:78:        raise ValueError(f"Unrecognized QDP line: {line}")
-astropy/io/ascii/qdp.py:150:    """Give list of column names from the READ SERR and TERR commands.
-astropy/io/ascii/qdp.py:460:        print(f"READ SERR {col_string}", file=fobj)
-astropy/io/ascii/qdp.py:494:class QDPSplitter(core.DefaultSplitter):
-astropy/io/ascii/qdp.py:502:class QDPHeader(basic.CommentedHeaderHeader):
-astropy/io/ascii/qdp.py:512:class QDPData(basic.BasicData):
-astropy/io/ascii/qdp.py:523:class QDP(basic.Basic):
-astropy/io/ascii/qdp.py:531:        READ SERR 3
-astropy/io/ascii/qdp.py:551:        READ SERR 3
-astropy/io/ascii/qdp.py:572:    a symmetric error (just like the ``READ SERR`` and ``READ TERR`` commands
-astropy/io/ascii/qdp.py:597:        t = Table.read(example_qdp, format='ascii.qdp', table_id=1, names=['a', 'b', 'c', 'd'])
-astropy/io/ascii/qdp.py:601:    Because the ``READ SERR`` and ``READ TERR`` commands say that there are
-
-__TTS_49302f9c28a84638b90c7e301a8150c3__RC:0
-__TTS_49302f9c28a84638b90c7e301a8150c3__PWD:/app/astropy
-__TTS_49302f9c28a84638b90c7e301a8150c3__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- __TTS_49302f9c28a84638b90c7e301a8150c3__PWD:/app/astropy && cd /app/astropy && sed -n '1,220p' astropy/io/ascii/qdp.py; __tts_rc=$?; printf '\n__TTS_f028c664c1e94ca99b23d5fddd453f86__RC:%s\n' "$__tts_rc"; printf '__TTS_f028c664c1e94ca99b23d5fddd453f86__PWD:'; pwd; printf '__TTS_f028c664c1e94ca99b23d5fddd453f86__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_49302f9c28a84638b90c7e301a8150c3__PWD:/app/astropy: No such file or directory
-
-__TTS_f028c664c1e94ca99b23d5fddd453f86__RC:1
-__TTS_f028c664c1e94ca99b23d5fddd453f86__PWD:/app/astropy
-__TTS_f028c664c1e94ca99b23d5fddd453f86__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- __TTS_f028c664c1e94ca99b23d5fddd453f86__PWD:/app/astropy && cd /app/astropy && sed -n '1,220p' astropy/io/ascii/qdp.py; __tts_rc=$?; printf '\n__TTS_2a339bcbb01046449f5c9dc39dd0cae8__RC:%s\n' "$__tts_rc"; printf '__TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:'; pwd; printf '__TTS_2a339bcbb01046449f5c9dc39dd0cae8__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_f028c664c1e94ca99b23d5fddd453f86__PWD:/app/astropy: No such file or directory
-
-__TTS_2a339bcbb01046449f5c9dc39dd0cae8__RC:1
-__TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy
-__TTS_2a339bcbb01046449f5c9dc39dd0cae8__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('/app/astropy/astropy/io/ascii/qdp.py')
-[?2004l[?2004h> s=p.read_text()
-[?2004l[?2004h> s=s.replace('command = vals[0] + vals[1]','command = vals[0].upper() + vals[1].upper()')
-[?2004l[?2004h> p.write_text(s)
-[?2004l[?2004h> print('patched')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_19ebd1134bfb4cb89c6c89b687396253__RC:%s\n' "$__tts_rc"; printf '__TTS_19ebd1134bfb4cb89c6c89b687396253__PWD:'; pwd; printf '__TTS_19ebd1134bfb4cb89c6c89b687396253__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && python -c "from pathlib import Path; p=Path('/app/astropy/astropy/io/ascii/qdp.py'); s=p.read_text(); print('\n'.join(s.splitlines()[:120]))"; __tts_rc=$?; printf '\n__TTS_95890900b7d24700b461ffef8b92693e__RC:%s\n' "$__tts_rc"; printf '__TTS_95890900b7d24700b461ffef8b92693e__PWD:'; pwd; printf '__TTS_95890900b7d24700b461ffef8b92693e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && sed -n '1,140p' /app/astropy/astropy/io/ascii/qdp.py; __tts_rc=$?; printf '\n__TTS_e7d2f40f7d0943beb9945e99193a7532__RC:%s\n' "$__tts_rc"; printf '__TTS_e7d2f40f7d0943beb9945e99193a7532__PWD:'; pwd; printf '__TTS_e7d2f40f7d0943beb9945e99193a7532__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && pkill -f "python - <<'PY'|python -c \"from pathlib|sed -n '1,140p' /app/astropy/astropy/io/ascii/qdp.py" || true; __tts_rc=$?; printf '\n__TTS_d2b3a6f882ba4eb5a831ee495c741944__RC:%s\n' "$__tts_rc"; printf '__TTS_d2b3a6f882ba4eb5a831ee495c741944__PWD:'; pwd; printf '__TTS_d2b3a6f882ba4eb5a831ee495c741944__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && perl -0pi -e 's/command = vals\[0\] \+ vals\[1\]/command = vals[0].upper() + vals[1].upper()/; s/(def test_roundtrip_qdp.*?\n)/$1\n\ndef test_read_lowercase_command(tmp_path):\n    qdp_file = tmp_path \/ "test.qdp"\n    qdp_file.write_text("read serr 1 2\\n1 0.5 1 0.5\\n")\n    from astropy.table import Table\n    t = Table.read(qdp_file, format="ascii.qdp")\n    assert t.colnames == ["col1", "col1_err", "col2", "col2_err"]\n    assert len(t) == 1\n/si' /app/astropy/astropy/io/ascii/qdp.py /app/astropy/astropy/io/ascii/tests/test_qdp.py; __tts_rc=$?; printf '\n__TTS_3661aa73ce7a4e648a1506ebdb461635__RC:%s\n' "$__tts_rc"; printf '__TTS_3661aa73ce7a4e648a1506ebdb461635__PWD:'; pwd; printf '__TTS_3661aa73ce7a4e648a1506ebdb461635__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-bash: cd: __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy: No such file or directory
-[?2004hroot@f696c00df930:/app/astropy# cd -- __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy && python -m pytest -q astropy/io/ascii/tests/test_qdp.py -k 'lowercase or roundtrip'; __tts_rc=$?; printf '\n__TTS_cf90fd18a4d242c890dd56227278eb7c__RC:%s\n' "$__tts_rc"; printf '__TTS_cf90fd18a4d242c890dd56227278eb7c__PWD:'; pwd; printf '__TTS_cf90fd18a4d242c890dd56227278eb7c__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_2a339bcbb01046449f5c9dc39dd0cae8__PWD:/app/astropy: No such file or directory
-
-__TTS_cf90fd18a4d242c890dd56227278eb7c__RC:1
-__TTS_cf90fd18a4d242c890dd56227278eb7c__PWD:/app/astropy
-__TTS_cf90fd18a4d242c890dd56227278eb7c__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- /app/astropy && cd /app/astropy && git diff -- astropy/io/ascii/qdp.py astropy/io/ascii/tests/test_qdp.py; __tts_rc=$?; printf '\n__TTS_2828a201d32b47649c0263c06bd926a5__RC:%s\n' "$__tts_rc"; printf '__TTS_2828a201d32b47649c0263c06bd926a5__PWD:'; pwd; printf '__TTS_2828a201d32b47649c0263c06bd926a5__END\n'; tmux wait -S done
-[?2004l[?1h=[1mdiff --git a/astropy/io/ascii/tests/test_qdp.py b/astropy/io/ascii/tests/test_qdp.py[m[m
-[1mindex ef24e6f6a3..487eda854f 100644[m[m
-[1m--- a/astropy/io/ascii/tests/test_qdp.py[m[m
-[1m+++ b/astropy/io/ascii/tests/test_qdp.py[m[m
-[36m@@ -43,7 +43,18 @@[m [mdef test_get_tables_from_qdp_file(tmp_path):[m[m
-     assert np.isclose(table2["MJD_nerr"][0], -2.37847222222222e-05)[m[m
- [m[m
- [m[m
-[31m-def test_roundtrip(tmp_path):[m[m
-[32m+[m[32mdef lowercase_header(value):[m[m
-[32m+[m[32m    """Make every non-comment line lower case."""[m[m
-[32m+[m[32m    lines = [][m[m
-[32m+[m[32m    for line in value.splitlines():[m[m
-[32m+[m[32m        if not line.startswith("!"):[m[m
-[32m+[m[32m            line = line.lower()[m[m
-[32m+[m[32m        lines.append(line)[m[m
-[32m+[m[32m    return "\n".join(lines)[m[m
-[32m+[m[m
-[32m+[m[m
-[32m+[m[32m@pytest.mark.parametrize("lowercase", [False, True])[m[m
-[32m+[m[32mdef test_roundtrip(tmp_path, lowercase):[m[m
-     example_qdp = """[m[m
-     ! Swift/XRT hardness ratio of trigger: XXXX, name: BUBU X-2[m[m
-     ! Columns are as labelled[m[m
-[36m@@ -70,6 +81,8 @@[m [mdef test_roundtrip(tmp_path):[m[m
-     53000.123456 2.37847222222222e-05    -2.37847222222222e-05   -0.292553       -0.374935[m[m
-     NO 1.14467592592593e-05    -1.14467592592593e-05   0.000000        NO[m[m
-     """[m[m
-[32m+[m[32m    if lowercase:[m[m
-[32m+[m[32m        example_qdp = lowercase_header(example_qdp)[m[m
- [m[m
-     path = str(tmp_path / "test.qdp")[m[m
-     path2 = str(tmp_path / "test2.qdp")[m[m
-[K[?1l>
-__TTS_2828a201d32b47649c0263c06bd926a5__RC:0
-__TTS_2828a201d32b47649c0263c06bd926a5__PWD:/app/astropy
-__TTS_2828a201d32b47649c0263c06bd926a5__END
-[?2004hroot@f696c00df930:/app/astropy# cd -- __TTS_2828a201d32b47649c0263c06bd926a5__PWD:/app/astropy && cd /app/astropy && grep -n "command = vals\[0\].*vals\[1\]\|def test_roundtrip\|lowercase_header" astropy/io/ascii/qdp.py astropy/io/ascii/tests/test_qdp.py; __tts_rc=$?; printf '\n__TTS_32b7a291b52a406b9cd5809df11bfc74__RC:%s\n' "$__tts_rc"; printf '__TTS_32b7a291b52a406b9cd5809df11bfc74__PWD:'; pwd; printf '__TTS_32b7a291b52a406b9cd5809df11bfc74__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_2828a201d32b47649c0263c06bd926a5__PWD:/app/astropy: No such file or directory
-
-__TTS_32b7a291b52a406b9cd5809df11bfc74__RC:1
-__TTS_32b7a291b52a406b9cd5809df11bfc74__PWD:/app/astropy
-__TTS_32b7a291b52a406b9cd5809df11bfc74__END
-[?2004hroot@f696c00df930:/app/astropy# 

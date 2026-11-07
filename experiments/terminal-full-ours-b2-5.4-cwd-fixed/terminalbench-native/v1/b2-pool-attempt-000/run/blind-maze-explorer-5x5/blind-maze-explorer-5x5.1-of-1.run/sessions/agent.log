@@ -1,114 +1,0 @@
-[?2004hroot@2c666440db38:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@2c666440db38:/app# clear
-[?2004l[H[J[3J[?2004hroot@2c666440db38:/app# pwd; __tts_rc=$?; printf '\n__TTS_7265f1d4b7124b5a8501674dcecd46d3__RC:%s\n' "$__tts_rc"; printf '__TTS_7265f1d4b7124b5a8501674dcecd46d3__PWD:'; pwd; printf '__TTS_7265f1d4b7124b5a8501674dcecd46d3__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_7265f1d4b7124b5a8501674dcecd46d3__RC:0
-__TTS_7265f1d4b7124b5a8501674dcecd46d3__PWD:/app
-__TTS_7265f1d4b7124b5a8501674dcecd46d3__END
-[?2004hroot@2c666440db38:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import os, pty, subprocess, select, time, re
-[?2004l[?2004h> from collections import deque
-[?2004l[?2004h> 
-[?2004l[?2004h> DIRS={'N':(0,-1),'S':(0,1),'E':(1,0),'W':(-1,0)}
-[?2004l[?2004h> OPP={'N':'S','S':'N','E':'W','W':'E'}
-[?2004l[?2004h> order=['N','E','S','W']
-[?2004l[?2004h> 
-[?2004l[?2004h> def read_all(fd, timeout=0.2):
-[?2004l[?2004h>     out=b''
-[?2004l[?2004h>     end=time.time()+timeout
-[?2004l[?2004h>     while time.time()<end:
-[?2004l[?2004h>         r,_,_=select.select([fd],[],[],0.05)
-[?2004l[?2004h>         if not r: continue
-[?2004l[?2004h>         try:
-[?2004l[?2004h>             chunk=os.read(fd,4096)
-[?2004l[?2004h>         except OSError:
-[?2004l[?2004h>             break
-[?2004l[?2004h>         if not chunk: break
-[?2004l[?2004h>         out+=chunk
-[?2004l[?2004h>         end=time.time()+0.05
-[?2004l[?2004h>     return out.decode(errors='ignore')
-[?2004l[?2004h> 
-[?2004l[?2004h> pid, fd = pty.fork()
-[?2004l[?2004h> if pid==0:
-[?2004l[?2004h>     os.execvp('./maze_game.sh',['./maze_game.sh'])
-[?2004l[?2004h> 
-[?2004l[?2004h> read_all(fd,0.5)
-[?2004l[?2004h> 
-[?2004l[?2004h> def send(cmd):
-[?2004l[?2004h>     os.write(fd,(cmd+'\n').encode())
-[?2004l[?2004h>     time.sleep(0.05)
-[?2004l[?2004h>     txt=read_all(fd,0.3)
-[?2004l[?2004h>     lines=[l.strip() for l in txt.splitlines() if l.strip()]
-[?2004l[?2004h>     for l in reversed(lines):
-[?2004l[?2004h>         if re.fullmatch(r'(?:hit wall|moved|reached exit)(?:\s*&\s*(?:hit wall|moved|reached exit))*', l):
-[?2004l[?2004h>             return [s.strip() for s in l.split('&')]
-[?2004l[?2004h>     raise RuntimeError(f'No result for {cmd!r}: {txt!r}')
-[?2004l[?2004h> 
-[?2004l[?2004h> cells={(0,0):'S'}
-[?2004l[?2004h> cur=(0,0)
-[?2004l[?2004h> exit_pos=None
-[?2004l[?2004h> stack=[(0,0,0)]
-[?2004l[?2004h> visited=set()
-[?2004l[?2004h> while stack:
-[?2004l[?2004h>     pos, idx = stack[-1]
-[?2004l[?2004h>     cur=pos
-[?2004l[?2004h>     if pos not in visited: visited.add(pos)
-[?2004l[?2004h>     if idx>=4:
-[?2004l[?2004h>         stack.pop()
-[?2004l[?2004h>         if stack:
-[?2004l[?2004h>             prev=stack[-1][0]
-[?2004l[?2004h>             dx,dy=prev[0]-pos[0], prev[1]-pos[1]
-[?2004l[?2004h>             d=[k for k,v in DIRS.items() if v==(dx,dy)][0]
-[?2004l[?2004h>             res=send('move '+d)[0]
-[?2004l[?2004h>             if res not in ('moved','reached exit'): raise RuntimeError('backtrack failed')
-[?2004l[?2004h>             cur=prev
-[?2004l[?2004h>         continue
-[?2004l[?2004h>     d=order[idx]
-[?2004l[?2004h>     stack[-1]=(pos,idx+1)
-[?2004l[?2004h>     dx,dy=DIRS[d]
-[?2004l[?2004h>     np=(pos[0]+dx,pos[1]+dy)
-[?2004l[?2004h>     if np in cells: continue
-[?2004l[?2004h>     res=send('move '+d)[0]
-[?2004l[?2004h>     if res=='hit wall':
-[?2004l[?2004h>         cells[np]='#'
-[?2004l[?2004h>     else:
-[?2004l[?2004h>         cells[np]='E' if res=='reached exit' else ' '
-[?2004l[?2004h>         if res=='reached exit': exit_pos=np
-[?2004l[?2004h>         cur=np
-[?2004l[?2004h>         stack.append((np,0))
-[?2004l[?2004h> 
-[?2004l[?2004h> send('quit')
-[?2004l[?2004h> read_all(fd,0.2)
-[?2004l[?2004h> 
-[?2004l[?2004h> opens=[p for p,v in cells.items() if v!='#']
-[?2004l[?2004h> minx,maxx=min(x for x,y in cells),max(x for x,y in cells)
-[?2004l[?2004h> miny,maxy=min(y for x,y in cells),max(y for x,y in cells)
-[?2004l[?2004h> lines=[]
-[?2004l[?2004h> for y in range(miny,maxy+1):
-[?2004l[?2004h>     row=''
-[?2004l[?2004h>     for x in range(minx,maxx+1):
-[?2004l[?2004h>         row+=cells.get((x,y),'#')
-[?2004l[?2004h>     lines.append(row)
-[?2004l[?2004h> mp='\n'.join(lines)+'\n'
-[?2004l[?2004h> open('/app/maze_map.txt','w').write(mp)
-[?2004l[?2004h> print(mp,end='')
-[?2004l[?2004h> print('FILE_OK', os.path.exists('/app/maze_map.txt'), os.path.getsize('/app/maze_map.txt'))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_18a94a234504490691db0edfdf9ec692__RC:%s\n' "$__tts_rc"; printf '__TTS_18a94a234504490691db0edfdf9ec692__PWD:'; pwd; printf '__TTS_18a94a234504490691db0edfdf9ec692__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && ls -l /app && python3 - <<'PY'
-[?2004l[?2004h> import os
-[?2004l[?2004h> p='/app/maze_map.txt'
-[?2004l[?2004h> print('exists',os.path.exists(p))
-[?2004l[?2004h> print(open(p).read() if os.path.exists(p) else 'NOFILE')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_a9edf2849d2947629a0d8264ebc179b9__RC:%s\n' "$__tts_rc"; printf '__TTS_a9edf2849d2947629a0d8264ebc179b9__PWD:'; pwd; printf '__TTS_a9edf2849d2947629a0d8264ebc179b9__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && ps -ef | grep -E 'maze_game|python3' | grep -v grep | head; __tts_rc=$?; printf '\n__TTS_c9df22f91bfd4888b64e5f44d0e6df23__RC:%s\n' "$__tts_rc"; printf '__TTS_c9df22f91bfd4888b64e5f44d0e6df23__PWD:'; pwd; printf '__TTS_c9df22f91bfd4888b64e5f44d0e6df23__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && pkill -f 'maze_game.sh|python3 - <<|python3' || true; __tts_rc=$?; printf '\n__TTS_4cab377306694c878e16a29615d6f08a__RC:%s\n' "$__tts_rc"; printf '__TTS_4cab377306694c878e16a29615d6f08a__PWD:'; pwd; printf '__TTS_4cab377306694c878e16a29615d6f08a__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m88[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_18a94a234504490691db0edfdf9ec692__RC:%s\n' "$__tts_rc"; printf '__TTS_18a94a234504490691db0edfdf9ec692__PWD:'; pwd; printf '__TTS_18a94a234504490691db0edfdf9ec692__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@2c666440db38:/app# 

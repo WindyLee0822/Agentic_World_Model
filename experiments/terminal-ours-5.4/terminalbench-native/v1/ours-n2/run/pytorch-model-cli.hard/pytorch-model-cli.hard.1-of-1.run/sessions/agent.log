@@ -1,193 +1,0 @@
-[?2004hroot@247796020f0b:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@247796020f0b:/app# clear
-[?2004l[H[J[3J[?2004hroot@247796020f0b:/app# pwd; __tts_rc=$?; printf '\n__TTS_37415eaba90044efbcf3fb35a4e27fda__RC:%s\n' "$__tts_rc"; printf '__TTS_37415eaba90044efbcf3fb35a4e27fda__PWD:'; pwd; printf '__TTS_37415eaba90044efbcf3fb35a4e27fda__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_37415eaba90044efbcf3fb35a4e27fda__RC:0
-__TTS_37415eaba90044efbcf3fb35a4e27fda__PWD:/app
-__TTS_37415eaba90044efbcf3fb35a4e27fda__END
-[?2004hroot@247796020f0b:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_eb286ecb220e44209bd356c3a8e1f99d__RC:%s\n' "$__tts_rc"; printf '__TTS_eb286ecb220e44209bd356c3a8e1f99d__PWD:'; pwd; printf '__TTS_eb286ecb220e44209bd356c3a8e1f99d__END\n'; tmux wait -S done
-[?2004lf /app/cJSON.c
-f /app/cJSON.h
-f /app/image.png
-f /app/lodepng.cpp
-f /app/lodepng.h
-f /app/model.pth
-f /app/model.py
-
-__TTS_eb286ecb220e44209bd356c3a8e1f99d__RC:0
-__TTS_eb286ecb220e44209bd356c3a8e1f99d__PWD:/app
-__TTS_eb286ecb220e44209bd356c3a8e1f99d__END
-[?2004hroot@247796020f0b:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__RC:%s\n' "$__tts_rc"; printf '__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__PWD:'; pwd; printf '__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__END\n'; tmux wait -S done
-[?2004lf /app/cJSON.c
-f /app/cJSON.h
-f /app/image.png
-f /app/lodepng.cpp
-f /app/lodepng.h
-f /app/model.pth
-f /app/model.py
-
-__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__RC:0
-__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__PWD:/app
-__TTS_164e733f52bf4ec2a32e1fa5d5ce9725__END
-[?2004hroot@247796020f0b:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_d821a08115f74048af7ae159ea133e46__RC:%s\n' "$__tts_rc"; printf '__TTS_d821a08115f74048af7ae159ea133e46__PWD:'; pwd; printf '__TTS_d821a08115f74048af7ae159ea133e46__END\n'; tmux wait -S done
-[?2004lf /app/cJSON.c
-f /app/cJSON.h
-f /app/image.png
-f /app/lodepng.cpp
-f /app/lodepng.h
-f /app/model.pth
-f /app/model.py
-
-__TTS_d821a08115f74048af7ae159ea133e46__RC:0
-__TTS_d821a08115f74048af7ae159ea133e46__PWD:/app
-__TTS_d821a08115f74048af7ae159ea133e46__END
-[?2004hroot@247796020f0b:/app# cd -- /app && find /app -maxdepth 2 -mindepth 1 -printf '%y %p\n' | sort | head -240; __tts_rc=$?; printf '\n__TTS_b36e0076a91043fdae364fc082b3725d__RC:%s\n' "$__tts_rc"; printf '__TTS_b36e0076a91043fdae364fc082b3725d__PWD:'; pwd; printf '__TTS_b36e0076a91043fdae364fc082b3725d__END\n'; tmux wait -S done
-[?2004lf /app/cJSON.c
-f /app/cJSON.h
-f /app/image.png
-f /app/lodepng.cpp
-f /app/lodepng.h
-f /app/model.pth
-f /app/model.py
-
-__TTS_b36e0076a91043fdae364fc082b3725d__RC:0
-__TTS_b36e0076a91043fdae364fc082b3725d__PWD:/app
-__TTS_b36e0076a91043fdae364fc082b3725d__END
-[?2004hroot@247796020f0b:/app# cd -- /app && sed -n '1,240p' -- /app/model.py; __tts_rc=$?; printf '\n__TTS_4ffb6063f2fd449087145a4eec203939__RC:%s\n' "$__tts_rc"; printf '__TTS_4ffb6063f2fd449087145a4eec203939__PWD:'; pwd; printf '__TTS_4ffb6063f2fd449087145a4eec203939__END\n'; tmux wait -S done
-[?2004limport torch
-import torch.nn as nn
-
-
-class MnistModel(nn.Module):
-    def __init__(
-        self,
-        input_dim: int,
-        hidden_dim: int,
-        num_classes: int,
-    ) -> torch.nn.Module:
-        super().__init__()
-
-        self.input_layer = nn.Linear(input_dim, hidden_dim)
-        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, num_classes)
-        self.activation = nn.ReLU()
-
-    def forward(self, x):
-        x = self.input_layer(x)
-        x = self.activation(x)
-
-        x = self.hidden_layer(x)
-        x = self.activation(x)
-
-        x = self.output_layer(x)
-        return x
-
-__TTS_4ffb6063f2fd449087145a4eec203939__RC:0
-__TTS_4ffb6063f2fd449087145a4eec203939__PWD:/app
-__TTS_4ffb6063f2fd449087145a4eec203939__END
-[?2004hroot@247796020f0b:/app# cd -- /app && sh -lc 'ls -la /app && printf "\n---\n" && find /app -maxdepth 2 -type f | sed "s#^#/ #"'; __tts_rc=$?; printf '\n__TTS_466124541cc7441fba3c527a107d3831__RC:%s\n' "$__tts_rc"; printf '__TTS_466124541cc7441fba3c527a107d3831__PWD:'; pwd; printf '__TTS_466124541cc7441fba3c527a107d3831__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 16 23:40 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-
----
-/ /app/lodepng.h
-/ /app/model.pth
-/ /app/cJSON.c
-/ /app/lodepng.cpp
-/ /app/cJSON.h
-/ /app/model.py
-/ /app/image.png
-
-__TTS_466124541cc7441fba3c527a107d3831__RC:0
-__TTS_466124541cc7441fba3c527a107d3831__PWD:/app
-__TTS_466124541cc7441fba3c527a107d3831__END
-[?2004hroot@247796020f0b:/app# cd -- __TTS_466124541cc7441fba3c527a107d3831__PWD:/app && python3 - <<'PY'
-[?2004l[?2004h> import os, json, struct, subprocess, textwrap
-[?2004l[?2004h> os.chdir('/app')
-[?2004l[?2004h> print(subprocess.check_output(['python3','-c',"import pathlib;print(pathlib.Path('model.py').read_text())"]).decode())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_73ed12083e754016af41ae0e16342f82__RC:%s\n' "$__tts_rc"; printf '__TTS_73ed12083e754016af41ae0e16342f82__PWD:'; pwd; printf '__TTS_73ed12083e754016af41ae0e16342f82__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_466124541cc7441fba3c527a107d3831__PWD:/app && python3 - <<'PY'
-[?2004l[?2004h> import os, json, struct, subprocess, textwrap, math
-[?2004l[?2004h> os.chdir('/app')
-[?2004l[?2004h> script = r'''
-[?2004l[?2004h> import os, json, torch
-[?2004l[?2004h> from PIL import Image
-[?2004l[?2004h> import torch.nn as nn
-[?2004l[?2004h> 
-[?2004l[?2004h> class MnistModel(nn.Module):
-[?2004l[?2004h>     def __init__(self, input_dim, hidden_dim, num_classes):
-[?2004l[?2004h>         super().__init__()
-[?2004l[?2004h>         self.input_layer = nn.Linear(input_dim, hidden_dim)
-[?2004l[?2004h>         self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-[?2004l[?2004h>         self.output_layer = nn.Linear(hidden_dim, num_classes)
-[?2004l[?2004h>         self.activation = nn.ReLU()
-[?2004l[?2004h>     def forward(self, x):
-[?2004l[?2004h>         x = self.activation(self.input_layer(x))
-[?2004l[?2004h>         x = self.activation(self.hidden_layer(x))
-[?2004l[?2004h>         return self.output_layer(x)
-[?2004l[?2004h> 
-[?2004l[?2004h> state = torch.load('model.pth', map_location='cpu')
-[?2004l[?2004h> shapes = {k:list(v.shape) for k,v in state.items()}
-[?2004l[?2004h> hidden_dim = state['input_layer.weight'].shape[0]
-[?2004l[?2004h> model = MnistModel(28*28, hidden_dim, 10)
-[?2004l[?2004h> model.load_state_dict(state)
-[?2004l[?2004h> model.eval()
-[?2004l[?2004h> weights = {k:v.detach().cpu().tolist() for k,v in state.items()}
-[?2004l[?2004h> json.dump({'input_dim':784,'hidden_dim':hidden_dim,'num_classes':10,'state_dict':weights}, open('weights.json','w'))
-[?2004l[?2004h> img = Image.open('image.png').convert('L').resize((28,28))
-[?2004l[?2004h> pix = torch.tensor(list(img.getdata()), dtype=torch.float32).reshape(1,28*28)/255.0
-[?2004l[?2004h> with torch.no_grad():
-[?2004l[?2004h>     pred = int(model(pix).argmax(dim=1).item())
-[?2004l[?2004h> open('prediction.txt','w').write(str(pred))
-[?2004l[?2004h> cli = r'''#!/usr/bin/env python3
-[?2004l[?2004h> import sys, json
-[?2004l[?2004h> from PIL import Image
-[?2004l[?2004h> 
-[?2004l[?2004h> def relu(v):
-[?2004l[?2004h>     return [x if x > 0 else 0.0 for x in v]
-[?2004l[?2004h> 
-[?2004l[?2004h> def linear(x, w, b):
-[?2004l[?2004h>     return [sum(xj*wij for xj, wij in zip(x, row)) + bi for row, bi in zip(w, b)]
-[?2004l[?2004h> 
-[?2004l[?2004h> def load_image(path):
-[?2004l[?2004h>     img = Image.open(path).convert('L').resize((28,28))
-[?2004l[?2004h>     return [p/255.0 for p in img.getdata()]
-[?2004l[?2004h> 
-[?2004l[?2004h> def main():
-[?2004l[?2004h>     if len(sys.argv) != 3:
-[?2004l[?2004h>         sys.exit(1)
-[?2004l[?2004h>     with open(sys.argv[1]) as f:
-[?2004l[?2004h>         data = json.load(f)
-[?2004l[?2004h>     s = data['state_dict']
-[?2004l[?2004h>     x = load_image(sys.argv[2])
-[?2004l[?2004h>     x = relu(linear(x, s['input_layer.weight'], s['input_layer.bias']))
-[?2004l[?2004h>     x = relu(linear(x, s['hidden_layer.weight'], s['hidden_layer.bias']))
-[?2004l[?2004h>     x = linear(x, s['output_layer.weight'], s['output_layer.bias'])
-[?2004l[?2004h>     print(max(range(len(x)), key=lambda i: x[i]))
-[?2004l[?2004h> 
-[?2004l[?2004h> if __name__ == '__main__':
-[?2004l[?2004h>     main()
-[?2004l[?2004h> '''
-[?2004l[?2004h> open('cli_tool','w').write(cli)
-[?2004l[?2004h> os.chmod('cli_tool',0o755)
-[?2004l[?2004h> '''
-[?2004l[?2004h> open('/tmp/build_cli.py','w').write(script)
-[?2004l[?2004h> subprocess.check_call(['python3','/tmp/build_cli.py'])
-[?2004l[?2004h> print(subprocess.check_output(['/app/cli_tool','/app/weights.json','/app/image.png']).decode().strip())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_21ddc82c3d51415ca5fc154904d8b12f__RC:%s\n' "$__tts_rc"; printf '__TTS_21ddc82c3d51415ca5fc154904d8b12f__PWD:'; pwd; printf '__TTS_21ddc82c3d51415ca5fc154904d8b12f__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- __TTS_466124541cc7441fba3c527a107d3831__PWD:/app && sh -lc 'cd /app && ls -l cli_tool weights.json prediction.txt && printf "cli_tool output: " && ./cli_tool weights.json image.png && printf "prediction.txt: " && cat prediction.txt'; __tts_rc=$?; printf '\n__TTS_d5049e90ff0f47aa837aff860350057a__RC:%s\n' "$__tts_rc"; printf '__TTS_d5049e90ff0f47aa837aff860350057a__PWD:'; pwd; printf '__TTS_d5049e90ff0f47aa837aff860350057a__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 9 delimited by end-of-file (wanted `PY')
-bash: cd: __TTS_466124541cc7441fba3c527a107d3831__PWD:/app: No such file or directory
-[?2004hroot@247796020f0b:/app# 

@@ -1,23 +1,0 @@
-[?2004hroot@5b24633935c8:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@5b24633935c8:/app# clear
-[?2004l[H[J[3J[?2004hroot@5b24633935c8:/app# pwd; __tts_rc=$?; printf '\n__TTS_9a0f5bac6e0043ba906824dc9425e73d__RC:%s\n' "$__tts_rc"; printf '__TTS_9a0f5bac6e0043ba906824dc9425e73d__PWD:'; pwd; printf '__TTS_9a0f5bac6e0043ba906824dc9425e73d__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_9a0f5bac6e0043ba906824dc9425e73d__RC:0
-__TTS_9a0f5bac6e0043ba906824dc9425e73d__PWD:/app
-__TTS_9a0f5bac6e0043ba906824dc9425e73d__END
-[?2004hroot@5b24633935c8:/app# cd -- /app && aws s3api create-bucket --bucket sample-bucket && aws s3api put-public-access-block --bucket sample-bucket --public-access-block-configuration BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false && printf '{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadGetObject","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::sample-bucket/*"}]}' >/tmp/sample-bucket-policy.json && aws s3api put-bucket-policy --bucket sample-bucket --policy file:///tmp/sample-bucket-policy.json; __tts_rc=$?; printf '\n__TTS_200add3b716249fd976d7171652892a6__RC:%s\n' "$__tts_rc"; printf '__TTS_200add3b716249fd976d7171652892a6__PWD:'; pwd; printf '__TTS_200add3b716249fd976d7171652892a6__END\n'; tmux wait -S done
-[?2004l{
-    "Location": "/sample-bucket"
-}
-
-__TTS_200add3b716249fd976d7171652892a6__RC:0
-__TTS_200add3b716249fd976d7171652892a6__PWD:/app
-__TTS_200add3b716249fd976d7171652892a6__END
-[?2004hroot@5b24633935c8:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@5b24633935c8:/app# 

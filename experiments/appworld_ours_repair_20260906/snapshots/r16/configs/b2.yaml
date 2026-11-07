@@ -1,4 +1,0 @@
-# B2: parallel sampling with per-rollout snapshot copies (forking — baseline only).
-method: b2
-N: 8
-simulator: {kind: snapshot}

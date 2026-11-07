@@ -1,85 +1,0 @@
-[?2004hroot@0fc7b9bbeff1:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@0fc7b9bbeff1:/app# clear
-[?2004l[H[J[3J[?2004hroot@0fc7b9bbeff1:/app# pwd; __tts_rc=$?; printf '\n__TTS_e8dfc913d4c240ed84d5ff65d137511d__RC:%s\n' "$__tts_rc"; printf '__TTS_e8dfc913d4c240ed84d5ff65d137511d__PWD:'; pwd; printf '__TTS_e8dfc913d4c240ed84d5ff65d137511d__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_e8dfc913d4c240ed84d5ff65d137511d__RC:0
-__TTS_e8dfc913d4c240ed84d5ff65d137511d__PWD:/app
-__TTS_e8dfc913d4c240ed84d5ff65d137511d__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && find /app -xdev -type f -o -type d | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_b840ef8647014e4c9437547b500a0fcf__RC:%s\n' "$__tts_rc"; printf '__TTS_b840ef8647014e4c9437547b500a0fcf__PWD:'; pwd; printf '__TTS_b840ef8647014e4c9437547b500a0fcf__END\n'; tmux wait -S done
-[?2004l/app
-/app/varsea
-/app/varsea/backup-5db238d6
-/app/varsea/backup-5db238d6/1784358873519999562.bin
-/app/varsea/backup-5db238d6/20260718-071433.log
-/app/varsea/logs-c3112663
-/app/varsea/logs-c3112663/1784358873513003854.bin
-/app/varsea/logs-c3112663/20260718-071433.log
-/app/varsea/cfg-0c56f870
-/app/varsea/cfg-0c56f870/20260718-071433.log
-/app/varsea/cfg-0c56f870/1784358873526748468.bin
-/app/varsea/tmp-1feb8b1b
-/app/varsea/tmp-1feb8b1b/1784358873498366156.bin
-/app/varsea/tmp-1feb8b1b/20260718-071433.log
-/app/varsea/disks
-/app/varsea/disks/sub1
-/app/varsea/disks/sub1/subA
-/app/varsea/disks/sub1/subA/subAlpha
-/app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat
-/app/varsea/data-4f658652
-/app/varsea/data-4f658652/20260718-071433.log
-/app/varsea/data-4f658652/1784358873505718498.bin
-
-__TTS_b840ef8647014e4c9437547b500a0fcf__RC:0
-__TTS_b840ef8647014e4c9437547b500a0fcf__PWD:/app
-__TTS_b840ef8647014e4c9437547b500a0fcf__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && find /app/varsea -type f \( -name '*.log' -o -name '*.bin' -o -name '*.dat' \) -exec sh -c 'for f; do strings -a "$f" | grep -E "8XD[A-Z0-9]{17}W54|PASSWORD=8XD[A-Z0-9]{17}W54" && echo "-- $f"; done' sh {} +; __tts_rc=$?; printf '\n__TTS_db13a48858064c4eb032c9c3a51d80ec__RC:%s\n' "$__tts_rc"; printf '__TTS_db13a48858064c4eb032c9c3a51d80ec__PWD:'; pwd; printf '__TTS_db13a48858064c4eb032c9c3a51d80ec__END\n'; tmux wait -S done
-[?2004l
-__TTS_db13a48858064c4eb032c9c3a51d80ec__RC:1
-__TTS_db13a48858064c4eb032c9c3a51d80ec__PWD:/app
-__TTS_db13a48858064c4eb032c9c3a51d80ec__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && find /app/varsea -type f -exec sh -c 'for f; do strings -a "$f" | grep -E "PASSWORD=|8XD[A-Z0-9]+W54" && printf "-- %s\n" "$f"; done' sh {} +; __tts_rc=$?; printf '\n__TTS_1d6f4801d7a546fabd60546187ba74d0__RC:%s\n' "$__tts_rc"; printf '__TTS_1d6f4801d7a546fabd60546187ba74d0__PWD:'; pwd; printf '__TTS_1d6f4801d7a546fabd60546187ba74d0__END\n'; tmux wait -S done
-[?2004lPASSWORD=8XDP5Q2RT9ZBn
-sh: 1: printf: Illegal option --
-
-__TTS_1d6f4801d7a546fabd60546187ba74d0__RC:1
-__TTS_1d6f4801d7a546fabd60546187ba74d0__PWD:/app
-__TTS_1d6f4801d7a546fabd60546187ba74d0__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && find /app/varsea -type f -exec sh -c 'for f; do strings -a "$f" | grep -nE "PASSWORD=|8XD[A-Za-z0-9]+W54" && echo FILE:$f; done' sh {} +; __tts_rc=$?; printf '\n__TTS_db1e0b322b234c23ab25caf2770f5dee__RC:%s\n' "$__tts_rc"; printf '__TTS_db1e0b322b234c23ab25caf2770f5dee__PWD:'; pwd; printf '__TTS_db1e0b322b234c23ab25caf2770f5dee__END\n'; tmux wait -S done
-[?2004l12994:PASSWORD=8XDP5Q2RT9ZBn
-FILE:/app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat
-
-__TTS_db1e0b322b234c23ab25caf2770f5dee__RC:1
-__TTS_db1e0b322b234c23ab25caf2770f5dee__PWD:/app
-__TTS_db1e0b322b234c23ab25caf2770f5dee__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import re,os
-[?2004l[?2004h> p='/app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat'
-[?2004l[?2004h> b=open(p,'rb').read()
-[?2004l[?2004h> pat=re.compile(rb'PASSWORD=([A-Z0-9]{23})')
-[?2004l[?2004h> ms=sorted(set(m.group(1).decode() for m in pat.finditer(b) if m.group(1).decode().startswith('8XD') and m.group(1).decode().endswith('W54')))
-[?2004l[?2004h> open('/app/recovered_passwords.txt','w').write(''.join(x+'\n' for x in ms))
-[?2004l[?2004h> print('\n'.join(ms) if ms else 'NO_MATCH')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9ae3be77acd4400197506d521e5e010d__RC:%s\n' "$__tts_rc"; printf '__TTS_9ae3be77acd4400197506d521e5e010d__PWD:'; pwd; printf '__TTS_9ae3be77acd4400197506d521e5e010d__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && grep -aobE 'PASSWORD=8XD[A-Z0-9]{17}W54' /app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat | tee /app/recovered_passwords.txt; __tts_rc=$?; printf '\n__TTS_24cb41c4b7804ee981f2424ce5ce1fc0__RC:%s\n' "$__tts_rc"; printf '__TTS_24cb41c4b7804ee981f2424ce5ce1fc0__PWD:'; pwd; printf '__TTS_24cb41c4b7804ee981f2424ce5ce1fc0__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import mmap,re; f=open('/app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat','rb'); m=mmap.mmap(f.fileno(),0,access=mmap.ACCESS_READ); pat=re.compile(rb'PASSWORD=(8XD[A-Z0-9]{17}W54)'); s=sorted(set(x.decode() for x in pat.findall(m))); open('/app/recovered_passwords.txt','w').write(('\n'.join(s)+'\n') if s else ''); print('\n'.join(s) if s else 'NO_MATCH')"; __tts_rc=$?; printf '\n__TTS_d8dded417d4f4438b8accbc7095ceb30__RC:%s\n' "$__tts_rc"; printf '__TTS_d8dded417d4f4438b8accbc7095ceb30__PWD:'; pwd; printf '__TTS_d8dded417d4f4438b8accbc7095ceb30__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 7 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 8
-    PY; __tts_rc=$?; printf '\n__TTS_9ae3be77acd4400197506d521e5e010d__RC:%s\n' "$__tts_rc"; printf '__TTS_9ae3be77acd4400197506d521e5e010d__PWD:'; pwd; printf '__TTS_9ae3be77acd4400197506d521e5e010d__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && cat /app/recovered_passwords.txt; __tts_rc=$?; printf '\n__TTS_87139dff60ae426eaa021da2776a9ab4__RC:%s\n' "$__tts_rc"; printf '__TTS_87139dff60ae426eaa021da2776a9ab4__PWD:'; pwd; printf '__TTS_87139dff60ae426eaa021da2776a9ab4__END\n'; tmux wait -S done
-[?2004lcat: /app/recovered_passwords.txt: No such file or directory
-
-__TTS_87139dff60ae426eaa021da2776a9ab4__RC:1
-__TTS_87139dff60ae426eaa021da2776a9ab4__PWD:/app
-__TTS_87139dff60ae426eaa021da2776a9ab4__END
-[?2004hroot@0fc7b9bbeff1:/app# cd -- /app && python3 -c "import mmap,re; p='/app/varsea/disks/sub1/subA/subAlpha/ae3f4c.dat'; f=open(p,'rb'); m=mmap.mmap(f.fileno(),0,access=mmap.ACCESS_READ); s=sorted(set(x.decode() for x in re.compile(rb'PASSWORD=(8XD[A-Z0-9]{17}W54)').findall(m))); open('/app/recovered_passwords.txt','w').write(('\n'.join(s)+'\n') if s else '')"; __tts_rc=$?; printf '\n__TTS_f73422aac7514e9bb4b8b7e89be362e4__RC:%s\n' "$__tts_rc"; printf '__TTS_f73422aac7514e9bb4b8b7e89be362e4__PWD:'; pwd; printf '__TTS_f73422aac7514e9bb4b8b7e89be362e4__END\n'; tmux wait -S done
-[?2004l
-__TTS_f73422aac7514e9bb4b8b7e89be362e4__RC:0
-__TTS_f73422aac7514e9bb4b8b7e89be362e4__PWD:/app
-__TTS_f73422aac7514e9bb4b8b7e89be362e4__END
-[?2004hroot@0fc7b9bbeff1:/app# 

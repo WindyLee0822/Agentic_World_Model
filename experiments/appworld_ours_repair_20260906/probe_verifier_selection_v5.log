@@ -1,3 +1,0 @@
-candidate 0 verdict False python_calls 10
-candidate 1 verdict True python_calls 9
-VERDICTS [False, True]

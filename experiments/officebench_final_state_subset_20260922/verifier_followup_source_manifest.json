@@ -1,5 +1,0 @@
-{
-  "src/tts/env/officebench_wm.py": "4bf02b7bb52e4a07849b8d3afca8faeaf66a6cb05ba387346dbf0e3e01b57feb",
-  "tests/test_officebench.py": "8b2ef0cc5b9dc9211a76b6d4bd55bbb784ffcdaa144f319abacaff8b65034c21",
-  "experiments/officebench_final_state_subset_20260922/verifier_followup.py": "f947f0b8069a26cfd1338b316e10ce1cac420bd55f298203e80e551e31c357df"
-}

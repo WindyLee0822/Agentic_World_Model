@@ -1,73 +1,0 @@
-[?2004hroot@b74709962079:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@b74709962079:/app# clear
-[?2004l[H[J[3J[?2004hroot@b74709962079:/app# pwd; __tts_rc=$?; printf '\n__TTS_163fedeaf0a0421bb10f8713cdb15f46__RC:%s\n' "$__tts_rc"; printf '__TTS_163fedeaf0a0421bb10f8713cdb15f46__PWD:'; pwd; printf '__TTS_163fedeaf0a0421bb10f8713cdb15f46__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_163fedeaf0a0421bb10f8713cdb15f46__RC:0
-__TTS_163fedeaf0a0421bb10f8713cdb15f46__PWD:/app
-__TTS_163fedeaf0a0421bb10f8713cdb15f46__END
-[?2004hroot@b74709962079:/app# cd -- /app && find data -maxdepth 2 -type f | sed -n '1,20p' && rencrypt --help | sed -n '1,120p'; __tts_rc=$?; printf '\n__TTS_ff8adcdd999241a1b7cefee89152218c__RC:%s\n' "$__tts_rc"; printf '__TTS_ff8adcdd999241a1b7cefee89152218c__PWD:'; pwd; printf '__TTS_ff8adcdd999241a1b7cefee89152218c__END\n'; tmux wait -S done
-[?2004ldata/sample2.txt
-data/sample1.txt
-usage: rencrypt [-o OUTPUT] [-p PROTOCOL] [-v] input_files [input_files ...]
-rencrypt: error: the following arguments are required: input_files
-
-__TTS_ff8adcdd999241a1b7cefee89152218c__RC:0
-__TTS_ff8adcdd999241a1b7cefee89152218c__PWD:/app
-__TTS_ff8adcdd999241a1b7cefee89152218c__END
-[?2004hroot@b74709962079:/app# cd -- /app && rencrypt -h | sed -n '1,200p'; __tts_rc=$?; printf '\n__TTS_d38a46006dbe4f4992a1a959774b806e__RC:%s\n' "$__tts_rc"; printf '__TTS_d38a46006dbe4f4992a1a959774b806e__PWD:'; pwd; printf '__TTS_d38a46006dbe4f4992a1a959774b806e__END\n'; tmux wait -S done
-[?2004lusage: rencrypt [-o OUTPUT] [-p PROTOCOL] [-v] input_files [input_files ...]
-rencrypt: error: the following arguments are required: input_files
-
-__TTS_d38a46006dbe4f4992a1a959774b806e__RC:0
-__TTS_d38a46006dbe4f4992a1a959774b806e__PWD:/app
-__TTS_d38a46006dbe4f4992a1a959774b806e__END
-[?2004hroot@b74709962079:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os, subprocess
-[?2004l[?2004h> os.makedirs('encrypted_data', exist_ok=True)
-[?2004l[?2004h> files=[os.path.join('data',f) for f in os.listdir('data') if os.path.isfile(os.path.join('data',f))]
-[?2004l[?2004h> for f in files:
-[?2004l[?2004h>     out=os.path.join('encrypted_data', os.path.basename(f))
-[?2004l[?2004h>     subprocess.run(['rencrypt','-p','3','-o',out,f], check=True)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_dfb66b6bf85841acaf95b2dc0be1541a__RC:%s\n' "$__tts_rc"; printf '__TTS_dfb66b6bf85841acaf95b2dc0be1541a__PWD:'; pwd; printf '__TTS_dfb66b6bf85841acaf95b2dc0be1541a__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && find encrypted_data -maxdepth 1 -type f -printf '%f\n' 2>/dev/null | sed -n '1,20p' && timeout 10s rencrypt -p 999 -o /tmp/x data/sample1.txt 2>&1 | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__RC:%s\n' "$__tts_rc"; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__PWD:'; pwd; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python - <<'PY'
-[?2004l[?2004h> import os, pexpect
-[?2004l[?2004h> os.makedirs('encrypted_data', exist_ok=True)
-[?2004l[?2004h> for name in os.listdir('data'):
-[?2004l[?2004h>     src=os.path.join('data',name)
-[?2004l[?2004h>     if not os.path.isfile(src):
-[?2004l[?2004h>         continue
-[?2004l[?2004h>     dst=os.path.join('encrypted_data', os.path.basename(src))
-[?2004l[?2004h>     child=pexpect.spawn('rencrypt',[src,'-o',dst,'-p','3'],encoding='utf-8',timeout=10)
-[?2004l[?2004h>     try:
-[?2004l[?2004h>         i=child.expect([r'(?i)pass', r'(?i)password', pexpect.EOF, pexpect.TIMEOUT])
-[?2004l[?2004h>         if i in (0,1):
-[?2004l[?2004h>             child.sendline('benchmarkpass123!')
-[?2004l[?2004h>             child.expect([r'(?i)confirm', r'(?i)again', pexpect.EOF, pexpect.TIMEOUT])
-[?2004l[?2004h>             if child.after and any(k in str(child.after).lower() for k in ['confirm','again']):
-[?2004l[?2004h>                 child.sendline('benchmarkpass123!')
-[?2004l[?2004h>                 child.expect(pexpect.EOF)
-[?2004l[?2004h>     finally:
-[?2004l[?2004h>         child.close()
-[?2004l[?2004h>     print(name, child.exitstatus, child.before)
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_4d95afa38c0c4ddab5d9f5371cf5522d__RC:%s\n' "$__tts_rc"; printf '__TTS_4d95afa38c0c4ddab5d9f5371cf5522d__PWD:'; pwd; printf '__TTS_4d95afa38c0c4ddab5d9f5371cf5522d__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m8[0m
-    cd -- /app && find encrypted_data -maxdepth 1 -type f -printf '%f\n' 2>/dev/null | sed -n '1,20p' && timeout 1[1;31m0[0ms rencrypt -p 999 -o /tmp/x data/sample1.txt 2>&1 | sed -n '1,80p'; __tts_rc=$?; printf '\n__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__RC:%s\n' "$__tts_rc"; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__PWD:'; pwd; printf '__TTS_3ad5aeb0a66a4e6fba358c37c8392f7f__END\n'; tmux wait -S done
-                                                                                                                  [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid decimal literal[0m
-[?2004hroot@b74709962079:/app# cd -- ''"'"'; pwd; printf '"'"'_' && cd /app && find encrypted_data -maxdepth 1 -type f -printf '%f %s\n' | sed -n '1,20p'; __tts_rc=$?; printf '\n__TTS_caf909ceb3264b66b949413548a745e5__RC:%s\n' "$__tts_rc"; printf '__TTS_caf909ceb3264b66b949413548a745e5__PWD:'; pwd; printf '__TTS_caf909ceb3264b66b949413548a745e5__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '_: No such file or directory
-
-__TTS_caf909ceb3264b66b949413548a745e5__RC:1
-__TTS_caf909ceb3264b66b949413548a745e5__PWD:/app
-__TTS_caf909ceb3264b66b949413548a745e5__END
-[?2004hroot@b74709962079:/app# cd -- /app && python -c "import os,pexpect; os.makedirs('encrypted_data',exist_ok=True); pw='benchmarkpass123!';
-[?2004lbash: !': event not found
-[?2004hroot@b74709962079:/app# [(__import__('builtins').exec('src=os.path.join(\'data\',n);dst=os.path.join(\'encrypted_data\',os.path.basename(n));c=pexpect.spawn(\'rencrypt\',[src,\'-o\',dst,\'-p\',\'3\'],encoding=\'utf-8\',timeout=10);i=c.expect([r\'(?i)pass\',pexpect.EOF,pexpect.TIMEOUT]); (c.sendline(pw), c.expect([r\'(?i)confirm|again\',pexpect.EOF,pexpect.TIMEOUT]), c.sendline(pw) if str(c.after).lower() not in [\'<class \'pexpect.exceptions.eof\'>\',\'<class \'pexpect.exceptions.timeout\'>\'] else None, c.expect(pexpect.EOF)); c.close()')) for n in os.listdir('data') if os.path.isfile(os.path.join('data',n))]"; __tts_rc=$?; printf '\n__TTS_65d6007d5d594bb9bf10509bc9278254__RC:%s\n' "$__tts_rc"; printf '__TTS_65d6007d5d594bb9bf10509bc9278254__PWD:'; pwd; printf '__TTS_65d6007d5d594bb9bf10509bc9278254__END\n'; tmux wait -S done
-[?2004lbash: syntax error near unexpected token `__import__'
-[?2004hroot@b74709962079:/app# 

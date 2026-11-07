@@ -1,26 +1,0 @@
-[?2004hroot@3773aa8765d9:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@3773aa8765d9:/app# clear
-[?2004l[H[J[3J[?2004hroot@3773aa8765d9:/app# pwd; __tts_rc=$?; printf '\n__TTS_bf6d6a389e264e4aa4481e66be8b950e__RC:%s\n' "$__tts_rc"; printf '__TTS_bf6d6a389e264e4aa4481e66be8b950e__PWD:'; pwd; printf '__TTS_bf6d6a389e264e4aa4481e66be8b950e__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_bf6d6a389e264e4aa4481e66be8b950e__RC:0
-__TTS_bf6d6a389e264e4aa4481e66be8b950e__PWD:/app
-__TTS_bf6d6a389e264e4aa4481e66be8b950e__END
-[?2004hroot@3773aa8765d9:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import inspect, os, mteb
-[?2004l[?2004h> from mteb import MTEB
-[?2004l[?2004h> print('mteb', mteb.__version__)
-[?2004l[?2004h> print('cwd', os.getcwd())
-[?2004l[?2004h> print('MTEB.run', inspect.signature(MTEB.run))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_c13e946d02fc4873b08a9b469f3ac9ec__RC:%s\n' "$__tts_rc"; printf '__TTS_c13e946d02fc4873b08a9b469f3ac9ec__PWD:'; pwd; printf '__TTS_c13e946d02fc4873b08a9b469f3ac9ec__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "from sentence_transformers import SentenceTransformer; import mteb; from mteb import MTEB; model_name='BAAI/bge-small-en-v1.5'; revision='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'; model=SentenceTransformer(model_name, revision=revision, trust_remote_code=False); evaluation=MTEB(tasks=['STS12']); evaluation.run(model, output_folder='results', overwrite_results=True)"; __tts_rc=$?; printf '\n__TTS_3f27394d89e644e6b8d37b653c8aa826__RC:%s\n' "$__tts_rc"; printf '__TTS_3f27394d89e644e6b8d37b653c8aa826__PWD:'; pwd; printf '__TTS_3f27394d89e644e6b8d37b653c8aa826__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "from sentence_transformers import SentenceTransformer; from mteb import MTEB; model_name='BAAI/bge-small-en-v1.5'; revision='5c38ec7c405ec4b44b94cc5a9bb96e735b38267a'; model=SentenceTransformer(model_name, revision=revision, trust_remote_code=False); MTEB(tasks=['STS12']).run(model, output_folder='results', overwrite_results=True)"; __tts_rc=$?; printf '\n__TTS_b87b84fdd62c4a00a2cfc51125fac237__RC:%s\n' "$__tts_rc"; printf '__TTS_b87b84fdd62c4a00a2cfc51125fac237__PWD:'; pwd; printf '__TTS_b87b84fdd62c4a00a2cfc51125fac237__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 6
-    PY; __tts_rc=$?; printf '\n__TTS_c13e946d02fc4873b08a9b469f3ac9ec__RC:%s\n' "$__tts_rc"; printf '__TTS_c13e946d02fc4873b08a9b469f3ac9ec__PWD:'; pwd; printf '__TTS_c13e946d02fc4873b08a9b469f3ac9ec__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@3773aa8765d9:/app# 

@@ -1,39 +1,0 @@
-[?2004hroot@5041ad9bc43e:/app/astropy# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@5041ad9bc43e:/app/astropy# clear
-[?2004l[H[J[3J[?2004hroot@5041ad9bc43e:/app/astropy# pwd; __tts_rc=$?; printf '\n__TTS_46c9513a5d5d453aad569f961e17045f__RC:%s\n' "$__tts_rc"; printf '__TTS_46c9513a5d5d453aad569f961e17045f__PWD:'; pwd; printf '__TTS_46c9513a5d5d453aad569f961e17045f__END\n'; tmux wait -S done
-[?2004l/app/astropy
-
-__TTS_46c9513a5d5d453aad569f961e17045f__RC:0
-__TTS_46c9513a5d5d453aad569f961e17045f__PWD:/app/astropy
-__TTS_46c9513a5d5d453aad569f961e17045f__END
-[?2004hroot@5041ad9bc43e:/app/astropy# cd -- /app/astropy && python - <<'PY'
-[?2004l[?2004h> from astropy.modeling import models as m
-[?2004l[?2004h> from astropy.modeling.separable import separability_matrix
-[?2004l[?2004h> cm = m.Linear1D(10) & m.Linear1D(5)
-[?2004l[?2004h> print(separability_matrix(cm))
-[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5)))
-[?2004l[?2004h> print(separability_matrix(m.Pix2Sky_TAN() & cm))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ecc3f2d9ffd84606acdf8afd6379d642__RC:%s\n' "$__tts_rc"; printf '__TTS_ecc3f2d9ffd84606acdf8afd6379d642__PWD:'; pwd; printf '__TTS_ecc3f2d9ffd84606acdf8afd6379d642__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('astropy/modeling/separable.py')
-[?2004l[?2004h> print(p.read_text())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_288fece522194118a60d1c6452de0a29__RC:%s\n' "$__tts_rc"; printf '__TTS_288fece522194118a60d1c6452de0a29__PWD:'; pwd; printf '__TTS_288fece522194118a60d1c6452de0a29__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && grep -R -n "def separability_matrix\|_separable\|CompoundModel" astropy/modeling/separable.py astropy/modeling | head -200; __tts_rc=$?; printf '\n__TTS_46e6b944c6a14278b9058545475171ea__RC:%s\n' "$__tts_rc"; printf '__TTS_46e6b944c6a14278b9058545475171ea__PWD:'; pwd; printf '__TTS_46e6b944c6a14278b9058545475171ea__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && sed -n '1,240p' astropy/modeling/separable.py; __tts_rc=$?; printf '\n__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__RC:%s\n' "$__tts_rc"; printf '__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__PWD:'; pwd; printf '__TTS_5d3753fd56bd4f1cab87fc96b2e66c0d__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app/astropy && python - <<'PY'
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('astropy/modeling/separable.py')
-[?2004l[?2004h> with p.open() as f:
-[?2004l[?2004h>     import itertools
-[?2004l[?2004h>     print(''.join(itertools.islice(f,240)))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_5e53d07272034c1693cc2252e283f2c7__RC:%s\n' "$__tts_rc"; printf '__TTS_5e53d07272034c1693cc2252e283f2c7__PWD:'; pwd; printf '__TTS_5e53d07272034c1693cc2252e283f2c7__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 7
-    PY; __tts_rc=$?; printf '\n__TTS_ecc3f2d9ffd84606acdf8afd6379d642__RC:%s\n' "$__tts_rc"; printf '__TTS_ecc3f2d9ffd84606acdf8afd6379d642__PWD:'; pwd; printf '__TTS_ecc3f2d9ffd84606acdf8afd6379d642__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@5041ad9bc43e:/app/astropy# 

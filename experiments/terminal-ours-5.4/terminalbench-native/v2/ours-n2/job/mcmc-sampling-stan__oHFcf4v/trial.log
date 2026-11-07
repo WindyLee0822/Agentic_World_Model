@@ -1,5 +1,0 @@
-Trial mcmc-sampling-stan__oHFcf4v failed: Docker compose command failed for environment mcmc-sampling-stan. Command: docker compose --project-name mcmc-sampling-stan__ohfcf4v__env --project-directory /home/t-wendili/.cache/harbor/tasks/jAoUooKp48ZpCL53Ra9yUk/mcmc-sampling-stan/environment -f /tmp/tmp8mondlsz/mcmc-sampling-stan__oHFcf4v__env-docker-compose-resources.json -f /home/t-wendili/miniconda3/envs/tts-terminalbench/lib/python3.12/site-packages/harbor/environments/docker/docker-compose-prebuilt.yaml -f /tmp/tmpo1iwd7jw/docker-compose-mounts.json up --detach --wait. Return code: 1. Stdout:  Network mcmc-sampling-stan__ohfcf4v__env_default Creating 
- Network mcmc-sampling-stan__ohfcf4v__env_default Error Error response from daemon: all predefined address pools have been fully subnetted
-failed to create network mcmc-sampling-stan__ohfcf4v__env_default: Error response from daemon: all predefined address pools have been fully subnetted
-. Stderr: None. 
-Collecting main service artifacts

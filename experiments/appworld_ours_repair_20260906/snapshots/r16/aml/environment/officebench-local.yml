@@ -1,7 +1,0 @@
-$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
-name: tts-officebench-local
-version: "20260803"
-description: OfficeBench app/evaluator runtime for standard AML compute without a Docker daemon.
-build:
-  path: ..
-  dockerfile_path: environment/officebench-local/Dockerfile

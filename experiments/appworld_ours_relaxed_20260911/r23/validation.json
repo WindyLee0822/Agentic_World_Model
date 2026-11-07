@@ -1,6 +1,0 @@
-{
-  "evidence_and_isolation_tests_passed": 3,
-  "existing_prediction_routing_regressions_passed": 26,
-  "live_task_recovery_proven": false,
-  "full_benchmark_target_proven": false
-}

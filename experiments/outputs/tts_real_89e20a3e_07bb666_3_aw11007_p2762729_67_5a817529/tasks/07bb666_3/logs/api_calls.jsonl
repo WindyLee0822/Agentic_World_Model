@@ -1,2 +1,0 @@
-{"method": "get", "url": "/api_docs/api_descriptions", "data": {"app_name": "amazon"}}
-{"method": "get", "url": "/api_docs/api_doc", "data": {"app_name": "amazon", "api_name": "show_cart"}}

@@ -1,20 +1,0 @@
-[?2004hroot@f5a5f1e3fdd0:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@f5a5f1e3fdd0:/app# clear
-[?2004l[H[J[?2004hroot@f5a5f1e3fdd0:/app# pwd; __tts_rc=$?; printf '\n__TTS_c5571974c556413faf7fc20439fb6137__RC:%s\n' "$__tts_rc"; printf '__TTS_c5571974c556413faf7fc20439fb6137__PWD:'; pwd; printf '__TTS_c5571974c556413faf7fc20439fb6137__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_c5571974c556413faf7fc20439fb6137__RC:0
-__TTS_c5571974c556413faf7fc20439fb6137__PWD:/app
-__TTS_c5571974c556413faf7fc20439fb6137__END
-[?2004hroot@f5a5f1e3fdd0:/app# cd -- /app && sh -lc 'test -f /app/alpine.iso && nohup qemu-system-x86_64 -m 512 -cdrom /app/alpine.iso -boot d -nographic -serial telnet:127.0.0.1:6665,server,nowait </dev/null >/tmp/qemu-alpine.log 2>&1 & pid=$!; for i in $(seq 1 180); do sleep 1; (echo | telnet 127.0.0.1 6665 2>/dev/null | grep -qi "login") && exit 0; done; kill $pid; exit 1'; __tts_rc=$?; printf '\n__TTS_153e4ec550244bba846726e680276875__RC:%s\n' "$__tts_rc"; printf '__TTS_153e4ec550244bba846726e680276875__PWD:'; pwd; printf '__TTS_153e4ec550244bba846726e680276875__END\n'; tmux wait -S done
-[?2004l
-__TTS_153e4ec550244bba846726e680276875__RC:1
-__TTS_153e4ec550244bba846726e680276875__PWD:/app
-__TTS_153e4ec550244bba846726e680276875__END
-[?2004hroot@f5a5f1e3fdd0:/app# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@f5a5f1e3fdd0:/app# 

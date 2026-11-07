@@ -1,8 +1,0 @@
-{
-  "changed_python_files_vs_r20": [
-    "src/tts/env/real_appworld.py",
-    "src/tts/env/appworld_ours_failure_boundary.py"
-  ],
-  "integration_change_only_existing_ours_predict_all_model_driven_branch": true,
-  "all_other_python_sources_identical": true
-}

@@ -1,57 +1,0 @@
-[?2004hroot@9faf4ab669e4:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@9faf4ab669e4:/app# clear
-[?2004l[H[J[3J[?2004hroot@9faf4ab669e4:/app# pwd; __tts_rc=$?; printf '\n__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__RC:%s\n' "$__tts_rc"; printf '__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__PWD:'; pwd; printf '__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__RC:0
-__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__PWD:/app
-__TTS_0f8dcb1c378b4d58b01ec698f5a6e5fb__END
-[?2004hroot@9faf4ab669e4:/app# cd -- /app && python - <<'PY'
-[?2004l[?2004h> import csv
-[?2004l[?2004h> with open('daily_temp_sf_high.csv') as f: hi=[float(r[0]) for r in csv.reader(f) if r]
-[?2004l[?2004h> with open('daily_temp_sf_low.csv') as f: lo=[float(r[0]) for r in csv.reader(f) if r]
-[?2004l[?2004h> avg=sum(h-l for h,l in zip(hi,lo))/min(len(hi),len(lo))
-[?2004l[?2004h> open('avg_temp.txt','w').write(str(avg))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_d594c8f203a743ae8c57300e60008abc__RC:%s\n' "$__tts_rc"; printf '__TTS_d594c8f203a743ae8c57300e60008abc__PWD:'; pwd; printf '__TTS_d594c8f203a743ae8c57300e60008abc__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && ls -l /app && wc -l /app/daily_temp_sf_high.csv /app/daily_temp_sf_low.csv && head -5 /app/daily_temp_sf_high.csv && head -5 /app/daily_temp_sf_low.csv; __tts_rc=$?; printf '\n__TTS_78456446d08248b893cf81180fb467d9__RC:%s\n' "$__tts_rc"; printf '__TTS_78456446d08248b893cf81180fb467d9__PWD:'; pwd; printf '__TTS_78456446d08248b893cf81180fb467d9__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python -c "import csv;f=open('daily_temp_sf_high.csv',newline='');r=csv.reader(f);hi=[float(next(r)[0]) for _ in range(10)];print(hi)"; __tts_rc=$?; printf '\n__TTS_d4f91fe577c7484386a3750517b633e4__RC:%s\n' "$__tts_rc"; printf '__TTS_d4f91fe577c7484386a3750517b633e4__PWD:'; pwd; printf '__TTS_d4f91fe577c7484386a3750517b633e4__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 3 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m6[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_d594c8f203a743ae8c57300e60008abc__RC:%s\n' "$__tts_rc"; printf '__TTS_d594c8f203a743ae8c57300e60008abc__PWD:'; pwd; printf '__TTS_d594c8f203a743ae8c57300e60008abc__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@9faf4ab669e4:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_d4f91fe57' && cd /app && python -c "import csv; h=csv.reader(open('daily_temp_sf_high.csv')); l=csv.reader(open('daily_temp_sf_low.csv')); s=n=0
-[?2004l[?2004h> for a,b in zip(h,l):
-[?2004l[?2004h>  s+=float(a[0])-float(b[0]); n+=1
-[?2004l[?2004h> open('avg_temp.txt','w').write(str(s/n))"; __tts_rc=$?; printf '\n__TTS_c9c47aa9636045cf91965e2cbaee68cb__RC:%s\n' "$__tts_rc"; printf '__TTS_c9c47aa9636045cf91965e2cbaee68cb__PWD:'; pwd; printf '__TTS_c9c47aa9636045cf91965e2cbaee68cb__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_d4f91fe57: No such file or directory
-
-__TTS_c9c47aa9636045cf91965e2cbaee68cb__RC:1
-__TTS_c9c47aa9636045cf91965e2cbaee68cb__PWD:/app
-__TTS_c9c47aa9636045cf91965e2cbaee68cb__END
-[?2004hroot@9faf4ab669e4:/app# cd -- /app && python -c "import csv,itertools; h=csv.reader(open('/app/daily_temp_sf_high.csv')); l=csv.reader(open('/app/daily_temp_sf_low.csv')); p=((float(a[0]),float(b[0])) for a,b in itertools.islice(zip(h,l),1000000)); s=n=0
-[?2004l[?2004h> for x,y in p: s+=x-y; n+=1
-[?2004l[?2004h> open('/app/avg_temp.txt','w').write(str(s/n))"; __tts_rc=$?; printf '\n__TTS_d5646bebb5b64c83880d9f94b8bc85d3__RC:%s\n' "$__tts_rc"; printf '__TTS_d5646bebb5b64c83880d9f94b8bc85d3__PWD:'; pwd; printf '__TTS_d5646bebb5b64c83880d9f94b8bc85d3__END\n'; tmux wait -S done
-[?2004lTraceback (most recent call last):
-  File [35m"<string>"[0m, line [35m2[0m, in [35m<module>[0m
-    for x,y in [1;31mp[0m: s+=x-y; n+=1
-               [1;31m^[0m
-  File [35m"<string>"[0m, line [35m1[0m, in [35m<genexpr>[0m
-    import csv,itertools; h=csv.reader(open('/app/daily_temp_sf_high.csv')); l=csv.reader(open('/app/daily_temp_sf_low.csv')); p=(([31mfloat[0m[1;31m(a[0])[0m,float(b[0])) for a,b in itertools.islice(zip(h,l),1000000)); s=n=0
-                                                                                                                                   [31m~~~~~[0m[1;31m^^^^^^[0m
-[1;35mValueError[0m: [35mcould not convert string to float: 'date'[0m
-
-__TTS_d5646bebb5b64c83880d9f94b8bc85d3__RC:1
-__TTS_d5646bebb5b64c83880d9f94b8bc85d3__PWD:/app
-__TTS_d5646bebb5b64c83880d9f94b8bc85d3__END
-[?2004hroot@9faf4ab669e4:/app# cd -- /app && python -c "import csv;h=csv.reader(open('/app/daily_temp_sf_high.csv'));l=csv.reader(open('/app/daily_temp_sf_low.csv'));next(h,None);next(l,None);s=n=0
-[?2004l[?2004h> for a,b in zip(h,l): s+=float(a[1])-float(b[1]); n+=1
-[?2004l[?2004h> open('/app/avg_temp.txt','w').write(str(s/n))"; __tts_rc=$?; printf '\n__TTS_59be59e9bcac42f394e8cc5d37232f71__RC:%s\n' "$__tts_rc"; printf '__TTS_59be59e9bcac42f394e8cc5d37232f71__PWD:'; pwd; printf '__TTS_59be59e9bcac42f394e8cc5d37232f71__END\n'; tmux wait -S done
-[?2004l
-__TTS_59be59e9bcac42f394e8cc5d37232f71__RC:0
-__TTS_59be59e9bcac42f394e8cc5d37232f71__PWD:/app
-__TTS_59be59e9bcac42f394e8cc5d37232f71__END
-[?2004hroot@9faf4ab669e4:/app# 

@@ -1,6 +1,0 @@
-{
-  "probe": "Excel reader given a .docx path; rejects extension before reading file",
-  "exception_type": "InvalidFileException",
-  "message": "openpyxl does not support .docx file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm",
-  "native_candidate_actions_executed": 0
-}

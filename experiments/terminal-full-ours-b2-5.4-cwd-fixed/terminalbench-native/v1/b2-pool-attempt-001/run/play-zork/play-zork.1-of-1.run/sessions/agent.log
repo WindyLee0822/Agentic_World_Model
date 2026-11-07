@@ -1,15 +1,0 @@
-[?2004hroot@90af0a991a81:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@90af0a991a81:/app# clear
-[?2004l[H[J[3J[?2004hroot@90af0a991a81:/app# pwd; __tts_rc=$?; printf '\n__TTS_cdf61f34af0541b1abe1a0c492474dfb__RC:%s\n' "$__tts_rc"; printf '__TTS_cdf61f34af0541b1abe1a0c492474dfb__PWD:'; pwd; printf '__TTS_cdf61f34af0541b1abe1a0c492474dfb__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_cdf61f34af0541b1abe1a0c492474dfb__RC:0
-__TTS_cdf61f34af0541b1abe1a0c492474dfb__PWD:/app
-__TTS_cdf61f34af0541b1abe1a0c492474dfb__END
-[?2004hroot@90af0a991a81:/app# cd -- /app && cd /app/frotz && printf 'look
-[?2004l[?2004h> quit
-[?2004l[?2004h> y
-[?2004l[?2004h> ' | ./frotz zork1.z5 | head -n 80; __tts_rc=$?; printf '\n__TTS_6314cccc16814bec8342ef21199e42e7__RC:%s\n' "$__tts_rc"; printf '__TTS_6314cccc16814bec8342ef21199e42e7__PWD:'; pwd; printf '__TTS_6314cccc16814bec8342ef21199e42e7__END\n'; tmux wait -S done
-[?2004lI won't run as root!

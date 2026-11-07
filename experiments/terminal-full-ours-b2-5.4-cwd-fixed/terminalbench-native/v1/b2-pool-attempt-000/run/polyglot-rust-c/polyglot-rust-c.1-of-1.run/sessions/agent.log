@@ -1,78 +1,0 @@
-[?2004hroot@fac71b250fe4:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@fac71b250fe4:/app# clear
-[?2004l[H[J[3J[?2004hroot@fac71b250fe4:/app# pwd; __tts_rc=$?; printf '\n__TTS_2438342d3e684893ad688b419f764e6d__RC:%s\n' "$__tts_rc"; printf '__TTS_2438342d3e684893ad688b419f764e6d__PWD:'; pwd; printf '__TTS_2438342d3e684893ad688b419f764e6d__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_2438342d3e684893ad688b419f764e6d__RC:0
-__TTS_2438342d3e684893ad688b419f764e6d__PWD:/app
-__TTS_2438342d3e684893ad688b419f764e6d__END
-[?2004hroot@fac71b250fe4:/app# cd -- /app && cat > /app/main.c.rs <<'EOF'
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0,1);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
-[?2004l[?2004h> fn main(){let n: u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
-[?2004l[?2004h> #endif
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
-[?2004l[?2004h> int main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\n",fib(n));return 0;}
-[?2004l[?2004h> /*
-[?2004l[?2004h> EOF
-[?2004l[?2004hroot@fac71b250fe4:/app# rustc /app/main.c.rs -o /app/main && /app/main 10 >/dev/null 2>&1 || true; __tts_rc=$?; printf '\n__TTS_ef818e1bca23432fa069a4d3b3682418__RC:%s\n' "$__tts_rc"; printf '__TTS_ef818e1bca23432fa069a4d3b3682418__PWD:'; pwd; printf '__TTS_ef818e1bca23432fa069a4d3b3682418__END\n'; tmux wait -S done
-[?2004l[0m[1m[38;5;9merror[E0758][0m[0m[1m: unterminated block comment[0m
-[0m [0m[0m[1m[38;5;12m--> [0m[0m/app/main.c.rs:9:1[0m
-[0m  [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m9[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m/*[0m
-[0m  [0m[0m[1m[38;5;12m| [0m[0m[1m[38;5;9m^^^[0m
-
-[0m[1m[38;5;9merror[0m[0m[1m: aborting due to previous error[0m
-
-[0m[1mFor more information about this error, try `rustc --explain E0758`.[0m
-
-__TTS_ef818e1bca23432fa069a4d3b3682418__RC:0
-__TTS_ef818e1bca23432fa069a4d3b3682418__PWD:/app
-__TTS_ef818e1bca23432fa069a4d3b3682418__END
-[?2004hroot@fac71b250fe4:/app# cd -- /app && cat >/app/main.c.rs <<'EOF'
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> #include <stdio.h>
-[?2004l[?2004h> #include <stdlib.h>
-[?2004l[?2004h> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
-[?2004l[?2004h> int main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\n",fib(n));return 0;}
-[?2004l[?2004h> #else
-[?2004l[?2004h> fn fib(mut n:u64)->u64{let(mut a,mut b)=(0,1);while n>0{let t=a+b;a=b;b=t;n-=1;}a}
-[?2004l[?2004h> fn main(){let n:u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
-[?2004l[?2004h> #endif
-[?2004l[?2004h> EOF; __tts_rc=$?; printf '\n__TTS_ca35899138f44024ab74edf8651f091a__RC:%s\n' "$__tts_rc"; printf '__TTS_ca35899138f44024ab74edf8651f091a__PWD:'; pwd; printf '__TTS_ca35899138f44024ab74edf8651f091a__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && sed -n '1,200p' /app/main.c.rs && printf '%s
-[?2004l[?2004h> ' '---' && (rustc /app/main.c.rs -o /tmp/rmain 2>&1 || true) && printf '%s
-[?2004l[?2004h> ' '---' && (gcc /app/main.c.rs -o /tmp/cmain 2>&1 || true); __tts_rc=$?; printf '\n__TTS_22289d30f2b94216b6532011072725ed__RC:%s\n' "$__tts_rc"; printf '__TTS_22289d30f2b94216b6532011072725ed__PWD:'; pwd; printf '__TTS_22289d30f2b94216b6532011072725ed__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> open('/app/main.c.rs','w').write('#include/*
-[?2004l[?2004h> */<stdio.h>
-[?2004l[?2004h> #include/*
-[?2004l[?2004h> */<stdlib.h>
-[?2004l[?2004h> #define FN fn
-[?2004l[?2004h> #define U u64
-[?2004l[?2004h> #define RET ->
-[?2004l[?2004h> #define LET let
-[?2004l[?2004h> #define WH while
-[?2004l[?2004h> #define IFN int
-[?2004l[?2004h> #define MAIN main
-[?2004l[?2004h> #define PRINT printf
-[?2004l[?2004h> #define PARSE strtoull(v[1],0,10)
-[?2004l[?2004h> #if 0
-[?2004l[?2004h> FN fib(mut n:U) RET U{LET(mut a,mut b)=(0,1);WH n>0{LET t=a+b;a=b;b=t;n-=1;}a}
-[?2004l[?2004h> FN MAIN(){LET n:U=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}
-[?2004l[?2004h> #else
-[?2004l[?2004h> unsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}
-[?2004l[?2004h> IFN MAIN(int c,char**v){unsigned long long n=PARSE;PRINT("%llu\\n",fib(n));return 0;}
-[?2004l[?2004h> #endif
-[?2004l[?2004h> ')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_eb2e122840524fcca554f50687eef00d__RC:%s\n' "$__tts_rc"; printf '__TTS_eb2e122840524fcca554f50687eef00d__PWD:'; pwd; printf '__TTS_eb2e122840524fcca554f50687eef00d__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 15 delimited by end-of-file (wanted `EOF')
-[?2004hroot@fac71b250fe4:/app# cd -- ''"'"'; pwd; printf '"'"'_' && python3 - <<'PY'
-[?2004l[?2004h> open('/app/main.c.rs','w').write('/*/#![allow(dead_code)]\nfn fib(mut n:u64)->u64{let(mut a,mut b)=(0,1);while n>0{let t=a+b;a=b;b=t;n-=1;}a}\nfn main(){let n:u64=std::env::args().nth(1).unwrap().parse().unwrap();println!("{}",fib(n));}\n/*/\n#include <stdio.h>\n#include <stdlib.h>\nunsigned long long fib(unsigned long long n){unsigned long long a=0,b=1;while(n--){unsigned long long t=a+b;a=b;b=t;}return a;}\nint main(int c,char**v){unsigned long long n=strtoull(v[1],0,10);printf("%llu\\n",fib(n));return 0;}\n/* */\n')
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_9bb2df2ad1684725ae59bf2b14950c7a__RC:%s\n' "$__tts_rc"; printf '__TTS_9bb2df2ad1684725ae59bf2b14950c7a__PWD:'; pwd; printf '__TTS_9bb2df2ad1684725ae59bf2b14950c7a__END\n'; tmux wait -S done
-[?2004l[?2004h> 

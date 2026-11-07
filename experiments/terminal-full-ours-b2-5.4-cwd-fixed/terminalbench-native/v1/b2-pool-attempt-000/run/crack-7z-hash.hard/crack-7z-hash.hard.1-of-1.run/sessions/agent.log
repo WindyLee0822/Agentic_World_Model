@@ -1,81 +1,0 @@
-[?2004hroot@e036d77cbc4d:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@e036d77cbc4d:/app# clear
-[?2004l[H[J[3J[?2004hroot@e036d77cbc4d:/app# pwd; __tts_rc=$?; printf '\n__TTS_69374a345ad845c981be03ea37b1854f__RC:%s\n' "$__tts_rc"; printf '__TTS_69374a345ad845c981be03ea37b1854f__PWD:'; pwd; printf '__TTS_69374a345ad845c981be03ea37b1854f__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_69374a345ad845c981be03ea37b1854f__RC:0
-__TTS_69374a345ad845c981be03ea37b1854f__PWD:/app
-__TTS_69374a345ad845c981be03ea37b1854f__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && ls -l /app && find /app -maxdepth 2 -type f | sed 's#^#/##'; __tts_rc=$?; printf '\n__TTS_086f04d273bc44dd8db44cbc689f91a9__RC:%s\n' "$__tts_rc"; printf '__TTS_086f04d273bc44dd8db44cbc689f91a9__PWD:'; pwd; printf '__TTS_086f04d273bc44dd8db44cbc689f91a9__END\n'; tmux wait -S done
-[?2004ltotal 12
-drwxr-xr-x 1 root root 4096 Jul 16 21:18 [0m[01;34mjohn[0m
--rwxr-xr-x 1 root root  215 Jul 16 19:53 [01;32msecrets.7z[0m
-//app/secrets.7z
-//app/john/README.md
-//app/john/.travis.yml
-//app/john/shell.nix
-//app/john/CONTRIBUTING.md
-//app/john/.editorconfig
-//app/john/.pre-commit.sh
-//app/john/.gitattributes
-//app/john/.mailmap
-//app/john/LICENSE
-//app/john/.gitignore
-//app/john/requirements.txt
-
-__TTS_086f04d273bc44dd8db44cbc689f91a9__RC:0
-__TTS_086f04d273bc44dd8db44cbc689f91a9__PWD:/app
-__TTS_086f04d273bc44dd8db44cbc689f91a9__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && 7z l /app/secrets.7z; __tts_rc=$?; printf '\n__TTS_079dcdfd85ae4c50a50be1466d9de024__RC:%s\n' "$__tts_rc"; printf '__TTS_079dcdfd85ae4c50a50be1466d9de024__PWD:'; pwd; printf '__TTS_079dcdfd85ae4c50a50be1466d9de024__END\n'; tmux wait -S done
-[?2004lbash: 7z: command not found
-
-__TTS_079dcdfd85ae4c50a50be1466d9de024__RC:127
-__TTS_079dcdfd85ae4c50a50be1466d9de024__PWD:/app
-__TTS_079dcdfd85ae4c50a50be1466d9de024__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && bash -lc 'which 7zr 7za bsdtar unar 7zz p7zip archive7z file | tr " " "\n" | sed "/^$/d"'; __tts_rc=$?; printf '\n__TTS_3c31e7b76fc5481b81eb876f0049f8d2__RC:%s\n' "$__tts_rc"; printf '__TTS_3c31e7b76fc5481b81eb876f0049f8d2__PWD:'; pwd; printf '__TTS_3c31e7b76fc5481b81eb876f0049f8d2__END\n'; tmux wait -S done
-[?2004l
-__TTS_3c31e7b76fc5481b81eb876f0049f8d2__RC:0
-__TTS_3c31e7b76fc5481b81eb876f0049f8d2__PWD:/app
-__TTS_3c31e7b76fc5481b81eb876f0049f8d2__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import struct
-[?2004l[?2004h> p='/app/secrets.7z'
-[?2004l[?2004h> b=open(p,'rb').read()
-[?2004l[?2004h> assert b[:6]==b"7z\xbc\xaf\x27\x1c"
-[?2004l[?2004h> maj,minv=b[6],b[7]
-[?2004l[?2004h> crc=struct.unpack('<I',b[8:12])[0]
-[?2004l[?2004h> next_off,next_size,next_crc=struct.unpack('<QQI',b[12:32])
-[?2004l[?2004h> print('ver',maj,minv,'next',next_off,next_size,next_crc,'len',len(b))
-[?2004l[?2004h> print(b[32:32+next_size].hex())
-[?2004l[?2004h> print(b[32+next_off:32+next_off+next_size].hex())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__RC:%s\n' "$__tts_rc"; printf '__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__PWD:'; pwd; printf '__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import py7zr; print('ok')"; __tts_rc=$?; printf '\n__TTS_074f8d788aa34a5db0f261505822aa7e__RC:%s\n' "$__tts_rc"; printf '__TTS_074f8d788aa34a5db0f261505822aa7e__PWD:'; pwd; printf '__TTS_074f8d788aa34a5db0f261505822aa7e__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "print(open('/app/secrets.7z','rb').read(80).hex())"; __tts_rc=$?; printf '\n__TTS_db374b32e68c4ce3871079b6d0477944__RC:%s\n' "$__tts_rc"; printf '__TTS_db374b32e68c4ce3871079b6d0477944__PWD:'; pwd; printf '__TTS_db374b32e68c4ce3871079b6d0477944__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 6 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 11
-    PY; __tts_rc=$?; printf '\n__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__RC:%s\n' "$__tts_rc"; printf '__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__PWD:'; pwd; printf '__TTS_ed98e9e2e5394d4e9b52ff5e8413cbbd__END\n'; tmux wait -S done
-                 ^
-SyntaxError: invalid syntax
-[?2004hroot@e036d77cbc4d:/app# cd -- ''"'"'; pwd; printf '"'"'__TTS_db374b32e68c4ce3871079b6d0477944__END\n'"'"'; tmux wait -S done' && python3 -c "import pathlib;print(pathlib.Path('/app/secrets.7z').read_bytes().hex())"; __tts_rc=$?; printf '\n__TTS_7acf81aa1d074e4391366f802f7743ed__RC:%s\n' "$__tts_rc"; printf '__TTS_7acf81aa1d074e4391366f802f7743ed__PWD:'; pwd; printf '__TTS_7acf81aa1d074e4391366f802f7743ed__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf '__TTS_db374b32e68c4ce3871079b6d0477944__END\n'; tmux wait -S done: No such file or directory
-
-__TTS_7acf81aa1d074e4391366f802f7743ed__RC:1
-__TTS_7acf81aa1d074e4391366f802f7743ed__PWD:/app
-__TTS_7acf81aa1d074e4391366f802f7743ed__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && python3 -c "import pathlib,struct; b=pathlib.Path('/app/secrets.7z').read_bytes(); print(len(b)); print(b.hex())"; __tts_rc=$?; printf '\n__TTS_471819e9f40447debfcc37fe51eae6eb__RC:%s\n' "$__tts_rc"; printf '__TTS_471819e9f40447debfcc37fe51eae6eb__PWD:'; pwd; printf '__TTS_471819e9f40447debfcc37fe51eae6eb__END\n'; tmux wait -S done
-[?2004l215
-377abcaf271c00040d2b289895000000000000002200000000000000eb890c95703e06dc09b6c714749d8efc9fa554340000813307ae0fcef2b20c07b0c3daf75f458a98484af8919005198cafc116ee745bea5ed503a82bb16f74820626d382f9b11d54074728d8ec9bcfb000698c26e75b1e10d7258f5fbf0a92fb1d9338ecdc449e7b9bf620d54e598891179c322577add1882448a40afede7e8478b2323fc404572cb28c02bb43278113bb12a937bb0d0000001706100109808500070b01000123030101055d001000000c80a60a01224c2d3a0000
-
-__TTS_471819e9f40447debfcc37fe51eae6eb__RC:0
-__TTS_471819e9f40447debfcc37fe51eae6eb__PWD:/app
-__TTS_471819e9f40447debfcc37fe51eae6eb__END
-[?2004hroot@e036d77cbc4d:/app# cd -- /app && python3 -c "import pathlib,binascii;h=pathlib.Path('/app/secrets.7z').read_bytes().hex();i=h.find('224c2d3a0000');print(bytes.fromhex(h[i+12:]).decode('utf-16le'))"; __tts_rc=$?; printf '\n__TTS_66179f6e55b047ada0e0cd2096152512__RC:%s\n' "$__tts_rc"; printf '__TTS_66179f6e55b047ada0e0cd2096152512__PWD:'; pwd; printf '__TTS_66179f6e55b047ada0e0cd2096152512__END\n'; tmux wait -S done
-[?2004l
-
-__TTS_66179f6e55b047ada0e0cd2096152512__RC:0
-__TTS_66179f6e55b047ada0e0cd2096152512__PWD:/app
-__TTS_66179f6e55b047ada0e0cd2096152512__END
-[?2004hroot@e036d77cbc4d:/app# 

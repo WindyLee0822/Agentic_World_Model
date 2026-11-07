@@ -1,104 +1,0 @@
-[?2004hroot@717de1ed0a41:/app/personal-site# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@717de1ed0a41:/app/personal-site# clear
-[?2004l[H[J[3J[?2004hroot@717de1ed0a41:/app/personal-site# pwd; __tts_rc=$?; printf '\n__TTS_bcc7d9e0c23e443289cdeee7534b7d61__RC:%s\n' "$__tts_rc"; printf '__TTS_bcc7d9e0c23e443289cdeee7534b7d61__PWD:'; pwd; printf '__TTS_bcc7d9e0c23e443289cdeee7534b7d61__END\n'; tmux wait -S done
-[?2004l/app/personal-site
-
-__TTS_bcc7d9e0c23e443289cdeee7534b7d61__RC:0
-__TTS_bcc7d9e0c23e443289cdeee7534b7d61__PWD:/app/personal-site
-__TTS_bcc7d9e0c23e443289cdeee7534b7d61__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && git status --short --branch && echo '---' && git branch -avv && echo '---' && git reflog --date=iso --all --decorate -n 20; __tts_rc=$?; printf '\n__TTS_4d254cd6a44b4dad8ae043f93dcc1875__RC:%s\n' "$__tts_rc"; printf '__TTS_4d254cd6a44b4dad8ae043f93dcc1875__PWD:'; pwd; printf '__TTS_4d254cd6a44b4dad8ae043f93dcc1875__END\n'; tmux wait -S done
-[?2004l## [32mmaster[m
----
-[?1h=* [32mmaster[m d7d3e4b off the job market woo[m
-[K[?1l>---
-[?1h=[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m refs/heads/master@{2026-07-18 13:52:33 +0000}: reset: moving to d7d3e4b[m
-[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 13:52:33 +0000}: checkout: moving from b87cb229280aa75426c0d0586c4711875d0afccb to master[m
-[33mb87cb22[m HEAD@{2026-07-18 13:52:33 +0000}: commit: Move to Stanford[m
-[33mc4e38a1[m HEAD@{2026-07-18 13:52:33 +0000}: checkout: moving from master to HEAD~1[m
-[33md7d3e4b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2026-07-18 13:52:33 +0000}: reset: moving to d7d3e4b[m
-[33m19b5d10[m refs/heads/master@{2026-07-18 13:52:32 +0000}: clone: from https://github.com/TheMikeMerrill/personal-site.git[m
-[33m19b5d10[m HEAD@{2026-07-18 13:52:32 +0000}: clone: from https://github.com/TheMikeMerrill/personal-site.git[m
-[K[?1l>
-__TTS_4d254cd6a44b4dad8ae043f93dcc1875__RC:0
-__TTS_4d254cd6a44b4dad8ae043f93dcc1875__PWD:/app/personal-site
-__TTS_4d254cd6a44b4dad8ae043f93dcc1875__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git show --stat --oneline b87cb22; __tts_rc=$?; printf '\n__TTS_8dc245f0bca04c9b92f09c292f5f4b84__RC:%s\n' "$__tts_rc"; printf '__TTS_8dc245f0bca04c9b92f09c292f5f4b84__PWD:'; pwd; printf '__TTS_8dc245f0bca04c9b92f09c292f5f4b84__END\n'; tmux wait -S done
-[?2004l[?1h=[33mb87cb22[m Move to Stanford[m
- _includes/about.md    |  4 [32m++[m[31m--[m[m
- _layouts/default.html | 32 [32m+++++++++++++++++[m[31m---------------[m[m
- 2 files changed, 19 insertions(+), 17 deletions(-)[m
-[K[?1l>
-__TTS_8dc245f0bca04c9b92f09c292f5f4b84__RC:0
-__TTS_8dc245f0bca04c9b92f09c292f5f4b84__PWD:/app/personal-site
-__TTS_8dc245f0bca04c9b92f09c292f5f4b84__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git cherry-pick b87cb22; __tts_rc=$?; printf '\n__TTS_53f3d334995740839a8a9b6be4f977d9__RC:%s\n' "$__tts_rc"; printf '__TTS_53f3d334995740839a8a9b6be4f977d9__PWD:'; pwd; printf '__TTS_53f3d334995740839a8a9b6be4f977d9__END\n'; tmux wait -S done
-[?2004lAuto-merging _includes/about.md
-CONFLICT (content): Merge conflict in _includes/about.md
-error: could not apply b87cb22... Move to Stanford
-[33mhint: After resolving the conflicts, mark them with[m
-[33mhint: "git add/rm <pathspec>", then run[m
-[33mhint: "git cherry-pick --continue".[m
-[33mhint: You can instead skip this commit with "git cherry-pick --skip".[m
-[33mhint: To abort and get back to the state before "git cherry-pick",[m
-[33mhint: run "git cherry-pick --abort".[m
-
-__TTS_53f3d334995740839a8a9b6be4f977d9__RC:1
-__TTS_53f3d334995740839a8a9b6be4f977d9__PWD:/app/personal-site
-__TTS_53f3d334995740839a8a9b6be4f977d9__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git status --short && echo '---' && git diff -- _includes/about.md _layouts/default.html; __tts_rc=$?; printf '\n__TTS_ada659afe1c1490583ff3a88f70b0d27__RC:%s\n' "$__tts_rc"; printf '__TTS_ada659afe1c1490583ff3a88f70b0d27__PWD:'; pwd; printf '__TTS_ada659afe1c1490583ff3a88f70b0d27__END\n'; tmux wait -S done
-[?2004l[31mUU[m _includes/about.md
-[32mM[m  _layouts/default.html
----
-[?1h=[1mdiff --cc _includes/about.md[m[m
-[1mindex ebf11b4,7561d9e..0000000[m[m
-[1m--- a/_includes/about.md[m[m
-[1m+++ b/_includes/about.md[m[m
-[36m@@@ -1,3 -1,3 +1,9 @@@[m[m
-[32m++<<<<<<< HEAD[m[m
-[32m +I am a sixth PhD candidate at the [Paul G. Allen School of Computer Science & Engineering](https://www.cs.washington.edu/) at The University of Washington, wh[m [32mere I am advised by [Tim Althoff](http://www.timalthoff.com/). I am affiliated with [UW NLP](https://twitter.com/uwnlp).[m[m
-[32m +[m[m
-[31m-  Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.app[m [31mle.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
-[32m++ Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.app[m [32mle.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
-[32m++=======[m[m
-[32m+ I am a Postdoctoral Researcher at Stanford CS.[m[m
-[32m+ [m[m
-[31m -Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.appl[m [31me.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
-[32m++Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.appl[m [32me.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com). [m[m
-[32m++>>>>>>> b87cb22 (Move to Stanford)[m[m
-[K[?1l>
-__TTS_ada659afe1c1490583ff3a88f70b0d27__RC:0
-__TTS_ada659afe1c1490583ff3a88f70b0d27__PWD:/app/personal-site
-__TTS_ada659afe1c1490583ff3a88f70b0d27__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && printf '%s
-[?2004l[?2004h> ' 'I am a Postdoctoral Researcher at Stanford CS.' '' 'Previously, I was a Student Researcher at [Google Research](https://research.google/), an ML Research Intern at [Apple Health AI](https://machinelearning.apple.com/work-with-us) and a data scientist and the second full-time employee at [HealthRhythms](https://www.healthrhythms.com).' > _includes/about.md && git add _includes/about.md _layouts/default.html && git cherry-pick --continue; __tts_rc=$?; printf '\n__TTS_4be48767b10c446a967a5e2e3da04aad__RC:%s\n' "$__tts_rc"; printf '__TTS_4be48767b10c446a967a5e2e3da04aad__PWD:'; pwd; printf '__TTS_4be48767b10c446a967a5e2e3da04aad__END\n'; tmux wait -S done
-[?2004lhint: Waiting for your editor to close the file... error: cannot run editor: No such file or directory
-error: unable to start editor 'editor'
-Please supply the message using either -m or -F option.
-
-__TTS_4be48767b10c446a967a5e2e3da04aad__RC:1
-__TTS_4be48767b10c446a967a5e2e3da04aad__PWD:/app/personal-site
-__TTS_4be48767b10c446a967a5e2e3da04aad__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git -c core.editor=true cherry-pick --continue; __tts_rc=$?; printf '\n__TTS_8614947bc39e4e94960c26e8d2d6ec14__RC:%s\n' "$__tts_rc"; printf '__TTS_8614947bc39e4e94960c26e8d2d6ec14__PWD:'; pwd; printf '__TTS_8614947bc39e4e94960c26e8d2d6ec14__END\n'; tmux wait -S done
-[?2004lhint: Waiting for your editor to close the file... [K[master 29ef590] Move to Stanford
- Date: Sat Jul 18 13:52:33 2026 +0000
- 2 files changed, 19 insertions(+), 17 deletions(-)
-
-__TTS_8614947bc39e4e94960c26e8d2d6ec14__RC:0
-__TTS_8614947bc39e4e94960c26e8d2d6ec14__PWD:/app/personal-site
-__TTS_8614947bc39e4e94960c26e8d2d6ec14__END
-[?2004hroot@717de1ed0a41:/app/personal-site# cd -- /app/personal-site && cd /app/personal-site && git status --short --branch && git log --oneline --decorate -n 3; __tts_rc=$?; printf '\n__TTS_cdbe1f0b54d94995997e01aa98ae4702__RC:%s\n' "$__tts_rc"; printf '__TTS_cdbe1f0b54d94995997e01aa98ae4702__PWD:'; pwd; printf '__TTS_cdbe1f0b54d94995997e01aa98ae4702__END\n'; tmux wait -S done
-[?2004l## [32mmaster[m
-[?1h=[33m29ef590[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m Move to Stanford[m
-[33md7d3e4b[m off the job market woo[m
-[33mc4e38a1[m Add code link for BLADE[m
-[K[?1l>
-__TTS_cdbe1f0b54d94995997e01aa98ae4702__RC:0
-__TTS_cdbe1f0b54d94995997e01aa98ae4702__PWD:/app/personal-site
-__TTS_cdbe1f0b54d94995997e01aa98ae4702__END
-[?2004hroot@717de1ed0a41:/app/personal-site# [?2004l
-exit
-[0;32masciinema: recording finished[0m
-[0;32masciinema: asciicast saved to /logs/agent.cast[0m
-[?2004hroot@717de1ed0a41:/app/personal-site# 

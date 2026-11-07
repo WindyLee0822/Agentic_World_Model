@@ -1,8 +1,0 @@
-{
-  "sampled_files": 4,
-  "sampled_events": 122,
-  "generated_python_events": 118,
-  "read_rounds": 56,
-  "model_call_errors": [],
-  "limitation": "Sampled response prefixes show model generation, not full execution fidelity or overall accuracy."
-}

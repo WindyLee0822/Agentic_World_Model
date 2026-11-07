@@ -1,100 +1,0 @@
-[?2004hroot@b541ef8e9007:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@b541ef8e9007:/app# clear
-[?2004l[H[J[3J[?2004hroot@b541ef8e9007:/app# pwd; __tts_rc=$?; printf '\n__TTS_948b95bae50e45519c9bdc6f8e38b5f5__RC:%s\n' "$__tts_rc"; printf '__TTS_948b95bae50e45519c9bdc6f8e38b5f5__PWD:'; pwd; printf '__TTS_948b95bae50e45519c9bdc6f8e38b5f5__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_948b95bae50e45519c9bdc6f8e38b5f5__RC:0
-__TTS_948b95bae50e45519c9bdc6f8e38b5f5__PWD:/app
-__TTS_948b95bae50e45519c9bdc6f8e38b5f5__END
-[?2004hroot@b541ef8e9007:/app# cd -- /app && ls -la /app; __tts_rc=$?; printf '\n__TTS_a88fa52f3a3c42c8ba61072cda98d65d__RC:%s\n' "$__tts_rc"; printf '__TTS_a88fa52f3a3c42c8ba61072cda98d65d__PWD:'; pwd; printf '__TTS_a88fa52f3a3c42c8ba61072cda98d65d__END\n'; tmux wait -S done
-[?2004ltotal 588
-drwxr-xr-x 1 root root   4096 Jul 16 19:53 .
-drwxr-xr-x 1 root root   4096 Jul 18 05:10 ..
--rw-r--r-- 1 root root  79506 Jul 16 19:53 cJSON.c
--rw-r--r-- 1 root root  16393 Jul 16 19:53 cJSON.h
--rw-r--r-- 1 root root    389 Jul 16 19:53 image.png
--rw-r--r-- 1 root root 311873 Jul 16 19:53 lodepng.cpp
--rw-r--r-- 1 root root 107788 Jul 16 19:53 lodepng.h
--rw-r--r-- 1 root root  54714 Jul 16 19:53 model.pth
--rw-r--r-- 1 root root    681 Jul 16 19:53 model.py
-
-__TTS_a88fa52f3a3c42c8ba61072cda98d65d__RC:0
-__TTS_a88fa52f3a3c42c8ba61072cda98d65d__PWD:/app
-__TTS_a88fa52f3a3c42c8ba61072cda98d65d__END
-[?2004hroot@b541ef8e9007:/app# cd -- /app && find /app -maxdepth 1 -type f | sort | xargs -I{} sh -lc 'printf "== %s ==\n" "{}"; file "{}"; [ "${1##*.}" = py ] && sed -n "1,220p" "{}" || true' sh {}; __tts_rc=$?; printf '\n__TTS_613851c459e74ec3b4b520daffc619d5__RC:%s\n' "$__tts_rc"; printf '__TTS_613851c459e74ec3b4b520daffc619d5__PWD:'; pwd; printf '__TTS_613851c459e74ec3b4b520daffc619d5__END\n'; tmux wait -S done
-[?2004l== /app/cJSON.c ==
-sh: 1: file: not found
-== /app/cJSON.h ==
-sh: 1: file: not found
-== /app/image.png ==
-sh: 1: file: not found
-== /app/lodepng.cpp ==
-sh: 1: file: not found
-== /app/lodepng.h ==
-sh: 1: file: not found
-== /app/model.pth ==
-sh: 1: file: not found
-== /app/model.py ==
-sh: 1: file: not found
-import torch
-import torch.nn as nn
-
-
-class MnistModel(nn.Module):
-    def __init__(
-        self,
-        input_dim: int,
-        hidden_dim: int,
-        num_classes: int,
-    ) -> torch.nn.Module:
-        super().__init__()
-
-        self.input_layer = nn.Linear(input_dim, hidden_dim)
-        self.hidden_layer = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, num_classes)
-        self.activation = nn.ReLU()
-
-    def forward(self, x):
-        x = self.input_layer(x)
-        x = self.activation(x)
-
-        x = self.hidden_layer(x)
-        x = self.activation(x)
-
-        x = self.output_layer(x)
-        return x
-
-__TTS_613851c459e74ec3b4b520daffc619d5__RC:0
-__TTS_613851c459e74ec3b4b520daffc619d5__PWD:/app
-__TTS_613851c459e74ec3b4b520daffc619d5__END
-[?2004hroot@b541ef8e9007:/app# cd -- /app && python3 - <<'PY'
-[?2004l[?2004h> import os,struct,json
-[?2004l[?2004h> from pathlib import Path
-[?2004l[?2004h> p=Path('/app/model.pth')
-[?2004l[?2004h> print('size',p.stat().st_size)
-[?2004l[?2004h> with p.open('rb') as f:
-[?2004l[?2004h>     print(f.read(16))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_b4f7552f28f04ee99fbabe90a961ae42__RC:%s\n' "$__tts_rc"; printf '__TTS_b4f7552f28f04ee99fbabe90a961ae42__PWD:'; pwd; printf '__TTS_b4f7552f28f04ee99fbabe90a961ae42__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import torch, json; m=torch.load('/app/model.pth', map_location='cpu'); print(type(m)); print(m.keys() if hasattr(m,'keys') else m)"; __tts_rc=$?; printf '\n__TTS_34ac9cf556174906bce1eda5aa098a9f__RC:%s\n' "$__tts_rc"; printf '__TTS_34ac9cf556174906bce1eda5aa098a9f__PWD:'; pwd; printf '__TTS_34ac9cf556174906bce1eda5aa098a9f__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && python3 -c "import zipfile; z=zipfile.ZipFile('/app/model.pth'); print('\n'.join(z.namelist()))"; __tts_rc=$?; printf '\n__TTS_c4090d34bf40414db2d9706cf14da858__RC:%s\n' "$__tts_rc"; printf '__TTS_c4090d34bf40414db2d9706cf14da858__PWD:'; pwd; printf '__TTS_c4090d34bf40414db2d9706cf14da858__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 5 delimited by end-of-file (wanted `PY')
-  File [35m"<stdin>"[0m, line [35m7[0m
-    PY; __tts_rc=[1;31m$[0m?; printf '\n__TTS_b4f7552f28f04ee99fbabe90a961ae42__RC:%s\n' "$__tts_rc"; printf '__TTS_b4f7552f28f04ee99fbabe90a961ae42__PWD:'; pwd; printf '__TTS_b4f7552f28f04ee99fbabe90a961ae42__END\n'; tmux wait -S done
-                 [1;31m^[0m
-[1;35mSyntaxError[0m: [35minvalid syntax[0m
-[?2004hroot@b541ef8e9007:/app# cd -- ''"'"'; pwd; printf '"'"'' && python3 -c "import zipfile,pickle,io; z=zipfile.ZipFile('/app/model.pth'); print(z.namelist()); data=z.read([n for n in z.namelist() if n.endswith('data.pkl')][0]); print(pickletools:=__import__('pickletools')); pickletools.dis(data[:2000])"; __tts_rc=$?; printf '\n__TTS_a88cc4b742e04ecf9b52239600cf0bf0__RC:%s\n' "$__tts_rc"; printf '__TTS_a88cc4b742e04ecf9b52239600cf0bf0__PWD:'; pwd; printf '__TTS_a88cc4b742e04ecf9b52239600cf0bf0__END\n'; tmux wait -S done
-[?2004lbash: cd: '; pwd; printf ': No such file or directory
-
-__TTS_a88cc4b742e04ecf9b52239600cf0bf0__RC:1
-__TTS_a88cc4b742e04ecf9b52239600cf0bf0__PWD:/app
-__TTS_a88cc4b742e04ecf9b52239600cf0bf0__END
-[?2004hroot@b541ef8e9007:/app# cd -- __TTS_a88cc4b742e04ecf9b52239600cf0bf0__PWD:/app && python3 -c "import zipfile; z=zipfile.ZipFile('/app/model.pth'); print('\n'.join(z.namelist()))"; __tts_rc=$?; printf '\n__TTS_1d4665b1f6f84de8b27f36ebbec0a810__RC:%s\n' "$__tts_rc"; printf '__TTS_1d4665b1f6f84de8b27f36ebbec0a810__PWD:'; pwd; printf '__TTS_1d4665b1f6f84de8b27f36ebbec0a810__END\n'; tmux wait -S done
-[?2004lbash: cd: __TTS_a88cc4b742e04ecf9b52239600cf0bf0__PWD:/app: No such file or directory
-
-__TTS_1d4665b1f6f84de8b27f36ebbec0a810__RC:1
-__TTS_1d4665b1f6f84de8b27f36ebbec0a810__PWD:/app
-__TTS_1d4665b1f6f84de8b27f36ebbec0a810__END
-[?2004hroot@b541ef8e9007:/app# 

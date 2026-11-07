@@ -1,57 +1,0 @@
-[?2004hroot@96a3bd8bbaee:/app# asciinema rec --stdin /logs/agent.cast
-[?2004l[0;32masciinema: recording asciicast to /logs/agent.cast[0m
-[0;32masciinema: press <ctrl-d> or type "exit" when you're done[0m
-[?2004hroot@96a3bd8bbaee:/app# clear
-[?2004l[H[J[3J[?2004hroot@96a3bd8bbaee:/app# pwd; __tts_rc=$?; printf '\n__TTS_c4d378c551d9457782c57987a1211a1b__RC:%s\n' "$__tts_rc"; printf '__TTS_c4d378c551d9457782c57987a1211a1b__PWD:'; pwd; printf '__TTS_c4d378c551d9457782c57987a1211a1b__END\n'; tmux wait -S done
-[?2004l/app
-
-__TTS_c4d378c551d9457782c57987a1211a1b__RC:0
-__TTS_c4d378c551d9457782c57987a1211a1b__PWD:/app
-__TTS_c4d378c551d9457782c57987a1211a1b__END
-[?2004hroot@96a3bd8bbaee:/app# cd -- /app && cd /app && ls -la; __tts_rc=$?; printf '\n__TTS_f4d10494b1684fc38da70096666d317f__RC:%s\n' "$__tts_rc"; printf '__TTS_f4d10494b1684fc38da70096666d317f__PWD:'; pwd; printf '__TTS_f4d10494b1684fc38da70096666d317f__END\n'; tmux wait -S done
-[?2004ltotal 486556
-drwxr-xr-x 1 root root      4096 Jul 18 20:06 [0m[01;34m.[0m
-drwxr-xr-x 1 root root      4096 Jul 18 20:06 [01;34m..[0m
--rw-r--r-- 1 root root 497759232 Jul 18 20:06 gpt2-124M.ckpt
--rw-r--r-- 1 root root    456318 Jul 18 20:06 vocab.bpe
-
-__TTS_f4d10494b1684fc38da70096666d317f__RC:0
-__TTS_f4d10494b1684fc38da70096666d317f__PWD:/app
-__TTS_f4d10494b1684fc38da70096666d317f__END
-[?2004hroot@96a3bd8bbaee:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import struct,sys
-[?2004l[?2004h> f=open('gpt2-124M.ckpt','rb')
-[?2004l[?2004h> print(f.read(64))
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_ede12214ad15426199fafb7ef6464f6a__RC:%s\n' "$__tts_rc"; printf '__TTS_ede12214ad15426199fafb7ef6464f6a__PWD:'; pwd; printf '__TTS_ede12214ad15426199fafb7ef6464f6a__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && xxd -l 128 gpt2-124M.ckpt | head; __tts_rc=$?; printf '\n__TTS_0929571555f2400780b804353332c804__RC:%s\n' "$__tts_rc"; printf '__TTS_0929571555f2400780b804353332c804__PWD:'; pwd; printf '__TTS_0929571555f2400780b804353332c804__END\n'; tmux wait -S done
-[?2004l[?2004h> cd -- /app && cd /app && file gpt2-124M.ckpt vocab.bpe; __tts_rc=$?; printf '\n__TTS_7517b72f10f548a482b2b68cc5f7ac14__RC:%s\n' "$__tts_rc"; printf '__TTS_7517b72f10f548a482b2b68cc5f7ac14__PWD:'; pwd; printf '__TTS_7517b72f10f548a482b2b68cc5f7ac14__END\n'; tmux wait -S done
-[?2004l[?2004h> [?2004l
-bash: warning: here-document at line 4 delimited by end-of-file (wanted `PY')
-  File "<stdin>", line 5
-    cd -- /app && cd /app && xxd -l 128 gpt2-124M.ckpt | head; __tts_rc=$?; printf '\n__TTS_0929571555f2400780b804353332c804__RC:%s\n' "$__tts_rc"; printf '__TTS_0929571555f2400780b804353332c804__PWD:'; pwd; printf '__TTS_0929571555f2400780b804353332c804__END\n'; tmux wait -S done
-                                               ^
-SyntaxError: invalid decimal literal
-[?2004hroot@96a3bd8bbaee:/app# cd -- /app && cd /app && ls; __tts_rc=$?; printf '\n__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__RC:%s\n' "$__tts_rc"; printf '__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__PWD:'; pwd; printf '__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__END\n'; tmux wait -S done
-[?2004lREADME.md  gpt2-124M.ckpt  main.py  pyproject.toml  uv.lock  vocab.bpe
-
-__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__RC:0
-__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__PWD:/app
-__TTS_4d50b2498b8d4610b4fc5ace2a379bd6__END
-[?2004hroot@96a3bd8bbaee:/app# cd -- /app && cd /app && sed -n '1,220p' README.md main.py; __tts_rc=$?; printf '\n__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__RC:%s\n' "$__tts_rc"; printf '__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__PWD:'; pwd; printf '__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__END\n'; tmux wait -S done
-[?2004ldef main():
-    print("Hello from app!")
-
-
-if __name__ == "__main__":
-    main()
-
-__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__RC:0
-__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__PWD:/app
-__TTS_8e3aea9ea96447c68f9e6fb18ad6c0a8__END
-[?2004hroot@96a3bd8bbaee:/app# cd -- /app && cd /app && python3 - <<'PY'
-[?2004l[?2004h> import os,struct
-[?2004l[?2004h> f=open('gpt2-124M.ckpt','rb')
-[?2004l[?2004h> print(os.path.getsize('gpt2-124M.ckpt'))
-[?2004l[?2004h> print(f.read(32).hex())
-[?2004l[?2004h> PY; __tts_rc=$?; printf '\n__TTS_f9149cd67ebc4f09937066e6aa407ec2__RC:%s\n' "$__tts_rc"; printf '__TTS_f9149cd67ebc4f09937066e6aa407ec2__PWD:'; pwd; printf '__TTS_f9149cd67ebc4f09937066e6aa407ec2__END\n'; tmux wait -S done
-[?2004l[?2004h> 
