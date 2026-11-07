@@ -229,11 +229,13 @@ implementation of that experiment. The non-adaptive and without-subagent studies
 are also not exposed as supported launch modes here.
 
 # Citations
-`@article{li2026agentic,
+```
+@article{li2026agentic,
   title={Agentic World Modeling for Agent Test-time Scaling without Environment Replica},
   author={Li, Wendi and Inan, Huseyin A and Chen, Wei-Ning and Chen, Yanzhi and Bansal, Chetan and Rajmohan, Saravan and Li, Sharon},
   journal={arXiv preprint arXiv:2610.40927},
   year={2026}
-}`
+}
+```
 
 
